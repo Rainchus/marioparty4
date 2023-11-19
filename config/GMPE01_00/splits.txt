@@ -16,7 +16,7 @@ Sections:
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC
-	.sbss       start:0x801D4758 end:0x801D475C
+	.sbss       start:0x801D4758 end:0x801D4760
 
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x800E2AA8 end:0x800E2B24

@@ -2,9 +2,9 @@ object: orig/GMPE01_00/sys/main.dol
 hash: ff8d894776d37167e454ae3f0c9e644407c1e6b1
 symbols: config/GMPE01_00/symbols.txt
 splits: config/GMPE01_00/splits.txt
-mw_comment_version: 8
-force_active:
-- __register_global_object
+quick_analysis: true # Faster re-runs after initial analysis
+mw_comment_version: 10 # GC 2.6 linker
+force_active: [__register_global_object]
 
 modules:
 - object: orig/GMPE01_00/files/dll/_minigameDll.rel
