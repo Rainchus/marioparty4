@@ -230,6 +230,16 @@ config.libs = [
             Object(Matching, "REL/empty.c"),  # Must be marked as matching
         ],
     },
+    {
+        "lib": "_minigameDLL",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
+        ],
+    },
 ]
 
 if args.mode == "configure":
