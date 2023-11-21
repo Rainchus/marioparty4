@@ -1,5 +1,5 @@
-#include "REL/executor.h"
 #include "common.h"
+#include "REL/executor.h"
 
 void ModuleProlog(void) {
     OSReport("minigame dll setup\n");
