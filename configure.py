@@ -223,7 +223,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(Matching, "game/malloc.c"),
-            Object(NonMatching, "game/memory.c"),
+            Object(Matching, "game/memory.c"),
         ],
     },
     {

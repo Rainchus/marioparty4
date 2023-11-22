@@ -24,13 +24,22 @@ void fn_1_26C(void);
 
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, u32 size);
+void HuMemDCFlushAll();
 void HuMemDCFlush(int heap);
+void *HuMemDirectMalloc(int heap, u32 size);
+void *HuMemDirectMallocNum(int heap, u32 size, int num);
+void HuMemDirectFree(void *ptr);
+void HuMemDirectFreeNum(int heap, int num);
+u32 HuMemUsedMallocSizeGet(int heap);
+u32 HuMemUsedMallocBlockGet(int heap);
+u32 HuMemHeapSizeGet(int heap);
+void *HuMemHeapPtrGet(int heap);
 
 void *HuMemHeapInit(void *ptr, u32 size);
-void *HuMemMemoryAlloc(void *heap_ptr, u32 size, void *retaddr);
-void *HuMemMemoryAllocNum(void *heap_ptr, u32 size, u32 num, void *retaddr);
-void HuMemMemoryFree(void *ptr, void *retaddr);
-void HuMemMemoryFreeNum(void *heap_ptr, u32 num, void *retaddr);
+void *HuMemMemoryAlloc(void *heap_ptr, u32 size, u32 retaddr);
+void *HuMemMemoryAllocNum(void *heap_ptr, u32 size, int num, u32 retaddr);
+void HuMemMemoryFree(void *ptr, u32 retaddr);
+void HuMemMemoryFreeNum(void *heap_ptr, int num, u32 retaddr);
 u32 HuMemUsedMemorySizeGet(void *heap_ptr);
 u32 HuMemUsedMemoryBlockGet(void *heap_ptr);
 
