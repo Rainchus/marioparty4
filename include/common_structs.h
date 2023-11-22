@@ -15,4 +15,10 @@ typedef struct Vec3f {
     f32 z;
 } Vec3f;
 
+typedef struct unkStruct_1D3B44 {
+    struct unkStruct_1D3B44 *prev;
+    char unk_04[0x1A];
+    u16  unk_1E;
+} unkStruct_1D3B44;
+
 #endif

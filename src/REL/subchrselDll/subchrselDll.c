@@ -16,3 +16,5 @@ u16 fn_1_10C(void) {
     }
     return var_r31;
 }
+
+// void fn_1_164(void)

@@ -9,6 +9,8 @@ void* OSAllocFromHeap(int heap, u32 size);
 s32 OSCheckHeap(int heap);
 void DCFlushRangeNoSync(void *addr, u32 size);
 void* HuPrcCreate(void (*), s32, s32, s32);
+void HuPrcSleep(s32, f32);
+void HuPrcVSleep(void);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
@@ -20,7 +22,6 @@ void fn_80044920(s16);
 void fn_80045F74(s16, s32);
 s32 fn_800578E4(void);
 void fn_1_26C(void);
-
 
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, s32 size);
