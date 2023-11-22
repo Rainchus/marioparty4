@@ -13,6 +13,63 @@ Sections:
 	.sdata2     type:rodata
 	.sbss2      type:bss
 
+game/main.c:
+	.text       start:0x800057C0 end:0x80005A5C
+	.data       start:0x8011EDE0 end:0x8011EDF0
+	.sdata      start:0x801D3420 end:0x801D3430
+	.sbss       start:0x801D3A00 end:0x801D3A58
+	.sdata2     start:0x801D4960 end:0x801D4968
+
+game/pad.c:
+	.text       start:0x80005A5C end:0x80006478
+	.data       start:0x8011EDF0 end:0x8011EE00
+	.bss        start:0x80142800 end:0x80142840
+	.sbss       start:0x801D3A58 end:0x801D3AE0
+
+game/dvd.c:
+	.text       start:0x80006478 end:0x80006E38
+	.data       start:0x8011EE00 end:0x8011EF58
+	.sdata      start:0x801D3430 end:0x801D3438
+	.sbss       start:0x801D3AE0 end:0x801D3AE8
+
+game/data.c:
+	.text       start:0x80006E38 end:0x80009400
+	.data       start:0x8011EF58 end:0x8011FDE0
+	.bss        start:0x80142840 end:0x80145640
+	.sdata      start:0x801D3438 end:0x801D3448
+	.sbss       start:0x801D3AE8 end:0x801D3AF8
+
+game/decode.c:
+	.text       start:0x80009400 end:0x80009AFC
+	.data       start:0x8011FDE0 end:0x8011FE00
+	.bss        start:0x80145640 end:0x80145A40
+
+game/malloc.c:
+	.text       start:0x8000A558 end:0x8000A938
+	.data       start:0x80121F50 end:0x80121FC8
+	.bss        start:0x80145A80 end:0x80145A98
+
+game/memory.c:
+	.text       start:0x8000A938 end:0x8000AEF0
+	.data       start:0x80121FC8 end:0x80122140
+
+game/sprman.c:
+	.text       start:0x8000D348 end:0x8000F6A0
+	.rodata     start:0x8011DD00 end:0x8011DD10
+	.data       start:0x801221D0 end:0x801222F0
+	.bss        start:0x8014C490 end:0x8015C690
+	.sdata      start:0x801D3460 end:0x801D3470
+	.sbss       start:0x801D3B48 end:0x801D3B50
+	.sdata2     start:0x801D49C8 end:0x801D49F0
+
+game/sprput.c:
+	.text       start:0x8000F6A0 end:0x80010B30
+	.rodata     start:0x8011DD10 end:0x8011DD20
+	.data       start:0x801222F0 end:0x80122320
+	.bss        start:0x8015C690 end:0x8015C6C0
+	.sbss       start:0x801D3B50 end:0x801D3B58
+	.sdata2     start:0x801D49F0 end:0x801D4A28
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC

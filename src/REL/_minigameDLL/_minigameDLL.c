@@ -6,5 +6,5 @@ void ModuleProlog(void) {
 }
 
 unsigned char fn_1_CC(void) {
-    return fn_80005A30();
+    return rand8();
 }
