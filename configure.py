@@ -222,8 +222,15 @@ config.libs = [
         "cflags": cflags_game,
         "host": False,
         "objects": [
+            Object(NonMatching, "game/main.c"),
+            Object(NonMatching, "game/pad.c"),
+            Object(NonMatching, "game/dvd.c"),
+            Object(NonMatching, "game/data.c"),
+            Object(NonMatching, "game/decode.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
+            Object(NonMatching, "game/sprman.c"),
+            Object(NonMatching, "game/sprput.c"),
         ],
     },
     {
