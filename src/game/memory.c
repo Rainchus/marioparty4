@@ -151,15 +151,13 @@ s32 HuMemMemoryAllocSizeGet(s32 size)
 
 void HuMemHeapDump(void *heap_ptr, s16 status)
 {
-    u8 dump_type;
-    s32 size, inactive_size;
-    s32 num_unused_blocks, num_blocks;
     struct memory_block *block = heap_ptr;
-    size = 0;
-    inactive_size = 0;
-    num_blocks = 0;
-    num_unused_blocks = 0;
-    
+    s32 size = 0;
+    s32 inactive_size = 0;
+    s32 num_blocks = 0;
+    s32 num_unused_blocks = 0;
+    u8 dump_type;
+
     if(status < 0) {
         dump_type = 10;
     } else if(status == 0) {
