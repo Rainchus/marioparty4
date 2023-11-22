@@ -8,6 +8,7 @@ void OSReport(const char * format, ...);
 void* OSAllocFromHeap(int heap, u32 size);
 s32 OSCheckHeap(int heap);
 void DCFlushRangeNoSync(void *addr, u32 size);
+void DCFlushRange(void *addr, u32 size);
 void* HuPrcCreate(void (*), s32, s32, s32);
 void HuPrcSleep(s32, f32);
 void HuPrcVSleep(void);
@@ -23,6 +24,7 @@ void fn_80045F74(s16, s32);
 s32 fn_800578E4(void);
 void fn_1_26C(void);
 
+void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, s32 size);
 void HuMemDCFlushAll();
