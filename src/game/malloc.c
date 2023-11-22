@@ -1,8 +1,9 @@
 #include "common.h"
 
 extern int __OSCurrHeap;
+extern int currentHeapHandle;
 
-static u32 HeapSizeTbl[5] = { 0x240000, 0x140000, 0xA80000, 0x580000, 0x6B1C0 };
+static u32 HeapSizeTbl[5] = { 0x240000, 0x140000, 0xA80000, 0x580000, 0 };
 static void *HeapTbl[5];
 
 void HuMemInitAll(void)
@@ -18,7 +19,7 @@ void HuMemInitAll(void)
         }
         HeapTbl[i] = HuMemInit(ptr, HeapSizeTbl[i]);
     }
-    free_size = OSCheckHeap(__OSCurrHeap);
+    free_size = OSCheckHeap(currentHeapHandle);
     OSReport("HuMem> left memory space %dKB(%d)\n", free_size/1024, free_size);
     ptr = OSAllocFromHeap(__OSCurrHeap, free_size);
     if(ptr == NULL) {
@@ -54,4 +55,52 @@ void *HuMemDirectMalloc(int heap, u32 size)
     }
     size = (size+31) & 0xFFFFFFE0;
     return HuMemMemoryAlloc(HeapTbl[heap], size, retaddr);
+}
+
+void *HuMemDirectMallocNum(int heap, u32 size, u32 num)
+{
+    register void *retaddr;
+    asm {
+        mflr retaddr
+    }
+    size = (size+31) & 0xFFFFFFE0;
+    return HuMemMemoryAllocNum(HeapTbl[heap], size, num, retaddr);
+}
+
+void HuMemDirectFree(void *ptr)
+{
+    register void *retaddr;
+    asm {
+        mflr retaddr
+    }
+    HuMemMemoryFree(ptr, retaddr);
+}
+
+void HuMemDirectFreeNum(int heap, u32 num)
+{
+    register void *retaddr;
+    asm {
+        mflr retaddr
+    }
+    HuMemMemoryFreeNum(HeapTbl[heap], num, retaddr);
+}
+
+u32 HuMemUsedMallocSizeGet(int heap)
+{
+    return HuMemUsedMemorySizeGet(HeapTbl[heap]);
+}
+
+u32 HuMemUsedMallocBlockGet(int heap)
+{
+    return HuMemUsedMemoryBlockGet(HeapTbl[heap]);
+}
+
+u32 HuMemHeapSizeGet(int heap)
+{
+    return HeapSizeTbl[heap];
+}
+
+void *HuMemHeapPtrGet(int heap)
+{
+    return HeapTbl[heap];
 }

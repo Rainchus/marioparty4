@@ -28,5 +28,11 @@ void HuMemDCFlush(int heap);
 
 void *HuMemHeapInit(void *ptr, u32 size);
 void *HuMemMemoryAlloc(void *heap_ptr, u32 size, void *retaddr);
+void *HuMemMemoryAllocNum(void *heap_ptr, u32 size, u32 num, void *retaddr);
+void HuMemMemoryFree(void *ptr, void *retaddr);
+void HuMemMemoryFreeNum(void *heap_ptr, u32 num, void *retaddr);
+u32 HuMemUsedMemorySizeGet(void *heap_ptr);
+u32 HuMemUsedMemoryBlockGet(void *heap_ptr);
+
 
 #endif

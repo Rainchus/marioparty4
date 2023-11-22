@@ -222,7 +222,8 @@ config.libs = [
         "cflags": cflags_game,
         "host": False,
         "objects": [
-            Object(NonMatching, "game/malloc.c"),
+            Object(Matching, "game/malloc.c"),
+            Object(NonMatching, "game/memory.c"),
         ],
     },
     {
