@@ -8,6 +8,7 @@ void OSReport(const char * format, ...);
 void* OSAllocFromHeap(int heap, u32 size);
 s32 OSCheckHeap(int heap);
 void DCFlushRangeNoSync(void *addr, u32 size);
+void DCFlushRange(void *addr, u32 size);
 void* HuPrcCreate(void (*), s32, s32, s32);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
