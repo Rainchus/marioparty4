@@ -225,6 +225,7 @@ config.libs = [
             Object(NonMatching, "game/main.c"),
             Object(NonMatching, "game/pad.c"),
             Object(NonMatching, "game/dvd.c"),
+            Object(NonMatching, "game/data.c"),
             Object(NonMatching, "game/decode.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
