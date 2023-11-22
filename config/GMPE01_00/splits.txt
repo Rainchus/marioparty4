@@ -13,6 +13,15 @@ Sections:
 	.sdata2     type:rodata
 	.sbss2      type:bss
 
+game/malloc.c:
+	.text       start:0x8000A558 end:0x8000A938
+	.data       start:0x80121F50 end:0x80121FC8
+	.bss        start:0x80145A80 end:0x80145A98
+
+game/memory.c:
+	.text       start:0x8000A938 end:0x8000AEF0
+	.data       start:0x80121FC8 end:0x80122140
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC

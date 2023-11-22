@@ -177,6 +177,12 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
+# Game flags
+cflags_game = [
+    *cflags_base,
+    "-O0,p",
+]
+
 config.linker_version = "GC/2.6"
 config.rel_strip_partial = False
 config.rel_empty_file = "REL/empty.c"
@@ -210,6 +216,16 @@ NonMatching = False
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
+    {
+        "lib": "Game",
+        "mw_version": config.linker_version,
+        "cflags": cflags_game,
+        "host": False,
+        "objects": [
+            Object(Matching, "game/malloc.c"),
+            Object(Matching, "game/memory.c"),
+        ],
+    },
     {
         "lib": "Runtime.PPCEABI.H",
         "mw_version": config.linker_version,
