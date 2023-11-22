@@ -19,11 +19,9 @@ static void HuDecodeNone(struct decode_data *decode)
 
 static void HuDecodeLz(struct decode_data *decode)
 {
-    u16 flag;
-    u16 pos;
+    u16 flag = 0;
+    u16 pos = 958;
     int i, j;
-    flag = 0;
-    pos = 958;
     
     for(i=0; i<1024; i++) {
         TextBuffer[i] = 0;
@@ -38,10 +36,10 @@ static void HuDecodeLz(struct decode_data *decode)
             pos = pos & 0x3FF;
             decode->size--;
         } else {
-            u16 copy_pos, copy_size;
+            int copy_pos, copy_size;
             copy_pos = *decode->src++;
             copy_size = *decode->src++;
-            copy_pos |= ((copy_size & 0xC0) << 2);
+            copy_pos |= ((copy_size & ~0x3F) << 2);
             copy_size = (copy_size & 0x3F)+3;
             for(j=0; j<copy_size; j++) {
                 TextBuffer[pos++] = *decode->dst++ = TextBuffer[(copy_pos+j) & 0x3FF];
