@@ -224,6 +224,8 @@ config.libs = [
         "objects": [
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
+            Object(NonMatching, "game/sprman.c"),
+            Object(NonMatching, "game/sprput.c"),
         ],
     },
     {
