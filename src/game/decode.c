@@ -19,9 +19,11 @@ static void HuDecodeNone(struct decode_data *decode)
 
 static void HuDecodeLz(struct decode_data *decode)
 {
-    u16 flag = 0;
-    u16 pos = 958;
-    int i, j;
+    u16 flag, pos;
+    int i, j, copy_len;
+    flag = 0;
+    pos = 958;
+    
     
     for(i=0; i<1024; i++) {
         TextBuffer[i] = 0;
@@ -36,13 +38,12 @@ static void HuDecodeLz(struct decode_data *decode)
             pos = pos & 0x3FF;
             decode->size--;
         } else {
-            int copy_pos, copy_size;
-            copy_pos = *decode->src++;
-            copy_size = *decode->src++;
-            copy_pos |= ((copy_size & ~0x3F) << 2);
-            copy_size = (copy_size & 0x3F)+3;
-            for(j=0; j<copy_size; j++) {
-                TextBuffer[pos++] = *decode->dst++ = TextBuffer[(copy_pos+j) & 0x3FF];
+            i = *decode->src++;
+            copy_len = *decode->src++;
+            i |= ((copy_len & ~0x3F) << 2);
+            copy_len = (copy_len & 0x3F)+3;
+            for(j=0; j<copy_len; j++) {
+                TextBuffer[pos++] = *decode->dst++ = TextBuffer[(i+j) & 0x3FF];
                 pos &= 0x3FF;
             }
             decode->size -= j;
@@ -171,7 +172,7 @@ static void HuDecodeRle(struct decode_data *decode)
     }
 }
 
-void HuDecodeData(void *src, void *dst, int decode_type, u32 size)
+void HuDecodeData(void *src, void *dst, u32 size, int decode_type)
 {
     struct decode_data decode;
     struct decode_data *decode_ptr = &decode;
