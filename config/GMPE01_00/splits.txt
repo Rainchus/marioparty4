@@ -44,6 +44,9 @@ game/decode.c:
 	.data       start:0x8011FDE0 end:0x8011FE00
 	.bss        start:0x80145640 end:0x80145A40
 
+game/font.c:
+	.data       start:0x8011FE00 end:0x80121E00
+
 game/malloc.c:
 	.text       start:0x8000A558 end:0x8000A938
 	.data       start:0x80121F50 end:0x80121FC8
@@ -52,6 +55,19 @@ game/malloc.c:
 game/memory.c:
 	.text       start:0x8000A938 end:0x8000AEF0
 	.data       start:0x80121FC8 end:0x80122140
+
+game/printfunc.c:
+	.text       start:0x8000AEF0 end:0x8000C4A4
+	.data       start:0x80122140 end:0x80122180
+	.bss        start:0x80145A98 end:0x8014C398
+	.sbss       start:0x801D3B28 end:0x801D3B38
+	.sdata2     start:0x801D4978 end:0x801D49C8
+
+game/process.c:
+	.text       start:0x8000C4A4 end:0x8000D348
+	.data       start:0x80122180 end:0x801221D0
+	.bss        start:0x8014C398 end:0x8014C490
+	.sbss       start:0x801D3B38 end:0x801D3B48
 
 game/sprman.c:
 	.text       start:0x8000D348 end:0x8000F6A0
