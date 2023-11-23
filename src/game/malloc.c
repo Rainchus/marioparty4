@@ -1,8 +1,6 @@
 #include "common.h"
 #include "dolphin/os.h"
 
-extern OSHeapHandle currentHeapHandle;
-
 static u32 HeapSizeTbl[5] = { 0x240000, 0x140000, 0xA80000, 0x580000, 0 };
 static void *HeapTbl[5];
 

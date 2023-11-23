@@ -15,19 +15,46 @@ typedef struct Vec3f {
     f32 z;
 } Vec3f;
 
-typedef struct unkStruct145A98 {
-    s16  unk_00;
-    char unk_02[10];
-    s16  unk_0C;
-    char unk_0E[6];
-    u8   unk_14;
-    char unk_15[0x53];
-} unkStruct145A98; // sizeof 0x68
+typedef struct jump_buf {
+    u32 lr;
+    u32 cr;
+    u32 sp;
+    u32 r2;
+    u32 pad;
+    u32 regs[19];
+    double flt_regs[19];
+} jmp_buf;
 
-typedef struct unkStruct1D3B44 {
-    struct unkStruct1D3B44 *prev;
-    char unk_04[0x1A];
-    u16  unk_1E;
-} unkStruct1D3B44; // sizeof ???
+typedef struct process {
+    struct process *next;
+    struct process *prev;
+    struct process *child;
+    struct process *parent;
+    struct process *next_child;
+    struct process *first_child;
+    void *heap;
+    u16 exec;
+    u16 stat;
+    u16 prio;
+    s32 sleep_time;
+    u32 base_sp;
+    jmp_buf jump;
+    void (*dtor)(void);
+    void *user_data;
+} Process;
+
+typedef struct player_config {
+    s16 character;
+    s16 pad_idx;
+    s16 diff;
+    s16 group;
+    s16 iscom;
+} PlayerConfig;
+
+typedef struct wipe_state {
+    u8 unk[52];
+    float duration;
+    u8 unk2[20];
+} WipeState;
 
 #endif

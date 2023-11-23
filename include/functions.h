@@ -4,10 +4,6 @@
 #include "types.h"
 #include "common_structs.h"
 
-void* HuPrcCreate(void (*), s32, s32, s32);
-void HuPrcSleep(s32, f32);
-void HuPrcVSleep(void);
-s32* HuPrcCurrentGet(void);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
@@ -18,7 +14,8 @@ void* omInitObjMan(s32, s32);
 void fn_80044920(s16);
 void fn_80045F74(s16, s32);
 s32 fn_800578E4(void);
-void fn_1_26C(void);
+void fn_80032A58(int arg0);
+void fn_80035A0C(void);
 
 void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
 void HuMemInitAll(void);
@@ -44,6 +41,32 @@ s32 HuMemUsedMemoryBlockGet(void *heap_ptr);
 s32 HuMemMemoryAllocSizeGet(s32 size);
 void HuMemHeapDump(void *heap_ptr, s16 status);
 
+void HuPrcInit(void);
+Process *HuPrcCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size);
+void HuPrcChildLink(Process *parent, Process *child);
+void HuPrcChildUnlink(Process *process);
+Process *HuPrcChildCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size, Process *parent);
+void HuPrcChildWatch();
+Process *HuPrcCurrentGet(void);
+int HuPrcKill(Process *process);
+void HuPrcChildKill(Process *process);
+void HuPrcSleep(s32 time);
+void HuPrcVSleep(void);
+void HuPrcWakeup(Process *process);
+void HuPrcDestructorSet2(Process *process, void (*func)(void));
+void HuPrcDestructorSet(void (*func)(void));
+void HuPrcCall(int tick);
+void *HuPrcMemAlloc(s32 size);
+void HuPrcMemFree(void *ptr);
+void HuPrcSetStat(Process *process, u16 value);
+void HuPrcResetStat(Process *process, u16 value);
+void HuPrcAllPause(int flag);
+void HuPrcAllUPause(int flag);
 
+void omOvlGotoEx(int id, s16 end_mode, int stat, int event);
+void omOvlReturnEx(int level, s16 end_mode);
+void WipeCreate(char dir, char type, short duration);
+
+u16 print8(s16 x, s16 y, float scale, char *str, ...);
 
 #endif

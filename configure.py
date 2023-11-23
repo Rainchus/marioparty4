@@ -173,14 +173,17 @@ cflags_runtime = [
 cflags_rel = [
     *cflags_base,
     "-O0,s",
+    "-char unsigned",
     "-sdata 0",
     "-sdata2 0",
+    "-pool off",
 ]
 
 # Game flags
 cflags_game = [
     *cflags_base,
     "-O0,p",
+    "-char unsigned",
 ]
 
 config.linker_version = "GC/2.6"
@@ -227,8 +230,12 @@ config.libs = [
             Object(NonMatching, "game/dvd.c"),
             Object(NonMatching, "game/data.c"),
             Object(Matching, "game/decode.c"),
+            Object(NonMatching, "game/font.c"),
+            Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
+            Object(NonMatching, "game/printfunc.c"),
+            Object(Matching, "game/process.c"),
             Object(NonMatching, "game/sprman.c"),
             Object(NonMatching, "game/sprput.c"),
         ],
@@ -261,6 +268,16 @@ config.libs = [
         "objects": [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
+        ],
+    },
+    {
+        "lib": "subchrselDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/subchrselDll/subchrselDll.c"),
         ],
     },
 ]
