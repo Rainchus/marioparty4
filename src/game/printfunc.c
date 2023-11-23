@@ -232,8 +232,8 @@ void pfDrawFonts(void)
                             
                         case 253:
                             shadow_color = (*str++)-1;
-                            shadow_ofs_x = 1.33333333f*strline[i].scale*scale;
-                            shadow_ofs_y = 1.33333333f*strline[i].scale*scale;
+                            shadow_ofs_x = 1.3333333f*strline[i].scale*scale;
+                            shadow_ofs_y = 1.3333333f*strline[i].scale*scale;
                             break;
                             
                         default:
