@@ -8,7 +8,7 @@ extern u8 ank8x8_4b[];
 
 struct strline_data {
     u16 type;
-    u16 color_idx;
+    u16 color;
     s16 x;
     s16 y;
     s16 w;
@@ -16,7 +16,7 @@ struct strline_data {
     s16 empstrline_next;
     float scale;
     char str[80];
-    GXColor color;
+    GXColor win_color;
 };
 
 static struct strline_data strline[256];
@@ -91,7 +91,7 @@ s16 print8(s16 x, s16 y, float scale, char *str, ...)
     ret = empstrline;
     empstrline = strline_curr->empstrline_next;
     strline_curr->type = 0;
-    strline_curr->color_idx = fontcolor;
+    strline_curr->color = fontcolor;
     strline_curr->x = x;
     strline_curr->y = y;
     strline_curr->scale = scale;
@@ -117,10 +117,10 @@ s16 printWin(s16 x, s16 y, s16 w, s16 h, GXColor *color)
     ret = empstrline;
     empstrline = strline_curr->empstrline_next;
     strline_curr->type = 1;
-    strline_curr->color.r = color->r;
-    strline_curr->color.g = color->g;
-    strline_curr->color.b = color->b;
-    strline_curr->color.a = color->a;
+    strline_curr->win_color.r = color->r;
+    strline_curr->win_color.g = color->g;
+    strline_curr->win_color.b = color->b;
+    strline_curr->win_color.a = color->a;
     strline_curr->x = x;
     strline_curr->y = y;
     strline_curr->w = w;
@@ -130,9 +130,10 @@ s16 printWin(s16 x, s16 y, s16 w, s16 h, GXColor *color)
 
 void pfDrawFonts(void)
 {
+    int i;
     GXTexObj font_tex;
-    Mtx modelview;
     Mtx44 proj;
+    Mtx modelview;
     u16 strline_count = strlinecnt;
     if(saftyFrameF) {
         WireDraw();
@@ -153,10 +154,146 @@ void pfDrawFonts(void)
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
     GXSetArray(GX_VA_CLR0, fcoltbl, sizeof(GXColor));
     GXSetZMode(GX_FALSE, GX_ALWAYS, GX_FALSE);
+    GXInvalidateTexAll();
     GXInitTexObj(&font_tex, ank8x8_4b, 128, 128, GX_TF_I4, GX_CLAMP, GX_CLAMP, GX_FALSE);
     GXInitTexObjLOD(&font_tex, GX_NEAR, GX_NEAR, 0, 0, 0, GX_FALSE, GX_FALSE, GX_ANISO_1);
     GXLoadTexObj(&font_tex, GX_TEXMAP0);
     GXSetNumTevStages(1);
     GXSetNumTexGens(1);
     GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
+    GXSetNumChans(1);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_VTX, GX_SRC_VTX, GX_LIGHT0, GX_DF_CLAMP, GX_AF_SPOT);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXSetColorUpdate(GX_TRUE);
+    for(i=0; i<256; i++) {
+        s16 x;
+        s16 y;
+        x = strline[i].x;
+        y = strline[i].y;
+        if(strline[i].type == 1) {
+            s16 w = strline[i].w;
+            s16 h = strline[i].h;
+            GXClearVtxDesc();
+            GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+            GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_S16, 0);
+            GXSetTevColor(GX_TEVREG0, strline[i].win_color);
+            GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+            GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_C0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+            GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_A0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
+            GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetNumTevStages(1);
+            GXSetNumTexGens(0);
+            GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+            GXPosition2s16(x, y);
+            GXPosition2s16(x+w, y);
+            GXPosition2s16(x+w, y+h);
+            GXPosition2s16(x, y+h);
+            GXClearVtxDesc();
+            GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+            GXSetVtxDesc(GX_VA_CLR0, GX_INDEX8);
+            GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+            GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_S16, 0);
+            GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
+            GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+            GXSetArray(GX_VA_CLR0, fcoltbl, sizeof(GXColor));
+            GXSetNumTevStages(1);
+            GXSetNumTexGens(1);
+            GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+            GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+            GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
+        } else {
+            if(strline[i].str[0] != '\0') {
+                float shadow_ofs_x, shadow_ofs_y;
+                float char_w = 8.0f*strline[i].scale;
+                float char_h = char_w;
+                float texcoord_x, texcoord_y;
+                char *str = strline[i].str;
+                u16 color = strline[i].color;
+                s16 shadow_color = -1;
+                float scale = 1.0f;
+                while(*str) {
+                    char c = *str++;
+                    switch(c) {
+                        case 255:
+                            c = *str++;
+                            scale = c/16.0f;
+                            char_w = scale*8.0f*strline[i].scale;
+                            char_h = scale*8.0f*strline[i].scale;
+                            break;
+                            
+                        case 254:
+                            color = (*str++)-1;
+                            break;
+                            
+                        case 253:
+                            shadow_color = (*str++)-1;
+                            shadow_ofs_x = scale*1.33333333f*strline[i].scale;
+                            shadow_ofs_y = scale*1.33333333f*strline[i].scale;
+                            break;
+                            
+                        default:
+                            texcoord_x = (c%16)/16.0f;
+                            texcoord_y = ((c/16)/16.0f)+(1/128.0f);
+                            if(shadow_color < 0) {
+                                GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+                                GXPosition3s16(x, y, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x, texcoord_y);
+                                GXPosition3s16(x+char_w, y, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x+(1/16.0f), texcoord_y);
+                                GXPosition3s16(x+char_w, y+char_h, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x+(1/16.0f), texcoord_y+(1/16.0f));
+                                GXPosition3s16(x, y+char_h, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x, texcoord_y+(1/16.0f));
+                            } else {
+                                GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+                                GXPosition3s16(x+shadow_ofs_x, y+shadow_ofs_y, 0);
+                                GXColor1x8(shadow_color);
+                                GXTexCoord2f32(texcoord_x, texcoord_y);
+                                GXPosition3s16(x+char_w+shadow_ofs_x, y+shadow_ofs_y, 0);
+                                GXColor1x8(shadow_color);
+                                GXTexCoord2f32(texcoord_x+(1/16.0f), texcoord_y);
+                                GXPosition3s16(x+char_w+shadow_ofs_x, y+char_h+shadow_ofs_y, 0);
+                                GXColor1x8(shadow_color);
+                                GXTexCoord2f32(texcoord_x+(1/16.0f), texcoord_y+(1/16.0f));
+                                GXPosition3s16(x+shadow_ofs_x, y+char_h+shadow_ofs_y, 0);
+                                GXColor1x8(shadow_color);
+                                GXTexCoord2f32(texcoord_x, texcoord_y+(1/16.0f));
+                                GXPosition3s16(x, y, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x, texcoord_y);
+                                GXPosition3s16(x+char_w, y, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x+(1/16.0f), texcoord_y);
+                                GXPosition3s16(x+char_w, y+char_h, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x+(1/16.0f), texcoord_y+(1/16.0f));
+                                GXPosition3s16(x, y+char_h, 0);
+                                GXColor1x8(color);
+                                GXTexCoord2f32(texcoord_x, texcoord_y+(1/16.0f));
+                            }
+                            x += char_w;
+                            if(x > 640) {
+                                x = 0;
+                                y += char_h;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+static void WireDraw(void)
+{
+    
 }

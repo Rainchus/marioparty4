@@ -173,6 +173,7 @@ cflags_runtime = [
 cflags_rel = [
     *cflags_base,
     "-O0,s",
+    "-enum int",
     "-char unsigned",
     "-sdata 0",
     "-sdata2 0",
@@ -183,6 +184,7 @@ cflags_rel = [
 cflags_game = [
     *cflags_base,
     "-O0,p",
+    "-enum int",
     "-char unsigned",
 ]
 
