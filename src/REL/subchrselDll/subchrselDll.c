@@ -1,20 +1,171 @@
-#include "subchrselDll.h"
+#include "common.h"
 
-void fn_1_A0(void) {
+//HACK: Force 0.5 and 3.0 double constants to appear in REL
+const double _half = 0.5;
+const double _three = 3.0;
+
+extern WipeState wipeData;
+
+extern PlayerConfig gPlayerConfig[4];
+extern u16 HuPadBtnDown[4];
+extern u8 HuPadDStk[4];
+extern int fontcolor;
+
+static void SubchrMain(void);
+
+static u8 cur_direction[4];
+
+static char *player_numstr[4] = {
+    "PLAYER1",
+    "PLAYER2",
+    "PLAYER3",
+    "PLAYER4"
+};
+
+static char *character_str[8] = {
+    "MARIO",
+    "LUIGI",
+    "PEACH",
+    "YOSHI",
+    "WARIO",
+    "DONKEY",
+    "DAISY",
+    "WALUIGI"
+};
+
+static char *ext_character_str[7] = {
+    "",
+    "KOOPA",
+    "KINOPIO",
+    "HEIHOH",
+    "TERESA",
+    "NOKO2",
+    "MKOOPA"
+};
+
+void ModuleProlog(void)
+{
     void* sp8 = omInitObjMan(0x32, 0x2000);
-    Hu3DBGColorSet(0U, 0U, 0U);
-    fn_8000C760(&fn_1_164, 0x1000, 0x3000, 0, fn_8000CA3C());
-    fn_800414AC(1, 0, -1);
+    Hu3DBGColorSet(0, 0, 0);
+    HuPrcChildCreate(SubchrMain, 4096, 12288, 0, HuPrcCurrentGet());
+    WipeCreate(1, 0, -1);
 }
 
-u16 fn_1_10C(void) {
-    u16 var_r31;
+static u16 GetBtns(void)
+{
+    u16 btns;
 
-    var_r31 = lbl_801D3AD0;
-    if (lbl_1_bss_0 != lbl_801D3AAC) {
-        var_r31 |= lbl_801D3AAC;
+    btns = HuPadBtnDown[0];
+    if (cur_direction[0] != HuPadDStk[0]) {
+        btns |= HuPadDStk[0];
     }
-    return var_r31;
+    return btns;
 }
 
-// void fn_1_164(void)
+static void SubchrMain()
+{
+    int prev_character[4];
+    int character[4];
+    int i, cursor_pos;
+    for(i=0; i<4; i++) {
+        prev_character[i] = gPlayerConfig[i].character;
+        character[i] = 0;
+        cur_direction[i] = 0;
+    }
+    cursor_pos = 0;
+    while(1) {
+        int y, x;
+        u16 btns;
+        fontcolor = 14;
+        print8(150, 64, 2.0f, "Sub Character Select");
+        x = 170;
+        y = 120;
+        for(i=0; i<4; i++, y += 16) {
+            fontcolor = 12;
+            print8(x, y, 2.0f, player_numstr[i]);
+            if(i == cursor_pos) {
+                fontcolor = 13;
+            } else {
+                fontcolor = 12;
+            }
+            if(character[i] != 0) {
+                print8(x+200, y, 2.0f, ext_character_str[character[i]]);
+            } else {
+                print8(x+200, y, 2.0f, character_str[prev_character[i]]);
+            }
+        }
+        if(GetBtns() & 0x1000) {
+            for(i=0; i<4; i++) {
+                if(character[i] != 0) {
+                    gPlayerConfig[i]. character = character[i]+7;
+                }
+            }
+            fn_80032A58(30);
+            WipeCreate(2, 0, -1);
+            HuPrcSleep(wipeData.duration+1.0f);
+            fn_80035A0C();
+            omOvlGotoEx(41, 1, 0, 0);
+            do {
+                HuPrcVSleep();
+            } while(1);
+        } else {
+            if(GetBtns() & 0x1) {
+                do {
+                    character[cursor_pos]--;
+                    if(character[cursor_pos] < 0) {
+                        character[cursor_pos] = 6;
+                    }
+                    for(i=0; i<4; i++) {
+                        if(cursor_pos != i) {
+                            if(character[cursor_pos] == character[i] && character[cursor_pos] != 0) {
+                                break;
+                            }
+                        }
+                    }
+                } while(i < 4);
+            }
+            if(GetBtns() & 0x2) {
+                do {
+                    character[cursor_pos]++;
+                    if(character[cursor_pos] > 6) {
+                        character[cursor_pos] = 0;
+                    }
+                    for(i=0; i<4; i++) {
+                        if(cursor_pos != i) {
+                            if(character[cursor_pos] == character[i] && character[cursor_pos] != 0) {
+                                break;
+                            }
+                        }
+                    }
+                } while(i < 4);
+            }
+            if(GetBtns() & 0x4) {
+                cursor_pos++;
+            }
+            if(GetBtns() & 0x8) {
+                cursor_pos--;
+            }
+            if(cursor_pos < 0) {
+                cursor_pos = 3;
+            }
+            if(cursor_pos > 3) {
+                cursor_pos = 0;
+            }
+            if(GetBtns() & 0x200) {
+                fn_80032A58(30);
+                WipeCreate(2, 0, -1);
+                HuPrcSleep(wipeData.duration+1.0f);
+                fn_80035A0C();
+                omOvlReturnEx(1, 1);
+                do {
+                    HuPrcVSleep();
+                } while(1);
+            } else {
+                if(cur_direction[0] != HuPadDStk[0]) {
+                    cur_direction[0] = HuPadDStk[0];
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}

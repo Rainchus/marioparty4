@@ -43,10 +43,18 @@ typedef struct process {
     void *user_data;
 } Process;
 
-typedef struct unkStruct1D3B44 {
-    struct unkStruct1D3B44 *prev;
-    char unk_04[0x1A];
-    u16  unk_1E;
-} unkStruct1D3B44; // sizeof ???
+typedef struct player_config {
+    s16 character;
+    s16 pad_idx;
+    s16 diff;
+    s16 group;
+    s16 iscom;
+} PlayerConfig;
+
+typedef struct wipe_state {
+    u8 unk[52];
+    float duration;
+    u8 unk2[20];
+} WipeState;
 
 #endif
