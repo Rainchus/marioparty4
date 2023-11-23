@@ -4,6 +4,7 @@ extern unkStruct145A98 lbl_80145A98[0x100];
 extern s32 debugFontColor;
 extern s16 lbl_801D3B2C;
 extern s16 lbl_801D3B2E;
+extern s16 lbl_801D3B3C;
 extern unkStruct1D3B44* lbl_801D3B44;
 
 void fn_8000AEF0(void) {
@@ -31,6 +32,13 @@ void fn_8000AF54(void) {
         }
     }
 }
+
+void HuPrcInit(void) {
+    lbl_801D3B3C = 0;
+    lbl_801D3B44 = NULL;
+}
+
+// ...
 
 // HuPrcCall
 
