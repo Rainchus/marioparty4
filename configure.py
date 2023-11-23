@@ -234,7 +234,7 @@ config.libs = [
             Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
-            Object(NonMatching, "game/printfunc.c"),
+            Object(Matching, "game/printfunc.c"),
             Object(Matching, "game/process.c"),
             Object(NonMatching, "game/sprman.c"),
             Object(NonMatching, "game/sprput.c"),
