@@ -293,32 +293,67 @@ void HuPrcCall(int tick)
     }
 }
 
-void HuPrcMemAlloc()
+void *HuPrcMemAlloc(s32 size)
 {
-    
+    Process *process = HuPrcCurrentGet();
+    return HuMemMemoryAlloc(process->heap, size, 0xA5A5A5A5);
 }
 
-void HuPrcMemFree()
+void HuPrcMemFree(void *ptr)
 {
-    
+    HuMemMemoryFree(ptr, 0xA5A5A5A5);
 }
 
-void HuPrcSetStat()
+void HuPrcSetStat(Process *process, u16 value)
 {
-    
+    process->stat |= value;
 }
 
-void HuPrcResetStat()
+void HuPrcResetStat(Process *process, u16 value)
 {
-    
+    process->stat &= ~value;
 }
 
-void HuPrcAllPause()
+void HuPrcAllPause(int flag)
 {
-    
+    Process *process = processtop;
+    if(flag) {
+        while(process != NULL) {
+            if(!(process->stat & 0x4)) {
+                HuPrcSetStat(process, 0x1);
+            }
+            
+            process = process->next;
+        }
+    } else {
+        while(process != NULL) {
+            if(process->stat & 0x1) {
+                HuPrcResetStat(process, 0x1);
+            }
+            
+            process = process->next;
+        }
+    }
 }
 
-void HuPrcAllUPause()
+void HuPrcAllUPause(int flag)
 {
-    
+    Process *process = processtop;
+    if(flag) {
+        while(process != NULL) {
+            if(!(process->stat & 0x8)) {
+                HuPrcSetStat(process, 0x2);
+            }
+            
+            process = process->next;
+        }
+    } else {
+        while(process != NULL) {
+            if(process->stat & 0x2) {
+                HuPrcResetStat(process, 0x2);
+            }
+            
+            process = process->next;
+        }
+    }
 }

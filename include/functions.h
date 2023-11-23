@@ -55,5 +55,11 @@ void HuPrcWakeup(Process *process);
 void HuPrcDestructorSet2(Process *process, void (*func)(void));
 void HuPrcDestructorSet(void (*func)(void));
 void HuPrcCall(int tick);
+void *HuPrcMemAlloc(s32 size);
+void HuPrcMemFree(void *ptr);
+void HuPrcSetStat(Process *process, u16 value);
+void HuPrcResetStat(Process *process, u16 value);
+void HuPrcAllPause(int flag);
+void HuPrcAllUPause(int flag);
 
 #endif
