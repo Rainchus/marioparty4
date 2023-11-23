@@ -176,6 +176,7 @@ cflags_rel = [
     "-char unsigned",
     "-sdata 0",
     "-sdata2 0",
+    "-pool off",
 ]
 
 # Game flags
@@ -230,6 +231,7 @@ config.libs = [
             Object(NonMatching, "game/data.c"),
             Object(Matching, "game/decode.c"),
             Object(NonMatching, "game/font.c"),
+            Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
             Object(NonMatching, "game/printfunc.c"),
@@ -266,6 +268,16 @@ config.libs = [
         "objects": [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
+        ],
+    },
+    {
+        "lib": "subchrselDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/subchrselDll/subchrselDll.c"),
         ],
     },
 ]
