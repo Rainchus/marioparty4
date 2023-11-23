@@ -7,6 +7,7 @@
 void* HuPrcCreate(void (*), s32, s32, s32);
 void HuPrcSleep(s32, f32);
 void HuPrcVSleep(void);
+s32* HuPrcCurrentGet(void);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
