@@ -10,10 +10,11 @@ extern void gclongjmp(jmp_buf *jump, int status);
 #define EXEC_KILLED 3
 
 static jmp_buf processjmpbuf;
-u32 procfunc;
-static u16 processcnt;
-static Process *processcur;
 static Process *processtop;
+static Process *processcur;
+static u16 processcnt;
+u32 procfunc;
+
 
 void HuPrcInit(void)
 {
