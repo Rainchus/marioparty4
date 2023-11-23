@@ -121,7 +121,6 @@ void HuPrcChildUnlink(Process *process)
     }
 }
 
-//Issues with swapped stack_size and heap local variable in HuPrcCreate inline
 Process *HuPrcChildCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size, Process *parent)
 {
     Process *child = HuPrcCreate(func, prio, stack_size, extra_size);
