@@ -15,14 +15,33 @@ typedef struct Vec3f {
     f32 z;
 } Vec3f;
 
-typedef struct unkStruct145A98 {
-    s16  unk_00;
-    char unk_02[10];
-    s16  unk_0C;
-    char unk_0E[6];
-    u8   unk_14;
-    char unk_15[0x53];
-} unkStruct145A98; // sizeof 0x68
+typedef struct jump_buf {
+    u32 lr;
+    u32 cr;
+    u32 sp;
+    u32 r2;
+    u32 pad;
+    u32 regs[19];
+    double flt_regs[19];
+} jmp_buf;
+
+typedef struct process {
+    struct process *next;
+    struct process *prev;
+    struct process *child;
+    struct process *parent;
+    struct process *next_child;
+    struct process *first_child;
+    void *heap;
+    u16 exec;
+    u16 stat;
+    u16 prio;
+    s32 sleep_time;
+    u32 base_sp;
+    jmp_buf jump;
+    void (*dtor)(void);
+    void *user_data;
+} Process;
 
 typedef struct unkStruct1D3B44 {
     struct unkStruct1D3B44 *prev;
