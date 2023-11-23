@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dolphin/os.h"
 
 struct decode_data
 {
