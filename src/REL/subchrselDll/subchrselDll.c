@@ -64,12 +64,12 @@ static u16 GetBtns(void)
 
 static void SubchrMain()
 {
-    int prev_character[4];
     int character[4];
+    int ext_character[4];
     int i, cursor_pos;
     for(i=0; i<4; i++) {
-        prev_character[i] = gPlayerConfig[i].character;
-        character[i] = 0;
+        character[i] = gPlayerConfig[i].character;
+        ext_character[i] = 0;
         cur_direction[i] = 0;
     }
     cursor_pos = 0;
@@ -88,16 +88,16 @@ static void SubchrMain()
             } else {
                 fontcolor = 12;
             }
-            if(character[i] != 0) {
-                print8(x+200, y, 2.0f, ext_character_str[character[i]]);
+            if(ext_character[i] != 0) {
+                print8(x+200, y, 2.0f, ext_character_str[ext_character[i]]);
             } else {
-                print8(x+200, y, 2.0f, character_str[prev_character[i]]);
+                print8(x+200, y, 2.0f, character_str[character[i]]);
             }
         }
         if(GetBtns() & 0x1000) {
             for(i=0; i<4; i++) {
-                if(character[i] != 0) {
-                    gPlayerConfig[i]. character = character[i]+7;
+                if(ext_character[i] != 0) {
+                    gPlayerConfig[i]. character = ext_character[i]+7;
                 }
             }
             fn_80032A58(30);
@@ -111,13 +111,13 @@ static void SubchrMain()
         } else {
             if(GetBtns() & 0x1) {
                 do {
-                    character[cursor_pos]--;
-                    if(character[cursor_pos] < 0) {
-                        character[cursor_pos] = 6;
+                    ext_character[cursor_pos]--;
+                    if(ext_character[cursor_pos] < 0) {
+                        ext_character[cursor_pos] = 6;
                     }
                     for(i=0; i<4; i++) {
                         if(cursor_pos != i) {
-                            if(character[cursor_pos] == character[i] && character[cursor_pos] != 0) {
+                            if(ext_character[cursor_pos] == ext_character[i] && ext_character[cursor_pos] != 0) {
                                 break;
                             }
                         }
@@ -126,13 +126,13 @@ static void SubchrMain()
             }
             if(GetBtns() & 0x2) {
                 do {
-                    character[cursor_pos]++;
-                    if(character[cursor_pos] > 6) {
-                        character[cursor_pos] = 0;
+                    ext_character[cursor_pos]++;
+                    if(ext_character[cursor_pos] > 6) {
+                        ext_character[cursor_pos] = 0;
                     }
                     for(i=0; i<4; i++) {
                         if(cursor_pos != i) {
-                            if(character[cursor_pos] == character[i] && character[cursor_pos] != 0) {
+                            if(ext_character[cursor_pos] == ext_character[i] && ext_character[cursor_pos] != 0) {
                                 break;
                             }
                         }
