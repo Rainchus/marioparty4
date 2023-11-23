@@ -130,10 +130,12 @@ s16 printWin(s16 x, s16 y, s16 w, s16 h, GXColor *color)
 
 void pfDrawFonts(void)
 {
-    int i;
     GXTexObj font_tex;
     Mtx44 proj;
     Mtx modelview;
+    int i;
+    s16 x, y, w, h;
+    
     u16 strline_count = strlinecnt;
     if(saftyFrameF) {
         WireDraw();
@@ -170,13 +172,12 @@ void pfDrawFonts(void)
     GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     GXSetColorUpdate(GX_TRUE);
     for(i=0; i<256; i++) {
-        s16 x;
-        s16 y;
+        
         x = strline[i].x;
         y = strline[i].y;
         if(strline[i].type == 1) {
-            s16 w = strline[i].w;
-            s16 h = strline[i].h;
+            w = strline[i].w;
+            h = strline[i].h;
             GXClearVtxDesc();
             GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
             GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_S16, 0);
@@ -193,6 +194,7 @@ void pfDrawFonts(void)
             GXPosition2s16(x+w, y);
             GXPosition2s16(x+w, y+h);
             GXPosition2s16(x, y+h);
+            GXEnd();
             GXClearVtxDesc();
             GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
             GXSetVtxDesc(GX_VA_CLR0, GX_INDEX8);
@@ -253,6 +255,7 @@ void pfDrawFonts(void)
                                 GXPosition3s16(x, y+char_h, 0);
                                 GXColor1x8(color);
                                 GXTexCoord2f32(texcoord_x, texcoord_y+(1/16.0f));
+                                GXEnd();
                             } else {
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 8);
                                 GXPosition3s16(x+shadow_ofs_x, y+shadow_ofs_y, 0);
@@ -279,6 +282,7 @@ void pfDrawFonts(void)
                                 GXPosition3s16(x, y+char_h, 0);
                                 GXColor1x8(color);
                                 GXTexCoord2f32(texcoord_x, texcoord_y+(1/16.0f));
+                                GXEnd();
                             }
                             x += char_w;
                             if(x > 640) {
