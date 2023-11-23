@@ -175,6 +175,7 @@ cflags_rel = [
     "-O0,s",
     "-enum int",
     "-char unsigned",
+    "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
     "-pool off",
@@ -186,6 +187,7 @@ cflags_game = [
     "-O0,p",
     "-enum int",
     "-char unsigned",
+    "-fp_contract off",
 ]
 
 config.linker_version = "GC/2.6"

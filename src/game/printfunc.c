@@ -222,8 +222,8 @@ void pfDrawFonts(void)
                         case 255:
                             c = *str++;
                             scale = c/16.0f;
-                            char_w = scale*8.0f*strline[i].scale;
-                            char_h = scale*8.0f*strline[i].scale;
+                            char_w = 8.0f*strline[i].scale*scale;
+                            char_h = 8.0f*strline[i].scale*scale;
                             break;
                             
                         case 254:
@@ -232,8 +232,8 @@ void pfDrawFonts(void)
                             
                         case 253:
                             shadow_color = (*str++)-1;
-                            shadow_ofs_x = scale*1.33333333f*strline[i].scale;
-                            shadow_ofs_y = scale*1.33333333f*strline[i].scale;
+                            shadow_ofs_x = 1.33333333f*strline[i].scale*scale;
+                            shadow_ofs_y = 1.33333333f*strline[i].scale*scale;
                             break;
                             
                         default:
@@ -254,7 +254,7 @@ void pfDrawFonts(void)
                                 GXColor1x8(color);
                                 GXTexCoord2f32(texcoord_x, texcoord_y+(1/16.0f));
                             } else {
-                                GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+                                GXBegin(GX_QUADS, GX_VTXFMT0, 8);
                                 GXPosition3s16(x+shadow_ofs_x, y+shadow_ofs_y, 0);
                                 GXColor1x8(shadow_color);
                                 GXTexCoord2f32(texcoord_x, texcoord_y);
