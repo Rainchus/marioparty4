@@ -5,6 +5,8 @@
 #include "common_structs.h"
 
 void* HuPrcCreate(void (*), s32, s32, s32);
+void HuPrcSleep(s32, f32);
+void HuPrcVSleep(void);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
@@ -18,7 +20,6 @@ s32 fn_800578E4(void);
 void fn_1_26C(void);
 
 void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
-
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, s32 size);
 void HuMemDCFlushAll();
