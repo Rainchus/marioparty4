@@ -4,13 +4,6 @@
 const double _half = 0.5;
 const double _three = 3.0;
 
-extern WipeState wipeData;
-
-extern PlayerConfig gPlayerConfig[4];
-extern u16 HuPadBtnDown[4];
-extern u8 HuPadDStk[4];
-extern int fontcolor;
-
 static void SubchrMain(void);
 
 static u8 cur_direction[4];

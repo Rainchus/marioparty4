@@ -4,5 +4,6 @@
 #include "types.h"
 #include "common_structs.h"
 #include "functions.h"
+#include "variables.h"
 
 #endif
