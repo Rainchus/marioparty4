@@ -4,9 +4,6 @@
 #include "types.h"
 #include "common_structs.h"
 
-void* HuPrcCreate(void (*), s32, s32, s32);
-void HuPrcSleep(s32, f32);
-void HuPrcVSleep(void);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
@@ -43,6 +40,9 @@ s32 HuMemUsedMemoryBlockGet(void *heap_ptr);
 s32 HuMemMemoryAllocSizeGet(s32 size);
 void HuMemHeapDump(void *heap_ptr, s16 status);
 
+Process *HuPrcCreate(void (*func)(void), u16 prio, s32 stack_size, s32 extra_size);
+void HuPrcSleep(s32 time);
+void HuPrcVSleep(void);
 
 
 #endif

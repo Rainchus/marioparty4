@@ -173,6 +173,7 @@ cflags_runtime = [
 cflags_rel = [
     *cflags_base,
     "-O0,s",
+    "-char unsigned",
     "-sdata 0",
     "-sdata2 0",
 ]
@@ -181,6 +182,7 @@ cflags_rel = [
 cflags_game = [
     *cflags_base,
     "-O0,p",
+    "-char unsigned",
 ]
 
 config.linker_version = "GC/2.6"
@@ -231,7 +233,7 @@ config.libs = [
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
             Object(NonMatching, "game/printfunc.c"),
-            Object(NonMatching, "game/process.c"),
+            Object(Matching, "game/process.c"),
             Object(NonMatching, "game/sprman.c"),
             Object(NonMatching, "game/sprput.c"),
         ],
