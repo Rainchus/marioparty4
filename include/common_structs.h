@@ -31,13 +31,13 @@ typedef struct process {
     struct process *child;
     struct process *parent;
     struct process *next_child;
-    struct process *last_child;
+    struct process *first_child;
     void *heap;
     u16 exec;
     u16 stat;
     u16 prio;
     s32 sleep_time;
-    void *base_sp;
+    u32 base_sp;
     jmp_buf jump;
     void (*dtor)(void);
     void *user_data;

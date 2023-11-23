@@ -40,9 +40,20 @@ s32 HuMemUsedMemoryBlockGet(void *heap_ptr);
 s32 HuMemMemoryAllocSizeGet(s32 size);
 void HuMemHeapDump(void *heap_ptr, s16 status);
 
-Process *HuPrcCreate(void (*func)(void), u16 prio, s32 stack_size, s32 extra_size);
+void HuPrcInit(void);
+Process *HuPrcCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size);
+void HuPrcChildLink(Process *parent, Process *child);
+void HuPrcChildUnlink(Process *process);
+Process *HuPrcChildCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size, Process *parent);
+void HuPrcChildWatch();
+Process *HuPrcCurrentGet();
+int HuPrcKill(Process *process);
+void HuPrcChildKill(Process *process);
 void HuPrcSleep(s32 time);
 void HuPrcVSleep(void);
-
+void HuPrcWakeup(Process *process);
+void HuPrcDestructorSet2(Process *process, void (*func)(void));
+void HuPrcDestructorSet(void (*func)(void));
+void HuPrcCall(int tick);
 
 #endif

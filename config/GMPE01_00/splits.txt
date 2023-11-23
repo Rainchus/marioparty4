@@ -47,6 +47,9 @@ game/decode.c:
 game/font.c:
 	.data       start:0x8011FE00 end:0x80121E00
 
+game/jmp.c:
+	.text       start:0x8000A464 end:0x8000A558
+
 game/malloc.c:
 	.text       start:0x8000A558 end:0x8000A938
 	.data       start:0x80121F50 end:0x80121FC8
