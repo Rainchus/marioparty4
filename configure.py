@@ -235,6 +235,7 @@ config.libs = [
             Object(NonMatching, "game/data.c"),
             Object(Matching, "game/decode.c"),
             Object(NonMatching, "game/font.c"),
+            Object(Matching, "game/init.c"),
             Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),

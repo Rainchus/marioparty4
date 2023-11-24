@@ -18,6 +18,7 @@ void* OSAllocFixed(void** rstart, void** rend);
 void OSFreeToHeap(OSHeapHandle heap, void* ptr);
 long OSCheckHeap(OSHeapHandle heap);
 void OSDumpHeap(OSHeapHandle heap);
+void *OSAllocFixed(void **rstart, void **rend);
 u32 OSReferentSize(void* ptr);
 void OSVisitAllocated(OSAllocVisitor visitor);
 extern volatile OSHeapHandle __OSCurrHeap;
