@@ -10,7 +10,7 @@ void HuMemInitAll(void)
     void *ptr;
     u32 free_size;
     for(i=0; i<4; i++) {
-        ptr = OSAllocFromHeap(__OSCurrHeap, HeapSizeTbl[i]);
+        ptr = OSAlloc(HeapSizeTbl[i]);
         if(ptr == NULL) {
             OSReport("HuMem> Failed OSAlloc Size:%d\n", HeapSizeTbl[i]);
             return;
@@ -19,7 +19,7 @@ void HuMemInitAll(void)
     }
     free_size = OSCheckHeap(currentHeapHandle);
     OSReport("HuMem> left memory space %dKB(%d)\n", free_size/1024, free_size);
-    ptr = OSAllocFromHeap(__OSCurrHeap, free_size);
+    ptr = OSAlloc(free_size);
     if(ptr == NULL) {
         OSReport("HuMem> Failed OSAlloc left space\n");
         return;

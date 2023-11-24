@@ -47,6 +47,14 @@ game/decode.c:
 game/font.c:
 	.data       start:0x8011FE00 end:0x80121E00
 
+game/init.c:
+	.text       start:0x80009AFC end:0x8000A464
+	.data       start:0x80121E00 end:0x80121F50
+	.bss        start:0x80145A40 end:0x80145A80
+	.sdata      start:0x801D3448 end:0x801D3460
+	.sbss       start:0x801D3AF8 end:0x801D3B28
+	.sdata2     start:0x801D4968 end:0x801D4978
+
 game/jmp.c:
 	.text       start:0x8000A464 end:0x8000A558
 
