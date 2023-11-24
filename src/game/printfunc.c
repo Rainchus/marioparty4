@@ -144,7 +144,7 @@ void pfDrawFonts(void)
     GXSetProjection(proj, GX_ORTHOGRAPHIC);
     MTXIdentity(modelview);
     GXLoadPosMtxImm(modelview, GX_PNMTX0);
-    GXSetCurrentMatrix(GX_PNMTX0);
+    GXSetCurrentMtx(GX_PNMTX0);
     GXSetViewport(0, 0, RenderMode->fbWidth, RenderMode->efbHeight, 0, 1);
     GXSetScissor(0, 0, RenderMode->fbWidth, RenderMode->efbHeight);
     GXClearVtxDesc();
@@ -170,9 +170,8 @@ void pfDrawFonts(void)
     GXSetZCompLoc(GX_FALSE);
     GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
     GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
-    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_TRUE);
     for(i=0; i<256; i++) {
-        
         x = strline[i].x;
         y = strline[i].y;
         if(strline[i].type == 1) {
@@ -211,13 +210,18 @@ void pfDrawFonts(void)
         } else {
             if(strline[i].str[0] != '\0') {
                 float shadow_ofs_x, shadow_ofs_y;
-                float char_w = 8.0f*strline[i].scale;
-                float char_h = char_w;
+                float char_w;
+                float char_h;
                 float texcoord_x, texcoord_y;
-                char *str = strline[i].str;
-                u16 color = strline[i].color;
-                s16 shadow_color = -1;
-                float scale = 1.0f;
+                char *str;
+                u16 color;
+                s16 shadow_color;
+                float scale;
+                char_w = char_h = 8.0f*strline[i].scale;
+                str = strline[i].str;
+                color = strline[i].color;
+                shadow_color = -1;
+                scale = 1.0f;
                 while(*str) {
                     char c = *str++;
                     switch(c) {
