@@ -113,6 +113,12 @@ static inline void GXColor1u32(const u32 v) {
   GXWGFifo.u32 = v;
 }
 
+static inline void GXColor3u8(const u8 r, const u8 g, const u8 b) {
+  GXWGFifo.u8 = r;
+  GXWGFifo.u8 = g;
+  GXWGFifo.u8 = b;
+}
+
 static inline void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a) {
   GXWGFifo.u8 = r;
   GXWGFifo.u8 = g;

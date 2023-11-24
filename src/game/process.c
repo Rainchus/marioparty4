@@ -1,6 +1,5 @@
 #include "common.h"
 #include "dolphin/os.h"
-#include "stdio.h"
 
 extern int gcsetjmp(jmp_buf *jump);
 extern void gclongjmp(jmp_buf *jump, int status);

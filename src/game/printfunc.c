@@ -1,6 +1,7 @@
 #include "common.h"
 #include "dolphin/mtx.h"
 #include "dolphin/gx.h"
+#include "dolphin/vi.h"
 #include "stdio.h"
 #include "stdarg.h"
 
@@ -22,10 +23,10 @@ struct strline_data {
 static struct strline_data strline[256];
 static char pfStrBuf[256];
 
-BOOL saftyFrameF;
-u16 strlinecnt;
-u16 empstrline;
 int fontcolor;
+u16 empstrline;
+u16 strlinecnt;
+BOOL saftyFrameF;
 
 static void WireDraw(void);
 
@@ -301,7 +302,51 @@ void pfDrawFonts(void)
     }
 }
 
-static void WireDraw(void)
+void WireDraw(void) //Is not private to prevent linker error due to analysis bug of refMapData0
 {
-    
+    Mtx44 proj;
+    Mtx modelview;
+    MTXOrtho(proj, 0, 480, 0, 576, 0, 10);
+    GXSetProjection(proj, GX_ORTHOGRAPHIC);
+    if(RenderMode->field_rendering) {
+        GXSetViewportJitter(0, 0, 640, 480, 0, 1, VIGetNextField());
+    } else {
+        GXSetViewport(0, 0, 640, 480, 0, 1);
+    }
+    GXSetScissor(0, 0, 640, 480);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_F32, 0);
+    GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGB, GX_RGB8, 0);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_KONST, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetNumTexGens(0);
+    GXSetNumTevStages(1);
+    GXSetZMode(GX_FALSE, GX_ALWAYS, GX_FALSE);
+    GXSetNumChans(1);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, GX_LIGHT_NULL, GX_DF_CLAMP, GX_AF_NONE);
+    MTXIdentity(modelview);
+    GXLoadPosMtxImm(modelview, GX_PNMTX0);
+    GXBegin(GX_LINES, 0, 8);
+    GXPosition2f32(16, 40);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(16, 440);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(16, 40);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(560, 40);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(560, 440);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(560, 40);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(560, 440);
+    GXColor3u8(255, 0, 0);
+    GXPosition2f32(16, 440);
+    GXColor3u8(255, 0, 0);
+    GXEnd();
 }
