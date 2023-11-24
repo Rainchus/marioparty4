@@ -232,7 +232,7 @@ config.libs = [
             Object(NonMatching, "game/main.c"),
             Object(NonMatching, "game/pad.c"),
             Object(Matching, "game/dvd.c"),
-            Object(NonMatching, "game/data.c"),
+            Object(Matching, "game/data.c"),
             Object(Matching, "game/decode.c"),
             Object(NonMatching, "game/font.c"),
             Object(NonMatching, "game/jmp.c"),

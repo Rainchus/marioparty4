@@ -66,7 +66,7 @@ typedef struct file_list_entry {
 typedef struct data_stat {
     s32 dir_id;
     void *dir;
-    void *data;
+    void *file;
     u32 raw_len;
     u32 comp_type;
     BOOL used;

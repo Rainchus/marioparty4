@@ -21,18 +21,19 @@ void fn_80032A58(int arg0);
 void fn_80035A0C(void);
 
 void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
+
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, s32 size);
 void HuMemDCFlushAll();
-void HuMemDCFlush(int heap);
-void *HuMemDirectMalloc(int heap, s32 size);
-void *HuMemDirectMallocNum(int heap, s32 size, u32 num);
+void HuMemDCFlush(HeapID heap);
+void *HuMemDirectMalloc(HeapID heap, s32 size);
+void *HuMemDirectMallocNum(HeapID heap, s32 size, u32 num);
 void HuMemDirectFree(void *ptr);
-void HuMemDirectFreeNum(int heap, u32 num);
-s32 HuMemUsedMallocSizeGet(int heap);
-s32 HuMemUsedMallocBlockGet(int heap);
-u32 HuMemHeapSizeGet(int heap);
-void *HuMemHeapPtrGet(int heap);
+void HuMemDirectFreeNum(HeapID heap, u32 num);
+s32 HuMemUsedMallocSizeGet(HeapID heap);
+s32 HuMemUsedMallocBlockGet(HeapID heap);
+u32 HuMemHeapSizeGet(HeapID heap);
+void *HuMemHeapPtrGet(HeapID heap);
 
 void *HuMemHeapInit(void *ptr, s32 size);
 void *HuMemMemoryAlloc(void *heap_ptr, s32 size, u32 retaddr);
@@ -75,5 +76,16 @@ void pfClsScr(void);
 s16 print8(s16 x, s16 y, float scale, char *str, ...);
 s16 printWin(s16 x, s16 y, s16 w, s16 h, GXColor *color);
 void pfDrawFonts(void);
+
+void *HuDvdDataRead(char *path);
+void **HuDvdDataReadMulti(char **paths);
+void *HuDvdDataReadDirect(char *path, HeapID heap);
+void *HuDvdDataFastRead(s32 entrynum);
+void *HuDvdDataFastReadNum(s32 entrynum, s32 num);
+void *HuDvdDataFastReadAsync(s32 entrynum, DataStat *stat);
+void HuDvdDataClose(void *ptr);
+void HuDvdErrorWatch();
+
+void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo);
 
 #endif
