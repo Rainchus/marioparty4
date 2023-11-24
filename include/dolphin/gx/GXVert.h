@@ -86,6 +86,11 @@ static inline void GXPosition2f32(const f32 x, const f32 y) {
   GXWGFifo.f32 = y;
 }
 
+static inline void GXPosition2s16(const s16 x, const s16 y) {
+  GXWGFifo.s16 = x;
+  GXWGFifo.s16 = y;
+}
+
 static inline void GXPosition3s16(const s16 x, const s16 y, const s16 z) {
   GXWGFifo.s16 = x;
   GXWGFifo.s16 = y;
@@ -108,6 +113,12 @@ static inline void GXColor1u32(const u32 v) {
   GXWGFifo.u32 = v;
 }
 
+static inline void GXColor3u8(const u8 r, const u8 g, const u8 b) {
+  GXWGFifo.u8 = r;
+  GXWGFifo.u8 = g;
+  GXWGFifo.u8 = b;
+}
+
 static inline void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a) {
   GXWGFifo.u8 = r;
   GXWGFifo.u8 = g;
@@ -125,8 +136,11 @@ static inline void GXTexCoord2f32(const f32 u, const f32 v) {
   GXWGFifo.f32 = v;
 }
 
-
 static inline void GXPosition1x8(u8 index) {
+  GXWGFifo.u8 = index;
+}
+
+static inline void GXColor1x8(u8 index) {
   GXWGFifo.u8 = index;
 }
 

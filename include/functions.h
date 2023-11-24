@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "common_structs.h"
+#include "dolphin/gx/GXStruct.h"
 
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
@@ -67,6 +68,10 @@ void omOvlGotoEx(int id, s16 end_mode, int stat, int event);
 void omOvlReturnEx(int level, s16 end_mode);
 void WipeCreate(char dir, char type, short duration);
 
-u16 print8(s16 x, s16 y, float scale, char *str, ...);
+void pfInit(void);
+void pfClsScr(void);
+s16 print8(s16 x, s16 y, float scale, char *str, ...);
+s16 printWin(s16 x, s16 y, s16 w, s16 h, GXColor *color);
+void pfDrawFonts(void);
 
 #endif

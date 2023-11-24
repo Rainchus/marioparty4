@@ -173,7 +173,9 @@ cflags_runtime = [
 cflags_rel = [
     *cflags_base,
     "-O0,s",
+    "-enum int",
     "-char unsigned",
+    "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
     "-pool off",
@@ -183,7 +185,9 @@ cflags_rel = [
 cflags_game = [
     *cflags_base,
     "-O0,p",
+    "-enum int",
     "-char unsigned",
+    "-fp_contract off",
 ]
 
 config.linker_version = "GC/2.6"
@@ -234,7 +238,7 @@ config.libs = [
             Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
-            Object(NonMatching, "game/printfunc.c"),
+            Object(Matching, "game/printfunc.c"),
             Object(Matching, "game/process.c"),
             Object(NonMatching, "game/sprman.c"),
             Object(NonMatching, "game/sprput.c"),
