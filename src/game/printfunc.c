@@ -302,7 +302,7 @@ void pfDrawFonts(void)
     }
 }
 
-void WireDraw(void) //Is not private to prevent linker error due to analysis bug of refMapData0
+static void WireDraw(void)
 {
     Mtx44 proj;
     Mtx modelview;
