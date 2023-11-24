@@ -2,6 +2,7 @@
 #define _COMMON_STRUCTS_H
 
 #include "types.h"
+#include "dolphin/dvd.h"
 
 typedef struct UnkOvl {
     s32 unk0;
@@ -61,5 +62,17 @@ typedef struct file_list_entry {
     char *name;
     s32 file_id;
 } FileListEntry;
+
+typedef struct data_stat {
+    s32 dir_id;
+    void *dir;
+    void *data;
+    u32 raw_len;
+    u32 comp_type;
+    BOOL used;
+    s32 num;
+    u32 status;
+    DVDFileInfo file_info;
+} DataStat;
 
 #endif

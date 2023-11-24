@@ -3,6 +3,7 @@
 #include "dolphin/os.h"
 
 extern u32 DirDataSize;
+extern void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo);
 
 static DVDDiskID correctDiskID = {
     { 'M', 'P', 'G', 'C' }, //gameName
@@ -18,7 +19,7 @@ void HuDvdErrorWatch();
 static s32 beforeDvdStatus;
 static int CallBackStatus;
 
-static void HuDVDReadAsyncCallBack()
+static void HuDVDReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo)
 {
     CallBackStatus = 1;
 }
@@ -125,12 +126,23 @@ void *HuDvdDataFastReadNum(s32 entrynum, s32 num)
     DVDFileInfo file;
     void *data = NULL;
     if(!DVDFastOpen(entrynum, &file)) {
-        OSPanic("dvd.c", 258, "dvd.c: File Open Error");
         (void)num;
-        (void)data;
+        OSPanic("dvd.c", 258, "dvd.c: File Open Error");
     } else {
         data = HuDvdDataReadWait(&file, 3, 1, num, HuDVDReadAsyncCallBack, FALSE);
         DVDClose(&file);
+    }
+    return data;
+}
+
+void *HuDvdDataFastReadAsync(s32 entrynum, DataStat *stat)
+{
+    DVDFileInfo file;
+    void *data = NULL;
+    if(!DVDFastOpen(entrynum, &stat->file_info)) {
+        OSPanic("dvd.c", 274, "dvd.c: File Open Error");
+    } else {
+        data = HuDvdDataReadWait(&stat->file_info, 3, 0, 0, HuDataDirReadAsyncCallBack, TRUE);
     }
     return data;
 }
