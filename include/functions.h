@@ -3,6 +3,8 @@
 
 #include "types.h"
 #include "common_structs.h"
+#include "common_enums.h"
+
 #include "dolphin/gx/GXStruct.h"
 
 void Hu3DBGColorSet(u8, u8, u8);
@@ -64,7 +66,7 @@ void HuPrcResetStat(Process *process, u16 value);
 void HuPrcAllPause(int flag);
 void HuPrcAllUPause(int flag);
 
-void omOvlGotoEx(int id, s16 end_mode, int stat, int event);
+void omOvlGotoEx(OverlayID overlay, s16 end_mode, int stat, int event);
 void omOvlReturnEx(int level, s16 end_mode);
 void WipeCreate(char dir, char type, short duration);
 

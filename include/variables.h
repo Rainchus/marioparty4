@@ -22,4 +22,6 @@ extern WipeState wipeData;
 
 extern PlayerConfig gPlayerConfig[4];
 
+extern FileListEntry _ovltbl[];
+
 #endif
