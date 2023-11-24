@@ -16,8 +16,8 @@ static DVDDiskID correctDiskID = {
 
 void HuDvdErrorWatch();
 
-static s32 beforeDvdStatus;
 static int CallBackStatus;
+static s32 beforeDvdStatus;
 
 static void HuDVDReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo)
 {
@@ -30,6 +30,8 @@ static void *HuDvdDataReadWait(DVDFileInfo *file, int heap, int mode, int num, D
     void *buf;
     if(mode != 0 && mode != 1 && mode != 2) {
         OSReport("dvd.c: HuDvdDataReadWait Mode Error");
+        buf = NULL;
+        len = 0;
     }
     len = file->length;
     DirDataSize = len;
@@ -75,8 +77,8 @@ void *HuDvdDataRead(char *path)
 void **HuDvdDataReadMulti(char **paths)
 {
     DVDFileInfo file;
-    u32 count;
     int i;
+    u32 count;
     void **file_ptrs;
     count = 0;
     while(paths[count]) {
@@ -167,15 +169,15 @@ void HuDvdErrorWatch()
             while(1);
             break;
             
-        case 6:
+        case 5:
             OSReport("DVD ERROR:No disk\n");
             break;
             
-        case 7:
+        case 6:
             OSReport("DVD ERROR:Cover open\n");
             break;
             
-        case 8:
+        case 7:
             OSReport("DVD ERROR:Wrong disk\n");
             break;
             
@@ -184,7 +186,6 @@ void HuDvdErrorWatch()
             break;
             
         default:
-            
             break;
     }
 }
