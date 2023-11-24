@@ -24,4 +24,6 @@ extern PlayerConfig gPlayerConfig[4];
 
 extern FileListEntry _ovltbl[];
 
+extern u32 DirDataSize;
+
 #endif

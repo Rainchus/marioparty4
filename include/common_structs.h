@@ -63,16 +63,16 @@ typedef struct file_list_entry {
     s32 file_id;
 } FileListEntry;
 
-typedef struct data_stat {
+typedef struct data_read_stat {
     s32 dir_id;
     void *dir;
-    void *data;
+    void *file;
     u32 raw_len;
     u32 comp_type;
     BOOL used;
     s32 num;
     u32 status;
     DVDFileInfo file_info;
-} DataStat;
+} DataReadStat;
 
 #endif

@@ -2,8 +2,6 @@
 #include "dolphin/dvd.h"
 #include "dolphin/os.h"
 
-extern u32 DirDataSize;
-extern void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo);
 
 static DVDDiskID correctDiskID = {
     { 'M', 'P', 'G', 'C' }, //gameName
@@ -14,7 +12,6 @@ static DVDDiskID correctDiskID = {
     0, //streamingBufSize
 };
 
-void HuDvdErrorWatch();
 
 static int CallBackStatus;
 static s32 beforeDvdStatus;
@@ -68,7 +65,7 @@ void *HuDvdDataRead(char *path)
     if(!DVDOpen(path, &file)) {
         OSPanic("dvd.c", 146, "dvd.c: File Open Error");
     } else {
-        data = HuDvdDataReadWait(&file, 3, 0, 0, HuDVDReadAsyncCallBack, FALSE);
+        data = HuDvdDataReadWait(&file, HEAP_DVD, 0, 0, HuDVDReadAsyncCallBack, FALSE);
         DVDClose(&file);
     }
     return data;
@@ -84,20 +81,20 @@ void **HuDvdDataReadMulti(char **paths)
     while(paths[count]) {
         count++;
     }
-    file_ptrs = HuMemDirectMalloc(0, count*4);
+    file_ptrs = HuMemDirectMalloc(0, count*sizeof(void *));
     for(i=0; i<count; i++) {
         if(!DVDOpen(paths[i], &file)) {
             OSPanic("dvd.c", 183, "dvd.c: File Open Error");
             return NULL;
         } else {
-            file_ptrs[i] = HuDvdDataReadWait(&file, 3, 0, 0, HuDVDReadAsyncCallBack, FALSE);
+            file_ptrs[i] = HuDvdDataReadWait(&file, HEAP_DVD, 0, 0, HuDVDReadAsyncCallBack, FALSE);
             DVDClose(&file);
         }
     }
     return file_ptrs;
 }
 
-void *HuDvdDataReadDirect(char *path, int heap)
+void *HuDvdDataReadDirect(char *path, HeapID heap)
 {
     DVDFileInfo file;
     void *data = NULL;
@@ -117,7 +114,7 @@ void *HuDvdDataFastRead(s32 entrynum)
     if(!DVDFastOpen(entrynum, &file)) {
         OSPanic("dvd.c", 243, "dvd.c: File Open Error");
     } else {
-        data = HuDvdDataReadWait(&file, 3, 0, 0, HuDVDReadAsyncCallBack, FALSE);
+        data = HuDvdDataReadWait(&file, HEAP_DVD, 0, 0, HuDVDReadAsyncCallBack, FALSE);
         DVDClose(&file);
     }
     return data;
@@ -131,20 +128,20 @@ void *HuDvdDataFastReadNum(s32 entrynum, s32 num)
         (void)num;
         OSPanic("dvd.c", 258, "dvd.c: File Open Error");
     } else {
-        data = HuDvdDataReadWait(&file, 3, 1, num, HuDVDReadAsyncCallBack, FALSE);
+        data = HuDvdDataReadWait(&file, HEAP_DVD, 1, num, HuDVDReadAsyncCallBack, FALSE);
         DVDClose(&file);
     }
     return data;
 }
 
-void *HuDvdDataFastReadAsync(s32 entrynum, DataStat *stat)
+void *HuDvdDataFastReadAsync(s32 entrynum, DataReadStat *stat)
 {
     DVDFileInfo file;
     void *data = NULL;
     if(!DVDFastOpen(entrynum, &stat->file_info)) {
         OSPanic("dvd.c", 274, "dvd.c: File Open Error");
     } else {
-        data = HuDvdDataReadWait(&stat->file_info, 3, 0, 0, HuDataDirReadAsyncCallBack, TRUE);
+        data = HuDvdDataReadWait(&stat->file_info, HEAP_DVD, 0, 0, HuDataDirReadAsyncCallBack, TRUE);
     }
     return data;
 }
