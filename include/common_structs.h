@@ -57,4 +57,9 @@ typedef struct wipe_state {
     u8 unk2[20];
 } WipeState;
 
+typedef struct file_list_entry {
+    char *name;
+    s32 file_id;
+} FileListEntry;
+
 #endif
