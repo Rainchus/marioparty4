@@ -2,7 +2,6 @@
 #include "dolphin/dvd.h"
 #include "dolphin/os.h"
 
-extern u32 DirDataSize;
 
 static DVDDiskID correctDiskID = {
     { 'M', 'P', 'G', 'C' }, //gameName
@@ -13,7 +12,6 @@ static DVDDiskID correctDiskID = {
     0, //streamingBufSize
 };
 
-void HuDvdErrorWatch();
 
 static int CallBackStatus;
 static s32 beforeDvdStatus;
@@ -136,7 +134,7 @@ void *HuDvdDataFastReadNum(s32 entrynum, s32 num)
     return data;
 }
 
-void *HuDvdDataFastReadAsync(s32 entrynum, DataStat *stat)
+void *HuDvdDataFastReadAsync(s32 entrynum, DataReadStat *stat)
 {
     DVDFileInfo file;
     void *data = NULL;

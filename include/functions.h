@@ -82,10 +82,36 @@ void **HuDvdDataReadMulti(char **paths);
 void *HuDvdDataReadDirect(char *path, HeapID heap);
 void *HuDvdDataFastRead(s32 entrynum);
 void *HuDvdDataFastReadNum(s32 entrynum, s32 num);
-void *HuDvdDataFastReadAsync(s32 entrynum, DataStat *stat);
+void *HuDvdDataFastReadAsync(s32 entrynum, DataReadStat *stat);
 void HuDvdDataClose(void *ptr);
 void HuDvdErrorWatch();
 
+void HuDataInit(void);
+int HuDataReadChk(s32 data_num);
+DataReadStat *HuDataGetStatus(void *dir_ptr);
+void *HuDataGetDirPtr(s32 data_num);
+DataReadStat *HuDataDirRead(s32 data_num);
+DataReadStat *HuDataDirReadNum(s32 data_num, s32 num);
+DataReadStat *HuDataDirSet(void *dir_ptr, s32 data_num);
 void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo);
+s32 HuDataDirReadAsync(s32 data_num);
+s32 HuDataDirReadNumAsync(s32 data_num, s32 num);
+BOOL HuDataGetAsyncStat(s32 status);
+void *HuDataRead(s32 data_num);
+void *HuDataReadNum(s32 data_num, s32 num);
+void *HuDataSelHeapRead(s32 data_num, HeapID heap);
+void *HuDataSelHeapReadNum(s32 data_num, s32 num, HeapID heap);
+void **HuDataReadMulti(s32 *data_ids);
+s32 HuDataGetSize(s32 data_num);
+void HuDataClose(void *ptr);
+void HuDataCloseMulti(void **ptrs);
+void HuDataDirClose(s32 data_id);
+void HuDataDirCloseNum(s32 num);
+void *HuDataReadNumHeapShortForce(s32 data_id, s32 num, HeapID heap);
+
+void *HuARDirCheck(s32 dir);
+void HuAR_ARAMtoMRAM(void *dst);
+void HuAR_ARAMtoMRAMNum(void *dst, s32 num);
+BOOL HuARDMACheck();
 
 #endif
