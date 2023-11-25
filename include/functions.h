@@ -46,6 +46,7 @@ s32 HuMemMemoryAllocSizeGet(s32 size);
 void HuMemHeapDump(void *heap_ptr, s16 status);
 
 void HuPrcInit(void);
+void HuPrcEnd(void);
 Process *HuPrcCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size);
 void HuPrcChildLink(Process *parent, Process *child);
 void HuPrcChildUnlink(Process *process);
@@ -113,5 +114,9 @@ void *HuARDirCheck(s32 dir);
 void HuAR_ARAMtoMRAM(void *dst);
 void HuAR_ARAMtoMRAMNum(void *dst, s32 num);
 BOOL HuARDMACheck();
+
+void BoardMessCreate(s16, s32, s32);
+void BoardMessKill(void);
+void BoardMessWait(void);
 
 #endif

@@ -6,5 +6,6 @@
 #include "common_enums.h"
 #include "functions.h"
 #include "variables.h"
+#include "dolphin/mtx/GeoTypes.h"
 
 #endif
