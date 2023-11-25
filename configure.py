@@ -251,6 +251,8 @@ config.libs = [
             Object(Matching, "game/ovllist.c"),
             Object(NonMatching, "game/window.c"),
             Object(NonMatching, "game/messdata.c"),
+            Object(NonMatching, "game/card.c"),
+            Object(NonMatching, "game/armem.c"),
         ],
     },
     {

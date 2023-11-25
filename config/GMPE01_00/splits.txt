@@ -146,6 +146,17 @@ game/window.c:
 game/messdata.c:
 	.text       start:0x800483A0 end:0x80048488
 
+game/card.c:
+	.text       start:0x80048488 end:0x80048A84
+	.data       start:0x80130688 end:0x801306D8
+	.sbss       start:0x801D3DF8 end:0x801D3E00
+
+game/armem.c:
+	.text       start:0x80048A84 end:0x800498F0
+	.data       start:0x801306D8 end:0x801307C8
+	.bss        start:0x801967E0 end:0x80196EC0
+	.sbss       start:0x801D3E00 end:0x801D3E10
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC
