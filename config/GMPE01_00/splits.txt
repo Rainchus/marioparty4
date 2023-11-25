@@ -114,6 +114,11 @@ game/hsfdraw.c:
 game/ovllist.c:
 	.data       start:0x8012F790 end:0x80130100
 
+game/frand.c:
+	.text       start:0x800325F4 end:0x80032830
+	.sbss       start:0x801D3D10 end:0x801D3D18
+	.sdata2     start:0x801D4CB0 end:0x801D4CC0
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC
