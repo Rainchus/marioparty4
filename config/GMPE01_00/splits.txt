@@ -97,6 +97,20 @@ game/sprput.c:
 	.sbss       start:0x801D3B50 end:0x801D3B58
 	.sdata2     start:0x801D49F0 end:0x801D4A28
 
+game/hsfload.c:
+	.text       start:0x80010B30 end:0x80014018
+	.data       start:0x80122320 end:0x80122390
+	.bss        start:0x8015C6C0 end:0x8015CC80
+	.sbss       start:0x801D3B58 end:0x801D3B90
+
+game/hsfdraw.c:
+	.text       start:0x80014018 end:0x8001F9AC
+	.rodata     start:0x8011DD20 end:0x8011DD30
+	.data       start:0x80122390 end:0x801225A0
+	.bss        start:0x8015CC80 end:0x801677C0
+	.sdata      start:0x801D3470 end:0x801D3488
+	.sbss       start:0x801D3B90 end:0x801D3C30
+
 game/ovllist.c:
 	.data       start:0x8012F790 end:0x80130100
 

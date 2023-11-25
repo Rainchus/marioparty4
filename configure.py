@@ -243,6 +243,8 @@ config.libs = [
             Object(Matching, "game/process.c"),
             Object(NonMatching, "game/sprman.c"),
             Object(NonMatching, "game/sprput.c"),
+            Object(NonMatching, "game/hsfload.c"),
+            Object(NonMatching, "game/hsfdraw.c"),
             Object(Matching, "game/ovllist.c"),
         ],
     },
