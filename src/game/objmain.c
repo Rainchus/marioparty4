@@ -22,28 +22,6 @@ typedef struct om_obj_man {
     omObjGroup *group;
 } omObjMan;
 
-extern u32 totalPolyCnted;
-
-extern void Hu3DModelPosSet(s16 index, float x, float y, float z);
-extern void Hu3DModelRotSet(s16 index, float x, float y, float z);
-extern void Hu3DModelScaleSet(s16 index, float x, float y, float z);
-
-extern void espInit(void);
-extern void omDLLDBGOut(void);
-extern void omDLLInit(FileListEntry *ovl_list);
-extern int omDLLStart(s16 ovl, s16 dll);
-extern void omDLLNumEnd(s16 ovl, s16 arg2);
-extern void omSysPauseEnable(BOOL flag);
-extern void fn_800338EC(s16 ovl);
-extern void HuAudDllSndGrpSet(u16 dll);
-extern void fn_8003F3AC(void);
-extern void fn_8004D6F4(s16 arg);
-extern void fn_80035A0C(void);
-
-extern s32 _CheckFlag(u32 flag);
-
-extern char fadeStat;
-
 omObjData *omDBGSysKeyObj;
 Process *omwatchproc;
 OverlayID omnextovl;
@@ -65,15 +43,6 @@ OverlayID omprevovl = OVL_INVALID;
 
 static void omWatchOverlayProc(void);
 static void omInsertObj(Process *objman_process, omObjData *object);
-
-void omMain(void);
-void omOvlKill(s16 arg1);
-void omDestroyObjMan(void);
-void omAddMember(Process *objman_process, u16 group, omObjData *object);
-void omSetTra(omObjData *object, float x, float y, float z);
-void omSetRot(omObjData *object, float x, float y, float z);
-void omSetSca(omObjData *object, float x, float y, float z);
-void omDelMember(Process *objman_process, omObjData *object);
 
 void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl)
 {
@@ -559,12 +528,12 @@ static void omDumpObj(Process *objman_process)
     OSReport("================================================================\n");
 }
 
-void omAllPause(int arg0)
+void omAllPause(BOOL pause)
 {
     Process *objman_process = HuPrcCurrentGet();
     omObjMan *objman = objman_process->user_data;
     int i;
-    if(arg0) {
+    if(pause) {
         for(i=0; i<objman->max_objs; i++) {
             if((objman->obj[i].stat & 0x21) == 0) {
                 omSetStatBit(&objman->obj[i], 0x10);

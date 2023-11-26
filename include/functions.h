@@ -65,12 +65,39 @@ void HuPrcResetStat(Process *process, u16 value);
 void HuPrcAllPause(int flag);
 void HuPrcAllUPause(int flag);
 
+void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl);
 void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat);
 void omOvlGotoEx(OverlayID overlay, s16 arg2, int event, int stat);
 void omOvlReturnEx(s16 level, s16 arg2);
-omOvlHisData* omOvlHisGet(s32);
+void omOvlKill(s16 arg);
 void omOvlHisChg(s32 level, OverlayID overlay, int event, int stat);
+omOvlHisData *omOvlHisGet(s32 level);
 Process *omInitObjMan(s16 max_objs, int prio);
+void omDestroyObjMan(void);
+omObjData *omAddObjEx(Process *objman_process, s16 prio, u16 mdlcnt, u16 mtncnt, s16 group, void (*func)(omObjData *));
+void omAddMember(Process *objman_process, u16 group, omObjData *object);
+void omDelObjEx(Process *objman_process, omObjData *object);
+void omDelMember(Process *objman_process, omObjData *object);
+void omMakeGroupEx(Process *objman_process, u16 group, u16 max_objs);
+omObjData **omGetGroupMemberListEx(Process *objman_process, s16 group);
+void omSetStatBit(omObjData *obj, u16 stat);
+void omResetStatBit(omObjData *obj, u16 stat);
+void omSetTra(omObjData *obj, float x, float y, float z);
+void omSetRot(omObjData *obj, float x, float y, float z);
+void omSetSca(omObjData *obj, float x, float y, float z);
+void omMain(void);
+void omAllPause(BOOL pause);
+char omPauseChk(void);
+OverlayID omCurrentOvlGet(void);
+
+
+void omDLLDBGOut(void);
+void omDLLInit(FileListEntry *ovl_list);
+int omDLLStart(s16 ovl, s16 dll);
+void omDLLNumEnd(s16 ovl, s16 arg2);
+
+void omSysPauseEnable(BOOL flag);
+
 
 void WipeCreate(char dir, char type, short duration);
 
@@ -116,6 +143,29 @@ void *HuARDirCheck(s32 dir);
 void HuAR_ARAMtoMRAM(void *dst);
 void HuAR_ARAMtoMRAMNum(void *dst, s32 num);
 BOOL HuARDMACheck();
+
+void Hu3DModelPosSet(s16 index, float x, float y, float z);
+void Hu3DModelRotSet(s16 index, float x, float y, float z);
+void Hu3DModelScaleSet(s16 index, float x, float y, float z);
+
+void espInit(void);
+
+void HuSprClose(void);
+
+void HuWinAllKill(void);
+
+void HuPadRumbleAllStop(void);
+
+void HuAudFXListnerKill(void);
+void HuAudDllSndGrpSet(u16 ovl);
+void fn_800338EC(s16 ovl);
+
+void fn_80035A0C(void);
+
+void fn_8003F3AC(void);
+void fn_8004D6F4(s16 arg);
+
+s32 _CheckFlag(u32 flag);
 
 void BoardMessCreate(s16, s32, s32);
 void BoardMessKill(void);
