@@ -120,6 +120,14 @@ game/hsfman.c:
 	.sdata2     start:0x801D4AB0 end:0x801D4B10
 	.sbss2      start:0x801D6BE0 end:0x801D6BE8
 
+game/objmain.c:
+	.text       start:0x8002EBD8 end:0x8002FF4C
+	.data       start:0x8012D918 end:0x8012DCC8
+	.bss        start:0x8018FB38 end:0x8018FBF8
+	.sdata      start:0x801D3498 end:0x801D34A0
+	.sbss       start:0x801D3CC0 end:0x801D3CF0
+	.sdata2     start:0x801D4C78 end:0x801D4CA0
+
 game/fault.c:
 	.text       start:0x8002FF4C end:0x800308B8
 	.data       start:0x8012DCC8 end:0x8012E4F0

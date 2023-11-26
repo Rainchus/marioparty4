@@ -246,6 +246,7 @@ config.libs = [
             Object(NonMatching, "game/hsfload.c"),
             Object(NonMatching, "game/hsfdraw.c"),
             Object(NonMatching, "game/hsfman.c"),
+            Object(Matching, "game/objmain.c"),
             Object(NonMatching, "game/fault.c"),
             Object(NonMatching, "game/frand.c"),
             Object(Matching, "game/ovllist.c"),

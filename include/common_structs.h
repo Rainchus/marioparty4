@@ -2,13 +2,14 @@
 #define _COMMON_STRUCTS_H
 
 #include "types.h"
+#include "common_enums.h"
 #include "dolphin/dvd.h"
 
-typedef struct UnkOvl {
-    s32 unk0;
-    char unk4[4];
-    s32 unk8;
-} UnkOvl;
+typedef struct om_ovl_his_data {
+    OverlayID overlay;
+    int event;
+    int stat;
+} omOvlHisData;
 
 typedef struct Vec3f {
     f32 x;
@@ -128,5 +129,27 @@ typedef struct Player {
 /* 0x2A */ s16 	stars;
 /* 0x2C */ char unk_2C[4];
 } Player; //size of 0x30
+
+typedef struct om_obj_data {
+    u16 stat;
+    s16 next_idx_alloc;
+    s16 prio;
+    s16 prev;
+    s16 next;
+    s16 next_idx;
+    s16 group;
+    u16 group_idx;
+    int unk10;
+    void (*func)(struct om_obj_data *);
+    Vec3f trans;
+    Vec3f rot;
+    Vec3f scale;
+    u16 mdlcnt;
+    s16 *model;
+    u16 mtncnt;
+    s16 *motion;
+    int work[4];
+    void *data;
+} omObjData;
 
 #endif

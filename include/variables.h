@@ -26,4 +26,22 @@ extern FileListEntry _ovltbl[];
 
 extern u32 DirDataSize;
 
+extern u32 totalPolyCnted;
+extern char fadeStat;
+
+extern omObjData *omDBGSysKeyObj;
+extern Process *omwatchproc;
+extern OverlayID omnextovl;
+extern OverlayID omcurovl;
+extern int omcurdll;
+extern int omovlhisidx;
+extern int omovlevtno;
+extern int omnextovlevtno;
+extern int omovlstat;
+extern char omUPauseFlag;
+extern s16 omSysExitReq;
+extern s16 omdispinfo;
+extern char omSysPauseEnableFlag;
+extern OverlayID omprevovl;
+
 #endif

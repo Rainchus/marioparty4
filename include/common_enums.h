@@ -6,6 +6,7 @@
 #define OVL_DEFINE(name, path) name,
 
 typedef enum {
+    OVL_INVALID = -1,
     #include "ovl_table.h"
     OVL_COUNT
 } OverlayID;
