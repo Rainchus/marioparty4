@@ -11,9 +11,6 @@ void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
 void Hu3DCameraViewportSet(s16, f32, f32, f32, f32, f32, f32);
-void omOvlHisChg(s32, s32, s32, s32);
-UnkOvl* omOvlHisGet(s32);
-void* omInitObjMan(s32, s32);
 void fn_80044920(s16);
 void fn_80045F74(s16, s32);
 s32 fn_800578E4(void);
@@ -68,8 +65,13 @@ void HuPrcResetStat(Process *process, u16 value);
 void HuPrcAllPause(int flag);
 void HuPrcAllUPause(int flag);
 
-void omOvlGotoEx(OverlayID overlay, s16 end_mode, int stat, int event);
-void omOvlReturnEx(int level, s16 end_mode);
+void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat);
+void omOvlGotoEx(OverlayID overlay, s16 arg2, int event, int stat);
+void omOvlReturnEx(s16 level, s16 arg2);
+omOvlHisData* omOvlHisGet(s32);
+void omOvlHisChg(s32 level, OverlayID overlay, int event, int stat);
+Process *omInitObjMan(s16 max_objs, int prio);
+
 void WipeCreate(char dir, char type, short duration);
 
 void pfInit(void);
