@@ -295,7 +295,7 @@ config.libs = [
         "objects": [
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/bootDll/bootDll.c"),
-            Object(Matching, "REL/bootDll/nintendo_data.c"), #Waiting for REL asset extraction to be fixed
+            Object(Matching, "REL/bootDll/nintendo_data.c"),
         ],
     },
     {

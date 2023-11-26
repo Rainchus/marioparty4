@@ -17,6 +17,10 @@ modules:
   symbols: config/GMPE01_00/rels/bootDll/symbols.txt
   splits: config/GMPE01_00/rels/bootDll/splits.txt
   links: []
+  extract:
+  - symbol: logoNintendoData
+    binary: logoNintendoData.bin
+    header: logoNintendoData.inc
 - object: orig/GMPE01_00/files/dll/instDll.rel
   hash: f09399fee83c63abfe2adb25341152adad959a93
   symbols: config/GMPE01_00/rels/instDll/symbols.txt

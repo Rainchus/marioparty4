@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern u8 logoNintendoData[];
+#include "logoNintendoData.inc"
 
 void *logoReadNintendo(void)
 {
