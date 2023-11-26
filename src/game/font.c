@@ -1,1 +1,1 @@
-#include "game/ank8x8_4b.inc"
+#include "ank8x8_4b.inc"

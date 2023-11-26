@@ -118,7 +118,7 @@ if not is_windows():
 
 # Tool versions
 config.compilers_tag = "20231018"
-config.dtk_tag = "v0.6.2"
+config.dtk_tag = "v0.6.3"
 config.sjiswrap_tag = "v1.1.1"
 config.wibo_tag = "0.6.3"
 
@@ -173,7 +173,7 @@ cflags_runtime = [
 # REL flags
 cflags_rel = [
     *cflags_base,
-    "-O0,s",
+    "-O0,p",
     "-enum int",
     "-char unsigned",
     "-fp_contract off",
@@ -285,6 +285,17 @@ config.libs = [
         "objects": [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
+        ],
+    },
+    {
+        "lib": "bootDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/bootDll/bootDll.c"),
+            Object(Matching, "REL/bootDll/nintendo_data.c"), #Waiting for REL asset extraction to be fixed
         ],
     },
     {
