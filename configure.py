@@ -118,7 +118,7 @@ if not is_windows():
 
 # Tool versions
 config.compilers_tag = "20231018"
-config.dtk_tag = "v0.6.0"
+config.dtk_tag = "v0.6.2"
 config.sjiswrap_tag = "v1.1.1"
 config.wibo_tag = "0.6.3"
 
@@ -150,6 +150,7 @@ cflags_base = [
     "-fp_contract on",
     "-str reuse",
     "-i include",
+    f"-i build/{config.version}/include",
     "-multibyte",
     f"-DVERSION={version_num}",
 ]
@@ -234,7 +235,7 @@ config.libs = [
             Object(Matching, "game/dvd.c"),
             Object(NonMatching, "game/data.c"),
             Object(Matching, "game/decode.c"),
-            Object(NonMatching, "game/font.c"),
+            Object(Matching, "game/font.c"),
             Object(Matching, "game/init.c"),
             Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
