@@ -192,5 +192,5 @@ extern s16 lbl_1_data_32;
 extern s32 lbl_1_data_54[2];
 extern s32 lbl_1_data_5C[2];
 extern s32 lbl_1_data_64[2];
-extern s32 lbl_1_data_6C[2];
+extern s32 lbl_1_data_6C[3]; //HACK: should be 2
 extern BoardState lbl_8018FCF8;

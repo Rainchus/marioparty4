@@ -314,7 +314,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/w10Dll/w10Dll_init.c"),
             Object(Matching, "REL/w10Dll/w10Dll.c"),
             Object(Matching, "REL/w10Dll/w10Dll2.c"),
         ],
