@@ -317,6 +317,8 @@ config.libs = [
             Object(Matching, "REL/w10Dll/w10Dll_init.c"),
             Object(Matching, "REL/w10Dll/w10Dll.c"),
             Object(Matching, "REL/w10Dll/w10Dll2.c"),
+            Object(Matching, "REL/w10Dll/w10Dll3.c"),
+            Object(Matching, "REL/w10Dll/w10Dll4.c"),
         ],
     },
 ]
