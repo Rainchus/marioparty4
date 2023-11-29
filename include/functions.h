@@ -187,6 +187,8 @@ void BoardMessCreate(s16, s32, s32);
 void BoardMessKill(void);
 void BoardMessWait(void);
 
+s32 rand8(void);
+
 void fn_8005D8E8(void); 
 void fn_8005DB6C(s16, Vec3f*, s32, f32, f32, s32); 
 void fn_8005E0C0(void);
