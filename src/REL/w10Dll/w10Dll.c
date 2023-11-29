@@ -1,17 +1,15 @@
 #include "include/REL/w10Dll.h"
 
 //BSS
-BoardStateSubStruct* lbl_1_bss_0;
-void* lbl_1_bss_8;
-s16 lbl_1_bss_C;
-s16 lbl_1_bss_E;
-s16 lbl_1_bss_10[4];
-Process* lbl_1_bss_18;
-s16 lbl_1_bss_1C;
-s16 lbl_1_bss_1E;
-s16 lbl_1_bss_20;
 s16 lbl_1_bss_22[11];
-
+s16 lbl_1_bss_20;
+s16 lbl_1_bss_1E;
+s16 lbl_1_bss_1C;
+Process* lbl_1_bss_18;
+s16 lbl_1_bss_10[4];
+s16 lbl_1_bss_E;
+s16 lbl_1_bss_C;
+void* lbl_1_bss_8;
 
 //DATA
 unkw10Dll lbl_1_data_0[1] = {
@@ -30,11 +28,12 @@ s16 lbl_1_data_30 = -1;
 s16 lbl_1_data_32 = -1;
 
 //unused?
-s16 lbl_1_data_34[] = {
-0x005F, 0x0000, 0x001A, 0x0000,
-0x006D, 0x0000, 0x008A, 0x0000,
-0x0085, 0x0000, 0x0011, 0x0000,
-0x000D, 0x0000, 0x0081, 0x0000
+s32 lbl_1_data_34[] = {
+0x005F0000, 0x001A0000,
+0x006D0000, 0x008A0000,
+0x00850000, 0x00110000,
+0x000D0000, 0x00810000,
+0
 };
 
 s32 lbl_1_data_54[2] = {
@@ -67,78 +66,10 @@ Vec3f lbl_1_data_80[2] = {
     {70.0f, 175.0f, 200.f},
 };
 
-w10DllUnk03 lbl_1_data_C6[11] = {
-1, -1, -1,
-2, -1, -1,
-4, -1, -1,
-5, -1, -1,
-5, -1, -1,
-4, -1, -1,
-1, -1, -1,
-3, -1, -1,
-2, -1, -1,
-4, -1, -1,
-5, 6, -1,
-};
-
-w10DllUnk04 lbl_1_data_108[42] = {
-{0x0000, 0000, fn_1_D2C},
-{0x0001, 0000, fn_1_D54},
-{0x0002, 0000, fn_1_D7C},
-{0x0003, 0000, fn_1_DA4},
-{0x0003, 0000, fn_1_DCC},
-{0x0003, 0000, fn_1_DF4},
-{0x0003, 0000, fn_1_E1C},
-{0x0004, 0000, fn_1_E44},
-{0x0005, 0000, fn_1_E94},
-{0x0006, 0000, fn_1_EBC},
-{0x0007, 0000, fn_1_EE4},
-{0x000A, 0000, fn_1_EE8},
-{0x000B, 0000, fn_1_F30},
-{0x0010, 0000, fn_1_F6C},
-{0x0011, 0000, fn_1_FB8},
-{0x000C, 0000, fn_1_1010},
-{0x000D, 0000, fn_1_105C},
-{0x000E, 0000, fn_1_1098},
-{0x000E, 0000, fn_1_10C0},
-{0x000F, 0000, fn_1_10F8},
-{0x0012, 0000, fn_1_1134},
-{0x0014, 0000, fn_1_1178},
-{0x0015, 0000, fn_1_11A0},
-{0x0016, 0000, fn_1_11EC},
-{0x0005, 0000, fn_1_1240},
-{0x0017, 0000, fn_1_1278},
-{0x0007, 0000, fn_1_12A0},
-{0x0005, 0000, fn_1_12DC},
-{0x0017, 0000, fn_1_1304},
-{0x0018, 0000, fn_1_132C},
-{0x0019, 0000, fn_1_1354},
-{0x0008, 0000, fn_1_137C},
-{0x0009, 0000, fn_1_13A4},
-{0x001A, 0000, fn_1_176C},
-{0x001B, 0000, fn_1_179C},
-{0x001B, 0000, fn_1_17F4},
-{0x001B, 0000, fn_1_1834},
-{0x001B, 0000, fn_1_18BC},
-{0x001C, 0000, fn_1_1908},
-{0x001C, 0000, fn_1_1930},
-{0x001C, 0000, fn_1_1958},
-{-1, 0, 0},
-};
-
-s32 lbl_1_data_2A8[11] = {
-0x007B0004,
-0x007B0005,
-0x007B0006,
-0x007B0007,
-0x007B0008,
-0x007B0009,
-0x007B000A,
-0x007B000B,
-0x007B000C,
-0x007B000D,
-0x007B000E
-};
+//RODATA
+//HACK: Force 0.5 and 3.0 double constants to appear in REL
+const double _half = 0.5;
+const double _three = 3.0;
 
 // function is probably global. only inlined in rels?
 inline s32 get_current_board(void) {
@@ -373,6 +304,8 @@ void fn_1_C20(void) {
         HuPrcVSleep();        
     }
 }
+
+const f32 pad = 0.0f;
 
 void fn_1_D2C(void) {
     fn_1_BA0(0x2E0001);

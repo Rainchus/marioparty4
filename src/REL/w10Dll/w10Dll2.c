@@ -1,5 +1,82 @@
 #include "include/REL/w10Dll.h"
 
+char lbl_1_data_98[] = "@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000";
+
+w10DllUnk03 lbl_1_data_C6[11] = {
+1, -1, -1,
+2, -1, -1,
+4, -1, -1,
+5, -1, -1,
+5, -1, -1,
+4, -1, -1,
+1, -1, -1,
+3, -1, -1,
+2, -1, -1,
+4, -1, -1,
+5, 6, -1,
+};
+
+w10DllUnk04 lbl_1_data_108[42] = {
+{0x0000, 0000, fn_1_D2C},
+{0x0001, 0000, fn_1_D54},
+{0x0002, 0000, fn_1_D7C},
+{0x0003, 0000, fn_1_DA4},
+{0x0003, 0000, fn_1_DCC},
+{0x0003, 0000, fn_1_DF4},
+{0x0003, 0000, fn_1_E1C},
+{0x0004, 0000, fn_1_E44},
+{0x0005, 0000, fn_1_E94},
+{0x0006, 0000, fn_1_EBC},
+{0x0007, 0000, fn_1_EE4},
+{0x000A, 0000, fn_1_EE8},
+{0x000B, 0000, fn_1_F30},
+{0x0010, 0000, fn_1_F6C},
+{0x0011, 0000, fn_1_FB8},
+{0x000C, 0000, fn_1_1010},
+{0x000D, 0000, fn_1_105C},
+{0x000E, 0000, fn_1_1098},
+{0x000E, 0000, fn_1_10C0},
+{0x000F, 0000, fn_1_10F8},
+{0x0012, 0000, fn_1_1134},
+{0x0014, 0000, fn_1_1178},
+{0x0015, 0000, fn_1_11A0},
+{0x0016, 0000, fn_1_11EC},
+{0x0005, 0000, fn_1_1240},
+{0x0017, 0000, fn_1_1278},
+{0x0007, 0000, fn_1_12A0},
+{0x0005, 0000, fn_1_12DC},
+{0x0017, 0000, fn_1_1304},
+{0x0018, 0000, fn_1_132C},
+{0x0019, 0000, fn_1_1354},
+{0x0008, 0000, fn_1_137C},
+{0x0009, 0000, fn_1_13A4},
+{0x001A, 0000, fn_1_176C},
+{0x001B, 0000, fn_1_179C},
+{0x001B, 0000, fn_1_17F4},
+{0x001B, 0000, fn_1_1834},
+{0x001B, 0000, fn_1_18BC},
+{0x001C, 0000, fn_1_1908},
+{0x001C, 0000, fn_1_1930},
+{0x001C, 0000, fn_1_1958},
+{-1, 0, 0},
+};
+
+char lbl_1_data_258[] = "Tutorial Hook P0:%d P1:%d P2:%d P3:%d  SCEN:%d  CUE:%d  PRM:%d DICE:%d  MSG:%d\n";
+
+s32 lbl_1_data_2A8[11] = {
+0x007B0004,
+0x007B0005,
+0x007B0006,
+0x007B0007,
+0x007B0008,
+0x007B0009,
+0x007B000A,
+0x007B000B,
+0x007B000C,
+0x007B000D,
+0x007B000E
+};
+
 void fn_1_13A4(void) {
     s32 i;
     Vec3f sp14;
@@ -142,7 +219,7 @@ void fn_1_1984(void) {
         }
         if (i != 4) {
             lbl_1_bss_C = 1;
-            OSReport("@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000");
+            OSReport(lbl_1_data_98);
             fn_80070EE8(0, 0x1F3);
             fn_8005B5FC();
             fn_800B3FD8(NULL);
@@ -171,7 +248,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                     }
                     if (i != 4) {
                         lbl_1_bss_C = 1;
-                        OSReport("@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000");
+                        OSReport(lbl_1_data_98);
                         fn_80070EE8(0, 0x1F3);
                         fn_8005B5FC();
                         fn_800B3FD8(NULL);
@@ -182,7 +259,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
         return;
     }
     if (arg0 != 0x1D) {
-        OSReport("Tutorial Hook P0:%d P1:%d P2:%d P3:%d  SCEN:%d  CUE:%d  PRM:%d DICE:%d  MSG:%d\n",
+        OSReport(lbl_1_data_258,
             (gPlayerData[0].characterID >> 5) & 1, (gPlayerData[1].characterID >> 5) & 1,
             (gPlayerData[2].characterID >> 5) & 1, (gPlayerData[3].characterID >> 5) & 1,
             lbl_1_bss_0->unk0, arg0, arg1, lbl_1_bss_0->unk4, lbl_1_bss_0->unk6);

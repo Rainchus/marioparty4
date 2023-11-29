@@ -1,5 +1,8 @@
 #include "include/REL/w10Dll.h"
 
+//BSS
+BoardStateSubStruct* lbl_1_bss_0;
+
 void fn_1_0(void) {
     fn_8005B150(&fn_1_E0, &fn_1_6D8);
 }
