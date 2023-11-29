@@ -78,8 +78,8 @@ typedef struct data_read_stat {
 
 typedef struct BoardStateSubStruct {
 /* 0x00 */ s32 unk0;
-/* 0x04 */ s16 unk4;
-/* 0x06 */ s16 unk6;
+/* 0x04 */ u16 unk4;
+/* 0x06 */ u16 unk6;
 /* 0x08 */ s16 unk8;
 } BoardStateSubStruct;
 
@@ -101,7 +101,7 @@ typedef struct {
 } PlayerFlags;
 
 typedef struct Player {
-/* 0x00 */ s8 	characterID;
+/* 0x00 */ u8 	characterID;
 /* 0x01 */ s8 	unk01;
 /* 0x02 */ s8 	unk02;
 /* 0x03 */ s8 	unk03;

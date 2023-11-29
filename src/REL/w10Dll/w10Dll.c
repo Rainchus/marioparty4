@@ -1,6 +1,8 @@
 #include "common.h"
 #include "REL/executor.h"
 
+#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
 
 typedef struct unkw10Dll {
@@ -25,6 +27,30 @@ typedef struct w10DllUnk02 {
 
 //this belongs to m456Dll
 w10DllUnk02** fn_8002FAC0(Process*, s32);
+
+void espDispOn(s16);
+void espPosSet(s16, f32, f32);
+void espScaleSet(s16, f32, f32);
+void fn_1_C10(s32);                                      /* extern */
+void fn_8005D8E8(void);                                    /* extern */
+void fn_8005DB6C(s16, Vec3f*, s32, f32, f32, s32);           /* extern */
+void fn_8005E0C0(void);                                    /* extern */
+void fn_80074210(s32, s32, Vec3f*);                          /* extern */
+void fn_8007A360(s32);                                 /* extern */
+void fn_8007F894(void);                                    /* extern */
+void fn_80083F84(void);                                    /* extern */
+void fn_800884F4(s32);                                   /* extern */
+void fn_800A4C88(void);                                    /* extern */
+void fn_800A6B10(void);                                    /* extern */
+extern f32 lbl_1_rodata_48;
+extern f32 lbl_1_rodata_4C;
+extern f32 lbl_1_rodata_50; //3200.0f;
+extern f32 lbl_1_rodata_54; //-1.0f
+extern s16 lbl_1_bss_20;
+extern s16 lbl_1_bss_22[];
+extern f32 lbl_1_rodata_58;
+extern f32 lbl_1_rodata_5C;
+extern f32 lbl_1_rodata_60;
 void fn_8003FD10(s16, f32, f32);
 extern s16 lbl_1_bss_20;
 extern f32 lbl_1_rodata_5C;
@@ -37,7 +63,7 @@ void fn_800B42B4(s32);
 void fn_80082AAC(s32);
 void fn_800B4264(s32, s32, s32);
 void fn_1_1FB0(void);
-void fn_1_1E3C(s32, s32, s32);
+void fn_1_1E3C(s16, s16, s16);
 void fn_8007500C(s32);
 void fn_1_BA0(s32);
 void fn_8006F0D4(s32, f32);
@@ -631,7 +657,78 @@ void fn_1_137C(void) {
 }
 */
 
-// fn_1_13A4
+/*
+void fn_1_13A4(void) {
+    s32 i;
+    Vec3f sp14;
+    Vec3f sp8;
+    s32 temp_r3_2;
+    
+    fn_1_BA0(0x2E0023);
+    for (i = 0; i < 4; i++) {
+        gPlayerData[i].flags.unk0 = 1;
+    }
+    fn_800A4C88();
+    fn_800884F4(0);
+    fn_1_C10(0);
+    fn_1_BA0(0x2E002B);
+    sp8.x = lbl_1_rodata_48;
+    sp8.y =  sp8.z = lbl_1_rodata_4C;
+    temp_r3_2 = fn_800745F0(0, 0x80000);
+    fn_80074210(0, temp_r3_2, &sp14);
+    fn_8006F158(lbl_1_bss_0->unk8, &sp14);
+    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    fn_8005E0C0();
+    fn_1_BA0(0x2E002C);
+    fn_8007A360(temp_r3_2);
+    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    fn_8005E0C0();
+    temp_r3_2 = fn_800745F0(0, 0x10000000);
+    fn_80074210(0, temp_r3_2, &sp14);
+    fn_8006F158(lbl_1_bss_0->unk8, &sp14);
+    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    fn_8005E0C0();
+    fn_1_BA0(0x2E002E);
+    fn_8007F894();
+    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    fn_8005E0C0();
+    temp_r3_2 = fn_800745F0(0, 0x08000000);
+    fn_80074210(0, temp_r3_2, &sp14);
+    fn_8006F158(lbl_1_bss_0->unk8, &sp14);
+    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    fn_8005E0C0();
+    fn_1_BA0(0x2E0030);
+    fn_800A6B10();
+    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    fn_8005E0C0();
+    fn_1_BA0(0x2E0032);
+    fn_80083F84();
+    fn_8005D8E8();
+    fn_8005E0C0();
+    fn_1_BA0(0x2E0033);
+    fn_1_BA0(0x2E0034);
+    fn_1_1E3C(8, 0x122, 0x8C);
+    fn_1_BA0(0x2E0035);
+    fn_1_1FB0();
+    fn_1_1E3C(9, 0x122, 0x8C);
+    fn_1_BA0(0x2E0036);
+    fn_1_1FB0();
+    fn_1_1E3C(0xA, 0x122, 0x8C);
+    fn_1_BA0(0x2E0037);
+    fn_1_1FB0();
+    fn_1_BA0(0x2E0038);
+    fn_1_BA0(0x2E0039);
+    if (lbl_1_bss_C == 0) {
+        lbl_1_bss_C = 1;
+        fn_80070EE8(0, 0x1F3);
+        fn_8005B5FC();
+    }
+    fn_800B3FD8(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
+*/
 
 /*
 void fn_1_176C(void) {
@@ -698,9 +795,92 @@ void fn_1_1980(void) {
 }
 */
 
-// fn_1_1984
+/*
+void fn_1_1984(void) {
+    s32 contPortIndex;
+    s32 i;
 
-// fn_1_1AAC
+    if (lbl_1_bss_C == 0) {
+        if (fn_80041600() != 0) {
+            HuWinDispOff(lbl_1_bss_E);
+            return;
+        }
+        HuWinDispOn(lbl_1_bss_E);
+        if (fn_8005B6A8() != 0) {
+            return;
+        }
+        for (i = 0; i < ARRAY_COUNT(gPlayerData); i++) {
+            contPortIndex = gPlayerData[i].controllerPort;
+            if (contPortIndex == -1) {
+                continue;
+            }
+            if (HuPadStatGet(contPortIndex) == 0 && HuPadBtnDown[contPortIndex] & 0x1000) {
+                break;
+            }
+        }
+        if (i != 4) {
+            lbl_1_bss_C = 1;
+            OSReport("@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000");
+            fn_80070EE8(0, 0x1F3);
+            fn_8005B5FC();
+            fn_800B3FD8(NULL);
+        }
+    }
+}
+*/
+
+/*
+int fn_1_1AAC(s16 arg0, s32 arg1) {
+    s32 i;
+    // s32 contPortIndex;
+
+    //sp10 = arg1;
+    if (arg0 == 0x1E) {
+        if (lbl_1_bss_C == 0) {
+            if (fn_80041600() != 0) {
+                HuWinDispOff(lbl_1_bss_E);
+            } else {
+                HuWinDispOn(lbl_1_bss_E);
+                if (fn_8005B6A8() == 0) {
+                    s32 contPortIndex;
+                    for (i = 0; i < ARRAY_COUNT(gPlayerData); i++) {
+                        contPortIndex = gPlayerData[i].controllerPort;
+                        if (contPortIndex == -1) {
+                            continue;
+                        }
+                        if (HuPadStatGet(contPortIndex) == 0 && HuPadBtnDown[contPortIndex] & 0x1000) {
+                            break;
+                        }
+                    }
+                    if (i != 4) {
+                        lbl_1_bss_C = 1;
+                        OSReport("@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000");
+                        fn_80070EE8(0, 0x1F3);
+                        fn_8005B5FC();
+                        fn_800B3FD8(NULL);
+                    }
+                }
+            }
+        }
+        return;
+    }
+    if (arg0 != 0x1D) {
+        OSReport("Tutorial Hook P0:%d P1:%d P2:%d P3:%d  SCEN:%d  CUE:%d  PRM:%d DICE:%d  MSG:%d\n",
+            (gPlayerData[0].characterID >> 5) & 1, (gPlayerData[1].characterID >> 5) & 1,
+            (gPlayerData[2].characterID >> 5) & 1, (gPlayerData[3].characterID >> 5) & 1,
+            lbl_1_bss_0->unk0, arg0, arg1, lbl_1_bss_0->unk4, lbl_1_bss_0->unk6);
+        if (lbl_1_data_108[lbl_1_bss_0->unk0].unk0 != -1) {
+            if (arg0 == 5) {
+                fn_8008831C(&lbl_1_data_C6[lbl_1_bss_0->unk4++]);
+            }
+            if (arg0 == lbl_1_data_108[lbl_1_bss_0->unk0].unk0) {
+                void (*temp_r3_3)() = lbl_1_data_108[lbl_1_bss_0->unk0++].unk4;
+                temp_r3_3();
+            }
+        }
+    }
+}
+*/
 
 /*
 void fn_1_1D68(void) {
@@ -725,7 +905,26 @@ void fn_1_1DEC(void) {
 }
 */
 
-// fn_1_1E3C
+/*
+void fn_1_1E3C(s16 arg0, s16 arg1, s16 arg2) {
+    f32 var_f31;
+    f32 var_f30;
+    u32 i;
+
+    lbl_1_bss_20 = lbl_1_bss_22[arg0];
+    espPosSet(lbl_1_bss_20, arg1, arg2);
+    var_f31 = lbl_1_rodata_58;
+    var_f30 = lbl_1_rodata_58;
+    espDispOn(lbl_1_bss_20);
+    for (i = 0; i < 15; i++) {
+        var_f31 += lbl_1_rodata_5C;
+        var_f30 += lbl_1_rodata_5C;
+        espScaleSet(lbl_1_bss_20, var_f31, var_f30);
+        HuPrcVSleep();        
+    }
+    espScaleSet(lbl_1_bss_20, lbl_1_rodata_60, lbl_1_rodata_60);
+}
+*/
 
 /*
 void fn_1_1FB0(void) {
