@@ -4,9 +4,11 @@
 #include "types.h"
 #include "common_structs.h"
 #include "common_enums.h"
-
+#include "dolphin/mtx.h"
 #include "dolphin/gx/GXStruct.h"
 
+void Hu3D2Dto3D(Vec3f*, s32, Vec3f*);
+void Hu3DModelLightInfoSet(s32, s32);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
@@ -149,12 +151,26 @@ void Hu3DModelRotSet(s16 index, float x, float y, float z);
 void Hu3DModelScaleSet(s16 index, float x, float y, float z);
 
 void espInit(void);
+void espScaleSet(s16, f32, f32);
+s16 espEntry(s32, s32, s32);
+void espDispOff(s16);
+void espKill(s16);
+void espDispOn(s16);
+void espPosSet(s16, f32, f32);
 
 void HuSprClose(void);
 
 void HuWinAllKill(void);
+void HuWinMesSet(s16, s32);
+void HuWinKill(s16);
+void HuWinPriSet(s16, s32);
+void HuWinMesPalSet(s16, s32, s32, s32, s32);
+void HuWinMesSpeedSet(s16, s32);
+void HuWinMesMaxSizeGet(s32, f32*, ...);
+s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
 
 void HuPadRumbleAllStop(void);
+s16 HuPadStatGet(s16);
 
 void HuAudFXListnerKill(void);
 void HuAudDllSndGrpSet(u16 ovl);
@@ -170,5 +186,57 @@ s32 _CheckFlag(u32 flag);
 void BoardMessCreate(s16, s32, s32);
 void BoardMessKill(void);
 void BoardMessWait(void);
+
+void fn_8005D8E8(void); 
+void fn_8005DB6C(s16, Vec3f*, s32, f32, f32, s32); 
+void fn_8005E0C0(void);
+void fn_80074210(s32, s32, Vec3f*);
+void fn_8007A360(s32);
+void fn_8007F894(void);
+void fn_80083F84(void);
+void fn_800884F4(s32);
+void fn_800A4C88(void);
+void fn_800A6B10(void);
+u8 fn_80041600(void);
+void fn_8008853C(s32);
+void fn_800B42B4(s32);
+void fn_80082AAC(s32);
+void fn_800B4264(s32, s32, s32);
+void fn_8007500C(s32);
+void fn_8006F0D4(s32, f32);
+f32 fn_8006F128(s32);
+f64 fmod(f32, f64);
+void fn_8006F61C(s16, s32);
+void fn_800B42BC(s16);
+s32 fn_8006DBD4(s16);
+void fn_8005B150(void*, void*);
+void fn_8006F2E8(s32, Vec3f*);
+void fn_8005D10C(void*, void*);
+s16 fn_8006D9A4(s32, void*, s32);
+void fn_8006DB90(s16);
+void fn_8006DDE8(s16, f32);
+void fn_8006E2B8(s16, s32, s32);
+void fn_8006E878(s16, f32);
+void fn_8006F158(s16, void*);
+void fn_8006F1A8(s16, f32, f32, f32);
+s32 fn_8006F220(s16 arg0, Vec3f* arg1);
+void fn_8006F50C(s16, s32);
+void fn_80073FF4(void*);
+void fn_80073FFC(void*);
+void fn_80074004(void*);
+s32 fn_800745F0(s32, s32);
+void fn_800772EC(s32);
+void fn_80077A3C(void);
+void fn_80077AAC(s16);
+void fn_8007A83C(s16);
+void fn_80083EDC(s16);
+void fn_800A4F6C(s16);
+void fn_800B3FD8(void*);
+void fn_800B4274(s32, s32);
+void fn_8005D5C0(Vec3f*);
+void fn_8006F338(s16, f32, f32, f32);
+s32 fn_8005B6A8(void);
+void fn_8006EFBC(s16, Mtx);
+void fn_8006F270(s16, f32, f32, f32);
 
 #endif

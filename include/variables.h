@@ -43,5 +43,7 @@ extern s16 omSysExitReq;
 extern s16 omdispinfo;
 extern char omSysPauseEnableFlag;
 extern OverlayID omprevovl;
+extern Player gPlayerData[4];
+extern BoardState lbl_8018FCF8;
 
 #endif

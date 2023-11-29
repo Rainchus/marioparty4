@@ -11,6 +11,11 @@ typedef struct om_ovl_his_data {
     int stat;
 } omOvlHisData;
 
+typedef struct Vec2f {
+    f32 x;
+    f32 y;
+} Vec2f;
+
 typedef struct Vec3f {
     f32 x;
     f32 y;
