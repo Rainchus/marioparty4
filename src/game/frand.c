@@ -1,6 +1,6 @@
 #include "common.h"
 
-u32 frand_seed;
+static u32 frand_seed;
 
 static inline u32 frandom(void)
 {
