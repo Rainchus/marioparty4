@@ -5,3 +5,16 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/w10Dll/w10Dll_init.c:
+	.text       start:0x00000000 end:0x000000E0
+
+REL/w10Dll/w10Dll.c:
+	.text       start:0x000000E0 end:0x000013A4
+	.rodata     start:0x00000000 end:0x00000018
+	.data       start:0x00000000 end:0x000002D4
+	.bss        start:0x00000000 end:0x00000038
+
+REL/w10Dll/w10Dll2.c:
+	.text       start:0x000013A4 end:0x0000206C
+	.rodata     start:0x00000058 end:0x00000070
