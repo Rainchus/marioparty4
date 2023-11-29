@@ -47,6 +47,14 @@ game/decode.c:
 game/font.c:
 	.data       start:0x8011FE00 end:0x80121E00
 
+game/init.c:
+	.text       start:0x80009AFC end:0x8000A464
+	.data       start:0x80121E00 end:0x80121F50
+	.bss        start:0x80145A40 end:0x80145A80
+	.sdata      start:0x801D3448 end:0x801D3460
+	.sbss       start:0x801D3AF8 end:0x801D3B28
+	.sdata2     start:0x801D4968 end:0x801D4978
+
 game/jmp.c:
 	.text       start:0x8000A464 end:0x8000A558
 
@@ -88,6 +96,74 @@ game/sprput.c:
 	.bss        start:0x8015C690 end:0x8015C6C0
 	.sbss       start:0x801D3B50 end:0x801D3B58
 	.sdata2     start:0x801D49F0 end:0x801D4A28
+
+game/hsfload.c:
+	.text       start:0x80010B30 end:0x80014018
+	.data       start:0x80122320 end:0x80122390
+	.bss        start:0x8015C6C0 end:0x8015CC80
+	.sbss       start:0x801D3B58 end:0x801D3B90
+
+game/hsfdraw.c:
+	.text       start:0x80014018 end:0x8001F9AC
+	.rodata     start:0x8011DD20 end:0x8011DD30
+	.data       start:0x80122390 end:0x801225A0
+	.bss        start:0x8015CC80 end:0x801677C0
+	.sdata      start:0x801D3470 end:0x801D3488
+	.sbss       start:0x801D3B90 end:0x801D3C30
+	.sdata2     start:0x801D4A28 end:0x801D4AB0
+
+game/hsfman.c:
+	.text       start:0x8001F9AC end:0x800250E8
+	.data       start:0x801225A0 end:0x8012D658
+	.bss        start:0x801677C0 end:0x8018D3D0
+	.sbss       start:0x801D3C30 end:0x801D3C60
+	.sdata2     start:0x801D4AB0 end:0x801D4B10
+	.sbss2      start:0x801D6BE0 end:0x801D6BE8
+
+game/objmain.c:
+	.text       start:0x8002EBD8 end:0x8002FF4C
+	.data       start:0x8012D918 end:0x8012DCC8
+	.bss        start:0x8018FB38 end:0x8018FBF8
+	.sdata      start:0x801D3498 end:0x801D34A0
+	.sbss       start:0x801D3CC0 end:0x801D3CF0
+	.sdata2     start:0x801D4C78 end:0x801D4CA0
+
+game/fault.c:
+	.text       start:0x8002FF4C end:0x800308B8
+	.data       start:0x8012DCC8 end:0x8012E4F0
+	.bss        start:0x8018FBF8 end:0x8018FC10
+	.sdata      start:0x801D34A0 end:0x801D34B0
+	.sbss       start:0x801D3CF0 end:0x801D3D00
+
+game/ovllist.c:
+	.data       start:0x8012F790 end:0x80130100
+
+game/frand.c:
+	.text       start:0x800325F4 end:0x80032830
+	.sbss       start:0x801D3D10 end:0x801D3D18
+	.sdata2     start:0x801D4CB0 end:0x801D4CC0
+
+game/window.c:
+	.text       start:0x8004207C end:0x800483A0
+	.data       start:0x80130140 end:0x80130688
+	.bss        start:0x801923C0 end:0x801967E0
+	.sdata      start:0x801D35E8 end:0x801D35F0
+	.sbss       start:0x801D3DB0 end:0x801D3DF8
+	.sdata2     start:0x801D4F08 end:0x801D4F98
+
+game/messdata.c:
+	.text       start:0x800483A0 end:0x80048488
+
+game/card.c:
+	.text       start:0x80048488 end:0x80048A84
+	.data       start:0x80130688 end:0x801306D8
+	.sbss       start:0x801D3DF8 end:0x801D3E00
+
+game/armem.c:
+	.text       start:0x80048A84 end:0x800498F0
+	.data       start:0x801306D8 end:0x801307C8
+	.bss        start:0x801967E0 end:0x80196EC0
+	.sbss       start:0x801D3E00 end:0x801D3E10
 
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068

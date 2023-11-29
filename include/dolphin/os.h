@@ -58,6 +58,7 @@ u32 OSUncachedToCached(void* ucaddr);
 #define OSDiffTick(tick1, tick0) ((s32)(tick1) - (s32)(tick0))
 
 #define OSRoundUp32B(v) (((u32)(v + 31) & ~31))
+#define OSRoundDown32B(x) (((u32)(x)) & ~31)
 
 void* OSGetArenaHi(void);
 void* OSGetArenaLo(void);
@@ -217,6 +218,9 @@ BOOL OSRestoreInterrupts(BOOL level);
 void OSReport(const char* msg, ...);
 void OSPanic(const char* file, int line, const char* msg, ...);
 void OSFatal(GXColor fg, GXColor bg, const char* msg);
+
+u32 OSGetPhysicalMemSize(void);
+u32 OSGetConsoleSimulatedMemSize(void);
 
 #ifdef __cplusplus
 }

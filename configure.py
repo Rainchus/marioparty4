@@ -118,7 +118,7 @@ if not is_windows():
 
 # Tool versions
 config.compilers_tag = "20231018"
-config.dtk_tag = "v0.6.0"
+config.dtk_tag = "v0.6.3"
 config.sjiswrap_tag = "v1.1.1"
 config.wibo_tag = "0.6.3"
 
@@ -150,6 +150,7 @@ cflags_base = [
     "-fp_contract on",
     "-str reuse",
     "-i include",
+    f"-i build/{config.version}/include",
     "-multibyte",
     f"-DVERSION={version_num}",
 ]
@@ -172,8 +173,10 @@ cflags_runtime = [
 # REL flags
 cflags_rel = [
     *cflags_base,
-    "-O0,s",
+    "-O0,p",
+    "-enum int",
     "-char unsigned",
+    "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
     "-pool off",
@@ -183,7 +186,9 @@ cflags_rel = [
 cflags_game = [
     *cflags_base,
     "-O0,p",
+    "-enum int",
     "-char unsigned",
+    "-fp_contract off",
 ]
 
 config.linker_version = "GC/2.6"
@@ -227,17 +232,29 @@ config.libs = [
         "objects": [
             Object(NonMatching, "game/main.c"),
             Object(NonMatching, "game/pad.c"),
-            Object(NonMatching, "game/dvd.c"),
+            Object(Matching, "game/dvd.c"),
             Object(NonMatching, "game/data.c"),
             Object(Matching, "game/decode.c"),
-            Object(NonMatching, "game/font.c"),
+            Object(Matching, "game/font.c"),
+            Object(Matching, "game/init.c"),
             Object(NonMatching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
-            Object(NonMatching, "game/printfunc.c"),
+            Object(Matching, "game/printfunc.c"),
             Object(Matching, "game/process.c"),
             Object(NonMatching, "game/sprman.c"),
             Object(NonMatching, "game/sprput.c"),
+            Object(NonMatching, "game/hsfload.c"),
+            Object(NonMatching, "game/hsfdraw.c"),
+            Object(NonMatching, "game/hsfman.c"),
+            Object(Matching, "game/objmain.c"),
+            Object(NonMatching, "game/fault.c"),
+            Object(NonMatching, "game/frand.c"),
+            Object(Matching, "game/ovllist.c"),
+            Object(NonMatching, "game/window.c"),
+            Object(NonMatching, "game/messdata.c"),
+            Object(NonMatching, "game/card.c"),
+            Object(NonMatching, "game/armem.c"),
         ],
     },
     {
@@ -268,6 +285,17 @@ config.libs = [
         "objects": [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
+        ],
+    },
+    {
+        "lib": "bootDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/bootDll/bootDll.c"),
+            Object(Matching, "REL/bootDll/nintendo_data.c"),
         ],
     },
     {
