@@ -39,11 +39,12 @@ typedef struct w10DllUnk04 {
 
 //this belongs to m456Dll
 w10DllUnk02** fn_8002FAC0(Process*, s32);
-
+u8 fn_80041600(void);
+s16 HuPadStatGet(s16);
 void espDispOn(s16);
 void espPosSet(s16, f32, f32);
 void espScaleSet(s16, f32, f32);
-void fn_1_C10(s32);
+void fn_1_C10(s16);
 void fn_8005D8E8(void); 
 void fn_8005DB6C(s16, Vec3f*, s32, f32, f32, s32); 
 void fn_8005E0C0(void);

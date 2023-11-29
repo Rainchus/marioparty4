@@ -2,7 +2,6 @@
 
 //BSS
 BoardStateSubStruct* lbl_1_bss_0;
-s32 lbl_1_bss_4_pad;
 void* lbl_1_bss_8;
 s16 lbl_1_bss_C;
 s16 lbl_1_bss_E;
@@ -349,8 +348,8 @@ void fn_1_BA0(s32 arg0) {
     BoardMessKill();
 }
 
-void fn_1_C10(s32 arg0) {
-    HuPrcEnd();
+void fn_1_C10(s16 arg0) {
+    lbl_1_bss_1C = arg0;
 }
 
 void fn_1_C20(void) {
