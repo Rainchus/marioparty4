@@ -174,7 +174,7 @@ void fn_1_13A4(void) {
     
     fn_1_BA0(0x2E0023);
     for (i = 0; i < 4; i++) {
-        gPlayerData[i].flags.unk0 = 1;
+        GWPlayer[i].flags.unk0 = 1;
     }
     fn_800A4C88();
     fn_800884F4(0);

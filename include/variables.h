@@ -20,7 +20,7 @@ extern u32 procfunc;
 
 extern WipeState wipeData;
 
-extern PlayerConfig gPlayerConfig[4];
+extern PlayerConfig GWPlayerCfg[4];
 
 extern FileListEntry _ovltbl[];
 
@@ -43,7 +43,7 @@ extern s16 omSysExitReq;
 extern s16 omdispinfo;
 extern char omSysPauseEnableFlag;
 extern OverlayID omprevovl;
-extern Player gPlayerData[4];
-extern BoardState lbl_8018FCF8;
+extern PlayerState GWPlayer[4];
+extern SystemState GWSystem;
 
 #endif

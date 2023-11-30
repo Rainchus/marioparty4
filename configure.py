@@ -253,6 +253,7 @@ config.libs = [
             Object(NonMatching, "game/perf.c"),
             Object(Matching, "game/objmain.c"),
             Object(NonMatching, "game/fault.c"),
+            Object(NonMatching, "game/gamework.c"),
             Object(Matching, "game/frand.c"),
             Object(Matching, "game/ovllist.c"),
             Object(NonMatching, "game/window.c"),

@@ -61,7 +61,7 @@ static void SubchrMain()
     int ext_character[4];
     int i, cursor_pos;
     for(i=0; i<4; i++) {
-        character[i] = gPlayerConfig[i].character;
+        character[i] = GWPlayerCfg[i].character;
         ext_character[i] = 0;
         cur_direction[i] = 0;
     }
@@ -90,7 +90,7 @@ static void SubchrMain()
         if(GetBtns() & 0x1000) {
             for(i=0; i<4; i++) {
                 if(ext_character[i] != 0) {
-                    gPlayerConfig[i].character = ext_character[i]+7;
+                    GWPlayerCfg[i].character = ext_character[i]+7;
                 }
             }
             fn_80032A58(30);
