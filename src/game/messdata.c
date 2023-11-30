@@ -1,52 +1,53 @@
 #include "common.h"
 
-void* MessData_MesPtrGet(s32* arg0, u32 arg1) {
-    u16 var2;
-    s32* var_r27;
-    s32 var_r28;
-    s32* temp_r31;
-    s32* var_r26;
-    s32* var_r25;
-    u16* var_r29;
-    s32 var1;
-    u16 var_r24;
-    s32* var_r30;
-    s32 var_r21;
-
-    var2 = arg1 >> 16;
-    temp_r31 = arg0;
-    var1 = *temp_r31++;
-    var_r29 = (u16*)((u8*)arg0 + *temp_r31);
-    
-    var_r28 = var1;
-    while (var_r28 != 0) {
-        if (*var_r29 != var2) {
-            var_r28--;
-            var_r29 += 2;
-            continue;
-        } else {
+static void *MessData_MesDataGet(void *messdata, u32 id)
+{
+    s32 i;
+    s32 max_bank;
+    u16 *banks;
+    u16 bank;
+    s32 *data;
+    bank = id >> 16;
+    data = messdata;
+    max_bank = *data;
+    data++;
+    banks = (u16 *)(((u8 *)messdata)+(*data));
+    for(i=max_bank; i != 0; i--, banks += 2) {
+        if(*banks == bank) {
             break;
         }
     }
-    if (var_r28 == 0) {
-        var_r26 = NULL;
+    if(i == 0) {
+        return NULL;
     } else {
-        temp_r31 = (s32*)((u32)temp_r31 + var_r29[1] * 4);
-        var_r26 = (s32*)((u8*)arg0 + *temp_r31);
+        data += banks[1];
+        return (((u8 *)messdata)+(*data));
     }
-    var_r27 = var_r26;
-    if (var_r27 != 0) {
-        var_r24 = arg1;
-        var_r30 = var_r27;
-        var_r21 = *var_r30;
-        var_r30++;
-        if (var_r21 <= var_r24) {
-            var_r25 = NULL;
-        } else {
-            var_r30 = var_r30 + var_r24;
-            var_r25 = (s32*)((u8*)var_r27 + *var_r30);
-        }
-        return var_r25;
+}
+
+static void *_MessData_MesPtrGet(void *messbank, u32 id)
+{
+    u16 index;
+    s32 max_index;
+    s32 *data;
+    
+    index = id & 0xFFFF;
+    data = messbank;
+    max_index = *data;
+    data++;
+    if(max_index <= index) {
+        return NULL;
+    } else {
+        data =  data+index;
+        return (((u8 *)messbank)+(*data));
     }
-    return 0;
+}
+
+void *MessData_MesPtrGet(void *messdata, u32 id)
+{
+    void *bank = MessData_MesDataGet(messdata, id);
+    if(bank) {
+        return _MessData_MesPtrGet(bank, id);
+    }
+    return NULL;
 }
