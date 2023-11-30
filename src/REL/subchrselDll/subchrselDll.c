@@ -90,7 +90,7 @@ static void SubchrMain()
         if(GetBtns() & 0x1000) {
             for(i=0; i<4; i++) {
                 if(ext_character[i] != 0) {
-                    gPlayerConfig[i]. character = ext_character[i]+7;
+                    gPlayerConfig[i].character = ext_character[i]+7;
                 }
             }
             fn_80032A58(30);

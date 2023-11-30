@@ -120,6 +120,30 @@ game/hsfman.c:
 	.sdata2     start:0x801D4AB0 end:0x801D4B10
 	.sbss2      start:0x801D6BE0 end:0x801D6BE8
 
+game/hsfmotion.c:
+	.text       start:0x800250E8 end:0x80028B04
+	.data       start:0x8012D658 end:0x8012D838
+	.bss        start:0x8018D3D0 end:0x8018DBD0
+	.sbss       start:0x801D3C60 end:0x801D3C68
+	.sdata2     start:0x801D4B10 end:0x801D4B60
+
+game/hsfanim.c:
+	.text       start:0x80028B04 end:0x8002CB74
+	.data       start:0x8012D838 end:0x8012D8F8
+	.bss        start:0x8018DBD0 end:0x8018F790
+	.sdata2     start:0x801D4B60 end:0x801D4BE8
+
+game/hsfex.c:
+	.text       start:0x8002CB74 end:0x8002E74C
+	.data       start:0x8012D8F8 end:0x8012D918
+	.sdata2     start:0x801D4BE8 end:0x801D4C78
+
+game/perf.c:
+	.text       start:0x8002E74C end:0x8002EBD8
+	.bss        start:0x8018F790 end:0x8018FB38
+	.sdata      start:0x801D3488 end:0x801D3498
+	.sbss       start:0x801D3C68 end:0x801D3CC0
+
 game/objmain.c:
 	.text       start:0x8002EBD8 end:0x8002FF4C
 	.data       start:0x8012D918 end:0x8012DCC8
