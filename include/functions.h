@@ -16,7 +16,7 @@ void Hu3DCameraViewportSet(s16, f32, f32, f32, f32, f32, f32);
 void fn_80044920(s16);
 void fn_80045F74(s16, s32);
 s32 fn_800578E4(void);
-void fn_80032A58(int arg0);
+void HuAudFadeOut(int arg0);
 void fn_80035A0C(void);
 
 void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
@@ -102,6 +102,7 @@ void omSysPauseEnable(BOOL flag);
 
 
 void WipeCreate(char dir, char type, short duration);
+u8 WipeStatGet(void);
 
 void pfInit(void);
 void pfClsScr(void);
@@ -174,7 +175,7 @@ s16 HuPadStatGet(s16);
 
 void HuAudFXListnerKill(void);
 void HuAudDllSndGrpSet(u16 ovl);
-void fn_800338EC(s16 ovl);
+void HuAudVoiceInit(s16 ovl);
 
 void fn_80035A0C(void);
 
@@ -199,7 +200,6 @@ void fn_80083F84(void);
 void fn_800884F4(s32);
 void fn_800A4C88(void);
 void fn_800A6B10(void);
-u8 fn_80041600(void);
 void fn_8008853C(s32);
 void fn_800B42B4(s32);
 void fn_80082AAC(s32);

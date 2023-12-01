@@ -129,7 +129,7 @@ void fn_1_1984(void) {
     s32 i;
 
     if (lbl_1_bss_C == 0) {
-        if (fn_80041600() != 0) {
+        if (WipeStatGet() != 0) {
             HuWinDispOff(lbl_1_bss_E);
             return;
         }
@@ -160,7 +160,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
     s32 i;
     if (arg0 == 0x1E) {
         if (lbl_1_bss_C == 0) {
-            if (fn_80041600() != 0) {
+            if (WipeStatGet() != 0) {
                 HuWinDispOff(lbl_1_bss_E);
             } else {
                 HuWinDispOn(lbl_1_bss_E);

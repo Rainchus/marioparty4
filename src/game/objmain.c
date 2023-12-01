@@ -71,7 +71,7 @@ static void omWatchOverlayProc(void)
                 OSReport("objman>Init esp\n");
                 espInit();
                 OSReport("objman>Call objectsetup\n");
-                fn_800338EC(omnextovl);
+                HuAudVoiceInit(omnextovl);
                 HuAudDllSndGrpSet(omnextovl);
                 omcurovl = omnextovl;
                 omovlevtno = omnextovlevtno;
