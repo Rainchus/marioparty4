@@ -84,21 +84,21 @@ void fn_1_176C(void) {
 
 void fn_1_179C(void) {
     fn_1_BA0(0x2E0025);
-    gPlayerData[1].flags.unk0 = 2;
-    gPlayerData[3].flags.unk0 = 2;
+    GWPlayer[1].flags.unk0 = 2;
+    GWPlayer[3].flags.unk0 = 2;
 }
 
 void fn_1_17F4(void) {
     fn_1_BA0(0x2E0026);
-    gPlayerData[0].flags.unk0 = 2;
+    GWPlayer[0].flags.unk0 = 2;
 }
 
 void fn_1_1834(void) {
     fn_1_BA0(0x2E0027);
-    gPlayerData[0].flags.unk0 = 1;
-    gPlayerData[1].flags.unk0 = 1;
-    gPlayerData[2].flags.unk0 = 1;
-    gPlayerData[3].flags.unk0 = 2;
+    GWPlayer[0].flags.unk0 = 1;
+    GWPlayer[1].flags.unk0 = 1;
+    GWPlayer[2].flags.unk0 = 1;
+    GWPlayer[3].flags.unk0 = 2;
 }
 
 void fn_1_18BC(void) {
@@ -137,8 +137,8 @@ void fn_1_1984(void) {
         if (fn_8005B6A8() != 0) {
             return;
         }
-        for (i = 0; i < ARRAY_COUNT(gPlayerData); i++) {
-            contPortIndex = gPlayerData[i].controllerPort;
+        for (i = 0; i < ARRAY_COUNT(GWPlayer); i++) {
+            contPortIndex = GWPlayer[i].controllerPort;
             if (contPortIndex == -1) {
                 continue;
             }
@@ -166,8 +166,8 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                 HuWinDispOn(lbl_1_bss_E);
                 if (fn_8005B6A8() == 0) {
                     s32 contPortIndex;
-                    for (i = 0; i < ARRAY_COUNT(gPlayerData); i++) {
-                        contPortIndex = gPlayerData[i].controllerPort;
+                    for (i = 0; i < ARRAY_COUNT(GWPlayer); i++) {
+                        contPortIndex = GWPlayer[i].controllerPort;
                         if (contPortIndex == -1) {
                             continue;
                         }
@@ -189,8 +189,8 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
     }
     if (arg0 != 0x1D) {
         OSReport(lbl_1_data_258,
-            (gPlayerData[0].characterID >> 5) & 1, (gPlayerData[1].characterID >> 5) & 1,
-            (gPlayerData[2].characterID >> 5) & 1, (gPlayerData[3].characterID >> 5) & 1,
+            (GWPlayer[0].characterID >> 5) & 1, (GWPlayer[1].characterID >> 5) & 1,
+            (GWPlayer[2].characterID >> 5) & 1, (GWPlayer[3].characterID >> 5) & 1,
             lbl_1_bss_0->unk0, arg0, arg1, lbl_1_bss_0->unk4, lbl_1_bss_0->unk6);
         if (lbl_1_data_108[lbl_1_bss_0->unk0].unk0 != -1) {
             if (arg0 == 5) {

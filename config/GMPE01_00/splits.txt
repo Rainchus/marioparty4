@@ -159,6 +159,11 @@ game/fault.c:
 	.sdata      start:0x801D34A0 end:0x801D34B0
 	.sbss       start:0x801D3CF0 end:0x801D3D00
 
+game/gamework.c:
+	.text       start:0x800308B8 end:0x800315BC
+	.rodata     start:0x8011DD30 end:0x8011DD50
+	.bss        start:0x8018FC10 end:0x80190008
+
 game/ovllist.c:
 	.data       start:0x8012F790 end:0x80130100
 

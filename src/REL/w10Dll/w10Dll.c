@@ -64,7 +64,7 @@ const double _three = 3.0;
 
 // function is probably global. only inlined in rels?
 inline s32 get_current_board(void) {
-    return lbl_8018FCF8.unk08 & 0x1F;
+    return GWSystem.unk08 & 0x1F;
 }
 
 void fn_1_E0(void) {
@@ -78,7 +78,7 @@ void fn_1_E0(void) {
     s32 temp2;
 
     temp2 = get_current_board();
-    lbl_1_bss_0 = &lbl_8018FCF8.unk10;
+    lbl_1_bss_0 = &GWSystem.unk10;
     lbl_1_bss_0->unk0 = 0;
     lbl_1_bss_0->unk4 = 0;
     lbl_1_bss_0->unk6 = 0;
