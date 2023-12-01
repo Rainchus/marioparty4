@@ -93,7 +93,7 @@ static void SubchrMain()
                     GWPlayerCfg[i].character = ext_character[i]+7;
                 }
             }
-            fn_80032A58(30);
+            HuAudFadeOut(30);
             WipeCreate(2, 0, -1);
             HuPrcSleep(wipeData.duration+1.0f);
             fn_80035A0C();
@@ -145,7 +145,7 @@ static void SubchrMain()
                 cursor_pos = 0;
             }
             if(GetBtns() & 0x200) {
-                fn_80032A58(30);
+                HuAudFadeOut(30);
                 WipeCreate(2, 0, -1);
                 HuPrcSleep(wipeData.duration+1.0f);
                 fn_80035A0C();

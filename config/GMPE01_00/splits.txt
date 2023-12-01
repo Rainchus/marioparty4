@@ -164,13 +164,38 @@ game/gamework.c:
 	.rodata     start:0x8011DD30 end:0x8011DD50
 	.bss        start:0x8018FC10 end:0x80190008
 
-game/ovllist.c:
-	.data       start:0x8012F790 end:0x80130100
+game/objsysobj.c:
+	.text       start:0x800315BC end:0x80031DB4
+	.bss        start:0x80190008 end:0x801901E0
+	.sbss       start:0x801D3D00 end:0x801D3D08
+	.sdata2     start:0x801D4CA0 end:0x801D4CB0
+
+game/objdll.c:
+	.text       start:0x80031DB4 end:0x800325F4
+	.data       start:0x8012E4F0 end:0x8012E988
+	.bss        start:0x801901E0 end:0x80190230
+	.sbss       start:0x801D3D08 end:0x801D3D10
 
 game/frand.c:
 	.text       start:0x800325F4 end:0x80032830
 	.sbss       start:0x801D3D10 end:0x801D3D18
 	.sdata2     start:0x801D4CB0 end:0x801D4CC0
+
+game/audio.c:
+	.text       start:0x80032830 end:0x80033EEC
+	.data       start:0x8012E988 end:0x8012F130
+	.bss        start:0x80190230 end:0x80190450
+	.sdata      start:0x801D34B0 end:0x801D34B8
+	.sbss       start:0x801D3D18 end:0x801D3D48
+	.sdata2     start:0x801D4CC0 end:0x801D4CD0
+
+game/EnvelopeExec.c:
+	.text       start:0x80033EEC end:0x800353AC
+	.sbss       start:0x801D3D48 end:0x801D3D78
+	.sdata2     start:0x801D4CD0 end:0x801D4CE8
+
+game/ovllist.c:
+	.data       start:0x8012F790 end:0x80130100
 
 game/window.c:
 	.text       start:0x8004207C end:0x800483A0
