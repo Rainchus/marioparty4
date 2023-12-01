@@ -6,6 +6,8 @@
 #include "dolphin/os.h"
 #include "dolphin/gx/GXStruct.h"
 
+#define M_PI 3.141592653589793
+
 extern u16 HuPadBtnDown[4];
 extern u8 HuPadDStk[4];
 
