@@ -1,5 +1,6 @@
 #include "common.h"
 #include "REL/executor.h"
+#include <dolphin/mtx.h>
 
 // global data //
 typedef struct unkStruct18FC10 {
@@ -68,8 +69,8 @@ void fn_80024348(Vec3f*, Vec3f*, Vec3f*);
 void fn_800243AC(f32);
 void fn_800240EC(f32, f32, u8, u8, u8);
 void fn_8002EF20(s16, s16);
-unkStructBSS114* fn_8002F454(void*, s16, s16, s16, s16, void*);
-void fn_8002F7AC(s32*, unkStructBSS114*);
+omObjData* fn_8002F454(void*, s16, s16, s16, s16, void*);
+void fn_8002F7AC(s32*, omObjData*);
 void fn_8002F9C4(void*, s16, s16);
 unkStructBSS114* fn_8002FAC0(void*, s16);
 void fn_8002FB10(void*, f32, f32, f32);
@@ -144,13 +145,13 @@ extern s32 lbl_2_bss_D4;
 extern s32 lbl_2_bss_D8;
 extern unkStructBSS114* lbl_2_bss_E0;
 extern s32 lbl_2_bss_F4;
-extern void* lbl_2_bss_F8;
-extern void* lbl_2_bss_FC;
+extern omObjData* lbl_2_bss_F8;
+extern omObjData* lbl_2_bss_FC;
 extern unkStructBSS100 lbl_2_bss_100;
-extern unkStructBSS114* lbl_2_bss_108;
-extern unkStructBSS114* lbl_2_bss_10C;
-extern unkStructBSS114* lbl_2_bss_110;
-extern unkStructBSS114* lbl_2_bss_114;
+extern omObjData* lbl_2_bss_108;
+extern omObjData* lbl_2_bss_10C;
+extern omObjData* lbl_2_bss_110;
+extern omObjData* lbl_2_bss_114;
 extern unkStructBSS114** lbl_2_bss_118;
 extern s32 lbl_2_bss_11C;
 extern s16 lbl_2_bss_120;
