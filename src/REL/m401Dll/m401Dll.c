@@ -403,6 +403,119 @@ void fn_2_1CF0(unkStructBSS114* arg0) {
     fn_2_FC40(0x28, &sp20, &sp14, &sp8);
 }
 
+void fn_2_1DE8(unkStructBSS114* arg0) {
+    Vec3f sp2C;
+    Vec3f sp20;
+    Vec3f sp14;
+    Vec3f sp8;
+    unkStructBSS114 *temp2;
+    unkStructBSS114 *temp;
+
+    temp = fn_80021444(arg0->unk_40->unk_00[0], lbl_2_data_124[3]);
+    temp->unk_04 = 2;
+    sp2C.x = 0.0f;
+    sp2C.y = -150.0f + 0.003921569f * (300.0f * fn_800325F4());
+    sp2C.z = -23000.0f;
+    fn_2_91AC(lbl_2_bss_100.unk_00, &sp2C);
+    sp2C.x = 0.0f;
+    sp2C.y = -150.0f + 0.003921569f * (300.0f * fn_800325F4());
+    sp2C.z = -25000.0f;
+    fn_2_91AC(lbl_2_bss_100.unk_04, &sp2C);
+    sp2C.x = 5500.0f;
+    sp2C.y = 0.0f;
+    sp2C.z = -29800.0f;
+    sp20.x = 100.0f;
+    sp20.y = 100.0f;
+    sp20.z = 100.0f;
+    sp14.x = -1500.0f;
+    sp14.y = 0.0f;
+    sp14.z = -24900.0f;
+    temp2 = fn_2_FC40(0x14, &sp2C, &sp20, &sp14);
+    fn_2_E6BC(temp2->unk_4C, 6.0f, 1.5f, 0.2f, 0.8f, 3.5f);
+    sp8.x = -650.0f;
+    sp8.y = -360.0f;
+    sp8.z = -26300.0f;
+    lbl_2_bss_D0 = fn_2_10A88(&sp8, 3);
+    lbl_2_bss_90[0] = fn_80032EAC(0x50B, &sp8);
+}
+
+void fn_2_20B0(unkStructBSS114* arg0) {
+    Vec3f sp8;
+    unkStructBSS114* temp;
+
+    temp = fn_80021444(arg0->unk_40->unk_00[0], lbl_2_data_124[4]);
+    temp->unk_04 = 2;
+    fn_8002127C(arg0->unk_40->unk_08[1][0], 1);
+    sp8.x = 0.0f;
+    sp8.y = -370.0f;
+    sp8.z = -43000.0f;
+    lbl_2_bss_8 = fn_2_10A88(&sp8, 3);
+    lbl_2_bss_90[1] = fn_80032EAC(0x50B, &sp8);
+    sp8.x = 380.0f;
+    sp8.y = -440.0f;
+    sp8.z = -32000.0f;
+    lbl_2_bss_CC = fn_2_10A88(&sp8, 3);
+    lbl_2_bss_90[2] = fn_80032EAC(0x50B, &sp8);
+    fn_8002127C(arg0->unk_40->unk_00[2], 1);
+    fn_80021228(arg0->unk_40->unk_00[2], -0x3FFFFFFF);
+}
+
+void fn_2_21F8(unkStructBSS114* arg0) {
+    Vec3f sp2C;
+    Vec3f sp20;
+    Vec3f sp14;
+    Vec3f sp8;
+    s32 i;
+    s32 var_r30_2;
+    unkStructBSS114* temp;
+
+    temp = fn_80021444(arg0->unk_40->unk_00[0], *lbl_2_data_124);
+    temp->unk_04 = 2;
+    
+    fn_8002127C(arg0->unk_40->unk_00[0], 1);
+    fn_8002127C(arg0->unk_40->unk_00[1], 1);
+    fn_80021228(arg0->unk_40->unk_00[0], 0x40000001);
+    fn_80021228(arg0->unk_40->unk_00[1], 0x40000001);
+    fn_8002127C(arg0->unk_40->unk_00[3], 1);
+    lbl_2_bss_44.x = 0.0f;
+    lbl_2_bss_44.y = 100.0f;
+    lbl_2_bss_44.z = 0.0f;
+    lbl_2_bss_38.x = 0.0f;
+    lbl_2_bss_38.y = 1000.0f;
+    lbl_2_bss_38.z = -1500.0f;
+    lbl_2_bss_2C.x = 0.0f;
+    lbl_2_bss_2C.y = 1.0f;
+    lbl_2_bss_2C.z = 0.0f;
+    fn_80022144(1, &lbl_2_bss_44, &lbl_2_bss_2C, &lbl_2_bss_38);
+    Hu3DCameraPerspectiveSet(1, lbl_2_bss_12C, lbl_2_bss_128, lbl_2_bss_124, 1.2f);
+    lbl_2_bss_54.unk_00 = lbl_2_bss_44;
+    fn_2_D088(NULL);
+    sp20 = lbl_2_bss_44;
+    PSVECSubtract(&lbl_2_bss_38, &lbl_2_bss_44, &sp2C);
+    fn_800BBFB0(&sp2C, &sp2C);
+    fn_80032D3C(&sp20, &sp2C, lbl_2_bss_88, lbl_2_bss_84, 0x12C, 0x12C, 0x12C);
+    sp14.x = 300.0f;
+    sp14.y = -450.0f;
+    sp14.z = -3100.0f;
+    lbl_2_bss_D8 = fn_2_10A88(&sp14, 3);
+    lbl_2_bss_90[0] = fn_80032EAC(0x50B, &sp14);
+    sp14.x = -300.0f;
+    sp14.y = -340.0f;
+    sp14.z = -4720.0f;
+    lbl_2_bss_D4 = fn_2_10A88(&sp14, 3);
+    lbl_2_bss_90[1] = fn_80032EAC(0x50B, &sp14);
+    fn_8002127C(arg0->unk_40->unk_00[2], 1);
+    fn_80021228(arg0->unk_40->unk_00[2], -0x3FFFFFFF);
+
+    var_r30_2 = 4;
+    for (i = 0; i < var_r30_2; i++) {
+        sp8.x = -340.0f + (0.003921569f * (680.0f * fn_800325F4()));
+        sp8.y = -250.0f + (0.003921569f * (500.0f * fn_800325F4()));
+        sp8.z = ((-1550.0f - (f32) (i * 0x104)) - 40.0f) + (0.003921569f * (80.0f * fn_800325F4()));
+        fn_2_10A88(&sp8, 0);
+    }
+}
+
 void fn_2_33B4(unkStructBSS114* arg0) {
     fn_800210CC(arg0->unk_40->unk_00[3], 110.0f, 5.0 * fn_800EB910(M_PI * (f64) lbl_2_bss_10 / 180.0), -1500.0);
     lbl_2_bss_10 += 2.0f;
