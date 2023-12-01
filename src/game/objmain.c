@@ -78,7 +78,7 @@ static void omWatchOverlayProc(void)
                 omovlstat = omnextovlstat;
                 omnextovl = OVL_INVALID;
                 if(_CheckFlag(0x1000C)) {
-                    fn_8003F3AC();
+                    MGSeqPracticeStart();
                 }
                 omSysPauseEnable(TRUE);
                 omcurdll = omDLLStart(omcurovl, 0);
@@ -136,7 +136,7 @@ void omOvlReturnEx(s16 level, s16 arg2)
 void omOvlKill(s16 arg)
 {
     fn_8004D6F4(-1);
-    fn_80035A0C();
+    MGSeqKillAll();
     Hu3DAllKill();
     HuWinAllKill();
     HuSprClose();

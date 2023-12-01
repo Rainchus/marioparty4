@@ -259,6 +259,7 @@ config.libs = [
             Object(Matching, "game/frand.c"),
             Object(NonMatching, "game/audio.c"),
             Object(NonMatching, "game/EnvelopeExec.c"),
+            Object(NonMatching, "game/minigame_seq.c"),
             Object(Matching, "game/ovllist.c"),
             Object(NonMatching, "game/window.c"),
             Object(Matching, "game/messdata.c"),

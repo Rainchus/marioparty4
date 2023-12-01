@@ -194,6 +194,14 @@ game/EnvelopeExec.c:
 	.sbss       start:0x801D3D48 end:0x801D3D78
 	.sdata2     start:0x801D4CD0 end:0x801D4CE8
 
+game/minigame_seq.c:
+	.text       start:0x800353AC end:0x8003F8B8
+	.data       start:0x8012F130 end:0x8012F790
+	.bss        start:0x80190450 end:0x80190860
+	.sdata      start:0x801D34B8 end:0x801D35C0
+	.sbss       start:0x801D3D78 end:0x801D3D98
+	.sdata2     start:0x801D4CE8 end:0x801D4EA8
+
 game/ovllist.c:
 	.data       start:0x8012F790 end:0x80130100
 

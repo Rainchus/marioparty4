@@ -177,9 +177,9 @@ void HuAudFXListnerKill(void);
 void HuAudDllSndGrpSet(u16 ovl);
 void HuAudVoiceInit(s16 ovl);
 
-void fn_80035A0C(void);
+void MGSeqKillAll(void);
 
-void fn_8003F3AC(void);
+void MGSeqPracticeStart(void);
 void fn_8004D6F4(s16 arg);
 
 s32 _CheckFlag(u32 flag);
