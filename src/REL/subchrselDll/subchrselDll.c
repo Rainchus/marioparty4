@@ -61,7 +61,7 @@ static void SubchrMain()
     int ext_character[4];
     int i, cursor_pos;
     for(i=0; i<4; i++) {
-        character[i] = gPlayerConfig[i].character;
+        character[i] = GWPlayerCfg[i].character;
         ext_character[i] = 0;
         cur_direction[i] = 0;
     }
@@ -90,13 +90,13 @@ static void SubchrMain()
         if(GetBtns() & 0x1000) {
             for(i=0; i<4; i++) {
                 if(ext_character[i] != 0) {
-                    gPlayerConfig[i]. character = ext_character[i]+7;
+                    GWPlayerCfg[i].character = ext_character[i]+7;
                 }
             }
-            fn_80032A58(30);
+            HuAudFadeOut(30);
             WipeCreate(2, 0, -1);
             HuPrcSleep(wipeData.duration+1.0f);
-            fn_80035A0C();
+            MGSeqKillAll();
             omOvlGotoEx(OVL_M433, 1, 0, 0);
             do {
                 HuPrcVSleep();
@@ -145,10 +145,10 @@ static void SubchrMain()
                 cursor_pos = 0;
             }
             if(GetBtns() & 0x200) {
-                fn_80032A58(30);
+                HuAudFadeOut(30);
                 WipeCreate(2, 0, -1);
                 HuPrcSleep(wipeData.duration+1.0f);
-                fn_80035A0C();
+                MGSeqKillAll();
                 omOvlReturnEx(1, 1);
                 do {
                     HuPrcVSleep();

@@ -76,7 +76,7 @@ void fn_8000F038(s16, s32, s32);
 s16 fn_800204D0(s32); 
 void fn_80021228(s16, s32);
 void fn_80022420(s16, s32);
-void fn_80023828(s16, s32);
+void Hu3DModelLightInfoSet(s16, s32);
 extern s16 lbl_1_bss_6;
 extern temp2 lbl_1_bss_8;
 extern f32 lbl_1_rodata_48;
@@ -103,7 +103,7 @@ void fn_1_2100(void) {
     fn_80021228(temp_r3_3, 1);
     fn_80021228(temp_r3_3, 0x40000001);
     fn_80022420(temp_r3_3, 1);
-    fn_80023828(temp_r3_3, 1);
+    Hu3DModelLightInfoSet(temp_r3_3, 1);
     lbl_1_bss_6 = fn_8000E0F8(4);
     fn_80008364(0x740008, 0x10000000, 2);
     temp_r3 = fn_8000DD24();

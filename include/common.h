@@ -7,5 +7,6 @@
 #include "functions.h"
 #include "variables.h"
 #include "dolphin/mtx/GeoTypes.h"
+#include "dolphin/mtx.h"
 
 #endif

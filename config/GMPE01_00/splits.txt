@@ -120,6 +120,30 @@ game/hsfman.c:
 	.sdata2     start:0x801D4AB0 end:0x801D4B10
 	.sbss2      start:0x801D6BE0 end:0x801D6BE8
 
+game/hsfmotion.c:
+	.text       start:0x800250E8 end:0x80028B04
+	.data       start:0x8012D658 end:0x8012D838
+	.bss        start:0x8018D3D0 end:0x8018DBD0
+	.sbss       start:0x801D3C60 end:0x801D3C68
+	.sdata2     start:0x801D4B10 end:0x801D4B60
+
+game/hsfanim.c:
+	.text       start:0x80028B04 end:0x8002CB74
+	.data       start:0x8012D838 end:0x8012D8F8
+	.bss        start:0x8018DBD0 end:0x8018F790
+	.sdata2     start:0x801D4B60 end:0x801D4BE8
+
+game/hsfex.c:
+	.text       start:0x8002CB74 end:0x8002E74C
+	.data       start:0x8012D8F8 end:0x8012D918
+	.sdata2     start:0x801D4BE8 end:0x801D4C78
+
+game/perf.c:
+	.text       start:0x8002E74C end:0x8002EBD8
+	.bss        start:0x8018F790 end:0x8018FB38
+	.sdata      start:0x801D3488 end:0x801D3498
+	.sbss       start:0x801D3C68 end:0x801D3CC0
+
 game/objmain.c:
 	.text       start:0x8002EBD8 end:0x8002FF4C
 	.data       start:0x8012D918 end:0x8012DCC8
@@ -135,13 +159,81 @@ game/fault.c:
 	.sdata      start:0x801D34A0 end:0x801D34B0
 	.sbss       start:0x801D3CF0 end:0x801D3D00
 
-game/ovllist.c:
-	.data       start:0x8012F790 end:0x80130100
+game/gamework.c:
+	.text       start:0x800308B8 end:0x800315BC
+	.rodata     start:0x8011DD30 end:0x8011DD50
+	.bss        start:0x8018FC10 end:0x80190008
+
+game/objsysobj.c:
+	.text       start:0x800315BC end:0x80031DB4
+	.bss        start:0x80190008 end:0x801901E0
+	.sbss       start:0x801D3D00 end:0x801D3D08
+	.sdata2     start:0x801D4CA0 end:0x801D4CB0
+
+game/objdll.c:
+	.text       start:0x80031DB4 end:0x800325F4
+	.data       start:0x8012E4F0 end:0x8012E988
+	.bss        start:0x801901E0 end:0x80190230
+	.sbss       start:0x801D3D08 end:0x801D3D10
 
 game/frand.c:
 	.text       start:0x800325F4 end:0x80032830
 	.sbss       start:0x801D3D10 end:0x801D3D18
 	.sdata2     start:0x801D4CB0 end:0x801D4CC0
+
+game/audio.c:
+	.text       start:0x80032830 end:0x80033EEC
+	.data       start:0x8012E988 end:0x8012F130
+	.bss        start:0x80190230 end:0x80190450
+	.sdata      start:0x801D34B0 end:0x801D34B8
+	.sbss       start:0x801D3D18 end:0x801D3D48
+	.sdata2     start:0x801D4CC0 end:0x801D4CD0
+
+game/EnvelopeExec.c:
+	.text       start:0x80033EEC end:0x800353AC
+	.sbss       start:0x801D3D48 end:0x801D3D78
+	.sdata2     start:0x801D4CD0 end:0x801D4CE8
+
+game/minigame_seq.c:
+	.text       start:0x800353AC end:0x8003F8B8
+	.data       start:0x8012F130 end:0x8012F790
+	.bss        start:0x80190450 end:0x80190860
+	.sdata      start:0x801D34B8 end:0x801D35C0
+	.sbss       start:0x801D3D78 end:0x801D3D98
+	.sdata2     start:0x801D4CE8 end:0x801D4EA8
+
+game/ovllist.c:
+	.data       start:0x8012F790 end:0x80130100
+
+game/esprite.c:
+	.text       start:0x8003F8B8 end:0x8003FF68
+	.bss        start:0x80190860 end:0x80192060
+	.sbss       start:0x801D3D98 end:0x801D3DA0
+
+game/code_8003FF68.c:
+	.text       start:0x8003FF68 end:0x80040500
+	.data       start:0x80130100 end:0x80130120
+	.bss        start:0x80192060 end:0x80192360
+	.sdata      start:0x801D35C0 end:0x801D35E0
+	.sdata2     start:0x801D4EA8 end:0x801D4EC0
+
+game/ClusterExec.c:
+	.text       start:0x80040500 end:0x80040D60
+	.sdata2     start:0x801D4EC0 end:0x801D4ED0
+
+game/ShapeExec.c:
+	.text       start:0x80040D60 end:0x80041170
+	.sdata2     start:0x801D4ED0 end:0x801D4EE0
+
+game/wipe.c:
+	.text       start:0x80041170 end:0x8004207C
+	.data       start:0x80130120 end:0x80130138
+	.bss        start:0x80192360 end:0x801923C0
+	.sdata      start:0x801D35E0 end:0x801D35E8
+	.sdata2     start:0x801D4EE0 end:0x801D4F08
+
+dolphin/os/__start.c:
+	.init       start:0x80003100 end:0x80003354
 
 game/window.c:
 	.text       start:0x8004207C end:0x800483A0
@@ -164,6 +256,180 @@ game/armem.c:
 	.data       start:0x801306D8 end:0x801307C8
 	.bss        start:0x801967E0 end:0x80196EC0
 	.sbss       start:0x801D3E00 end:0x801D3E10
+
+game/code_800498F0.c:
+	.text       start:0x800498F0 end:0x80050C5C
+	.data       start:0x801307C8 end:0x801311E8
+	.bss        start:0x80196EC0 end:0x80197650
+	.sdata      start:0x801D35F0 end:0x801D3638
+	.sbss       start:0x801D3E10 end:0x801D3E18
+	.sdata2     start:0x801D4F98 end:0x801D50D0
+
+game/mapspace.c:
+	.text       start:0x80050C5C end:0x80054A00
+	.bss        start:0x80197650 end:0x80197AB8
+	.sbss       start:0x801D3E18 end:0x801D3E38
+	.sdata2     start:0x801D50D0 end:0x801D5100
+
+game/THPSimple.c:
+	.text       start:0x80054A00 end:0x80056B04
+	.data       start:0x801311E8 end:0x801312E8
+	.bss        start:0x80197AC0 end:0x801981A0
+	.sdata      start:0x801D3638 end:0x801D3640
+	.sbss       start:0x801D3E38 end:0x801D3E58
+	.sdata2     start:0x801D5100 end:0x801D5108
+
+game/THPDraw.c:
+	.text       start:0x80056B04 end:0x8005745C
+	.sdata2     start:0x801D5108 end:0x801D5120
+
+game/thpmain.c:
+	.text       start:0x8005745C end:0x80057E24
+	.rodata     start:0x8011DD50 end:0x8011DD60
+	.data       start:0x801312E8 end:0x80131350
+	.bss        start:0x801981A0 end:0x801981E0
+	.sbss       start:0x801D3E58 end:0x801D3E80
+	.sdata2     start:0x801D5120 end:0x801D5138
+
+game/objsub.c:
+	.text       start:0x80057E24 end:0x80058010
+	.data       start:0x80131350 end:0x80132150
+	.bss        start:0x801981E0 end:0x80198410
+
+game/flag.c:
+	.text       start:0x80058010 end:0x80058228
+	.bss        start:0x80198410 end:0x80198420
+
+dolphin/PPCArch.c:
+	.text       start:0x800B42F4 end:0x800B439C
+
+dolphin/os/OS.c:
+	.text       start:0x800B439C end:0x800B4CF8
+	.data       start:0x8013B560 end:0x8013B720
+	.bss        start:0x801A5300 end:0x801A5350
+	.sbss       start:0x801D42B0 end:0x801D42E0
+
+dolphin/os/OSAlarm.c:
+	.text       start:0x800B4CF8 end:0x800B53A4
+	.sbss       start:0x801D42E0 end:0x801D42E8
+
+dolphin/os/OSAlloc.c:
+	.text       start:0x800B53A4 end:0x800B5D9C
+	.data       start:0x8013B720 end:0x8013BAB8
+	.sdata      start:0x801D38B8 end:0x801D38C0
+	.sbss       start:0x801D42E8 end:0x801D42F8
+
+dolphin/os/OSArena.c:
+	.text       start:0x800B5D9C end:0x800B5DBC
+	.sdata      start:0x801D38C0 end:0x801D38C8
+	.sbss       start:0x801D42F8 end:0x801D4300
+
+dolphin/os/OSAudioSystem.c:
+	.text       start:0x800B5DBC end:0x800B6050
+	.data       start:0x8013BAB8 end:0x8013BB38
+
+dolphin/os/OSCache.c:
+	.text       start:0x800B6050 end:0x800B66E8
+	.data       start:0x8013BB38 end:0x8013BD68
+
+dolphin/os/OSContext.c:
+	.text       start:0x800B66E8 end:0x800B6F48
+	.data       start:0x8013BD68 end:0x8013BF40
+
+dolphin/os/OSError.c:
+	.text       start:0x800B6F48 end:0x800B71E4
+	.data       start:0x8013BF40 end:0x8013C260
+	.bss        start:0x801A5350 end:0x801A5390
+	.sdata      start:0x801D38C8 end:0x801D38D0
+
+dolphin/os/OSFont.c:
+	.text       start:0x800B71E4 end:0x800B723C
+	.sdata      start:0x801D38D0 end:0x801D38D8
+
+dolphin/os/OSInterrupt.c:
+	.text       start:0x800B723C end:0x800B7AA8
+	.data       start:0x8013C260 end:0x8013C290
+	.sbss       start:0x801D4300 end:0x801D4318
+
+dolphin/os/OSLink.c:
+	.text       start:0x800B7AA8 end:0x800B822C
+	.data       start:0x8013C290 end:0x8013C2E0
+
+dolphin/os/OSMessage.c:
+	.text       start:0x800B822C end:0x800B828C
+
+dolphin/os/OSMemory.c:
+	.text       start:0x800B828C end:0x800B8584
+	.data       start:0x8013C2E0 end:0x8013C2F0
+
+dolphin/os/OSMutex.c:
+	.text       start:0x800B8584 end:0x800B85F4
+
+dolphin/os/OSReboot.c:
+	.text       start:0x800B85F4 end:0x800B8800
+	.bss        start:0x801A53A0 end:0x801A53C0
+	.sbss       start:0x801D4318 end:0x801D4328
+
+dolphin/os/OSReset.c:
+	.text       start:0x800B8800 end:0x800B8BE4
+	.sbss       start:0x801D4328 end:0x801D4330
+
+dolphin/os/OSResetSW.c:
+	.text       start:0x800B8BE4 end:0x800B8F70
+	.sbss       start:0x801D4330 end:0x801D4350
+
+dolphin/os/OSRtc.c:
+	.text       start:0x800B8F70 end:0x800B999C
+	.bss        start:0x801A53C0 end:0x801A5418
+
+dolphin/os/OSStopwatch.c:
+	.text       start:0x800B999C end:0x800B9D0C
+	.data       start:0x8013C2F0 end:0x8013C368
+
+dolphin/os/OSSync.c:
+	.text       start:0x800B9D0C end:0x800B9D90
+
+dolphin/os/OSThread.c:
+	.text       start:0x800B9D90 end:0x800BAE5C
+	.bss        start:0x801A5418 end:0x801A5E00
+	.sbss       start:0x801D4350 end:0x801D4360
+
+dolphin/os/OSTime.c:
+	.text       start:0x800BAE5C end:0x800BB280
+	.data       start:0x8013C368 end:0x8013C3C8
+
+dolphin/os/__ppc_eabi_init.c:
+	.init       start:0x80003354 end:0x800033A8
+	.text       start:0x800BB280 end:0x800BB314
+
+dolphin/db.c:
+	.text       start:0x800BB314 end:0x800BB400
+	.data       start:0x8013C3C8 end:0x8013C3E0
+	.sbss       start:0x801D4360 end:0x801D4368
+
+dolphin/mtx/mtx.c:
+	.text       start:0x800BB400 end:0x800BBCB0
+	.sdata      start:0x801D38D8 end:0x801D38E0
+	.sdata2     start:0x801D6350 end:0x801D6368
+
+dolphin/mtx/mtxvec.c:
+	.text       start:0x800BBCB0 end:0x800BBDE4
+
+dolphin/mtx/mtx44.c:
+	.text       start:0x800BBDE4 end:0x800BBF4C
+	.sdata2     start:0x801D6368 end:0x801D6380
+
+dolphin/mtx/vec.c:
+	.text       start:0x800BBF4C end:0x800BC2C4
+	.sdata2     start:0x801D6380 end:0x801D6390
+
+dolphin/mtx/quat.c:
+	.text       start:0x800BC2C4 end:0x800BC710
+	.rodata     start:0x8011E430 end:0x8011E440
+	.sdata2     start:0x801D6390 end:0x801D63B8
+
+dolphin/mtx/psmtx.c:
+	.text       start:0x800BC710 end:0x800BC9E8
 
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
