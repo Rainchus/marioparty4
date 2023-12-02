@@ -205,6 +205,33 @@ game/minigame_seq.c:
 game/ovllist.c:
 	.data       start:0x8012F790 end:0x80130100
 
+game/esprite.c:
+	.text       start:0x8003F8B8 end:0x8003FF68
+	.bss        start:0x80190860 end:0x80192060
+	.sbss       start:0x801D3D98 end:0x801D3DA0
+
+game/code_8003FF68.c:
+	.text       start:0x8003FF68 end:0x80040500
+	.data       start:0x80130100 end:0x80130120
+	.bss        start:0x80192060 end:0x80192360
+	.sdata      start:0x801D35C0 end:0x801D35E0
+	.sdata2     start:0x801D4EA8 end:0x801D4EC0
+
+game/ClusterExec.c:
+	.text       start:0x80040500 end:0x80040D60
+	.sdata2     start:0x801D4EC0 end:0x801D4ED0
+
+game/ShapeExec.c:
+	.text       start:0x80040D60 end:0x80041170
+	.sdata2     start:0x801D4ED0 end:0x801D4EE0
+
+game/wipe.c:
+	.text       start:0x80041170 end:0x8004207C
+	.data       start:0x80130120 end:0x80130138
+	.bss        start:0x80192360 end:0x801923C0
+	.sdata      start:0x801D35E0 end:0x801D35E8
+	.sdata2     start:0x801D4EE0 end:0x801D4F08
+
 game/window.c:
 	.text       start:0x8004207C end:0x800483A0
 	.data       start:0x80130140 end:0x80130688
@@ -226,6 +253,20 @@ game/armem.c:
 	.data       start:0x801306D8 end:0x801307C8
 	.bss        start:0x801967E0 end:0x80196EC0
 	.sbss       start:0x801D3E00 end:0x801D3E10
+
+game/code_800498F0.c:
+	.text       start:0x800498F0 end:0x80050C5C
+	.data       start:0x801307C8 end:0x801312E8
+	.bss        start:0x80196EC0 end:0x80197650
+	.sdata      start:0x801D35F0 end:0x801D3638
+	.sbss       start:0x801D3E10 end:0x801D3E18
+	.sdata2     start:0x801D4F98 end:0x801D50D0
+
+game/mapspace.c:
+	.text       start:0x80050C5C end:0x80054A00
+	.bss        start:0x80197650 end:0x80197AC0
+	.sbss       start:0x801D3E18 end:0x801D3E38
+	.sdata2     start:0x801D50D0 end:0x801D5100
 
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
