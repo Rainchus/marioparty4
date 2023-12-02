@@ -547,3 +547,21 @@ extract:
 - symbol: Ascii8x8_1bpp
   binary: Ascii8x8_1bpp.bin
   header: Ascii8x8_1bpp.inc
+- symbol: coveropen_en
+  binary: coveropen_en.bin
+  header: coveropen_en.inc
+- symbol: fatalerror_en
+  binary: fatalerror_en.bin
+  header: fatalerror_en.inc
+- symbol: loading_en
+  binary: loading_en.bin
+  header: loading_en.inc
+- symbol: nodisc_en
+  binary: nodisc_en.bin
+  header: nodisc_en.inc
+- symbol: retryerror_en
+  binary: retryerror_en.bin
+  header: retryerror_en.inc
+- symbol: wrongdisc_en
+  binary: wrongdisc_en.bin
+  header: wrongdisc_en.inc
