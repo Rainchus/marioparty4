@@ -342,7 +342,7 @@ config.libs = [
         "objects": [
             Object(Matching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
             Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
-            Object(Matching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp"),
+            Object(NonMatching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp"),
         ],
     },
     {
