@@ -191,6 +191,7 @@ cflags_game = [
     "-fp_contract off",
 ]
 
+
 config.linker_version = "GC/2.6"
 config.rel_strip_partial = False
 config.rel_empty_file = "REL/empty.c"
@@ -279,6 +280,58 @@ config.libs = [
             Object(NonMatching, "game/flag.c"),
         ],
     },
+    DolphinLib(
+        "base",
+        [
+            Object(NonMatching, "dolphin/PPCArch.c"),
+        ],
+    ),
+    DolphinLib(
+        "os",
+        [
+            Object(NonMatching, "dolphin/os/OS.c"),
+            Object(NonMatching, "dolphin/os/OSAlarm.c"),
+            Object(NonMatching, "dolphin/os/OSAlloc.c"),
+            Object(NonMatching, "dolphin/os/OSArena.c"),
+            Object(NonMatching, "dolphin/os/OSAudioSystem.c"),
+            Object(NonMatching, "dolphin/os/OSCache.c"),
+            Object(NonMatching, "dolphin/os/OSContext.c"),
+            Object(NonMatching, "dolphin/os/OSError.c"),
+            Object(NonMatching, "dolphin/os/OSFont.c"),
+            Object(NonMatching, "dolphin/os/OSInterrupt.c"),
+            Object(NonMatching, "dolphin/os/OSLink.c"),
+            Object(NonMatching, "dolphin/os/OSMessage.c"),
+            Object(NonMatching, "dolphin/os/OSMemory.c"),
+            Object(NonMatching, "dolphin/os/OSMutex.c"),
+            Object(NonMatching, "dolphin/os/OSReboot.c"),
+            Object(NonMatching, "dolphin/os/OSReset.c"),
+            Object(NonMatching, "dolphin/os/OSResetSW.c"),
+            Object(NonMatching, "dolphin/os/OSRtc.c"),
+            Object(NonMatching, "dolphin/os/OSStopwatch.c"),
+            Object(NonMatching, "dolphin/os/OSSync.c"),
+            Object(NonMatching, "dolphin/os/OSThread.c"),
+            Object(NonMatching, "dolphin/os/OSTime.c"),
+            Object(NonMatching, "dolphin/os/__start.c"),
+            Object(NonMatching, "dolphin/os/__ppc_eabi_init.c"),
+        ],
+    ),
+    DolphinLib(
+        "db",
+        [
+            Object(NonMatching, "dolphin/db.c"),
+        ],
+    ),
+    DolphinLib(
+        "mtx",
+        [
+            Object(NonMatching, "dolphin/mtx/mtx.c"),
+            Object(NonMatching, "dolphin/mtx/mtxvec.c"),
+            Object(NonMatching, "dolphin/mtx/mtx44.c"),
+            Object(NonMatching, "dolphin/mtx/vec.c"),
+            Object(NonMatching, "dolphin/mtx/quat.c"),
+            Object(NonMatching, "dolphin/mtx/psmtx.c"),
+        ],
+    ),
     {
         "lib": "Runtime.PPCEABI.H",
         "mw_version": config.linker_version,

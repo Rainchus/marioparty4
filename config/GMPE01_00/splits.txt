@@ -232,6 +232,9 @@ game/wipe.c:
 	.sdata      start:0x801D35E0 end:0x801D35E8
 	.sdata2     start:0x801D4EE0 end:0x801D4F08
 
+dolphin/os/__start.c:
+	.init       start:0x80003100 end:0x80003354
+
 game/window.c:
 	.text       start:0x8004207C end:0x800483A0
 	.data       start:0x80130140 end:0x80130688
@@ -296,6 +299,137 @@ game/objsub.c:
 game/flag.c:
 	.text       start:0x80058010 end:0x80058228
 	.bss        start:0x80198410 end:0x80198420
+
+dolphin/PPCArch.c:
+	.text       start:0x800B42F4 end:0x800B439C
+
+dolphin/os/OS.c:
+	.text       start:0x800B439C end:0x800B4CF8
+	.data       start:0x8013B560 end:0x8013B720
+	.bss        start:0x801A5300 end:0x801A5350
+	.sbss       start:0x801D42B0 end:0x801D42E0
+
+dolphin/os/OSAlarm.c:
+	.text       start:0x800B4CF8 end:0x800B53A4
+	.sbss       start:0x801D42E0 end:0x801D42E8
+
+dolphin/os/OSAlloc.c:
+	.text       start:0x800B53A4 end:0x800B5D9C
+	.data       start:0x8013B720 end:0x8013BAB8
+	.sdata      start:0x801D38B8 end:0x801D38C0
+	.sbss       start:0x801D42E8 end:0x801D42F8
+
+dolphin/os/OSArena.c:
+	.text       start:0x800B5D9C end:0x800B5DBC
+	.sdata      start:0x801D38C0 end:0x801D38C8
+	.sbss       start:0x801D42F8 end:0x801D4300
+
+dolphin/os/OSAudioSystem.c:
+	.text       start:0x800B5DBC end:0x800B6050
+	.data       start:0x8013BAB8 end:0x8013BB38
+
+dolphin/os/OSCache.c:
+	.text       start:0x800B6050 end:0x800B66E8
+	.data       start:0x8013BB38 end:0x8013BD68
+
+dolphin/os/OSContext.c:
+	.text       start:0x800B66E8 end:0x800B6F48
+	.data       start:0x8013BD68 end:0x8013BF40
+
+dolphin/os/OSError.c:
+	.text       start:0x800B6F48 end:0x800B71E4
+	.data       start:0x8013BF40 end:0x8013C260
+	.bss        start:0x801A5350 end:0x801A5390
+	.sdata      start:0x801D38C8 end:0x801D38D0
+
+dolphin/os/OSFont.c:
+	.text       start:0x800B71E4 end:0x800B723C
+	.sdata      start:0x801D38D0 end:0x801D38D8
+
+dolphin/os/OSInterrupt.c:
+	.text       start:0x800B723C end:0x800B7AA8
+	.data       start:0x8013C260 end:0x8013C290
+	.sbss       start:0x801D4300 end:0x801D4318
+
+dolphin/os/OSLink.c:
+	.text       start:0x800B7AA8 end:0x800B822C
+	.data       start:0x8013C290 end:0x8013C2E0
+
+dolphin/os/OSMessage.c:
+	.text       start:0x800B822C end:0x800B828C
+
+dolphin/os/OSMemory.c:
+	.text       start:0x800B828C end:0x800B8584
+	.data       start:0x8013C2E0 end:0x8013C2F0
+
+dolphin/os/OSMutex.c:
+	.text       start:0x800B8584 end:0x800B85F4
+
+dolphin/os/OSReboot.c:
+	.text       start:0x800B85F4 end:0x800B8800
+	.bss        start:0x801A53A0 end:0x801A53C0
+	.sbss       start:0x801D4318 end:0x801D4328
+
+dolphin/os/OSReset.c:
+	.text       start:0x800B8800 end:0x800B8BE4
+	.sbss       start:0x801D4328 end:0x801D4330
+
+dolphin/os/OSResetSW.c:
+	.text       start:0x800B8BE4 end:0x800B8F70
+	.sbss       start:0x801D4330 end:0x801D4350
+
+dolphin/os/OSRtc.c:
+	.text       start:0x800B8F70 end:0x800B999C
+	.bss        start:0x801A53C0 end:0x801A5418
+
+dolphin/os/OSStopwatch.c:
+	.text       start:0x800B999C end:0x800B9D0C
+	.data       start:0x8013C2F0 end:0x8013C368
+
+dolphin/os/OSSync.c:
+	.text       start:0x800B9D0C end:0x800B9D90
+
+dolphin/os/OSThread.c:
+	.text       start:0x800B9D90 end:0x800BAE5C
+	.bss        start:0x801A5418 end:0x801A5E00
+	.sbss       start:0x801D4350 end:0x801D4360
+
+dolphin/os/OSTime.c:
+	.text       start:0x800BAE5C end:0x800BB280
+	.data       start:0x8013C368 end:0x8013C3C8
+
+dolphin/os/__ppc_eabi_init.c:
+	.init       start:0x80003354 end:0x800033A8
+	.text       start:0x800BB280 end:0x800BB314
+
+dolphin/db.c:
+	.text       start:0x800BB314 end:0x800BB400
+	.data       start:0x8013C3C8 end:0x8013C3E0
+	.sbss       start:0x801D4360 end:0x801D4368
+
+dolphin/mtx/mtx.c:
+	.text       start:0x800BB400 end:0x800BBCB0
+	.sdata      start:0x801D38D8 end:0x801D38E0
+	.sdata2     start:0x801D6350 end:0x801D6368
+
+dolphin/mtx/mtxvec.c:
+	.text       start:0x800BBCB0 end:0x800BBDE4
+
+dolphin/mtx/mtx44.c:
+	.text       start:0x800BBDE4 end:0x800BBF4C
+	.sdata2     start:0x801D6368 end:0x801D6380
+
+dolphin/mtx/vec.c:
+	.text       start:0x800BBF4C end:0x800BC2C4
+	.sdata2     start:0x801D6380 end:0x801D6390
+
+dolphin/mtx/quat.c:
+	.text       start:0x800BC2C4 end:0x800BC710
+	.rodata     start:0x8011E430 end:0x8011E440
+	.sdata2     start:0x801D6390 end:0x801D63B8
+
+dolphin/mtx/psmtx.c:
+	.text       start:0x800BC710 end:0x800BC9E8
 
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
