@@ -7,8 +7,6 @@
 extern "C" {
 #endif
 
-#define OS_THREAD_SPECIFIC_MAX 2
-
 typedef struct OSThread OSThread;
 typedef struct OSThreadQueue OSThreadQueue;
 typedef struct OSThreadLink OSThreadLink;
@@ -58,8 +56,6 @@ struct OSThread {
   OSThreadLink linkActive;
   u8* stackBase;
   u32* stackEnd;
-  s32 error;
-  void* specific[OS_THREAD_SPECIFIC_MAX];
 };
 
 enum OS_THREAD_STATE {
@@ -97,9 +93,6 @@ BOOL OSSetThreadPriority(OSThread* thread, OSPriority priority);
 OSPriority OSGetThreadPriority(OSThread* thread);
 void OSSleepThread(OSThreadQueue* queue);
 void OSWakeupThread(OSThreadQueue* queue);
-
-void* OSGetThreadSpecific(s32 index);
-void OSSetThreadSpecific(s32 index, void* ptr);
 
 OSThread* OSSetIdleFunction(OSIdleFunction idleFunction, void* param, void* stack, u32 stackSize);
 OSThread* OSGetIdleFunction(void);

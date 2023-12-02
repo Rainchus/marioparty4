@@ -295,10 +295,26 @@ game/objsub.c:
 	.text       start:0x80057E24 end:0x80058010
 	.data       start:0x80131350 end:0x80132150
 	.bss        start:0x801981E0 end:0x80198410
+	.sbss       start:0x801D3E80 end:0x801D3EA8
 
 game/flag.c:
 	.text       start:0x80058010 end:0x80058228
 	.bss        start:0x80198410 end:0x80198420
+
+game/saveload.c:
+	.text       start:0x80058228 end:0x8005A6F8
+	.data       start:0x80132150 end:0x801321F8
+	.bss        start:0x80198420 end:0x8019C440
+	.sdata      start:0x801D3640 end:0x801D3658
+	.sbss       start:0x801D3EA8 end:0x801D3EB8
+	.sdata2     start:0x801D5138 end:0x801D5148
+
+game/sreset.c:
+	.text       start:0x8005A6F8 end:0x8005B150
+	.data       start:0x801321F8 end:0x80139798
+	.bss        start:0x8019C440 end:0x8019D7E0
+	.sdata      start:0x801D3658 end:0x801D3670
+	.sbss       start:0x801D3EB8 end:0x801D3ED0
 
 dolphin/PPCArch.c:
 	.text       start:0x800B42F4 end:0x800B439C
@@ -441,3 +457,12 @@ Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.ctors      start:0x8011DCC0 end:0x8011DCC4
 	.dtors      start:0x8011DCE0 end:0x8011DCE8
 	.sdata      start:0x801D39B0 end:0x801D39B8
+
+Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp:
+	extab       start:0x80005670 end:0x800056E4
+	extabindex  start:0x80005748 end:0x8000579C
+	.text       start:0x800E2B24 end:0x800E3F5C
+	.rodata     start:0x8011E4D0 end:0x8011E5A0
+	.data       start:0x8013E218 end:0x8013E300
+	.bss        start:0x801A72D0 end:0x801A72E0
+	.sdata      start:0x801D39B8 end:0x801D39C8
