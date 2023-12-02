@@ -272,6 +272,11 @@ config.libs = [
             Object(NonMatching, "game/armem.c"),
             Object(NonMatching, "game/code_800498F0.c"),
             Object(NonMatching, "game/mapspace.c"),
+            Object(NonMatching, "game/THPSimple.c"),
+            Object(NonMatching, "game/THPDraw.c"),
+            Object(NonMatching, "game/thpmain.c"),
+            Object(NonMatching, "game/objsub.c"),
+            Object(NonMatching, "game/flag.c"),
         ],
     },
     {
