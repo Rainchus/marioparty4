@@ -278,6 +278,8 @@ config.libs = [
             Object(NonMatching, "game/thpmain.c"),
             Object(NonMatching, "game/objsub.c"),
             Object(NonMatching, "game/flag.c"),
+            Object(NonMatching, "game/saveload.c"),
+            Object(NonMatching, "game/sreset.c"),
         ],
     },
     DolphinLib(
@@ -340,6 +342,7 @@ config.libs = [
         "objects": [
             Object(Matching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
             Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
+            Object(NonMatching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp"),
         ],
     },
     {
