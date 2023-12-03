@@ -170,6 +170,7 @@ typedef struct anim_time_data {
 
 typedef struct anim_bank_data {
     s16 timeNum;
+    s16 unk;
     AnimFrameData *frame;
 } AnimBankData;
 
@@ -217,9 +218,9 @@ typedef struct anim_data {
 } AnimData;
 
 typedef struct sprite_data {
-    char r;
-    char g;
-    char b;
+    u8 r;
+    u8 g;
+    u8 b;
     char draw_no;
     short frame;
     short bank;
@@ -229,11 +230,11 @@ typedef struct sprite_data {
     float time;
     float x;
     float y;
-    float rot;
+    float z_rot;
     float scale_x;
     float scale_y;
     float speed;
-    float alpha;
+    float a;
     GXTexWrapMode wrap_s;
     GXTexWrapMode wrap_t;
     short tex_scale_x;
@@ -247,7 +248,7 @@ typedef struct sprite_data {
     AnimFrameData *frame_data;
     short work[4];
     AnimData *bg;
-    short bg_bank;
+    unsigned short bg_bank;
     short scissor_x;
     short scissor_y;
     short scissor_w;
@@ -255,23 +256,23 @@ typedef struct sprite_data {
 } SpriteData;
 
 typedef struct sprite_group_data {
-    short num_members;
+    short capacity;
     float x;
     float y;
-    float rot;
+    float z_rot;
     float scale_x;
     float scale_y;
     float center_x;
     float center_y;
-    s16 *members;
+    short *members;
     Mtx mtx;
 } SpriteGroupData;
 
 typedef struct sprite_order_data {
-    u16 group;
-    u16 sprite;
-    u16 prio;
-    u16 next;
+    unsigned short group;
+    unsigned short sprite;
+    unsigned short prio;
+    unsigned short next;
 } SpriteOrderData;
 
 #endif
