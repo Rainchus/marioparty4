@@ -159,7 +159,7 @@ typedef struct om_obj_data {
     void *data;
 } omObjData;
 
-typedef struct anim_time_data {
+typedef struct anim_frame_data {
     s16 pat;
     s16 time;
     s16 shiftX;
