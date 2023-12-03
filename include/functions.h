@@ -52,7 +52,7 @@ void HuPrcChildLink(Process *parent, Process *child);
 void HuPrcChildUnlink(Process *process);
 Process *HuPrcChildCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size, Process *parent);
 void HuPrcChildWatch();
-Process *HuPrcCurrentGet();
+Process *HuPrcCurrentGet(void);
 int HuPrcKill(Process *process);
 void HuPrcChildKill(Process *process);
 void HuPrcSleep(s32 time);

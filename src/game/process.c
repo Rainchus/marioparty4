@@ -45,7 +45,6 @@ static void LinkProcess(Process** root, Process* process) {
         }
     }
 }
-
 static void UnlinkProcess(Process **root, Process *process) {
     if (process->next) {
         process->next->prev = process->prev;
