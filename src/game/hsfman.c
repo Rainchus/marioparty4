@@ -1,9 +1,36 @@
 #include "common.h"
 
 typedef struct ThreeDDataStruct {
-    char unk_00[0xC4];
-    s32  unk_C4;
-    char unk_C8[0x5C];
+    f32  unk_00;
+    f32  unk_04;
+    f32  unk_08;
+    s16  unk_0C;
+    s16  unk_0E;
+    char unk_10[0x12];
+    u16  unk_22;
+    char unk_24[0x2C];
+    s32  unk_50;
+    s32  unk_54;
+    char unk_58[0xC];
+    f32  unk_64;
+    char unk_68[0xC];
+    f32  unk_74;
+    char unk_78[0x1C];
+    f32  unk_94;
+    char unk_98[0x2C];
+    void*unk_C4;
+    char unk_C8[0x4];
+    f32  unk_CC;
+    f32  unk_D0;
+    f32  unk_D4;
+    f32  unk_D8;
+    f32  unk_DC;
+    f32  unk_E0;
+    f32  unk_E4;
+    f32  unk_E8;
+    f32  unk_EC;
+    f32  unk_F0[4];
+    char unk_100[0x24];
 } ThreeDDataStruct;
 typedef struct ThreeDCameraStruct {
     f32  unk_00;
@@ -64,7 +91,7 @@ void Hu3DInit(void) {
 
     data = Hu3DData;
     for (i = 0; i < 0x200; i++, data++) {
-        data->unk_C4 = 0;
+        data->unk_C4 = NULL;
     }
     camera = Hu3DCamera;
     for (i = 0; i < 0x10; i++, camera++) {
