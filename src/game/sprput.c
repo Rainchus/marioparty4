@@ -4,18 +4,19 @@
 #include "dolphin/vi.h"
 
 static void *bmpNoCC[8];
-static s16 HuSprLayerDrawNo[8];
+static short HuSprLayerDrawNo[8];
 
-static s16 bmpCCIdx;
+static short bmpCCIdx;
 
-void HuSprTexLoad(AnimData *anim, short bmp, short slot, GXTexWrapMode wrap_s, GXTexWrapMode wrap_t, GXTexFilter filter);
 
 void mtxTransCat(Mtx matrix, float x, float y, float z);
+
+static void HuSprLayerHook(short layer);
 
 void HuSprDispInit(void)
 {
     Mtx44 proj;
-    s16 i;
+    short i;
     for(i=0; i<8; i++) {
         bmpNoCC[i] = NULL;
     }
@@ -40,12 +41,12 @@ void HuSprDispInit(void)
 
 void HuSprDisp(SpriteData *sprite)
 {
-    s16 i;
+    short i;
     AnimData *anim = sprite->data;
     AnimPatData *pat = sprite->pat_data;
     Vec axis = {0, 0, 1};
     Mtx modelview, rot;
-    s16 color_sum;
+    short color_sum;
     void (*func)(SpriteData *);
     GXSetScissor(sprite->scissor_x, sprite->scissor_y, sprite->scissor_w, sprite->scissor_h);
     if(sprite->attr & 0x10) {
@@ -180,5 +181,72 @@ void HuSprDisp(SpriteData *sprite)
 
 void HuSprTexLoad(AnimData *anim, short bmp, short slot, GXTexWrapMode wrap_s, GXTexWrapMode wrap_t, GXTexFilter filter)
 {
-    
+    GXTexObj tex_obj;
+    GXTlutObj tlut_obj;
+    AnimBmpData *bmp_ptr = &anim->bmp[bmp];
+    short sizeX = bmp_ptr->sizeX;
+    short sizeY = bmp_ptr->sizeY;
+    switch(bmp_ptr->dataFmt & 0xF) {
+        case 0:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_RGBA8, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        case 1:
+        case 2:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_RGB5A3, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        case 3:
+            GXInitTlutObj(&tlut_obj, bmp_ptr->palData, GX_TL_RGB5A3, bmp_ptr->palNum);
+            GXLoadTlut(&tlut_obj, slot);
+            GXInitTexObjCI(&tex_obj,bmp_ptr->data, sizeX, sizeY, GX_TF_C8, wrap_s, wrap_t, GX_FALSE, slot);
+            break;
+            
+        case 4:
+            GXInitTlutObj(&tlut_obj, bmp_ptr->palData, GX_TL_RGB5A3, bmp_ptr->palNum);
+            GXLoadTlut(&tlut_obj, slot);
+            GXInitTexObjCI(&tex_obj,bmp_ptr->data, sizeX, sizeY, GX_TF_C4, wrap_s, wrap_t, GX_FALSE, slot);
+            break;
+            
+        case 5:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_IA8, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        case 6:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_IA4, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        case 7:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_I8, wrap_s, wrap_t, GX_FALSE);
+            break;
+        
+        case 8:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_I4, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        case 9:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_CTF_A8, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        case 10:
+            GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_CMPR, wrap_s, wrap_t, GX_FALSE);
+            break;
+            
+        default:
+            break;
+    }
+    GXInitTexObjLOD(&tex_obj, filter, filter, 0, 0, 0, GX_FALSE, GX_FALSE, GX_ANISO_1);
+    GXLoadTexObj(&tex_obj, slot);
+}
+
+void HuSprExecLayerSet(short draw_no, short layer)
+{
+    HuSprLayerDrawNo[layer] = draw_no;
+    Hu3DLayerHookSet(layer, HuSprLayerHook);
+}
+
+static void HuSprLayerHook(short layer)
+{
+    HuSprDispInit();
+    HuSprExec(HuSprLayerDrawNo[layer]);
 }
