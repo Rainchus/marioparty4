@@ -1,10 +1,8 @@
 #ifndef _FUNCTIONS_H_
 #define _FUNCTIONS_H_
 
-#include "types.h"
+#include "dolphin.h"
 #include "common_structs.h"
-#include "dolphin/mtx.h"
-#include "dolphin/gx/GXStruct.h"
 
 void Hu3DLayerHookSet(short layer, void (*func)(short layer));
 void Hu3D2Dto3D(Vec*, s32, Vec*);

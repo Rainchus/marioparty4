@@ -1,10 +1,8 @@
 #ifndef _VARIABLES_H
 #define _VARIABLES_H
 
-#include "types.h"
+#include "dolphin.h"
 #include "common_structs.h"
-#include "dolphin/os.h"
-#include "dolphin/gx/GXStruct.h"
 
 #define M_PI 3.141592653589793
 
