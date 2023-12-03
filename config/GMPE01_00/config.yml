@@ -565,3 +565,6 @@ extract:
 - symbol: wrongdisc_en
   binary: wrongdisc_en.bin
   header: wrongdisc_en.inc
+- symbol: DEMOFontBitmap
+  binary: DEMOFontBitmap.bin
+  header: DEMOFontBitmap.inc

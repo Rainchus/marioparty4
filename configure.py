@@ -334,6 +334,32 @@ config.libs = [
             Object(NonMatching, "dolphin/mtx/psmtx.c"),
         ],
     ),
+    DolphinLib(
+        "dvd",
+        [
+            Object(NonMatching, "dolphin/dvd/dvdlow.c"),
+            Object(NonMatching, "dolphin/dvd/dvdfs.c"),
+            Object(NonMatching, "dolphin/dvd/dvd.c"),
+            Object(NonMatching, "dolphin/dvd/dvdqueue.c"),
+            Object(NonMatching, "dolphin/dvd/dvderror.c"),
+            Object(NonMatching, "dolphin/dvd/fstload.c"),
+        ],
+    ),
+    DolphinLib(
+        "vi",
+        [
+            Object(NonMatching, "dolphin/vi.c"),
+        ],
+    ),
+    DolphinLib(
+        "demo",
+        [
+            Object(NonMatching, "dolphin/demo/DEMOInit.c"),
+            Object(NonMatching, "dolphin/demo/DEMOFont.c"),
+            Object(NonMatching, "dolphin/demo/DEMOPuts.c"),
+            Object(NonMatching, "dolphin/demo/DEMOStats.c"),
+        ],
+    ),
     {
         "lib": "Runtime.PPCEABI.H",
         "mw_version": config.linker_version,
