@@ -244,7 +244,7 @@ config.libs = [
             Object(Matching, "game/printfunc.c"),
             Object(Matching, "game/process.c"),
             Object(Matching, "game/sprman.c"),
-            Object(NonMatching, "game/sprput.c"),
+            Object(Matching, "game/sprput.c"),
             Object(NonMatching, "game/hsfload.c"),
             Object(NonMatching, "game/hsfdraw.c"),
             Object(NonMatching, "game/hsfman.c"),

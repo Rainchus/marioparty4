@@ -5,12 +5,10 @@ SpriteData HuSprData[384];
 SpriteGroupData HuSprGrpData[256];
 static SpriteOrderData HuSprOrder[384*2];
 
-
 static short HuSprOrderNum;
 static short HuSprOrderNo;
 static BOOL HuSprPauseF;
 
-void HuSprDisp(SpriteData *sprite);
 
 static void HuSprOrderEntry(short group, short sprite);
 

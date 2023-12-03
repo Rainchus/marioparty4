@@ -7,6 +7,7 @@
 #include "dolphin/mtx.h"
 #include "dolphin/gx/GXStruct.h"
 
+void Hu3DLayerHookSet(short layer, void (*func)(short layer));
 void Hu3D2Dto3D(Vec3f*, s32, Vec3f*);
 void Hu3DModelLightInfoSet(s32, s32);
 void Hu3DBGColorSet(u8, u8, u8);
@@ -200,6 +201,9 @@ AnimData *HuSprAnimMake(short sizeX, short sizeY, short dataFmt);
 void HuSprBGSet(short group, short member,  AnimData *bg, short bg_bank);
 void HuSprSprBGSet(short sprite, AnimData *bg, short bg_bank);
 void AnimDebug(AnimData *anim);
+void HuSprDispInit(void);
+void HuSprDisp(SpriteData *sprite);
+void HuSprTexLoad(AnimData *anim, short bmp, short slot, GXTexWrapMode wrap_s, GXTexWrapMode wrap_t, GXTexFilter filter);
 
 void HuWinAllKill(void);
 void HuWinMesSet(s16, s32);
