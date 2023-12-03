@@ -2,55 +2,9 @@
 #define _COMMON_STRUCTS_H
 
 #include "types.h"
-#include "common_enums.h"
 #include "dolphin/dvd.h"
 #include "dolphin/mtx/GeoTypes.h"
 #include "dolphin/gx/GXEnum.h"
-
-typedef struct om_ovl_his_data {
-    OverlayID overlay;
-    int event;
-    int stat;
-} omOvlHisData;
-
-typedef struct Vec2f {
-    f32 x;
-    f32 y;
-} Vec2f;
-
-typedef struct Vec3f {
-    f32 x;
-    f32 y;
-    f32 z;
-} Vec3f;
-
-typedef struct jump_buf {
-    u32 lr;
-    u32 cr;
-    u32 sp;
-    u32 r2;
-    u32 pad;
-    u32 regs[19];
-    double flt_regs[19];
-} jmp_buf;
-
-typedef struct process {
-    struct process *next;
-    struct process *prev;
-    struct process *child;
-    struct process *parent;
-    struct process *next_child;
-    struct process *first_child;
-    void *heap;
-    u16 exec;
-    u16 stat;
-    u16 prio;
-    s32 sleep_time;
-    u32 base_sp;
-    jmp_buf jump;
-    void (*dtor)(void);
-    void *user_data;
-} Process;
 
 typedef struct player_config {
     s16 character;
@@ -65,23 +19,6 @@ typedef struct wipe_state {
     float duration;
     u8 unk2[20];
 } WipeState;
-
-typedef struct file_list_entry {
-    char *name;
-    s32 file_id;
-} FileListEntry;
-
-typedef struct data_read_stat {
-    s32 dir_id;
-    void *dir;
-    void *file;
-    u32 raw_len;
-    u32 comp_type;
-    BOOL used;
-    s32 num;
-    u32 status;
-    DVDFileInfo file_info;
-} DataReadStat;
 
 typedef struct BoardStateSubStruct {
 /* 0x00 */ s32 unk0;
@@ -136,143 +73,5 @@ typedef struct player_state {
 /* 0x2A */ s16 	stars;
 /* 0x2C */ char unk_2C[4];
 } PlayerState; //size of 0x30
-
-typedef struct om_obj_data {
-    u16 stat;
-    s16 next_idx_alloc;
-    s16 prio;
-    s16 prev;
-    s16 next;
-    s16 next_idx;
-    s16 group;
-    u16 group_idx;
-    int unk10;
-    void (*func)(struct om_obj_data *);
-    Vec3f trans;
-    Vec3f rot;
-    Vec3f scale;
-    u16 mdlcnt;
-    s16 *model;
-    u16 mtncnt;
-    s16 *motion;
-    int work[4];
-    void *data;
-} omObjData;
-
-typedef struct anim_frame_data {
-    s16 pat;
-    s16 time;
-    s16 shiftX;
-    s16 shiftY;
-    s16 flip;
-    s16 pad;
-} AnimFrameData;
-
-typedef struct anim_bank_data {
-    s16 timeNum;
-    s16 unk;
-    AnimFrameData *frame;
-} AnimBankData;
-
-typedef struct anim_layer_data {
-    u8 alpha;
-    u8 flip;
-    s16 bmpNo;
-    s16 startX;
-    s16 startY;
-    s16 sizeX;
-    s16 sizeY;
-    s16 shiftX;
-    s16 shiftY;
-    s16 vtx[8];
-} AnimLayerData;
-
-typedef struct anim_pat_data {
-    s16 layerNum;
-    s16 centerX;
-    s16 centerY;
-    s16 sizeX;
-    s16 sizeY;
-    AnimLayerData *layer;
-} AnimPatData;
-
-typedef struct anim_bmp_data {
-    u8 pixSize;
-    u8 dataFmt;
-    s16 palNum;
-    s16 sizeX;
-    s16 sizeY;
-    u32 dataSize;
-    void *palData;
-    void *data;
-} AnimBmpData;
-
-typedef struct anim_data {
-    s16 bankNum;
-    s16 patNum;
-    s16 bmpNum;
-    s16 useNum;
-    AnimBankData *bank;
-    AnimPatData *pat;
-    AnimBmpData *bmp;
-} AnimData;
-
-typedef struct sprite_data {
-    u8 r;
-    u8 g;
-    u8 b;
-    char draw_no;
-    short frame;
-    short bank;
-    short attr;
-    short dirty_flag;
-    short prio;
-    float time;
-    float x;
-    float y;
-    float z_rot;
-    float scale_x;
-    float scale_y;
-    float speed;
-    float a;
-    GXTexWrapMode wrap_s;
-    GXTexWrapMode wrap_t;
-    short tex_scale_x;
-    short tex_scale_y;
-    Mtx *group_mtx;
-    union {
-        AnimData *data;
-        void (*func)(struct sprite_data *sprite);
-    };
-    AnimPatData *pat_data;
-    AnimFrameData *frame_data;
-    short work[4];
-    AnimData *bg;
-    unsigned short bg_bank;
-    short scissor_x;
-    short scissor_y;
-    short scissor_w;
-    short scissor_h;
-} SpriteData;
-
-typedef struct sprite_group_data {
-    short capacity;
-    float x;
-    float y;
-    float z_rot;
-    float scale_x;
-    float scale_y;
-    float center_x;
-    float center_y;
-    short *members;
-    Mtx mtx;
-} SpriteGroupData;
-
-typedef struct sprite_order_data {
-    unsigned short group;
-    unsigned short sprite;
-    unsigned short prio;
-    unsigned short next;
-} SpriteOrderData;
 
 #endif

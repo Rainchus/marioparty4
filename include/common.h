@@ -3,10 +3,7 @@
 
 #include "types.h"
 #include "common_structs.h"
-#include "common_enums.h"
 #include "functions.h"
 #include "variables.h"
-#include "dolphin/mtx/GeoTypes.h"
-#include "dolphin/mtx.h"
 
 #endif

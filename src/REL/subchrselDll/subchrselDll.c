@@ -1,4 +1,7 @@
 #include "common.h"
+#include "game/object.h"
+#include "game/printfunc.h"
+#include "dolphin/pad.h"
 
 //HACK: Force 0.5 and 3.0 double constants to appear in REL
 const double _half = 0.5;
@@ -38,7 +41,7 @@ static char *ext_character_str[7] = {
 
 void ModuleProlog(void)
 {
-    void* sp8 = omInitObjMan(0x32, 0x2000);
+    Process *sp8 = omInitObjMan(0x32, 0x2000);
     Hu3DBGColorSet(0, 0, 0);
     HuPrcChildCreate(SubchrMain, 4096, 12288, 0, HuPrcCurrentGet());
     WipeCreate(1, 0, -1);
@@ -69,17 +72,17 @@ static void SubchrMain()
     while(1) {
         int y, x;
         u16 btns;
-        fontcolor = 14;
+        fontcolor = FONT_COLOR_YELLOW;
         print8(150, 64, 2.0f, "Sub Character Select");
         x = 170;
         y = 120;
         for(i=0; i<4; i++, y += 16) {
-            fontcolor = 12;
+            fontcolor = FONT_COLOR_GREEN;
             print8(x, y, 2.0f, player_numstr[i]);
             if(i == cursor_pos) {
-                fontcolor = 13;
+                fontcolor = FONT_COLOR_CYAN;
             } else {
-                fontcolor = 12;
+                fontcolor = FONT_COLOR_GREEN;
             }
             if(ext_character[i] != 0) {
                 print8(x+200, y, 2.0f, ext_character_str[ext_character[i]]);
@@ -87,7 +90,7 @@ static void SubchrMain()
                 print8(x+200, y, 2.0f, character_str[character[i]]);
             }
         }
-        if(GetBtns() & 0x1000) {
+        if(GetBtns() & PAD_BUTTON_START) {
             for(i=0; i<4; i++) {
                 if(ext_character[i] != 0) {
                     GWPlayerCfg[i].character = ext_character[i]+7;
@@ -102,7 +105,7 @@ static void SubchrMain()
                 HuPrcVSleep();
             } while(1);
         } else {
-            if(GetBtns() & 0x1) {
+            if(GetBtns() & PAD_BUTTON_LEFT) {
                 do {
                     ext_character[cursor_pos]--;
                     if(ext_character[cursor_pos] < 0) {
@@ -117,7 +120,7 @@ static void SubchrMain()
                     }
                 } while(i < 4);
             }
-            if(GetBtns() & 0x2) {
+            if(GetBtns() & PAD_BUTTON_RIGHT) {
                 do {
                     ext_character[cursor_pos]++;
                     if(ext_character[cursor_pos] > 6) {
@@ -132,10 +135,10 @@ static void SubchrMain()
                     }
                 } while(i < 4);
             }
-            if(GetBtns() & 0x4) {
+            if(GetBtns() & PAD_BUTTON_DOWN) {
                 cursor_pos++;
             }
-            if(GetBtns() & 0x8) {
+            if(GetBtns() & PAD_BUTTON_UP) {
                 cursor_pos--;
             }
             if(cursor_pos < 0) {
@@ -144,7 +147,7 @@ static void SubchrMain()
             if(cursor_pos > 3) {
                 cursor_pos = 0;
             }
-            if(GetBtns() & 0x200) {
+            if(GetBtns() & PAD_BUTTON_B) {
                 HuAudFadeOut(30);
                 WipeCreate(2, 0, -1);
                 HuPrcSleep(wipeData.duration+1.0f);

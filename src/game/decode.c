@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/data.h"
 #include "dolphin/os.h"
 
 struct decode_data
@@ -181,27 +182,27 @@ void HuDecodeData(void *src, void *dst, u32 size, int decode_type)
     decode_ptr->dst = dst;
     decode_ptr->size = size;
     switch(decode_type) {
-        case 0:
+        case DATA_DECODE_NONE:
             HuDecodeNone(decode_ptr);
             break;
             
-        case 1:
+        case DATA_DECODE_LZ:
             HuDecodeLz(decode_ptr);
             break;
             
-        case 2:
+        case DATA_DECODE_SLIDE:
             HuDecodeSlide(decode_ptr);
             break;
             
-        case 3:
+        case DATA_DECODE_FSLIDE_ALT:
             HuDecodeFslide(decode_ptr);
             break;
             
-        case 4:
+        case DATA_DECODE_FSLIDE:
             HuDecodeFslide(decode_ptr);
             break;
             
-        case 5:
+        case DATA_DECODE_RLE:
             HuDecodeRle(decode_ptr);
             break;
             
