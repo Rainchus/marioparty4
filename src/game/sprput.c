@@ -51,8 +51,9 @@ void HuSprDisp(SpriteData *sprite)
             void (*func)(SpriteData *);
             func = sprite->func;
             func(sprite);
+            HuSprDispInit();
         }
-        HuSprDispInit();
+        
     } else {
         AnimLayerData *layer;
         AnimBmpData *bg_bmp;
