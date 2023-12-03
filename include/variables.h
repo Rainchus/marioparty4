@@ -46,4 +46,6 @@ extern OverlayID omprevovl;
 extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
 
+extern u32 minimumVcount;
+
 #endif

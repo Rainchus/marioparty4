@@ -4,6 +4,8 @@
 #include "types.h"
 #include "common_enums.h"
 #include "dolphin/dvd.h"
+#include "dolphin/mtx/GeoTypes.h"
+#include "dolphin/gx/GXEnum.h"
 
 typedef struct om_ovl_his_data {
     OverlayID overlay;
@@ -156,5 +158,121 @@ typedef struct om_obj_data {
     int work[4];
     void *data;
 } omObjData;
+
+typedef struct anim_time_data {
+    s16 pat;
+    s16 time;
+    s16 shiftX;
+    s16 shiftY;
+    s16 flip;
+    s16 pad;
+} AnimFrameData;
+
+typedef struct anim_bank_data {
+    s16 timeNum;
+    s16 unk;
+    AnimFrameData *frame;
+} AnimBankData;
+
+typedef struct anim_layer_data {
+    u8 alpha;
+    u8 flip;
+    s16 bmpNo;
+    s16 startX;
+    s16 startY;
+    s16 sizeX;
+    s16 sizeY;
+    s16 shiftX;
+    s16 shiftY;
+    s16 vtx[8];
+} AnimLayerData;
+
+typedef struct anim_pat_data {
+    s16 layerNum;
+    s16 centerX;
+    s16 centerY;
+    s16 sizeX;
+    s16 sizeY;
+    AnimLayerData *layer;
+} AnimPatData;
+
+typedef struct anim_bmp_data {
+    u8 pixSize;
+    u8 dataFmt;
+    s16 palNum;
+    s16 sizeX;
+    s16 sizeY;
+    u32 dataSize;
+    void *palData;
+    void *data;
+} AnimBmpData;
+
+typedef struct anim_data {
+    s16 bankNum;
+    s16 patNum;
+    s16 bmpNum;
+    s16 useNum;
+    AnimBankData *bank;
+    AnimPatData *pat;
+    AnimBmpData *bmp;
+} AnimData;
+
+typedef struct sprite_data {
+    u8 r;
+    u8 g;
+    u8 b;
+    char draw_no;
+    short frame;
+    short bank;
+    short attr;
+    short dirty_flag;
+    short prio;
+    float time;
+    float x;
+    float y;
+    float z_rot;
+    float scale_x;
+    float scale_y;
+    float speed;
+    float a;
+    GXTexWrapMode wrap_s;
+    GXTexWrapMode wrap_t;
+    short tex_scale_x;
+    short tex_scale_y;
+    Mtx *group_mtx;
+    union {
+        AnimData *data;
+        void (*func)(struct sprite_data *sprite);
+    };
+    AnimPatData *pat_data;
+    AnimFrameData *frame_data;
+    short work[4];
+    AnimData *bg;
+    unsigned short bg_bank;
+    short scissor_x;
+    short scissor_y;
+    short scissor_w;
+    short scissor_h;
+} SpriteData;
+
+typedef struct sprite_group_data {
+    short capacity;
+    float x;
+    float y;
+    float z_rot;
+    float scale_x;
+    float scale_y;
+    float center_x;
+    float center_y;
+    short *members;
+    Mtx mtx;
+} SpriteGroupData;
+
+typedef struct sprite_order_data {
+    unsigned short group;
+    unsigned short sprite;
+    unsigned short prio;
+    unsigned short next;
+} SpriteOrderData;
 
 #endif
