@@ -447,6 +447,65 @@ dolphin/mtx/quat.c:
 dolphin/mtx/psmtx.c:
 	.text       start:0x800BC710 end:0x800BC9E8
 
+dolphin/dvd/dvdlow.c:
+	.text       start:0x800BC9E8 end:0x800BD83C
+	.bss        start:0x801A5E00 end:0x801A5EE0
+	.sdata      start:0x801D38E0 end:0x801D38E8
+	.sbss       start:0x801D4368 end:0x801D43B0
+
+dolphin/dvd/dvdfs.c:
+	.text       start:0x800BD83C end:0x800BE118
+	.data       start:0x8013C3E0 end:0x8013C548
+	.sdata      start:0x801D38E8 end:0x801D38F0
+	.sbss       start:0x801D43B0 end:0x801D43D0
+
+dolphin/dvd/dvd.c:
+	.text       start:0x800BE118 end:0x800C059C
+	.data       start:0x8013C548 end:0x8013C660
+	.bss        start:0x801A5EE0 end:0x801A5FB8
+	.sdata      start:0x801D38F0 end:0x801D38F8
+	.sbss       start:0x801D43D0 end:0x801D4418
+
+dolphin/dvd/dvdqueue.c:
+	.text       start:0x800C059C end:0x800C0794
+	.bss        start:0x801A5FB8 end:0x801A5FD8
+
+dolphin/dvd/dvderror.c:
+	.text       start:0x800C0794 end:0x800C092C
+	.data       start:0x8013C660 end:0x8013C6A8
+
+dolphin/dvd/fstload.c:
+	.text       start:0x800C092C end:0x800C0B6C
+	.data       start:0x8013C6A8 end:0x8013C718
+	.bss        start:0x801A5FD8 end:0x801A6048
+	.sdata      start:0x801D38F8 end:0x801D3908
+	.sbss       start:0x801D4418 end:0x801D4428
+
+dolphin/vi.c:
+	.text       start:0x800C0B6C end:0x800C2980
+	.data       start:0x8013C718 end:0x8013C9E0
+	.bss        start:0x801A6048 end:0x801A6190
+	.sbss       start:0x801D4428 end:0x801D4478
+
+dolphin/demo/DEMOFont.c:
+	.data       start:0x8013C9E0 end:0x8013D5E0
+
+dolphin/demo/DEMOInit.c:
+	.text       start:0x800C2980 end:0x800C2988
+	.sbss       start:0x801D4478 end:0x801D4480
+
+dolphin/demo/DEMOPuts.c:
+	.text       start:0x800C2988 end:0x800C2F84
+	.sbss       start:0x801D4480 end:0x801D4488
+	.sdata2     start:0x801D63B8 end:0x801D63D8
+
+dolphin/demo/DEMOStats.c:
+	.text       start:0x800C2F84 end:0x800C3CDC
+	.data       start:0x8013D5E0 end:0x8013D748
+	.sdata      start:0x801D3908 end:0x801D3910
+	.sbss       start:0x801D4488 end:0x801D44E8
+	.sdata2     start:0x801D63D8 end:0x801D63E8
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC

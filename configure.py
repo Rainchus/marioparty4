@@ -243,8 +243,8 @@ config.libs = [
             Object(Matching, "game/memory.c"),
             Object(Matching, "game/printfunc.c"),
             Object(Matching, "game/process.c"),
-            Object(NonMatching, "game/sprman.c"),
-            Object(NonMatching, "game/sprput.c"),
+            Object(Matching, "game/sprman.c"),
+            Object(Matching, "game/sprput.c"),
             Object(NonMatching, "game/hsfload.c"),
             Object(NonMatching, "game/hsfdraw.c"),
             Object(NonMatching, "game/hsfman.c"),
@@ -332,6 +332,32 @@ config.libs = [
             Object(NonMatching, "dolphin/mtx/vec.c"),
             Object(NonMatching, "dolphin/mtx/quat.c"),
             Object(NonMatching, "dolphin/mtx/psmtx.c"),
+        ],
+    ),
+    DolphinLib(
+        "dvd",
+        [
+            Object(NonMatching, "dolphin/dvd/dvdlow.c"),
+            Object(NonMatching, "dolphin/dvd/dvdfs.c"),
+            Object(NonMatching, "dolphin/dvd/dvd.c"),
+            Object(NonMatching, "dolphin/dvd/dvdqueue.c"),
+            Object(NonMatching, "dolphin/dvd/dvderror.c"),
+            Object(NonMatching, "dolphin/dvd/fstload.c"),
+        ],
+    ),
+    DolphinLib(
+        "vi",
+        [
+            Object(NonMatching, "dolphin/vi.c"),
+        ],
+    ),
+    DolphinLib(
+        "demo",
+        [
+            Object(NonMatching, "dolphin/demo/DEMOInit.c"),
+            Object(NonMatching, "dolphin/demo/DEMOFont.c"),
+            Object(NonMatching, "dolphin/demo/DEMOPuts.c"),
+            Object(NonMatching, "dolphin/demo/DEMOStats.c"),
         ],
     ),
     {
