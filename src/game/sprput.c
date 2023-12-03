@@ -45,10 +45,11 @@ void HuSprDisp(SpriteData *sprite)
     AnimPatData *pat = sprite->pat_data;
     Vec axis = {0, 0, 1};
     Mtx modelview, rot;
+    s16 color_sum;
+    void (*func)(SpriteData *);
     GXSetScissor(sprite->scissor_x, sprite->scissor_y, sprite->scissor_w, sprite->scissor_h);
     if(sprite->attr & 0x10) {
         if(sprite->func) {
-            void (*func)(SpriteData *);
             func = sprite->func;
             func(sprite);
             HuSprDispInit();
@@ -57,7 +58,6 @@ void HuSprDisp(SpriteData *sprite)
     } else {
         AnimLayerData *layer;
         AnimBmpData *bg_bmp;
-        s16 color_sum;
         GXColor color;
         GXSetNumTexGens(1);
         GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
@@ -85,8 +85,10 @@ void HuSprDisp(SpriteData *sprite)
             GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
         }
         if(sprite->bg) {
-            AnimFrameData *bg_frame = sprite->bg->bank[sprite->bg_bank].frame;
-            AnimPatData *bg_pat = &sprite->bg->pat[bg_frame->pat];
+            AnimPatData *bg_pat;
+            AnimFrameData *bg_frame;
+            bg_frame = sprite->bg->bank[sprite->bg_bank].frame;
+            bg_pat = &sprite->bg->pat[bg_frame->pat];
             layer = bg_pat->layer;
             bg_bmp = &sprite->bg->bmp[layer->bmpNo];
             HuSprTexLoad(sprite->bg, layer->bmpNo, 1, GX_CLAMP, GX_CLAMP, GX_NEAR);
@@ -174,4 +176,9 @@ void HuSprDisp(SpriteData *sprite)
             GXSetTexCoordScaleManually(GX_TEXCOORD0, GX_FALSE, 0, 0);
         }
     }
+}
+
+void HuSprTexLoad(AnimData *anim, short bmp, short slot, GXTexWrapMode wrap_s, GXTexWrapMode wrap_t, GXTexFilter filter)
+{
+    
 }
