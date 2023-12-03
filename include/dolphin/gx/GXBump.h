@@ -21,6 +21,12 @@ void GXSetTevIndirect(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXIndTe
                       GXIndTexAlphaSel alpha_sel);
 void GXSetTevIndWarp(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXBool signed_offsets,
                      GXBool replace_mode, GXIndTexMtxID matrix_sel);
+                     
+void GXSetTevIndTile (GXTevStageID tev_stage, GXIndTexStageID ind_stage,
+			     u16 tilesize_s, u16 tilesize_t, 
+			     u16 tilespacing_s, u16 tilespacing_t, 
+			     GXIndTexFormat format, GXIndTexMtxID matrix_sel,
+			     GXIndTexBiasSel bias_sel, GXIndTexAlphaSel alpha_sel);
 void GXSetIndTexCoordScale(GXIndTexStageID ind_state, GXIndTexScale scale_s, GXIndTexScale scale_t);
 
 #ifdef __cplusplus
