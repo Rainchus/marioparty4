@@ -223,6 +223,33 @@ static void SceneLoad(void)
     }
 }
 
+
+static void ColorLoad(void)
+{
+    s32 i;
+    HsfVertexBuf *file_color;
+    HsfVertexBuf *new_color;
+    void *data;
+    void *color_data;
+    HsfVertexBuf *temp_color;
+    
+    if(head.color.count) {
+        temp_color = file_color = (HsfVertexBuf *)((u32)fileptr+head.color.ofs);
+        data = &file_color[head.color.count];
+        for(i=0; i<head.color.count; i++, file_color++);
+        new_color = temp_color;
+        Model.color = new_color;
+        Model.colorCnt = head.color.count;
+        file_color = (HsfVertexBuf *)((u32)fileptr+head.color.ofs);
+        data = &file_color[head.color.count];
+        for(i=0; i<head.color.count; i++, new_color++, file_color++) {
+            color_data = file_color->data;
+            new_color->name = SetName((u32 *)&file_color->name);
+            new_color->data = (void *)((u32)data+(u32)color_data);
+        }
+    }
+}
+
 static HsfBitmap *SearchBitmapPtr(s32 id)
 {
     HsfBitmap *bitmap; 
