@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/init.h"
 #include "dolphin/os.h"
 #include "dolphin/gx.h"
 #include "dolphin/dvd.h"

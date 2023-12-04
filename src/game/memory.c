@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/memory.h"
 #include "dolphin/os.h"
 
 #define DATA_GET_BLOCK(ptr) ((struct memory_block *)(((char *)(ptr))-32))

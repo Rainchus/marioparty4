@@ -1,4 +1,6 @@
 #include "common.h"
+#include "game/printfunc.h"
+#include "game/object.h"
 
 #define OM_OVL_HIS_MAX 16
 #define OM_MAX_GROUPS 10
@@ -141,10 +143,10 @@ void omOvlKill(s16 arg)
     HuWinAllKill();
     HuSprClose();
     HuPrcChildKill(omwatchproc);
-    HuMemDirectFreeNum(HEAP_SYSTEM, 0x10000000);
-    HuDataDirCloseNum(0x10000000);
-    HuMemDirectFreeNum(HEAP_DVD, 0x10000000);
-    HuMemDirectFreeNum(HEAP_DATA, 0x10000000);
+    HuMemDirectFreeNum(HEAP_SYSTEM, MEMORY_DEFAULT_NUM);
+    HuDataDirCloseNum(MEMORY_DEFAULT_NUM);
+    HuMemDirectFreeNum(HEAP_DVD, MEMORY_DEFAULT_NUM);
+    HuMemDirectFreeNum(HEAP_DATA, MEMORY_DEFAULT_NUM);
     HuPadRumbleAllStop();
     HuAudFXListnerKill();
     OSReport("OvlKill %d\n", arg);
@@ -188,8 +190,8 @@ Process *omInitObjMan(s16 max_objs, int prio)
     max_objs += 2;
     omSysExitReq = FALSE;
     process = HuPrcChildCreate(omMain, prio, 16384, 0, omwatchproc);
-    HuPrcSetStat(process, 12);
-    objman = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(omObjMan), 0x10000000);
+    HuPrcSetStat(process, PROCESS_STAT_PAUSE_EN|PROCESS_STAT_UPAUSE_EN);
+    objman = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(omObjMan), MEMORY_DEFAULT_NUM);
     objman->max_objs = max_objs;
     process->user_data = objman;
     process->dtor = omDestroyObjMan;
@@ -197,9 +199,9 @@ Process *omInitObjMan(s16 max_objs, int prio)
     objman->next_idx = 0;
     objman->obj_last = -1;
     objman->obj_first = -1;
-    obj_all = HuMemDirectMallocNum(HEAP_SYSTEM, max_objs*sizeof(omObjData), 0x10000000);
+    obj_all = HuMemDirectMallocNum(HEAP_SYSTEM, max_objs*sizeof(omObjData), MEMORY_DEFAULT_NUM);
     objman->obj =  obj_all;
-    group_all = HuMemDirectMallocNum(HEAP_SYSTEM, OM_MAX_GROUPS*sizeof(omObjGroup), 0x10000000);
+    group_all = HuMemDirectMallocNum(HEAP_SYSTEM, OM_MAX_GROUPS*sizeof(omObjGroup), MEMORY_DEFAULT_NUM);
     objman->group = group_all;
     for(i=0; i<max_objs;i++) {
         obj = &obj_all[i];
@@ -251,7 +253,7 @@ omObjData *omAddObjEx(Process *objman_process, s16 prio, u16 mdlcnt, u16 mtncnt,
     object->prio = prio;
     omInsertObj(objman_process, object);
     if(mdlcnt) {
-        object->model = HuMemDirectMallocNum(HEAP_SYSTEM, mdlcnt*sizeof(s16), 0x10000000);
+        object->model = HuMemDirectMallocNum(HEAP_SYSTEM, mdlcnt*sizeof(s16), MEMORY_DEFAULT_NUM);
         object->mdlcnt = mdlcnt;
         for(i=0; i<mdlcnt; i++) {
             object->model[i] = -1;
@@ -261,7 +263,7 @@ omObjData *omAddObjEx(Process *objman_process, s16 prio, u16 mdlcnt, u16 mtncnt,
         object->mdlcnt = 0;
     }
     if(mtncnt) {
-        object->motion = HuMemDirectMallocNum(HEAP_SYSTEM, mtncnt*sizeof(s16), 0x10000000);
+        object->motion = HuMemDirectMallocNum(HEAP_SYSTEM, mtncnt*sizeof(s16), MEMORY_DEFAULT_NUM);
         object->mtncnt = mtncnt;
     } else {
         object->motion = NULL;
@@ -273,7 +275,7 @@ omObjData *omAddObjEx(Process *objman_process, s16 prio, u16 mdlcnt, u16 mtncnt,
         object->group = group;
         object->group_idx = 0;
     }
-    object->stat = 4;
+    object->stat = OM_STAT_ACTIVE;
     object->unk10 = 0;
     object->func = func;
     object->work[0] = object->work[1] = object->work[2] = object->work[3] = 0;
@@ -363,7 +365,7 @@ void omDelObjEx(Process *objman_process, omObjData *object)
         HuMemDirectFree(object->data);
         object->data = NULL;
     }
-    object->stat = 1;
+    object->stat = OM_STAT_DELETED;
     if(object->next >= 0) {
         obj_all[object->next].prev = object->prev;
     }
@@ -412,8 +414,8 @@ void omMakeGroupEx(Process *objman_process, u16 group, u16 max_objs)
     group_ptr->next_idx = 0;
     group_ptr->max_objs = max_objs;
     group_ptr->num_objs = 0;
-    group_ptr->obj = HuMemDirectMallocNum(HEAP_SYSTEM, max_objs*sizeof(omObjData *), 0x10000000);
-    group_ptr->next = HuMemDirectMallocNum(HEAP_SYSTEM, max_objs*sizeof(u16), 0x10000000);
+    group_ptr->obj = HuMemDirectMallocNum(HEAP_SYSTEM, max_objs*sizeof(omObjData *), MEMORY_DEFAULT_NUM);
+    group_ptr->next = HuMemDirectMallocNum(HEAP_SYSTEM, max_objs*sizeof(u16), MEMORY_DEFAULT_NUM);
     for(i=0; i<max_objs; i++) {
         group_ptr->obj[i] = NULL;
         group_ptr->next[i] = i+1;
@@ -474,7 +476,7 @@ void omMain(void)
             color.g = 0;
             color.b = 255;
             printWin(7, 23, 128*scale, 40*scale, &color);
-            fontcolor = 14;
+            fontcolor = FONT_COLOR_YELLOW;
             print8(8, 24, scale, "\xFD\x01H:%08lX(%ld)", HuMemUsedMallocSizeGet(HEAP_SYSTEM), HuMemUsedMallocBlockGet(HEAP_SYSTEM));
             print8(8, 24+(8*scale), scale, "\xFD\x01M:%08lX(%ld)", HuMemUsedMallocSizeGet(HEAP_DATA), HuMemUsedMallocBlockGet(HEAP_DATA));
             print8(8, 24+(16*scale), scale, "\xFD\x01OBJ:%d/%d", objman->num_objs, objman->max_objs);
@@ -485,18 +487,18 @@ void omMain(void)
         while(obj_index != -1) {
             object = &obj_all[obj_index];
             obj_index = object->prev;
-            if((object->stat & 0x3) == 0) {
-                if(object->func != NULL && (object->stat & 0x58) == 0) {
+            if((object->stat & (OM_STAT_DELETED|OM_STAT_DISABLED)) == 0) {
+                if(object->func != NULL && (object->stat & (0x40|0x8|OM_STAT_PAUSED)) == 0) {
                     object->func(object);
                 }
                 if(omcurovl == -1 || objman->obj_last == -1) {
                     break;
                 }
-                if((object->stat & 0x3) == 0) {
-                    if((obj_all[obj_index].stat & 0x3) != 0) {
+                if((object->stat & (OM_STAT_DELETED|OM_STAT_DISABLED)) == 0) {
+                    if((obj_all[obj_index].stat & (OM_STAT_DELETED|OM_STAT_DISABLED)) != 0) {
                         obj_index = object->prev;
                     }
-                    if(object->model != NULL && object->model[0] != -1 && !(object->stat & 0x100)) {
+                    if(object->model != NULL && object->model[0] != -1 && !(object->stat & OM_STAT_MODEL_PAUSED)) {
                         Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
                         Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
                         Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
@@ -535,14 +537,14 @@ void omAllPause(BOOL pause)
     int i;
     if(pause) {
         for(i=0; i<objman->max_objs; i++) {
-            if((objman->obj[i].stat & 0x21) == 0) {
-                omSetStatBit(&objman->obj[i], 0x10);
+            if((objman->obj[i].stat & (OM_STAT_DELETED|OM_STAT_NOPAUSE)) == 0) {
+                omSetStatBit(&objman->obj[i], OM_STAT_PAUSED);
             }
         }
     } else {
         for(i=0; i<objman->max_objs; i++) {
-            if((objman->obj[i].stat & 0x21) == 0) {
-                omResetStatBit(&objman->obj[i], 0x10);
+            if((objman->obj[i].stat & (OM_STAT_DELETED|OM_STAT_NOPAUSE)) == 0) {
+                omResetStatBit(&objman->obj[i], OM_STAT_PAUSED);
             }
         }
     }

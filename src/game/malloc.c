@@ -1,4 +1,6 @@
 #include "common.h"
+#include "game/memory.h"
+#include "game/init.h"
 #include "dolphin/os.h"
 
 static u32 HeapSizeTbl[HEAP_MAX] = { 0x240000, 0x140000, 0xA80000, 0x580000, 0 };

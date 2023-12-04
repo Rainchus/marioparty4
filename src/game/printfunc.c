@@ -1,7 +1,7 @@
 #include "common.h"
-#include "dolphin/mtx.h"
-#include "dolphin/gx.h"
-#include "dolphin/vi.h"
+#include "dolphin.h"
+#include "game/printfunc.h"
+#include "game/init.h"
 #include "stdio.h"
 #include "stdarg.h"
 
