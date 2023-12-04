@@ -13,7 +13,7 @@ char *StringTable;
 char *DicStringTable;
 void **NSymIndex;
 HsfObject *objtop;
-HsfVertexBuf *vtxtop;
+HsfBuffer *vtxtop;
 HsfCluster *ClusterTop;
 HsfAttribute *AttributeTop;
 HsfMaterial *MaterialTop;
@@ -226,20 +226,20 @@ static void SceneLoad(void)
 static void ColorLoad(void)
 {
     s32 i;
-    HsfVertexBuf *file_color;
-    HsfVertexBuf *new_color;
+    HsfBuffer *file_color;
+    HsfBuffer *new_color;
     void *data;
     void *color_data;
-    HsfVertexBuf *temp_color;
+    HsfBuffer *temp_color;
     
     if(head.color.count) {
-        temp_color = file_color = (HsfVertexBuf *)((u32)fileptr+head.color.ofs);
+        temp_color = file_color = (HsfBuffer *)((u32)fileptr+head.color.ofs);
         data = &file_color[head.color.count];
         for(i=0; i<head.color.count; i++, file_color++);
         new_color = temp_color;
         Model.color = new_color;
         Model.colorCnt = head.color.count;
-        file_color = (HsfVertexBuf *)((u32)fileptr+head.color.ofs);
+        file_color = (HsfBuffer *)((u32)fileptr+head.color.ofs);
         data = &file_color[head.color.count];
         for(i=0; i<head.color.count; i++, new_color++, file_color++) {
             color_data = file_color->data;
@@ -252,14 +252,14 @@ static void ColorLoad(void)
 static void VertexLoad(void)
 {
     s32 i, j;
-    HsfVertexBuf *file_vertex;
-    HsfVertexBuf *new_vertex;
+    HsfBuffer *file_vertex;
+    HsfBuffer *new_vertex;
     void *data;
     HsfVector3f *data_elem;
     void *temp_data;
     
     if(head.vertex.count) {
-        vtxtop = file_vertex = (HsfVertexBuf *)((u32)fileptr+head.vertex.ofs);
+        vtxtop = file_vertex = (HsfBuffer *)((u32)fileptr+head.vertex.ofs);
         data = (void *)&file_vertex[head.vertex.count];
         for(i=0; i<head.vertex.count; i++, file_vertex++) {
             for(j=0; j<(u32)file_vertex->count; j++) {
@@ -269,7 +269,7 @@ static void VertexLoad(void)
         new_vertex = vtxtop;
         Model.vertex = new_vertex;
         Model.vertexCnt = head.vertex.count;
-        file_vertex = (HsfVertexBuf *)((u32)fileptr+head.vertex.ofs);
+        file_vertex = (HsfBuffer *)((u32)fileptr+head.vertex.ofs);
         VertexDataTop = data = (void *)&file_vertex[head.vertex.count];
         for(i=0; i<head.vertex.count; i++, new_vertex++, file_vertex++) {
             temp_data = file_vertex->data;
@@ -290,20 +290,20 @@ static void NormalLoad(void)
 {
     s32 i, j;
     void *temp_data;
-    HsfVertexBuf *file_normal;
-    HsfVertexBuf *new_normal;
-    HsfVertexBuf *temp_normal;
+    HsfBuffer *file_normal;
+    HsfBuffer *new_normal;
+    HsfBuffer *temp_normal;
     void *data;
     
     
     if(head.normal.count) {
         s32 cenv_count = head.cenv.count;
-        temp_normal = file_normal = (HsfVertexBuf *)((u32)fileptr+head.normal.ofs);
+        temp_normal = file_normal = (HsfBuffer *)((u32)fileptr+head.normal.ofs);
         data = (void *)&file_normal[head.normal.count];
         new_normal = temp_normal;
         Model.normal = new_normal;
         Model.normalCnt = head.normal.count;
-        file_normal = (HsfVertexBuf *)((u32)fileptr+head.normal.ofs);
+        file_normal = (HsfBuffer *)((u32)fileptr+head.normal.ofs);
         NormalDataTop = data = (void *)&file_normal[head.normal.count];
         for(i=0; i<head.normal.count; i++, new_normal++, file_normal++) {
             temp_data = file_normal->data;
@@ -317,15 +317,15 @@ static void NormalLoad(void)
 static void STLoad(void)
 {
     s32 i, j;
-    HsfVertexBuf *file_st;
-    HsfVertexBuf *temp_st;
-    HsfVertexBuf *new_st;
+    HsfBuffer *file_st;
+    HsfBuffer *temp_st;
+    HsfBuffer *new_st;
     void *data;
     HsfVector2f *data_elem;
     void *temp_data;
     
     if(head.st.count) {
-        temp_st = file_st = (HsfVertexBuf *)((u32)fileptr+head.st.ofs);
+        temp_st = file_st = (HsfBuffer *)((u32)fileptr+head.st.ofs);
         data = (void *)&file_st[head.st.count];
         for(i=0; i<head.st.count; i++, file_st++) {
             for(j=0; j<(u32)file_st->count; j++) {
@@ -335,7 +335,7 @@ static void STLoad(void)
         new_st = temp_st;
         Model.st = new_st;
         Model.stCnt = head.st.count;
-        file_st = (HsfVertexBuf *)((u32)fileptr+head.st.ofs);
+        file_st = (HsfBuffer *)((u32)fileptr+head.st.ofs);
         data = (void *)&file_st[head.st.count];
         for(i=0; i<head.st.count; i++, new_st++, file_st++) {
             temp_data = file_st->data;
@@ -353,7 +353,42 @@ static void STLoad(void)
 
 static void FaceLoad(void)
 {
+    HsfBuffer *file_face;
+    HsfBuffer *new_face;
+    HsfBuffer *temp_face;
+    HsfFace *temp_data;
+    HsfFace *data;
+    HsfFace *file_face_strip;
+    HsfFace *new_face_strip;
+    HsfTristrip *strip;
+    s32 i;
+    s32 j;
     
+    if(head.face.count) {
+        temp_face = file_face = (HsfBuffer *)((u32)fileptr+head.face.ofs);
+        data = (HsfFace *)&file_face[head.face.count];
+        new_face = temp_face;
+        Model.face = new_face;
+        Model.faceCnt = head.face.count;
+        file_face = (HsfBuffer *)((u32)fileptr+head.face.ofs);
+        data = (HsfFace *)&file_face[head.face.count];
+        for(i=0; i<head.face.count; i++, new_face++, file_face++) {
+            temp_data = file_face->data;
+            new_face->name = SetName((u32 *)&file_face->name);
+            new_face->count = file_face->count;
+            new_face->data = (void *)((u32)data+(u32)temp_data);
+            strip = (HsfTristrip *)(&((HsfFace *)new_face->data)[new_face->count]);
+        }
+        new_face = temp_face;
+        for(i=0; i<head.face.count; i++, new_face++) {
+            file_face_strip = new_face_strip = new_face->data;
+            for(j=0; j<new_face->count; j++, new_face_strip++, file_face_strip++) {
+                if(file_face_strip->type == 4) {
+                    new_face_strip->strip.data = &strip[(s32)file_face_strip->strip.data];
+                }
+            }
+        }
+    }
 }
 
 static HsfBitmap *SearchBitmapPtr(s32 id)

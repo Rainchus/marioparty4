@@ -101,7 +101,11 @@ typedef struct hsf_vertex_buf {
     char *name;
     s32 count;
     void *data;
-} HsfVertexBuf;
+} HsfBuffer;
+
+typedef struct hsf_tristrip {
+    u16 data[4];
+} HsfTristrip;
 
 typedef struct hsf_face {
     u16 type;
@@ -110,11 +114,12 @@ typedef struct hsf_face {
     union {
         struct {
             u32 count;
-            u16 *data;
+            HsfTristrip *data;
         } strip;
         u16 ext_indices[4];
     };
-} HSFFace;
+    float nbt[3];
+} HsfFace;
 
 typedef struct hsf_const_data {
     u32 flags;
@@ -122,37 +127,10 @@ typedef struct hsf_const_data {
 } HsfConstData;
 
 typedef struct hsf_transform {
-    Vec pos;
-    Vec rot;
-    Vec scale;
+    HsfVector3f pos;
+    HsfVector3f rot;
+    HsfVector3f scale;
 } HsfTransform;
-
-typedef struct hsf_object_data {
-    struct hsf_object *parent;
-    u32 childrenCount;
-    struct hsf_object **children;
-    HsfTransform base;
-    HsfTransform curr;
-    Vec min;
-    Vec max;
-    u8 unk[136];
-    HsfVertexBuf *face;
-    HsfVertexBuf *vertex;
-    HsfVertexBuf *normal;
-    HsfVertexBuf *st;
-    HsfVertexBuf *color;
-    HsfMaterial *material;
-    HsfAttribute *attribute;
-    u8 unk2[36];
-} HsfObjectData;
-
-typedef struct hsf_object {
-    char *name;
-    u32 type;
-    HsfConstData *constData;
-    u32 flags;
-    HsfObjectData data;
-} HsfObject;
 
 typedef struct hsf_cenv {
     u8 unk[36];
@@ -174,8 +152,42 @@ typedef struct hsf_shape {
     char *name;
     u16 count1;
     u16 morphTargetCnt;
-    HsfVertexBuf **morphTargets;
+    HsfBuffer **morphTargets;
 } HsfShape;
+
+typedef struct hsf_object_data {
+    struct hsf_object *parent;
+    u32 childrenCount;
+    struct hsf_object **children;
+    HsfTransform base;
+    HsfTransform curr;
+    Vec min;
+    Vec max;
+    u8 unk[136];
+    HsfBuffer *face;
+    HsfBuffer *vertex;
+    HsfBuffer *normal;
+    HsfBuffer *st;
+    HsfBuffer *color;
+    HsfMaterial *material;
+    HsfAttribute *attribute;
+    u8 unk2[12];
+    u32 vertexShapeCnt;
+    HsfBuffer **vertexShape;
+    u32 clusterCnt;
+    HsfCluster **cluster;
+    u32 hook;
+    HsfCenv *cenv;
+    void *file[2];
+} HsfObjectData;
+
+typedef struct hsf_object {
+    char *name;
+    u32 type;
+    HsfConstData *constData;
+    u32 flags;
+    HsfObjectData data;
+} HsfObject;
 
 typedef struct hsf_skeleton {
     char *name;
@@ -217,11 +229,11 @@ typedef struct hsf_data {
     HsfScene *scene;
     HsfAttribute *attribute;
     HsfMaterial *material;
-    HsfVertexBuf *vertex;
-    HsfVertexBuf *normal;
-    HsfVertexBuf *st;
-    HsfVertexBuf *color;
-    HsfVertexBuf *face;
+    HsfBuffer *vertex;
+    HsfBuffer *normal;
+    HsfBuffer *st;
+    HsfBuffer *color;
+    HsfBuffer *face;
     HsfBitmap *bitmap;
     HsfPalette *palette;
     HsfObject *root;
