@@ -134,7 +134,7 @@ typedef struct hsf_face {
 
 typedef struct hsf_const_data {
     u32 flags;
-    u8 unk[64];
+    u8 unk4[64];
 } HsfConstData;
 
 typedef struct hsf_transform {
@@ -195,20 +195,31 @@ typedef struct hsf_cenv {
 typedef struct hsf_part {
     char *name;
     u32 count;
-    u16 *data;
+    u16 *vertex;
 } HsfPart;
 
 typedef struct hsf_cluster {
-    char *name[3];
+    char *name[2];
+    union {
+        char *targetName;
+        u32 target;
+    };
     HsfPart *part;
-    u8 unk[144];
+    u8 unk10[132];
+    u8 adjusted;
+    u8 unk95;
+    u16 type;
+    u32 vertexCnt;
+    HsfBuffer **vertex;
 } HsfCluster;
 
 typedef struct hsf_shape {
     char *name;
-    u16 count1;
-    u16 morphTargetCnt;
-    HsfBuffer **morphTargets;
+    union {
+        u16 count16[2];
+        u32 vertexCnt;
+    };
+    HsfBuffer **vertex;
 } HsfShape;
 
 typedef struct hsf_object_data {
@@ -221,9 +232,10 @@ typedef struct hsf_object_data {
         struct {
             HsfVector3f min;
             HsfVector3f max;
-            u8 unk[136];
+            float baseMorph;
+            float *morphWeight[33];
         } mesh;
-        struct hsf_object *unk64;
+        struct hsf_object *replica;
     };
     
     HsfBuffer *face;
@@ -233,7 +245,8 @@ typedef struct hsf_object_data {
     HsfBuffer *st;
     HsfMaterial *material;
     HsfAttribute *attribute;
-    u8 unk2[4];
+    u8 unk120[2];
+    u8 shapeType;
     u32 vertexShapeCnt;
     HsfBuffer **vertexShape;
     u32 clusterCnt;
@@ -275,9 +288,12 @@ typedef struct hsf_motion {
 } HsfMotion;
 
 typedef struct hsf_map_attr {
-    u8 unk[16];
-    void *unk10;
-    u8 unk2[4];
+    float min_x;
+    float min_z;
+    float max_x;
+    float max_z;
+    s16 *data;
+    u32 dataLen;
 } HsfMapAttr;
 
 typedef struct hsf_matrix {

@@ -41,6 +41,7 @@ static void BitmapLoad(void);
 static void MotionLoad(void);
 static void MatrixLoad(void);
 
+static s32 SearchObjectSetName(HsfData *data, char *name);
 static HsfBuffer *SearchVertexPtr(s32 id);
 static HsfBuffer *SearchNormalPtr(s32 id);
 static HsfBuffer *SearchStPtr(s32 id);
@@ -83,6 +84,27 @@ HsfData *LoadHSF(void *data)
     objtop = NULL;
     return hsf;
     
+}
+
+void ClusterAdjustObject(HsfData *src_model, HsfData *model)
+{
+    HsfCluster *cluster;
+    s32 i;
+    if(!model) {
+        return;
+    }
+    if(model->clusterCnt == 0) {
+        return;
+    }
+    cluster = model->cluster;
+    if(cluster->adjusted) {
+        return;
+    }
+    cluster->adjusted = 1;
+    for(i=0; i<model->clusterCnt; i++, cluster++) {
+        char *name = cluster->targetName;
+        cluster->target = SearchObjectSetName(src_model, name);
+    }
 }
 
 static void FileLoad(void *data)
@@ -516,7 +538,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
             if(Model.root == NULL) {
                 Model.root = temp_object;
             }
-            new_object->data.unk64 = &objtop[(u32)new_object->data.unk64];
+            new_object->data.replica = &objtop[(u32)new_object->data.replica];
             for(i=0; i<data->childrenCount; i++) {
                 DispObject(new_object, new_object->data.children[i]);
             }
@@ -769,6 +791,108 @@ static void SkeletonLoad(void)
             skeleton_new[i].transform.scale.x = skeleton_file[i].transform.scale.x;
             skeleton_new[i].transform.scale.y = skeleton_file[i].transform.scale.y;
             skeleton_new[i].transform.scale.z = skeleton_file[i].transform.scale.z;
+        }
+    }
+}
+
+static void PartLoad(void)
+{
+    HsfPart *part_file;
+    HsfPart *part_new;
+    
+    u16 *data;
+    s32 i, j;
+    
+    if(head.part.count) {
+        part_new = part_file = (HsfPart *)((u32)fileptr+head.part.ofs);
+        Model.partCnt = head.part.count;
+        Model.part = part_file;
+        data = (u16 *)&part_file[head.part.count];
+        for(i=0; i<head.part.count; i++, part_new++) {
+            part_new->name = SetName((u32 *)&part_file[i].name);
+            part_new->count = part_file[i].count;
+            part_new->vertex = &data[(u32)part_file[i].vertex];
+            for(j=0; j<part_new->count; j++) {
+                part_new->vertex[j] = part_new->vertex[j];
+            }
+        }
+    }
+}
+
+static void ClusterLoad(void)
+{
+    HsfCluster *cluster_file;
+    HsfCluster *cluster_new;
+    
+    s32 i, j;
+    
+    if(head.cluster.count) {
+        cluster_new = cluster_file = (HsfCluster *)((u32)fileptr+head.cluster.ofs);
+        Model.clusterCnt = head.cluster.count;
+        Model.cluster = cluster_file;
+        for(i=0; i<head.cluster.count; i++) {
+            HsfBuffer *vertex;
+            u32 vertexSym;
+            cluster_new[i].name[0] = SetName((u32 *)&cluster_file[i].name[0]);
+            cluster_new[i].name[1] = SetName((u32 *)&cluster_file[i].name[1]);
+            cluster_new[i].targetName = SetName((u32 *)&cluster_file[i].targetName);
+            cluster_new[i].part = SearchPartPtr((s32)cluster_file[i].part);
+            cluster_new[i].unk95 = cluster_file[i].unk95;
+            cluster_new[i].type = cluster_file[i].type;
+            cluster_new[i].vertexCnt = cluster_file[i].vertexCnt;
+            vertexSym = (u32)cluster_file[i].vertex;
+            cluster_new[i].vertex = (HsfBuffer **)&NSymIndex[vertexSym];
+            for(j=0; j<cluster_new[i].vertexCnt; j++) {
+                vertex = SearchVertexPtr((s32)cluster_new[i].vertex[j]);
+                cluster_new[i].vertex[j] = vertex;
+            }
+        }
+    }
+}
+
+static void ShapeLoad(void)
+{
+    s32 i, j;
+    HsfShape *shape_new;
+    HsfShape *shape_file;
+
+    if(head.shape.count) {
+        shape_new = shape_file = (HsfShape *)((u32)fileptr+head.shape.ofs);
+        Model.shapeCnt = head.shape.count;
+        Model.shape = shape_file;
+        for(i=0; i<Model.shapeCnt; i++) {
+            u32 vertexSym;
+            HsfBuffer *vertex;
+
+            shape_new[i].name = SetName((u32 *)&shape_file[i].name);
+            shape_new[i].count16[0] = shape_file[i].count16[0];
+            shape_new[i].count16[1] = shape_file[i].count16[1];
+            vertexSym = (u32)shape_file[i].vertex;
+            shape_new[i].vertex = (HsfBuffer **)&NSymIndex[vertexSym];
+            for(j=0; j<shape_new[i].count16[1]; j++) {
+                vertex = &vtxtop[(u32)shape_new[i].vertex[j]];
+                shape_new[i].vertex[j] = vertex;
+            }
+        }
+    }
+}
+
+static void MapAttrLoad(void)
+{
+    s32 i;
+    HsfMapAttr *mapattr_base;
+    HsfMapAttr *mapattr_file;
+    HsfMapAttr *mapattr_new;
+    s16 *data;
+    
+    if(head.mapAttr.count) {
+        mapattr_file = mapattr_base = (HsfMapAttr *)((u32)fileptr+head.mapAttr.ofs);
+        mapattr_new = mapattr_base;
+        Model.mapAttrCnt = head.mapAttr.count;
+        Model.mapAttr = mapattr_base;
+        data = (s16 *)&mapattr_base[head.mapAttr.count];
+        for(i=0; i<head.mapAttr.count; i++, mapattr_file++, mapattr_new++) {
+            mapattr_new->data = &data[(u32)mapattr_file->data];
         }
     }
 }
