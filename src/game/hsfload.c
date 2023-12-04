@@ -415,7 +415,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
     temp.parent = parent;
     object->type = object->type;
     switch(object->type) {
-        case 2:
+        case HSF_OBJTYPE_MESH:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -432,7 +432,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
             if(Model.root == NULL) {
                 Model.root = temp_object;
             }
-            new_object->type = 2;
+            new_object->type = HSF_OBJTYPE_MESH;
             new_object->data.vertex = SearchVertexPtr((s32)data->vertex);
             new_object->data.normal = SearchNormalPtr((s32)data->normal);
             new_object->data.st = SearchStPtr((s32)data->st);
@@ -478,7 +478,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
             
-        case 0:
+        case HSF_OBJTYPE_NULL1:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -500,7 +500,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case 1:
+        case HSF_OBJTYPE_REPLICA:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -523,7 +523,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
 
-        case 3:
+        case HSF_OBJTYPE_ROOT:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -545,7 +545,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case 4:
+        case HSF_OBJTYPE_JOINT:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -567,7 +567,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case 5:
+        case HSF_OBJTYPE_NULL2:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -589,7 +589,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case 9:
+        case HSF_OBJTYPE_MAP:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -626,14 +626,14 @@ static inline void FixupObject(HsfObject *object)
         case 8:
         {
             objdata_8 = &object->data;
-            object->type = 8;
+            object->type = HSF_OBJTYPE_NONE2;
         }
         break;
         
         case 7:
         {
             objdata_7 = &object->data;
-            object->type = 7;
+            object->type = HSF_OBJTYPE_NONE1;
         }
         break;
         
@@ -648,12 +648,8 @@ static void ObjectLoad(void)
     s32 i;
     HsfObject *object;
     HsfObject *new_object;
-    
-    
     s32 obj_type;
-    
-    
-    
+
     if(head.object.count) {
         objtop = object = (HsfObject *)((u32)fileptr+head.object.ofs);
         for(i=0; i<head.object.count; i++, object++) {
@@ -671,6 +667,108 @@ static void ObjectLoad(void)
         object = objtop;
         for(i=0; i<head.object.count; i++, object++) {
             FixupObject(object);
+        }
+    }
+}
+
+static void CenvLoad(void)
+{
+    HsfCenvMulti *multi_file;
+    HsfCenvMulti *multi_new;
+    HsfCenvSingle *single_new;
+    HsfCenvSingle *single_file;
+    HsfCenvDual *dual_file;
+    HsfCenvDual *dual_new;
+
+    HsfCenv *cenv_new;
+    HsfCenv *cenv_file;
+    void *data_base;
+    void *weight_base;
+    
+    s32 j;
+    s32 i;
+    
+    if(head.cenv.count) {
+        cenv_file = (HsfCenv *)((u32)fileptr+head.cenv.ofs);
+        data_base = &cenv_file[head.cenv.count];
+        weight_base = data_base;
+        cenv_new = cenv_file;
+        Model.cenvCnt = head.cenv.count;
+        Model.cenv = cenv_file;
+        for(i=0; i<head.cenv.count; i++) {
+            cenv_new[i].singleData = (HsfCenvSingle *)((u32)cenv_file[i].singleData+(u32)data_base);
+            cenv_new[i].dualData = (HsfCenvDual *)((u32)cenv_file[i].dualData+(u32)data_base);
+            cenv_new[i].multiData = (HsfCenvMulti *)((u32)cenv_file[i].multiData+(u32)data_base);
+            cenv_new[i].singleCount = cenv_file[i].singleCount;
+            cenv_new[i].dualCount = cenv_file[i].dualCount;
+            cenv_new[i].multiCount = cenv_file[i].multiCount;
+            cenv_new[i].copyCount = cenv_file[i].copyCount;
+            cenv_new[i].vtxCount = cenv_file[i].vtxCount;
+            weight_base = (void *)((u32)weight_base+(cenv_new[i].singleCount*sizeof(HsfCenvSingle)));
+            weight_base = (void *)((u32)weight_base+(cenv_new[i].dualCount*sizeof(HsfCenvDual)));
+            weight_base = (void *)((u32)weight_base+(cenv_new[i].multiCount*sizeof(HsfCenvMulti)));
+        }
+        for(i=0; i<head.cenv.count; i++) {
+            single_new = single_file = cenv_new[i].singleData;
+            for(j=0; j<cenv_new[i].singleCount; j++) {
+                single_new[j].target = single_file[j].target;
+                single_new[j].posCnt = single_file[j].posCnt;
+                single_new[j].pos = single_file[j].pos;
+                single_new[j].normalCnt = single_file[j].normalCnt;
+                single_new[j].normal = single_file[j].normal;
+                
+            }
+            dual_new = dual_file = cenv_new[i].dualData;
+            for(j=0; j<cenv_new[i].dualCount; j++) {
+                dual_new[j].target1 = dual_file[j].target1;
+                dual_new[j].target2 = dual_file[j].target2;
+                dual_new[j].weightCnt = dual_file[j].weightCnt;
+                dual_new[j].weight = (HsfCenvDualWeight *)((u32)weight_base+(u32)dual_file[j].weight);
+            }
+            multi_new = multi_file = cenv_new[i].multiData;
+            for(j=0; j<cenv_new[i].multiCount; j++) {
+                multi_new[j].weightCnt = multi_file[j].weightCnt;
+                multi_new[j].pos = multi_file[j].pos;
+                multi_new[j].posCnt = multi_file[j].posCnt;
+                multi_new[j].normal = multi_file[j].normal;
+                multi_new[j].normalCnt = multi_file[j].normalCnt;
+                multi_new[j].weight = (HsfCenvMultiWeight *)((u32)weight_base+(u32)multi_file[j].weight);
+            }
+            dual_new = dual_file = cenv_new[i].dualData;
+            for(j=0; j<cenv_new[i].dualCount; j++) {
+                HsfCenvDualWeight *discard = dual_new[j].weight;
+            }
+            multi_new = multi_file = cenv_new[i].multiData;
+            for(j=0; j<cenv_new[i].multiCount; j++) {
+                HsfCenvMultiWeight *weight = multi_new[j].weight;
+                s32 k;
+                for(k=0; k<multi_new[j].weightCnt; k++, weight++);
+            }
+        }
+    }
+}
+
+static void SkeletonLoad(void)
+{
+    HsfSkeleton *skeleton_file;
+    HsfSkeleton *skeleton_new;
+    s32 i;
+    
+    if(head.skeleton.count) {
+        skeleton_new = skeleton_file = (HsfSkeleton *)((u32)fileptr+head.skeleton.ofs);
+        Model.skeletonCnt = head.skeleton.count;
+        Model.skeleton = skeleton_file;
+        for(i=0; i<head.skeleton.count; i++) {
+            skeleton_new[i].name = SetName((u32 *)&skeleton_file[i].name);
+            skeleton_new[i].transform.pos.x = skeleton_file[i].transform.pos.x;
+            skeleton_new[i].transform.pos.y = skeleton_file[i].transform.pos.y;
+            skeleton_new[i].transform.pos.z = skeleton_file[i].transform.pos.z;
+            skeleton_new[i].transform.rot.x = skeleton_file[i].transform.rot.x;
+            skeleton_new[i].transform.rot.y = skeleton_file[i].transform.rot.y;
+            skeleton_new[i].transform.rot.z = skeleton_file[i].transform.rot.z;
+            skeleton_new[i].transform.scale.x = skeleton_file[i].transform.scale.x;
+            skeleton_new[i].transform.scale.y = skeleton_file[i].transform.scale.y;
+            skeleton_new[i].transform.scale.z = skeleton_file[i].transform.scale.z;
         }
     }
 }

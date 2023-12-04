@@ -3,6 +3,17 @@
 
 #include "dolphin.h"
 
+#define HSF_OBJTYPE_NULL1 0
+#define HSF_OBJTYPE_REPLICA 1
+#define HSF_OBJTYPE_MESH 2
+#define HSF_OBJTYPE_ROOT 3
+#define HSF_OBJTYPE_JOINT 4
+#define HSF_OBJTYPE_NULL2 5
+#define HSF_OBJTYPE_NULL3 6
+#define HSF_OBJTYPE_NONE1 7
+#define HSF_OBJTYPE_NONE2 8
+#define HSF_OBJTYPE_MAP 9
+
 typedef struct hsf_vector3f {
     float x;
     float y;
@@ -132,8 +143,53 @@ typedef struct hsf_transform {
     HsfVector3f scale;
 } HsfTransform;
 
+typedef struct hsf_cenv_single {
+    u32 target;
+    u16 pos;
+    u16 posCnt;
+    u16 normal;
+    u16 normalCnt;
+} HsfCenvSingle;
+
+typedef struct hsf_cenv_dual_weight {
+    float weight;
+    u16 pos;
+    u16 posCnt;
+    u16 normal;
+    u16 normalCnt;
+} HsfCenvDualWeight;
+
+typedef struct hsf_cenv_dual {
+    u32 target1;
+    u32 target2;
+    u32 weightCnt;
+    HsfCenvDualWeight *weight;
+} HsfCenvDual;
+
+typedef struct hsf_cenv_multi_weight {
+    u32 target;
+    float value;
+} HsfCenvMultiWeight;
+
+typedef struct hsf_cenv_multi {
+    u32 weightCnt;
+    u16 pos;
+    u16 posCnt;
+    u16 normal;
+    u16 normalCnt;
+    HsfCenvMultiWeight *weight;
+} HsfCenvMulti;
+
 typedef struct hsf_cenv {
-    u8 unk[36];
+    char *name;
+    HsfCenvSingle *singleData;
+    HsfCenvDual *dualData;
+    HsfCenvMulti *multiData;
+    u32 singleCount;
+    u32 dualCount;
+    u32 multiCount;
+    u32 vtxCount;
+    u32 copyCount;
 } HsfCenv;
 
 typedef struct hsf_part {
