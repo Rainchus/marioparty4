@@ -8,7 +8,9 @@ typedef struct ThreeDDataStruct {
     s16  unk_0E;
     char unk_10[0x12];
     u16  unk_22;
-    char unk_24[0x2C];
+    char unk_24[0x24];
+    u32  unk_48;
+    char unk_4C[0x4];
     s32  unk_50;
     s32  unk_54;
     char unk_58[0xC];
@@ -37,13 +39,19 @@ typedef struct ThreeDCameraStruct {
     char unk_04[0x54];
 } ThreeDCameraStruct;
 typedef struct ThreeDProjectionStruct {
-    char unk_00[0x4];
+    s8   unk_00;
+    char unk_01[0x3];
     s32  unk_04;
-    char unk_08[0x90];
+    char unk_08[0xC];
+    Vec3f unk_14;
+    Vec3f unk_20;
+    Vec3f unk_2C;
+    char unk_38[0x60];
 } ThreeDProjectionStruct;
 typedef struct ThreeDShadowStruct {
-    char unk_00[0x4];
-    s32  unk_04;
+    char unk_00[0x2];
+    u16  unk_02;
+    void*unk_04;
     char unk_08[0x90];
 } ThreeDShadowStruct;
 
@@ -53,6 +61,7 @@ void Hu3DLighInit(void);
 void Hu3DMotionInit(void);
 void Hu3DParManInit(void);
 char *HuSprAnimRead(char*);
+void HuSprAnimKill(s32);
 s16 Hu3DCameraExistF;
 ThreeDDataStruct Hu3DData[0x200];
 ThreeDCameraStruct Hu3DCamera[0x10];
@@ -83,6 +92,7 @@ char *hiliteAnim[4];
 ThreeDProjectionStruct Hu3DProjection[4];
 ThreeDShadowStruct Hu3DShadowData;
 GXColor BGColor;
+f32 lbl_801D4AFC;
 
 void Hu3DInit(void) {
     ThreeDDataStruct* data;
@@ -130,4 +140,27 @@ void Hu3DInit(void) {
     modelKillAllF = 0;
     Hu3DPauseF = 0;
     NoSyncF = 0;
+}
+
+void Hu3DShadowSizeSet(u16 arg0) {
+    Hu3DShadowData.unk_02 = arg0;
+    if (Hu3DShadowData.unk_04 != 0) {
+        HuMemDirectFree(Hu3DShadowData.unk_04);
+    }
+    Hu3DShadowData.unk_04 = HuMemDirectMalloc(HEAP_DATA, arg0 * arg0);
+}
+
+void Hu3DProjectionKill(s16 arg0) {
+    HuSprAnimKill(Hu3DProjection[arg0].unk_04);
+    Hu3DProjection[arg0].unk_04 = 0;
+}
+
+void Hu3DProjectionPosSet(s16 arg0, Vec3f arg1, Vec3f arg2, Vec3f arg3) {
+    Hu3DProjection[arg0].unk_14 = arg1;
+    Hu3DProjection[arg0].unk_20 = arg3;
+    Hu3DProjection[arg0].unk_2C = arg2;
+}
+
+void Hu3DProjectionTPLvlSet(s16 arg0, f32 arg8) {
+    Hu3DProjection[arg0].unk_00 = (s8) (lbl_801D4AFC * arg8);
 }
