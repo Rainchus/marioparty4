@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/data.h"
 #include "dolphin/dvd.h"
 
 #define PTR_OFFSET(ptr, offset) (void *)(((u8 *)(ptr)+(u32)(offset)))

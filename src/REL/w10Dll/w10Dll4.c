@@ -1,4 +1,5 @@
 #include "REL/w10Dll.h"
+#include "game/data.h"
 
 char lbl_1_data_98[] = "@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000";
 
@@ -64,17 +65,17 @@ w10DllUnk04 lbl_1_data_108[42] = {
 char lbl_1_data_258[] = "Tutorial Hook P0:%d P1:%d P2:%d P3:%d  SCEN:%d  CUE:%d  PRM:%d DICE:%d  MSG:%d\n";
 
 s32 lbl_1_data_2A8[11] = {
-0x007B0004,
-0x007B0005,
-0x007B0006,
-0x007B0007,
-0x007B0008,
-0x007B0009,
-0x007B000A,
-0x007B000B,
-0x007B000C,
-0x007B000D,
-0x007B000E
+    MAKE_DATA_NUM(DATADIR_W10, 4),
+    MAKE_DATA_NUM(DATADIR_W10, 5),
+    MAKE_DATA_NUM(DATADIR_W10, 6),
+    MAKE_DATA_NUM(DATADIR_W10, 7),
+    MAKE_DATA_NUM(DATADIR_W10, 8),
+    MAKE_DATA_NUM(DATADIR_W10, 9),
+    MAKE_DATA_NUM(DATADIR_W10, 10),
+    MAKE_DATA_NUM(DATADIR_W10, 11),
+    MAKE_DATA_NUM(DATADIR_W10, 12),
+    MAKE_DATA_NUM(DATADIR_W10, 13),
+    MAKE_DATA_NUM(DATADIR_W10, 14)
 };
 
 void fn_1_176C(void) {

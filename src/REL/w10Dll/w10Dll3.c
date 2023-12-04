@@ -168,8 +168,8 @@ void fn_1_137C(void) {
 
 void fn_1_13A4(void) {
     s32 i;
-    Vec3f sp14;
-    Vec3f sp8;
+    Vec sp14;
+    Vec sp8;
     s32 temp_r3_2;
     
     fn_1_BA0(0x2E0023);

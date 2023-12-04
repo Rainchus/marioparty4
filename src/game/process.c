@@ -1,5 +1,9 @@
 #include "common.h"
+#include "game/process.h"
+#include "game/memory.h"
 #include "dolphin/os.h"
+
+#define PROCESS_MEMORY_RETADDR 0xA5A5A5A5
 
 extern int gcsetjmp(jmp_buf *jump);
 extern void gclongjmp(jmp_buf *jump, int status);
@@ -75,13 +79,13 @@ Process *HuPrcCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_siz
         return NULL;
     }
     HuMemHeapInit(heap, alloc_size);
-    process = HuMemMemoryAlloc(heap, sizeof(Process), 0xA5A5A5A5);
+    process = HuMemMemoryAlloc(heap, sizeof(Process), PROCESS_MEMORY_RETADDR);
     process->heap = heap;
     process->exec = EXEC_NORMAL;
     process->stat = 0;
     process->prio = prio;
     process->sleep_time = 0;
-    process->base_sp = ((u32)HuMemMemoryAlloc(heap, stack_size, 0xA5A5A5A5))+stack_size-8;
+    process->base_sp = ((u32)HuMemMemoryAlloc(heap, stack_size, PROCESS_MEMORY_RETADDR))+stack_size-8;
     gcsetjmp(&process->jump);
     process->jump.lr = (u32)func;
     process->jump.sp = process->base_sp;
@@ -196,7 +200,7 @@ void HuPrcEnd()
     gcTerminateProcess(process);
 }
 
-void HuPrcSleep(s32 time)
+void HuPrcSleep(int time)
 {
     Process *process = HuPrcCurrentGet();
     if(time != 0 && process->exec != EXEC_KILLED) {
@@ -256,7 +260,7 @@ void HuPrcCall(int tick)
             return;
         }
         procfunc = process->jump.lr;
-        if((process->stat & 0x3) && process->exec != EXEC_KILLED) {
+        if((process->stat & (PROCESS_STAT_PAUSE|PROCESS_STAT_UPAUSE)) && process->exec != EXEC_KILLED) {
             ret = 1;
             continue;
         }
@@ -293,12 +297,12 @@ void HuPrcCall(int tick)
 void *HuPrcMemAlloc(s32 size)
 {
     Process *process = HuPrcCurrentGet();
-    return HuMemMemoryAlloc(process->heap, size, 0xA5A5A5A5);
+    return HuMemMemoryAlloc(process->heap, size, PROCESS_MEMORY_RETADDR);
 }
 
 void HuPrcMemFree(void *ptr)
 {
-    HuMemMemoryFree(ptr, 0xA5A5A5A5);
+    HuMemMemoryFree(ptr, PROCESS_MEMORY_RETADDR);
 }
 
 void HuPrcSetStat(Process *process, u16 value)
@@ -316,16 +320,16 @@ void HuPrcAllPause(int flag)
     Process *process = processtop;
     if(flag) {
         while(process != NULL) {
-            if(!(process->stat & 0x4)) {
-                HuPrcSetStat(process, 0x1);
+            if(!(process->stat & PROCESS_STAT_PAUSE_EN)) {
+                HuPrcSetStat(process, PROCESS_STAT_PAUSE);
             }
             
             process = process->next;
         }
     } else {
         while(process != NULL) {
-            if(process->stat & 0x1) {
-                HuPrcResetStat(process, 0x1);
+            if(process->stat & PROCESS_STAT_PAUSE) {
+                HuPrcResetStat(process, PROCESS_STAT_PAUSE);
             }
             
             process = process->next;
@@ -338,16 +342,16 @@ void HuPrcAllUPause(int flag)
     Process *process = processtop;
     if(flag) {
         while(process != NULL) {
-            if(!(process->stat & 0x8)) {
-                HuPrcSetStat(process, 0x2);
+            if(!(process->stat & PROCESS_STAT_UPAUSE_EN)) {
+                HuPrcSetStat(process, PROCESS_STAT_UPAUSE);
             }
             
             process = process->next;
         }
     } else {
         while(process != NULL) {
-            if(process->stat & 0x2) {
-                HuPrcResetStat(process, 0x2);
+            if(process->stat & PROCESS_STAT_UPAUSE) {
+                HuPrcResetStat(process, PROCESS_STAT_UPAUSE);
             }
             
             process = process->next;

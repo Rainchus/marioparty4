@@ -1,18 +1,19 @@
 #include "REL/w10Dll.h"
+#include "game/data.h"
 
 s32 lbl_1_data_78[2] = {
-    0x007B0010,
+    MAKE_DATA_NUM(DATADIR_W10, 16),
     -1
 };
 
-Vec3f lbl_1_data_80[2] = {
+Vec lbl_1_data_80[2] = {
     {70.0f, 355.0f, 200.f},
     {70.0f, 175.0f, 200.f},
 };
 
 void fn_1_AEC(void) {
     lbl_1_bss_1C = 0;
-    lbl_1_bss_1E = fn_8006D9A4(0x7B000F, &lbl_1_data_78, 0);
+    lbl_1_bss_1E = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_W10, 15), &lbl_1_data_78, 0);
     fn_8006E2B8(lbl_1_bss_1E, 1, 0x40000001);
     fn_800B42BC(lbl_1_bss_1E);
     fn_8006F61C(lbl_1_bss_1E, 6);
@@ -41,8 +42,8 @@ void fn_1_C10(s16 arg0) {
 
 void fn_1_C20(void) {
     Mtx sp20;
-    Vec3f sp14;
-    Vec3f sp8;
+    Vec sp14;
+    Vec sp8;
     
     while (1) {
         if (fn_8005B6A8() != 0) {

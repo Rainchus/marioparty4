@@ -1,12 +1,14 @@
 #include "common.h"
+#include "dolphin.h"
 #include "REL/executor.h"
+#include "game/process.h"
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
 typedef struct unkw10Dll {
-    Vec3f unk0;
-    Vec3f unk0C;
-    Vec3f unk18;
+    Vec unk0;
+    Vec unk0C;
+    Vec unk18;
     s32 unk24;
 } unkw10Dll; //sizeof 0x28
 
@@ -22,9 +24,6 @@ typedef struct m456DllUnk02 {
     char unk00[0x5C];
     w10DllUnk01* unk5C;
 } m456DllUnk02; //sizeof ?
-
-//this belongs to m456Dll
-m456DllUnk02** fn_8002FAC0(Process*, s32);
 
 typedef struct w10DllUnk03 {
     s16 unk0;
@@ -103,7 +102,7 @@ void fn_1_137C(void);
 
 extern w10DllUnk04 lbl_1_data_108[42];
 extern w10DllUnk03 lbl_1_data_C6[];
-extern Vec3f lbl_1_data_80[];
+extern Vec lbl_1_data_80[];
 extern Process* lbl_1_bss_18;
 extern s16 lbl_1_bss_1C;
 extern s16 lbl_1_bss_1E;

@@ -1,4 +1,5 @@
 #include "include/REL/w10Dll.h"
+#include "game/data.h"
 
 //BSS
 s16 lbl_1_bss_22[11];
@@ -18,7 +19,7 @@ unkw10Dll lbl_1_data_0[1] = {
     3300.0f, 100.0f, -900.0f,
     0.0f, 0.0f, 0.0f,
     1.0f, 1.0f, 1.0f,
-    0x007B0003
+    MAKE_DATA_NUM(DATADIR_W10, 3)
 };
 
 
@@ -38,23 +39,23 @@ s32 lbl_1_data_34[] = {
 };
 
 s32 lbl_1_data_54[2] = {
-    0x007B0012,
-    -1
+    MAKE_DATA_NUM(DATADIR_W10, 18),
+    DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_5C[2] = {
-    0x00020009,
-    -1
+    MAKE_DATA_NUM(DATADIR_BGUEST, 9),
+    DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_64[2] = {
-    0x00020018,
-    -1
+    MAKE_DATA_NUM(DATADIR_BGUEST, 24),
+    DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_6C[2] = {
-    0x0002000E,
-    -1,
+    MAKE_DATA_NUM(DATADIR_BGUEST, 14),
+    DATA_NUM_LISTEND
 };
 
 //RODATA
@@ -86,26 +87,26 @@ void fn_1_E0(void) {
     fn_1_AEC();
     fn_1_1D68();
     lbl_1_bss_C = 0;
-    fn_800772EC(0x7B0000);
+    fn_800772EC(MAKE_DATA_NUM(DATADIR_W10, 0));
     temp = fn_800745F0(0, 1);
     fn_800B4274(temp, 1);
-    lbl_1_data_28 = fn_8006D9A4(0x7B0001, NULL, 0);
+    lbl_1_data_28 = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_W10, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_28, -1.0f);
     fn_8006F1A8(lbl_1_data_28, 0.0f, 0.0f, 0.0f);
     fn_8006E2B8(lbl_1_data_28, 0, 0x40000001);
     fn_8006E878(lbl_1_data_28, 1.0f);
-    lbl_1_data_2A = fn_8006D9A4(0x7B0002, NULL, 0);
+    lbl_1_data_2A = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_W10, 2), NULL, 0);
     fn_8006DDE8(lbl_1_data_2A, -1.0f);
     fn_8006F1A8(lbl_1_data_2A, 0.0f, 0.0f, 0.0f);
     fn_8006E2B8(lbl_1_data_2A, 0, 0x40000001);
-    lbl_1_data_2C = fn_8006D9A4(0x7B0011, lbl_1_data_54, 0);
+    lbl_1_data_2C = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_W10, 17), lbl_1_data_54, 0);
     fn_8006F1A8(lbl_1_data_2C, 0.0f, 0.0f, 0.0f);
     fn_8006E2B8(lbl_1_data_2C, 1, 0x40000001);
-    lbl_1_data_2E = fn_8006D9A4(0x20005, lbl_1_data_5C, 0);
+    lbl_1_data_2E = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_BGUEST, 5), lbl_1_data_5C, 0);
     fn_8006E2B8(lbl_1_data_2E, 1, 0x40000001);
-    lbl_1_data_32 = fn_8006D9A4(0x20012, lbl_1_data_64, 0);
+    lbl_1_data_32 = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_BGUEST, 18), lbl_1_data_64, 0);
     fn_8006E2B8(lbl_1_data_32, 1, 0x40000001);
-    lbl_1_data_30 = fn_8006D9A4(0x2000D, lbl_1_data_6C, 0);
+    lbl_1_data_30 = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_BGUEST, 13), lbl_1_data_6C, 0);
     fn_8006E2B8(lbl_1_data_30, 1, 0x40000001);
     fn_8005D10C(&fn_1_8C0, &fn_1_904);
     for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
