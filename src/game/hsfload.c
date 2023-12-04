@@ -1,6 +1,6 @@
 #include "game/hsfformat.h"
 
-GXColor rgba[400];
+GXColor rgba[100];
 HsfHeader head;
 HsfData Model;
 
