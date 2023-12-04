@@ -189,7 +189,7 @@ typedef struct hsf_object_data {
 
 typedef struct hsf_object {
     char *name;
-    u32 type;
+    s32 type;
     HsfConstData *constData;
     u32 flags;
     HsfObjectData data;

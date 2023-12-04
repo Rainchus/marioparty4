@@ -412,7 +412,6 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         HsfCluster *cluster;
     } temp;
     
-    
     temp.parent = parent;
     object->type = object->type;
     switch(object->type) {
@@ -523,9 +522,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
             }
         }
         break;
-        
 
-        
         case 3:
         {
             HsfObjectData *data;
@@ -616,6 +613,65 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         
         default:
             break;
+    }
+}
+
+static inline void FixupObject(HsfObject *object)
+{
+    HsfObjectData *objdata_8;
+    HsfObjectData *objdata_7;
+    
+    s32 obj_type = object->type;
+    switch(obj_type) {
+        case 8:
+        {
+            objdata_8 = &object->data;
+            object->type = 8;
+        }
+        break;
+        
+        case 7:
+        {
+            objdata_7 = &object->data;
+            object->type = 7;
+        }
+        break;
+        
+        default:
+            break;
+            
+    }
+}
+
+static void ObjectLoad(void)
+{
+    s32 i;
+    HsfObject *object;
+    HsfObject *new_object;
+    
+    
+    s32 obj_type;
+    
+    
+    
+    if(head.object.count) {
+        objtop = object = (HsfObject *)((u32)fileptr+head.object.ofs);
+        for(i=0; i<head.object.count; i++, object++) {
+            new_object = object;
+            new_object->name = SetName((u32 *)&object->name);
+        }
+        object = objtop;
+        for(i=0; i<head.object.count; i++, object++) {
+            if((s32)object->data.parent == -1) {
+                break;
+            }
+        }
+        DispObject(NULL, object);
+        Model.objectCnt = head.object.count;
+        object = objtop;
+        for(i=0; i<head.object.count; i++, object++) {
+            FixupObject(object);
+        }
     }
 }
 
