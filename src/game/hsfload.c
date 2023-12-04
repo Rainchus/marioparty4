@@ -223,7 +223,6 @@ static void SceneLoad(void)
     }
 }
 
-
 static void ColorLoad(void)
 {
     s32 i;
@@ -248,6 +247,113 @@ static void ColorLoad(void)
             new_color->data = (void *)((u32)data+(u32)color_data);
         }
     }
+}
+
+static void VertexLoad(void)
+{
+    s32 i, j;
+    HsfVertexBuf *file_vertex;
+    HsfVertexBuf *new_vertex;
+    void *data;
+    HsfVector3f *data_elem;
+    void *temp_data;
+    
+    if(head.vertex.count) {
+        vtxtop = file_vertex = (HsfVertexBuf *)((u32)fileptr+head.vertex.ofs);
+        data = (void *)&file_vertex[head.vertex.count];
+        for(i=0; i<head.vertex.count; i++, file_vertex++) {
+            for(j=0; j<(u32)file_vertex->count; j++) {
+                data_elem = (HsfVector3f *)(((u32)data)+((u32)file_vertex->data)+(j*sizeof(HsfVector3f)));
+            }
+        }
+        new_vertex = vtxtop;
+        Model.vertex = new_vertex;
+        Model.vertexCnt = head.vertex.count;
+        file_vertex = (HsfVertexBuf *)((u32)fileptr+head.vertex.ofs);
+        VertexDataTop = data = (void *)&file_vertex[head.vertex.count];
+        for(i=0; i<head.vertex.count; i++, new_vertex++, file_vertex++) {
+            temp_data = file_vertex->data;
+            new_vertex->count = file_vertex->count;
+            new_vertex->name = SetName((u32 *)&file_vertex->name);
+            new_vertex->data = (void *)((u32)data+(u32)temp_data);
+            for(j=0; j<new_vertex->count; j++) {
+                data_elem = (HsfVector3f *)(((u32)data)+((u32)temp_data)+(j*sizeof(HsfVector3f)));
+                ((HsfVector3f *)new_vertex->data)[j].x = data_elem->x;
+                ((HsfVector3f *)new_vertex->data)[j].y = data_elem->y;
+                ((HsfVector3f *)new_vertex->data)[j].z = data_elem->z;
+            }
+        }
+    }
+}
+
+static void NormalLoad(void)
+{
+    s32 i, j;
+    void *temp_data;
+    HsfVertexBuf *file_normal;
+    HsfVertexBuf *new_normal;
+    HsfVertexBuf *temp_normal;
+    void *data;
+    
+    
+    if(head.normal.count) {
+        s32 cenv_count = head.cenv.count;
+        temp_normal = file_normal = (HsfVertexBuf *)((u32)fileptr+head.normal.ofs);
+        data = (void *)&file_normal[head.normal.count];
+        new_normal = temp_normal;
+        Model.normal = new_normal;
+        Model.normalCnt = head.normal.count;
+        file_normal = (HsfVertexBuf *)((u32)fileptr+head.normal.ofs);
+        NormalDataTop = data = (void *)&file_normal[head.normal.count];
+        for(i=0; i<head.normal.count; i++, new_normal++, file_normal++) {
+            temp_data = file_normal->data;
+            new_normal->count = file_normal->count;
+            new_normal->name = SetName((u32 *)&file_normal->name);
+            new_normal->data = (void *)((u32)data+(u32)temp_data);
+        }
+    }
+}
+
+static void STLoad(void)
+{
+    s32 i, j;
+    HsfVertexBuf *file_st;
+    HsfVertexBuf *temp_st;
+    HsfVertexBuf *new_st;
+    void *data;
+    HsfVector2f *data_elem;
+    void *temp_data;
+    
+    if(head.st.count) {
+        temp_st = file_st = (HsfVertexBuf *)((u32)fileptr+head.st.ofs);
+        data = (void *)&file_st[head.st.count];
+        for(i=0; i<head.st.count; i++, file_st++) {
+            for(j=0; j<(u32)file_st->count; j++) {
+                data_elem = (HsfVector2f *)(((u32)data)+((u32)file_st->data)+(j*sizeof(HsfVector2f)));
+            }
+        }
+        new_st = temp_st;
+        Model.st = new_st;
+        Model.stCnt = head.st.count;
+        file_st = (HsfVertexBuf *)((u32)fileptr+head.st.ofs);
+        data = (void *)&file_st[head.st.count];
+        for(i=0; i<head.st.count; i++, new_st++, file_st++) {
+            temp_data = file_st->data;
+            new_st->count = file_st->count;
+            new_st->name = SetName((u32 *)&file_st->name);
+            new_st->data = (void *)((u32)data+(u32)temp_data);
+            for(j=0; j<new_st->count; j++) {
+                data_elem = (HsfVector2f *)(((u32)data)+((u32)temp_data)+(j*sizeof(HsfVector2f)));
+                ((HsfVector2f *)new_st->data)[j].x = data_elem->x;
+                ((HsfVector2f *)new_st->data)[j].y = data_elem->y;
+            }
+        }
+    }
+}
+
+static void FaceLoad(void)
+{
+    
 }
 
 static HsfBitmap *SearchBitmapPtr(s32 id)

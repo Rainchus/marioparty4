@@ -3,6 +3,17 @@
 
 #include "dolphin.h"
 
+typedef struct hsf_vector3f {
+    float x;
+    float y;
+    float z;
+} HsfVector3f;
+
+typedef struct hsf_vector2f {
+    float x;
+    float y;
+} HsfVector2f;
+
 typedef struct hsf_section {
     s32 ofs;
     s32 count;
@@ -88,7 +99,7 @@ typedef struct hsf_material {
 
 typedef struct hsf_vertex_buf {
     char *name;
-    u32 count;
+    s32 count;
     void *data;
 } HsfVertexBuf;
 
@@ -105,12 +116,6 @@ typedef struct hsf_face {
     };
 } HSFFace;
 
-typedef struct hsf_face_buf {
-    char *name;
-    u32 count;
-    HSFFace *data;
-} HsfFaceBuf;
-
 typedef struct hsf_const_data {
     u32 flags;
     u8 unk[64];
@@ -122,12 +127,8 @@ typedef struct hsf_transform {
     Vec scale;
 } HsfTransform;
 
-typedef struct hsf_object {
-    char *name;
-    u32 type;
-    HsfConstData *constData;
-    u32 flags;
-    u32 idx;
+typedef struct hsf_object_data {
+    struct hsf_object *parent;
     u32 childrenCount;
     struct hsf_object **children;
     HsfTransform base;
@@ -135,7 +136,7 @@ typedef struct hsf_object {
     Vec min;
     Vec max;
     u8 unk[136];
-    HsfFaceBuf *face;
+    HsfVertexBuf *face;
     HsfVertexBuf *vertex;
     HsfVertexBuf *normal;
     HsfVertexBuf *st;
@@ -143,6 +144,14 @@ typedef struct hsf_object {
     HsfMaterial *material;
     HsfAttribute *attribute;
     u8 unk2[36];
+} HsfObjectData;
+
+typedef struct hsf_object {
+    char *name;
+    u32 type;
+    HsfConstData *constData;
+    u32 flags;
+    HsfObjectData data;
 } HsfObject;
 
 typedef struct hsf_cenv {
@@ -212,7 +221,7 @@ typedef struct hsf_data {
     HsfVertexBuf *normal;
     HsfVertexBuf *st;
     HsfVertexBuf *color;
-    HsfFaceBuf *face;
+    HsfVertexBuf *face;
     HsfBitmap *bitmap;
     HsfPalette *palette;
     HsfObject *root;
