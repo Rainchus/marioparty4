@@ -67,8 +67,8 @@ typedef struct hsf_bitmap {
 
 typedef struct hsf_palette {
     char *name;
-    int unk;
-    int palSize;
+    s32 unk;
+    s32 palSize;
     void *data;
 } HsfPalette;
 
@@ -161,17 +161,23 @@ typedef struct hsf_object_data {
     struct hsf_object **children;
     HsfTransform base;
     HsfTransform curr;
-    Vec min;
-    Vec max;
-    u8 unk[136];
+    union {
+        struct {
+            HsfVector3f min;
+            HsfVector3f max;
+            u8 unk[136];
+        } mesh;
+        struct hsf_object *unk64;
+    };
+    
     HsfBuffer *face;
     HsfBuffer *vertex;
     HsfBuffer *normal;
-    HsfBuffer *st;
     HsfBuffer *color;
+    HsfBuffer *st;
     HsfMaterial *material;
     HsfAttribute *attribute;
-    u8 unk2[12];
+    u8 unk2[4];
     u32 vertexShapeCnt;
     HsfBuffer **vertexShape;
     u32 clusterCnt;

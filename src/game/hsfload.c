@@ -1,4 +1,5 @@
 #include "game/hsfformat.h"
+#include "string.h"
 
 GXColor rgba[100];
 HsfHeader head;
@@ -39,6 +40,15 @@ static void PaletteLoad(void);
 static void BitmapLoad(void);
 static void MotionLoad(void);
 static void MatrixLoad(void);
+
+static HsfBuffer *SearchVertexPtr(s32 id);
+static HsfBuffer *SearchNormalPtr(s32 id);
+static HsfBuffer *SearchStPtr(s32 id);
+static HsfBuffer *SearchColorPtr(s32 id);
+static HsfBuffer *SearchFacePtr(s32 id);
+static HsfCenv *SearchCenvPtr(s32 id);
+static HsfPart *SearchPartPtr(s32 id);
+static HsfPalette *SearchPalettePtr(s32 id);
 
 static HsfBitmap *SearchBitmapPtr(s32 id);
 static char *GetString(u32 *str_ofs);
@@ -384,11 +394,332 @@ static void FaceLoad(void)
             file_face_strip = new_face_strip = new_face->data;
             for(j=0; j<new_face->count; j++, new_face_strip++, file_face_strip++) {
                 if(file_face_strip->type == 4) {
-                    new_face_strip->strip.data = &strip[(s32)file_face_strip->strip.data];
+                    new_face_strip->strip.data = &strip[(u32)file_face_strip->strip.data];
                 }
             }
         }
     }
+}
+
+static void DispObject(HsfObject *parent, HsfObject *object)
+{
+    
+    u32 i;
+    HsfObject *child_obj;
+    
+    HsfObject *temp_object;
+    
+    HsfCluster *temp_cluster;
+    HsfObject *temp_parent = parent;
+    HsfBuffer *shape;
+    
+    
+    object->type = object->type;
+    switch(object->type) {
+        case 2:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            new_object->data.parent = parent;
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            new_object->type = 2;
+            new_object->data.vertex = SearchVertexPtr((s32)data->vertex);
+            new_object->data.normal = SearchNormalPtr((s32)data->normal);
+            new_object->data.st = SearchStPtr((s32)data->st);
+            new_object->data.color = SearchColorPtr((s32)data->color);
+            new_object->data.face = SearchFacePtr((s32)data->face);
+            new_object->data.vertexShape = (HsfBuffer **)&NSymIndex[(u32)data->vertexShape];
+            for(i=0; i<new_object->data.vertexShapeCnt; i++) {
+                HsfBuffer *shape = &vtxtop[(u32)new_object->data.vertexShape[i]];
+                new_object->data.vertexShape[i] = shape;
+            }
+            new_object->data.cluster = (HsfCluster **)&NSymIndex[(u32)data->cluster];
+            for(i=0; i<new_object->data.clusterCnt; i++) {
+                temp_cluster = &ClusterTop[(u32)new_object->data.cluster[i]];
+                new_object->data.cluster[i] = temp_cluster;
+            }
+            new_object->data.cenv = SearchCenvPtr((s32)data->cenv);
+            new_object->data.material = Model.material;
+            if((s32)data->attribute >= 0) {
+                new_object->data.attribute = Model.attribute;
+            } else {
+                new_object->data.attribute = NULL;
+            }
+            new_object->data.file[0] = (void *)((u32)fileptr+(u32)data->file[0]);
+            new_object->data.file[1] = (void *)((u32)fileptr+(u32)data->file[1]);
+            new_object->data.base.pos.x = data->base.pos.x;
+            new_object->data.base.pos.y = data->base.pos.y;
+            new_object->data.base.pos.z = data->base.pos.z;
+            new_object->data.base.rot.x = data->base.rot.x;
+            new_object->data.base.rot.y = data->base.rot.y;
+            new_object->data.base.rot.z = data->base.rot.z;
+            new_object->data.base.scale.x = data->base.scale.x;
+            new_object->data.base.scale.y = data->base.scale.y;
+            new_object->data.base.scale.z = data->base.scale.z;
+            new_object->data.mesh.min.x = data->mesh.min.x;
+            new_object->data.mesh.min.y = data->mesh.min.y;
+            new_object->data.mesh.min.z = data->mesh.min.z;
+            new_object->data.mesh.max.x = data->mesh.max.x;
+            new_object->data.mesh.max.y = data->mesh.max.y;
+            new_object->data.mesh.max.z = data->mesh.max.z;
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+            
+        case 0:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.parent = parent;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+        
+        case 1:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.parent = parent;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            new_object->data.unk64 = &objtop[(u32)new_object->data.unk64];
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+        
+
+        
+        case 3:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.parent = parent;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+        
+        case 4:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.parent = parent;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+        
+        case 5:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.parent = parent;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+        
+        case 9:
+        {
+            HsfObjectData *data;
+            HsfObject *new_object;
+            data = &object->data;
+            new_object = temp_object = object;
+            new_object->data.parent = parent;
+            new_object->data.childrenCount = data->childrenCount;
+            new_object->data.children = (HsfObject **)&NSymIndex[(u32)data->children];
+            for(i=0; i<new_object->data.childrenCount; i++) {
+                child_obj = &objtop[(u32)new_object->data.children[i]];
+                new_object->data.children[i] = child_obj;
+            }
+            if(Model.root == NULL) {
+                Model.root = temp_object;
+            }
+            for(i=0; i<data->childrenCount; i++) {
+                DispObject(new_object, new_object->data.children[i]);
+            }
+        }
+        break;
+        
+        default:
+            break;
+    }
+}
+
+static s32 SearchObjectSetName(HsfData *data, char *name)
+{
+    HsfObject *object = data->object;
+    s32 i;
+    for(i=0; i<data->objectCnt; i++, object++) {
+        char *other_name = object->name;
+        int unk8 = 0;
+        if(!strcmp(other_name, name)) {
+            return i;
+        }
+    }
+    OSReport("Search Object Error %s\n", name);
+    return -1;
+}
+
+static HsfBuffer *SearchVertexPtr(s32 id)
+{
+    HsfBuffer *vertex; 
+    if(id == -1) {
+        return NULL;
+    }
+    vertex = (HsfBuffer *)((u32)fileptr+head.vertex.ofs);
+    vertex += id;
+    return vertex;
+}
+
+static HsfBuffer *SearchNormalPtr(s32 id)
+{
+    HsfBuffer *normal; 
+    if(id == -1) {
+        return NULL;
+    }
+    normal = (HsfBuffer *)((u32)fileptr+head.normal.ofs);
+    normal += id;
+    return normal;
+}
+
+static HsfBuffer *SearchStPtr(s32 id)
+{
+    HsfBuffer *st; 
+    if(id == -1) {
+        return NULL;
+    }
+    st = (HsfBuffer *)((u32)fileptr+head.st.ofs);
+    st += id;
+    return st;
+}
+
+static HsfBuffer *SearchColorPtr(s32 id)
+{
+    HsfBuffer *color; 
+    if(id == -1) {
+        return NULL;
+    }
+    color = (HsfBuffer *)((u32)fileptr+head.color.ofs);
+    color += id;
+    return color;
+}
+
+static HsfBuffer *SearchFacePtr(s32 id)
+{
+    HsfBuffer *face; 
+    if(id == -1) {
+        return NULL;
+    }
+    face = (HsfBuffer *)((u32)fileptr+head.face.ofs);
+    face += id;
+    return face;
+}
+
+static HsfCenv *SearchCenvPtr(s32 id)
+{
+    HsfCenv *cenv; 
+    if(id == -1) {
+        return NULL;
+    }
+    cenv = (HsfCenv *)((u32)fileptr+head.cenv.ofs);
+    cenv += id;
+    return cenv;
+}
+
+static HsfPart *SearchPartPtr(s32 id)
+{
+    HsfPart *part; 
+    if(id == -1) {
+        return NULL;
+    }
+    part = (HsfPart *)((u32)fileptr+head.part.ofs);
+    part += id;
+    return part;
+}
+
+static HsfPalette *SearchPalettePtr(s32 id)
+{
+    HsfPalette *palette; 
+    if(id == -1) {
+        return NULL;
+    }
+    palette = Model.palette;
+    palette += id;
+    return palette;
 }
 
 static HsfBitmap *SearchBitmapPtr(s32 id)
