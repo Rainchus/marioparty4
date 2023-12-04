@@ -67,9 +67,9 @@ typedef struct hsf_bitmap {
     s32 maxLod;
     u8 dataFmt;
     u8 pixSize;
-    u16 w;
-    u16 h;
-    u16 palSize;
+    s16 sizeX;
+    s16 sizeY;
+    s16 palSize;
     GXColor tint;
     void *palData;
     u32 unk;
@@ -79,13 +79,17 @@ typedef struct hsf_bitmap {
 typedef struct hsf_palette {
     char *name;
     s32 unk;
-    s32 palSize;
-    void *data;
+    u32 palSize;
+    u16 *data;
 } HsfPalette;
 
 typedef struct hsf_attribute {
     char *name;
-    u8 unk[124];
+    u8 unk4[96];
+    u32 wrap_s;
+    u32 wrap_t;
+    u8 unk6C[16];
+    u32 flag;
     HsfBitmap *bitmap;
 } HsfAttribute;
 
@@ -288,10 +292,10 @@ typedef struct hsf_motion {
 } HsfMotion;
 
 typedef struct hsf_map_attr {
-    float min_x;
-    float min_z;
-    float max_x;
-    float max_z;
+    float minX;
+    float minZ;
+    float maxX;
+    float maxZ;
     s16 *data;
     u32 dataLen;
 } HsfMapAttr;

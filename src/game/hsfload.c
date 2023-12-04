@@ -877,6 +877,93 @@ static void ShapeLoad(void)
     }
 }
 
+static void BitmapLoad(void)
+{
+    HsfBitmap *bitmap_file;
+    HsfBitmap *bitmap_temp;
+    HsfBitmap *bitmap_new;
+    HsfPalette *palette;
+    void *data;
+    s32 i;
+    
+    if(head.bitmap.count) {
+        bitmap_temp = bitmap_file = (HsfBitmap *)((u32)fileptr+head.bitmap.ofs);
+        data = &bitmap_file[head.bitmap.count];
+        for(i=0; i<head.bitmap.count; i++, bitmap_file++);
+        bitmap_new = bitmap_temp;
+        Model.bitmap = bitmap_file;
+        Model.bitmapCnt = head.bitmap.count;
+        bitmap_file = (HsfBitmap *)((u32)fileptr+head.bitmap.ofs);
+        data = &bitmap_file[head.bitmap.count];
+        for(i=0; i<head.bitmap.count; i++, bitmap_file++, bitmap_new++) {
+            bitmap_new->name = SetName((u32 *)&bitmap_file->name);
+            bitmap_new->dataFmt = bitmap_file->dataFmt;
+            bitmap_new->pixSize = bitmap_file->pixSize;
+            bitmap_new->sizeX = bitmap_file->sizeX;
+            bitmap_new->sizeY = bitmap_file->sizeY;
+            bitmap_new->palSize = bitmap_file->palSize;
+            palette = SearchPalettePtr((u32)bitmap_file->palData);
+            if(palette) {
+                bitmap_new->palData = palette->data;
+            }
+            bitmap_new->data = (void *)((u32)data+(u32)bitmap_file->data);
+        }
+    }
+}
+
+static void PaletteLoad(void)
+{
+    s32 i;
+    s32 j;
+    HsfPalette *palette_file;
+    HsfPalette *palette_temp;
+    HsfPalette *palette_new;
+    
+    void *data_base;
+    u16 *temp_data;
+    u16 *data;
+    
+    if(head.palette.count) {
+        palette_temp = palette_file = (HsfPalette *)((u32)fileptr+head.palette.ofs);
+        data_base = (u16 *)&palette_file[head.palette.count];
+        for(i=0; i<head.palette.count; i++, palette_file++) {
+            temp_data = (u16 *)((u32)data_base+(u32)palette_file->data);
+        }
+        Model.palette = palette_temp;
+        Model.paletteCnt = head.palette.count;
+        palette_new = palette_temp;
+        palette_file = (HsfPalette *)((u32)fileptr+head.palette.ofs);
+        data_base = (u16 *)&palette_file[head.palette.count];
+        for(i=0; i<head.palette.count; i++, palette_file++, palette_new++) {
+            temp_data = (u16 *)((u32)data_base+(u32)palette_file->data);
+            data = temp_data;
+            palette_new->name = SetName((u32 *)&palette_file->name);
+            palette_new->data = data;
+            palette_new->palSize = palette_file->palSize;
+            for(j=0; j<palette_file->palSize; j++) {
+                data[j] = data[j];
+            }
+        }
+    }
+}
+
+static void MotionLoad(void)
+{
+    
+}
+
+static void MatrixLoad(void)
+{
+    HsfMatrix *matrix_file;
+    
+    if(head.matrix.count) {
+        matrix_file = (HsfMatrix *)((u32)fileptr+head.matrix.ofs);
+        matrix_file->data = (Mtx *)((u32)fileptr+head.matrix.ofs+sizeof(HsfMatrix));
+        Model.matrix = matrix_file;
+        Model.matrixCnt = head.matrix.count;
+    }
+}
+
 static void MapAttrLoad(void)
 {
     s32 i;
