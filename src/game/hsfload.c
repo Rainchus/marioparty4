@@ -1,5 +1,6 @@
 #include "game/hsfformat.h"
 #include "string.h"
+#include "ctype.h"
 
 GXColor rgba[100];
 HsfHeader head;
@@ -945,6 +946,43 @@ static void PaletteLoad(void)
             }
         }
     }
+}
+
+char *MakeObjectName(char *name)
+{
+    static char buf[768];
+    int index, num_minus;
+    char *temp_name;
+    num_minus = 0;
+    index = 0;
+    temp_name = name;
+    while(*temp_name) {
+        if(*temp_name == '-') {
+            name = temp_name+1;
+            break;
+        }
+        temp_name++;
+    }
+    while(*name) {
+        if(num_minus != 0) {
+            break;
+        }
+        if(*name == '_' && !isalpha(name[1])) {
+            num_minus++;
+            break;
+        }
+        buf[index] = *name;
+        name++;
+        index++;
+    }
+    buf[index] = '\0';
+    return buf;
+}
+
+int CmpObjectName(char *name1, char *name2)
+{
+    int temp = 0;
+    return strcmp(name1, name2);
 }
 
 static void MotionLoad(void)
