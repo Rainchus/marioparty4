@@ -2,9 +2,7 @@
 #define _COMMON_STRUCTS_H
 
 #include "types.h"
-#include "dolphin/dvd.h"
-#include "dolphin/mtx/GeoTypes.h"
-#include "dolphin/gx/GXEnum.h"
+#include "dolphin.h"
 
 typedef struct player_config {
     s16 character;

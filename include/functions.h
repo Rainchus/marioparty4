@@ -11,11 +11,7 @@ void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s16);
 void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
 void Hu3DCameraViewportSet(s16, f32, f32, f32, f32, f32, f32);
-void fn_80044920(s16);
-void fn_80045F74(s16, s32);
-s32 fn_800578E4(void);
 void HuAudFadeOut(int arg0);
-void fn_80035A0C(void);
 
 void WipeCreate(char dir, char type, short duration);
 u8 WipeStatGet(void);
@@ -36,7 +32,9 @@ void HuWinAllKill(void);
 void HuWinMesSet(s16, s32);
 void HuWinKill(s16);
 void HuWinPriSet(s16, s32);
+void HuWinHomeClear(s16);
 void HuWinMesPalSet(s16, s32, s32, s32, s32);
+void HuWinMesSet(s16, s32);
 void HuWinMesSpeedSet(s16, s32);
 void HuWinMesMaxSizeGet(s32, f32*, ...);
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
@@ -58,6 +56,8 @@ s32 _CheckFlag(u32 flag);
 void BoardMessCreate(s16, s32, s32);
 void BoardMessKill(void);
 void BoardMessWait(void);
+
+s32 HuTHPFrameGet(void);
 
 s32 rand8(void);
 
