@@ -6,8 +6,8 @@ HsfData Model;
 
 static BOOL MotionOnly;
 static HsfData *MotionModel;
-static HsfVertexBuf *VertexDataTop;
-static HsfVertexBuf *NormalDataTop;
+static void *VertexDataTop;
+static void *NormalDataTop;
 void *fileptr;
 char *StringTable;
 char *DicStringTable;
