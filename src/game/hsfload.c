@@ -403,17 +403,17 @@ static void FaceLoad(void)
 
 static void DispObject(HsfObject *parent, HsfObject *object)
 {
-    
     u32 i;
     HsfObject *child_obj;
-    
     HsfObject *temp_object;
+    struct {
+        HsfObject *parent;
+        HsfBuffer *shape;
+        HsfCluster *cluster;
+    } temp;
     
-    HsfCluster *temp_cluster;
-    HsfObject *temp_parent = parent;
-    HsfBuffer *shape;
     
-    
+    temp.parent = parent;
     object->type = object->type;
     switch(object->type) {
         case 2:
@@ -441,13 +441,13 @@ static void DispObject(HsfObject *parent, HsfObject *object)
             new_object->data.face = SearchFacePtr((s32)data->face);
             new_object->data.vertexShape = (HsfBuffer **)&NSymIndex[(u32)data->vertexShape];
             for(i=0; i<new_object->data.vertexShapeCnt; i++) {
-                HsfBuffer *shape = &vtxtop[(u32)new_object->data.vertexShape[i]];
-                new_object->data.vertexShape[i] = shape;
+                temp.shape = &vtxtop[(u32)new_object->data.vertexShape[i]];
+                new_object->data.vertexShape[i] = temp.shape;
             }
             new_object->data.cluster = (HsfCluster **)&NSymIndex[(u32)data->cluster];
             for(i=0; i<new_object->data.clusterCnt; i++) {
-                temp_cluster = &ClusterTop[(u32)new_object->data.cluster[i]];
-                new_object->data.cluster[i] = temp_cluster;
+                temp.cluster = &ClusterTop[(u32)new_object->data.cluster[i]];
+                new_object->data.cluster[i] = temp.cluster;
             }
             new_object->data.cenv = SearchCenvPtr((s32)data->cenv);
             new_object->data.material = Model.material;
