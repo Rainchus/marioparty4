@@ -1004,12 +1004,6 @@ static inline char *MotionGetName(HsfTrack *track)
     return ret;
 }
 
-static inline BOOL CompareName(char *name1, char *name2)
-{
-    int unk = 0;
-    return !strcmp(name1, name2);
-}
-
 static inline s32 FindObjectName(char *name)
 {
     s32 i;
@@ -1017,7 +1011,7 @@ static inline s32 FindObjectName(char *name)
     
     object = objtop;
     for(i=0; i<head.object.count; i++, object++) {
-        if(CompareName(object->name, name)) {
+        if(!CmpObjectName(object->name, name)) {
             return i;
         }
     }
@@ -1378,7 +1372,7 @@ static s32 SearchObjectSetName(HsfData *data, char *name)
     HsfObject *object = data->object;
     s32 i;
     for(i=0; i<data->objectCnt; i++, object++) {
-        if(CompareName(object->name, name)) {
+        if(!CmpObjectName(object->name, name)) {
             return i;
         }
     }
