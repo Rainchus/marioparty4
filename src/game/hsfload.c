@@ -2,6 +2,7 @@
 #include "string.h"
 #include "ctype.h"
 
+#define AS_S16(field) (*((s16 *)&(field)))
 GXColor rgba[100];
 HsfHeader head;
 HsfData Model;
@@ -54,6 +55,7 @@ static HsfPalette *SearchPalettePtr(s32 id);
 
 static HsfBitmap *SearchBitmapPtr(s32 id);
 static char *GetString(u32 *str_ofs);
+static char *GetMotionString(u16 *str_ofs);
 
 HsfData *LoadHSF(void *data)
 {
@@ -168,6 +170,12 @@ static HsfData *SetHsfModel(void)
 char *SetName(u32 *str_ofs)
 {
     char *ret = GetString(str_ofs);
+    return ret;
+}
+
+static inline char *SetMotionName(u16 *str_ofs)
+{
+    char *ret = GetMotionString(str_ofs);
     return ret;
 }
 
@@ -438,7 +446,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
     temp.parent = parent;
     object->type = object->type;
     switch(object->type) {
-        case HSF_OBJTYPE_MESH:
+        case HSF_OBJ_MESH:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -455,7 +463,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
             if(Model.root == NULL) {
                 Model.root = temp_object;
             }
-            new_object->type = HSF_OBJTYPE_MESH;
+            new_object->type = HSF_OBJ_MESH;
             new_object->data.vertex = SearchVertexPtr((s32)data->vertex);
             new_object->data.normal = SearchNormalPtr((s32)data->normal);
             new_object->data.st = SearchStPtr((s32)data->st);
@@ -501,7 +509,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
             
-        case HSF_OBJTYPE_NULL1:
+        case HSF_OBJ_NULL1:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -523,7 +531,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case HSF_OBJTYPE_REPLICA:
+        case HSF_OBJ_REPLICA:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -546,7 +554,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
 
-        case HSF_OBJTYPE_ROOT:
+        case HSF_OBJ_ROOT:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -568,7 +576,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case HSF_OBJTYPE_JOINT:
+        case HSF_OBJ_JOINT:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -590,7 +598,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case HSF_OBJTYPE_NULL2:
+        case HSF_OBJ_NULL2:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -612,7 +620,7 @@ static void DispObject(HsfObject *parent, HsfObject *object)
         }
         break;
         
-        case HSF_OBJTYPE_MAP:
+        case HSF_OBJ_MAP:
         {
             HsfObjectData *data;
             HsfObject *new_object;
@@ -649,14 +657,14 @@ static inline void FixupObject(HsfObject *object)
         case 8:
         {
             objdata_8 = &object->data;
-            object->type = HSF_OBJTYPE_NONE2;
+            object->type = HSF_OBJ_NONE2;
         }
         break;
         
         case 7:
         {
             objdata_7 = &object->data;
-            object->type = HSF_OBJTYPE_NONE1;
+            object->type = HSF_OBJ_NONE1;
         }
         break;
         
@@ -985,9 +993,344 @@ int CmpObjectName(char *name1, char *name2)
     return strcmp(name1, name2);
 }
 
+static inline char *MotionGetName(HsfTrack *track)
+{
+    char *ret;
+    if(DicStringTable) {
+        ret = &DicStringTable[track->target];
+    } else {
+        ret = GetMotionString(&track->target);
+    }
+    return ret;
+}
+
+static inline s32 FindObjectName(char *name)
+{
+    s32 i;
+    HsfObject *object;
+    
+    object = objtop;
+    for(i=0; i<head.object.count; i++, object++) {
+        char *other_name = object->name;
+        int unk = 0;
+        if(!strcmp(other_name, name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline s32 FindClusterName(char *name)
+{
+    s32 i;
+    HsfCluster *cluster;
+    
+    cluster = ClusterTop;
+    for(i=0; i<head.cluster.count; i++, cluster++) {
+        if(!strcmp(cluster->name[0], name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline int FindMotionClusterName(char *name)
+{
+    s32 i;
+    HsfCluster *cluster;
+    
+    cluster = MotionModel->cluster;
+    for(i=0; i<MotionModel->clusterCnt; i++, cluster++) {
+        if(!strcmp(cluster->name[0], name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline s32 FindAttributeName(char *name)
+{
+    s32 i;
+    HsfAttribute *attribute;
+    
+    attribute = AttributeTop;
+    for(i=0; i<head.attribute.count; i++, attribute++) {
+        if(!attribute->name) {
+            continue;
+        }
+        if(!strcmp(attribute->name, name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline int FindMotionAttributeName(char *name)
+{
+    s32 i;
+    HsfAttribute *attribute;
+    
+    attribute = MotionModel->attribute;
+    for(i=0; i<MotionModel->attributeCnt; i++, attribute++) {
+        if(!attribute->name) {
+            continue;
+        }
+        if(!strcmp(attribute->name, name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline void MotionLoadTransform(HsfTrack *track, void *data)
+{
+    HsfTrack *out_track;
+    char *name;
+    s32 numKeyframes;
+    out_track = track;
+    name = MotionGetName(track);
+    if(objtop) {
+        out_track->target = FindObjectName(name);
+    }
+    numKeyframes = AS_S16(track->numKeyframes);
+    switch(track->curveType) {
+        case HSF_CURVE_STEP:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_LINEAR:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_BEZIER:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_CONST:
+            break;
+    }
+}
+
+static inline void MotionLoadCluster(HsfTrack *track, void *data)
+{
+    HsfTrack *out_track;
+    char *name;
+    s32 numKeyframes;
+    out_track = track;
+    name = SetMotionName(&track->target);
+    if(!MotionOnly) {
+        AS_S16(out_track->target) = FindClusterName(name);
+    } else {
+        AS_S16(out_track->target) = FindMotionClusterName(name);
+    }
+    numKeyframes = AS_S16(track->numKeyframes);
+    switch(track->curveType) {
+        case HSF_CURVE_STEP:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_LINEAR:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_BEZIER:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_CONST:
+            break;
+    }
+}
+
+static inline void MotionLoadClusterWeight(HsfTrack *track, void *data)
+{
+    HsfTrack *out_track;
+    char *name;
+    s32 numKeyframes;
+    out_track = track;
+    name = SetMotionName(&track->target);
+    if(!MotionOnly) {
+        AS_S16(out_track->target) = FindClusterName(name);
+    } else {
+        AS_S16(out_track->target) = FindMotionClusterName(name);
+    }
+    numKeyframes = AS_S16(track->numKeyframes);
+    switch(track->curveType) {
+        case HSF_CURVE_STEP:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_LINEAR:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_BEZIER:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_CONST:
+            break;
+    }
+}
+
+static inline void MotionLoadMaterial(HsfTrack *track, void *data)
+{
+    s32 numKeyframes;
+    HsfTrack *out_track;
+    out_track = track;
+    numKeyframes = AS_S16(track->numKeyframes);
+    switch(track->curveType) {
+        case HSF_CURVE_STEP:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_LINEAR:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_BEZIER:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_CONST:
+            break;
+    }
+}
+
+static inline void MotionLoadAttribute(HsfTrack *track, void *data)
+{
+    HsfTrack *out_track;
+    char *name;
+    out_track = track;
+    if(AS_S16(out_track->target) != -1) {
+        name = SetMotionName(&track->target);
+        if(!MotionOnly) {
+            AS_S16(out_track->param) = FindAttributeName(name);
+        } else {
+            AS_S16(out_track->param) = FindMotionAttributeName(name);
+        }
+    }
+    
+    switch(track->curveType) {
+        case HSF_CURVE_STEP:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_LINEAR:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_BEZIER:
+        {
+            void *temp_data = (void *)((u32)data+(u32)track->data);
+            out_track->data = temp_data;
+        }
+        break;
+        
+        case HSF_CURVE_BITMAP:
+        {
+            HsfBitmapKey *file_frame;
+            HsfBitmapKey *new_frame;
+            s32 i;
+            new_frame = file_frame = (HsfBitmapKey *)((u32)data+(u32)track->data);
+            out_track->data = file_frame;
+            for(i=0; i<out_track->numKeyframes; i++, file_frame++, new_frame++) {
+                new_frame->data = SearchBitmapPtr((s32)file_frame->data);
+            }
+        }
+        break;
+        case HSF_CURVE_CONST:
+            break;
+    }
+}
+
+
 static void MotionLoad(void)
 {
+    HsfMotion *file_motion;
+    HsfMotion *temp_motion;
+    HsfMotion *new_motion;
+    HsfTrack *track_base;
+    void *track_data;
+    s32 i;
     
+    MotionOnly = FALSE;
+    MotionModel = NULL;
+    if(head.motion.count) {
+        temp_motion = file_motion = (HsfMotion *)((u32)fileptr+head.motion.ofs);
+        new_motion = temp_motion;
+        Model.motion = new_motion;
+        Model.motionCnt = file_motion->numTracks;
+        track_base = (HsfTrack *)&file_motion[head.motion.count];
+        track_data = &track_base[file_motion->numTracks];
+        new_motion->track = track_base;
+        for(i=0; i<(s32)file_motion->numTracks; i++) {
+            switch(track_base[i].type) {
+                case HSF_TRACK_TRANSFORM:
+                case HSF_TRACK_MORPH:
+                    MotionLoadTransform(&track_base[i], track_data);
+                    break;
+                    
+                case HSF_TRACK_CLUSTER:
+                    MotionLoadCluster(&track_base[i], track_data);
+                    break;
+                    
+                case HSF_TRACK_CLUSTER_WEIGHT:
+                    MotionLoadClusterWeight(&track_base[i], track_data);
+                    break;
+                    
+                case HSF_TRACK_MATERIAL:
+                    MotionLoadMaterial(&track_base[i], track_data);
+                    break;
+                    
+                case HSF_TRACK_ATTRIBUTE:
+                    MotionLoadAttribute(&track_base[i], track_data);
+                    break;
+            }
+        }
+    }
 }
 
 static void MatrixLoad(void)

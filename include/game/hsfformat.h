@@ -3,16 +3,29 @@
 
 #include "dolphin.h"
 
-#define HSF_OBJTYPE_NULL1 0
-#define HSF_OBJTYPE_REPLICA 1
-#define HSF_OBJTYPE_MESH 2
-#define HSF_OBJTYPE_ROOT 3
-#define HSF_OBJTYPE_JOINT 4
-#define HSF_OBJTYPE_NULL2 5
-#define HSF_OBJTYPE_NULL3 6
-#define HSF_OBJTYPE_NONE1 7
-#define HSF_OBJTYPE_NONE2 8
-#define HSF_OBJTYPE_MAP 9
+#define HSF_OBJ_NULL1 0
+#define HSF_OBJ_REPLICA 1
+#define HSF_OBJ_MESH 2
+#define HSF_OBJ_ROOT 3
+#define HSF_OBJ_JOINT 4
+#define HSF_OBJ_NULL2 5
+#define HSF_OBJ_NULL3 6
+#define HSF_OBJ_NONE1 7
+#define HSF_OBJ_NONE2 8
+#define HSF_OBJ_MAP 9
+
+#define HSF_TRACK_TRANSFORM 2
+#define HSF_TRACK_MORPH 3
+#define HSF_TRACK_CLUSTER 5
+#define HSF_TRACK_CLUSTER_WEIGHT 6
+#define HSF_TRACK_MATERIAL 9
+#define HSF_TRACK_ATTRIBUTE 10
+
+#define HSF_CURVE_STEP 0
+#define HSF_CURVE_LINEAR 1
+#define HSF_CURVE_BEZIER 2
+#define HSF_CURVE_BITMAP 3
+#define HSF_CURVE_CONST 4
 
 typedef struct hsf_vector3f {
     float x;
@@ -273,15 +286,23 @@ typedef struct hsf_skeleton {
     HsfTransform transform;
 } HsfSkeleton;
 
+typedef struct hsf_bitmap_keyframe {
+    float time;
+    HsfBitmap *data;
+} HsfBitmapKey;
+
 typedef struct hsf_track {
-    u8 mode;
-    u8 value;
-    s16 idx;
-    s16 type;
-    s16 effect;
-    s16 curveType;
-    s16 numKeyframes;
-    void *data;
+    u8 type;
+    u8 start;
+    u16 target;
+    u16 param;
+    u16 channel;
+    u16 curveType;
+    u16 numKeyframes;
+    union {
+        float value;
+        void *data;
+    };
 } HsfTrack;
 
 typedef struct hsf_motion {
