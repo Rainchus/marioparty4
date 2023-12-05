@@ -1082,6 +1082,9 @@ static inline int FindMotionAttributeName(char *name)
 
 static inline void MotionLoadTransform(HsfTrack *track, void *data)
 {
+    float *step_data;
+    float *linear_data;
+    float *bezier_data;
     HsfTrack *out_track;
     char *name;
     s32 numKeyframes;
@@ -1094,22 +1097,22 @@ static inline void MotionLoadTransform(HsfTrack *track, void *data)
     switch(track->curveType) {
         case HSF_CURVE_STEP:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            step_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = step_data;
         }
         break;
         
         case HSF_CURVE_LINEAR:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            linear_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = linear_data;
         }
         break;
         
         case HSF_CURVE_BEZIER:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            bezier_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = bezier_data;
         }
         break;
         
@@ -1120,9 +1123,13 @@ static inline void MotionLoadTransform(HsfTrack *track, void *data)
 
 static inline void MotionLoadCluster(HsfTrack *track, void *data)
 {
+    s32 numKeyframes;
+    float *step_data;
+    float *linear_data;
+    float *bezier_data;
     HsfTrack *out_track;
     char *name;
-    s32 numKeyframes;
+    
     out_track = track;
     name = SetMotionName(&track->target);
     if(!MotionOnly) {
@@ -1131,25 +1138,26 @@ static inline void MotionLoadCluster(HsfTrack *track, void *data)
         AS_S16(out_track->target) = FindMotionClusterName(name);
     }
     numKeyframes = AS_S16(track->numKeyframes);
+    (void)out_track;
     switch(track->curveType) {
         case HSF_CURVE_STEP:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            step_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = step_data;
         }
         break;
         
         case HSF_CURVE_LINEAR:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            linear_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = linear_data;
         }
         break;
         
         case HSF_CURVE_BEZIER:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            bezier_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = bezier_data;
         }
         break;
         
@@ -1160,9 +1168,13 @@ static inline void MotionLoadCluster(HsfTrack *track, void *data)
 
 static inline void MotionLoadClusterWeight(HsfTrack *track, void *data)
 {
+    s32 numKeyframes;
+    float *step_data;
+    float *linear_data;
+    float *bezier_data;
     HsfTrack *out_track;
     char *name;
-    s32 numKeyframes;
+    
     out_track = track;
     name = SetMotionName(&track->target);
     if(!MotionOnly) {
@@ -1171,25 +1183,26 @@ static inline void MotionLoadClusterWeight(HsfTrack *track, void *data)
         AS_S16(out_track->target) = FindMotionClusterName(name);
     }
     numKeyframes = AS_S16(track->numKeyframes);
+    (void)out_track;
     switch(track->curveType) {
         case HSF_CURVE_STEP:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            step_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = step_data;
         }
         break;
         
         case HSF_CURVE_LINEAR:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            linear_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = linear_data;
         }
         break;
         
         case HSF_CURVE_BEZIER:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            bezier_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = bezier_data;
         }
         break;
         
@@ -1200,6 +1213,9 @@ static inline void MotionLoadClusterWeight(HsfTrack *track, void *data)
 
 static inline void MotionLoadMaterial(HsfTrack *track, void *data)
 {
+    float *step_data;
+    float *linear_data;
+    float *bezier_data;
     s32 numKeyframes;
     HsfTrack *out_track;
     out_track = track;
@@ -1207,22 +1223,22 @@ static inline void MotionLoadMaterial(HsfTrack *track, void *data)
     switch(track->curveType) {
         case HSF_CURVE_STEP:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            step_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = step_data;
         }
         break;
         
         case HSF_CURVE_LINEAR:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            linear_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = linear_data;
         }
         break;
         
         case HSF_CURVE_BEZIER:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            bezier_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = bezier_data;
         }
         break;
         
@@ -1233,6 +1249,12 @@ static inline void MotionLoadMaterial(HsfTrack *track, void *data)
 
 static inline void MotionLoadAttribute(HsfTrack *track, void *data)
 {
+    HsfBitmapKey *file_frame;
+    HsfBitmapKey *new_frame;
+    s32 i;
+    float *step_data;
+    float *linear_data;
+    float *bezier_data;
     HsfTrack *out_track;
     char *name;
     out_track = track;
@@ -1248,30 +1270,27 @@ static inline void MotionLoadAttribute(HsfTrack *track, void *data)
     switch(track->curveType) {
         case HSF_CURVE_STEP:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            step_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = step_data;
         }
         break;
         
         case HSF_CURVE_LINEAR:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            linear_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = linear_data;
         }
         break;
         
         case HSF_CURVE_BEZIER:
         {
-            void *temp_data = (void *)((u32)data+(u32)track->data);
-            out_track->data = temp_data;
+            bezier_data = (float *)((u32)data+(u32)track->data);
+            out_track->data = bezier_data;
         }
         break;
         
         case HSF_CURVE_BITMAP:
         {
-            HsfBitmapKey *file_frame;
-            HsfBitmapKey *new_frame;
-            s32 i;
             new_frame = file_frame = (HsfBitmapKey *)((u32)data+(u32)track->data);
             out_track->data = file_frame;
             for(i=0; i<out_track->numKeyframes; i++, file_frame++, new_frame++) {
@@ -1283,7 +1302,6 @@ static inline void MotionLoadAttribute(HsfTrack *track, void *data)
             break;
     }
 }
-
 
 static void MotionLoad(void)
 {
@@ -1332,7 +1350,30 @@ static void MotionLoad(void)
             }
         }
     }
-    
+    //HACK: Bump register of i to r31
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
+    (void)i;
 }
 
 static void MatrixLoad(void)
