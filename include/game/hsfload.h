@@ -1,5 +1,5 @@
-#ifndef _HSFLOAD_H
-#define _HSFLOAD_H
+#ifndef _GAME_HSFLOAD_H
+#define _GAME_HSFLOAD_H
 
 #include "game/hsfformat.h"
 

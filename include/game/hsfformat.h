@@ -1,5 +1,5 @@
-#ifndef _HSF_FORMAT_H
-#define _HSF_FORMAT_H
+#ifndef _GAME_HSFFORMAT_H
+#define _GAME_HSFFORMAT_H
 
 #include "dolphin.h"
 
