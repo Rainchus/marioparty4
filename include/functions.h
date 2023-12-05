@@ -53,9 +53,9 @@ void fn_8004D6F4(s16 arg);
 
 s32 _CheckFlag(u32 flag);
 
-void BoardMessCreate(s16, s32, s32);
-void BoardMessKill(void);
-void BoardMessWait(void);
+void BoardWinCreate(s16, s32, s32);
+void BoardWinKill(void);
+void BoardWinWait(void);
 
 s32 HuTHPFrameGet(void);
 

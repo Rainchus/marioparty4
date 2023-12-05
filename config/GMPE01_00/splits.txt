@@ -348,6 +348,44 @@ game/board/window.c:
 	.sbss       start:0x801D3F68 end:0x801D3F98
 	.sdata2     start:0x801D5318 end:0x801D5328
 
+game/board/com.c:
+	.text       start:0x800714F8 end:0x800729A4
+	.data       start:0x80139B00 end:0x80139BC8
+	.sdata      start:0x801D36F0 end:0x801D36F8
+	.sdata2     start:0x801D5328 end:0x801D5350
+
+game/board/overhead.c:
+	.text       start:0x800729A4 end:0x80073FF4
+	.rodata     start:0x8011DED0 end:0x8011DEF0
+	.data       start:0x80139BC8 end:0x80139CC8
+	.bss        start:0x8019D9F8 end:0x8019DA10
+	.sdata      start:0x801D36F8 end:0x801D3700
+	.sbss       start:0x801D3F98 end:0x801D3FB0
+	.sdata2     start:0x801D5350 end:0x801D53C0
+
+game/board/space.c:
+	.text       start:0x80073FF4 end:0x80077AAC
+	.data       start:0x80139CC8 end:0x80139D08
+	.bss        start:0x8019DA10 end:0x801A4A10
+	.sdata      start:0x801D3700 end:0x801D3708
+	.sbss       start:0x801D3FB0 end:0x801D3FE8
+	.sdata2     start:0x801D53C0 end:0x801D5440
+
+game/board/shop.c:
+	.text       start:0x80077AAC end:0x8007A83C
+	.data       start:0x80139D08 end:0x80139E88
+	.sdata      start:0x801D3708 end:0x801D3728
+	.sbss       start:0x801D3FE8 end:0x801D4008
+	.sdata2     start:0x801D5440 end:0x801D5510
+
+game/board/lottery.c:
+	.text       start:0x8007A83C end:0x8007FB50
+	.rodata     start:0x8011DEF0 end:0x8011E020
+	.data       start:0x80139E88 end:0x8013A1F0
+	.sdata      start:0x801D3728 end:0x801D3748
+	.sbss       start:0x801D4008 end:0x801D4028
+	.sdata2     start:0x801D5510 end:0x801D56A0
+
 dolphin/PPCArch.c:
 	.text       start:0x800B42F4 end:0x800B439C
 

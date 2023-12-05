@@ -284,6 +284,11 @@ config.libs = [
             Object(NonMatching, "game/board/board.c"),
             Object(NonMatching, "game/board/model.c"),
             Object(NonMatching, "game/board/window.c"),
+            Object(NonMatching, "game/board/com.c"),
+            Object(NonMatching, "game/board/overhead.c"),
+            Object(NonMatching, "game/board/space.c"),
+            Object(NonMatching, "game/board/shop.c"),
+            Object(NonMatching, "game/board/lottery.c"),
         ],
     },
     DolphinLib(
