@@ -280,6 +280,10 @@ config.libs = [
             Object(NonMatching, "game/flag.c"),
             Object(NonMatching, "game/saveload.c"),
             Object(NonMatching, "game/sreset.c"),
+            Object(NonMatching, "game/board/main.c"),
+            Object(NonMatching, "game/board/board.c"),
+            Object(NonMatching, "game/board/model.c"),
+            Object(NonMatching, "game/board/window.c"),
         ],
     },
     DolphinLib(
