@@ -1004,6 +1004,12 @@ static inline char *MotionGetName(HsfTrack *track)
     return ret;
 }
 
+static inline BOOL CompareName(char *name1, char *name2)
+{
+    int unk = 0;
+    return !strcmp(name1, name2);
+}
+
 static inline s32 FindObjectName(char *name)
 {
     s32 i;
@@ -1011,9 +1017,7 @@ static inline s32 FindObjectName(char *name)
     
     object = objtop;
     for(i=0; i<head.object.count; i++, object++) {
-        char *other_name = object->name;
-        int unk = 0;
-        if(!strcmp(other_name, name)) {
+        if(CompareName(object->name, name)) {
             return i;
         }
     }
@@ -1328,9 +1332,13 @@ static void MotionLoad(void)
                 case HSF_TRACK_ATTRIBUTE:
                     MotionLoadAttribute(&track_base[i], track_data);
                     break;
+                    
+                default:
+                    break;
             }
         }
     }
+    
 }
 
 static void MatrixLoad(void)
@@ -1370,9 +1378,7 @@ static s32 SearchObjectSetName(HsfData *data, char *name)
     HsfObject *object = data->object;
     s32 i;
     for(i=0; i<data->objectCnt; i++, object++) {
-        char *other_name = object->name;
-        int unk8 = 0;
-        if(!strcmp(other_name, name)) {
+        if(CompareName(object->name, name)) {
             return i;
         }
     }
