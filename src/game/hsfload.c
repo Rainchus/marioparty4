@@ -1,4 +1,4 @@
-#include "game/hsfformat.h"
+#include "game/hsfload.h"
 #include "string.h"
 #include "ctype.h"
 
@@ -89,24 +89,24 @@ HsfData *LoadHSF(void *data)
     
 }
 
-void ClusterAdjustObject(HsfData *src_model, HsfData *model)
+void ClusterAdjustObject(HsfData *model, HsfData *src_model)
 {
     HsfCluster *cluster;
     s32 i;
-    if(!model) {
+    if(!src_model) {
         return;
     }
-    if(model->clusterCnt == 0) {
+    if(src_model->clusterCnt == 0) {
         return;
     }
-    cluster = model->cluster;
+    cluster = src_model->cluster;
     if(cluster->adjusted) {
         return;
     }
     cluster->adjusted = 1;
-    for(i=0; i<model->clusterCnt; i++, cluster++) {
+    for(i=0; i<src_model->clusterCnt; i++, cluster++) {
         char *name = cluster->targetName;
-        cluster->target = SearchObjectSetName(src_model, name);
+        cluster->target = SearchObjectSetName(model, name);
     }
 }
 
