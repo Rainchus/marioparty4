@@ -31,9 +31,9 @@ void fn_1_BA0(s32 arg0) {
         var_r31 = 6;
         break;
     }
-    BoardMessCreate(var_r31, arg0, -1);
-    BoardMessWait();
-    BoardMessKill();
+    BoardWinCreate(var_r31, arg0, -1);
+    BoardWinWait();
+    BoardWinKill();
 }
 
 void fn_1_C10(s16 arg0) {
