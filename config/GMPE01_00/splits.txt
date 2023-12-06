@@ -460,6 +460,93 @@ game/board/item.c:
 	.sbss       start:0x801D40F8 end:0x801D4138
 	.sdata2     start:0x801D5AF8 end:0x801D5D30
 
+game/board/bowser.c:
+	.text       start:0x800975AC end:0x8009B4D4
+	.rodata     start:0x8011E238 end:0x8011E300
+	.data       start:0x8013AA10 end:0x8013AA60
+	.bss        start:0x801A4BE8 end:0x801A4C30
+	.sdata      start:0x801D37B0 end:0x801D37C8
+	.sbss       start:0x801D4138 end:0x801D4178
+	.sdata2     start:0x801D5D30 end:0x801D5DE0
+
+game/board/battle.c:
+	.text       start:0x8009B4D4 end:0x8009D148
+	.rodata     start:0x8011E300 end:0x8011E380
+	.data       start:0x8013AA60 end:0x8013AB10
+	.bss        start:0x801A4C30 end:0x801A4C40
+	.sdata      start:0x801D37C8 end:0x801D37D0
+	.sbss       start:0x801D4178 end:0x801D41A0
+	.sdata2     start:0x801D5DE0 end:0x801D5E88
+
+game/board/fortune_space.c:
+	.text       start:0x8009D148 end:0x8009DFD0
+	.rodata     start:0x8011E380 end:0x8011E3A8
+	.data       start:0x8013AB10 end:0x8013AB28
+	.bss        start:0x801A4C40 end:0x801A4C58
+	.sdata      start:0x801D37D0 end:0x801D37D8
+	.sbss       start:0x801D41A0 end:0x801D41B0
+	.sdata2     start:0x801D5E88 end:0x801D5E98
+
+game/board/boo.c:
+	.text       start:0x8009DFD0 end:0x800A1A34
+	.data       start:0x8013AB28 end:0x8013AD00
+	.sdata      start:0x801D37D8 end:0x801D37E8
+	.sbss       start:0x801D41B0 end:0x801D41E8
+	.sdata2     start:0x801D5E98 end:0x801D5FA0
+
+game/board/mg_setup.c:
+	.text       start:0x800A1A34 end:0x800A4F6C
+	.rodata     start:0x8011E3A8 end:0x8011E3D0
+	.data       start:0x8013AD00 end:0x8013AE38
+	.bss        start:0x801A4C58 end:0x801A4CC8
+	.sdata      start:0x801D37E8 end:0x801D37F0
+	.sbss       start:0x801D41E8 end:0x801D4218
+	.sdata2     start:0x801D5FA0 end:0x801D6080
+
+game/board/boo_house.c:
+	.text       start:0x800A4F6C end:0x800A6EE4
+	.data       start:0x8013AE38 end:0x8013AF70
+	.bss        start:0x801A4CC8 end:0x801A4CD8
+	.sdata      start:0x801D37F0 end:0x801D3840
+	.sbss       start:0x801D4218 end:0x801D4230
+	.sdata2     start:0x801D6080 end:0x801D60C8
+
+game/board/start.c:
+	.text       start:0x800A6EE4 end:0x800A9708
+	.rodata     start:0x8011E3D0 end:0x8011E3F0
+	.data       start:0x8013AF70 end:0x8013B1F8
+	.bss        start:0x801A4CD8 end:0x801A4CF0
+	.sdata      start:0x801D3840 end:0x801D3850
+	.sbss       start:0x801D4230 end:0x801D4240
+	.sdata2     start:0x801D60C8 end:0x801D6198
+
+game/board/last5.c:
+	.text       start:0x800A9708 end:0x800ADB84
+	.rodata     start:0x8011E410 end:0x8011E430
+	.data       start:0x8013B1F8 end:0x8013B3F0
+	.bss        start:0x801A4CF0 end:0x801A4D38
+	.sdata      start:0x801D3850 end:0x801D38B8
+	.sbss       start:0x801D4240 end:0x801D4260
+	.sdata2     start:0x801D6198 end:0x801D6298
+
+game/board/pause.c:
+	.text       start:0x800ADB84 end:0x800B1974
+	.data       start:0x8013B3F0 end:0x8013B518
+	.bss        start:0x801A4D38 end:0x801A4D68
+	.sbss       start:0x801D4260 end:0x801D4280
+	.sdata2     start:0x801D6298 end:0x801D6350
+
+game/board/com_path.c:
+	.text       start:0x800B1974 end:0x800B3ED8
+	.bss        start:0x801A4D68 end:0x801A52E8
+	.sbss       start:0x801D4280 end:0x801D4288
+
+game/board/tutorial.c:
+	.text       start:0x800B3ED8 end:0x800B42F4
+	.data       start:0x8013B518 end:0x8013B560
+	.bss        start:0x801A52E8 end:0x801A5300
+	.sbss       start:0x801D4288 end:0x801D42B0
+
 dolphin/PPCArch.c:
 	.text       start:0x800B42F4 end:0x800B439C
 
