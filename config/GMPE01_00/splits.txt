@@ -316,6 +316,150 @@ game/sreset.c:
 	.sdata      start:0x801D3658 end:0x801D3670
 	.sbss       start:0x801D3EB8 end:0x801D3ED0
 
+game/board/main.c:
+	.text       start:0x8005B150 end:0x80061F44
+	.rodata     start:0x8011DD60 end:0x8011DD90
+	.data       start:0x80139798 end:0x80139898
+	.bss        start:0x8019D7E0 end:0x8019D968
+	.sdata      start:0x801D3670 end:0x801D3680
+	.sbss       start:0x801D3ED0 end:0x801D3F20
+	.sdata2     start:0x801D5148 end:0x801D51F8
+
+game/board/board.c:
+	.text       start:0x80061F44 end:0x8006D248
+	.rodata     start:0x8011DD90 end:0x8011DE60
+	.data       start:0x80139898 end:0x80139AA0
+	.bss        start:0x8019D968 end:0x8019D998
+	.sdata      start:0x801D3680 end:0x801D36E0
+	.sbss       start:0x801D3F20 end:0x801D3F58
+	.sdata2     start:0x801D51F8 end:0x801D5300
+
+game/board/model.c:
+	.text       start:0x8006D248 end:0x8006FD7C
+	.sbss       start:0x801D3F58 end:0x801D3F68
+	.sdata2     start:0x801D5300 end:0x801D5318
+
+game/board/window.c:
+	.text       start:0x8006FD7C end:0x800714F8
+	.rodata     start:0x8011DE60 end:0x8011DED0
+	.data       start:0x80139AA0 end:0x80139B00
+	.bss        start:0x8019D998 end:0x8019D9F8
+	.sdata      start:0x801D36E0 end:0x801D36F0
+	.sbss       start:0x801D3F68 end:0x801D3F98
+	.sdata2     start:0x801D5318 end:0x801D5328
+
+game/board/com.c:
+	.text       start:0x800714F8 end:0x800729A4
+	.data       start:0x80139B00 end:0x80139BC8
+	.sdata      start:0x801D36F0 end:0x801D36F8
+	.sdata2     start:0x801D5328 end:0x801D5350
+
+game/board/overhead.c:
+	.text       start:0x800729A4 end:0x80073FF4
+	.rodata     start:0x8011DED0 end:0x8011DEF0
+	.data       start:0x80139BC8 end:0x80139CC8
+	.bss        start:0x8019D9F8 end:0x8019DA10
+	.sdata      start:0x801D36F8 end:0x801D3700
+	.sbss       start:0x801D3F98 end:0x801D3FB0
+	.sdata2     start:0x801D5350 end:0x801D53C0
+
+game/board/space.c:
+	.text       start:0x80073FF4 end:0x80077AAC
+	.data       start:0x80139CC8 end:0x80139D08
+	.bss        start:0x8019DA10 end:0x801A4A60
+	.sdata      start:0x801D3700 end:0x801D3708
+	.sbss       start:0x801D3FB0 end:0x801D3FE8
+	.sdata2     start:0x801D53C0 end:0x801D5440
+
+game/board/shop.c:
+	.text       start:0x80077AAC end:0x8007A83C
+	.data       start:0x80139D08 end:0x80139E88
+	.bss        start:0x801A4A60 end:0x801A4A90
+	.sdata      start:0x801D3708 end:0x801D3728
+	.sbss       start:0x801D3FE8 end:0x801D4008
+	.sdata2     start:0x801D5440 end:0x801D5510
+
+game/board/lottery.c:
+	.text       start:0x8007A83C end:0x8007FB50
+	.rodata     start:0x8011DEF0 end:0x8011E020
+	.data       start:0x80139E88 end:0x8013A1F0
+	.bss        start:0x801A4A90 end:0x801A4AC0
+	.sdata      start:0x801D3728 end:0x801D3748
+	.sbss       start:0x801D4008 end:0x801D4028
+	.sdata2     start:0x801D5510 end:0x801D56A0
+
+game/board/basic_space.c:
+	.text       start:0x8007FB50 end:0x80080D54
+	.data       start:0x8013A1F0 end:0x8013A228
+	.sdata2     start:0x801D56A0 end:0x801D5730
+
+game/board/warp.c:
+	.text       start:0x80080D54 end:0x800816CC
+	.rodata     start:0x8011E020 end:0x8011E040
+	.data       start:0x8013A228 end:0x8013A248
+	.bss        start:0x801A4AC0 end:0x801A4AD0
+	.sdata      start:0x801D3748 end:0x801D3758
+	.sbss       start:0x801D4028 end:0x801D4040
+	.sdata2     start:0x801D5730 end:0x801D5780
+
+game/board/char_roulette.c:
+	.text       start:0x800816CC end:0x80082C90
+	.data       start:0x8013A248 end:0x8013A2B0
+	.sdata      start:0x801D3758 end:0x801D3760
+	.sbss       start:0x801D4040 end:0x801D4060
+	.sdata2     start:0x801D5780 end:0x801D5810
+
+game/board/mushroom_space.c:
+	.text       start:0x80082C90 end:0x80083EDC
+	.sdata      start:0x801D3760 end:0x801D3770
+	.sbss       start:0x801D4060 end:0x801D4070
+	.sdata2     start:0x801D5810 end:0x801D5898
+
+game/board/star.c:
+	.text       start:0x80083EDC end:0x80085CC8
+	.rodata     start:0x8011E040 end:0x8011E0B0
+	.data       start:0x8013A2B0 end:0x8013A368
+	.bss        start:0x801A4AD0 end:0x801A4AE0
+	.sdata      start:0x801D3770 end:0x801D3778
+	.sbss       start:0x801D4070 end:0x801D4088
+	.sdata2     start:0x801D5898 end:0x801D5938
+
+game/board/dice_roll.c:
+	.text       start:0x80085CC8 end:0x8008831C
+	.rodata     start:0x8011E0B0 end:0x8011E118
+	.data       start:0x8013A368 end:0x8013A408
+	.bss        start:0x801A4AE0 end:0x801A4AF0
+	.sdata      start:0x801D3778 end:0x801D3790
+	.sbss       start:0x801D4088 end:0x801D40A8
+	.sdata2     start:0x801D5938 end:0x801D59E0
+
+game/board/ui.c:
+	.text       start:0x8008831C end:0x8008DF68
+	.rodata     start:0x8011E118 end:0x8011E200
+	.data       start:0x8013A408 end:0x8013A608
+	.bss        start:0x801A4AF0 end:0x801A4B80
+	.sdata      start:0x801D3790 end:0x801D3798
+	.sbss       start:0x801D40A8 end:0x801D40E0
+	.sdata2     start:0x801D59E0 end:0x801D5AA0
+
+game/board/hidden_block.c:
+	.text       start:0x8008DF68 end:0x8008EE28
+	.rodata     start:0x8011E200 end:0x8011E220
+	.data       start:0x8013A608 end:0x8013A620
+	.bss        start:0x801A4B80 end:0x801A4BA8
+	.sdata      start:0x801D3798 end:0x801D37A0
+	.sbss       start:0x801D40E0 end:0x801D40F8
+	.sdata2     start:0x801D5AA0 end:0x801D5AF8
+
+game/board/item.c:
+	.text       start:0x8008EE28 end:0x800975AC
+	.rodata     start:0x8011E220 end:0x8011E238
+	.data       start:0x8013A620 end:0x8013AA10
+	.bss        start:0x801A4BA8 end:0x801A4BE8
+	.sdata      start:0x801D37A0 end:0x801D37B0
+	.sbss       start:0x801D40F8 end:0x801D4138
+	.sdata2     start:0x801D5AF8 end:0x801D5D30
+
 dolphin/PPCArch.c:
 	.text       start:0x800B42F4 end:0x800B439C
 
