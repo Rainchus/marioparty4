@@ -3,9 +3,7 @@
 #include "game/printfunc.h"
 #include "dolphin/pad.h"
 
-//HACK: Force 0.5 and 3.0 double constants to appear in REL
-const double _half = 0.5;
-const double _three = 3.0;
+#include "math.h"
 
 static void SubchrMain(void);
 

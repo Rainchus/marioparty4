@@ -1,6 +1,8 @@
 #include "include/REL/w10Dll.h"
 #include "game/data.h"
 
+#include "math.h"
+
 //BSS
 s16 lbl_1_bss_22[11];
 s16 lbl_1_bss_20;
@@ -57,11 +59,6 @@ s32 lbl_1_data_6C[2] = {
     MAKE_DATA_NUM(DATADIR_BGUEST, 14),
     DATA_NUM_LISTEND
 };
-
-//RODATA
-//HACK: Force 0.5 and 3.0 double constants to appear in REL
-const double _half = 0.5;
-const double _three = 3.0;
 
 // function is probably global. only inlined in rels?
 inline s32 get_current_board(void) {
