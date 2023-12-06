@@ -1,5 +1,39 @@
 #include "common.h"
+#include "game/memory.h"
 
+typedef struct ThreeDDataSubstruct {
+    char  unk_00[0x8];
+    void *unk_08;
+    void *unk_0C;
+    void *unk_10;
+    void *unk_14;
+    void *unk_18;
+    char  unk_20[0x4];
+    void *unk_24;
+    void *unk_28;
+    void *unk_2C;
+    void *unk_30;
+    char  unk_34[0x14];
+    void *unk_48;
+    void *unk_4C;
+    char  unk_50[0x8];
+    s16   unk_58;
+    s16   unk_5A;
+    s16   unk_5C;
+    s16   unk_5E;
+    s16   unk_60;
+    s16   unk_62;
+    s16   unk_64;
+    s16   unk_66;
+    s16   unk_68;
+    s16   unk_6A;
+    s16   unk_6C;
+    s16   unk_6E;
+} ThreeDDataSubstruct;
+
+// 801677C0
+//  |=> unk_C4 -> 807d65a0
+//  |    |=> unk_08 -> 807d6650
 typedef struct ThreeDDataStruct {
     f32  unk_00;
     f32  unk_04;
@@ -43,9 +77,9 @@ typedef struct ThreeDProjectionStruct {
     char unk_01[0x3];
     s32  unk_04;
     char unk_08[0xC];
-    Vec3f unk_14;
-    Vec3f unk_20;
-    Vec3f unk_2C;
+    Vec unk_14;
+    Vec unk_20;
+    Vec unk_2C;
     char unk_38[0x60];
 } ThreeDProjectionStruct;
 typedef struct ThreeDShadowStruct {
@@ -155,7 +189,7 @@ void Hu3DProjectionKill(s16 arg0) {
     Hu3DProjection[arg0].unk_04 = 0;
 }
 
-void Hu3DProjectionPosSet(s16 arg0, Vec3f arg1, Vec3f arg2, Vec3f arg3) {
+void Hu3DProjectionPosSet(s16 arg0, Vec arg1, Vec arg2, Vec arg3) {
     Hu3DProjection[arg0].unk_14 = arg1;
     Hu3DProjection[arg0].unk_20 = arg3;
     Hu3DProjection[arg0].unk_2C = arg2;
