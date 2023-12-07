@@ -69,10 +69,10 @@ typedef struct hsf_header {
 } HsfHeader;
 
 typedef struct hsf_scene {
-    GXColor unk0;
-    f32 unk4;
-    f32 unk8;
-    u32 unkC;
+    GXFogType fogType;
+    f32 start;
+    f32 end;
+    GXColor color;
 } HsfScene;
 
 typedef struct hsf_bitmap {

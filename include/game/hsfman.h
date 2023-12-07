@@ -53,7 +53,7 @@ typedef struct ThreeDCameraStruct {
 typedef struct ThreeDProjectionStruct {
     s8 unk_00;
     char unk_01[0x3];
-    u32 unk_04;
+    AnimData *unk_04;
     char unk_08[0xC];
     Point3d unk_14;
     Point3d unk_20;
@@ -67,10 +67,5 @@ typedef struct ThreeDShadowStruct {
     void*unk_04;
     char unk_08[0x90];
 } ThreeDShadowStruct;
-typedef struct fog_data {
-    GXFogType fogType;
-    f32 start;
-    f32 end;
-    GXColor color;
-} FogStruct;
+
 #endif
