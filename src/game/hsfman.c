@@ -5,8 +5,6 @@ void Hu3DFogClear(void);
 void Hu3DLighInit(void);
 void Hu3DMotionInit(void);
 void Hu3DParManInit(void);
-char *HuSprAnimRead(char*);
-void HuSprAnimKill(s32);
 
 s16 Hu3DCameraExistF;
 ModelData Hu3DData[0x200] = {};
@@ -42,14 +40,6 @@ const char lbl_8012D630[] = "Error: Not Found %s for MipMapSet\n";
 s16 reflectMapNo;
 char *toonAnim;
 GXColor BGColor;
-void Hu3DAnimInit(void);
-void Hu3DFogClear(void);
-void Hu3DLighInit(void);
-void Hu3DMotionInit(void);
-void Hu3DParManInit(void);
-char *HuSprAnimRead(char*);
-void HuSprAnimKill(s32);
-
 
 extern s16 Hu3DCameraBit;
 extern s16 Hu3DCameraNo;
