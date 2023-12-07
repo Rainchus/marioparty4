@@ -1,3 +1,6 @@
+#ifndef _GAME_HSFMAN_H
+#define _GAME_HSFMAN_H
+
 #include "common.h"
 #include "game/memory.h"
 #include "game/hsfformat.h"
@@ -70,3 +73,4 @@ typedef struct fog_data {
     f32 end;
     GXColor color;
 } FogStruct;
+#endif
