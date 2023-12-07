@@ -67,7 +67,6 @@ typedef struct ThreeDShadowStruct {
     void*unk_04;
     char unk_08[0x90];
 } ThreeDShadowStruct;
-<<<<<<< HEAD
 typedef struct fog_data {
     GXFogType fogType;
     f32 start;
@@ -83,7 +82,4 @@ void Hu3DProjectionKill(s16);
 void Hu3DProjectionPosSet(s16, Vec, Vec, Vec);
 void Hu3DProjectionTPLvlSet(s16, f32);
 void Hu3DMipMapSet(char*, s16, s32, f32);
-=======
-
->>>>>>> b4e58bdf23b3e769e0ca1dbe9167e3775049e51d
 #endif
