@@ -78,7 +78,6 @@ void fn_800B4264(s32, s32, s32);
 void fn_8007500C(s32);
 void fn_8006F0D4(s32, f32);
 f32 fn_8006F128(s32);
-f64 fmod(f32, f64);
 void fn_8006F61C(s16, s32);
 void fn_800B42BC(s16);
 s32 fn_8006DBD4(s16);
