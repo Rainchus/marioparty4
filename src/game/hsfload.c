@@ -257,8 +257,8 @@ static void SceneLoad(void)
     if(head.scene.count) {
         file_scene = (HsfScene *)((u32)fileptr+head.scene.ofs);
         new_scene = file_scene;
-        new_scene->unk8 = file_scene->unk8;
-        new_scene->unk4 = file_scene->unk4;
+        new_scene->end = file_scene->end;
+        new_scene->start = file_scene->start;
         Model.scene = new_scene;
         Model.sceneCnt = head.scene.count;
     }

@@ -5,19 +5,17 @@ void Hu3DFogClear(void);
 void Hu3DLighInit(void);
 void Hu3DMotionInit(void);
 void Hu3DParManInit(void);
-char *HuSprAnimRead(char*);
-void HuSprAnimKill(s32);
 
 s16 Hu3DCameraExistF;
 ModelData Hu3DData[0x200] = {};
 ThreeDCameraStruct Hu3DCamera[0x10] = {};
 s16 layerNum[8] = {};
 void (*layerHook[8])(s16) = {};
-char *reflectAnim[5] = {};
-char *hiliteAnim[4] = {};
+AnimData *reflectAnim[5] = {};
+AnimData *hiliteAnim[4] = {};
 ThreeDProjectionStruct Hu3DProjection[4] = {};
 ThreeDShadowStruct Hu3DShadowData = {};
-FogStruct FogData = {};
+HsfScene FogData = {};
 Mtx Hu3DCameraMtx = {};
 Mtx Hu3DCameraMtxXPose = {};
 s16 Hu3DPauseF;
@@ -27,28 +25,26 @@ s32 Hu3DShadowF;
 u16 NoSyncF;
 f32 lbl_801D4AB0;
 s32 modelKillAllF;
-char refMapData0[0x1240] = {};
-char refMapData1[0x1100] = {};
-char refMapData2[0x2080] = {};
-char refMapData3[0x2080] = {};
-char refMapData4[0x2080] = {};
-char toonMapData[0x880] = {};
-char toonMapData2[0x1080] = {};
-char hiliteData[0x480] = {};
-char hiliteData2[0x480] = {};
-char hiliteData3[0x480] = {};
-char hiliteData4[0x480] = {};
+#include "refMapData0.inc"
+#include "refMapData1.inc"
+#include "refMapData2.inc"
+#include "refMapData3.inc"
+#include "refMapData4.inc"
+#include "toonMapData.inc"
+#include "toonMapData2.inc"
+#include "hiliteData.inc"
+#include "hiliteData2.inc"
+#include "hiliteData3.inc"
+#include "hiliteData4.inc"
 const char lbl_8012D630[] = "Error: Not Found %s for MipMapSet\n";
 s16 reflectMapNo;
-char *toonAnim;
+AnimData *toonAnim;
 GXColor BGColor;
 void Hu3DAnimInit(void);
 void Hu3DFogClear(void);
 void Hu3DLighInit(void);
 void Hu3DMotionInit(void);
 void Hu3DParManInit(void);
-char *HuSprAnimRead(char*);
-void HuSprAnimKill(s32);
 
 
 extern s16 Hu3DCameraBit;
@@ -101,7 +97,7 @@ void Hu3DInit(void) {
     Hu3DAnimInit();
     Hu3DParManInit();
     for (i = 0; i < 4; i++) {
-        Hu3DProjection[i].unk_04 = 0;
+        Hu3DProjection[i].unk_04 = NULL;
     }
     Hu3DShadowCamBit = 0;
     Hu3DShadowData.unk_04 = 0;
@@ -304,7 +300,7 @@ void Hu3DShadowSizeSet(u16 arg0) {
 
 void Hu3DProjectionKill(s16 arg0) {
     HuSprAnimKill(Hu3DProjection[arg0].unk_04);
-    Hu3DProjection[arg0].unk_04 = 0;
+    Hu3DProjection[arg0].unk_04 = NULL;
 }
 
 void Hu3DProjectionPosSet(s16 arg0, Vec arg1, Vec arg2, Vec arg3) {
