@@ -100,7 +100,7 @@ void Hu3DPreProc(void) {
     var_r31 = &Hu3DData[0];
     for (var_r30 = 0; var_r30 < 0x200; var_r31++) {
         if (var_r31->hsfData != 0) {
-            var_r31->unk_50 &= 0xFFFFF7FF;
+            var_r31->attr &= 0xFFFFF7FF;
         }
         var_r30++;
     }
@@ -179,16 +179,16 @@ void Hu3DExec(void) {
                     var_r30 = Hu3DData;
                     for (i = 0, var_r23 = i; i < 0x200; i++, var_r30++) {
                         if (var_r30->hsfData != 0) {
-                            if ((var_r30->unk_50 & 0x10000) != 0) {
+                            if ((var_r30->attr & 0x10000) != 0) {
                                 Hu3DCameraMotionExec(i);
                             } else {
-                                if ((var_r30->unk_50 & 0x2001) == 0x2001 && var_r30->unk_08 != -1) {
+                                if ((var_r30->attr & 0x2001) == 0x2001 && var_r30->unk_08 != -1) {
                                     Hu3DMotionExec(i, var_r30->unk_08, var_r30->unk_64, 0);
                                 }
-                                if ((var_r30->unk_50 & 9) == 0 && (var_r30->unk_22 & temp_r22) != 0 && var_r30->unk_06 == j) {
-                                    if (((var_r30->unk_50 & 0x800) == 0 && (var_r30->unk_50 & 0x100) == 0) || ((var_r30->unk_50 & 0x100) != 0 && (var_r30->unk_00 & 1) != 0)) {
+                                if ((var_r30->attr & 9) == 0 && (var_r30->camera & temp_r22) != 0 && var_r30->layer == j) {
+                                    if (((var_r30->attr & 0x800) == 0 && (var_r30->attr & 0x100) == 0) || ((var_r30->attr & 0x100) != 0 && (var_r30->unk_00 & 1) != 0)) {
                                         var_r25 = 0;
-                                        var_r30->unk_54 &= 0xBFFFFFFF;
+                                        var_r30->motion_attr &= 0xBFFFFFFF;
                                         if (var_r30->unk_08 != -1) {
                                             Hu3DMotionExec(i, var_r30->unk_08, var_r30->unk_64, 0);
                                         }
@@ -198,7 +198,7 @@ void Hu3DExec(void) {
                                         if (var_r30->unk_0A != -1) {
                                             Hu3DMotionExec(i, var_r30->unk_0A, var_r30->unk_74, 1);
                                         }
-                                        if ((var_r30->unk_50 & 0x400) != 0) {
+                                        if ((var_r30->attr & 0x400) != 0) {
                                             ClusterMotionExec(var_r30);
                                             var_r25 = 1;
                                         }
@@ -210,13 +210,13 @@ void Hu3DExec(void) {
                                             }
                                             var_r25 = 1;
                                         }
-                                        if ((var_r30->unk_50 & 0x90) == 0 && (var_r30->unk_54 & 0x40000002) == 0) {
+                                        if ((var_r30->attr & 0x90) == 0 && (var_r30->motion_attr & 0x40000002) == 0) {
                                             var_r25 = 1;
                                             InitVtxParm(var_r30->hsfData);
                                             if (var_r30->unk_0E != -1) {
                                                 ShapeProc(var_r30->hsfData);
                                             }
-                                            if ((var_r30->unk_50 & 0x400) != 0) {
+                                            if ((var_r30->attr & 0x400) != 0) {
                                                 ClusterProc(var_r30);
                                             }
                                             if (var_r30->hsfData->cenvCnt != 0) {
@@ -227,19 +227,19 @@ void Hu3DExec(void) {
                                         if (var_r25 != 0) {
                                             GXInvalidateVtxCache();
                                         }
-                                        var_r30->unk_50 |= 0x800;
+                                        var_r30->attr |= 0x800;
                                     }
-                                    if (var_r24 != 0 && (var_r30->unk_50 & 0x10) != 0) {
+                                    if (var_r24 != 0 && (var_r30->attr & 0x10) != 0) {
                                         GXWaitDrawDone();
                                         var_r24 = 0;
                                     }
-                                    if ((var_r30->unk_50 & 0x8000) == 0 && (lbl_801D4AB4 != var_r30->unk_E4 || lbl_801D4AB4 != var_r30->unk_E8 || lbl_801D4AB4 != var_r30->unk_EC)) {
-                                        mtxRot(sp40, var_r30->unk_D8, var_r30->unk_DC, var_r30->unk_E0);
-                                        mtxScaleCat(sp40, var_r30->unk_E4, var_r30->unk_E8, var_r30->unk_EC);
-                                        mtxTransCat(sp40, var_r30->unk_CC, var_r30->unk_D0, var_r30->unk_D4);
+                                    if ((var_r30->attr & 0x8000) == 0 && (lbl_801D4AB4 != var_r30->scale.x || lbl_801D4AB4 != var_r30->scale.y || lbl_801D4AB4 != var_r30->scale.z)) {
+                                        mtxRot(sp40, var_r30->rot.x, var_r30->rot.y, var_r30->rot.z);
+                                        mtxScaleCat(sp40, var_r30->scale.x, var_r30->scale.y, var_r30->scale.z);
+                                        mtxTransCat(sp40, var_r30->pos.x, var_r30->pos.y, var_r30->pos.z);
                                         PSMTXConcat(Hu3DCameraMtx, sp40, sp10);
                                         PSMTXConcat(sp10, var_r30->unk_F0, sp10);
-                                        Hu3DDraw(var_r30, sp10[0], &var_r30->unk_E4);
+                                        Hu3DDraw(var_r30, sp10[0], &var_r30->scale.x);
                                     }
                                     var_r30->unk_00++;
                                     var_r23++;
@@ -259,7 +259,7 @@ void Hu3DExec(void) {
     HuSprExec(0);
     var_r30 = Hu3DData;
     for (i = 0; i < 0x200; i++, var_r30++) {
-        if (var_r30->hsfData != 0 && (var_r30->unk_08 != -1 || (var_r30->unk_50 & 0x400) != 0 || var_r30->unk_0E != -1) && (Hu3DPauseF == 0 || (var_r30->unk_50 & 0x200000) != 0)) {
+        if (var_r30->hsfData != 0 && (var_r30->unk_08 != -1 || (var_r30->attr & 0x400) != 0 || var_r30->unk_0E != -1) && (Hu3DPauseF == 0 || (var_r30->attr & 0x200000) != 0)) {
             Hu3DMotionNext(i);
         }
     }
@@ -336,8 +336,8 @@ s16 Hu3DModelCreate(s32 arg0) {
     }
     var_r31->hsfData = LoadHSF(arg0);
     var_r31->unk_48 = Hu3DMallocNo = var_r31->hsfData;
-    var_r31->unk_50 = 0;
-    var_r31->unk_54 = 0;
+    var_r31->attr = 0;
+    var_r31->motion_attr = 0;
     var_r31->unk_02 = 0;
     MakeDisplayList(var_r30, (HsfData* ) var_r31->unk_48);
     var_r31->unk_68.x = lbl_801D4AB8;
@@ -366,11 +366,11 @@ s16 Hu3DModelCreate(s32 arg0) {
     } else {
         var_r31->unk_20 = var_r31->unk_08 = -1;
     }
-    var_r31->unk_CC = var_r31->unk_D0 = var_r31->unk_D4 = lbl_801D4AB4;
-    var_r31->unk_D8 = var_r31->unk_DC = var_r31->unk_E0 = lbl_801D4AB4;
-    var_r31->unk_E4 = var_r31->unk_E8 = var_r31->unk_EC = lbl_801D4AB8;
-    var_r31->unk_22 = -1;
-    var_r31->unk_06 = 0;
+    var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = lbl_801D4AB4;
+    var_r31->rot.x = var_r31->rot.y = var_r31->rot.z = lbl_801D4AB4;
+    var_r31->scale.x = var_r31->scale.y = var_r31->scale.z = lbl_801D4AB8;
+    var_r31->camera = -1;
+    var_r31->layer = 0;
     var_r31->unk_120 = 0;
     var_r31->unk_26 = 0;
     var_r31->unk_03 = 0;
@@ -423,12 +423,12 @@ s16 Hu3DModelLink(s16 arg0) {
     var_r31->hsfData->root = (HsfObject*)((u32)temp_r3_2 + ((u32)var_r31->hsfData->root - (u32)var_r31->hsfData->object));
     var_r31->hsfData->object = temp_r3_2;
     var_r31->unk_48 = temp_r30->unk_48;
-    var_r31->unk_50 = temp_r30->unk_50;
-    temp_r30->unk_50 |= 0x100000;
-    var_r31->unk_54 = temp_r30->unk_54;
-    var_r31->unk_CC = var_r31->unk_D0 = var_r31->unk_D4 = lbl_801D4AB4;
-    var_r31->unk_D8 = var_r31->unk_DC = var_r31->unk_E0 = lbl_801D4AB4;
-    var_r31->unk_E4 = var_r31->unk_E8 = var_r31->unk_EC = lbl_801D4AB8;
+    var_r31->attr = temp_r30->attr;
+    temp_r30->attr |= 0x100000;
+    var_r31->motion_attr = temp_r30->motion_attr;
+    var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = lbl_801D4AB4;
+    var_r31->rot.x = var_r31->rot.y = var_r31->rot.z = lbl_801D4AB4;
+    var_r31->scale.x = var_r31->scale.y = var_r31->scale.z = lbl_801D4AB8;
     var_r31->unk_08 = temp_r30->unk_08;
     if (var_r31->unk_08 != -1) {
         var_r31->unk_68.y = lbl_801D4AB4;
@@ -439,14 +439,14 @@ s16 Hu3DModelLink(s16 arg0) {
         var_r31->unk_10[i] = temp_r30->unk_10[i];
         if (var_r31->unk_10[i] != -1) {
             ClusterAdjustObject(var_r31->hsfData, Hu3DMotion[var_r31->unk_10[i]].unk_04);
-            var_r31->unk_50 |= 0x400;
+            var_r31->attr |= 0x400;
         }
     }
     var_r31->unk_64 = temp_r30->unk_64;
     var_r31->unk_68.x = temp_r30->unk_68.x;
     var_r31->unk_20 = temp_r30->unk_20;
-    var_r31->unk_22 = -1;
-    var_r31->unk_06 = 0;
+    var_r31->camera = -1;
+    var_r31->layer = 0;
     var_r31->unk_120 = 0;
     var_r31->unk_26 = 0;
     var_r31->unk_03 = 0;
@@ -480,11 +480,11 @@ s16 Hu3DHookFuncCreate(HsfData* arg0) {
     }
     var_r31->hsfData = arg0;
     var_r31->unk_48 = (HsfData *)(var_r29 + 0x2710);
-    var_r31->unk_50 = 0x10;
-    var_r31->unk_54 = 0;
-    var_r31->unk_CC = var_r31->unk_D0 = var_r31->unk_D4 = lbl_801D4AB4;
-    var_r31->unk_D8 = var_r31->unk_DC = var_r31->unk_E0 = lbl_801D4AB4;
-    var_r31->unk_E4 = var_r31->unk_E8 = var_r31->unk_EC = lbl_801D4AB8;
+    var_r31->attr = 0x10;
+    var_r31->motion_attr = 0;
+    var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = lbl_801D4AB4;
+    var_r31->rot.x = var_r31->rot.y = var_r31->rot.z = lbl_801D4AB4;
+    var_r31->scale.x = var_r31->scale.y = var_r31->scale.z = lbl_801D4AB8;
     var_r31->unk_08 = var_r31->unk_0C = var_r31->unk_0A = var_r31->unk_0E = -1;
     
     for (i = 0; i < 4; i++) {
@@ -493,8 +493,8 @@ s16 Hu3DHookFuncCreate(HsfData* arg0) {
     var_r31->unk_64 = lbl_801D4AB4;
     var_r31->unk_68.x = lbl_801D4AB8;
     var_r31->unk_20 = -1;
-    var_r31->unk_22 = -1;
-    var_r31->unk_06 = 0;
+    var_r31->camera = -1;
+    var_r31->layer = 0;
     var_r31->unk_120 = 0;
     var_r31->unk_26 = 0;
     var_r31->unk_03 = 0;
@@ -522,14 +522,14 @@ void Hu3DModelKill(s16 arg0) {
     temp_r31 = &Hu3DData[arg0];
     var_r28 = temp_r31->hsfData;
     if (var_r28 != 0) {
-        if ((temp_r31->unk_50 & 4) != 0) {
+        if ((temp_r31->attr & 4) != 0) {
             Hu3DShadowCamBit -= 1;
         }
-        layerNum[temp_r31->unk_06] -= 1;
+        layerNum[temp_r31->layer] -= 1;
 
-        if ((temp_r31->unk_50 & 0x10) != 0) {
+        if ((temp_r31->attr & 0x10) != 0) {
             HuMemDirectFreeNum(HEAP_DATA, (u32) temp_r31->unk_48);
-            if ((temp_r31->unk_50 & 0x20) != 0) {
+            if ((temp_r31->attr & 0x20) != 0) {
                 copy = temp_r31->unk_120;
                 HuSprAnimKill(copy->unk_44);
             }
@@ -539,7 +539,7 @@ void Hu3DModelKill(s16 arg0) {
             }
             return;
         }
-        if ((temp_r31->unk_50 & 0x10000) != 0) {
+        if ((temp_r31->attr & 0x10000) != 0) {
             if (temp_r31->unk_08 != -1) {
                 Hu3DMotionKill(temp_r31->unk_08);
             }
@@ -600,6 +600,163 @@ void Hu3DModelKill(s16 arg0) {
             HuMemDCFlush(HEAP_DATA);
         }
     }
+}
+
+void Hu3DModelAllKill(void) {
+    ModelData* var_r30;
+    s16 i;
+
+    modelKillAllF = 1;
+    var_r30 = Hu3DData;
+    
+    for (i = 0; i < 0x200; i++, var_r30++) {
+        if (var_r30->hsfData != 0) {
+            Hu3DModelKill(i);
+        }
+    }
+    modelKillAllF = 0;
+    
+    for (i = 0; i < 8; i++) {
+        layerNum[i] = 0;
+        layerHook[i] = NULL;
+    }
+    Hu3DParManAllKill();
+    HuMemDCFlush(HEAP_DATA);
+}
+
+void Hu3DModelPosSet(s16 index, f32 x, f32 y, f32 z) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[index];
+    temp_r31->pos.x = x;
+    temp_r31->pos.y = y;
+    temp_r31->pos.z = z;
+}
+
+void Hu3DModelPosSetV(s16 arg0, Vec arg1) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    temp_r31->pos = arg1;
+}
+
+void Hu3DModelRotSet(s16 index, f32 x, f32 y, f32 z) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[index];
+    temp_r31->rot.x = x;
+    temp_r31->rot.y = y;
+    temp_r31->rot.z = z;
+}
+
+void Hu3DModelRotSetV(s16 arg0, Vec arg1) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    temp_r31->rot = arg1;
+}
+
+void Hu3DModelScaleSet(s16 index, f32 x, f32 y, f32 z) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[index];
+    temp_r31->scale.x = x;
+    temp_r31->scale.y = y;
+    temp_r31->scale.z = z;
+}
+
+void Hu3DModelScaleSetV(s16 arg0, Vec arg1) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    temp_r31->scale = arg1;
+}
+
+void Hu3DModelAttrSet(s16 arg0, u32 arg1) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    if ((arg1 & (1 << 30)) != 0) {
+        temp_r31->motion_attr |= arg1 & 0xBFFFFFFF;
+    } else {
+        temp_r31->attr |= arg1;
+    }
+}
+
+void Hu3DModelAttrReset(s16 arg0, u32 arg1) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    if ((arg1 & (1 << 30)) != 0) {
+        temp_r31->motion_attr &= ~arg1;
+    } else {
+        temp_r31->attr &= ~arg1;
+    }
+}
+
+u32 Hu3DModelAttrGet(s16 arg0) {
+    ModelData *copy = &Hu3DData[arg0];
+    return copy->attr;
+}
+
+u32 Hu3DModelMotionAttrGet(s16 arg0) {
+    ModelData *copy = &Hu3DData[arg0];
+    return copy->motion_attr;
+}
+
+void Hu3DModelClusterAttrSet(s16 arg0, s16 arg1, s32 arg2) {
+    ModelData* temp_r31;
+    s32 temp_r6;
+
+    temp_r31 = &Hu3DData[arg0];
+    temp_r31->cluster_attr[arg1] |= arg2;
+}
+
+void Hu3DModelClusterAttrReset(s16 arg0, s16 arg1, s32 arg2) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    temp_r31->cluster_attr[arg1] &= ~arg2;
+}
+
+void Hu3DModelCameraSet(s16 arg0, u16 arg1) {
+    ModelData* copy = &Hu3DData[arg0];
+    copy->camera = arg1;
+}
+
+void Hu3DModelLayerSet(s16 arg0, s16 arg1) {
+    ModelData* temp_r31;
+
+    temp_r31 = &Hu3DData[arg0];
+    layerNum[temp_r31->layer] -= 1;
+    temp_r31->layer = arg1;
+    layerNum[arg1] += 1;
+}
+
+HsfObject* Hu3DModelObjPtrGet(s16 arg0, s32 arg1) {
+    char name[0x100];
+    s32 spC;
+    s16 sp8;
+    HsfData* temp_r31;
+    s16 var_r30;
+    HsfObject* var_r29;
+    HsfObject* var_r28;
+    u32 var_r4;
+
+    temp_r31 = Hu3DData[arg0].hsfData;
+    var_r29 = temp_r31->object;
+    strcpy(&name, MakeObjectName(arg1));
+    
+    for (var_r30 = 0; var_r30 < temp_r31->objectCnt; var_r29++, var_r30++) {
+        var_r28 = var_r29;
+        if (strcmp(&name, var_r28->name) == 0) {
+            return var_r29;
+        }
+    }
+    if (var_r30 == temp_r31->objectCnt) {
+        OSReport("Error: OBJPtr Error!\n");
+    }
+    return NULL;
 }
 
 void Hu3DShadowSizeSet(u16 arg0) {
