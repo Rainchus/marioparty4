@@ -759,6 +759,44 @@ HsfObject* Hu3DModelObjPtrGet(s16 arg0, s32 arg1) {
     return NULL;
 }
 
+static inline void inlineFunc(HsfObject* var_r26) {
+    HsfConstData* temp_r25;
+    HsfObject* copy = var_r26;
+    if (copy->type == 2U) {
+        temp_r25 = copy->constData;
+        temp_r25->flags |= 1;
+    } 
+}
+
+void Hu3DModelTPLvlSet(s16 arg0, f32 arg8) {
+    HsfMaterial* var_r31;
+    HsfData* temp_r30;
+    s16 i;
+    ModelData* temp_r28;
+    HsfObject* var_r27;
+    HsfObject* var_r26;
+    HsfConstData* temp_r25;
+
+    temp_r28 = &Hu3DData[arg0];
+    temp_r30 = temp_r28->hsfData;
+    var_r31 = temp_r30->material;
+    for (i = 0; i < temp_r30->materialCnt; i++, var_r31++) {
+        var_r31->invAlpha = lbl_801D4AB8 - arg8;
+        if (lbl_801D4AB8 != arg8) {
+            var_r31->pass = (var_r31->pass & 0xF0) | 1;
+        } else {
+            var_r31->pass &= 0xF0;
+        }
+    }
+    var_r26 = temp_r30->object;
+    for (i = 0; i < temp_r30->objectCnt; var_r26++, i++) {
+        inlineFunc(var_r26);
+    }
+    temp_r28->attr |= 0x40000;
+}
+
+// ...
+
 void Hu3DShadowSizeSet(u16 arg0) {
     Hu3DShadowData.unk_02 = arg0;
     if (Hu3DShadowData.unk_04 != 0) {
