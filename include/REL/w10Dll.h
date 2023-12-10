@@ -5,6 +5,13 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
+typedef struct w10_state {
+/* 0x00 */ s32 unk0;
+/* 0x04 */ u16 unk4;
+/* 0x06 */ u16 unk6;
+/* 0x08 */ s16 unk8;
+} W10State;
+
 typedef struct unkw10Dll {
     Vec unk0;
     Vec unk0C;
@@ -107,7 +114,7 @@ extern Process* lbl_1_bss_18;
 extern s16 lbl_1_bss_1C;
 extern s16 lbl_1_bss_1E;
 extern s32 lbl_1_data_78[2];
-extern BoardStateSubStruct* lbl_1_bss_0;
+extern W10State* lbl_1_bss_0;
 extern s16 lbl_1_bss_10[4]; //could be incorrect size
 extern void* lbl_1_bss_8; //unknown type
 extern s16 lbl_1_bss_C;

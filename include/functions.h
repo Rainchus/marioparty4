@@ -40,7 +40,6 @@ void HuWinMesMaxSizeGet(s32, f32*, ...);
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
 
 void HuPadRumbleAllStop(void);
-s16 HuPadStatGet(s16);
 
 void HuAudFXListnerKill(void);
 void HuAudDllSndGrpSet(u16 ovl);
