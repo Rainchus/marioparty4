@@ -14,7 +14,7 @@ s16 lbl_1_bss_E;
 s16 lbl_1_bss_C;
 void* lbl_1_bss_8;
 s32 lbl_1_bss_4_pad;
-BoardStateSubStruct* lbl_1_bss_0;
+W10State* lbl_1_bss_0;
 
 //DATA
 unkw10Dll lbl_1_data_0[1] = {
@@ -62,7 +62,7 @@ s32 lbl_1_data_6C[2] = {
 
 // function is probably global. only inlined in rels?
 inline s32 get_current_board(void) {
-    return GWSystem.unk08 & 0x1F;
+    return GWSystem.board;
 }
 
 void fn_1_E0(void) {
@@ -76,7 +76,7 @@ void fn_1_E0(void) {
     s32 temp2;
 
     temp2 = get_current_board();
-    lbl_1_bss_0 = &GWSystem.unk10;
+    lbl_1_bss_0 = (W10State *)&GWSystem.board_data;
     lbl_1_bss_0->unk0 = 0;
     lbl_1_bss_0->unk4 = 0;
     lbl_1_bss_0->unk6 = 0;

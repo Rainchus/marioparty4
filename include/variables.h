@@ -21,6 +21,6 @@ extern char fadeStat;
 
 extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
-
+extern GameStat GWGameStat;
 
 #endif
