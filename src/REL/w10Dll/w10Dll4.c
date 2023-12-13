@@ -1,6 +1,8 @@
 #include "REL/w10Dll.h"
 #include "game/data.h"
 
+s16 HuPadStatGet(s16 i); //TODO: Move to some other header file since gamework.c relies on an implicit declaration of it
+
 char lbl_1_data_98[] = "@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000";
 
 w10DllUnk03 lbl_1_data_C6[11] = {
@@ -85,21 +87,21 @@ void fn_1_176C(void) {
 
 void fn_1_179C(void) {
     fn_1_BA0(0x2E0025);
-    GWPlayer[1].flags.unk0 = 2;
-    GWPlayer[3].flags.unk0 = 2;
+    GWPlayer[1].color = 2;
+    GWPlayer[3].color = 2;
 }
 
 void fn_1_17F4(void) {
     fn_1_BA0(0x2E0026);
-    GWPlayer[0].flags.unk0 = 2;
+    GWPlayer[0].color = 2;
 }
 
 void fn_1_1834(void) {
     fn_1_BA0(0x2E0027);
-    GWPlayer[0].flags.unk0 = 1;
-    GWPlayer[1].flags.unk0 = 1;
-    GWPlayer[2].flags.unk0 = 1;
-    GWPlayer[3].flags.unk0 = 2;
+    GWPlayer[0].color = 1;
+    GWPlayer[1].color = 1;
+    GWPlayer[2].color = 1;
+    GWPlayer[3].color = 2;
 }
 
 void fn_1_18BC(void) {
@@ -139,7 +141,7 @@ void fn_1_1984(void) {
             return;
         }
         for (i = 0; i < ARRAY_COUNT(GWPlayer); i++) {
-            contPortIndex = GWPlayer[i].controllerPort;
+            contPortIndex = GWPlayer[i].port;
             if (contPortIndex == -1) {
                 continue;
             }
@@ -168,7 +170,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                 if (fn_8005B6A8() == 0) {
                     s32 contPortIndex;
                     for (i = 0; i < ARRAY_COUNT(GWPlayer); i++) {
-                        contPortIndex = GWPlayer[i].controllerPort;
+                        contPortIndex = GWPlayer[i].port;
                         if (contPortIndex == -1) {
                             continue;
                         }
@@ -190,8 +192,8 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
     }
     if (arg0 != 0x1D) {
         OSReport(lbl_1_data_258,
-            (GWPlayer[0].characterID >> 5) & 1, (GWPlayer[1].characterID >> 5) & 1,
-            (GWPlayer[2].characterID >> 5) & 1, (GWPlayer[3].characterID >> 5) & 1,
+            GWPlayer[0].com, GWPlayer[1].com,
+            GWPlayer[2].com, GWPlayer[3].com,
             lbl_1_bss_0->unk0, arg0, arg1, lbl_1_bss_0->unk4, lbl_1_bss_0->unk6);
         if (lbl_1_data_108[lbl_1_bss_0->unk0].unk0 != -1) {
             if (arg0 == 5) {
