@@ -1,6 +1,8 @@
 #ifndef _MATH_H
 #define _MATH_H
 
+#define M_PI 3.141592653589793
+
 extern inline float sqrtf(float x)
 {
 	static const double _half=.5;

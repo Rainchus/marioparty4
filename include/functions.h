@@ -8,9 +8,9 @@ void Hu3DLayerHookSet(short layer, void (*func)(short layer));
 void Hu3D2Dto3D(Vec*, s32, Vec*);
 void Hu3DModelLightInfoSet(s32, s32);
 void Hu3DBGColorSet(u8, u8, u8);
-void Hu3DCameraCreate(s16);
-void Hu3DCameraPerspectiveSet(s16, f32, f32, f32, f32);
-void Hu3DCameraViewportSet(s16, f32, f32, f32, f32, f32, f32);
+void Hu3DCameraCreate(s32);
+void Hu3DCameraPerspectiveSet(s32, f32, f32, f32, f32);
+void Hu3DCameraViewportSet(s32, f32, f32, f32, f32, f32, f32);
 void HuAudFadeOut(int arg0);
 
 void WipeCreate(char dir, char type, short duration);
