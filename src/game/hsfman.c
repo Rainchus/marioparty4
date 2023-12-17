@@ -108,7 +108,7 @@ void Hu3DPreProc(void) {
 }
 
 void Hu3DExec(void) {
-    GXColor unusedColor;
+    GXColor unusedColor = {0, 0, 0, 0};
     CameraData* camera;
     ModelData* data;
     s16 temp_r22;
@@ -122,7 +122,6 @@ void Hu3DExec(void) {
     Mtx sp10;
     ThreeDProjectionStruct* var_r26;
 
-    unusedColor = lbl_801D6BE0;
     HuPerfBegin(3);
     GXSetCurrentMtx(0U);
     camera = Hu3DCamera;
@@ -310,8 +309,6 @@ void Hu3DPauseSet(s32 arg0) {
 void Hu3DNoSyncSet(s32 arg0) {
     NoSyncF = arg0;
 }
-
-// ,,,
 
 s16 Hu3DModelCreate(s32 arg0) {
     HsfData* temp_r0;
@@ -955,9 +952,8 @@ void Hu3DModelHookSet(s16 arg0, s32 arg1, s16 arg2) {
                 constData->hook = arg2;
                 data = &Hu3DData[arg2];
                 data->attr |= 0x8000;
-                return;
-            } else {
                 (void)data;
+                return;
             }
         }
     }
@@ -1348,7 +1344,7 @@ void Hu3DLighInit(void) {
     }
 }
 
-void Hu3DGLightCreate(f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD, u8 arg0, u8 arg1, u8 arg2) {
+s16 Hu3DGLightCreate(f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD, u8 arg0, u8 arg1, u8 arg2) {
     Vec vec1;
     Vec vec2;
     GXColor color;
@@ -1363,7 +1359,7 @@ void Hu3DGLightCreate(f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD
     color.g = arg1;
     color.b = arg2;
     color.a = 0xFF;
-    Hu3DGLightCreateV(&vec1, &vec2, &color);
+    return Hu3DGLightCreateV(&vec1, &vec2, &color);
 }
 
 s16 Hu3DGLightCreateV(Vec* arg0, Vec* arg1, GXColor* arg2) {
@@ -1392,7 +1388,7 @@ s16 Hu3DGLightCreateV(Vec* arg0, Vec* arg1, GXColor* arg2) {
     return var_r30;
 }
 
-void Hu3DLLightCreate(s16 arg0, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD, u8 arg1, u8 arg2, u8 arg3) {
+s16 Hu3DLLightCreate(s16 arg0, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD, u8 arg1, u8 arg2, u8 arg3) {
     Vec vec1;
     Vec vec2;
     GXColor color;
@@ -1407,7 +1403,7 @@ void Hu3DLLightCreate(s16 arg0, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC
     color.g = arg2;
     color.b = arg3;
     color.a = 0xFF;
-    Hu3DLLightCreateV(arg0, &vec1, &vec2, &color);
+    return Hu3DLLightCreateV(arg0, &vec1, &vec2, &color);
 }
 
 s16 Hu3DLLightCreateV(s16 arg0, Vec* arg1, Vec* arg2, GXColor* arg3) {
@@ -1466,6 +1462,300 @@ void Hu3DLLightSpotSet(s16 arg0, s16 arg1, u16 arg2, f32 arg8) {
     temp_r31->unk_00 &= 0xFF00;
     temp_r31->unk_04 = arg8;
     temp_r31->unk_02 = arg2;
+}
+
+void Hu3DGLightInfinitytSet(s16 lightIndex) {
+    LightData* temp_r31;
+
+    temp_r31 = &Hu3DGlobalLight[lightIndex];
+    temp_r31->unk_00 &= 0xFF00;
+    temp_r31->unk_00 |= 1;
+}
+
+void Hu3DLLightInfinitytSet(s16 dataIndex, s16 lightIndex) {
+    ModelData* data;
+    LightData* temp_r31;
+
+    data = &Hu3DData[dataIndex];
+    temp_r31 = &Hu3DLocalLight[data->unk_38[lightIndex]];
+    temp_r31->unk_00 &= 0xFF00;
+    temp_r31->unk_00 |= 1;
+}
+
+void Hu3DGLightPointSet(s16 arg0, u16 arg1, f32 arg8, f32 arg9) {
+    LightData* temp_r31;
+
+    temp_r31 = &Hu3DGlobalLight[arg0];
+    temp_r31->unk_00 &= 0xFF00;
+    temp_r31->unk_00 |= 2;
+    temp_r31->unk_04 = arg8;
+    temp_r31->unk_08 = arg9;
+    temp_r31->unk_02 = arg1;
+}
+
+void Hu3DLLightPointSet(s16 arg0, s16 arg1, u16 arg2, f32 arg8, f32 arg9) {
+    ModelData* data;
+    LightData* temp_r31;
+
+    data = &Hu3DData[arg0];
+    temp_r31 = &Hu3DLocalLight[data->unk_38[arg1]];
+    temp_r31->unk_00 &= 0xFF00;
+    temp_r31->unk_00 |= 2;
+    temp_r31->unk_04 = arg8;
+    temp_r31->unk_08 = arg9;
+    temp_r31->unk_02 = arg2;
+}
+
+void Hu3DGLightKill(s16 index) {
+    Hu3DGlobalLight[index].unk_00 = -1;
+}
+
+void Hu3DLLightKill(s16 dataIndex, s16 lightIndex) {
+    ModelData* temp_r31;
+    LightData* light;
+    s16 var_r30;
+
+    temp_r31 = &Hu3DData[dataIndex];
+    light = &Hu3DLocalLight[temp_r31->unk_38[lightIndex]];
+    light->unk_00 = -1;
+    temp_r31->unk_38[lightIndex] = -1;
+    
+    for (var_r30 = 0; var_r30 < 8; var_r30++) {
+        if (temp_r31->unk_38[var_r30] == -1) {
+            break;
+        }
+    }
+    if (var_r30 == 8) {
+        temp_r31->attr &= ~0x1000;
+    }
+}
+
+void Hu3DLightAllKill(void) {
+    s16 i;
+    LightData* light;
+
+    light = Hu3DGlobalLight;
+    for (i = 0; i < 8; i++, light++) {
+        if (light->unk_00 != -1) {
+            Hu3DGlobalLight[i].unk_00 = -1;
+        }
+    }
+}
+
+void Hu3DGLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+    LightData* light;
+
+    light = &Hu3DGlobalLight[arg0];
+    light->color.r = arg1;
+    light->color.g = arg2;
+    light->color.b = arg3;
+    light->color.a = arg4;
+}
+
+void Hu3DLLightColorSet(s16 arg0, s16 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
+    LightData* light;
+    ModelData* data;
+
+    data = &Hu3DData[arg0];
+    light = &Hu3DLocalLight[data->unk_38[arg1]];
+    light->color.r = arg2;
+    light->color.g = arg3;
+    light->color.b = arg4;
+    light->color.a = arg5;
+}
+
+void Hu3DGLightPosSetV(s16 arg0, Vec* arg1, Point3d* arg2) {
+    Point3d* spC;
+    s16 sp8;
+    LightData* temp_r31;
+    
+    temp_r31 = &Hu3DGlobalLight[arg0];
+    temp_r31->unk_1C = *arg1;
+    
+    PSVECNormalize(arg2, &temp_r31->unk_28);
+}
+
+void Hu3DLLightPosSetV(s16 arg0, s16 arg1, Vec* arg2, Point3d* arg3) {
+    ModelData* data;
+    LightData* temp_r31;
+
+    data = &Hu3DData[arg0];
+    temp_r31 = &Hu3DLocalLight[data->unk_38[arg1]];
+    temp_r31->unk_1C = *arg2;
+    
+    PSVECNormalize(arg3, &temp_r31->unk_28);
+}
+
+void Hu3DGLightPosSet(s16 arg0, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD) {
+    LightData* temp_r31;
+
+    temp_r31 = &Hu3DGlobalLight[arg0];
+    temp_r31->unk_1C.x = arg8;
+    temp_r31->unk_1C.y = arg9;
+    temp_r31->unk_1C.z = argA;
+    temp_r31->unk_28.x = argB;
+    temp_r31->unk_28.y = argC;
+    temp_r31->unk_28.z = argD;
+    PSVECNormalize(&temp_r31->unk_28, &temp_r31->unk_28);
+}
+
+void Hu3DLLightPosSet(s16 arg0, s16 arg1, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD) {
+    ModelData* data;
+    LightData* temp_r31;
+
+    data = &Hu3DData[arg0];
+    temp_r31 = &Hu3DLocalLight[data->unk_38[arg1]];
+    temp_r31->unk_1C.x = arg8;
+    temp_r31->unk_1C.y = arg9;
+    temp_r31->unk_1C.z = argA;
+    temp_r31->unk_28.x = argB;
+    temp_r31->unk_28.y = argC;
+    temp_r31->unk_28.z = argD;
+    PSVECNormalize(&temp_r31->unk_28, &temp_r31->unk_28);
+}
+
+void Hu3DGLightPosAimSetV(s16 arg0, Point3d* arg1, Point3d* arg2) {
+    LightData* temp_r31;
+
+    temp_r31 = &Hu3DGlobalLight[arg0];
+    temp_r31->unk_1C = *arg1;
+    
+    PSVECSubtract(arg2, arg1, &temp_r31->unk_28);
+    PSVECNormalize(&temp_r31->unk_28, &temp_r31->unk_28);
+}
+
+void Hu3DLLightPosAimSetV(s16 arg0, s16 arg1, Point3d* arg2, Point3d* arg3) {
+    ModelData* data;
+    LightData* temp_r31;
+
+    data = &Hu3DData[arg0];
+    temp_r31 = &Hu3DLocalLight[data->unk_38[arg1]];
+    temp_r31->unk_1C = *arg2;
+    
+    PSVECSubtract(arg3, arg2, &temp_r31->unk_28);
+    PSVECNormalize(&temp_r31->unk_28, &temp_r31->unk_28);
+}
+
+void Hu3DGLightPosAimSet(s16 arg0, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD) {
+    Vec vec2;
+    Vec vec1;
+    LightData* temp_r30;
+    LightData* temp_r31;
+
+    vec2.x = arg8;
+    vec2.y = arg9;
+    vec2.z = argA;
+    vec1.x = argB;
+    vec1.y = argC;
+    vec1.z = argD;
+    
+    temp_r30 = &Hu3DGlobalLight[arg0];
+    temp_r31 = temp_r30;
+    temp_r31->unk_1C = vec2;
+    PSVECSubtract(&vec1, &vec2, &temp_r31->unk_28);
+    PSVECNormalize(&temp_r31->unk_28, &temp_r31->unk_28);
+}
+
+void Hu3DLLightPosAimSet(s16 arg0, s16 arg1, f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD) {
+    Vec vec2;
+    Vec vec1;
+    ModelData* data;
+    LightData* temp_r30;
+    LightData* temp_r31;
+
+    vec2.x = arg8;
+    vec2.y = arg9;
+    vec2.z = argA;
+    vec1.x = argB;
+    vec1.y = argC;
+    vec1.z = argD;
+    
+    data = &Hu3DData[arg0];
+    temp_r30 = &Hu3DLocalLight[data->unk_38[arg1]];
+    temp_r31 = temp_r30;
+    temp_r31->unk_1C = vec2;
+    PSVECSubtract(&vec1, &vec2, &temp_r31->unk_28);
+    PSVECNormalize(&temp_r31->unk_28, &temp_r31->unk_28);
+}
+
+void Hu3DGLightStaticSet(s16 arg0, s32 arg1) {
+    LightData* temp_r31;
+
+    temp_r31 = &Hu3DGlobalLight[arg0];
+    if (arg1 != 0) temp_r31->unk_00 |= 0x8000;
+    else temp_r31->unk_00 &= ~0x8000;
+}
+
+void Hu3DLLightStaticSet(s16 arg0, s16 arg1, s32 arg2) {
+    ModelData* data;
+    LightData* temp_r31;
+
+    data = &Hu3DData[arg0];
+    temp_r31 = &Hu3DLocalLight[data->unk_38[arg1]];
+    if (arg2 != 0) temp_r31->unk_00 |= 0x8000;
+    else temp_r31->unk_00 &= ~0x8000;
+}
+
+// ...
+
+s16 Hu3DLightSet(ModelData* arg0, s32 arg1, s32 arg2, f32 arg8) {
+    s16 var_r30;
+    LightData* var_r29;
+    s16 var_r28;
+    s16 i;
+
+    var_r28 = 0;
+    var_r30 = 1;
+    var_r29 = Hu3DGlobalLight;
+    
+    for (i = 0; i < 8; i++, var_r29++) {
+        if (var_r29->unk_00 != -1) {
+            lightSet(var_r29, var_r30, arg2, arg1, arg8);
+            var_r28 |= var_r30;
+            var_r30 = (s16) var_r30 * 2;
+        }
+    }
+    if ((arg0->attr & 0x1000) != 0) {
+        for (i = 0; i < 8; i++) {
+            if (arg0->unk_38[i] != -1) {
+                var_r29 = &Hu3DLocalLight[arg0->unk_38[i]];
+                lightSet(var_r29, var_r30, arg2, arg1, arg8);
+                var_r28 |= var_r30;
+                var_r30 = (s16) var_r30 * 2;
+            }
+        }
+    }
+    return var_r28;
+}
+
+// ...
+
+void Hu3DReflectMapSet(AnimData* arg0) {
+    
+    if (reflectAnim[0] != (AnimData*) refMapData0) {
+        HuMemDirectFree(reflectAnim[0]);
+    }
+    reflectAnim[0] = HuSprAnimRead(arg0);
+    reflectMapNo = 0;
+}
+
+void Hu3DReflectNoSet(s16 arg0) {
+    reflectMapNo = arg0;
+}
+
+void Hu3DFogSet(f32 arg0, f32 arg1, u8 arg2, u8 arg3, u8 arg4) {
+    FogData.fogType = 4;
+    FogData.start = arg0;
+    FogData.end = arg1;
+    FogData.color.r = arg2;
+    FogData.color.g = arg3;
+    FogData.color.b = arg4;
+    FogData.color.a = 0xFF;
+}
+
+void Hu3DFogClear(void) {
+    FogData.fogType = 0;
+    GXSetFog(GX_FOG_NONE, 0.0f, 0.0f, 0.0f, 0.0f, BGColor);
 }
 
 // ...
