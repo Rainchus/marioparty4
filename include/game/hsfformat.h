@@ -2,6 +2,7 @@
 #define _GAME_HSFFORMAT_H
 
 #include "dolphin.h"
+#include "game/hsfanim.h"
 
 #define HSF_OBJ_NULL1 0
 #define HSF_OBJ_REPLICA 1
@@ -151,13 +152,15 @@ typedef struct hsf_face {
 
 typedef struct hsf_const_data {
     u32 flags;
-    u8 unk4[64];
+    s16 hook;
+    u8 unk6[0x3A];
+    AnimData *hilite_map;
 } HsfConstData;
 
 typedef struct hsf_transform {
-    HsfVector3f pos;
-    HsfVector3f rot;
-    HsfVector3f scale;
+    Vec pos;
+    Vec rot;
+    Vec scale;
 } HsfTransform;
 
 typedef struct hsf_cenv_single {
@@ -273,12 +276,24 @@ typedef struct hsf_object_data {
     void *file[2];
 } HsfObjectData;
 
+typedef struct hsf_camera {
+    HsfVector3f target;
+    HsfVector3f pos;
+    float aspect_dupe;
+    float fov;
+    float near;
+    float far;
+} HsfCamera;
+
 typedef struct hsf_object {
     char *name;
-    s32 type;
+    u32 type;
     HsfConstData *constData;
     u32 flags;
-    HsfObjectData data;
+    union {
+        HsfObjectData data;
+        HsfCamera camera;
+    };
 } HsfObject;
 
 typedef struct hsf_skeleton {
