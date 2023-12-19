@@ -76,7 +76,7 @@ static s16 comKeyIdx;
 static u8 LanguageNo;
 AnimData* fontAnim;
 
-static SomeFontTblStruct ATTRIBUTE_ALIGN(32) spcFontTbl[] = {
+static SomeFontTblStruct spcFontTbl[] = {
     {   &iconAnim,  0, 20, 24,  10, 12 },
     {   &iconAnim,  1, 20, 24,  10, 12 },
     {   &iconAnim,  2, 20, 24,  10, 12 },
@@ -144,7 +144,7 @@ u8 charWJTbl[] = {
     20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
     20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
 };
-static u8 charColPal[] = {
+static u8 ATTRIBUTE_ALIGN(32) charColPal[] = {
     0x00, 0x00, 0x00,
     0x00, 0x00, 0xFF,
     0xFF, 0x00, 0x00,
@@ -185,29 +185,6 @@ static s32 winVoiceTbl[] = {
     0x47, 0x46, 0x48, 0x3E,
     0x3E, 0x3F, 0x49, 0x49,
     0x49
-};
-char lbl_80130610[] = "Error: No Message\n";
-char lbl_80130623[] = "Error: No Message data\n";
-static s32 winPortraitTbl[] = {
-    0x0086000F,
-    0x00860010,
-    0x00860011,
-    0x00860012,
-    0x00860013,
-    0x00860014,
-    0x00860015,
-    0x00860016,
-    0x00860017,
-    0x00860018,
-    0x00860019,
-    0x0086001A,
-    0x0086001B,
-    0x00860009,
-    0x0086000A,
-    0x0086000B,
-    0x0086000C,
-    0x0086000D,
-    0x0086000E
 };
 
 s16 winPrio = 1000;
@@ -1281,12 +1258,12 @@ void HuWinMesSet(s16 arg0, u32 arg1) {
     win->unk00 = 1;
     if ((arg1 & 0x80000000) == 0) {
         if (messDataPtr == 0) {
-            OSReport(lbl_80130610);
+            OSReport("Error: No Message\n");
             return;
         }
         win->unk90 = MessData_MesPtrGet(messDataPtr, arg1);
         if (win->unk90 == 0) {
-            OSReport(lbl_80130623);
+            OSReport("Error: No Message data\n");
             HuWinMesSet(arg0, 0);
             return;
         }
@@ -1304,12 +1281,12 @@ void HuWinInsertMesSet(s16 arg0, u32 arg1, s16 arg2) {
 
     if (!(arg1 & 0x80000000)) {
         if (messDataPtr == 0) {
-            OSReport(lbl_80130610);
+            OSReport("Error: No Message\n");
             return;
         }
         temp_r31->unkB4[arg2] = MessData_MesPtrGet(messDataPtr, arg1);
         if (temp_r31->unkB4[arg2] == 0) {
-            OSReport(lbl_80130623);
+            OSReport("Error: No Message data\n");
         }
     } else {
         temp_r31->unkB4[arg2] = (void*) arg1;
@@ -1788,6 +1765,28 @@ void HuWinDisablePlayerReset(s16 arg0, s32 arg1) {
 void HuWinExCreate(f32 arg0, f32 arg1, s16 arg2, s16 arg3, s16 arg4) {
     HuWinExCreateStyled(arg0, arg1, arg2, arg3, arg4, 0);
 }
+
+static s32 winPortraitTbl[] = {
+    0x0086000F,
+    0x00860010,
+    0x00860011,
+    0x00860012,
+    0x00860013,
+    0x00860014,
+    0x00860015,
+    0x00860016,
+    0x00860017,
+    0x00860018,
+    0x00860019,
+    0x0086001A,
+    0x0086001B,
+    0x00860009,
+    0x0086000A,
+    0x0086000B,
+    0x0086000C,
+    0x0086000D,
+    0x0086000E
+};
 
 static inline void HuWinExCreateStyledInlineFunc(s16 arg0, s16 arg1, f32 arg2, f32 arg3) {
     s16 var_1;
