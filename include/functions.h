@@ -29,14 +29,13 @@ void espDispOn(s16);
 void espPosSet(s16, f32, f32);
 
 void HuWinAllKill(void);
-void HuWinMesSet(s16, s32);
 void HuWinKill(s16);
-void HuWinPriSet(s16, s32);
+void HuWinPriSet(s16, s16);
 void HuWinHomeClear(s16);
-void HuWinMesPalSet(s16, s32, s32, s32, s32);
-void HuWinMesSet(s16, s32);
-void HuWinMesSpeedSet(s16, s32);
-void HuWinMesMaxSizeGet(s32, f32*, ...);
+void HuWinMesPalSet(s16, u8, u8, u8, u8);
+void HuWinMesSet(s16, u32);
+void HuWinMesSpeedSet(s16, s16);
+void HuWinMesMaxSizeGet(s16, f32*, ...);
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
 
 void HuPadRumbleAllStop(void);
