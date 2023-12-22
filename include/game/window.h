@@ -66,12 +66,12 @@ typedef struct {
     /* 0x14C */ s16 scissor_y;
     /* 0x14E */ s16 scissor_w;
     /* 0x150 */ s16 scissor_h;
-    /* 0x152 */ s16 char_w;
+    /* 0x152 */ s16 tab_w;
     /* 0x154 */ s16 push_key;
     /* 0x156 */ s16 key_down;
     /* 0x158 */ s16 key_auto;
     /* 0x160 */ u8 ATTRIBUTE_ALIGN(32) mess_pal[10][3];
-} SomeWindowStruct; // Size 0x180
+} WindowData; // Size 0x180
 
 void HuWindowInit(void);
 void HuWinInit(s32 arg0);
@@ -80,8 +80,8 @@ void HuWinKill(s16 arg0);
 void HuWinAllKill(void);
 void HuWinHomeClear(s16 arg0);
 void HuWinKeyWaitEntry(s16 arg0);
-u32 HuWinActivePadGet(SomeWindowStruct* arg0);
-u32 HuWinActiveKeyGetX(SomeWindowStruct* arg0);
+u32 HuWinActivePadGet(WindowData* arg0);
+u32 HuWinActiveKeyGetX(WindowData* arg0);
 void HuWinPosSet(s16 arg0, f32 arg1, f32 arg2);
 void HuWinScaleSet(s16 arg0, f32 arg1, f32 arg2);
 void HuWinZRotSet(s16 arg0, f32 arg1);
