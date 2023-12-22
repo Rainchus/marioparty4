@@ -2,86 +2,76 @@
 #define _GAME_WINDOW_H
 
 #include "game/sprite.h"
+#include "dolphin.h"
+
 
 typedef struct {
-    /* 0x00 */ u8 unk00;
-    /* 0x01 */ u8 unk01;
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s16 unk04;
-    /* 0x06 */ s16 unk06;
-} UnknownWindowStruct1; // Size 8
+    /* 0x00 */ u8 color;
+    /* 0x01 */ u8 fade;
+    /* 0x02 */ s16 x;
+    /* 0x04 */ s16 y;
+    /* 0x06 */ s16 character;
+} WinChar; // Size 8
 
 typedef struct {
-    /* 0x00 */ u8 unk00;
-    /* 0x01 */ char unk01[1];
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s16 unk04;
-} UnknownWindowStruct2; // Size 6
+    /* 0x00 */ u8 stat;
+    /* 0x02 */ s16 x;
+    /* 0x04 */ s16 y;
+} WinChoice; // Size 6
 
 typedef struct {
-    /* 0x000 */ u8 unk00;
-    /* 0x001 */ u8 unk01;
-    /* 0x002 */ u8 unk02;
-    /* 0x003 */ u8 unk03;
-    /* 0x004 */ s16 unk04;
-    /* 0x006 */ s16 unk06[30];
-    /* 0x042 */ s16 unk42;
-    /* 0x044 */ s16 unk44;
-    /* 0x046 */ s16 unk46;
-    /* 0x048 */ s16 unk48;
-    /* 0x04A */ char unk4A[2];
-    /* 0x04C */ u32 unk4C;
-    /* 0x050 */ AnimData* unk50;
-    /* 0x054 */ s16 unk54;
-    /* 0x056 */ s16 unk56;
-    /* 0x058 */ s16 unk58;
-    /* 0x05A */ s16 unk5A;
-    /* 0x05C */ s16 unk5C;
-    /* 0x05E */ s16 unk5E;
-    /* 0x060 */ s16 unk60;
-    /* 0x062 */ s16 unk62;
-    /* 0x064 */ s16 unk64;
-    /* 0x066 */ s16 unk66;
-    /* 0x068 */ s16 unk68;
-    /* 0x06A */ s16 unk6A;
-    /* 0x06C */ f32 unk6C;
-    /* 0x070 */ f32 unk70;
-    /* 0x074 */ f32 unk74;
-    /* 0x078 */ f32 unk78;
-    /* 0x07C */ f32 unk7C;
-    /* 0x080 */ s16 unk80;
-    /* 0x082 */ s16 unk82;
-    /* 0x084 */ UnknownWindowStruct1* unk84;
-    /* 0x088 */ s16 unk88;
-    /* 0x08A */ char unk8A[2];
+    /* 0x000 */ u8 stat;
+    /* 0x001 */ u8 active_pad;
+    /* 0x002 */ u8 player_disable;
+    /* 0x003 */ u8 color_key;
+    /* 0x004 */ s16 group;
+    /* 0x006 */ s16 sprite_id[30];
+    /* 0x042 */ s16 speed;
+    /* 0x044 */ s16 mess_time;
+    /* 0x046 */ s16 advance_sprite;
+    /* 0x048 */ s16 prio;
+    /* 0x04C */ u32 attr;
+    /* 0x050 */ AnimData *frame;
+    /* 0x054 */ s16 mess_rect_x;
+    /* 0x056 */ s16 mess_rect_w;
+    /* 0x058 */ s16 mess_rect_y;
+    /* 0x05A */ s16 mess_rect_h;
+    /* 0x05C */ s16 mess_x;
+    /* 0x05E */ s16 mess_y;
+    /* 0x060 */ s16 mess_color;
+    /* 0x062 */ s16 mess_shadow_color;
+    /* 0x064 */ s16 spacing_x;
+    /* 0x066 */ s16 spacing_y;
+    /* 0x068 */ s16 w;
+    /* 0x06A */ s16 h;
+    /* 0x06C */ f32 pos_x;
+    /* 0x070 */ f32 pos_y;
+    /* 0x074 */ f32 scale_x;
+    /* 0x078 */ f32 scale_y;
+    /* 0x07C */ f32 rot;
+    /* 0x080 */ s16 num_chars;
+    /* 0x082 */ s16 max_chars;
+    /* 0x084 */ WinChar *char_data;
+    /* 0x088 */ s16 mess_stackptr;
     /* 0x08C */ s32 unk8C;
-    /* 0x090 */ u8* unk90;
-    /* 0x094 */ u8* unk94[1]; // unknown size
-    /* 0x098 */ char unk98[0x1C];
-    /* 0x0B4 */ void* unkB4[8];
-    /* 0x0D4 */ s16 unkD4;
-    /* 0x0D6 */ s16 unkD6;
-    /* 0x0D8 */ s16 unkD8;
-    /* 0x0DA */ u8 unkDA[16];
-    /* 0x0EA */ UnknownWindowStruct2 unkEA[16];
-    /* 0x14A */ s16 unk14A;
-    /* 0x14C */ s16 unk14C;
-    /* 0x14E */ s16 unk14E;
-    /* 0x150 */ s16 unk150;
-    /* 0x152 */ s16 unk152;
-    /* 0x154 */ s16 unk154;
-    /* 0x156 */ s16 unk156;
-    /* 0x158 */ s16 unk158;
-    /* 0x15A */ char unk15A[6];
-    /* 0x160 */ u8 unk160[10][3];
-    /* 0x17E */ char unk17E[2];
+    /* 0x090 */ u8 *mess;
+    /* 0x094 */ u8 *mess_stack[8];
+    /* 0x0B4 */ u8 *insert_mess[8];
+    /* 0x0D4 */ s16 num_choices;
+    /* 0x0D6 */ s16 choice;
+    /* 0x0D8 */ s16 cursor_sprite;
+    /* 0x0DA */ u8 choice_disable[16];
+    /* 0x0EA */ WinChoice choice_data[16];
+    /* 0x14A */ s16 scissor_x;
+    /* 0x14C */ s16 scissor_y;
+    /* 0x14E */ s16 scissor_w;
+    /* 0x150 */ s16 scissor_h;
+    /* 0x152 */ s16 char_w;
+    /* 0x154 */ s16 push_key;
+    /* 0x156 */ s16 key_down;
+    /* 0x158 */ s16 key_auto;
+    /* 0x160 */ u8 ATTRIBUTE_ALIGN(32) mess_pal[10][3];
 } SomeWindowStruct; // Size 0x180
-
-typedef struct {
-    /* 0x00 */ u8 r;
-    /* 0x01 */ u8 g;
-    /* 0x02 */ u8 b;
-} ColorRGB; // Size 3
 
 void HuWindowInit(void);
 void HuWinInit(s32 arg0);
@@ -105,7 +95,7 @@ u8 HuWinStatGet(s16 arg0);
 void HuWinMesColSet(s16 arg0, u8 arg1);
 void HuWinMesPalSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
 void HuWinBGTPLvlSet(s16 arg0, f32 arg1);
-void HuWinBGColSet(s16 arg0, ColorRGB* arg1);
+void HuWinBGColSet(s16 arg0, GXColor *arg1);
 void HuWinMesSpeedSet(s16 arg0, s16 arg1);
 void HuWinMesRead(s32 arg0);
 void HuWinMesSet(s16 arg0, u32 arg1);
