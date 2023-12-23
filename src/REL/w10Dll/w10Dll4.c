@@ -144,7 +144,7 @@ void fn_1_1984(void) {
             if (contPortIndex == -1) {
                 continue;
             }
-            if (HuPadStatGet(contPortIndex) == 0 && HuPadBtnDown[contPortIndex] & 0x1000) {
+            if (HuPadStatGet(contPortIndex) == 0 && HuPadBtnDown[contPortIndex] & PAD_BUTTON_START) {
                 break;
             }
         }
