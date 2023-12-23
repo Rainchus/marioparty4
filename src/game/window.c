@@ -11,8 +11,6 @@
 #include "stdarg.h"
 #include "string.h"
 
-#define M_PI 3.141592653589793
-
 typedef struct {
     /* 0x00 */ AnimData **anim;
     /* 0x04 */ s16 bank;
@@ -27,28 +25,26 @@ typedef struct {
     /* 0x04 */ u32 player[4];
 } keyBufData; // Size 0x14
 
-static void MesDispFunc(SpriteData*);
-static u8 winBGMake(AnimData*, AnimData*);
+static void MesDispFunc(SpriteData *sprite);
+static u8 winBGMake(AnimData *bg, AnimData *frame);
 static void HuWinProc(void);
-static void HuWinDrawMes(s16 arg0);
-static s32 HuWinCR(WindowData* arg0);
-static void _HuWinHomeClear(WindowData* arg0);
-static void HuWinKeyWait(s16 arg0);
-static s16 HuWinSpcFontEntry(WindowData* arg0, s16 arg1, s16 arg2, s16 arg3);
-static void HuWinSpcFontClear(WindowData* arg0);
-static void HuWinChoice(WindowData* arg0);
-static void GetMesMaxSizeSub(u32 arg0);
-static s32 GetMesMaxSizeSub2(WindowData* arg0, u8* arg1);
+static void HuWinDrawMes(s16 window);
+static s32 HuWinCR(WindowData *window);
+static void _HuWinHomeClear(WindowData *window);
+static void HuWinKeyWait(s16 window);
+static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y);
+static void HuWinSpcFontClear(WindowData *window);
+static void HuWinChoice(WindowData *window);
+static void GetMesMaxSizeSub(u32 mess);
+static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data);
 
-void* HuAR_DVDtoARAM(s32);
-void* HuAR_ARAMtoMRAMFileRead(s32, s32, s32);
+void *HuAR_DVDtoARAM(s32);
+void *HuAR_ARAMtoMRAMFileRead(s32, s32, s32);
 s32 HuAudFXPlay(s32);
 void HuAR_ARAMtoMRAM(void*);
-void HuDataDirClose(s32);
-void* HuDataReadNum(s32, s32);
 
 void mtxTransCat(Mtx, float, float, float);
-void* MessData_MesPtrGet(void*, u32);
+void *MessData_MesPtrGet(void*, u32);
 
 extern u16 HuPadBtn[4];
 extern u8 HuPadDStkRep[4];
@@ -62,7 +58,7 @@ static AnimData *cursorAnim;
 static AnimData *cardAnimA;
 static AnimData *cardAnimB;
 static Process *winProc;
-void* messDataPtr;
+void *messDataPtr;
 static s32 messDataNo;
 static s16 winMaxWidth;
 static s16 winMaxHeight;
@@ -179,7 +175,7 @@ static s32 frameFileTbl[] = {
     MAKE_DATA_NUM(DATADIR_WIN, 6)
 };
 
-static char* mesDataTbl[] = {
+static char *mesDataTbl[] = {
     "mess/mini.dat",
     "mess/board.dat",
     "mess/mini_e.dat",
@@ -210,7 +206,7 @@ void HuWindowInit(void) {
 
 void HuWinInit(s32 mess_data_no) {
     s16 i;
-    void* anim_data;
+    void *anim_data;
     s8 language;
 
     if (!winProc) {
@@ -872,7 +868,7 @@ void HuWinHomeClear(s16 window) {
 }
 
 void HuWinKeyWaitEntry(s16 window) {
-    WindowData* window_ptr = &winData[window];
+    WindowData *window_ptr = &winData[window];
 
     if (window_ptr->attr & 0x400) {
         window_ptr->stat = 0;
@@ -883,7 +879,7 @@ void HuWinKeyWaitEntry(s16 window) {
 }
 
 static void HuWinKeyWait(s16 window) {
-    WindowData* window_ptr = &winData[window];
+    WindowData *window_ptr = &winData[window];
 
     if (window_ptr->push_key & HuWinActivePadGet(window_ptr)) {
         window_ptr->key_down = HuWinActivePadGet(window_ptr);
@@ -921,7 +917,7 @@ static void HuWinSpcFontPosSet(WindowData *window, s16 index, s16 x, s16 y) {
     HuSprPosSet(window->group, index, x - window->w / 2, y - window->h / 2);
 }
 
-static void HuWinSpcFontClear(WindowData* window) {
+static void HuWinSpcFontClear(WindowData *window) {
     s16 i;
 
     for (i=10; i<30; i++) {

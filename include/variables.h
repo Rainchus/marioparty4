@@ -15,7 +15,7 @@ extern PlayerConfig GWPlayerCfg[4];
 extern u32 DirDataSize;
 
 extern u32 totalPolyCnted;
-extern char fadeStat;
+extern u8 fadeStat;
 
 extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;

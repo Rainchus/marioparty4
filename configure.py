@@ -258,7 +258,7 @@ config.libs = [
             Object(NonMatching, "game/objsysobj.c"),
             Object(NonMatching, "game/objdll.c"),
             Object(Matching, "game/frand.c"),
-            Object(NonMatching, "game/audio.c"),
+            Object(Matching, "game/audio.c"),
             Object(NonMatching, "game/EnvelopeExec.c"),
             Object(NonMatching, "game/minigame_seq.c"),
             Object(Matching, "game/ovllist.c"),
