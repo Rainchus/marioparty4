@@ -4,9 +4,6 @@
 #include "dolphin.h"
 #include "common_structs.h"
 
-extern u16 HuPadBtnDown[4];
-extern u8 HuPadDStk[4];
-
 extern WipeState wipeData;
 
 extern PlayerConfig GWPlayerCfg[4];

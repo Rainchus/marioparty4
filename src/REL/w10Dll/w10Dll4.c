@@ -1,7 +1,6 @@
 #include "REL/w10Dll.h"
+#include "game/pad.h"
 #include "game/data.h"
-
-s16 HuPadStatGet(s16 i); //TODO: Move to some other header file since gamework.c relies on an implicit declaration of it
 
 char lbl_1_data_98[] = "@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000";
 

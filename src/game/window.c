@@ -6,6 +6,7 @@
 #include "game/dvd.h"
 #include "game/memory.h"
 #include "game/process.h"
+#include "game/pad.h"
 
 #include "math.h"
 #include "stdarg.h"
@@ -45,10 +46,6 @@ void HuAR_ARAMtoMRAM(void*);
 
 void mtxTransCat(Mtx, float, float, float);
 void *MessData_MesPtrGet(void*, u32);
-
-extern u16 HuPadBtn[4];
-extern u8 HuPadDStkRep[4];
-
 WindowData ATTRIBUTE_ALIGN(32) winData[32];
 u32 winKey[4];
 keyBufData winComKeyBuf[256];

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/printfunc.h"
 #include "game/object.h"
+#include "game/pad.h"
 
 #define OM_OVL_HIS_MAX 16
 #define OM_MAX_GROUPS 10

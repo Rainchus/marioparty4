@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/object.h"
 #include "game/printfunc.h"
-#include "dolphin/pad.h"
+#include "game/pad.h"
 
 #include "math.h"
 

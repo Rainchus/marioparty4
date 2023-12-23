@@ -1,6 +1,8 @@
 #include "common.h"
 #include "dolphin.h"
 #include "game/msm.h"
+#include "game/pad.h"
+
 
 typedef struct pad_rumble {
     s16 duration;
@@ -9,7 +11,6 @@ typedef struct pad_rumble {
     s16 time;
 } PadRumble;
 
-void HuPadRead(void);
 static void PadReadVSync(u32 retraceCount);
 static void PadADConv(s16 pad, PADStatus *status);
 
@@ -45,7 +46,7 @@ static s8 _PadErr[4];
 static u32 RumbleBit;
 u32 VCounter;
 
-u32 chanTbl[4] = { PAD_CHAN0_BIT, PAD_CHAN1_BIT, PAD_CHAN2_BIT, PAD_CHAN3_BIT };
+static u32 chanTbl[4] = { PAD_CHAN0_BIT, PAD_CHAN1_BIT, PAD_CHAN2_BIT, PAD_CHAN3_BIT };
 
 extern int HuDvdErrWait;
 
@@ -119,10 +120,10 @@ static void PadReadVSync(u32 retraceCount)
             } else {
                 u16 button = curr_status->button;
                 if(curr_status->triggerL & 0xC0) {
-                    button |= 0x4000;
+                    button |= PAD_BUTTON_TRIGGER_L;
                 }
                 if(curr_status->triggerR & 0xC0) {
-                    button |= 0x2000;
+                    button |= PAD_BUTTON_TRIGGER_R;
                 }
                 if(button && _PadBtn[i] == button) {
                     if(_PadRepCnt[i] > 20) {
@@ -246,7 +247,7 @@ void HuPadRumbleAllStop(void)
     }
 }
 
-int HuPadStatGet(s16 pad)
+s16 HuPadStatGet(s16 pad)
 {
     return _PadErr[pad];
 }
