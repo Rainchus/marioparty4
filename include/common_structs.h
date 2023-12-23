@@ -13,9 +13,12 @@ typedef struct player_config {
 } PlayerConfig;
 
 typedef struct wipe_state {
-    u8 unk[52];
+    char unk00[0x30];
+    float unk30;
     float duration;
-    u8 unk2[20];
+    char unk38[0x11];
+    u8 unk49;
+    char unk4A[2];
 } WipeState;
 
 

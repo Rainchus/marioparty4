@@ -11,7 +11,7 @@ void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s32);
 void Hu3DCameraPerspectiveSet(s32, f32, f32, f32, f32);
 void Hu3DCameraViewportSet(s32, f32, f32, f32, f32, f32, f32);
-void HuAudFadeOut(int arg0);
+void HuAudFadeOut(s32 arg0);
 
 void WipeCreate(char dir, char type, short duration);
 u8 WipeStatGet(void);
