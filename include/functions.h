@@ -38,8 +38,6 @@ void HuWinMesSpeedSet(s16, s16);
 void HuWinMesMaxSizeGet(s16, f32*, ...);
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
 
-void HuPadRumbleAllStop(void);
-
 void HuAudFXListnerKill(void);
 void HuAudDllSndGrpSet(u16 ovl);
 void HuAudVoiceInit(s16 ovl);

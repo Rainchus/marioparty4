@@ -1,7 +1,6 @@
 #include "REL/w10Dll.h"
+#include "game/pad.h"
 #include "game/data.h"
-
-s16 HuPadStatGet(s16 i); //TODO: Move to some other header file since gamework.c relies on an implicit declaration of it
 
 char lbl_1_data_98[] = "@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000";
 
@@ -145,7 +144,7 @@ void fn_1_1984(void) {
             if (contPortIndex == -1) {
                 continue;
             }
-            if (HuPadStatGet(contPortIndex) == 0 && HuPadBtnDown[contPortIndex] & 0x1000) {
+            if (HuPadStatGet(contPortIndex) == 0 && HuPadBtnDown[contPortIndex] & PAD_BUTTON_START) {
                 break;
             }
         }
