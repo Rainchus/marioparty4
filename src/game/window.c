@@ -1089,11 +1089,11 @@ static void HuWinChoice(WindowData *window) {
     if (window->choice != choice_next) {
         window->choice = choice_next;
         HuAudFXPlay(0);
-    } else if (key & (window->key_auto | 0x100)) {
+    } else if (key & (window->key_auto | PAD_BUTTON_A)) {
         HuAudFXPlay(2);
         window->key_down = key;
         window->stat = 0;
-    } else if ((key & 0x200) && !(window->attr & 0x10)) {
+    } else if ((key & PAD_BUTTON_B) && !(window->attr & 0x10)) {
         HuAudFXPlay(3);
         window->key_down = key;
         window->choice = -1;
