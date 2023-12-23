@@ -35,6 +35,7 @@ typedef struct {
     /* 0x0C */ float backSurDis;
 } UnkMsmStruct_02; // Size (min: 0x10, max: 0x1C)
 
+void msmSysRegularProc(void);
 void msmSysSetOutputMode(s32 arg0);
 void msmSysSetAux(s32 arg0, s32 arg1);
 s32 msmSysGetSampSize(s32 arg0);
