@@ -4,21 +4,32 @@
 
 typedef struct pad_rumble {
     s16 duration;
-    s16 stop;
-    s16 rumble;
+    s16 off;
+    s16 on;
     s16 time;
-} padRumble;
+} PadRumble;
 
 void HuPadRead(void);
 static void PadReadVSync(u32 retraceCount);
 static void PadADConv(s16 pad, PADStatus *status);
 
 static int padStatErrOld[4];
-static padRumble rumbleData[4];
+static PadRumble rumbleData[4];
 
+u16 HuPadBtn[4];
+u16 HuPadBtnDown[4];
 u16 HuPadBtnRep[4];
-u16 _PadBtnDown[4];
+s8 HuPadStkX[4];
+s8 HuPadStkY[4];
+s8 HuPadSubStkX[4];
+s8 HuPadSubStkY[4];
+u8 HuPadTrigL[4];
+u8 HuPadTrigR[4];
+u8 HuPadDStk[4];
+u8 HuPadDStkRep[4];
+s8 HuPadErr[4];
 u16 _PadBtn[4];
+u16 _PadBtnDown[4];
 static u16 _PadRepCnt[4];
 static s8 _PadStkX[4];
 static s8 _PadStkY[4];
@@ -65,7 +76,21 @@ void HuPadInit(void)
 
 void HuPadRead(void)
 {
-    
+    s16 i;
+    for(i=0; i<4; i++) {
+        HuPadBtn[i] = _PadBtn[i] & ~(PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT | PAD_BUTTON_UP | PAD_BUTTON_DOWN);
+        HuPadBtnDown[i] = _PadBtnDown[i] & ~(PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT | PAD_BUTTON_UP | PAD_BUTTON_DOWN);
+        HuPadStkX[i] = _PadStkX[i];
+        HuPadStkY[i] = _PadStkY[i];
+        HuPadSubStkX[i] = _PadSubStkX[i];
+        HuPadSubStkY[i] = _PadSubStkY[i];
+        HuPadTrigL[i] = _PadTrigL[i];
+        HuPadTrigR[i] = _PadTrigR[i];
+        HuPadDStk[i] = _PadDStk[i];
+        HuPadDStkRep[i] = _PadDStkRep[i];
+        HuPadErr[i] = _PadErr[i];
+        _PadBtnDown[i] = 0;
+    }
 }
 
 static void PadReadVSync(u32 retraceCount)
@@ -79,7 +104,7 @@ static void PadReadVSync(u32 retraceCount)
         chan = 0;
         for(i=0; i<4; i++) {
             PADStatus *curr_status = &status[i];
-            padRumble *rumble = &rumbleData[i];
+            PadRumble *rumble = &rumbleData[i];
             if(padStatErrOld[i] && curr_status->err == PAD_ERR_NONE) {
                 PADControlMotor(i, PAD_MOTOR_STOP_HARD);
                 rumble->duration = 0;
@@ -121,11 +146,11 @@ static void PadReadVSync(u32 retraceCount)
                 _PadTrigR[i] = curr_status->triggerR;
                 _PadErr[i] = curr_status->err;
                 if(rumble->duration) {
-                    s16 time = rumble->time%(rumble->stop+rumble->rumble);
+                    s16 time = rumble->time%(rumble->off+rumble->on);
                     if(time == 0) {
                         PADControlMotor(i, PAD_MOTOR_RUMBLE);
                     } else {
-                        if(time == rumble->stop) {
+                        if(time == rumble->off) {
                             PADControlMotor(i, PAD_MOTOR_STOP);
                         }
                     }
@@ -145,8 +170,88 @@ static void PadReadVSync(u32 retraceCount)
     VCounter++;
 }
 
-static void PadADConv(s16 player, PADStatus *status)
+static void PadADConv(s16 pad, PADStatus *status)
 {
-    
-    
+    s16 stickX, stickY;
+    s16 spA, sp8;
+    spA = 0;
+    sp8 = 0;
+    stickX = abs(status->stickX);
+    stickY = abs(status->stickY);
+    _PadDStk[pad] = 0;
+    if(stickY > 20) {
+        if(status->stickY > 0) {
+            _PadDStk[pad] |= PAD_BUTTON_UP;
+        } else {
+            _PadDStk[pad] |= PAD_BUTTON_DOWN;
+        }
+    }
+    if(stickX > 30) {
+        if(status->stickX < 0) {
+            _PadDStk[pad] |= PAD_BUTTON_LEFT;
+        } else {
+            _PadDStk[pad] |= PAD_BUTTON_RIGHT;
+        }
+    }
+    if(stickX+stickY < 20) {
+        _PadDStkRepOld[pad]  =0;
+    }
+    if(_PadDStkRepCnt[pad]) {
+        _PadDStkRepCnt[pad]--;
+        if(stickX+stickY < 20) {
+            _PadDStkRepCnt[pad] = 0;
+        }
+        _PadDStkRep[pad] = 0;
+    } else {
+        _PadDStkRep[pad] = _PadDStk[pad];
+        if(_PadDStkRep[pad]) {
+            if(_PadDStkRepOld[pad] == _PadDStkRep[pad]) {
+                _PadDStkRepCnt[pad] = 2;
+            } else {
+                _PadDStkRepCnt[pad] = 20;
+            }
+            _PadDStkRepOld[pad] = _PadDStkRep[pad];
+        }
+    }
+}
+
+void HuPadRumbleSet(s16 pad, s16 duration, s16 off, s16 on)
+{
+    PadRumble *rumble = &rumbleData[pad];
+    if(_PadErr[pad] == PAD_ERR_NONE) {
+        rumble->duration = duration;
+        rumble->off = off;
+        rumble->on = on;
+        rumble->time = 0;
+    }
+}
+
+void HuPadRumbleStop(s16 pad)
+{
+    PadRumble *rumble = &rumbleData[pad];
+    if(_PadErr[pad] == PAD_ERR_NONE) {
+        rumble->duration = 0;
+        PADControlMotor(pad, PAD_MOTOR_STOP_HARD);
+    }
+}
+
+void HuPadRumbleAllStop(void)
+{
+    int i;
+    for(i=0; i<4; i++) {
+        rumbleData[i].duration = 0;
+        if(_PadErr[i] == PAD_ERR_NONE) {
+            PADControlMotor(i, PAD_MOTOR_STOP_HARD);
+        }
+    }
+}
+
+int HuPadStatGet(s16 pad)
+{
+    return _PadErr[pad];
+}
+
+u32 HuPadRumbleGet(void)
+{
+    return RumbleBit;
 }
