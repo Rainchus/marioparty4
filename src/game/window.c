@@ -59,7 +59,7 @@ static s16 winMaxHeight;
 static u8 mesWInsert[8];
 static u8 winTabSize;
 static u8 winInsertF;
-static void *winAMemP;
+static u32 winAMemP;
 static u8 *fontWidthP;
 static s32 cancelCRF;
 static s16 mesCharCnt;

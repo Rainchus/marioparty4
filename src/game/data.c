@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/data.h"
+#include "game/armem.h"
 #include "dolphin/dvd.h"
 
 #define PTR_OFFSET(ptr, offset) (void *)(((u8 *)(ptr)+(u32)(offset)))
@@ -108,7 +109,7 @@ DataReadStat *HuDataDirRead(s32 data_num)
     }
     
     if((status = HuDataReadChk(data_num)) < 0) {
-        void *dir_aram;
+        u32 dir_aram;
         if(dir_aram = HuARDirCheck(data_num)) {
             HuAR_ARAMtoMRAM(dir_aram);
             while(HuARDMACheck());
@@ -144,7 +145,7 @@ DataReadStat *HuDataDirReadNum(s32 data_num, s32 num)
     }
     
     if((status = HuDataReadChk(data_num)) < 0) {
-        void *dir_aram;
+        u32 dir_aram;
         if((dir_aram = HuARDirCheck(data_num))) {
             OSReport("ARAM data num %x\n", data_num);
             HuAR_ARAMtoMRAMNum(dir_aram, num);
@@ -220,7 +221,7 @@ s32 HuDataDirReadAsync(s32 data_num)
         return -1;
     }
     if((status = HuDataReadChk(data_num)) < 0) {
-        void *dir_aram;
+        u32 dir_aram;
         if(dir_aram = HuARDirCheck(data_num)) {
             OSReport("ARAM data num %x\n", data_num);
             HuAR_ARAMtoMRAM(dir_aram);
