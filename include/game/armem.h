@@ -3,19 +3,20 @@
 
 #include "common.h"
 #include "game/memory.h"
+#include "game/data.h"
 
 void HuARInit(void);
-void *HuARMalloc(u32 arg0);
-void HuARFree(void *arg0);
+u32 HuARMalloc(u32 size);
+void HuARFree(u32 amemptr);
 void HuAMemDump(void);
-void *HuAR_DVDtoARAM(u32 arg0);
-void HuAR_MRAMtoARAM(s32 arg0);
-void *HuAR_MRAMtoARAM2(void *arg0);
-void HuAR_ARAMtoMRAM(void *dst);
-void *HuAR_ARAMtoMRAMNum(void *dst, s32 num);
-BOOL HuARDMACheck(void);
-void *HuARDirCheck(u32 dir);
-void HuARDirFree(u32 arg0);
-void *HuAR_ARAMtoMRAMFileRead(u32 arg0, u32 arg1, HeapID arg2);
+u32 HuAR_DVDtoARAM(u32 dir);
+u32 HuAR_MRAMtoARAM(s32 dir);
+u32 HuAR_MRAMtoARAM2(void *dir_ptr);
+void HuAR_ARAMtoMRAM(u32 amemptr);
+void *HuAR_ARAMtoMRAMNum(u32 amemptr, s32 num);
+s32 HuARDMACheck(void);
+u32 HuARDirCheck(u32 dir);
+void HuARDirFree(u32 dir);
+void *HuAR_ARAMtoMRAMFileRead(u32 dir, u32 num, HeapID heap);
 
 #endif
