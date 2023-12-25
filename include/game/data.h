@@ -63,9 +63,9 @@ void *HuDataReadNumHeapShortForce(s32 data_id, s32 num, HeapID heap);
 
 void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
 
-void *HuARDirCheck(s32 dir);
+void *HuARDirCheck(u32 dir);
 void HuAR_ARAMtoMRAM(void *dst);
-void HuAR_ARAMtoMRAMNum(void *dst, s32 num);
+void *HuAR_ARAMtoMRAMNum(void *dst, s32 num);
 BOOL HuARDMACheck();
 
 
