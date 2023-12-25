@@ -7,6 +7,8 @@
 #include "game/memory.h"
 #include "game/process.h"
 #include "game/pad.h"
+#include "game/armem.h"
+#include "game/audio.h"
 
 #include "math.h"
 #include "stdarg.h"
@@ -38,11 +40,6 @@ static void HuWinSpcFontClear(WindowData *window);
 static void HuWinChoice(WindowData *window);
 static void GetMesMaxSizeSub(u32 mess);
 static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data);
-
-void *HuAR_DVDtoARAM(s32);
-void *HuAR_ARAMtoMRAMFileRead(s32, s32, s32);
-s32 HuAudFXPlay(s32);
-void HuAR_ARAMtoMRAM(void*);
 
 void mtxTransCat(Mtx, float, float, float);
 void *MessData_MesPtrGet(void*, u32);
@@ -289,7 +286,7 @@ s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     }
     HuSprGrpCenterSet(group, w / 2, h / 2);
     HuSprGrpPosSet(group, window->pos_x, window->pos_y);
-    frame_data = HuAR_ARAMtoMRAMFileRead(frameFileTbl[frame], MEMORY_DEFAULT_NUM, 2);
+    frame_data = HuAR_ARAMtoMRAMFileRead(frameFileTbl[frame], MEMORY_DEFAULT_NUM, HEAP_DATA);
     window->frame = HuSprAnimRead(frame_data);
     sprite = window->sprite_id[0] = HuSprCreate(window->frame, winPrio, 0);
     HuSprGrpMemberSet(group, 0, sprite);
