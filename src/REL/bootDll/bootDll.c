@@ -10,6 +10,7 @@
 #include "game/pad.h"
 #include "game/window.h"
 #include "game/thpmain.h"
+#include "game/msm.h"
 #include "math.h"
 
 #define HU_PAD_BTN_ALL (HuPadBtn[0] | HuPadBtn[1] | HuPadBtn[2] | HuPadBtn[3])
@@ -429,5 +430,60 @@ void fn_1_2100(void)
 
 BOOL fn_1_2474(void)
 {
-	
+	float scale;
+	float scale_time;
+	s32 sp8[32];
+	s16 i;
+	Hu3DModelAttrReset(lbl_1_bss_8[0], 1);
+	Hu3DModelAttrReset(lbl_1_bss_8[1], 1);
+	HuSprAttrReset(lbl_1_bss_6, 0, SPRITE_ATTR_HIDDEN);
+	HuSprAttrReset(lbl_1_bss_6, 1, SPRITE_ATTR_HIDDEN);
+	OSReport(">>>>>>>>MSM_SE_SEL_01 %d\n", msmSeGetEntryID(2092, sp8));
+	OSReport(">>>>>>>>SE Num %d\n", msmSeGetNumPlay(0));
+	HuAudSStreamPlay(20);
+	WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
+	while(WipeStatGet()) {
+		HuPrcVSleep();
+	}
+	HuSprAttrReset(lbl_1_bss_6, 3, SPRITE_ATTR_HIDDEN);
+	for(i=1; i<=50; i++) {
+		scale = (cos((i*1.8)*M_PI/180.0)*10.0)+1.0;
+		HuSprScaleSet(lbl_1_bss_6, 3, scale, scale);
+		HuSprTPLvlSet(lbl_1_bss_6, 3, i/50.0);
+		HuPrcVSleep();
+	}
+	HuSprAttrReset(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN);
+	for(i=scale_time=0; i<1800; i++) {
+		if(i <= 10) {
+			HuSprTPLvlSet(lbl_1_bss_6, 2, i/10.0);
+		}
+		if(HuPadBtnDown[0] & PAD_BUTTON_START) {
+			s32 ret = HuAudFXPlay(2092);
+			if(ret < 0) {
+				OSReport(">>>>>Error %d\n", ret);
+			}
+			HuSprAttrSet(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN);
+			return 1;
+		}
+		scale = (sin((i*scale_time)*M_PI/180.0)*0.1)+0.9;
+		scale_time += 0.05;
+		if(scale_time > 5) {
+			scale_time = 5;
+		}
+		HuSprScaleSet(lbl_1_bss_6, 2, scale, scale);
+		HuPrcVSleep();
+	}
+	WipeColorSet(255, 255, 255);
+	WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
+	while(WipeStatGet()) {
+		HuPrcVSleep();
+	}
+	Hu3DModelAttrSet(lbl_1_bss_8[0], 1);
+	Hu3DModelAttrSet(lbl_1_bss_8[1], 1);
+	Hu3DModelAttrSet(lbl_1_bss_8[2], 1);
+	HuSprAttrSet(lbl_1_bss_6, 0, SPRITE_ATTR_HIDDEN);
+	HuSprAttrSet(lbl_1_bss_6, 1, SPRITE_ATTR_HIDDEN);
+	HuSprAttrSet(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN);
+	HuSprAttrSet(lbl_1_bss_6, 3, SPRITE_ATTR_HIDDEN);
+	return 0;
 }
