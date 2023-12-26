@@ -225,15 +225,16 @@ game/ShapeExec.c:
 	.text       start:0x80040D60 end:0x80041170
 	.sdata2     start:0x801D4ED0 end:0x801D4EE0
 
+dolphin/os/__start.c:
+	.init       start:0x80003100 end:0x80003354
+
 game/wipe.c:
 	.text       start:0x80041170 end:0x8004207C
 	.data       start:0x80130120 end:0x80130138
 	.bss        start:0x80192360 end:0x801923C0
 	.sdata      start:0x801D35E0 end:0x801D35E8
+	.sbss       start:0x801D3DA8 end:0x801D3DB0
 	.sdata2     start:0x801D4EE0 end:0x801D4F08
-
-dolphin/os/__start.c:
-	.init       start:0x80003100 end:0x80003354
 
 game/window.c:
 	.text       start:0x8004207C end:0x800483A0

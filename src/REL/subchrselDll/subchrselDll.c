@@ -2,6 +2,7 @@
 #include "game/object.h"
 #include "game/printfunc.h"
 #include "game/pad.h"
+#include "game/wipe.h"
 
 #include "math.h"
 

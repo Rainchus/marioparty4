@@ -266,7 +266,7 @@ config.libs = [
             Object(NonMatching, "game/code_8003FF68.c"),
             Object(NonMatching, "game/ClusterExec.c"),
             Object(NonMatching, "game/ShapeExec.c"),
-            Object(NonMatching, "game/wipe.c"),
+            Object(Matching, "game/wipe.c"),
             Object(Matching, "game/window.c"),
             Object(Matching, "game/messdata.c"),
             Object(NonMatching, "game/card.c"),

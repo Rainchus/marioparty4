@@ -1,6 +1,7 @@
 #include "REL/w10Dll.h"
 #include "game/pad.h"
 #include "game/data.h"
+#include "game/wipe.h"
 
 char lbl_1_data_98[] = "@@@@@@@@@@@@@@ Tutorial Exit @@@@@@@@@@@@@@\n\000";
 

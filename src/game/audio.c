@@ -2,6 +2,8 @@
 #include "game/memory.h"
 #include "game/msm.h"
 #include "game/object.h"
+#include "game/wipe.h"
+
 
 typedef struct {
     /* 0x00 */ s16 unk00;
@@ -109,9 +111,9 @@ void HuAudFadeOut(s32 arg0) {
 }
 
 s32 HuAudFXPlay(s32 arg0) {
-    WipeState *temp_r31 = &wipeData;
+    WipeState *wipe = &wipeData;
 
-    if (omSysExitReq != 0 || (wipeData.unk49 == 2 && temp_r31->unk30 / temp_r31->duration > 0.5)) {
+    if (omSysExitReq != 0 || (wipeData.mode == WIPE_MODE_OUT && wipe->time / wipe->duration > 0.5)) {
         return 0;
     }
     return HuAudFXPlayVolPan(arg0, 0x7F, 0x40);

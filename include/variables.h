@@ -4,7 +4,6 @@
 #include "dolphin.h"
 #include "common_structs.h"
 
-extern WipeState wipeData;
 
 extern PlayerConfig GWPlayerCfg[4];
 
