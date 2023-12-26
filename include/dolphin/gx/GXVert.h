@@ -86,6 +86,11 @@ static inline void GXPosition2f32(const f32 x, const f32 y) {
   GXWGFifo.f32 = y;
 }
 
+static inline void GXPosition2u16(const u16 x, const u16 y) {
+  GXWGFifo.u16 = x;
+  GXWGFifo.u16 = y;
+}
+
 static inline void GXPosition2s16(const s16 x, const s16 y) {
   GXWGFifo.s16 = x;
   GXWGFifo.s16 = y;

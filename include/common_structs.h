@@ -12,16 +12,6 @@ typedef struct player_config {
     s16 iscom;
 } PlayerConfig;
 
-typedef struct wipe_state {
-    char unk00[0x30];
-    float unk30;
-    float duration;
-    char unk38[0x11];
-    u8 unk49;
-    char unk4A[2];
-} WipeState;
-
-
 typedef struct system_state {
 /* 0x00 */ struct {
         u16 story : 1;
