@@ -6,7 +6,6 @@
 
 void Hu3DLayerHookSet(short layer, void (*func)(short layer));
 void Hu3D2Dto3D(Vec*, s32, Vec*);
-void Hu3DModelLightInfoSet(s32, s32);
 void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DCameraCreate(s32);
 void Hu3DCameraPerspectiveSet(s32, f32, f32, f32, f32);
@@ -49,8 +48,6 @@ s32 _CheckFlag(u32 flag);
 void BoardWinCreate(s16, s32, s32);
 void BoardWinKill(void);
 void BoardWinWait(void);
-
-s32 HuTHPFrameGet(void);
 
 s32 rand8(void);
 

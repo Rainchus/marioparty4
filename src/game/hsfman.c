@@ -1,4 +1,5 @@
 #include "game/hsfman.h"
+#include "game/hsfload.h"
 
 ModelData Hu3DData[0x200];
 CameraData Hu3DCamera[0x10];
@@ -310,7 +311,7 @@ void Hu3DNoSyncSet(s32 arg0) {
     NoSyncF = arg0;
 }
 
-s16 Hu3DModelCreate(s32 arg0) {
+s16 Hu3DModelCreate(void *arg0) {
     HsfData* temp_r0;
     ModelData* var_r31;
     s16 i;
@@ -726,7 +727,7 @@ void Hu3DModelLayerSet(s16 arg0, s16 arg1) {
     layerNum[arg1] += 1;
 }
 
-HsfObject* Hu3DModelObjPtrGet(s16 arg0, s32 arg1) {
+HsfObject* Hu3DModelObjPtrGet(s16 arg0, char *arg1) {
     char name[0x100];
     s32 spC;
     s16 sp8;
@@ -900,7 +901,7 @@ void Hu3DModelShadowMapSet(s16 arg0) {
     }
 }
 
-void Hu3DModelShadowMapObjSet(s16 arg0, s32 arg1) {
+void Hu3DModelShadowMapObjSet(s16 arg0, char *arg1) {
     char name[0x100];
     HsfData* temp_r30;
     s16 i;
@@ -931,7 +932,7 @@ void Hu3DModelAmbSet(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
     temp_r31->unk_58.y = argA;
 }
 
-void Hu3DModelHookSet(s16 arg0, s32 arg1, s16 arg2) {
+void Hu3DModelHookSet(s16 arg0, char *arg1, s16 arg2) {
     char name[0x100];
     ModelData* data;
     HsfData* temp_r30;
@@ -986,7 +987,7 @@ void Hu3DModelHookReset(s16 arg0) {
     }
 }
 
-void Hu3DModelHookObjReset(s16 arg0, s32 arg1) {
+void Hu3DModelHookObjReset(s16 arg0, char *arg1) {
     char name[0x100];
     ModelData* temp_r28;
     HsfData* temp_r30;

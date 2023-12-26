@@ -2,6 +2,8 @@
 #define _GAME_SPRITE_H
 
 #include "dolphin.h"
+#include "game/data.h"
+#include "game/memory.h"
 
 #define SPRITE_MAX 384
 #define SPRITE_GROUP_MAX 256
@@ -152,6 +154,7 @@ typedef struct sprite_group_data {
 extern SpriteData HuSprData[SPRITE_MAX];
 extern SpriteGroupData HuSprGrpData[SPRITE_GROUP_MAX];
 
+#define HuSprAnimReadFile(data_id) (HuSprAnimRead(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 
 void HuSprInit(void);
 void HuSprClose(void);
