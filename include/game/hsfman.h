@@ -10,6 +10,7 @@
 #include "game/init.h"
 #include "game/data.h"
 #include "game/memory.h"
+#include "dolphin/gx/GXVert.h"
 
 #define Hu3DModelCreateFile(data_id) (Hu3DModelCreate(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 
@@ -84,10 +85,16 @@ typedef struct ThreeDProjectionStruct {
     Mtx unk_68;
 } ThreeDProjectionStruct; // sizeof 0x98
 typedef struct shadow_data {
-    char unk_00[0x2];
+    u8 unk_00;
+    u8 unk_01;
     u16 unk_02;
-    void*unk_04;
-    char unk_08[0x90];
+    void* unk_04;
+    Vec unk_08;
+    Vec unk_14;
+    Vec unk_20;
+    Vec unk_2C;
+    Mtx unk_38;
+    Mtx unk_68;
 } ShadowData; // sizeof 0x98
 typedef struct motion_data {
     s16 unk_00;
@@ -151,6 +158,7 @@ void Hu3DParManAllKill(void);
 f32 Hu3DMotionMotionMaxTimeGet(s16);
 void Hu3DMotionStartEndSet(s16, f32, f32);
 void Hu3DMotionTimeSet(s16, f32);
+void GXInitSpecularDir(GXLightObj*, f32, f32, f32);
 
 void Hu3DInit(void);
 void Hu3DPreProc(void);
@@ -236,9 +244,10 @@ void Hu3DLLightPosAimSet(s16, s16, f32, f32, f32, f32, f32, f32);
 void Hu3DGLightStaticSet(s16, s32);
 void Hu3DLLightStaticSet(s16, s16, s32);
 s32 Hu3DModelLightInfoSet(s16, s16);
-s16 Hu3DLightSet(ModelData*, s32, s32, f32);
-void lightSet(LightData*, s16, s32, s32, f32);
-//...
+s16 Hu3DLightSet(ModelData*, Mtx*, Mtx*, f32);
+void lightSet(LightData* arg0, s16 arg1, Mtx *arg2, Mtx *arg3, f32 arg8);
+void Hu3DReflectMapSet(AnimData* arg0);
+void Hu3DReflectNoSet(s16 arg0);
 void Hu3DFogSet(f32, f32, u8, u8, u8);
 void Hu3DFogClear(void);
 //...
@@ -249,8 +258,6 @@ void Hu3DProjectionTPLvlSet(s16, f32);
 void Hu3DMipMapSet(char*, s16, s32, f32);
 
 extern MotionData Hu3DMotion[0x100];
-extern f32 lbl_801D4AFC;
-extern GXColor lbl_801D6BE0;
 extern u32 totalMatCnt;
 extern u32 totalMatCnted;
 extern u32 totalPolyCnt;

@@ -1345,6 +1345,7 @@ void Hu3DLighInit(void) {
     }
 }
 
+
 s16 Hu3DGLightCreate(f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD, u8 arg0, u8 arg1, u8 arg2) {
     Vec vec1;
     Vec vec2;
@@ -1363,6 +1364,17 @@ s16 Hu3DGLightCreate(f32 arg8, f32 arg9, f32 argA, f32 argB, f32 argC, f32 argD,
     return Hu3DGLightCreateV(&vec1, &vec2, &color);
 }
 
+inline s16 Hu3DLightCreateV(LightData *light, Vec *arg0, Vec *arg1, GXColor *arg2) {
+    light->unk_00 = 0;
+    light->unk_1C = *arg0;
+    light->unk_28 = *arg1;
+    light->unk_34.x = light->unk_34.y = light->unk_34.z = 0.0f;
+    light->unk_04 = 30.0f;
+    light->unk_02 = 2;
+    PSVECNormalize(&light->unk_28, &light->unk_28);
+    light->color = *arg2;
+}
+
 s16 Hu3DGLightCreateV(Vec* arg0, Vec* arg1, GXColor* arg2) {
     s16 var_r30;
     LightData* var_r31;
@@ -1377,15 +1389,9 @@ s16 Hu3DGLightCreateV(Vec* arg0, Vec* arg1, GXColor* arg2) {
     if (var_r30 == 8) {
         return -1;
     }
-    var_r31->unk_00 = 0;
-    var_r31->unk_1C = *arg0;
-    var_r31->unk_28 = *arg1;
-    var_r31->unk_34.x = var_r31->unk_34.y = var_r31->unk_34.z = 0.0f;
-    var_r31->unk_04 = 0.0f;
-    var_r31->unk_02 = 2;
-    
-    PSVECNormalize(&var_r31->unk_28, &var_r31->unk_28);
-    var_r31->color = *arg2;
+
+    Hu3DLightCreateV(var_r31, arg0, arg1, arg2);
+
     return var_r30;
 }
 
@@ -1423,14 +1429,8 @@ s16 Hu3DLLightCreateV(s16 arg0, Vec* arg1, Vec* arg2, GXColor* arg3) {
     if (var_r28 == 0x20) {
         return -1;
     }
-    var_r31->unk_00 = 0;
-    var_r31->unk_1C = *arg1;
-    var_r31->unk_28 = *arg2;
-    var_r31->unk_34.x = var_r31->unk_34.y = var_r31->unk_34.z = 0.0f;
-    var_r31->unk_04 = 30.0f;
-    var_r31->unk_02 = 2;
-    PSVECNormalize(&var_r31->unk_28, &var_r31->unk_28);
-    var_r31->color = *arg3;
+
+    Hu3DLightCreateV(var_r31, arg1, arg2, arg3);
     
     for (var_r30 = 0; var_r30 < 8; var_r30++) {
         if (temp_r29->unk_38[var_r30] == -1) {
@@ -1758,7 +1758,7 @@ s32 Hu3DModelLightInfoSet(s16 arg0, s16 arg1) {
     return var_r25;
 }
 
-s16 Hu3DLightSet(ModelData* arg0, s32 arg1, s32 arg2, f32 arg8) {
+s16 Hu3DLightSet(ModelData* arg0, Mtx *arg1, Mtx *arg2, f32 arg8) {
     s16 var_r30;
     LightData* var_r29;
     s16 var_r28;
@@ -1772,7 +1772,7 @@ s16 Hu3DLightSet(ModelData* arg0, s32 arg1, s32 arg2, f32 arg8) {
         if (var_r29->unk_00 != -1) {
             lightSet(var_r29, var_r30, arg2, arg1, arg8);
             var_r28 |= var_r30;
-            var_r30 = (s16) var_r30 * 2;
+            var_r30 *= 2;
         }
     }
     if ((arg0->attr & 0x1000) != 0) {
@@ -1781,14 +1781,51 @@ s16 Hu3DLightSet(ModelData* arg0, s32 arg1, s32 arg2, f32 arg8) {
                 var_r29 = &Hu3DLocalLight[arg0->unk_38[i]];
                 lightSet(var_r29, var_r30, arg2, arg1, arg8);
                 var_r28 |= var_r30;
-                var_r30 = (s16) var_r30 * 2;
+                var_r30 *= 2;
             }
         }
     }
     return var_r28;
 }
 
-// ...
+void lightSet(LightData* arg0, s16 arg1, Mtx *arg2, Mtx *arg3, f32 arg8) {
+    GXLightObj sp30;
+    Point3d sp24;
+    Point3d sp18;
+
+    switch ((u8)arg0->unk_00) {
+    case 0:
+        GXInitLightAttn(&sp30, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+        GXInitLightSpot(&sp30, arg0->unk_04, arg0->unk_02);
+        break;
+    case 1:
+        GXInitLightAttn(&sp30, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+        GXInitLightSpot(&sp30, 20.0f, GX_SP_COS);
+        GXInitLightAttnK(&sp30, 1.0f, 0.0f, 0.0f);
+        PSVECScale(&arg0->unk_28, &arg0->unk_1C, -1000000.0f);
+        break;
+    case 2:
+        GXInitLightAttn(&sp30, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        GXInitLightDistAttn(&sp30, arg0->unk_04, arg0->unk_08, arg0->unk_02);
+        break;
+    }
+    if ((arg0->unk_00 & 0x8000) != 0) {
+        PSMTXMultVec(*arg2, &arg0->unk_28, &sp24);
+        PSMTXMultVec(*arg3, &arg0->unk_1C, &sp18);
+        GXInitLightPos(&sp30, sp18.x, sp18.y, sp18.z);
+    } else {
+        GXInitLightPos(&sp30, arg0->unk_1C.x, arg0->unk_1C.y, arg0->unk_1C.z);
+        sp24 = arg0->unk_28;
+    }
+    if (0.0f == arg8) {
+        GXInitLightDir(&sp30, sp24.x, sp24.y, sp24.z);
+    } else {
+        GXInitSpecularDir(&sp30, sp24.x, sp24.y, sp24.z);
+        GXInitLightAttn(&sp30, 0.0f, 0.0f, 1.0f, arg8 / 2, 0.0f, 1.0f - (arg8 / 2));
+    }
+    GXInitLightColor(&sp30, arg0->color);
+    GXLoadLightObjImm(&sp30, arg1);
+}
 
 void Hu3DReflectMapSet(AnimData* arg0) {
     
@@ -1818,7 +1855,36 @@ void Hu3DFogClear(void) {
     GXSetFog(GX_FOG_NONE, 0.0f, 0.0f, 0.0f, 0.0f, BGColor);
 }
 
-// ...
+void Hu3DShadowCreate(f32 arg8, f32 arg9, f32 argA) {
+    Hu3DShadowData.unk_02 = 0xC0;
+    if (Hu3DShadowData.unk_04 == 0) {
+        Hu3DShadowData.unk_04 = HuMemDirectMalloc(HEAP_DATA, 0x9000);
+    }
+    Hu3DShadowData.unk_08.x = arg8;
+    Hu3DShadowData.unk_08.y = arg9;
+    Hu3DShadowData.unk_08.z = argA;
+    Hu3DShadowData.unk_14.x = 300.0f;
+    Hu3DShadowData.unk_14.y = 300.0f;
+    Hu3DShadowData.unk_14.z = 0.0f;
+    Hu3DShadowData.unk_20.x = Hu3DShadowData.unk_20.y = Hu3DShadowData.unk_20.z = 0.0f;
+    Hu3DShadowData.unk_2C.x = -1.0f;
+    Hu3DShadowData.unk_2C.y = 1.0f;
+    Hu3DShadowData.unk_2C.z = 0.0f;
+    C_MTXLightPerspective(Hu3DShadowData.unk_68, arg8, 1.2f, 0.5f, -0.5f, 0.5f, 0.5f);
+    PSVECNormalize(&Hu3DShadowData.unk_2C, &Hu3DShadowData.unk_2C);
+    Hu3DShadowData.unk_00 = 0x80;
+    Hu3DShadowF = 1;
+}
+
+void Hu3DShadowPosSet(Vec* arg0, Vec* arg1, Vec* arg2) {
+    Hu3DShadowData.unk_14 = *arg0;
+    Hu3DShadowData.unk_20 = *arg2;
+    Hu3DShadowData.unk_2C = *arg1;
+}
+
+void Hu3DShadowTPLvlSet(f32 arg8) {
+    Hu3DShadowData.unk_00 = 255.0f * arg8;
+}
 
 void Hu3DShadowSizeSet(u16 arg0) {
     Hu3DShadowData.unk_02 = arg0;
@@ -1826,6 +1892,125 @@ void Hu3DShadowSizeSet(u16 arg0) {
         HuMemDirectFree(Hu3DShadowData.unk_04);
     }
     Hu3DShadowData.unk_04 = HuMemDirectMalloc(HEAP_DATA, arg0 * arg0);
+}
+
+void Hu3DShadowExec(void) {
+    ModelData* var_r31;
+    s16 var_r30;
+    Mtx spB8;
+    Mtx sp88;
+    Mtx sp58;
+    Mtx44 sp18;
+    GXColor sp14 = {0, 0, 0, 0};
+    s32 test;
+    s32 test2;
+
+    Hu3DDrawPreInit();
+    GXSetCopyClear(sp14, 0xFFFFFF);
+    C_MTXPerspective(sp18, Hu3DShadowData.unk_08.x, 1.2f, Hu3DShadowData.unk_08.y, Hu3DShadowData.unk_08.z);
+    GXSetProjection(sp18, GX_PERSPECTIVE);
+    if (Hu3DShadowData.unk_02 <= 0xF0) {
+        GXSetScissor(2, 2, Hu3DShadowData.unk_02 * 2 - 4, Hu3DShadowData.unk_02 * 2 - 4);
+        GXSetViewport(0.0f, 0.0f, Hu3DShadowData.unk_02 * 2, Hu3DShadowData.unk_02 * 2, 0.0f, 1.0f);
+        test = (Hu3DShadowData.unk_02 / 2) * (Hu3DShadowData.unk_02 / 2);
+    } else {
+        GXSetScissor(1, 1, Hu3DShadowData.unk_02 - 2, Hu3DShadowData.unk_02 - 2);
+        GXSetViewport(0.0f, 0.0f, Hu3DShadowData.unk_02, Hu3DShadowData.unk_02, 0.0f, 1.0f);
+        test = Hu3DShadowData.unk_02 * Hu3DShadowData.unk_02;
+    }
+    C_MTXLookAt(Hu3DCameraMtx, &Hu3DShadowData.unk_14, &Hu3DShadowData.unk_2C, &Hu3DShadowData.unk_20);
+    PSMTXCopy(Hu3DCameraMtx, Hu3DShadowData.unk_38);
+    var_r31 = Hu3DData;
+    shadowModelDrawF = 1;
+    GXInvalidateTexAll();
+    GXSetFog(GX_FOG_NONE, 0.0f, 0.0f, 0.0f, 0.0f, BGColor);
+    
+    for (var_r30 = 0; var_r30 < 0x200; var_r30++, var_r31++) {
+        if (var_r31->hsfData != 0 && (var_r31->attr & 4) != 0 && (var_r31->attr & 1) == 0 && (var_r31->attr & 0x8000) == 0) {
+            if ((var_r31->attr & 8) != 0) {
+                test2 = 0;
+                if (var_r31->unk_08 != -1) {
+                    Hu3DMotionExec(var_r30, var_r31->unk_08, var_r31->unk_64, 0);
+                }
+                if (var_r31->unk_0C != -1) {
+                    Hu3DSubMotionExec(var_r30);
+                }
+                if (var_r31->unk_0A != -1) {
+                    Hu3DMotionExec(var_r30, var_r31->unk_0A, var_r31->unk_74, 1);
+                }
+                if ((var_r31->attr & 0x400) != 0) {
+                    ClusterMotionExec(var_r31);
+                    test2 = 1;
+                }
+                if (var_r31->unk_0E != -1) {
+                    if (var_r31->unk_08 == -1) {
+                        Hu3DMotionExec(var_r30, var_r31->unk_0E, var_r31->unk_94, 0);
+                    } else {
+                        Hu3DMotionExec(var_r30, var_r31->unk_0E, var_r31->unk_94, 1);
+                    }
+                }
+                if ((var_r31->attr & 0x90) == 0 || (var_r31->motion_attr & 0x40000002) == 0) {
+                    test2 = 1;
+                    InitVtxParm(var_r31->hsfData);
+                    if (var_r31->unk_0E != -1) {
+                        ShapeProc(var_r31->hsfData);
+                    }
+                    if ((var_r31->attr & 0x400) != 0) {
+                        ClusterProc(var_r31);
+                    }
+                    if (var_r31->hsfData->cenvCnt != 0) {
+                        EnvelopeProc(var_r31->hsfData);
+                    }
+                    PPCSync();
+                }
+                var_r31->attr |= 0x800;
+            }
+            mtxRot(sp58, var_r31->rot.x, var_r31->rot.y, var_r31->rot.z);
+            PSMTXScale(spB8, var_r31->scale.x, var_r31->scale.y, var_r31->scale.z);
+            PSMTXConcat(sp58, spB8, spB8);
+            mtxTransCat(spB8, var_r31->pos.x, var_r31->pos.y, var_r31->pos.z);
+            PSMTXConcat(Hu3DCameraMtx, spB8, sp88);
+            PSMTXConcat(sp88, var_r31->unk_F0, sp88);
+            Hu3DDraw(var_r31, sp88[0], &var_r31->scale.x);
+        }
+    }
+    Hu3DDrawPost();
+    shadowModelDrawF = 0;
+    if (Hu3DShadowData.unk_02 <= 0xF0) {
+        GXSetTexCopySrc(0, 0, Hu3DShadowData.unk_02 * 2, Hu3DShadowData.unk_02 * 2);
+        GXSetTexCopyDst(Hu3DShadowData.unk_02, Hu3DShadowData.unk_02, GX_CTF_R8, 1);
+    } else {
+        GXSetTexCopySrc(0, 0, Hu3DShadowData.unk_02, Hu3DShadowData.unk_02);
+        GXSetTexCopyDst(Hu3DShadowData.unk_02, Hu3DShadowData.unk_02, GX_CTF_R8, 0);
+    }
+    GXCopyTex(Hu3DShadowData.unk_04, 1);
+    GXSetViewport(0.0f, 0.0f, RenderMode->fbWidth, RenderMode->xfbHeight, 0.0f, 1.0f);
+    GXSetScissor(0, 0, RenderMode->fbWidth, RenderMode->efbHeight);
+    C_MTXOrtho(sp18, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f);
+    GXSetProjection(sp18, GX_ORTHOGRAPHIC);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_U8, 0);
+    GXSetTevColor(GX_TEVREG0, BGColor);
+    GXSetNumTexGens(0);
+    GXSetNumTevStages(1);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0);
+    GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+    GXSetNumChans(0);
+    PSMTXIdentity(sp88);
+    GXLoadPosMtxImm(sp88, 0);
+    GXSetZMode(0, GX_ALWAYS, 1);
+    GXSetNumChans(1);
+    GXSetChanCtrl(GX_COLOR0A0, 0, GX_SRC_REG, GX_SRC_REG, 0, GX_DF_CLAMP, GX_AF_NONE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+
+    GXColor3u8(0, 0, 0);
+    GXColor3u8(1, 0, 0);
+    GXColor3u8(1, 1, 0);
+    GXColor3u8(0, 1, 0);
 }
 
 s16 Hu3DProjectionCreate(void *arg0, f32 arg8, f32 arg9, f32 argA) {
