@@ -285,6 +285,18 @@ typedef struct hsf_camera {
     float far;
 } HsfCamera;
 
+typedef struct hsf_light {
+    HsfVector3f pos;
+    HsfVector3f target;
+    u8 type;
+    u8 r;
+    u8 g;
+    u8 b;
+    float unk2C;
+    float ref_distance;
+    float ref_brightness;
+    float cutoff;
+} HsfLight;
 typedef struct hsf_object {
     char *name;
     u32 type;
@@ -293,6 +305,7 @@ typedef struct hsf_object {
     union {
         HsfObjectData data;
         HsfCamera camera;
+        HsfLight light;
     };
 } HsfObject;
 

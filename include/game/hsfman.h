@@ -30,8 +30,8 @@ typedef struct model_data {
     s16 unk_20;
     u16 camera;
     s16 unk_24;
-    s16 unk_26;
-    char unk_28[0x10];
+    u16 unk_26;
+    u16 unk_28[8];
     s16 unk_38[8];
     HsfData *unk_48;
     HsfData *unk_4C;
@@ -205,7 +205,6 @@ void Hu3DCameraKill(s32);
 void Hu3DCameraAllKill(void);
 void Hu3DCameraSet(s32, Mtx);
 BOOL Hu3DModelCameraInfoSet(s16, u16);
-BOOL Hu3DModelLightInfoSet(s16, u16);
 s16 Hu3DModelCameraCreate(s16, u16);
 void Hu3DCameraMotionOn(s16, s8);
 void Hu3DCameraMotionStart(s16, u16);
@@ -236,7 +235,7 @@ void Hu3DGLightPosAimSet(s16, f32, f32, f32, f32, f32, f32);
 void Hu3DLLightPosAimSet(s16, s16, f32, f32, f32, f32, f32, f32);
 void Hu3DGLightStaticSet(s16, s32);
 void Hu3DLLightStaticSet(s16, s16, s32);
-//...
+s32 Hu3DModelLightInfoSet(s16, s16);
 s16 Hu3DLightSet(ModelData*, s32, s32, f32);
 void lightSet(LightData*, s16, s32, s32, f32);
 //...
