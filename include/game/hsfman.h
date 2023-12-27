@@ -8,6 +8,10 @@
 #include "game/hsfformat.h"
 #include "game/sprite.h"
 #include "game/init.h"
+#include "game/data.h"
+#include "game/memory.h"
+
+#define Hu3DModelCreateFile(data_id) (Hu3DModelCreate(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 
 typedef struct model_data {
     u8 unk_00;
@@ -135,7 +139,6 @@ void Hu3DMotionExec(s16, s16, f32, s32);
 f32 Hu3DMotionMaxTimeGet(s16);                      /* extern */
 s16 Hu3DMotionModelCreate(s16);                     /* extern */
 void Hu3DMotionShapeSet(s16, s16);                     /* extern */
-HsfData* LoadHSF(s32);                              /* extern */
 void MakeDisplayList(s16, HsfData*);                   /* extern */
 void ClusterAdjustObject(HsfData*, HsfData*);          /* extern */
 HsfObject* Hu3DObjDuplicate(HsfData*, u32);         /* extern */
@@ -145,7 +148,6 @@ void Hu3DLLightKill(s16, s16);                         /* extern */
 s32 Hu3DMotionKill(s16);
 void Hu3DModelKill(s16);
 void Hu3DParManAllKill(void);
-s32 MakeObjectName(s32);
 f32 Hu3DMotionMotionMaxTimeGet(s16);
 void Hu3DMotionStartEndSet(s16, f32, f32);
 void Hu3DMotionTimeSet(s16, f32);
@@ -158,7 +160,7 @@ void Hu3DBGColorSet(u8, u8, u8);
 void Hu3DLayerHookSet(s16, void (*)(s16));
 void Hu3DPauseSet(s32);
 void Hu3DNoSyncSet(s32);
-s16 Hu3DModelCreate(s32);
+s16 Hu3DModelCreate(void *);
 s16 Hu3DModelLink(s16);
 s16 Hu3DHookFuncCreate(HsfData*);
 void Hu3DModelAllKill(void);
@@ -176,7 +178,7 @@ void Hu3DModelClusterAttrSet(s16, s16, s32);
 void Hu3DModelClusterAttrReset(s16, s16, s32);
 void Hu3DModelCameraSet(s16, u16);
 void Hu3DModelLayerSet(s16, s16);
-HsfObject* Hu3DModelObjPtrGet(s16, s32);
+HsfObject* Hu3DModelObjPtrGet(s16, char *);
 void Hu3DModelTPLvlSet(s16, f32);
 void Hu3DModelHiliteMapSet(s16, AnimData*);
 void Hu3DModelShadowSet(s16);
@@ -184,11 +186,11 @@ void Hu3DModelShadowReset(s16);
 void Hu3DModelShadowDispOn(s16);
 void Hu3DModelShadowDispOff(s16);
 void Hu3DModelShadowMapSet(s16);
-void Hu3DModelShadowMapObjSet(s16, s32);
+void Hu3DModelShadowMapObjSet(s16, char *);
 void Hu3DModelAmbSet(s16, f32, f32, f32);
-void Hu3DModelHookSet(s16, s32, s16);
+void Hu3DModelHookSet(s16, char *, s16);
 void Hu3DModelHookReset(s16);
-void Hu3DModelHookObjReset(s16, s32);
+void Hu3DModelHookObjReset(s16, char *);
 void Hu3DModelProjectionSet(s16, s16);
 void Hu3DModelProjectionReset(s16, s16);
 void Hu3DModelHiliteTypeSet(s16, s16);
@@ -203,6 +205,7 @@ void Hu3DCameraKill(s32);
 void Hu3DCameraAllKill(void);
 void Hu3DCameraSet(s32, Mtx);
 BOOL Hu3DModelCameraInfoSet(s16, u16);
+BOOL Hu3DModelLightInfoSet(s16, u16);
 s16 Hu3DModelCameraCreate(s16, u16);
 void Hu3DCameraMotionOn(s16, s8);
 void Hu3DCameraMotionStart(s16, u16);

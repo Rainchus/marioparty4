@@ -39,6 +39,8 @@ struct OSResetFunctionInfo {
   OSResetFunctionInfo* prev;
 };
 
+u32 OSGetResetCode(void);
+
 #ifdef __cplusplus
 }
 #endif

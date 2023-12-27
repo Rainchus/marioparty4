@@ -67,7 +67,7 @@ inline s32 get_current_board(void) {
 
 void fn_1_E0(void) {
     f32 sp10;
-    f32 spC;
+    f32 spC[2];
     s32 sp8;
     
     s32 i;
@@ -130,8 +130,8 @@ void fn_1_E0(void) {
     fn_800A4F6C(lbl_1_data_32);
     fn_80077AAC(lbl_1_data_2E);
     fn_8007A83C(lbl_1_data_30);
-    HuWinMesMaxSizeGet(1, &spC, 0x2E003A);
-    lbl_1_bss_E = HuWinCreate(-10000.0f, 390.0f, spC, sp10, 1);
+    HuWinMesMaxSizeGet(1, spC, 0x2E003A);
+    lbl_1_bss_E = HuWinCreate(-10000.0f, 390.0f, spC[0], spC[1], 1);
     HuWinMesSet(lbl_1_bss_E, 0x2E003A);
     HuWinMesSpeedSet(lbl_1_bss_E, 0);
     HuWinPriSet(lbl_1_bss_E, 1);
