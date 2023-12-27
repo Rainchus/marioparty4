@@ -3,6 +3,7 @@
 
 #define M_PI 3.141592653589793
 
+#ifdef MATH_EXPORT_CONST
 extern inline float sqrtf(float x)
 {
 	static const double _half=.5;
@@ -19,7 +20,22 @@ extern inline float sqrtf(float x)
 	}
 	return x;
 }
-
+#else
+extern inline float sqrtf(float x)
+{
+	volatile float y;
+	if(x > 0.0f)
+	{
+		double guess = __frsqrte((double)x);   // returns an approximation to
+		guess = 0.5*guess*(3.0 - guess*guess*x);  // now have 12 sig bits
+		guess = 0.5*guess*(3.0 - guess*guess*x);  // now have 24 sig bits
+		guess = 0.5*guess*(3.0 - guess*guess*x);  // now have 32 sig bits
+		y=(float)(x*guess);
+		return y;
+	}
+	return x;
+}
+#endif
 double atan(double x);
 double copysign(double x, double y);
 double cos(double x);

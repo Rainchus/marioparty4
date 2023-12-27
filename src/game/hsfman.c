@@ -325,7 +325,7 @@ s16 Hu3DModelCreate(void *arg0) {
         }
     }
     if (var_r30 == 0x200) {
-        OSReport("Error: Not Found %s for MipMapSet\n");
+        OSReport("Error: Create Model Over!\n");
         return -1;
     }
     var_r31->hsfData = LoadHSF(arg0);
@@ -380,7 +380,7 @@ s16 Hu3DModelCreate(void *arg0) {
     PSMTXIdentity(var_r31->unk_F0);
     layerNum[0] += 1;
     HuMemDCFlush(HEAP_DATA);
-    if ((var_r31->hsfData->sceneCnt != 0) && ((var_r31->hsfData->scene->start != 0.0f) || (var_r31->hsfData->scene->end != 0.0f))) {
+    if ((var_r31->hsfData->sceneCnt != 0) && ((var_r31->hsfData->scene->start) || (var_r31->hsfData->scene->end))) {
         Hu3DFogSet(var_r31->hsfData->scene->start, var_r31->hsfData->scene->end, var_r31->hsfData->scene->color.r, var_r31->hsfData->scene->color.g, var_r31->hsfData->scene->color.b);
     }
     return var_r30;
@@ -1569,8 +1569,7 @@ void Hu3DLLightColorSet(s16 dataIndex, s16 lightIndex, u8 r, u8 g, u8 b, u8 a) {
 
 inline void Hu3DLightPosSetV(LightData *light, Vec* pos, Vec* aim) {
     light->unk_1C = *pos;
-    PSVECSubtract(aim, pos, &light->unk_28);
-    PSVECNormalize(&light->unk_28, &light->unk_28);
+    PSVECNormalize(aim, &light->unk_28);
 }
 
 void Hu3DGLightPosSetV(s16 index, Vec* pos, Vec* aim) {
@@ -1772,7 +1771,7 @@ s16 Hu3DLightSet(ModelData* arg0, Mtx *arg1, Mtx *arg2, f32 arg8) {
         if (var_r29->unk_00 != -1) {
             lightSet(var_r29, var_r30, arg2, arg1, arg8);
             var_r28 |= var_r30;
-            var_r30 *= 2;
+            var_r30 <<= 1;
         }
     }
     if ((arg0->attr & 0x1000) != 0) {
@@ -1781,7 +1780,7 @@ s16 Hu3DLightSet(ModelData* arg0, Mtx *arg1, Mtx *arg2, f32 arg8) {
                 var_r29 = &Hu3DLocalLight[arg0->unk_38[i]];
                 lightSet(var_r29, var_r30, arg2, arg1, arg8);
                 var_r28 |= var_r30;
-                var_r30 *= 2;
+                var_r30 <<= 1;
             }
         }
     }
@@ -2038,7 +2037,7 @@ s16 Hu3DProjectionCreate(void *arg0, f32 arg8, f32 arg9, f32 argA) {
     var_r31->unk_2C.x = -1.0f;
     var_r31->unk_2C.y = 1.0f;
     var_r31->unk_2C.z = 0.0f;
-    C_MTXLightPerspective(var_r31->unk_68, arg8, 1.2f, 0.5f, 20.0f, 0.5f, 0.5f);
+    C_MTXLightPerspective(var_r31->unk_68, arg8, 1.2f, 0.5f, -0.5f, 0.5f, 0.5f);
     PSVECNormalize(&var_r31->unk_2C, &var_r31->unk_2C);
     var_r31->unk_00 = 0x80;
     Hu3DProjectionNum++;

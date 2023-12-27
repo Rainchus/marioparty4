@@ -174,19 +174,18 @@ cflags_runtime = [
 cflags_rel = [
     *cflags_base,
     "-O0,p",
-    "-enum int",
     "-char unsigned",
     "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
     "-pool off",
+    "-DMATH_EXPORT_CONST",
 ]
 
 # Game flags
 cflags_game = [
     *cflags_base,
     "-O0,p",
-    "-enum int",
     "-char unsigned",
     "-fp_contract off",
 ]
@@ -247,7 +246,7 @@ config.libs = [
             Object(Matching, "game/sprput.c"),
             Object(Matching, "game/hsfload.c"),
             Object(NonMatching, "game/hsfdraw.c"),
-            Object(NonMatching, "game/hsfman.c"),
+            Object(Matching, "game/hsfman.c"),
             Object(NonMatching, "game/hsfmotion.c"),
             Object(NonMatching, "game/hsfanim.c"),
             Object(NonMatching, "game/hsfex.c"),
