@@ -19,24 +19,26 @@
 
 extern int lbl_801D3A00;
 
-Process *lbl_1_bss_54;
+static Process *objman;
 Vec lbl_1_bss_3C[2];
 Vec lbl_1_bss_24[2];
 float lbl_1_bss_1C[2];
 
-s16 lbl_1_bss_E[7];
+Vec lbl_1_bss_10;
 
-s16 lbl_1_bss_8[3];
-s16 lbl_1_bss_6;
+static s16 demoWin;
+
+static s16 titleModel[3];
+static s16 titleGroup;
 
 s16 lbl_1_bss_4;
 s32 lbl_1_bss_0;
 
-void fn_1_26C(void);
-void fn_1_9F8(void);
-void fn_1_AC0(void);
-void fn_1_2100(void);
-BOOL fn_1_2474(void);
+static void BootProc(void);
+static void UpdateDemoMess(void);
+static void ProgressiveProc(void);
+static void TitleInit(void);
+static BOOL TitleProc(void);
 
 void *logoReadNintendo(void);
 
@@ -44,7 +46,7 @@ void ModuleProlog(void)
 {
 	omOvlHisData *history;
 	OSReport("******* Boot ObjectSetup *********\n");
-	lbl_1_bss_54 = omInitObjMan(50, 8192);
+	objman = omInitObjMan(50, 8192);
 	lbl_1_bss_3C[0].x = -67;
 	lbl_1_bss_3C[0].y = 40;
 	lbl_1_bss_3C[0].z = 0;
@@ -55,13 +57,13 @@ void ModuleProlog(void)
 	Hu3DCameraCreate(1);
 	Hu3DCameraPerspectiveSet(1, 30, 20, 15000, 1.2);
 	Hu3DCameraViewportSet(1, 0, 0, 640, 480, 0, 1);
-	HuPrcCreate(fn_1_26C, 100, 12288, 0);
+	HuPrcCreate(BootProc, 100, 12288, 0);
 	Hu3DBGColorSet(0, 0, 0);
 	history = omOvlHisGet(0);
 	omOvlHisChg(0, history->overlay, 1, history->stat);
 }
 
-void fn_1_26C(void)
+static void BootProc(void)
 {
 	AnimData *data;
 	s16 group;
@@ -71,7 +73,7 @@ void fn_1_26C(void)
 	OSTick tick_prev;
 	Process *curr = HuPrcCurrentGet();
 	if(omovlevtno == 0) {
-		fn_1_AC0();
+		ProgressiveProc();
 	}
 	group = HuSprGrpCreate(2);
 	data = HuSprAnimRead(logoReadNintendo());
@@ -87,7 +89,7 @@ void fn_1_26C(void)
 		HuSprPosSet(group, 1, 288, 240);
 		HuSprAttrSet(group, 1, SPRITE_ATTR_HIDDEN);
 		HuWinInit(1);
-		fn_1_2100();
+		TitleInit();
 		lbl_801D3A00 = 1;
 	} else {
 		s16 group_thp;
@@ -110,7 +112,7 @@ void fn_1_26C(void)
 			HuWindowInit();
 			MGSeqInit();
 			HuWinInit(1);
-			fn_1_2100();
+			TitleInit();
 			data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 1));
 			sprite_hudson = HuSprCreate(data, 0, 0);
 			HuSprGrpMemberSet(group, 1, sprite_hudson);
@@ -174,11 +176,11 @@ void fn_1_26C(void)
 		HuSprGrpMemberSet(group_thp, 0, sprite_thp);
 		HuSprPosSet(group_thp, 0, 288, 240);
 		HuWinMesMaxSizeBetGet(win_size, MAKE_MESSID(54, 0), MAKE_MESSID(54, 4));
-		lbl_1_bss_E[0] = HuWinCreate(-10000, 448-win_size[1], win_size[0], win_size[1], 0);
-		HuWinMesSpeedSet(lbl_1_bss_E[0], 0);
-		HuWinBGTPLvlSet(lbl_1_bss_E[0], 0);
-		HuWinPriSet(lbl_1_bss_E[0], 10);
-		HuWinAttrSet(lbl_1_bss_E[0], 0x800);
+		demoWin = HuWinCreate(-10000, 448-win_size[1], win_size[0], win_size[1], 0);
+		HuWinMesSpeedSet(demoWin, 0);
+		HuWinBGTPLvlSet(demoWin, 0);
+		HuWinPriSet(demoWin, 10);
+		HuWinAttrSet(demoWin, 0x800);
 		HuPrcSleep(5);
 		WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
 		while(WipeStatGet()) {
@@ -186,7 +188,7 @@ void fn_1_26C(void)
 		}
 		skip_wait = FALSE;
 		while(!HuTHPEndCheck()) {
-			fn_1_9F8();
+			UpdateDemoMess();
 			if(HuPadBtnDown[0] & (PAD_BUTTON_START|PAD_BUTTON_A)) {
 				skip_wait = TRUE;
 				break;
@@ -197,7 +199,7 @@ void fn_1_26C(void)
 		while(WipeStatGet()) {
 			HuPrcVSleep();
 		}
-		HuWinKill(lbl_1_bss_E[0]);
+		HuWinKill(demoWin);
 		HuTHPClose();
 		HuPrcVSleep();
 		HuSprGrpKill(group_thp);
@@ -206,7 +208,7 @@ void fn_1_26C(void)
 		}
 		skip_wait = FALSE;
 	}
-	if(!fn_1_2474()) {
+	if(!TitleProc()) {
 		HuPrcSleep(60);
 		goto repeat;
 	}
@@ -231,7 +233,7 @@ void fn_1_26C(void)
 	} while(1);
 }
 
-s16 lbl_1_data_38[] = {
+static s16 demoTimingTbl[] = {
 	1686, 1785,
 	1850, 1936,
 	1993, 2097,
@@ -240,26 +242,26 @@ s16 lbl_1_data_38[] = {
 	-1, -1,
 };
 
-void fn_1_9F8(void)
+static void UpdateDemoMess(void)
 {
 	int frame = HuTHPFrameGet();
 	int i;
-	for(i=0; lbl_1_data_38[i*2] != -1; i++) {
-		if(frame == lbl_1_data_38[i*2]) {
-			HuWinMesSet(lbl_1_bss_E[0], MAKE_MESSID(54, i));
+	for(i=0; demoTimingTbl[i*2] != -1; i++) {
+		if(frame == demoTimingTbl[i*2]) {
+			HuWinMesSet(demoWin, MAKE_MESSID(54, i));
 		}
-		if(frame == lbl_1_data_38[(i*2)+1]) {
-			HuWinHomeClear(lbl_1_bss_E[0]);
+		if(frame == demoTimingTbl[(i*2)+1]) {
+			HuWinHomeClear(demoWin);
 		}
 	}
 }
 
-u16 lbl_1_data_50[] = {
+static u16 progressivePosTbl[] = {
 	236, 313,
 	353, 313
 };
 
-void fn_1_AC0(void)
+static void ProgressiveProc(void)
 {
 	s16 i;
 	s16 option;
@@ -289,11 +291,11 @@ void fn_1_AC0(void)
 	data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 6));
 	sprite = HuSprCreate(data, 0, 0);
 	HuSprGrpMemberSet(group, 1, sprite);
-	HuSprPosSet(group, 1, lbl_1_data_50[option*2], lbl_1_data_50[(option*2)+1]);
+	HuSprPosSet(group, 1, progressivePosTbl[option*2], progressivePosTbl[(option*2)+1]);
 	data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 7));
 	sprite = HuSprCreate(data, 0, 0);
 	HuSprGrpMemberSet(group, 2, sprite);
-	HuSprPosSet(group, 2, lbl_1_data_50[option*2], lbl_1_data_50[(option*2)+1]);
+	HuSprPosSet(group, 2, progressivePosTbl[option*2], progressivePosTbl[(option*2)+1]);
 	HuSprAttrSet(group, 2, SPRITE_ATTR_HIDDEN);
 	WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
 	while(WipeStatGet()) {
@@ -302,12 +304,12 @@ void fn_1_AC0(void)
 	for(i=0; i<600; i++) {
 		if(HU_PAD_DSTK_ALL & (PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT)) {
 			option ^= 1;
-			HuSprPosSet(group, 1, lbl_1_data_50[option*2], lbl_1_data_50[(option*2)+1]);
+			HuSprPosSet(group, 1, progressivePosTbl[option*2], progressivePosTbl[(option*2)+1]);
 			i=0;
 		}
 		if(HU_PAD_BTNDOWN_ALL & PAD_BUTTON_A) {
 			HuSprAttrSet(group, 1, SPRITE_ATTR_HIDDEN);
-			HuSprPosSet(group, 2, lbl_1_data_50[option*2], lbl_1_data_50[(option*2)+1]);
+			HuSprPosSet(group, 2, progressivePosTbl[option*2], progressivePosTbl[(option*2)+1]);
 			HuSprAttrReset(group, 2, SPRITE_ATTR_HIDDEN);
 			break;
 		}
@@ -360,7 +362,6 @@ u16 lbl_1_data_58[] = {
 
 void fn_1_1178(void)
 {
-	
 	s16 i;
 	for(i=0; i<1; i++) {
 		Vec pos, target, up;
@@ -388,56 +389,56 @@ void fn_1_152C(void)
 	
 }
 
-void fn_1_2100(void)
+static void TitleInit(void)
 {
 	s16 model;
 	s16 sprite;
 	AnimData *sprite_data;
-	lbl_1_bss_8[0] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 11));
+	titleModel[0] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 11));
 	Hu3DModelAttrSet(model, 1);
 	Hu3DModelAttrSet(model, 0x40000001);
-	lbl_1_bss_8[1] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 12));
+	titleModel[1] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 12));
 	Hu3DModelAttrSet(model, 1);
 	Hu3DModelAttrSet(model, 0x40000001);
-	lbl_1_bss_8[2] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 13));
+	titleModel[2] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 13));
 	Hu3DModelAttrSet(model, 1);
 	Hu3DModelAttrSet(model, 0x40000001);
 	Hu3DModelCameraInfoSet(model, 1);
 	Hu3DModelLightInfoSet(model, 1);
-	lbl_1_bss_6 = HuSprGrpCreate(4);
+	titleGroup = HuSprGrpCreate(4);
 	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 8));
 	sprite = HuSprCreate(sprite_data, 0, 0);
-	HuSprGrpMemberSet(lbl_1_bss_6, 0, sprite);
-	HuSprAttrSet(lbl_1_bss_6, 0, SPRITE_ATTR_HIDDEN);
-	HuSprDrawNoSet(lbl_1_bss_6, 0, 127);
-	HuSprPosSet(lbl_1_bss_6, 0, 288, 240);
+	HuSprGrpMemberSet(titleGroup, 0, sprite);
+	HuSprAttrSet(titleGroup, 0, SPRITE_ATTR_HIDDEN);
+	HuSprDrawNoSet(titleGroup, 0, 127);
+	HuSprPosSet(titleGroup, 0, 288, 240);
 	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 10));
 	sprite = HuSprCreate(sprite_data, 1, 0);
-	HuSprGrpMemberSet(lbl_1_bss_6, 1, sprite);
-	HuSprAttrSet(lbl_1_bss_6, 1, SPRITE_ATTR_HIDDEN);
-	HuSprPosSet(lbl_1_bss_6, 1, 288, 420);
+	HuSprGrpMemberSet(titleGroup, 1, sprite);
+	HuSprAttrSet(titleGroup, 1, SPRITE_ATTR_HIDDEN);
+	HuSprPosSet(titleGroup, 1, 288, 420);
 	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 2));
 	sprite = HuSprCreate(sprite_data, 2, 0);
-	HuSprGrpMemberSet(lbl_1_bss_6, 2, sprite);
-	HuSprAttrSet(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN|SPIRTE_ATTR_BILINEAR);
-	HuSprPosSet(lbl_1_bss_6, 2, 288, 380);
+	HuSprGrpMemberSet(titleGroup, 2, sprite);
+	HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN|SPIRTE_ATTR_BILINEAR);
+	HuSprPosSet(titleGroup, 2, 288, 380);
 	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 9));
 	sprite = HuSprCreate(sprite_data, 0, 0);
-	HuSprGrpMemberSet(lbl_1_bss_6, 3, sprite);
-	HuSprAttrSet(lbl_1_bss_6, 3, SPRITE_ATTR_HIDDEN|SPIRTE_ATTR_BILINEAR);
-	HuSprPosSet(lbl_1_bss_6, 3, 288, 200);
+	HuSprGrpMemberSet(titleGroup, 3, sprite);
+	HuSprAttrSet(titleGroup, 3, SPRITE_ATTR_HIDDEN|SPIRTE_ATTR_BILINEAR);
+	HuSprPosSet(titleGroup, 3, 288, 200);
 }
 
-BOOL fn_1_2474(void)
+static BOOL TitleProc(void)
 {
 	float scale;
 	float scale_time;
 	s32 sp8[32];
 	s16 i;
-	Hu3DModelAttrReset(lbl_1_bss_8[0], 1);
-	Hu3DModelAttrReset(lbl_1_bss_8[1], 1);
-	HuSprAttrReset(lbl_1_bss_6, 0, SPRITE_ATTR_HIDDEN);
-	HuSprAttrReset(lbl_1_bss_6, 1, SPRITE_ATTR_HIDDEN);
+	Hu3DModelAttrReset(titleModel[0], 1);
+	Hu3DModelAttrReset(titleModel[1], 1);
+	HuSprAttrReset(titleGroup, 0, SPRITE_ATTR_HIDDEN);
+	HuSprAttrReset(titleGroup, 1, SPRITE_ATTR_HIDDEN);
 	OSReport(">>>>>>>>MSM_SE_SEL_01 %d\n", msmSeGetEntryID(2092, sp8));
 	OSReport(">>>>>>>>SE Num %d\n", msmSeGetNumPlay(0));
 	HuAudSStreamPlay(20);
@@ -445,24 +446,24 @@ BOOL fn_1_2474(void)
 	while(WipeStatGet()) {
 		HuPrcVSleep();
 	}
-	HuSprAttrReset(lbl_1_bss_6, 3, SPRITE_ATTR_HIDDEN);
+	HuSprAttrReset(titleGroup, 3, SPRITE_ATTR_HIDDEN);
 	for(i=1; i<=50; i++) {
 		scale = (cos((i*1.8)*M_PI/180.0)*10.0)+1.0;
-		HuSprScaleSet(lbl_1_bss_6, 3, scale, scale);
-		HuSprTPLvlSet(lbl_1_bss_6, 3, i/50.0);
+		HuSprScaleSet(titleGroup, 3, scale, scale);
+		HuSprTPLvlSet(titleGroup, 3, i/50.0);
 		HuPrcVSleep();
 	}
-	HuSprAttrReset(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN);
+	HuSprAttrReset(titleGroup, 2, SPRITE_ATTR_HIDDEN);
 	for(i=scale_time=0; i<1800; i++) {
 		if(i <= 10) {
-			HuSprTPLvlSet(lbl_1_bss_6, 2, i/10.0);
+			HuSprTPLvlSet(titleGroup, 2, i/10.0);
 		}
 		if(HuPadBtnDown[0] & PAD_BUTTON_START) {
 			s32 ret = HuAudFXPlay(2092);
 			if(ret < 0) {
 				OSReport(">>>>>Error %d\n", ret);
 			}
-			HuSprAttrSet(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN);
 			return 1;
 		}
 		scale = (sin((i*scale_time)*M_PI/180.0)*0.1)+0.9;
@@ -470,7 +471,7 @@ BOOL fn_1_2474(void)
 		if(scale_time > 5) {
 			scale_time = 5;
 		}
-		HuSprScaleSet(lbl_1_bss_6, 2, scale, scale);
+		HuSprScaleSet(titleGroup, 2, scale, scale);
 		HuPrcVSleep();
 	}
 	WipeColorSet(255, 255, 255);
@@ -478,12 +479,12 @@ BOOL fn_1_2474(void)
 	while(WipeStatGet()) {
 		HuPrcVSleep();
 	}
-	Hu3DModelAttrSet(lbl_1_bss_8[0], 1);
-	Hu3DModelAttrSet(lbl_1_bss_8[1], 1);
-	Hu3DModelAttrSet(lbl_1_bss_8[2], 1);
-	HuSprAttrSet(lbl_1_bss_6, 0, SPRITE_ATTR_HIDDEN);
-	HuSprAttrSet(lbl_1_bss_6, 1, SPRITE_ATTR_HIDDEN);
-	HuSprAttrSet(lbl_1_bss_6, 2, SPRITE_ATTR_HIDDEN);
-	HuSprAttrSet(lbl_1_bss_6, 3, SPRITE_ATTR_HIDDEN);
+	Hu3DModelAttrSet(titleModel[0], 1);
+	Hu3DModelAttrSet(titleModel[1], 1);
+	Hu3DModelAttrSet(titleModel[2], 1);
+	HuSprAttrSet(titleGroup, 0, SPRITE_ATTR_HIDDEN);
+	HuSprAttrSet(titleGroup, 1, SPRITE_ATTR_HIDDEN);
+	HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN);
+	HuSprAttrSet(titleGroup, 3, SPRITE_ATTR_HIDDEN);
 	return 0;
 }
