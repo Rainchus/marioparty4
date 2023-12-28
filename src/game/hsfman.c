@@ -1165,7 +1165,7 @@ void Hu3DCameraPosSet(s32 cam, f32 x, f32 y, f32 z, f32 ux, f32 uy, f32 uz, f32 
     }
 }
 
-void Hu3DCameraPosSetV(s32 cam, Vec pos, Vec up, Vec target) {
+void Hu3DCameraPosSetV(s32 cam, Vec *pos, Vec *up, Vec *target) {
     s16 mask;
     s16 i;
     CameraData* cam_ptr;
@@ -1173,9 +1173,9 @@ void Hu3DCameraPosSetV(s32 cam, Vec pos, Vec up, Vec target) {
     for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
-            cam_ptr->pos = pos;
-            cam_ptr->up = up;
-            cam_ptr->target = target;
+            cam_ptr->pos = *pos;
+            cam_ptr->up = *up;
+            cam_ptr->target = *target;
         }
     }
 }
