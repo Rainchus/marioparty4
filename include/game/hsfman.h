@@ -206,7 +206,7 @@ void Hu3DCameraPerspectiveSet(s32, f32, f32, f32, f32);
 void Hu3DCameraViewportSet(s32, f32, f32, f32, f32, f32, f32);
 void Hu3DCameraScissorSet(s32, s32, s32, s32, s32);
 void Hu3DCameraPosSet(s32, f32, f32, f32, f32, f32, f32, f32, f32, f32);
-void Hu3DCameraPosSetV(s32, Vec, Vec, Vec);
+void Hu3DCameraPosSetV(s32 cam, Vec *pos, Vec *up, Vec *target);
 void Hu3DCameraKill(s32);
 void Hu3DCameraAllKill(void);
 void Hu3DCameraSet(s32, Mtx);

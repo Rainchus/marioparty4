@@ -1,7 +1,7 @@
 #include "include/REL/w10Dll.h"
 
 void fn_1_0(void) {
-    fn_8005B150(&fn_1_E0, &fn_1_6D8);
+    BoardInit(&fn_1_E0, &fn_1_6D8);
 }
 
 int _prolog(void) {
@@ -10,7 +10,7 @@ int _prolog(void) {
         (**ctors)();
         ctors++;
     }
-    fn_8005B150(&fn_1_E0, &fn_1_6D8);
+	fn_1_0();
     return 0;
 }
 

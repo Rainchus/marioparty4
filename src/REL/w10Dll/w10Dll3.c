@@ -185,33 +185,32 @@ void fn_1_13A4(void) {
     temp_r3_2 = fn_800745F0(0, 0x80000);
     fn_80074210(0, temp_r3_2, &sp14);
     fn_8006F158(lbl_1_bss_0->unk8, &sp14);
-    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     fn_8005E0C0();
     fn_1_BA0(0x2E002C);
     fn_8007A360(temp_r3_2);
-    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     fn_8005E0C0();
     temp_r3_2 = fn_800745F0(0, 0x10000000);
     fn_80074210(0, temp_r3_2, &sp14);
     fn_8006F158(lbl_1_bss_0->unk8, &sp14);
-    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     fn_8005E0C0();
     fn_1_BA0(0x2E002E);
     fn_8007F894();
-    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     fn_8005E0C0();
     temp_r3_2 = fn_800745F0(0, 0x08000000);
     fn_80074210(0, temp_r3_2, &sp14);
     fn_8006F158(lbl_1_bss_0->unk8, &sp14);
-    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     fn_8005E0C0();
     fn_1_BA0(0x2E0030);
     fn_800A6B10();
-    fn_8005DB6C(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
+    BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     fn_8005E0C0();
     fn_1_BA0(0x2E0032);
-    fn_80083F84();
-    fn_8005D8E8();
+    BoardCameraTargetSetModel(fn_80083F84());
     fn_8005E0C0();
     fn_1_BA0(0x2E0033);
     fn_1_BA0(0x2E0034);
@@ -229,7 +228,7 @@ void fn_1_13A4(void) {
     if (lbl_1_bss_C == 0) {
         lbl_1_bss_C = 1;
         fn_80070EE8(0, 0x1F3);
-        fn_8005B5FC();
+        BoardKill();
     }
     fn_800B3FD8(NULL);
     while (1) {
