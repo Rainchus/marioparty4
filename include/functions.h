@@ -43,21 +43,19 @@ void MGSeqKillAll(void);
 void MGSeqPracticeStart(void);
 void fn_8004D6F4(s16 arg);
 
-s32 _CheckFlag(u32 flag);
-
 void BoardWinCreate(s16, s32, s32);
 void BoardWinKill(void);
 void BoardWinWait(void);
 
 s32 rand8(void);
 
-void fn_8005D8E8(void); 
-void fn_8005DB6C(s16, Vec*, s32, f32, f32, s32); 
+void BoardCameraTargetSetModel(s16 model); 
+void BoardCameraStartMotion2(s16, Vec*, s32, f32, f32, s32); 
 void fn_8005E0C0(void);
 void fn_80074210(s32, s32, Vec*);
 void fn_8007A360(s32);
 void fn_8007F894(void);
-void fn_80083F84(void);
+s16 fn_80083F84(void);
 void fn_800884F4(s32);
 void fn_800A4C88(void);
 void fn_800A6B10(void);
@@ -71,7 +69,7 @@ f32 fn_8006F128(s32);
 void fn_8006F61C(s16, s32);
 void fn_800B42BC(s16);
 s32 fn_8006DBD4(s16);
-void fn_8005B150(void*, void*);
+void BoardInit(void*, void*);
 void fn_8006F2E8(s32, Vec*);
 void fn_8005D10C(void*, void*);
 s16 fn_8006D9A4(s32, void*, s32);
@@ -95,7 +93,7 @@ void fn_80083EDC(s16);
 void fn_800A4F6C(s16);
 void fn_800B3FD8(void*);
 void fn_800B4274(s32, s32);
-void fn_8005D5C0(Vec*);
+void BoardCameraRotGet(Vec*);
 void fn_8006F338(s16, f32, f32, f32);
 s32 fn_8005B6A8(void);
 void fn_8006EFBC(s16, Mtx);

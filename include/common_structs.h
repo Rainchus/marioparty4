@@ -14,8 +14,8 @@ typedef struct player_config {
 
 typedef struct system_state {
 /* 0x00 */ struct {
-        u16 story : 1;
-        u16 team : 1;
+        u8 story : 1;
+        u8 team : 1;
         u8 : 7;
     };
 /* 0x02 */ struct {
@@ -46,8 +46,9 @@ typedef struct system_state {
 /* 0x32 */ char unk_32[0x2];
 /* 0x34 */ u16 mg_next;
 /* 0x36 */ s16 mg_next_extra;
-/* 0x38 */ u8 flag[3][16];
-/* 0x68 */ u8 unk_68[0x74];
+/* 0x38 */ s16 unk_38;
+/* 0x3A */ u8 flag[3][16];
+/* 0x6A */ u8 unk_6A[0x72];
 } SystemState; //8018fcf8, sizeof 0xDC
 
 typedef struct player_state {

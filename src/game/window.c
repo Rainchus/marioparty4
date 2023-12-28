@@ -185,7 +185,7 @@ static s32 winVoiceTbl[] = {
     0x49
 };
 
-s16 winPrio = 1000;
+static s16 winPrio = 1000;
 
 void HuWindowInit(void) {
     s16 i;

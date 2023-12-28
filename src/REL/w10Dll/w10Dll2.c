@@ -53,7 +53,7 @@ void fn_1_C20(void) {
         }
         Hu3D2Dto3D(&lbl_1_data_80[lbl_1_bss_1C], 1, &sp14);
         fn_8006F158(lbl_1_bss_1E, &sp14);
-        fn_8005D5C0(&sp8);
+        BoardCameraRotGet(&sp8);
         PSMTXRotRad(sp20, 'y', 0.2617994f);
         fn_8006EFBC(lbl_1_bss_1E, sp20);
         fn_8006F270(lbl_1_bss_1E, sp8.x, 0.0f, 0.0f);
