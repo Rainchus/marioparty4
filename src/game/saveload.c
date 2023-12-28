@@ -3,27 +3,17 @@
 #include "game/pad.h"
 #include "game/window.h"
 #include "game/flag.h"
+#include "game/card.h"
 
 #include "string.h"
 
 static s16 SLCreateSaveWin(void);
 static void SLKillSaveWin(void);
 
-s32 HuCardOpen(s16, char*, void*);
-s32 HuCardSectorSizeGet(s16);
-s32 HuCardCreate(s16, char*, u32, void*);
-s32 HuCardFreeSpaceGet(s16, void*, void*);
-s32 HuCardMount(s16);
-void HuCardUnMount(s16);
-s32 HuCardFormat(s16);
-s32 HuCardWrite(void*, void*, u32, s32);
-s32 HuCardRead(void*, void*, s32, s32);
-s32 HuCardClose(void*);
-
 
 extern u8 UnMountCnt;
 
-s32 curFileInfo[8];
+CARDFileInfo curFileInfo;
 u8 ATTRIBUTE_ALIGN(32) saveBuf[0x4000];
 
 u64 SLSerialNo;
@@ -62,27 +52,27 @@ s32 SLFileOpen(char *arg0) {
         if (temp_r3 < 0) {
             return temp_r3;
         }
-        temp_r3 = HuCardOpen(curSlotNo, arg0, curFileInfo);
-        if (temp_r3 == -4) {
-            return -4;
+        temp_r3 = HuCardOpen(curSlotNo, arg0, &curFileInfo);
+        if (temp_r3 == CARD_RESULT_NOFILE) {
+            return CARD_RESULT_NOFILE;
         }
-        if (temp_r3 == -2) {
+        if (temp_r3 == CARD_RESULT_WRONGDEVICE) {
             SLMessOut(7);
-            return -0x80;
+            return CARD_RESULT_FATAL_ERROR;
         }
-        if (temp_r3 == -128) {
+        if (temp_r3 == CARD_RESULT_FATAL_ERROR) {
             SLMessOut(1);
-            return -0x80;
+            return CARD_RESULT_FATAL_ERROR;
         }
-        if (temp_r3 == -3) {
+        if (temp_r3 == CARD_RESULT_NOCARD) {
             SLMessOut(0);
-            return -3;
+            return CARD_RESULT_NOCARD;
         }
-        if (temp_r3 == -6) {
+        if (temp_r3 == CARD_RESULT_BROKEN) {
             temp_r3 = HuCardSectorSizeGet(curSlotNo);
             if (temp_r3 > 0 && temp_r3 != 0x2000) {
                 SLMessOut(8);
-                return -2;
+                return CARD_RESULT_WRONGDEVICE;
             }
             UnMountCnt = 0;
             temp_r3 = SLMessOut(5);
@@ -92,10 +82,10 @@ s32 SLFileOpen(char *arg0) {
                     return temp_r3;
                 }
             } else {
-                return -4;
+                return CARD_RESULT_NOFILE;
             }
         } else {
-            return 0;
+            return CARD_RESULT_READY;
         }
     }
 }
@@ -117,20 +107,20 @@ s32 SLFileCreate(char *arg0, u32 arg1, void *arg2) {
     temp_r31 = HuCardSectorSizeGet(curSlotNo);
     if (temp_r31 < 0 && temp_r31 != 0x2000) {
         SLMessOut(8);
-        return -0x80;
+        return CARD_RESULT_FATAL_ERROR;
     }
     temp_r31 = HuCardFreeSpaceGet(curSlotNo, &sp14, &sp10);
     if (sp10 == 0 && arg1 > sp14) {
         SLMessOut(4);
-        return -9;
+        return CARD_RESULT_INSSPACE;
     }
     if (sp10 == 0) {
         SLMessOut(2);
-        return -9;
+        return CARD_RESULT_INSSPACE;
     }
     if (arg1 > sp14) {
         SLMessOut(3);
-        return -9;
+        return CARD_RESULT_INSSPACE;
     }
     HuWinInit(1);
     HuWinMesMaxSizeGet(1, sp18, 0x10000B);
@@ -139,34 +129,34 @@ s32 SLFileCreate(char *arg0, u32 arg1, void *arg2) {
     HuWinMesSet(temp_r30, 0x10000B);
     HuWinMesWait(temp_r30);
     _SetFlag(FLAG_ID_MAKE(3, 0));
-    temp_r31 = HuCardCreate(curSlotNo, arg0, arg1, curFileInfo);
+    temp_r31 = HuCardCreate(curSlotNo, arg0, arg1, &curFileInfo);
     _ClearFlag(0x30000);
     if (temp_r31 < 0) {
         HuWinExAnimOut(temp_r30);
         HuWinExCleanup(temp_r30);
     }
-    if (temp_r31 == -3) {
+    if (temp_r31 == CARD_RESULT_NOCARD) {
         SLMessOut(0);
-        return -3;
+        return CARD_RESULT_NOCARD;
     }
     if (temp_r31 < 0) {
         SLMessOut(1);
-        return -0x80;
+        return CARD_RESULT_FATAL_ERROR;
     }
     _SetFlag(FLAG_ID_MAKE(3, 0));
-    temp_r31 = HuCardWrite(curFileInfo, arg2, arg1, 0);
+    temp_r31 = HuCardWrite(&curFileInfo, arg2, arg1, 0);
 	_ClearFlag(FLAG_ID_MAKE(3, 0));
     if (temp_r31 < 0) {
         HuWinExAnimOut(temp_r30);
         HuWinExCleanup(temp_r30);
     }
-    if (temp_r31 == -3) {
+    if (temp_r31 == CARD_RESULT_NOCARD) {
         SLMessOut(0);
-        return -3;
+        return CARD_RESULT_NOCARD;
     }
     if (temp_r31 < 0) {
         SLMessOut(1);
-        return -0x80;
+        return CARD_RESULT_FATAL_ERROR;
     }
     _SetFlag(FLAG_ID_MAKE(3, 0));
     temp_r31 = SLStatSet(1);
@@ -195,7 +185,7 @@ s32 SLFileWrite(s32 arg0, void *arg1) {
     HuWinMesWait(temp_r31);
     HuPrcSleep(0x3C);
     _SetFlag(FLAG_ID_MAKE(3, 0));
-    var_r30 = HuCardWrite(curFileInfo, arg1, arg0, 0);
+    var_r30 = HuCardWrite(&curFileInfo, arg1, arg0, 0);
     if (var_r30 == 0) {
         var_r30 = SLStatSet(1);
     }
@@ -211,8 +201,8 @@ s32 SLFileRead(s32 arg0, void *arg1) {
     if (SaveEnableF == 0) {
         return 0;
     }
-    temp_r3 = HuCardRead(curFileInfo, arg1, arg0, 0);
-    if (temp_r3 == -3) {
+    temp_r3 = HuCardRead(&curFileInfo, arg1, arg0, 0);
+    if (temp_r3 == CARD_RESULT_NOCARD) {
         SLMessOut(0);
     } else if (temp_r3 < 0) {
         SLMessOut(1);
@@ -226,7 +216,7 @@ s32 SLFileClose(void) {
     if (SaveEnableF == 0) {
         return 0;
     }
-    temp_r31 = HuCardClose(curFileInfo);
+    temp_r31 = HuCardClose(&curFileInfo);
     return temp_r31;
 }
 
@@ -337,7 +327,7 @@ s32 SLSave(void) {
     while (1) {
         SLCheckSumSet();
         var_r31 = SLFileOpen(SaveFileNameTbl[curBoxNo]);
-        if (var_r31 == -4) {
+        if (var_r31 == CARD_RESULT_NOFILE) {
             if (!SLSerialNoCheck()) {
                 SLMessOut(9);
             } else {
@@ -350,7 +340,7 @@ s32 SLSave(void) {
                 }
             }
         } else {
-            if (var_r31 == -3) {
+            if (var_r31 == CARD_RESULT_NOCARD) {
                 var_r31 = SLMessOut(0xA);
                 if (var_r31 != 0) {
                     SLMessOut(0xB);
@@ -366,11 +356,11 @@ s32 SLSave(void) {
                     SLCreateSaveWin();
                     var_r31 = SLFileWrite(0x4000, saveBuf);
                     SLKillSaveWin();
-                    if (var_r31 == -3) {
+                    if (var_r31 == CARD_RESULT_NOCARD) {
                         SLMessOut(0);
-                    } else if (var_r31 == -2) {
+                    } else if (var_r31 == CARD_RESULT_WRONGDEVICE) {
                         SLMessOut(7);
-                    } else if (var_r31 == -6) {
+                    } else if (var_r31 == CARD_RESULT_BROKEN) {
                         var_r31 = HuCardSectorSizeGet(curSlotNo);
                         if (var_r31 > 0 && var_r31 != 0x2000) {
                             SLMessOut(8);
@@ -385,7 +375,7 @@ s32 SLSave(void) {
                             }
                             continue;
                         } else {
-                            var_r31 = -6;
+                            var_r31 = CARD_RESULT_BROKEN;
                         }
                     } else if (var_r31 < 0) {
                         SLMessOut(1);
@@ -541,7 +531,7 @@ s32 SLStatSet(s32 arg0) {
     s32 temp_r29;
     s32 temp_r3;
 
-    temp_r29 = curFileInfo[1];
+    temp_r29 = curFileInfo.fileNo;
     temp_r3 = CARDGetStatus(curSlotNo, temp_r29, &sp8);
     if (temp_r3 == -3) {
         if (arg0 != 0) {
@@ -553,33 +543,34 @@ s32 SLStatSet(s32 arg0) {
         if (arg0 != 0) {
             SLMessOut(1);
         }
-        return -0x80;
+        return CARD_RESULT_FATAL_ERROR;
     }
     sp8.commentAddr = 0;
     sp8.iconAddr = 0x40;
-    sp8.bannerFormat = (sp8.bannerFormat & ~3) | 1;
-    sp8.iconFormat = (sp8.iconFormat & ~3) | 1;
-    sp8.iconFormat = (sp8.iconFormat & ~0xC) | 4;
-    sp8.iconFormat = (sp8.iconFormat & ~0x30) | 0x10;
-    sp8.iconFormat = (sp8.iconFormat & ~0xC0) | 0x40;
-    sp8.iconSpeed = (sp8.iconSpeed & ~3) | 2;
-    sp8.iconSpeed = (sp8.iconSpeed & ~0xC) | 8;
-    sp8.iconSpeed = (sp8.iconSpeed & ~0x30) | 0x20;
-    sp8.iconSpeed = (sp8.iconSpeed & ~0xC0) | 0x80;
-    sp8.iconSpeed = (sp8.iconSpeed & ~0x300);
-    sp8.bannerFormat = (sp8.bannerFormat & ~4);
+	CARDSetBannerFormat(&sp8, CARD_STAT_BANNER_C8);
+	CARDSetIconFormat(&sp8, 0, CARD_STAT_ICON_C8);
+	CARDSetIconFormat(&sp8, 1, CARD_STAT_ICON_C8);
+	CARDSetIconFormat(&sp8, 2, CARD_STAT_ICON_C8);
+	CARDSetIconFormat(&sp8, 3, CARD_STAT_ICON_C8);
+    CARDSetIconSpeed(&sp8, 0, CARD_STAT_SPEED_MIDDLE);
+	CARDSetIconSpeed(&sp8, 1, CARD_STAT_SPEED_MIDDLE);
+	CARDSetIconSpeed(&sp8, 2, CARD_STAT_SPEED_MIDDLE);
+	CARDSetIconSpeed(&sp8, 3, CARD_STAT_SPEED_MIDDLE);
+	CARDSetIconSpeed(&sp8, 4, CARD_STAT_SPEED_END);
+    CARDSetIconAnim(&sp8, CARD_STAT_ANIM_LOOP);
+
     temp_r3 = CARDSetStatus(curSlotNo, temp_r29, &sp8);
-    if (temp_r3 == -3) {
+    if (temp_r3 == CARD_RESULT_NOCARD) {
         if (arg0 != 0) {
             SLMessOut(0);
         }
-        return -3;
+        return CARD_RESULT_NOCARD;
     }
     if (temp_r3 < 0) {
         if (arg0 != 0) {
             SLMessOut(1);
         }
-        return -0x80;
+        return CARD_RESULT_FATAL_ERROR;
     }
     return temp_r3;
 }
@@ -589,23 +580,23 @@ s32 SLCardMount(s16 arg0) {
 
     while (1) {
         temp_r3 = HuCardMount(curSlotNo);
-        if (temp_r3 == -2) {
+        if (temp_r3 == CARD_RESULT_WRONGDEVICE) {
             SLMessOut(7);
             return temp_r3;
         }
-        if (temp_r3 == -128) {
+        if (temp_r3 == CARD_RESULT_FATAL_ERROR) {
             SLMessOut(1);
-            return -0x80;
+            return CARD_RESULT_FATAL_ERROR;
         }
-        if (temp_r3 == -3) {
+        if (temp_r3 == CARD_RESULT_NOCARD) {
             SLMessOut(0);
-            return -3;
+            return CARD_RESULT_NOCARD;
         }
-        if (temp_r3 == -6) {
+        if (temp_r3 == CARD_RESULT_BROKEN) {
             temp_r3 = HuCardSectorSizeGet(curSlotNo);
             if (temp_r3 > 0 && temp_r3 != 0x2000) {
                 SLMessOut(8);
-                return -2;
+                return CARD_RESULT_WRONGDEVICE;
             }
             UnMountCnt = 0;
             temp_r3 = SLMessOut(5);
@@ -615,7 +606,7 @@ s32 SLCardMount(s16 arg0) {
                     return temp_r3;
                 }
             } else {
-                return -0x80;
+                return CARD_RESULT_FATAL_ERROR;
             }
         } else {
             break;
@@ -628,7 +619,7 @@ s32 SLCardMount(s16 arg0) {
     }
     if (temp_r3 != 0x2000) {
         SLMessOut(8);
-        return -2;
+        return CARD_RESULT_WRONGDEVICE;
     }
     return 0;
 }
@@ -642,15 +633,15 @@ s32 SLFormat(s16 arg0) {
 
     HuWinInit(1);
     HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
-    HuWinMesMaxSizeGet(1, sp8, 0x100038);
+    HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(16, 56));
     temp_r3 = HuWinExCreateStyled(-10000.0f, 150.0f, sp8[0], sp8[1], -1, 2);
     HuWinExAnimIn(temp_r3);
     HuWinInsertMesSet(temp_r3, MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
-    HuWinMesSet(temp_r3, 0x100038);
-    HuWinMesMaxSizeGet(1, sp8, 0x10000B);
+    HuWinMesSet(temp_r3, MAKE_MESSID(16, 56));
+    HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(16, 11));
     temp_r3_2 = HuWinExCreateStyled(-10000.0f, 200.0f, sp8[0], sp8[1], -1, 2);
     HuWinExAnimIn(temp_r3_2);
-    HuWinMesSet(temp_r3_2, 0x10000B);
+    HuWinMesSet(temp_r3_2, MAKE_MESSID(16, 11));
     HuWinMesWait(temp_r3_2);
     HuPrcSleep(0x1E);
     if (UnMountCnt & (1 << curSlotNo)) {
@@ -670,16 +661,16 @@ s32 SLFormat(s16 arg0) {
         HuWinExAnimOut(temp_r3_2);
         HuWinExCleanup(temp_r3_2);
     }
-    if (temp_r24 == -128) {
+    if (temp_r24 == CARD_RESULT_FATAL_ERROR) {
         SLMessOut(6);
         SLMessOut(1);
-        return -0x80;
+        return CARD_RESULT_FATAL_ERROR;
     }
-    if (temp_r24 == -3) {
+    if (temp_r24 == CARD_RESULT_NOCARD) {
         SLMessOut(0);
-        return -3;
+        return CARD_RESULT_NOCARD;
     }
-    if (temp_r24 == -2) {
+    if (temp_r24 == CARD_RESULT_WRONGDEVICE) {
         SLMessOut(7);
         return temp_r24;
     }
@@ -708,74 +699,70 @@ s16 SLMessOut(s16 arg0) {
     var_r29 = 0;
     var_r27 = 0;
     HuWinInit(1);
-    if (saveMessWin != -1) {
-        HuWinExAnimOut(saveMessWin);
-        HuWinExCleanup(saveMessWin);
-        saveMessWin = -1;
-    }
+	SLKillSaveWin();
     switch (arg0) {
         case 0:
-            var_r31 = 0x100002;
+            var_r31 = MAKE_MESSID(16, 2);
             break;
         case 1:
-            var_r31 = 0x100053;
+            var_r31 = MAKE_MESSID(16, 83);
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
         case 2:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            var_r31 = 0x10004A;
+            var_r31 = MAKE_MESSID(16, 74);
             break;
         case 3:
-            var_r31 = 0x10004A;
+            var_r31 = MAKE_MESSID(16, 74);
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
         case 4:
-            var_r31 = 0x10004A;
+            var_r31 = MAKE_MESSID(16, 74);
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
         case 5:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            var_r31 = 0x100004;
+            var_r31 = MAKE_MESSID(16, 4);
             var_r27 = 1;
             break;
         case 6:
-            var_r31 = 0x100036;
+            var_r31 = MAKE_MESSID(16, 54);
             break;
         case 7:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            var_r31 = 0x100037;
+            var_r31 = MAKE_MESSID(16, 55);
             break;
         case 8:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            var_r31 = 0x100039;
+            var_r31 = MAKE_MESSID(16, 57);
             break;
         case 9:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            var_r31 = 0x100045;
+            var_r31 = MAKE_MESSID(16, 69);
             break;
         case 10:
-            var_r31 = 0x100046;
+            var_r31 = MAKE_MESSID(16, 70);
             var_r27 = 1;
             break;
         case 11:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             var_r29 = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            var_r31 = 0x100048;
+            var_r31 = MAKE_MESSID(16, 72);
             break;
         case 12:
-            var_r31 = 0x100050;
+            var_r31 = MAKE_MESSID(16, 80);
             break;
     }
-    if (var_r31 == 0x100004) {
-        HuWinMesMaxSizeGet(1, sp8, 0x10004E);
+    if (var_r31 == MAKE_MESSID(16, 4)) {
+        HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(16, 78));
     } else {
         HuWinMesMaxSizeGet(1, sp8, var_r31);
     }
@@ -792,7 +779,7 @@ s16 SLMessOut(s16 arg0) {
     if (var_r27 != 0) {
         var_r28 = HuWinChoiceGet(temp_r3, 1);
         if (arg0 == 5 && var_r28 == 0) {
-            HuWinMesSet(temp_r3, 0x10004E);
+            HuWinMesSet(temp_r3, MAKE_MESSID(16, 78));
             HuWinMesWait(temp_r3);
             var_r28 = HuWinChoiceGet(temp_r3, 1);
         }
