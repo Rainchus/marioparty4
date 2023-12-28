@@ -13,10 +13,10 @@ Vec lbl_1_data_80[2] = {
 
 void fn_1_AEC(void) {
     lbl_1_bss_1C = 0;
-    lbl_1_bss_1E = fn_8006D9A4(MAKE_DATA_NUM(DATADIR_W10, 15), &lbl_1_data_78, 0);
-    fn_8006E2B8(lbl_1_bss_1E, 1, 0x40000001);
+    lbl_1_bss_1E = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 15), &lbl_1_data_78, 0);
+    BoardModelMotionStart(lbl_1_bss_1E, 1, 0x40000001);
     fn_800B42BC(lbl_1_bss_1E);
-    fn_8006F61C(lbl_1_bss_1E, 6);
+    BoardModelLayerSet(lbl_1_bss_1E, 6);
     lbl_1_bss_18 = HuPrcCreate(fn_1_C20, 0x1FFF, 0x1800, 0);
 }
 
@@ -46,18 +46,18 @@ void fn_1_C20(void) {
     Vec sp8;
     
     while (1) {
-        if (fn_8005B6A8() != 0) {
-            fn_8006DB90(lbl_1_bss_1E);
+        if (BoardIsKill() != 0) {
+            BoardModelKill(lbl_1_bss_1E);
             fn_800B42BC(-1);
             HuPrcEnd();
         }
         Hu3D2Dto3D(&lbl_1_data_80[lbl_1_bss_1C], 1, &sp14);
-        fn_8006F158(lbl_1_bss_1E, &sp14);
+        BoardModelPosSetV(lbl_1_bss_1E, &sp14);
         BoardCameraRotGet(&sp8);
         PSMTXRotRad(sp20, 'y', 0.2617994f);
-        fn_8006EFBC(lbl_1_bss_1E, sp20);
-        fn_8006F270(lbl_1_bss_1E, sp8.x, 0.0f, 0.0f);
-        fn_8006F338(lbl_1_bss_1E, 0.2f, 0.2f, 0.2f);
+        BoardModelMtxSet(lbl_1_bss_1E, sp20);
+        BoardModelRotSet(lbl_1_bss_1E, sp8.x, 0.0f, 0.0f);
+        BoardModelScaleSet(lbl_1_bss_1E, 0.2f, 0.2f, 0.2f);
         HuPrcVSleep();        
     }
 }
