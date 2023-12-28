@@ -113,52 +113,50 @@ typedef struct light_data {
     GXColor color;
 } LightData;
 
-void ClusterMotionExec(ModelData*);             /* extern */
-void ClusterProc(ModelData*);                   /* extern */
-void EnvelopeProc(HsfData*);                           /* extern */
-void GXWaitDrawDone();                                 /* extern */
-void Hu3DAnimExec();                                   /* extern */
-void Hu3DCameraMotionExec(s16);                        /* extern */
-void Hu3DDraw(ModelData*, f32*, f32*);          /* extern */
-void Hu3DDrawPost();                                   /* extern */
-void Hu3DDrawPreInit();                                /* extern */
-void Hu3DMotionNext(s16);                              /* extern */
-void Hu3DShadowExec();                                 /* extern */
-void Hu3DSubMotionExec(s16);                           /* extern */
-void HuPerfBegin(s32);                                   /* extern */
-void HuPerfEnd(s32);                                     /* extern */
-void HuSprBegin(void);                                     /* extern */
-void HuSprDispInit(void);                                  /* extern */
-void HuSprExec(s16);                                     /* extern */
-void HuSprFinish(void);                                    /* extern */
-void InitVtxParm(HsfData*);                            /* extern */
-void ShapeProc(HsfData*);                              /* extern */
-void mtxRot(Mtx, f32, f32, f32);                /* extern */
-void mtxScaleCat(Mtx, f32, f32, f32);           /* extern */
-void mtxTransCat(Mtx, f32, f32, f32);
-void Hu3DAnimInit(void);
-void Hu3DFogClear(void);
-void Hu3DMotionInit(void);
-void Hu3DParManInit(void);
-void Hu3DFogSet(f32, f32, u8, u8, u8);                 /* extern */
-void Hu3DMotionClusterSet(s16, s16);                   /* extern */
-void Hu3DMotionExec(s16, s16, f32, s32);
-f32 Hu3DMotionMaxTimeGet(s16);                      /* extern */
-s16 Hu3DMotionModelCreate(s16);                     /* extern */
-void Hu3DMotionShapeSet(s16, s16);                     /* extern */
-void MakeDisplayList(s16, HsfData*);                   /* extern */
-void ClusterAdjustObject(HsfData*, HsfData*);          /* extern */
-HsfObject* Hu3DObjDuplicate(HsfData*, u32);         /* extern */
-void Hu3DAnimModelKill(s16);                           /* extern */
-void Hu3DGLightKill(s16);                              /* extern */
-void Hu3DLLightKill(s16, s16);                         /* extern */
-s32 Hu3DMotionKill(s16);
-void Hu3DModelKill(s16);
-void Hu3DParManAllKill(void);
-f32 Hu3DMotionMotionMaxTimeGet(s16);
-void Hu3DMotionStartEndSet(s16, f32, f32);
-void Hu3DMotionTimeSet(s16, f32);
-void GXInitSpecularDir(GXLightObj*, f32, f32, f32);
+extern void ClusterMotionExec(ModelData*);             /* extern */
+extern void ClusterProc(ModelData*);                   /* extern */
+extern void EnvelopeProc(HsfData*);                           /* extern */
+extern void GXWaitDrawDone();                                 /* extern */
+extern void Hu3DAnimExec();                                   /* extern */
+extern void Hu3DCameraMotionExec(s16);                        /* extern */
+extern void Hu3DDraw(ModelData*, f32*, f32*);          /* extern */
+extern void Hu3DDrawPost();                                   /* extern */
+extern void Hu3DDrawPreInit();                                /* extern */
+extern void Hu3DMotionNext(s16);                              /* extern */
+extern void Hu3DShadowExec();                                 /* extern */
+extern void Hu3DSubMotionExec(s16);                           /* extern */
+extern void HuPerfBegin(s32);                                   /* extern */
+extern void HuPerfEnd(s32);                                     /* extern */
+extern void HuSprBegin(void);                                     /* extern */
+extern void HuSprDispInit(void);                                  /* extern */
+extern void HuSprExec(s16);                                     /* extern */
+extern void HuSprFinish(void);                                    /* extern */
+extern void InitVtxParm(HsfData*);                            /* extern */
+extern void ShapeProc(HsfData*);                              /* extern */
+extern void mtxRot(Mtx, f32, f32, f32);                /* extern */
+extern void mtxScaleCat(Mtx, f32, f32, f32);           /* extern */
+extern void mtxTransCat(Mtx, f32, f32, f32);
+extern void Hu3DAnimInit(void);
+extern void Hu3DMotionInit(void);
+extern void Hu3DParManInit(void);
+extern void Hu3DMotionClusterSet(s16, s16);                   /* extern */
+extern void Hu3DMotionExec(s16, s16, f32, s32);
+extern f32 Hu3DMotionMaxTimeGet(s16);                      /* extern */
+extern s16 Hu3DMotionModelCreate(s16);                     /* extern */
+extern void Hu3DMotionShapeSet(s16, s16);                     /* extern */
+extern void MakeDisplayList(s16, HsfData*);                   /* extern */
+extern void ClusterAdjustObject(HsfData*, HsfData*);          /* extern */
+extern HsfObject* Hu3DObjDuplicate(HsfData*, u32);         /* extern */
+extern void Hu3DAnimModelKill(s16);                           /* extern */
+extern void Hu3DGLightKill(s16);                              /* extern */
+extern void Hu3DLLightKill(s16, s16);                         /* extern */
+extern s32 Hu3DMotionKill(s16);
+extern void Hu3DModelKill(s16);
+extern void Hu3DParManAllKill(void);
+extern f32 Hu3DMotionMotionMaxTimeGet(s16);
+extern void Hu3DMotionStartEndSet(s16, f32, f32);
+extern void Hu3DMotionTimeSet(s16, f32);
+extern void GXInitSpecularDir(GXLightObj*, f32, f32, f32);
 
 void Hu3DInit(void);
 void Hu3DPreProc(void);
@@ -250,8 +248,12 @@ void Hu3DReflectMapSet(AnimData* arg0);
 void Hu3DReflectNoSet(s16 arg0);
 void Hu3DFogSet(f32, f32, u8, u8, u8);
 void Hu3DFogClear(void);
-//...
+void Hu3DShadowCreate(f32, f32, f32);
+void Hu3DShadowPosSet(Vec*, Vec*, Vec*);
+void Hu3DShadowTPLvlSet(f32);
 void Hu3DShadowSizeSet(u16);
+void Hu3DShadowExec(void);
+s16 Hu3DProjectionCreate(void*, f32, f32, f32);
 void Hu3DProjectionKill(s16);
 void Hu3DProjectionPosSet(s16, Vec, Vec, Vec);
 void Hu3DProjectionTPLvlSet(s16, f32);
