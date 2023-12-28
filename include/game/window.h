@@ -75,6 +75,8 @@ typedef struct {
     /* 0x160 */ u8 ATTRIBUTE_ALIGN(32) mess_pal[10][3];
 } WindowData; // Size 0x180
 
+extern WindowData winData[32];
+
 void HuWindowInit(void);
 void HuWinInit(s32 mess_data_no);
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame);
