@@ -17,7 +17,7 @@
 #define HU_PAD_BTNDOWN_ALL (HuPadBtnDown[0] | HuPadBtnDown[1] | HuPadBtnDown[2] | HuPadBtnDown[3])
 #define HU_PAD_DSTK_ALL (HuPadDStkRep[0] | HuPadDStkRep[1] | HuPadDStkRep[2] | HuPadDStkRep[3])
 
-extern int lbl_801D3A00;
+extern int SystemInitF;
 
 static Process *objman;
 Vec lbl_1_bss_3C[2];
@@ -90,7 +90,7 @@ static void BootProc(void)
 		HuSprAttrSet(group, 1, SPRITE_ATTR_HIDDEN);
 		HuWinInit(1);
 		TitleInit();
-		lbl_801D3A00 = 1;
+		SystemInitF = 1;
 	} else {
 		s16 group_thp;
 		BOOL skip_wait;
@@ -106,7 +106,7 @@ static void BootProc(void)
 			HuPrcVSleep();
 		}
 		WipeColorSet(255, 255, 255);
-		if(!lbl_801D3A00) {
+		if(!SystemInitF) {
 			tick_prev = OSGetTick();
 			fn_800498F0();
 			HuWindowInit();
@@ -140,7 +140,7 @@ static void BootProc(void)
 		while(WipeStatGet()) {
 			HuPrcVSleep();
 		}
-		if(!lbl_801D3A00) {
+		if(!SystemInitF) {
 			void *group_samp;
 			tick_prev = OSGetTick();
 			group_samp = HuMemDirectMalloc(HEAP_DATA, msmSysGetSampSize(0));
@@ -162,9 +162,9 @@ static void BootProc(void)
 			HuPrcVSleep();
 		}
 		tick_prev = OSGetTick();
-		if(!lbl_801D3A00) {
+		if(!SystemInitF) {
 			HuAudSndGrpSetSet(0);
-			lbl_801D3A00 = 1;
+			SystemInitF = 1;
 		}
 		while(OSTicksToMilliseconds(OSGetTick()-tick_prev) < 1000) {
 			HuPrcVSleep();

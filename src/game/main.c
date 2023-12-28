@@ -13,11 +13,8 @@
 #include "game/perf.h"
 #include "game/gamework.h"
 
-extern s32 ViGetRetraceCount(void);
-
-extern GXRenderModeObj* RenderMode;
 extern FileListEntry _ovltbl[];
-s32 lbl_801D3A54;
+s32 GlobalCounter;
 u32 lbl_801D3A50;
 u32 lbl_801D3A4C;
 u32 lbl_801D3A48;
@@ -38,7 +35,7 @@ u32 lbl_801D3A10;
 u32 lbl_801D3A0C;
 u32 lbl_801D3A08;
 s32 HuDvdErrWait;
-s32 lbl_801D3A00;
+s32 SystemInitF;
 
 void main(void) {
     u32 sp14;
@@ -49,13 +46,13 @@ void main(void) {
     s32 temp_r30;
 
     HuDvdErrWait = 0;
-    lbl_801D3A00 = 0;
+    SystemInitF = 0;
     HuSysInit(&GXNtsc480IntDf);
     HuPrcInit();
     HuPadInit();
     GWInit();
     pfInit();
-    lbl_801D3A54 = 0;
+    GlobalCounter = 0;
     HuSprInit();
     Hu3DInit();
     HuDataInit();
@@ -109,7 +106,7 @@ void main(void) {
         GXReadPixMetric(&lbl_801D3A44, &lbl_801D3A40, &lbl_801D3A3C, &lbl_801D3A38, &lbl_801D3A34, &lbl_801D3A30);
         GXReadMemMetric(&lbl_801D3A2C, &lbl_801D3A28, &lbl_801D3A24, &lbl_801D3A20, &lbl_801D3A1C, &lbl_801D3A18, &lbl_801D3A14, &lbl_801D3A10, &lbl_801D3A0C, &lbl_801D3A08);
         HuPerfEnd(2);
-        lbl_801D3A54++;
+        GlobalCounter++;
     }
 }
 
