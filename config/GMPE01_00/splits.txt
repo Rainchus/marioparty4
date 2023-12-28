@@ -738,6 +738,48 @@ dolphin/demo/DEMOStats.c:
 	.sbss       start:0x801D4488 end:0x801D44E8
 	.sdata2     start:0x801D63D8 end:0x801D63E8
 
+dolphin/pad/Padclamp.c:
+	.text       start:0x800C3CDC end:0x800C3F14
+	.sdata      start:0x801D3910 end:0x801D3918
+
+dolphin/pad/Pad.c:
+	.text       start:0x800C3F14 end:0x800C59DC
+	.bss        start:0x801A61B0 end:0x801A6200
+	.sdata      start:0x801D3918 end:0x801D3938
+	.sbss       start:0x801D44E8 end:0x801D4510
+
+dolphin/ai.c:
+	.text       start:0x800C59DC end:0x800C62B8
+	.sbss       start:0x801D4510 end:0x801D4550
+
+dolphin/ar/ar.c:
+	.text       start:0x800C62B8 end:0x800C6F68
+	.sbss       start:0x801D4550 end:0x801D4570
+
+dolphin/ar/arq.c:
+	.text       start:0x800C6F68 end:0x800C72FC
+	.sbss       start:0x801D4570 end:0x801D4598
+
+dolphin/dsp/dsp.c:
+	.text       start:0x800C72FC end:0x800C7508
+	.data       start:0x8013D748 end:0x8013D780
+	.sbss       start:0x801D4598 end:0x801D45A0
+
+dolphin/dsp/dsp_debug.c:
+	.text       start:0x800C7508 end:0x800C7558
+
+dolphin/dsp/dsp_task.c:
+	.text       start:0x800C7558 end:0x800C7DDC
+	.data       start:0x8013D780 end:0x8013D8C0
+	.sbss       start:0x801D45A0 end:0x801D45B8
+
+dolphin/gx/GXInit.c:
+	.text       start:0x800C7DDC end:0x800C8ECC
+	.bss        start:0x801A6200 end:0x801A6778
+	.sdata      start:0x801D3938 end:0x801D3940
+	.sbss       start:0x801D45B8 end:0x801D45C8
+	.sdata2     start:0x801D63E8 end:0x801D6408
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC

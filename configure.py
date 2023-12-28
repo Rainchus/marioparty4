@@ -388,6 +388,40 @@ config.libs = [
             Object(NonMatching, "dolphin/demo/DEMOStats.c"),
         ],
     ),
+    DolphinLib(
+        "pad",
+        [
+            Object(NonMatching, "dolphin/pad/Padclamp.c"),
+            Object(NonMatching, "dolphin/pad/Pad.c"),
+        ],
+    ),
+    DolphinLib(
+        "ai",
+        [
+            Object(NonMatching, "dolphin/ai.c"),
+        ],
+    ),
+    DolphinLib(
+        "ar",
+        [
+            Object(NonMatching, "dolphin/ar/ar.c"),
+            Object(NonMatching, "dolphin/ar/arq.c"),
+        ],
+    ),
+    DolphinLib(
+        "dsp",
+        [
+            Object(NonMatching, "dolphin/dsp/dsp.c"),
+            Object(NonMatching, "dolphin/dsp/dsp_debug.c"),
+            Object(NonMatching, "dolphin/dsp/dsp_task.c"),
+        ],
+    ),
+    DolphinLib(
+        "gx",
+        [
+            Object(NonMatching, "dolphin/gx/GXInit.c"),
+        ],
+    ),
     {
         "lib": "Runtime.PPCEABI.H",
         "mw_version": config.linker_version,
