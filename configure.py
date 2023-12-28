@@ -268,7 +268,7 @@ config.libs = [
             Object(Matching, "game/wipe.c"),
             Object(Matching, "game/window.c"),
             Object(Matching, "game/messdata.c"),
-            Object(NonMatching, "game/card.c"),
+            Object(Matching, "game/card.c"),
             Object(Matching, "game/armem.c"),
             Object(NonMatching, "game/code_800498F0.c"),
             Object(NonMatching, "game/mapspace.c"),
