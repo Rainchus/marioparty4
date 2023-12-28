@@ -1,6 +1,7 @@
 #include "common.h"
 #include "string.h"
 #include "game/gamework.h"
+#include "game/flag.h"
 
 GameStat GWGameStatDefault;
 GameStat GWGameStat;
@@ -144,7 +145,7 @@ s16 GWGetMessSpeed(void)
 
 void GWSetMGRecord(int index, s32 value)
 {
-    if(!_CheckFlag(0x1000C)) {
+    if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         GWGameStat.mg_record[index] = value;
     }
 }
@@ -297,7 +298,7 @@ s16 GWGetCoins(int player)
 
 void GWSetCoins(int player, s16 value)
 {
-    if(!_CheckFlag(0x1000C)) {
+    if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         if(value < 0) {
             value = 0;
         }
