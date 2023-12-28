@@ -8,54 +8,37 @@ typedef struct {
     /* 0x04 */ char unk04[4];
     /* 0x08 */ s64 unk08;
     /* 0x10 */ s64 unk10;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ char unk1C[0x34];
+    /* 0x18 */ OSStopwatch unk18;
     /* 0x50 */ s16 unk50;
     /* 0x52 */ char unk52[6];
 } UnknownPerfStruct; // Size 0x58
 
 static void DSCallbackFunc(u16 arg0);
 
-void OSInitStopwatch(void*, char*);
-void OSStartStopwatch(void*);
-u64 OSCheckStopwatch(void*);
-void OSResetStopwatch(void*);
-void OSStopStopwatch(void*);
-void GXSetDrawSync(s32);
-void GXSetDrawSyncCallback(void*);
-void GXReadGPMetric(s32*, s32*);
-void GXReadMemMetric(s32*, s32*, s32*, s32*, s32*, s32*, s32*, s32*, s32*, s32*);
-void GXReadPixMetric(s32*, s32*, s32*, s32*, s32*, s32*);
-void GXReadVCacheMetric(s32*, s32*, s32*);
-void GXClearGPMetric(void);
-void GXClearMemMetric(void);
-void GXClearPixMetric(void);
-void GXClearVCacheMetric(void);
-
-static u8 Ssw[56];
+static OSStopwatch Ssw;
 static UnknownPerfStruct perf[10];
 
-static s32 met0;
-static s32 met1;
-static s32 vcheck;
-static s32 vmiss;
-static s32 vstall;
-static s32 cp_req;
-static s32 tc_req;
-static s32 cpu_rd_req;
-static s32 cpu_wr_req;
-static s32 dsp_req;
-static s32 io_req;
-static s32 vi_req;
-static s32 pe_req;
-static s32 rf_req;
-static s32 fi_req;
-static s32 top_pixels_in;
-static s32 top_pixels_out;
-static s32 bot_pixels_in;
-static s32 bot_pixels_out;
-static s32 clr_pixels_in;
-static s32 total_copy_clks;
+static u32 met0;
+static u32 met1;
+static u32 vcheck;
+static u32 vmiss;
+static u32 vstall;
+static u32 cp_req;
+static u32 tc_req;
+static u32 cpu_rd_req;
+static u32 cpu_wr_req;
+static u32 dsp_req;
+static u32 io_req;
+static u32 vi_req;
+static u32 pe_req;
+static u32 rf_req;
+static u32 fi_req;
+static u32 top_pixels_in;
+static u32 top_pixels_out;
+static u32 bot_pixels_in;
+static u32 bot_pixels_out;
+static u32 clr_pixels_in;
+static u32 total_copy_clks;
 static s16 tokenEndF;
 static u8 metf;
 

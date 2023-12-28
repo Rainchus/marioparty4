@@ -738,6 +738,107 @@ dolphin/demo/DEMOStats.c:
 	.sbss       start:0x801D4488 end:0x801D44E8
 	.sdata2     start:0x801D63D8 end:0x801D63E8
 
+dolphin/pad/Padclamp.c:
+	.text       start:0x800C3CDC end:0x800C3F14
+	.sdata      start:0x801D3910 end:0x801D3918
+
+dolphin/pad/Pad.c:
+	.text       start:0x800C3F14 end:0x800C59DC
+	.bss        start:0x801A61B0 end:0x801A6200
+	.sdata      start:0x801D3918 end:0x801D3938
+	.sbss       start:0x801D44E8 end:0x801D4510
+
+dolphin/ai.c:
+	.text       start:0x800C59DC end:0x800C62B8
+	.sbss       start:0x801D4510 end:0x801D4550
+
+dolphin/ar/ar.c:
+	.text       start:0x800C62B8 end:0x800C6F68
+	.sbss       start:0x801D4550 end:0x801D4570
+
+dolphin/ar/arq.c:
+	.text       start:0x800C6F68 end:0x800C72FC
+	.sbss       start:0x801D4570 end:0x801D4598
+
+dolphin/dsp/dsp.c:
+	.text       start:0x800C72FC end:0x800C7508
+	.data       start:0x8013D748 end:0x8013D780
+	.sbss       start:0x801D4598 end:0x801D45A0
+
+dolphin/dsp/dsp_debug.c:
+	.text       start:0x800C7508 end:0x800C7558
+
+dolphin/dsp/dsp_task.c:
+	.text       start:0x800C7558 end:0x800C7DDC
+	.data       start:0x8013D780 end:0x8013D8C0
+	.sbss       start:0x801D45A0 end:0x801D45B8
+
+dolphin/gx/GXInit.c:
+	.text       start:0x800C7DDC end:0x800C8ECC
+	.bss        start:0x801A6200 end:0x801A6778
+	.sdata      start:0x801D3938 end:0x801D3940
+	.sbss       start:0x801D45B8 end:0x801D45C8
+	.sdata2     start:0x801D63E8 end:0x801D6408
+
+dolphin/gx/GXFifo.c:
+	.text       start:0x800C8ECC end:0x800C96F4
+	.sbss       start:0x801D45C8 end:0x801D45E8
+
+dolphin/gx/GXAttr.c:
+	.text       start:0x800C96F4 end:0x800CA51C
+	.data       start:0x8013D8C0 end:0x8013D9E0
+	.sdata      start:0x801D3940 end:0x801D3950
+
+dolphin/gx/GXMisc.c:
+	.text       start:0x800CA51C end:0x800CAC40
+	.sbss       start:0x801D45E8 end:0x801D4600
+
+dolphin/gx/GXGeometry.c:
+	.text       start:0x800CAC40 end:0x800CB020
+
+dolphin/gx/GXFrameBuf.c:
+	.text       start:0x800CB020 end:0x800CBBD4
+	.data       start:0x8013D9E0 end:0x8013DB10
+	.sdata2     start:0x801D6408 end:0x801D6410
+
+dolphin/gx/GXLight.c:
+	.text       start:0x800CBBD4 end:0x800CC5C0
+	.data       start:0x8013DB10 end:0x8013DB30
+	.sdata2     start:0x801D6410 end:0x801D6460
+
+dolphin/gx/GXTexture.c:
+	.text       start:0x800CC5C0 end:0x800CD618
+	.data       start:0x8013DB30 end:0x8013DD58
+	.sdata      start:0x801D3950 end:0x801D3958
+	.sdata2     start:0x801D6460 end:0x801D6488
+
+dolphin/gx/GXBump.c:
+	.text       start:0x800CD618 end:0x800CDE94
+	.sdata2     start:0x801D6488 end:0x801D64A0
+
+dolphin/gx/GXTev.c:
+	.text       start:0x800CDE94 end:0x800CE8CC
+	.data       start:0x8013DD58 end:0x8013DD80
+
+dolphin/gx/GXPixel.c:
+	.text       start:0x800CE8CC end:0x800CF014
+	.data       start:0x8013DD80 end:0x8013DDA0
+	.sdata2     start:0x801D64A0 end:0x801D64D0
+
+dolphin/gx/GXStubs.c:
+	.text       start:0x800CF014 end:0x800CF018
+
+dolphin/gx/GXDisplayList.c:
+	.text       start:0x800CF018 end:0x800CF224
+
+dolphin/gx/GXTransform.c:
+	.text       start:0x800CF224 end:0x800CF9D8
+	.sdata2     start:0x801D64D0 end:0x801D64F8
+
+dolphin/gx/GXPerf.c:
+	.text       start:0x800CF9D8 end:0x800D09A4
+	.data       start:0x8013DDA0 end:0x8013DEE8
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x800E2008 end:0x800E2068
 	.dtors      start:0x8011DCE8 end:0x8011DCEC
