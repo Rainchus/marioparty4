@@ -10,6 +10,7 @@ extern "C" {
 #endif
 
 u32 VIGetNextField(void);
+u32 VIGetRetraceCount();
 VIRetraceCallback VISetPreRetraceCallback(VIRetraceCallback callback);
 VIRetraceCallback VISetPostRetraceCallback(VIRetraceCallback callback);
 void __VIGetCurrentPosition(s16* x, s16* y);

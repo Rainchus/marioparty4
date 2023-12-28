@@ -137,7 +137,7 @@ void fn_1_1984(void) {
             return;
         }
         HuWinDispOn(lbl_1_bss_E);
-        if (fn_8005B6A8() != 0) {
+        if (BoardIsKill() != 0) {
             return;
         }
         for (i = 0; i < ARRAY_COUNT(GWPlayer); i++) {
@@ -167,7 +167,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                 HuWinDispOff(lbl_1_bss_E);
             } else {
                 HuWinDispOn(lbl_1_bss_E);
-                if (fn_8005B6A8() == 0) {
+                if (BoardIsKill() == 0) {
                     s32 contPortIndex;
                     for (i = 0; i < ARRAY_COUNT(GWPlayer); i++) {
                         contPortIndex = GWPlayer[i].port;
