@@ -2,6 +2,7 @@
 #include "game/printfunc.h"
 #include "game/object.h"
 #include "game/pad.h"
+#include "game/flag.h"
 
 #define OM_OVL_HIS_MAX 16
 #define OM_MAX_GROUPS 10
@@ -80,7 +81,7 @@ static void omWatchOverlayProc(void)
                 omovlevtno = omnextovlevtno;
                 omovlstat = omnextovlstat;
                 omnextovl = OVL_INVALID;
-                if(_CheckFlag(0x1000C)) {
+                if(_CheckFlag(FLAG_ID_MAKE(1, 12))) {
                     MGSeqPracticeStart();
                 }
                 omSysPauseEnable(TRUE);

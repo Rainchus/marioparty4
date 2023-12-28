@@ -43,8 +43,6 @@ void MGSeqKillAll(void);
 void MGSeqPracticeStart(void);
 void fn_8004D6F4(s16 arg);
 
-s32 _CheckFlag(u32 flag);
-
 void BoardWinCreate(s16, s32, s32);
 void BoardWinKill(void);
 void BoardWinWait(void);

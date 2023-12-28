@@ -2,6 +2,7 @@
 #include "game/data.h"
 #include "game/pad.h"
 #include "game/window.h"
+#include "game/flag.h"
 
 #include "string.h"
 
@@ -18,8 +19,7 @@ s32 HuCardFormat(s16);
 s32 HuCardWrite(void*, void*, u32, s32);
 s32 HuCardRead(void*, void*, s32, s32);
 s32 HuCardClose(void*);
-void _ClearFlag(s32);
-void _SetFlag(s32);
+
 
 extern u8 UnMountCnt;
 
@@ -138,7 +138,7 @@ s32 SLFileCreate(char *arg0, u32 arg1, void *arg2) {
     HuWinExAnimIn(temp_r30);
     HuWinMesSet(temp_r30, 0x10000B);
     HuWinMesWait(temp_r30);
-    _SetFlag(0x30000);
+    _SetFlag(FLAG_ID_MAKE(3, 0));
     temp_r31 = HuCardCreate(curSlotNo, arg0, arg1, curFileInfo);
     _ClearFlag(0x30000);
     if (temp_r31 < 0) {
@@ -153,9 +153,9 @@ s32 SLFileCreate(char *arg0, u32 arg1, void *arg2) {
         SLMessOut(1);
         return -0x80;
     }
-    _SetFlag(0x30000);
+    _SetFlag(FLAG_ID_MAKE(3, 0));
     temp_r31 = HuCardWrite(curFileInfo, arg2, arg1, 0);
-    _ClearFlag(0x30000);
+	_ClearFlag(FLAG_ID_MAKE(3, 0));
     if (temp_r31 < 0) {
         HuWinExAnimOut(temp_r30);
         HuWinExCleanup(temp_r30);
@@ -168,9 +168,9 @@ s32 SLFileCreate(char *arg0, u32 arg1, void *arg2) {
         SLMessOut(1);
         return -0x80;
     }
-    _SetFlag(0x30000);
+    _SetFlag(FLAG_ID_MAKE(3, 0));
     temp_r31 = SLStatSet(1);
-    _ClearFlag(0x30000);
+    _ClearFlag(FLAG_ID_MAKE(3, 0));
     HuWinExAnimOut(temp_r30);
     HuWinExCleanup(temp_r30);
     if (temp_r31 < 0) {
@@ -194,12 +194,12 @@ s32 SLFileWrite(s32 arg0, void *arg1) {
     HuWinMesSet(temp_r31, 0x10000B);
     HuWinMesWait(temp_r31);
     HuPrcSleep(0x3C);
-    _SetFlag(0x30000);
+    _SetFlag(FLAG_ID_MAKE(3, 0));
     var_r30 = HuCardWrite(curFileInfo, arg1, arg0, 0);
     if (var_r30 == 0) {
         var_r30 = SLStatSet(1);
     }
-    _ClearFlag(0x30000);
+    _ClearFlag(FLAG_ID_MAKE(3, 0));
     HuWinExAnimOut(temp_r31);
     HuWinExCleanup(temp_r31);
     return var_r30;
@@ -661,9 +661,9 @@ s32 SLFormat(s16 arg0) {
         SLMessOut(0xC);
         return 0;
     }
-    _SetFlag(0x30000);
+    _SetFlag(FLAG_ID_MAKE(3, 0));
     temp_r24 = HuCardFormat(curSlotNo);
-    _ClearFlag(0x30000);
+    _ClearFlag(FLAG_ID_MAKE(3, 0));
     if (temp_r24 < 0) {
         HuWinExAnimOut(temp_r3);
         HuWinExCleanup(temp_r3);

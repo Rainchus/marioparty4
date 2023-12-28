@@ -1,6 +1,7 @@
 #include "dolphin.h"
 #include "game/wipe.h"
 #include "game/memory.h"
+#include "game/flag.h"
 
 extern s8 lbl_801D429C;
 
@@ -110,7 +111,7 @@ void WipeExecAlways(void)
 void WipeCreate(s16 mode, s16 type, s16 duration)
 {
 	WipeState *wipe;
-	if(_CheckFlag(0x1000B) && lbl_801D429C) {
+	if(_CheckFlag(FLAG_ID_MAKE(1, 11)) && lbl_801D429C) {
 		return;
 	}
 	wipe = &wipeData;
