@@ -436,6 +436,47 @@ config.libs = [
             Object(NonMatching, "dolphin/gx/GXPerf.c"),
         ],
     ),
+    DolphinLib(
+        "card",
+        [
+            Object(NonMatching, "dolphin/card/CARDBios.c"),
+            Object(NonMatching, "dolphin/card/CARDUnlock.c"),
+            Object(NonMatching, "dolphin/card/CARDRdwr.c"),
+            Object(NonMatching, "dolphin/card/CARDBlock.c"),
+            Object(NonMatching, "dolphin/card/CARDDir.c"),
+            Object(NonMatching, "dolphin/card/CARDCheck.c"),
+            Object(NonMatching, "dolphin/card/CARDMount.c"),
+            Object(NonMatching, "dolphin/card/CARDFormat.c"),
+            Object(NonMatching, "dolphin/card/CARDOpen.c"),
+            Object(NonMatching, "dolphin/card/CARDCreate.c"),
+            Object(NonMatching, "dolphin/card/CARDRead.c"),
+            Object(NonMatching, "dolphin/card/CARDWrite.c"),
+            Object(NonMatching, "dolphin/card/CARDDelete.c"),
+            Object(NonMatching, "dolphin/card/CARDStat.c"),
+            Object(NonMatching, "dolphin/card/CARDNet.c"),
+        ],
+    ),
+    DolphinLib(
+        "exi",
+        [
+            Object(NonMatching, "dolphin/exi/EXIBios.c"),
+            Object(NonMatching, "dolphin/exi/EXIUart.c"),
+        ],
+    ),
+    DolphinLib(
+        "si",
+        [
+            Object(NonMatching, "dolphin/si/SIBios.c"),
+            Object(NonMatching, "dolphin/si/SISamplingRate.c"),
+        ],
+    ),
+    DolphinLib(
+        "thp",
+        [
+            Object(NonMatching, "dolphin/thp/THPDec.c"),
+            Object(NonMatching, "dolphin/thp/THPAudio.c"),
+        ],
+    ),
     {
         "lib": "Runtime.PPCEABI.H",
         "mw_version": config.linker_version,
