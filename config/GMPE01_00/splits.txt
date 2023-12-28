@@ -432,7 +432,7 @@ game/board/star.c:
 	.sdata2     start:0x801D5898 end:0x801D5938
 
 game/board/dice_roll.c:
-	.text       start:0x80085CC8 end:0x8008831C
+	.text       start:0x80085CC8 end:0x80088368
 	.rodata     start:0x8011E0B0 end:0x8011E118
 	.data       start:0x8013A368 end:0x8013A408
 	.bss        start:0x801A4AE0 end:0x801A4AF0
@@ -441,7 +441,7 @@ game/board/dice_roll.c:
 	.sdata2     start:0x801D5938 end:0x801D59E0
 
 game/board/ui.c:
-	.text       start:0x8008831C end:0x8008DF68
+	.text       start:0x80088368 end:0x8008DF68
 	.rodata     start:0x8011E118 end:0x8011E200
 	.data       start:0x8013A408 end:0x8013A608
 	.bss        start:0x801A4AF0 end:0x801A4B80
