@@ -847,6 +847,10 @@ dolphin/card/CARDBios.c:
 	.bss        start:0x801A6C98 end:0x801A6ED8
 
 dolphin/card/CARDUnlock.c:
+	.text       start:0x800D1CC4 end:0x800D2F24
+	.data       start:0x8013DF00 end:0x8013E060
+
+dolphin/card/CARDRdwr.c:
 	.text       start:0x800D2F24 end:0x800D31A4
 
 dolphin/card/CARDBlock.c:
