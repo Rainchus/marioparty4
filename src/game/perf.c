@@ -8,21 +8,14 @@ typedef struct {
     /* 0x04 */ char unk04[4];
     /* 0x08 */ s64 unk08;
     /* 0x10 */ s64 unk10;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ char unk1C[0x34];
+    /* 0x18 */ OSStopwatch unk18;
     /* 0x50 */ s16 unk50;
     /* 0x52 */ char unk52[6];
 } UnknownPerfStruct; // Size 0x58
 
 static void DSCallbackFunc(u16 arg0);
 
-void OSInitStopwatch(void*, char*);
-void OSStartStopwatch(void*);
-u64 OSCheckStopwatch(void*);
-void OSResetStopwatch(void*);
-void OSStopStopwatch(void*);
-
-static u8 Ssw[56];
+static OSStopwatch Ssw;
 static UnknownPerfStruct perf[10];
 
 static u32 met0;

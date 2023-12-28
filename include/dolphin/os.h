@@ -90,6 +90,23 @@ typedef struct OSCalendarTime {
 OSTime OSCalendarTimeToTicks(OSCalendarTime* td);
 void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime* td);
 
+typedef struct OSStopwatch {
+	char* name;
+	OSTime total;
+	u32 hits;
+	OSTime min;
+	OSTime max;
+	OSTime last;
+	BOOL running;
+} OSStopwatch;
+
+void OSInitStopwatch(OSStopwatch* sw, char* name);
+void OSStartStopwatch(OSStopwatch* sw);
+void OSStopStopwatch(OSStopwatch* sw);
+OSTime OSCheckStopwatch(OSStopwatch* sw);
+void OSResetStopwatch(OSStopwatch* sw);
+void OSDumpStopwatch(OSStopwatch* sw);
+
 #define OS_CONSOLE_MASK 0xf0000000
 #define OS_CONSOLE_RETAIL 0x00000000
 #define OS_CONSOLE_DEVELOPMENT 0x10000000
