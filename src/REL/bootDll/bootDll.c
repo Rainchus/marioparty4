@@ -108,7 +108,7 @@ static void BootProc(void)
 		WipeColorSet(255, 255, 255);
 		if(!SystemInitF) {
 			tick_prev = OSGetTick();
-			fn_800498F0();
+			CharManInit();
 			HuWindowInit();
 			MGSeqInit();
 			HuWinInit(1);
