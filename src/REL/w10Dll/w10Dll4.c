@@ -107,7 +107,7 @@ void fn_1_1834(void) {
 void fn_1_18BC(void) {
     fn_1_BA0(0x2E0028);
     fn_1_BA0(0x2E0029);
-    lbl_801A52E8 = 0;
+    boardTutorialData = 0;
     fn_8008853C(0);
 }
 
