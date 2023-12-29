@@ -105,7 +105,7 @@ void fn_1_E0(void) {
     BoardModelMotionStart(lbl_1_data_32, 1, 0x40000001);
     lbl_1_data_30 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 13), lbl_1_data_6C, 0);
     BoardModelMotionStart(lbl_1_data_30, 1, 0x40000001);
-    fn_8005D10C(&fn_1_8C0, &fn_1_904);
+    BoardLightHookSet(&fn_1_8C0, &fn_1_904);
     for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
         temp_r30 = &lbl_1_data_0[i];
         if (temp_r30->unk24 != -1) {

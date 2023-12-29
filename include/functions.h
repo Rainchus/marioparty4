@@ -71,7 +71,7 @@ void fn_800B42BC(s16);
 s32 BoardModelIDGet(s16);
 void BoardInit(void*, void*);
 void BoardModelScaleSetV(s32, Vec*);
-void fn_8005D10C(void*, void*);
+void BoardLightHookSet(void*, void*);
 s16 BoardModelCreate(s32, void*, s32);
 void BoardModelKill(s16);
 void fn_8006DDE8(s16, f32);
