@@ -31,8 +31,8 @@ void fn_1_E1C(void) {
 void fn_1_E44(void) {
     fn_1_BA0(0x2E0008);
     fn_1_BA0(0x2E0009);
-    fn_8007500C(0);
-    fn_8006F50C(lbl_1_data_2C, 1);
+    BoardSpaceStarSetIndex(0);
+    BoardModelVisibilitySet(lbl_1_data_2C, 1);
 }
 
 void fn_1_E94(void) {
@@ -118,7 +118,7 @@ void fn_1_11A0(void) {
     s32 temp;
     
     fn_1_BA0(0x2E0019);
-    temp = fn_800745F0(0, 1);
+    temp = BoardSpaceFlagSearch(0, 1);
     fn_800B4274(temp, 0);
 }
 
@@ -126,7 +126,7 @@ void fn_1_11EC(void) {
     s32 temp;
     
     fn_1_BA0(0x2E001A);
-    temp = fn_800745F0(0, 1);
+    temp = BoardSpaceFlagSearch(0, 1);
     fn_800B4274(temp, 0);
     fn_800B42B4(0);
 }
@@ -182,8 +182,8 @@ void fn_1_13A4(void) {
     fn_1_BA0(0x2E002B);
     sp8.x = -33.0f;
     sp8.y =  sp8.z = 0.0f;
-    temp_r3_2 = fn_800745F0(0, 0x80000);
-    fn_80074210(0, temp_r3_2, &sp14);
+    temp_r3_2 = BoardSpaceFlagSearch(0, 0x80000);
+    BoardSpacePosGet(0, temp_r3_2, &sp14);
     BoardModelPosSetV(lbl_1_bss_0->unk8, &sp14);
     BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     BoardCameraMotionWait();
@@ -191,8 +191,8 @@ void fn_1_13A4(void) {
     fn_8007A360(temp_r3_2);
     BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     BoardCameraMotionWait();
-    temp_r3_2 = fn_800745F0(0, 0x10000000);
-    fn_80074210(0, temp_r3_2, &sp14);
+    temp_r3_2 = BoardSpaceFlagSearch(0, 0x10000000);
+    BoardSpacePosGet(0, temp_r3_2, &sp14);
     BoardModelPosSetV(lbl_1_bss_0->unk8, &sp14);
     BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     BoardCameraMotionWait();
@@ -200,8 +200,8 @@ void fn_1_13A4(void) {
     fn_8007F894();
     BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     BoardCameraMotionWait();
-    temp_r3_2 = fn_800745F0(0, 0x08000000);
-    fn_80074210(0, temp_r3_2, &sp14);
+    temp_r3_2 = BoardSpaceFlagSearch(0, 0x08000000);
+    BoardSpacePosGet(0, temp_r3_2, &sp14);
     BoardModelPosSetV(lbl_1_bss_0->unk8, &sp14);
     BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     BoardCameraMotionWait();
