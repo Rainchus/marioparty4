@@ -80,13 +80,13 @@ void fn_1_E0(void) {
     lbl_1_bss_0->unk0 = 0;
     lbl_1_bss_0->unk4 = 0;
     lbl_1_bss_0->unk6 = 0;
-    fn_800B3FD8(&fn_1_1AAC);
+    BoardTutorialHookSet(&fn_1_1AAC);
     fn_1_AEC();
     fn_1_1D68();
     lbl_1_bss_C = 0;
     BoardSpaceInit(MAKE_DATA_NUM(DATADIR_W10, 0));
     temp = BoardSpaceFlagSearch(0, 1);
-    fn_800B4274(temp, 1);
+    BoardTutorialBlockSetPos(temp, 1);
     lbl_1_data_28 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_28, -1.0f);
     BoardModelPosSet(lbl_1_data_28, 0.0f, 0.0f, 0.0f);

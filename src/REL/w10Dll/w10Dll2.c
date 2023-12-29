@@ -15,7 +15,7 @@ void fn_1_AEC(void) {
     lbl_1_bss_1C = 0;
     lbl_1_bss_1E = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 15), &lbl_1_data_78, 0);
     BoardModelMotionStart(lbl_1_bss_1E, 1, 0x40000001);
-    fn_800B42BC(lbl_1_bss_1E);
+    BoardTutorialHostSet(lbl_1_bss_1E);
     BoardModelLayerSet(lbl_1_bss_1E, 6);
     lbl_1_bss_18 = HuPrcCreate(fn_1_C20, 0x1FFF, 0x1800, 0);
 }
@@ -48,7 +48,7 @@ void fn_1_C20(void) {
     while (1) {
         if (BoardIsKill() != 0) {
             BoardModelKill(lbl_1_bss_1E);
-            fn_800B42BC(-1);
+            BoardTutorialHostSet(-1);
             HuPrcEnd();
         }
         Hu3D2Dto3D(&lbl_1_data_80[lbl_1_bss_1C], 1, &sp14);

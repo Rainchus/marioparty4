@@ -3,7 +3,7 @@
 #include "game/memory.h"
 #include "game/flag.h"
 
-extern s8 lbl_801D429C;
+extern s8 boardTutorialF;
 
 s16 HuSysVWaitGet(s16 old);
 
@@ -111,7 +111,7 @@ void WipeExecAlways(void)
 void WipeCreate(s16 mode, s16 type, s16 duration)
 {
 	WipeState *wipe;
-	if(_CheckFlag(FLAG_ID_MAKE(1, 11)) && lbl_801D429C) {
+	if(_CheckFlag(FLAG_ID_MAKE(1, 11)) && boardTutorialF) {
 		return;
 	}
 	wipe = &wipeData;

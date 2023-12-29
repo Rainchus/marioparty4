@@ -154,7 +154,7 @@ void fn_1_1984(void) {
             OSReport(lbl_1_data_98);
             fn_80070EE8(0, 0x1F3);
             BoardKill();
-            fn_800B3FD8(NULL);
+            BoardTutorialHookSet(NULL);
         }
     }
 }
@@ -183,7 +183,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                         OSReport(lbl_1_data_98);
                         fn_80070EE8(0, 0x1F3);
                         BoardKill();
-                        fn_800B3FD8(NULL);
+                        BoardTutorialHookSet(NULL);
                     }
                 }
             }

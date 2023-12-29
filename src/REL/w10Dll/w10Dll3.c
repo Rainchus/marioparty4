@@ -64,7 +64,7 @@ void fn_1_F6C(void) {
     fn_1_1E3C(2, 0x122, 0x8C);
     fn_1_BA0(0x2E000F);
     fn_1_1FB0();
-    fn_800B4264(0, 0x50, 1);
+    BoardTutorialDirInputSet(0, 0x50, 1);
 }
 
 void fn_1_FB8(void) {
@@ -72,14 +72,14 @@ void fn_1_FB8(void) {
     fn_1_BA0(0x2E0010);
     fn_1_1FB0();
     fn_1_BA0(0x2E0011);
-    fn_800B4264(-0x50, 0, 1);
+    BoardTutorialDirInputSet(-0x50, 0, 1);
 }
 
 void fn_1_1010(void) {
     fn_1_1E3C(4, 0x122, 0x8C);
     fn_1_BA0(0x2E0012);
     fn_1_1FB0();
-    fn_800B4264(0, 0x50, 1);
+    BoardTutorialDirInputSet(0, 0x50, 1);
 }
 
 void fn_1_105C(void) {
@@ -94,7 +94,7 @@ void fn_1_1098(void) {
 
 void fn_1_10C0(void) {
     fn_1_BA0(0x2E0015);
-    fn_800B4264(-0x50, 0, 1);
+    BoardTutorialDirInputSet(-0x50, 0, 1);
 }
 
 void fn_1_10F8(void) {
@@ -119,7 +119,7 @@ void fn_1_11A0(void) {
     
     fn_1_BA0(0x2E0019);
     temp = BoardSpaceFlagSearch(0, 1);
-    fn_800B4274(temp, 0);
+    BoardTutorialBlockSetPos(temp, 0);
 }
 
 void fn_1_11EC(void) {
@@ -127,13 +127,13 @@ void fn_1_11EC(void) {
     
     fn_1_BA0(0x2E001A);
     temp = BoardSpaceFlagSearch(0, 1);
-    fn_800B4274(temp, 0);
-    fn_800B42B4(0);
+    BoardTutorialBlockSetPos(temp, 0);
+    BoardTutorialItemSet(0);
 }
 
 void fn_1_1240(void) {
     fn_1_BA0(0x2E001B);
-    fn_800B4264(0x50, 0, 1);
+    BoardTutorialDirInputSet(0x50, 0, 1);
 }
 
 void fn_1_1278(void) {
@@ -143,7 +143,7 @@ void fn_1_1278(void) {
 void fn_1_12A0(void) {
     fn_1_BA0(0x2E001D);
     fn_80062B74(2, 1);
-    fn_800B42B4(1);
+    BoardTutorialItemSet(1);
 }
 
 void fn_1_12DC(void) {
@@ -230,7 +230,7 @@ void fn_1_13A4(void) {
         fn_80070EE8(0, 0x1F3);
         BoardKill();
     }
-    fn_800B3FD8(NULL);
+    BoardTutorialHookSet(NULL);
     while (1) {
         HuPrcVSleep();
     }
