@@ -84,8 +84,8 @@ void fn_1_E0(void) {
     fn_1_AEC();
     fn_1_1D68();
     lbl_1_bss_C = 0;
-    fn_800772EC(MAKE_DATA_NUM(DATADIR_W10, 0));
-    temp = fn_800745F0(0, 1);
+    BoardSpaceInit(MAKE_DATA_NUM(DATADIR_W10, 0));
+    temp = BoardSpaceFlagSearch(0, 1);
     fn_800B4274(temp, 1);
     lbl_1_data_28 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_28, -1.0f);
@@ -114,18 +114,18 @@ void fn_1_E0(void) {
             BoardModelPosSetV(lbl_1_bss_10[i], temp_r30);
             BoardModelRotSetV(lbl_1_bss_10[i], &temp_r30->unk0C);
             BoardModelScaleSetV(lbl_1_bss_10[i], &temp_r30->unk18);
-            fn_8006F50C(lbl_1_bss_10[i], 1);
+            BoardModelVisibilitySet(lbl_1_bss_10[i], 1);
             if (lbl_1_bss_8 != NULL) {
                 BoardModelMotionStart(lbl_1_bss_10[i], 0, 0x40000001);
             }
         }
     }
-    fn_8006F50C(lbl_1_bss_10[0], 0);
+    BoardModelVisibilitySet(lbl_1_bss_10[0], 0);
     lbl_1_bss_0->unk8 = BoardModelCreate(0x7000A, NULL, 0);
-    fn_8006F50C(lbl_1_bss_0->unk8, 0);
-    fn_80073FF4(&fn_1_90C);
-    fn_80073FFC(&fn_1_91C);
-    fn_80074004(&fn_1_908);
+    BoardModelVisibilitySet(lbl_1_bss_0->unk8, 0);
+    BoardSpaceWalkEventFuncSet(&fn_1_90C);
+    BoardSpaceWalkMiniEventFuncSet(&fn_1_91C);
+    BoardSpaceLandEventFuncSet(&fn_1_908);
     fn_80083EDC(lbl_1_data_2C);
     fn_800A4F6C(lbl_1_data_32);
     fn_80077AAC(lbl_1_data_2E);
@@ -173,7 +173,7 @@ void fn_1_6D8(void) {
     BoardModelKill(lbl_1_bss_0->unk8);
     fn_1_1DEC();
     HuWinKill(lbl_1_bss_E);
-    fn_80077A3C();
+    BoardSpaceDestroy();
 }
 
 void fn_1_8C0(void) {
