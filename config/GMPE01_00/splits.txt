@@ -1156,5 +1156,121 @@ MSL_C.PPCEABI.bare.H/w_pow.c:
 MSL_C.PPCEABI.bare.H/math_ppc.c:
 	.text       start:0x800EBB00 end:0x800EBBB4
 
+TRK_MINNOW_DOLPHIN/mainloop.c:
+	.text       start:0x800EBBB4 end:0x800EBCAC
+
+TRK_MINNOW_DOLPHIN/nubevent.c:
+	.text       start:0x800EBCAC end:0x800EBED4
+	.bss        start:0x801A7730 end:0x801A7758
+
+TRK_MINNOW_DOLPHIN/nubinit.c:
+	.text       start:0x800EBED4 end:0x800EC054
+	.rodata     start:0x8011EA50 end:0x8011EA70
+	.bss        start:0x801A7758 end:0x801A7760
+
+TRK_MINNOW_DOLPHIN/msg.c:
+	.text       start:0x800EC054 end:0x800EC230
+
+TRK_MINNOW_DOLPHIN/msgbuf.c:
+	.text       start:0x800EC230 end:0x800ECC5C
+	.rodata     start:0x8011EA70 end:0x8011EA90
+	.bss        start:0x801A7760 end:0x801A9110
+
+TRK_MINNOW_DOLPHIN/serpoll.c:
+	.text       start:0x800ECC5C end:0x800ED028
+	.bss        start:0x801A9110 end:0x801A9128
+
+TRK_MINNOW_DOLPHIN/usrput.c:
+	.text       start:0x800ED028 end:0x800ED0B4
+
+TRK_MINNOW_DOLPHIN/dispatch.c:
+	.text       start:0x800ED0B4 end:0x800ED150
+	.data       start:0x8013E998 end:0x8013EA20
+	.bss        start:0x801A9128 end:0x801A9130
+
+TRK_MINNOW_DOLPHIN/msghndlr.c:
+	.text       start:0x800ED150 end:0x800EF9B0
+	.data       start:0x8013EA20 end:0x8013EA58
+	.bss        start:0x801A9130 end:0x801A9138
+
+TRK_MINNOW_DOLPHIN/support.c:
+	.text       start:0x800EF9B0 end:0x800F0270
+
+TRK_MINNOW_DOLPHIN/mutex_TRK.c:
+	.text       start:0x800F0270 end:0x800F0288
+
+TRK_MINNOW_DOLPHIN/notify.c:
+	.text       start:0x800F0288 end:0x800F0360
+
+TRK_MINNOW_DOLPHIN/flush_cache.c:
+	.text       start:0x800F0360 end:0x800F0398
+
+TRK_MINNOW_DOLPHIN/mem_TRK.c:
+	.init       start:0x800034E0 end:0x80003534
+	.text       start:0x800F0398 end:0x800F0454
+
+TRK_MINNOW_DOLPHIN/targimpl.c:
+	.text       start:0x800F0454 end:0x800F1CF0
+	.rodata     start:0x8011EA90 end:0x8011EB18
+	.data       start:0x8013EA58 end:0x8013EA88
+	.bss        start:0x801A91E0 end:0x801A96B8
+
+TRK_MINNOW_DOLPHIN/targsupp.c:
+	.text       start:0x800F1CF0 end:0x800F1D10
+
+TRK_MINNOW_DOLPHIN/dolphin_trk.c:
+	.text       start:0x800F1D10 end:0x800F1E50
+	.data       start:0x8013EA88 end:0x8013EAC8
+	.bss        start:0x801A96B8 end:0x801A96C0
+
+TRK_MINNOW_DOLPHIN/mpc_7xx_603e.c:
+	.text       start:0x800F1E50 end:0x800F21C8
+
+TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c:
+	.text       start:0x800F21C8 end:0x800F26B8
+	.rodata     start:0x8011EB18 end:0x8011EB60
+	.data       start:0x8013EAC8 end:0x8013EAE8
+	.bss        start:0x801A96C8 end:0x801AB8F0
+
+TRK_MINNOW_DOLPHIN/targcont.c:
+	.text       start:0x800F26B8 end:0x800F26EC
+
+TRK_MINNOW_DOLPHIN/target_options.c:
+	.text       start:0x800F26EC end:0x800F2708
+	.bss        start:0x801AB8F0 end:0x801AB8F8
+
+TRK_MINNOW_DOLPHIN/mslsupp.c:
+	.text       start:0x800F2708 end:0x800F2880
+
+musyx/runtime/seq.c:
+	.text       start:0x800F2880 end:0x800F67F0
+	.data       start:0x8013EAE8 end:0x8013EB38
+	.bss        start:0x801AB8F8 end:0x801B9138
+	.sbss       start:0x801D4788 end:0x801D47A8
+	.sdata2     start:0x801D6988 end:0x801D69A8
+
+musyx/runtime/synth.c:
+	.text       start:0x800F67F0 end:0x800F9B4C
+	.bss        start:0x801B9138 end:0x801BA720
+	.sbss       start:0x801D47A8 end:0x801D47F0
+	.sdata2     start:0x801D69A8 end:0x801D69E8
+
+musyx/runtime/seq_api.c:
+	.text       start:0x800F9B4C end:0x800F9DCC
+
+musyx/runtime/snd_synthapi.c:
+	.text       start:0x800F9DCC end:0x800FA54C
+
+musyx/runtime/stream.c:
+	.text       start:0x800FA54C end:0x800FE0B8
+	.bss        start:0x801BA720 end:0x801BC020
+	.sbss       start:0x801D47F0 end:0x801D47F8
+	.sdata2     start:0x801D69E8 end:0x801D6A00
+
+musyx/runtime/synthdata.c:
+	.text       start:0x800FE0B8 end:0x800FFE48
+	.bss        start:0x801BC020 end:0x801C6658
+	.sbss       start:0x801D47F8 end:0x801D4840
+
 game/kerent.c:
 	.text       start:0x8011CCC4 end:0x8011DCA8
