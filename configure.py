@@ -790,6 +790,26 @@ config.libs = [
         ],
     },
     {
+        "lib": "staffDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/staffDll/staffDll.c"),
+        ],
+    },
+    {
+        "lib": "selmenuDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/selmenuDll/selmenuDll.c"),
+        ],
+    },
+    {
         "lib": "w10Dll",
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
