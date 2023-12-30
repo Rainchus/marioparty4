@@ -509,11 +509,12 @@ def generate_build_ninja(config, build_config):
 
             lib, obj = result
             lib_name = lib["lib"]
+            src_dir = Path(lib.get("src_dir", config.src_dir))
 
             options = obj.options
             completed = obj.completed
 
-            unit_src_path = config.src_dir / options["source"]
+            unit_src_path = src_dir / options["source"]
             if not unit_src_path.exists():
                 if config.warn_missing_source or completed:
                     print(f"Missing source file {unit_src_path}")
