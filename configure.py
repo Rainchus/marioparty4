@@ -790,6 +790,37 @@ config.libs = [
         ],
     },
     {
+        "lib": "staffDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/staffDll/staffDll.c"),
+        ],
+    },
+    {
+        "lib": "E3setupDLL",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "REL/E3setupDLL/mgselect.c"),
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/E3setupDLL/main.c"),
+        ],
+    },
+    {
+        "lib": "selmenuDll",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/selmenuDll/selmenuDll.c"),
+        ],
+    },
+    {
         "lib": "w10Dll",
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
