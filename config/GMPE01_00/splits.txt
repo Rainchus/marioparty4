@@ -1242,5 +1242,35 @@ TRK_MINNOW_DOLPHIN/target_options.c:
 TRK_MINNOW_DOLPHIN/mslsupp.c:
 	.text       start:0x800F2708 end:0x800F2880
 
+musyx/runtime/seq.c:
+	.text       start:0x800F2880 end:0x800F67F0
+	.data       start:0x8013EAE8 end:0x8013EB38
+	.bss        start:0x801AB8F8 end:0x801B9138
+	.sbss       start:0x801D4788 end:0x801D47A8
+	.sdata2     start:0x801D6988 end:0x801D69A8
+
+musyx/runtime/synth.c:
+	.text       start:0x800F67F0 end:0x800F9B4C
+	.bss        start:0x801B9138 end:0x801BA720
+	.sbss       start:0x801D47A8 end:0x801D47F0
+	.sdata2     start:0x801D69A8 end:0x801D69E8
+
+musyx/runtime/seq_api.c:
+	.text       start:0x800F9B4C end:0x800F9DCC
+
+musyx/runtime/snd_synthapi.c:
+	.text       start:0x800F9DCC end:0x800FA54C
+
+musyx/runtime/stream.c:
+	.text       start:0x800FA54C end:0x800FE0B8
+	.bss        start:0x801BA720 end:0x801BC020
+	.sbss       start:0x801D47F0 end:0x801D47F8
+	.sdata2     start:0x801D69E8 end:0x801D6A00
+
+musyx/runtime/synthdata.c:
+	.text       start:0x800FE0B8 end:0x800FFE48
+	.bss        start:0x801BC020 end:0x801C6658
+	.sbss       start:0x801D47F8 end:0x801D4840
+
 game/kerent.c:
 	.text       start:0x8011CCC4 end:0x8011DCA8
