@@ -190,6 +190,21 @@ cflags_trk = [
     "-inline auto,deferred",
 ]
 
+cflags_odemuexi = [
+    *cflags_base,
+    "-inline auto,deferred",
+]
+
+cflags_amcstub = [
+    *cflags_base,
+    "-inline auto,deferred",
+]
+
+cflags_odenotstub = [
+    *cflags_base,
+    "-inline auto,deferred",
+]
+
 cflags_musyx = [
     "-proc gekko",
     "-nodefaults",
@@ -225,6 +240,13 @@ cflags_game = [
     "-fp_contract off",
 ]
 
+# Game flags
+cflags_libhu = [
+    *cflags_base,
+    "-O0,p",
+    "-char unsigned",
+    "-fp_contract off",
+]
 
 config.linker_version = "GC/2.6"
 config.rel_strip_partial = False
@@ -638,10 +660,35 @@ config.libs = [
             Object(NonMatching, "musyx/runtime/snd_synthapi.c"),
             Object(NonMatching, "musyx/runtime/stream.c"),
             Object(NonMatching, "musyx/runtime/synthdata.c"),
+            Object(NonMatching, "musyx/runtime/synthmacros.c"),
+            Object(NonMatching, "musyx/runtime/synthvoice.c"),
+            Object(NonMatching, "musyx/runtime/synth_ac.c"),
+            Object(NonMatching, "musyx/runtime/synth_dbtab.c"),
+            Object(NonMatching, "musyx/runtime/synth_adsr.c"),
+            Object(NonMatching, "musyx/runtime/synth_vsamples.c"),
+            Object(NonMatching, "musyx/runtime/s_data.c"),
+            Object(NonMatching, "musyx/runtime/hw_dspctrl.c"),
+            Object(NonMatching, "musyx/runtime/hw_volconv.c"),
+            Object(NonMatching, "musyx/runtime/snd3d.c"),
+            Object(NonMatching, "musyx/runtime/snd_init.c"),
+            Object(NonMatching, "musyx/runtime/snd_math.c"),
+            Object(NonMatching, "musyx/runtime/snd_midictrl.c"),
+            Object(NonMatching, "musyx/runtime/snd_service.c"),
+            Object(NonMatching, "musyx/runtime/hardware.c"),
+            Object(NonMatching, "musyx/runtime/dsp_import.c"),
+            Object(NonMatching, "musyx/runtime/hw_aramdma.c"),
+            Object(NonMatching, "musyx/runtime/hw_dolphin.c"),
+            Object(NonMatching, "musyx/runtime/hw_memory.c"),
+            Object(NonMatching, "musyx/runtime/CheapReverb/creverb_fx.c"),
+            Object(NonMatching, "musyx/runtime/CheapReverb/creverb.c"),
+            Object(NonMatching, "musyx/runtime/StdReverb/reverb_fx.c"),
+            Object(NonMatching, "musyx/runtime/StdReverb/reverb.c"),
+            Object(NonMatching, "musyx/runtime/Delay/delay_fx.c"),
+            Object(NonMatching, "musyx/runtime/Chorus/chorus_fx.c"),
         }
     ),
     {
-        "lib": "musyx",
+        "lib": "REL",
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
@@ -651,13 +698,40 @@ config.libs = [
         ],
     },
     {
-        "lib": "REL",
+        "lib": "OdemuExi2",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_odemuexi,
         "host": False,
         "objects": [
-            Object(Matching, "REL/executor.c"),
-            Object(Matching, "REL/empty.c"),  # Must be marked as matching
+            Object(NonMatching, "OdemuExi2/DebuggerDriver.c"),
+        ],
+    },
+    {
+        "lib": "amcstubs",
+        "mw_version": config.linker_version,
+        "cflags": cflags_amcstub,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "amcstubs/AmcExi2Stubs.c"),
+        ],
+    },
+    {
+        "lib": "odenotstub",
+        "mw_version": config.linker_version,
+        "cflags": cflags_odenotstub,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "odenotstub/odenotstub.c"),
+        ],
+    },
+    {
+        "lib": "libhu",
+        "mw_version": config.linker_version,
+        "cflags": cflags_libhu,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "libhu/setvf.c"),
+            Object(NonMatching, "libhu/subvf.c"),
         ],
     },
     {
