@@ -746,13 +746,13 @@ config.libs = [
     },
     {
         "lib": "msm",
-        "mw_version": config.linker_version,
+        "mw_version": "GC/1.2.5n",
         "cflags": cflags_msm,
         "host": False,
         "objects": [
             Object(NonMatching, "msm/msmsys.c"),
             Object(NonMatching, "msm/msmmem.c"),
-            Object(NonMatching, "msm/msmfio.c"),
+            Object(Matching, "msm/msmfio.c"),
             Object(NonMatching, "msm/msmmus.c"),
             Object(NonMatching, "msm/msmse.c"),
             Object(NonMatching, "msm/msmstream.c"),
