@@ -248,6 +248,11 @@ cflags_libhu = [
     "-fp_contract off",
 ]
 
+# Game flags
+cflags_msm = [
+    *cflags_base,
+]
+
 config.linker_version = "GC/2.6"
 config.rel_strip_partial = False
 config.rel_empty_file = "REL/empty.c"
@@ -644,8 +649,10 @@ config.libs = [
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/mem_TRK.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/targimpl.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/targsupp.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/__exception.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/dolphin_trk.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/mpc_7xx_603e.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/main_TRK.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/targcont.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/target_options.c"),
@@ -732,6 +739,20 @@ config.libs = [
         "objects": [
             Object(NonMatching, "libhu/setvf.c"),
             Object(NonMatching, "libhu/subvf.c"),
+        ],
+    },
+    {
+        "lib": "msm",
+        "mw_version": config.linker_version,
+        "cflags": cflags_msm,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "msm/msmsys.c"),
+            Object(NonMatching, "msm/msmmem.c"),
+            Object(NonMatching, "msm/msmfio.c"),
+            Object(NonMatching, "msm/msmmus.c"),
+            Object(NonMatching, "msm/msmse.c"),
+            Object(NonMatching, "msm/msmstream.c"),
         ],
     },
     {

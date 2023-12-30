@@ -215,6 +215,7 @@ game/code_8003FF68.c:
 	.data       start:0x80130100 end:0x80130120
 	.bss        start:0x80192060 end:0x80192360
 	.sdata      start:0x801D35C0 end:0x801D35E0
+	.sbss       start:0x801D3DA0 end:0x801D3DA8
 	.sdata2     start:0x801D4EA8 end:0x801D4EC0
 
 game/ClusterExec.c:
@@ -224,9 +225,6 @@ game/ClusterExec.c:
 game/ShapeExec.c:
 	.text       start:0x80040D60 end:0x80041170
 	.sdata2     start:0x801D4ED0 end:0x801D4EE0
-
-dolphin/os/__start.c:
-	.init       start:0x80003100 end:0x80003354
 
 game/wipe.c:
 	.text       start:0x80041170 end:0x8004207C
@@ -554,6 +552,9 @@ game/board/tutorial.c:
 	.bss        start:0x801A52E8 end:0x801A5300
 	.sbss       start:0x801D4288 end:0x801D42B0
 
+dolphin/os/__start.c:
+	.init       start:0x80003100 end:0x80003354
+
 dolphin/PPCArch.c:
 	.text       start:0x800B42F4 end:0x800B439C
 
@@ -734,6 +735,7 @@ dolphin/demo/DEMOInit.c:
 
 dolphin/demo/DEMOPuts.c:
 	.text       start:0x800C2988 end:0x800C2F84
+	.bss        start:0x801A6190 end:0x801A61B0
 	.sbss       start:0x801D4480 end:0x801D4488
 	.sdata2     start:0x801D63B8 end:0x801D63D8
 
@@ -1213,12 +1215,16 @@ TRK_MINNOW_DOLPHIN/targimpl.c:
 	.text       start:0x800F0454 end:0x800F1CF0
 	.rodata     start:0x8011EA90 end:0x8011EB18
 	.data       start:0x8013EA58 end:0x8013EA88
-	.bss        start:0x801A91E0 end:0x801A96B8
+	.bss        start:0x801A9138 end:0x801A96B8
 
 TRK_MINNOW_DOLPHIN/targsupp.c:
 	.text       start:0x800F1CF0 end:0x800F1D10
 
+TRK_MINNOW_DOLPHIN/__exception.c:
+	.init       start:0x80003534 end:0x80005468
+
 TRK_MINNOW_DOLPHIN/dolphin_trk.c:
+	.init       start:0x80005468 end:0x8000556C
 	.text       start:0x800F1D10 end:0x800F1E50
 	.data       start:0x8013EA88 end:0x8013EAC8
 	.bss        start:0x801A96B8 end:0x801A96C0
@@ -1226,8 +1232,12 @@ TRK_MINNOW_DOLPHIN/dolphin_trk.c:
 TRK_MINNOW_DOLPHIN/mpc_7xx_603e.c:
 	.text       start:0x800F1E50 end:0x800F21C8
 
+TRK_MINNOW_DOLPHIN/main_TRK.c:
+	.text       start:0x800F21C8 end:0x800F220C
+	.bss        start:0x801A96C0 end:0x801A96C8
+
 TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c:
-	.text       start:0x800F21C8 end:0x800F26B8
+	.text       start:0x800F220C end:0x800F26B8
 	.rodata     start:0x8011EB18 end:0x8011EB60
 	.data       start:0x8013EAC8 end:0x8013EAE8
 	.bss        start:0x801A96C8 end:0x801AB8F0
@@ -1405,6 +1415,32 @@ libhu/setvf.c:
 
 libhu/subvf.c:
 	.text       start:0x80115474 end:0x801154A8
+
+msm/msmsys.c:
+	.text       start:0x801154A8 end:0x801176C8
+	.bss        start:0x801D2C20 end:0x801D3120
+	.sdata2     start:0x801D6BB8 end:0x801D6BC0
+
+msm/msmmem.c:
+	.text       start:0x801176C8 end:0x801178F8
+	.bss        start:0x801D3120 end:0x801D3150
+
+msm/msmfio.c:
+	.text       start:0x801178F8 end:0x801179E8
+	.bss        start:0x801D3150 end:0x801D3160
+
+msm/msmmus.c:
+	.text       start:0x801179E8 end:0x80118A80
+	.bss        start:0x801D3160 end:0x801D32D8
+
+msm/msmse.c:
+	.text       start:0x80118A80 end:0x8011A044
+	.bss        start:0x801D32D8 end:0x801D33C0
+	.sdata2     start:0x801D6BC0 end:0x801D6BD8
+
+msm/msmstream.c:
+	.text       start:0x8011A044 end:0x8011CCC4
+	.bss        start:0x801D33C0 end:0x801D3420
 
 game/kerent.c:
 	.text       start:0x8011CCC4 end:0x8011DCA8
