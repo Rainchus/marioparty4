@@ -190,6 +190,21 @@ cflags_trk = [
     "-inline auto,deferred",
 ]
 
+cflags_musyx = [
+    "-proc gekko",
+    "-nodefaults",
+    "-nosyspath",
+    "-i include",
+    "-inline auto",
+    "-O4,p",
+    "-fp hard",
+    "-enum int",
+    "-Cpp_exceptions off",
+    "-str reuse,pool,readonly",
+    "-fp_contract off",
+    "-DMUSY_TARGET=MUSY_TARGET_DOLPHIN",
+]
+
 # REL flags
 cflags_rel = [
     *cflags_base,
@@ -226,6 +241,21 @@ def DolphinLib(lib_name, objects):
         "objects": objects,
     }
 
+def MusyX(objects, mw_version="GC/2.6", debug=False, major=2, minor=0, patch=0):
+    cflags = cflags_musyx if not debug else cflags_musyx_debug
+    return {
+        "lib": "musyx",
+        "mw_version": mw_version,
+        "src_dir": "extern/musyx/src",
+        "host": False,
+        "cflags": [
+            *cflags,
+            f"-DMUSY_VERSION_MAJOR={major}",
+            f"-DMUSY_VERSION_MINOR={minor}",
+            f"-DMUSY_VERSION_PATCH={patch}",
+        ],
+        "objects": objects,
+    }
 
 # Helper function for REL script objects
 def Rel(lib_name, objects):
@@ -598,6 +628,26 @@ config.libs = [
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/targcont.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/target_options.c"),
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/mslsupp.c"),
+        ],
+    },
+    MusyX(
+        objects={
+            Object(NonMatching, "musyx/runtime/seq.c"),
+            Object(NonMatching, "musyx/runtime/synth.c"),
+            Object(NonMatching, "musyx/runtime/seq_api.c"),
+            Object(NonMatching, "musyx/runtime/snd_synthapi.c"),
+            Object(NonMatching, "musyx/runtime/stream.c"),
+            Object(NonMatching, "musyx/runtime/synthdata.c"),
+        }
+    ),
+    {
+        "lib": "musyx",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/empty.c"),  # Must be marked as matching
         ],
     },
     {
