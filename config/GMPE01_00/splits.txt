@@ -1406,5 +1406,31 @@ libhu/setvf.c:
 libhu/subvf.c:
 	.text       start:0x80115474 end:0x801154A8
 
+msm/msmsys.c:
+	.text       start:0x801154A8 end:0x801176C8
+	.bss        start:0x801D2C20 end:0x801D3120
+	.sdata2     start:0x801D6BB8 end:0x801D6BC0
+
+msm/msmmem.c:
+	.text       start:0x801176C8 end:0x801178F8
+	.bss        start:0x801D3120 end:0x801D3150
+
+msm/msmfio.c:
+	.text       start:0x801178F8 end:0x801179E8
+	.bss        start:0x801D3150 end:0x801D3160
+
+msm/msmmus.c:
+	.text       start:0x801179E8 end:0x80118A80
+	.bss        start:0x801D3160 end:0x801D32D8
+
+msm/msmse.c:
+	.text       start:0x80118A80 end:0x8011A044
+	.bss        start:0x801D32D8 end:0x801D33C0
+	.sdata2     start:0x801D6BC0 end:0x801D6BD8
+
+msm/msmstream.c:
+	.text       start:0x8011A044 end:0x8011CCC4
+	.bss        start:0x801D33C0 end:0x801D3420
+
 game/kerent.c:
 	.text       start:0x8011CCC4 end:0x8011DCA8
