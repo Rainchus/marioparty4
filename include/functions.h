@@ -69,7 +69,7 @@ f32 BoardModelRotYGet(s32);
 void BoardModelLayerSet(s16, s32);
 void BoardTutorialHostSet(s16);
 s32 BoardModelIDGet(s16);
-void BoardInit(void*, void*);
+void BoardCommonInit(void*, void*);
 void BoardModelScaleSetV(s32, Vec*);
 void BoardLightHookSet(void*, void*);
 s16 BoardModelCreate(s32, void*, s32);

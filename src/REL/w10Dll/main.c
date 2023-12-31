@@ -65,7 +65,7 @@ inline s32 get_current_board(void) {
     return GWSystem.board;
 }
 
-void fn_1_E0(void) {
+void BoardInit(void) {
     f32 sp10;
     f32 spC[2];
     s32 sp8;
@@ -138,7 +138,7 @@ void fn_1_E0(void) {
     HuWinMesPalSet(lbl_1_bss_E, 7, 0, 0, 0);
 }
 
-void fn_1_6D8(void) {
+void BoardDestroy(void) {
     s32 i;
     for (i = 0; i < 1; i++) {
         if (lbl_1_bss_10[i] != 0) {

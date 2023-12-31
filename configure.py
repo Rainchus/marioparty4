@@ -861,13 +861,45 @@ config.libs = [
             Object(NonMatching, "REL/subchrselDll/subchrselDll.c"),
         }
     ),
-    Rel('subchrselDll',
+    Rel('w01Dll',
         objects = {
-            Object(Matching, "REL/w10Dll/w10Dll_init.c"),
-            Object(Matching, "REL/w10Dll/w10Dll.c"),
-            Object(Matching, "REL/w10Dll/w10Dll2.c"),
-            Object(Matching, "REL/w10Dll/w10Dll3.c"),
-            Object(Matching, "REL/w10Dll/w10Dll4.c"),
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w01Dll/main.c"),
+            Object(NonMatching, "REL/w01Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w01Dll/mg_item.c"),
+        }
+    ),
+    Rel('w02Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w02Dll/main.c"),
+            Object(NonMatching, "REL/w02Dll/dice.c"),
+            Object(NonMatching, "REL/w02Dll/gamble.c"),
+            Object(NonMatching, "REL/w02Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w02Dll/mg_item.c"),
+            Object(NonMatching, "REL/w02Dll/shuffleboard.c"),
+            Object(NonMatching, "REL/w02Dll/roulette.c"),
+        }
+    ),
+    Rel('w03Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w03Dll/main.c"),
+            Object(NonMatching, "REL/w03Dll/statue.c"),
+            Object(NonMatching, "REL/w03Dll/condor.c"),
+            Object(NonMatching, "REL/w03Dll/river.c"),
+            Object(NonMatching, "REL/w03Dll/smoke.c"),
+            Object(NonMatching, "REL/w03Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w03Dll/mg_item.c"),
+        }
+    ),
+    Rel('w10Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(Matching, "REL/w10Dll/main.c"),
+            Object(Matching, "REL/w10Dll/host.c"),
+            Object(Matching, "REL/w10Dll/scene.c"),
+            Object(Matching, "REL/w10Dll/tutorial.c"),
         }
     ),
 ]
