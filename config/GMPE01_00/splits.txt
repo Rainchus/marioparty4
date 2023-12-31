@@ -324,7 +324,7 @@ game/board/main.c:
 	.sbss       start:0x801D3ED0 end:0x801D3F20
 	.sdata2     start:0x801D5148 end:0x801D51F8
 
-game/board/board.c:
+game/board/player.c:
 	.text       start:0x80061F44 end:0x8006D308
 	.rodata     start:0x8011DD90 end:0x8011DE60
 	.data       start:0x80139898 end:0x80139AA0
