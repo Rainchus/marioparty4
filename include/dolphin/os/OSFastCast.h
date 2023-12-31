@@ -60,9 +60,9 @@ static inline void OSf32tos16(f32 *f, s16 *out) { *out = __OSf32tos16(*f); }
 
 static inline u8 __OSf32tou8(register f32 inF)
 {
-  register u8 out;
   u32 tmp;
   register u32 *tmpPtr = &tmp;
+  register u8 out;
   // clang-format off
     asm {
         psq_st inF, 0(tmpPtr), 0x1, OS_FASTCAST_U8
