@@ -758,88 +758,69 @@ config.libs = [
             Object(NonMatching, "msm/msmstream.c"),
         ],
     },
-    {
-        "lib": "_minigameDLL",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+    Rel('_minigameDLL',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
-        ],
-    },
-    {
-        "lib": "bootDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('bootDll',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/bootDll/bootDll.c"),
             Object(Matching, "REL/bootDll/nintendo_data.c"),
-        ],
-    },
-    {
-        "lib": "subchrselDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
-            Object(Matching, "REL/executor.c"),
-            Object(Matching, "REL/subchrselDll/subchrselDll.c"),
-        ],
-    },
-    {
-        "lib": "staffDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
-            Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/staffDll/staffDll.c"),
-        ],
-    },
-    {
-        "lib": "E3setupDLL",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('E3setupDLL',
+        objects = {
             Object(NonMatching, "REL/E3setupDLL/mgselect.c"),
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/E3setupDLL/main.c"),
-        ],
-    },
-    {
-        "lib": "instDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('instDll',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/instDll/main.c"),
             Object(NonMatching, "REL/instDll/font.c"),
-        ],
-    },
-     {
-        "lib": "modeseldll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('m401Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m401Dll/main.c"),
+            Object(NonMatching, "REL/m401Dll/main_ex.c"),
+        }
+    ),
+    Rel('m402Dll',
+        objects = {
+            Object(NonMatching, "REL/m402Dll/main.c"),
+        }
+    ),
+    Rel('m403Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m403Dll/main.c"),
+            Object(NonMatching, "REL/m403Dll/scene.c"),
+        }
+    ),
+    Rel('m404Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m404Dll/main.c"),
+        }
+    ),
+    Rel('modeseldll',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/modeseldll/main.c"),
             Object(NonMatching, "REL/modeseldll/modesel.c"),
             Object(NonMatching, "REL/modeseldll/filesel.c"),
             Object(NonMatching, "REL/modeseldll/datalist.c"),
-        ],
-    },
-    {
-        "lib": "option",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('option',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/option/scene.c"),
             Object(NonMatching, "REL/option/camera.c"),
@@ -850,45 +831,45 @@ config.libs = [
             Object(NonMatching, "REL/option/sound.c"),
             Object(NonMatching, "REL/option/record.c"),
             Object(NonMatching, "REL/option/window.c"),
-        ],
-    },
-    {
-        "lib": "present",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('present',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/present/init.c"),
             Object(NonMatching, "REL/present/camera.c"),
             Object(NonMatching, "REL/present/present.c"),
             Object(NonMatching, "REL/present/main.c"),
             Object(NonMatching, "REL/present/common.c"),
-        ],
-    },
-    {
-        "lib": "selmenuDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('selmenuDll',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/selmenuDll/selmenuDll.c"),
-        ],
-    },
-    {
-        "lib": "w10Dll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('staffDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/staffDll/staffDll.c"),
+        }
+    ),
+    Rel('subchrselDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/subchrselDll/subchrselDll.c"),
+        }
+    ),
+    Rel('subchrselDll',
+        objects = {
             Object(Matching, "REL/w10Dll/w10Dll_init.c"),
             Object(Matching, "REL/w10Dll/w10Dll.c"),
             Object(Matching, "REL/w10Dll/w10Dll2.c"),
             Object(Matching, "REL/w10Dll/w10Dll3.c"),
             Object(Matching, "REL/w10Dll/w10Dll4.c"),
-        ],
-    },
+        }
+    ),
 ]
 
 if args.mode == "configure":
