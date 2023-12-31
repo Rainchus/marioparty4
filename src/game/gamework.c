@@ -46,7 +46,7 @@ static inline void ResetBoardSettings(void)
 
 void GWInit(void)
 {
-    GWResetGameStat();
+    GWGameStatReset();
     _InitFlag();
     GWErase();
     InitPlayerConfig();
@@ -112,7 +112,7 @@ static inline void ResetFlag(GameStat *game_stat)
     game_stat->field10F_bit6 = game_stat->field110_bit6 = 0;
 }
 
-void GWResetGameStat(void)
+void GWGameStatReset(void)
 {
     GameStat *game_stat = &GWGameStatDefault;
     memset(game_stat, 0, sizeof(GameStat));
@@ -134,7 +134,7 @@ void GWResetGameStat(void)
     ResetBoardSettings();
 }
 
-s16 GWGetMessSpeed(void)
+s16 GWMessSpeedGet(void)
 {
     if(GWSystem.mess_delay > 48) {
         GWSystem.mess_speed = 1;
@@ -143,19 +143,19 @@ s16 GWGetMessSpeed(void)
     return GWSystem.mess_delay;
 }
 
-void GWSetMGRecord(int index, s32 value)
+void GWMGRecordSet(int index, s32 value)
 {
     if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         GWGameStat.mg_record[index] = value;
     }
 }
 
-s32 GWGetMGRecord(int index)
+s32 GWMGRecordGet(int index)
 {
     return GWGameStat.mg_record[index];
 }
 
-void GWGetCharColor(int character, GXColor *color)
+void GWCharColorGet(int character, GXColor *color)
 {
     GXColor char_color[] = {
         { 227, 67, 67, 255 },
@@ -170,7 +170,7 @@ void GWGetCharColor(int character, GXColor *color)
     *color = char_color[character];
 }
 
-void GWSetBoardPlayCount(int board, u8 value)
+void GWBoardPlayCountSet(int board, u8 value)
 {
     if(value > 99) {
         value = 99;
@@ -178,7 +178,7 @@ void GWSetBoardPlayCount(int board, u8 value)
     GWGameStat.board_play_count[board] = value;
 }
 
-void GWAddBoardPlayCount(int board, u8 value)
+void GWBoardPlayCountAdd(int board, u8 value)
 {
     value += GWGameStat.board_play_count[board];
     if(value > 99) {
@@ -188,32 +188,32 @@ void GWAddBoardPlayCount(int board, u8 value)
 }
 
 
-u8 GWGetBoardPlayCount(int board)
+u8 GWBoardPlayCountGet(int board)
 {
     return GWGameStat.board_play_count[board];
 }
 
-void GWSetBoardMaxStars(int board, int value)
+void GWBoardMaxStarsSet(int board, int value)
 {
     GWGameStat.board_max_stars[board] = value;
 }
 
-u16 GWGetBoardMaxStars(int board)
+u16 GWBoardMaxStarsGet(int board)
 {
     return GWGameStat.board_max_stars[board];
 }
 
-void GWSetBoardMaxCoins(int board, int value)
+void GWBoardMaxCoinsSet(int board, int value)
 {
     GWGameStat.board_max_coins[board] = value;
 }
 
-u16 GWGetBoardMaxCoins(int board)
+u16 GWBoardMaxCoinsGet(int board)
 {
     return GWGameStat.board_max_coins[board];
 }
 
-int GWIncBoardWinCount(int character, int board)
+int GWBoardWinCountInc(int character, int board)
 {
     int win_count = GWGameStat.board_win_count[board][character]+1;
     if(win_count > 99) {
@@ -223,17 +223,17 @@ int GWIncBoardWinCount(int character, int board)
     return win_count;
 }
 
-int GWGetBoardWinCount(int character, int board)
+int GWBoardWinCountGet(int character, int board)
 {
     return GWGameStat.board_win_count[board][character];
 }
 
-void GWSetBoardWinCount(int character, int board, int value)
+void GWBoardWinCountSet(int character, int board, int value)
 {
     GWGameStat.board_win_count[board][character] = value;
 }
 
-int GWGetMGAvail(int id)
+int GWMGAvailGet(int id)
 {
     int word;
     int bit;
@@ -247,7 +247,7 @@ int GWGetMGAvail(int id)
     }
 }
 
-int GWSetMGAvail(int id)
+int GWMGAvailSet(int id)
 {
     int word;
     int bit;
@@ -257,7 +257,7 @@ int GWSetMGAvail(int id)
     GWGameStat.mg_avail[word] |= (1 << bit);
 }
 
-int GWGetMGCustom(int id)
+int GWMGCustomGet(int id)
 {
     int word;
     int bit;
@@ -271,7 +271,7 @@ int GWGetMGCustom(int id)
     }
 }
 
-int GWSetMGCustom(int id)
+int GWMGCustomSet(int id)
 {
     int word;
     int bit;
@@ -281,7 +281,7 @@ int GWSetMGCustom(int id)
     GWGameStat.mg_custom[word] |= (1 << bit);
 }
 
-int GWResetMGCustom(int id)
+int GWMGCustomReset(int id)
 {
     int word;
     int bit;
@@ -291,12 +291,12 @@ int GWResetMGCustom(int id)
     GWGameStat.mg_custom[word] &= ~(1 << bit);
 }
 
-s16 GWGetCoins(int player)
+s16 GWCoinsGet(int player)
 {
     return GWPlayer[player].coins;
 }
 
-void GWSetCoins(int player, s16 value)
+void GWCoinsSet(int player, s16 value)
 {
     if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         if(value < 0) {
@@ -312,12 +312,12 @@ void GWSetCoins(int player, s16 value)
     }
 }
 
-void GWAddCoins(int player, s16 amount)
+void GWCoinsAdd(int player, s16 amount)
 {
-    GWSetCoins(player, GWPlayer[player].coins+amount);
+    GWCoinsSet(player, GWPlayer[player].coins+amount);
 }
 
-void GWSetStars(int player, s16 value)
+void GWStarsSet(int player, s16 value)
 {
     if(value < 0) {
         value = 0;
@@ -331,17 +331,17 @@ void GWSetStars(int player, s16 value)
     GWPlayer[player].stars = value;
 }
 
-void GWAddStars(int player, s16 amount)
+void GWStarsAdd(int player, s16 amount)
 {
-    GWSetStars(player, GWPlayer[player].stars+amount);
+    GWStarsSet(player, GWPlayer[player].stars+amount);
 }
 
-s16 GWGetStars(int player)
+s16 GWStarsGet(int player)
 {
     return GWPlayer[player].stars;
 }
 
-void GWSetTotalStars(s16 value)
+void GWTotalStarsSet(s16 value)
 {
     if(value < 0) {
         value = 0;
@@ -352,12 +352,12 @@ void GWSetTotalStars(s16 value)
     GWGameStat.total_stars = value;
 }
 
-void GWAddTotalStars(s16 amount)
+void GWTotalStarsAdd(s16 amount)
 {
-    GWSetTotalStars(GWGameStat.total_stars+amount);
+    GWTotalStarsSet(GWGameStat.total_stars+amount);
 }
 
-u16 GWGetTotalStars(void)
+u16 GWTotalStarsGet(void)
 {
     return GWGameStat.total_stars;
 }
