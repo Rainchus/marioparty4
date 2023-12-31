@@ -698,16 +698,6 @@ config.libs = [
         }
     ),
     {
-        "lib": "REL",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
-            Object(Matching, "REL/executor.c"),
-            Object(Matching, "REL/empty.c"),  # Must be marked as matching
-        ],
-    },
-    {
         "lib": "OdemuExi2",
         "mw_version": config.linker_version,
         "cflags": cflags_odemuexi,
@@ -756,6 +746,16 @@ config.libs = [
             Object(NonMatching, "msm/msmmus.c"),
             Object(NonMatching, "msm/msmse.c"),
             Object(NonMatching, "msm/msmstream.c"),
+        ],
+    },
+    {
+        "lib": "REL",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rel,
+        "host": False,
+        "objects": [
+            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/empty.c"),  # Must be marked as matching
         ],
     },
     Rel('_minigameDLL',
@@ -810,6 +810,25 @@ config.libs = [
             Object(NonMatching, "REL/m404Dll/main.c"),
         }
     ),
+    Rel('mentDll',
+        objects = {
+            Object(NonMatching, "REL/mentDll/common.c"),
+            Object(NonMatching, "REL/mentDll/main.c"),
+        }
+    ),
+    Rel('mgmodedll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/mgmodedll/mgmode.c"),
+            Object(NonMatching, "REL/mgmodedll/free_play.c"),
+            Object(NonMatching, "REL/mgmodedll/record.c"),
+            Object(NonMatching, "REL/mgmodedll/battle.c"),
+            Object(NonMatching, "REL/mgmodedll/tictactoe.c"),
+            Object(NonMatching, "REL/mgmodedll/main.c"),
+            Object(NonMatching, "REL/mgmodedll/datalist.c"),
+            Object(NonMatching, "REL/mgmodedll/minigame.c"),
+        }
+    ),
     Rel('modeseldll',
         objects = {
             Object(Matching, "REL/executor.c"),
@@ -817,6 +836,14 @@ config.libs = [
             Object(NonMatching, "REL/modeseldll/modesel.c"),
             Object(NonMatching, "REL/modeseldll/filesel.c"),
             Object(NonMatching, "REL/modeseldll/datalist.c"),
+        }
+    ),
+    Rel('mpexDll',
+        objects = {
+            Object(NonMatching, "REL/mpexDll/main.c"),
+            Object(NonMatching, "REL/mpexDll/mpex.c"),
+            Object(NonMatching, "REL/mpexDll/charsel.c"),
+            Object(NonMatching, "REL/mpexDll/mgname.c"),
         }
     ),
     Rel('option',
