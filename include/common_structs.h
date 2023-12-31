@@ -80,7 +80,7 @@ typedef struct player_state {
 /* 0x0C */ s16 space_curr;
 /* 0x0E */ s16 space_prev;
 /* 0x10 */ s16 space_next;
-/* 0x12 */ s16 unk_12;
+/* 0x12 */ s16 space_shock;
 /* 0x14 */ u8 blue_count;
 /* 0x15 */ u8 red_count;
 /* 0x16 */ u8 question_count;

@@ -142,7 +142,7 @@ void fn_1_1278(void) {
 
 void fn_1_12A0(void) {
     fn_1_BA0(0x2E001D);
-    fn_80062B74(2, 1);
+    BoardPlayerItemAdd(2, 1);
     BoardTutorialItemSet(1);
 }
 
