@@ -1,7 +1,7 @@
-#include "include/REL/w10Dll.h"
+#include "REL/board_executor.h"
 
-void fn_1_0(void) {
-    BoardInit(&fn_1_E0, &fn_1_6D8);
+static void InitBoard(void) {
+    BoardCommonInit(BoardInit, BoardDestroy);
 }
 
 int _prolog(void) {
@@ -10,7 +10,7 @@ int _prolog(void) {
         (**ctors)();
         ctors++;
     }
-	fn_1_0();
+	InitBoard();
     return 0;
 }
 
