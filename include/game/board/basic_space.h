@@ -1,3 +1,6 @@
+#ifndef _BOARD_BASIC_SPACE_H
+#define _BOARD_BASIC_SPACE_H
+
 #include "common.h"
 #include "math.h"
 #include "game/process.h"
@@ -35,3 +38,5 @@ void fn_800804F8(omObjData*, bitcopy*);
 void fn_800806B0(omObjData*, bitcopy*);
 void fn_8008094C(omObjData*, bitcopy*);
 void fn_80080AF4(omObjData*, bitcopy*);
+
+#endif

@@ -1741,8 +1741,8 @@ static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data) {
     return mess_w;
 }
 
-s32 HuWinKeyWaitNumGet(u32 mess) {
-    s32 wait_num;
+s16 HuWinKeyWaitNumGet(u32 mess) {
+    s16 wait_num;
     u8 *mess_data;
 
     if (mess > 0x80000000) {

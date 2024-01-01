@@ -1,5 +1,6 @@
 #include "REL/w10Dll.h"
 #include "game/data.h"
+#include "game/board/window.h"
 
 s32 lbl_1_data_78[2] = {
     MAKE_DATA_NUM(DATADIR_W10, 16),
