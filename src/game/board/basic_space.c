@@ -61,12 +61,13 @@ static s32 coinDigitMdl[10] = {
 	MAKE_DATA_NUM(DATADIR_BOARD, 21),
 };
 
-void BoardEventLandBlue(s32 player) {
+void BoardEventLandBlue(s32 player, s16 space) {
     Vec pos;
     s32 i;
     s8 coin_chg;
     s32 coins;
-
+	
+	
     BoardCameraViewSet(2);
     BoardPlayerAnimBlendSet(player, 0, 15);
     while (BoardPlayerAnimBlendCheck(player) == 0) {
@@ -101,7 +102,7 @@ void BoardEventLandBlue(s32 player) {
     BoardRotateDiceNumbers(player);
 }
 
-void BoardEventLandRed(s32 player) {
+void BoardEventLandRed(s32 player, s16 space) {
     Vec pos;
     s32 i;
     s8 coin_chg;
