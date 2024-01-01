@@ -12,6 +12,13 @@ void BoardRotateDiceNumbers(s32);
 void BoardCameraAnimBlendSet(s32, s16, s16);
 s32 BoardPlayerAnimBlendCheck(s32);
 
+omObjData *lbl_8013A1F0[4] = {
+    (omObjData *)NULL,
+    (omObjData *)NULL,
+    (omObjData *)NULL,
+    (omObjData *)NULL
+};
+
 s32 lbl_8013A200[10] = {
     0x7000C, 0x7000D,
     0x7000E, 0x7000F,

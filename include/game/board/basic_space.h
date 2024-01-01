@@ -26,13 +26,6 @@ typedef struct bit_copy {
     s16 unk_0E;
 } bitcopy;
 
-omObjData *lbl_8013A1F0[4] = {
-    (omObjData *)NULL,
-    (omObjData *)NULL,
-    (omObjData *)NULL,
-    (omObjData *)NULL
-};
-
 void BoardEventLandBlue(s32);
 void BoardEventLandRed(s32);
 s8 fn_8007FE70(Point3d*, s8);
