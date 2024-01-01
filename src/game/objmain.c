@@ -139,7 +139,7 @@ void omOvlReturnEx(s16 level, s16 arg2)
 
 void omOvlKill(s16 arg)
 {
-    fn_8004D6F4(-1);
+    CharModelKillAll(-1);
     MGSeqKillAll();
     Hu3DAllKill();
     HuWinAllKill();

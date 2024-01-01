@@ -3,6 +3,10 @@
 
 #define M_PI 3.141592653589793
 
+#ifndef _MATH_INLINE
+#define _MATH_INLINE static inline
+#endif
+
 #ifdef MATH_EXPORT_CONST
 extern inline float sqrtf(float x)
 {
@@ -36,6 +40,7 @@ extern inline float sqrtf(float x)
 	return x;
 }
 #endif
+
 double atan(double x);
 double copysign(double x, double y);
 double cos(double x);
@@ -57,5 +62,15 @@ float atan2f(float y, float x);
 float acosf(float x);
 
 #define abs(x) __abs(x)
+
+_MATH_INLINE float fabsf(float x) { return (float)fabs((double)x); }
+_MATH_INLINE float sinf(float x) { return (float)sin((double)x); }
+_MATH_INLINE float cosf(float x) { return (float)cos((double)x); }
+_MATH_INLINE float atan2f(float y, float x) { return (float)atan2((double)y, (double)x); }
+_MATH_INLINE float fmodf(float x, float m) { return (float)fmod((double)x, (double)m); }
+
+_MATH_INLINE float floorf(float x) { return floor(x); }
+
+_MATH_INLINE float powf(float __x, float __y) { return pow(__x, __y); }
 
 #endif

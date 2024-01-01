@@ -16,8 +16,8 @@ typedef struct system_state {
 /* 0x00 */ struct {
         u8 story : 1;
         u8 team : 1;
-        u8 : 7;
     };
+/* 0x01 */ s8 diff_story;
 /* 0x02 */ struct {
         u16 bonus_star : 1;
         u16 explain_mg : 1;
@@ -62,8 +62,8 @@ typedef struct player_state {
         u8 team : 1;
         u8 field02_bit1 : 1;
         u8 player_idx : 2;
-        u8 field02_bit4 : 5;
     };
+/* 0x03 */ s8 handicap;
 /* 0x04 */ s8 port;
 /* 0x05 */ s8 items[3];
 /* 0x08 */ struct {
@@ -80,7 +80,7 @@ typedef struct player_state {
 /* 0x0C */ s16 space_curr;
 /* 0x0E */ s16 space_prev;
 /* 0x10 */ s16 space_next;
-/* 0x12 */ s16 unk_12;
+/* 0x12 */ s16 space_shock;
 /* 0x14 */ u8 blue_count;
 /* 0x15 */ u8 red_count;
 /* 0x16 */ u8 question_count;

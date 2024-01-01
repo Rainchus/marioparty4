@@ -150,9 +150,11 @@ cflags_base = [
     "-fp_contract on",
     "-str reuse",
     "-i include",
+    "-i extern/musyx/include",
     f"-i build/{config.version}/include",
     "-multibyte",
     f"-DVERSION={version_num}",
+    "-DMUSY_TARGET=MUSY_TARGET_DOLPHIN",
 ]
 
 # Debug flags
@@ -168,6 +170,57 @@ cflags_runtime = [
     "-str reuse,pool,readonly",
     "-common off",
     "-inline auto,deferred",
+]
+
+# Metrowerks library flags
+cflags_msl = [
+    *cflags_base,
+    "-use_lmw_stmw on",
+    "-str reuse,pool,readonly",
+    "-common off",
+    "-inline auto,deferred",
+]
+
+# Metrowerks library flags
+cflags_trk = [
+    *cflags_base,
+    "-use_lmw_stmw on",
+    "-str reuse,pool,readonly",
+    "-common off",
+    "-sdata 0",
+    "-sdata2 0",
+    "-inline auto,deferred",
+]
+
+cflags_odemuexi = [
+    *cflags_base,
+    "-inline auto,deferred",
+]
+
+cflags_amcstub = [
+    *cflags_base,
+    "-inline auto,deferred",
+]
+
+cflags_odenotstub = [
+    *cflags_base,
+    "-inline auto,deferred",
+]
+
+cflags_musyx = [
+    "-proc gekko",
+    "-nodefaults",
+    "-nosyspath",
+    "-i include",
+    "-i extern/musyx/include",
+    "-inline auto",
+    "-O4,p",
+    "-fp hard",
+    "-enum int",
+    "-Cpp_exceptions off",
+    "-str reuse,pool,readonly",
+    "-fp_contract off",
+    "-DMUSY_TARGET=MUSY_TARGET_DOLPHIN",
 ]
 
 # REL flags
@@ -190,6 +243,18 @@ cflags_game = [
     "-fp_contract off",
 ]
 
+# Game flags
+cflags_libhu = [
+    *cflags_base,
+    "-O0,p",
+    "-char unsigned",
+    "-fp_contract off",
+]
+
+# Game flags
+cflags_msm = [
+    *cflags_base,
+]
 
 config.linker_version = "GC/2.6"
 config.rel_strip_partial = False
@@ -206,6 +271,21 @@ def DolphinLib(lib_name, objects):
         "objects": objects,
     }
 
+def MusyX(objects, mw_version="GC/2.6", debug=False, major=2, minor=0, patch=0):
+    cflags = cflags_musyx if not debug else cflags_musyx_debug
+    return {
+        "lib": "musyx",
+        "mw_version": mw_version,
+        "src_dir": "extern/musyx/src",
+        "host": False,
+        "cflags": [
+            *cflags,
+            f"-DMUSY_VERSION_MAJOR={major}",
+            f"-DMUSY_VERSION_MINOR={minor}",
+            f"-DMUSY_VERSION_PATCH={patch}",
+        ],
+        "objects": objects,
+    }
 
 # Helper function for REL script objects
 def Rel(lib_name, objects):
@@ -280,10 +360,10 @@ config.libs = [
             Object(Matching, "game/saveload.c"),
             Object(NonMatching, "game/sreset.c"),
             Object(NonMatching, "game/board/main.c"),
-            Object(NonMatching, "game/board/board.c"),
+            Object(NonMatching, "game/board/player.c"),
             Object(NonMatching, "game/board/model.c"),
             Object(NonMatching, "game/board/window.c"),
-            Object(NonMatching, "game/board/board_snd.c"),
+            Object(NonMatching, "game/board/speaker.c"),
             Object(NonMatching, "game/board/com.c"),
             Object(NonMatching, "game/board/overhead.c"),
             Object(NonMatching, "game/board/space.c"),
@@ -485,9 +565,187 @@ config.libs = [
         "cflags": cflags_runtime,
         "host": False,
         "objects": [
+            Object(NonMatching, "Runtime.PPCEABI.H/__va_arg.c"),
             Object(Matching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
+            Object(NonMatching, "Runtime.PPCEABI.H/__mem.c"),
+            Object(NonMatching, "Runtime.PPCEABI.H/New.cp"),
+            Object(NonMatching, "Runtime.PPCEABI.H/NewMore.cp"),
+            Object(NonMatching, "Runtime.PPCEABI.H/NMWException.cp"),
             Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
             Object(NonMatching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp"),
+            Object(NonMatching, "Runtime.PPCEABI.H/GCN_mem_alloc.c"),
+        ],
+    },
+    {
+        "lib": "MSL_C.PPCEABI.bare.H",
+        "mw_version": config.linker_version,
+        "cflags": cflags_msl,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/abort_exit.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/alloc.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/errno.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/ansi_files.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/ansi_fp.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/arith.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/buffer_io.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/ctype.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/direct_io.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/file_io.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/FILE_POS.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/mbstring.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/mem.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/mem_funcs.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/misc_io.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/printf.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/float.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/signal.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/string.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/uart_console_io.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/wchar_io.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/e_acos.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/e_asin.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/e_atan2.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/e_fmod.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/e_pow.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/e_rem_pio2.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/k_cos.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/k_rem_pio2.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/k_sin.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/k_tan.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_atan.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_copysign.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_cos.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_floor.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_frexp.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_ldexp.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_modf.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_sin.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/s_tan.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/w_acos.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/w_asin.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/w_atan2.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/w_fmod.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/w_pow.c"),
+            Object(NonMatching, "MSL_C.PPCEABI.bare.H/math_ppc.c"),
+        ],
+    },
+    {
+        "lib": "TRK_MINNOW_DOLPHIN",
+        "mw_version": config.linker_version,
+        "cflags": cflags_trk,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/mainloop.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/nubevent.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/nubinit.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/msg.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/msgbuf.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/serpoll.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/usrput.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/dispatch.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/msghndlr.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/support.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/mutex_TRK.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/notify.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/flush_cache.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/mem_TRK.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/targimpl.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/targsupp.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/__exception.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/dolphin_trk.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/mpc_7xx_603e.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/main_TRK.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/targcont.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/target_options.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/mslsupp.c"),
+        ],
+    },
+    MusyX(
+        objects={
+            Object(Matching, "musyx/runtime/seq.c"),
+            Object(NonMatching, "musyx/runtime/synth.c"),
+            Object(Matching, "musyx/runtime/seq_api.c"),
+            Object(Matching, "musyx/runtime/snd_synthapi.c"),
+            Object(NonMatching, "musyx/runtime/stream.c"),
+            Object(Matching, "musyx/runtime/synthdata.c"),
+            Object(NonMatching, "musyx/runtime/synthmacros.c"),
+            Object(NonMatching, "musyx/runtime/synthvoice.c"),
+            Object(Matching, "musyx/runtime/synth_ac.c"),
+            Object(Matching, "musyx/runtime/synth_dbtab.c"),
+            Object(NonMatching, "musyx/runtime/synth_adsr.c"),
+            Object(NonMatching, "musyx/runtime/synth_vsamples.c"),
+            Object(NonMatching, "musyx/runtime/s_data.c"),
+            Object(NonMatching, "musyx/runtime/hw_dspctrl.c"),
+            Object(Matching, "musyx/runtime/hw_volconv.c"),
+            Object(Matching, "musyx/runtime/snd3d.c"),
+            Object(Matching, "musyx/runtime/snd_init.c"),
+            Object(NonMatching, "musyx/runtime/snd_math.c"),
+            Object(NonMatching, "musyx/runtime/snd_midictrl.c"),
+            Object(NonMatching, "musyx/runtime/snd_service.c"),
+            Object(Matching, "musyx/runtime/hardware.c"),
+            Object(Matching, "musyx/runtime/dsp_import.c"),
+            Object(Matching, "musyx/runtime/hw_aramdma.c"),
+            Object(Matching, "musyx/runtime/hw_dolphin.c"),
+            Object(Matching, "musyx/runtime/hw_memory.c"),
+            Object(Matching, "musyx/runtime/CheapReverb/creverb_fx.c"),
+            Object(NonMatching, "musyx/runtime/CheapReverb/creverb.c"),
+            Object(Matching, "musyx/runtime/StdReverb/reverb_fx.c"),
+            Object(NonMatching, "musyx/runtime/StdReverb/reverb.c"),
+            Object(Matching, "musyx/runtime/Delay/delay_fx.c"),
+            Object(Matching, "musyx/runtime/Chorus/chorus_fx.c"),
+        }
+    ),
+    {
+        "lib": "OdemuExi2",
+        "mw_version": config.linker_version,
+        "cflags": cflags_odemuexi,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "OdemuExi2/DebuggerDriver.c"),
+        ],
+    },
+    {
+        "lib": "amcstubs",
+        "mw_version": config.linker_version,
+        "cflags": cflags_amcstub,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "amcstubs/AmcExi2Stubs.c"),
+        ],
+    },
+    {
+        "lib": "odenotstub",
+        "mw_version": config.linker_version,
+        "cflags": cflags_odenotstub,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "odenotstub/odenotstub.c"),
+        ],
+    },
+    {
+        "lib": "libhu",
+        "mw_version": config.linker_version,
+        "cflags": cflags_libhu,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "libhu/setvf.c"),
+            Object(NonMatching, "libhu/subvf.c"),
+        ],
+    },
+    {
+        "lib": "msm",
+        "mw_version": "GC/1.2.5n",
+        "cflags": cflags_msm,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "msm/msmsys.c"),
+            Object(NonMatching, "msm/msmmem.c"),
+            Object(Matching, "msm/msmfio.c"),
+            Object(NonMatching, "msm/msmmus.c"),
+            Object(NonMatching, "msm/msmse.c"),
+            Object(NonMatching, "msm/msmstream.c"),
         ],
     },
     {
@@ -500,50 +758,177 @@ config.libs = [
             Object(Matching, "REL/empty.c"),  # Must be marked as matching
         ],
     },
-    {
-        "lib": "_minigameDLL",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+    Rel('_minigameDLL',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
-        ],
-    },
-    {
-        "lib": "bootDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('bootDll',
+        objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/bootDll/bootDll.c"),
             Object(Matching, "REL/bootDll/nintendo_data.c"),
-        ],
-    },
-    {
-        "lib": "subchrselDll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
+        }
+    ),
+    Rel('E3setupDLL',
+        objects = {
+            Object(NonMatching, "REL/E3setupDLL/mgselect.c"),
             Object(Matching, "REL/executor.c"),
-            Object(Matching, "REL/subchrselDll/subchrselDll.c"),
-        ],
-    },
-    {
-        "lib": "w10Dll",
-        "mw_version": config.linker_version,
-        "cflags": cflags_rel,
-        "host": False,
-        "objects": [
-            Object(Matching, "REL/w10Dll/w10Dll_init.c"),
-            Object(Matching, "REL/w10Dll/w10Dll.c"),
-            Object(Matching, "REL/w10Dll/w10Dll2.c"),
-            Object(Matching, "REL/w10Dll/w10Dll3.c"),
-            Object(Matching, "REL/w10Dll/w10Dll4.c"),
-        ],
-    },
+            Object(NonMatching, "REL/E3setupDLL/main.c"),
+        }
+    ),
+    Rel('instDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/instDll/main.c"),
+            Object(NonMatching, "REL/instDll/font.c"),
+        }
+    ),
+    Rel('m401Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m401Dll/main.c"),
+            Object(NonMatching, "REL/m401Dll/main_ex.c"),
+        }
+    ),
+    Rel('m402Dll',
+        objects = {
+            Object(NonMatching, "REL/m402Dll/main.c"),
+        }
+    ),
+    Rel('m403Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m403Dll/main.c"),
+            Object(NonMatching, "REL/m403Dll/scene.c"),
+        }
+    ),
+    Rel('m404Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m404Dll/main.c"),
+        }
+    ),
+    Rel('mentDll',
+        objects = {
+            Object(NonMatching, "REL/mentDll/common.c"),
+            Object(NonMatching, "REL/mentDll/main.c"),
+        }
+    ),
+    Rel('mgmodedll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/mgmodedll/mgmode.c"),
+            Object(NonMatching, "REL/mgmodedll/free_play.c"),
+            Object(NonMatching, "REL/mgmodedll/record.c"),
+            Object(NonMatching, "REL/mgmodedll/battle.c"),
+            Object(NonMatching, "REL/mgmodedll/tictactoe.c"),
+            Object(NonMatching, "REL/mgmodedll/main.c"),
+            Object(NonMatching, "REL/mgmodedll/datalist.c"),
+            Object(NonMatching, "REL/mgmodedll/minigame.c"),
+        }
+    ),
+    Rel('modeseldll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/modeseldll/main.c"),
+            Object(NonMatching, "REL/modeseldll/modesel.c"),
+            Object(NonMatching, "REL/modeseldll/filesel.c"),
+            Object(NonMatching, "REL/modeseldll/datalist.c"),
+        }
+    ),
+    Rel('mpexDll',
+        objects = {
+            Object(NonMatching, "REL/mpexDll/main.c"),
+            Object(NonMatching, "REL/mpexDll/mpex.c"),
+            Object(NonMatching, "REL/mpexDll/charsel.c"),
+            Object(NonMatching, "REL/mpexDll/mgname.c"),
+        }
+    ),
+    Rel('option',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/option/scene.c"),
+            Object(NonMatching, "REL/option/camera.c"),
+            Object(NonMatching, "REL/option/room.c"),
+            Object(NonMatching, "REL/option/guide.c"),
+            Object(NonMatching, "REL/option/state.c"),
+            Object(NonMatching, "REL/option/rumble.c"),
+            Object(NonMatching, "REL/option/sound.c"),
+            Object(NonMatching, "REL/option/record.c"),
+            Object(NonMatching, "REL/option/window.c"),
+        }
+    ),
+    Rel('present',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/present/init.c"),
+            Object(NonMatching, "REL/present/camera.c"),
+            Object(NonMatching, "REL/present/present.c"),
+            Object(NonMatching, "REL/present/main.c"),
+            Object(NonMatching, "REL/present/common.c"),
+        }
+    ),
+    Rel('selmenuDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/selmenuDll/selmenuDll.c"),
+        }
+    ),
+    Rel('staffDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/staffDll/staffDll.c"),
+        }
+    ),
+    Rel('subchrselDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/subchrselDll/subchrselDll.c"),
+        }
+    ),
+    Rel('w01Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w01Dll/main.c"),
+            Object(NonMatching, "REL/w01Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w01Dll/mg_item.c"),
+        }
+    ),
+    Rel('w02Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w02Dll/main.c"),
+            Object(NonMatching, "REL/w02Dll/dice.c"),
+            Object(NonMatching, "REL/w02Dll/gamble.c"),
+            Object(NonMatching, "REL/w02Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w02Dll/mg_item.c"),
+            Object(NonMatching, "REL/w02Dll/shuffleboard.c"),
+            Object(NonMatching, "REL/w02Dll/roulette.c"),
+        }
+    ),
+    Rel('w03Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w03Dll/main.c"),
+            Object(NonMatching, "REL/w03Dll/statue.c"),
+            Object(NonMatching, "REL/w03Dll/condor.c"),
+            Object(NonMatching, "REL/w03Dll/river.c"),
+            Object(NonMatching, "REL/w03Dll/smoke.c"),
+            Object(NonMatching, "REL/w03Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w03Dll/mg_item.c"),
+        }
+    ),
+    Rel('w10Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(Matching, "REL/w10Dll/main.c"),
+            Object(Matching, "REL/w10Dll/host.c"),
+            Object(Matching, "REL/w10Dll/scene.c"),
+            Object(Matching, "REL/w10Dll/tutorial.c"),
+        }
+    ),
 ]
 
 if args.mode == "configure":

@@ -107,7 +107,7 @@ void fn_1_1834(void) {
 void fn_1_18BC(void) {
     fn_1_BA0(0x2E0028);
     fn_1_BA0(0x2E0029);
-    lbl_801A52E8 = 0;
+    boardTutorialData = 0;
     fn_8008853C(0);
 }
 
@@ -154,7 +154,7 @@ void fn_1_1984(void) {
             OSReport(lbl_1_data_98);
             fn_80070EE8(0, 0x1F3);
             BoardKill();
-            fn_800B3FD8(NULL);
+            BoardTutorialHookSet(NULL);
         }
     }
 }
@@ -183,7 +183,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                         OSReport(lbl_1_data_98);
                         fn_80070EE8(0, 0x1F3);
                         BoardKill();
-                        fn_800B3FD8(NULL);
+                        BoardTutorialHookSet(NULL);
                     }
                 }
             }

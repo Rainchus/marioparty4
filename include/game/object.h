@@ -31,25 +31,25 @@ typedef struct om_ovl_his_data {
 } omOvlHisData;
 
 typedef struct om_obj_data {
-    u16 stat;
-    s16 next_idx_alloc;
-    s16 prio;
-    s16 prev;
-    s16 next;
-    s16 next_idx;
-    s16 group;
-    u16 group_idx;
-    int unk10;
-    omObjFunc func;
-    Vec trans;
-    Vec rot;
-    Vec scale;
-    u16 mdlcnt;
-    s16 *model;
-    u16 mtncnt;
-    s16 *motion;
-    int work[4];
-    void *data;
+/* 0x00 */ u16 stat;
+/* 0x02 */ s16 next_idx_alloc;
+/* 0x04 */ s16 prio;
+/* 0x06 */ s16 prev;
+/* 0x08 */ s16 next;
+/* 0x0A */ s16 next_idx;
+/* 0x0C */ s16 group;
+/* 0x0E */ u16 group_idx;
+/* 0x10 */ int unk10;
+/* 0x14 */ omObjFunc func;
+/* 0x18 */ Vec trans;
+/* 0x24 */ Vec rot;
+/* 0x30 */ Vec scale;
+/* 0x3C */ u16 mdlcnt;
+/* 0x40 */ s16 *model;
+/* 0x44 */ u16 mtncnt;
+/* 0x48 */ s16 *motion;
+/* 0x4C */ int work[4];
+/* 0x5C */ void *data;
 } omObjData;
 
 void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl);

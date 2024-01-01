@@ -65,7 +65,7 @@ inline s32 get_current_board(void) {
     return GWSystem.board;
 }
 
-void fn_1_E0(void) {
+void BoardInit(void) {
     f32 sp10;
     f32 spC[2];
     s32 sp8;
@@ -80,13 +80,13 @@ void fn_1_E0(void) {
     lbl_1_bss_0->unk0 = 0;
     lbl_1_bss_0->unk4 = 0;
     lbl_1_bss_0->unk6 = 0;
-    fn_800B3FD8(&fn_1_1AAC);
+    BoardTutorialHookSet(&fn_1_1AAC);
     fn_1_AEC();
     fn_1_1D68();
     lbl_1_bss_C = 0;
     BoardSpaceInit(MAKE_DATA_NUM(DATADIR_W10, 0));
     temp = BoardSpaceFlagSearch(0, 1);
-    fn_800B4274(temp, 1);
+    BoardTutorialBlockSetPos(temp, 1);
     lbl_1_data_28 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_28, -1.0f);
     BoardModelPosSet(lbl_1_data_28, 0.0f, 0.0f, 0.0f);
@@ -105,7 +105,7 @@ void fn_1_E0(void) {
     BoardModelMotionStart(lbl_1_data_32, 1, 0x40000001);
     lbl_1_data_30 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 13), lbl_1_data_6C, 0);
     BoardModelMotionStart(lbl_1_data_30, 1, 0x40000001);
-    fn_8005D10C(&fn_1_8C0, &fn_1_904);
+    BoardLightHookSet(&fn_1_8C0, &fn_1_904);
     for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
         temp_r30 = &lbl_1_data_0[i];
         if (temp_r30->unk24 != -1) {
@@ -138,7 +138,7 @@ void fn_1_E0(void) {
     HuWinMesPalSet(lbl_1_bss_E, 7, 0, 0, 0);
 }
 
-void fn_1_6D8(void) {
+void BoardDestroy(void) {
     s32 i;
     for (i = 0; i < 1; i++) {
         if (lbl_1_bss_10[i] != 0) {

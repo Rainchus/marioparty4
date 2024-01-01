@@ -8,16 +8,16 @@
 
 static void SubchrMain(void);
 
-static u8 cur_direction[4];
+static u8 dirPlayer[4];
 
-static char *player_numstr[4] = {
+static char *playerNumTbl[4] = {
     "PLAYER1",
     "PLAYER2",
     "PLAYER3",
     "PLAYER4"
 };
 
-static char *character_str[8] = {
+static char *charNameTbl[8] = {
     "MARIO",
     "LUIGI",
     "PEACH",
@@ -28,7 +28,7 @@ static char *character_str[8] = {
     "WALUIGI"
 };
 
-static char *ext_character_str[7] = {
+static char *extCharNameTbl[7] = {
     "",
     "KOOPA",
     "KINOPIO",
@@ -51,7 +51,7 @@ static u16 GetBtns(void)
     u16 btns;
 
     btns = HuPadBtnDown[0];
-    if (cur_direction[0] != HuPadDStk[0]) {
+    if (dirPlayer[0] != HuPadDStk[0]) {
         btns |= HuPadDStk[0];
     }
     return btns;
@@ -65,7 +65,7 @@ static void SubchrMain()
     for(i=0; i<4; i++) {
         character[i] = GWPlayerCfg[i].character;
         ext_character[i] = 0;
-        cur_direction[i] = 0;
+        dirPlayer[i] = 0;
     }
     cursor_pos = 0;
     while(1) {
@@ -77,16 +77,16 @@ static void SubchrMain()
         y = 120;
         for(i=0; i<4; i++, y += 16) {
             fontcolor = FONT_COLOR_GREEN;
-            print8(x, y, 2.0f, player_numstr[i]);
+            print8(x, y, 2.0f, playerNumTbl[i]);
             if(i == cursor_pos) {
                 fontcolor = FONT_COLOR_CYAN;
             } else {
                 fontcolor = FONT_COLOR_GREEN;
             }
             if(ext_character[i] != 0) {
-                print8(x+200, y, 2.0f, ext_character_str[ext_character[i]]);
+                print8(x+200, y, 2.0f, extCharNameTbl[ext_character[i]]);
             } else {
-                print8(x+200, y, 2.0f, character_str[character[i]]);
+                print8(x+200, y, 2.0f, charNameTbl[character[i]]);
             }
         }
         if(GetBtns() & PAD_BUTTON_START) {
@@ -156,8 +156,8 @@ static void SubchrMain()
                     HuPrcVSleep();
                 } while(1);
             } else {
-                if(cur_direction[0] != HuPadDStk[0]) {
-                    cur_direction[0] = HuPadDStk[0];
+                if(dirPlayer[0] != HuPadDStk[0]) {
+                    dirPlayer[0] = HuPadDStk[0];
                 }
             }
         }
