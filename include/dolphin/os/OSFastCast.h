@@ -75,6 +75,18 @@ static inline u8 __OSf32tou8(register f32 inF)
 
 static inline void OSf32tou8(f32 *f, u8 *out) { *out = __OSf32tou8(*f); }
 
+static inline float __OSu16tof32(register const u16* arg) {
+    register float ret;
+
+    asm {
+        psq_l ret, 0(arg), 1, 3
+    }
+    
+    return ret;
+}
+
+static inline void OSu16tof32(const u16* in, float* out) { *out = __OSu16tof32(in); }
+
 #ifdef __cplusplus
 }
 #endif

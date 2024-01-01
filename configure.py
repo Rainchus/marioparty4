@@ -369,7 +369,7 @@ config.libs = [
             Object(NonMatching, "game/board/space.c"),
             Object(NonMatching, "game/board/shop.c"),
             Object(NonMatching, "game/board/lottery.c"),
-            Object(NonMatching, "game/board/basic_space.c"),
+            Object(Matching, "game/board/basic_space.c"),
             Object(NonMatching, "game/board/warp.c"),
             Object(NonMatching, "game/board/char_roulette.c"),
             Object(NonMatching, "game/board/mushroom_space.c"),
