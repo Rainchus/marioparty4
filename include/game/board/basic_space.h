@@ -33,14 +33,6 @@ omObjData *lbl_8013A1F0[4] = {
     (omObjData *)NULL
 };
 
-s32 lbl_8013A200[10] = {
-    0x7000C, 0x7000D,
-    0x7000E, 0x7000F,
-    0x70010, 0x70011,
-    0x70012, 0x70013,
-    0x70014, 0x70015
-};
-
 void BoardEventLandBlue(s32);
 void BoardEventLandRed(s32);
 s8 fn_8007FE70(Point3d*, s8);

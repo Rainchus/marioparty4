@@ -12,6 +12,14 @@ void BoardRotateDiceNumbers(s32);
 void BoardCameraAnimBlendSet(s32, s16, s16);
 s32 BoardPlayerAnimBlendCheck(s32);
 
+s32 lbl_8013A200[10] = {
+    0x7000C, 0x7000D,
+    0x7000E, 0x7000F,
+    0x70010, 0x70011,
+    0x70012, 0x70013,
+    0x70014, 0x70015
+};
+
 void BoardEventLandBlue(s32 arg0) {
     Point3d sp8;
     f32 temp_f1;
