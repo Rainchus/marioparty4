@@ -390,16 +390,14 @@ void BoardWinStartComKeySet(void) {
 
     if (BoardPlayerIsAllCom() != 0) {
         sp8[0] = sp8[1] = sp8[2] = sp8[3] = 0x100;
-        goto block_20;
-    }
-    if (GWSystem.player_curr == -1) {
-        if ((GWPlayer[0].com == 0) || (GWPlayer[1].com == 0) || (GWPlayer[2].com == 0) || (GWPlayer[3].com == 0)) {
+    } else {
+        if (GWSystem.player_curr == -1) {
+            if ((GWPlayer[0].com == 0) || (GWPlayer[1].com == 0) || (GWPlayer[2].com == 0) || (GWPlayer[3].com == 0)) {
+                return;
+            }
+        } else if (GWPlayer[GWSystem.player_curr].com == 0) {
             return;
         }
-        goto block_9;
-    }
-    if (GWPlayer[GWSystem.player_curr].com != 0) {
-block_9:
         if (GWSystem.player_curr != -1) {
             for (var_r31 = 0; var_r31 < 4; var_r31++) {
                 temp_r29 = GWPlayer[var_r31].port;
@@ -414,18 +412,17 @@ block_9:
                 sp8[var_r31] = 0x100;
             }
         }
-block_20:
-        temp_r28 = GWMessSpeedGet();
-        temp_r30 = HuWinKeyWaitNumGet(winMess);
-        if (temp_r30 != 0) {
-            HuWinComKeyReset();
-            for (var_r31 = 0; var_r31 < temp_r30; var_r31++) {
-                HuWinComKeyWait(sp8[0], sp8[1], sp8[2], sp8[3], (s32)temp_r28);
-            }
+    }
+    temp_r28 = GWMessSpeedGet();
+    temp_r30 = HuWinKeyWaitNumGet(winMess);
+    if (temp_r30 != 0) {
+        HuWinComKeyReset();
+        for (var_r31 = 0; var_r31 < temp_r30; var_r31++) {
+            HuWinComKeyWait(sp8[0], sp8[1], sp8[2], sp8[3], (s32)temp_r28);
         }
     }
 }
 
-void BoardWinComKeyFuncSet(void (*func)()) {
+void BoardWinComKeyFuncSet(void (*func)) {
     comKeyFunc = func;
 }

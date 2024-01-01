@@ -30,6 +30,6 @@ s32 BoardWinPortraitGet(void);
 s32 BoardWinPortraitGetStar(void);
 void BoardWinPlayerSet(s32);
 void BoardWinStartComKeySet(void);
-void BoardWinComKeyFuncSet(void (*)());
+void BoardWinComKeyFuncSet(void (*));
 
 #endif

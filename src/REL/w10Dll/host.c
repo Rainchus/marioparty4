@@ -22,7 +22,7 @@ void fn_1_AEC(void) {
 }
 
 void fn_1_BA0(s32 arg0) {
-    s32 var_r31;
+    s16 var_r31;
 
     switch (lbl_1_bss_1C) {
     case 0:
