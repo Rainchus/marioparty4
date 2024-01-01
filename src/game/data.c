@@ -116,8 +116,7 @@ DataReadStat *HuDataDirRead(s32 data_num)
             status = HuDataReadChk(data_num);
             read_stat = &ReadDataStat[status];
         } else {
-            status = HuDataReadStatusGet();
-            if(status == -1) {
+            if((status = HuDataReadStatusGet()) == -1) {
                 OSReport("data.c: Data Work Max Error\n");
                 return NULL;
             }
@@ -156,8 +155,7 @@ DataReadStat *HuDataDirReadNum(s32 data_num, s32 num)
             read_stat->num = num;
         } else {
             OSReport("data num %x\n", data_num);
-            status = HuDataReadStatusGet();
-            if(status == -1) {
+            if((status = HuDataReadStatusGet()) == -1) {
                 OSReport("data.c: Data Work Max Error\n");
                 return NULL;
             }
