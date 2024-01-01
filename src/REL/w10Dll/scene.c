@@ -177,7 +177,7 @@ void fn_1_13A4(void) {
         GWPlayer[i].color = 1;
     }
     fn_800A4C88();
-    fn_800884F4(0);
+    BoardStatusShowSetAll(0);
     fn_1_C10(0);
     fn_1_BA0(0x2E002B);
     sp8.x = -33.0f;
