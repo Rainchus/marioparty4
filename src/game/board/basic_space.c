@@ -139,7 +139,7 @@ s8 fn_8007FE70(Point3d* arg0, s8 arg1) {
     temp_r31->field08_bit3 = 0;
     temp_r31->unk_02 = __abs(arg1) / 10;
     temp_r31->unk_03 = __abs(arg1) % 10;
-    temp_r31->unk_01 = (s8) (var_r29 + 1);
+    temp_r31->unk_01 = var_r29 + 1;
     temp_r31->unk_04 = 0;
     temp_r31->unk_06 = 0;
     fn_80080124(temp_r31, arg0);

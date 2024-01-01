@@ -12,8 +12,6 @@ typedef struct bit_copy {
         u8 field08_bit1 : 1;
         u8 field08_bit2 : 1;
         u8 field08_bit3 : 3;
-        u8 field08_bit6 : 1;
-        u8 field08_bit7 : 1;
     };
     s8 unk_01;
     s8 unk_02;
@@ -24,7 +22,7 @@ typedef struct bit_copy {
     s16 unk_0A;
     s16 unk_0C;
     s16 unk_0E;
-} bitcopy;
+} bitcopy; // sizeof 0x10
 
 void BoardEventLandBlue(s32);
 void BoardEventLandRed(s32);
