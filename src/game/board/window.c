@@ -39,7 +39,7 @@ void BoardWinInit(void) {
     HuWinInit(1);
 }
 
-void fn_8006FDA0(f32* arg0) {
+void BoardWinUnusedArraySet(f32* arg0) {
     if (arg0 != 0) {
         lbl_801D3F70[0] = arg0[0];
         lbl_801D3F70[1] = arg0[1];

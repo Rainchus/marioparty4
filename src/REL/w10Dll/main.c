@@ -1,5 +1,6 @@
 #include "include/REL/w10Dll.h"
 #include "game/data.h"
+#include "game/hsfman.h"
 
 #include "math.h"
 
@@ -177,7 +178,7 @@ void BoardDestroy(void) {
 }
 
 void fn_1_8C0(void) {
-    s32 temp = BoardModelIDGet(lbl_1_data_28);
+    s16 temp = BoardModelIDGet(lbl_1_data_28);
     Hu3DModelLightInfoSet(temp, 1);
 }
 

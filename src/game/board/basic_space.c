@@ -29,17 +29,17 @@ static void CoinChgSeparate(omObjData*, coinChg*);
 static void CoinChgShow(omObjData*, coinChg*);
 static void CoinChgDisappear(omObjData*, coinChg*);
 
-void BoardTutorialHookExec(s16, s32);
-void BoardCameraViewSet(s32);
-void omVibrate(s16, s16, s16, s16);
-void BoardPlayerPosGet(s32, Vec*);
-s32 BoardModelPosGet(s16, Vec*);
-void BoardPlayerMotionEndWait(s32);
-void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
-void BoardPlayerCoinsAdd(s32, s32);
-void BoardRotateDiceNumbers(s32);
-void BoardCameraAnimBlendSet(s32, s16, s16);
-s32 BoardPlayerAnimBlendCheck(s32);
+extern void BoardTutorialHookExec(s16, s32);
+extern void BoardCameraViewSet(s32);
+extern void omVibrate(s16, s16, s16, s16);
+extern void BoardPlayerPosGet(s32, Vec*);
+extern s32 BoardModelPosGet(s16, Vec*);
+extern void BoardPlayerMotionEndWait(s32);
+extern void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
+extern void BoardPlayerCoinsAdd(s32, s32);
+extern void BoardRotateDiceNumbers(s32);
+extern void BoardCameraAnimBlendSet(s32, s16, s16);
+extern s32 BoardPlayerAnimBlendCheck(s32);
 
 static omObjData *coinChgObj[4] = {
     NULL,
