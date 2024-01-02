@@ -16,7 +16,7 @@ static s16 defaultChoice;
 static s32 winMess;
 static s32 winAttr;
 f32 lbl_801D3F70[2];
-static void (*comKeyFunc)();
+static BoardWinComKeyFunc comKeyFunc;
 static Process* winProc;
 static s32 choiceDisableTbl[0x10];
 static u32 winInsertMesTbl[8];
@@ -33,7 +33,7 @@ static s32 StarPortraitTbl[] = {
 };
 
 static s16 windowID = -1;
-const s8 lbl_801D5318[4] = {0, 1, 4, 0};
+static const s8 winSpeedTbl[4] = {0, 1, 4, 0};
 
 void BoardWinInit(void) {
     HuWinInit(1);
@@ -67,13 +67,13 @@ void BoardWinDestroy(void) {
     winProc = 0;
 }
 
-void BoardWinProc(void) {
-    f32 sp10[2];
-    f32 sp8[2];
-    s32 var_r31;
-    f32* temp_r29;
-    f32* temp_r30;
-    WindowData *var_r28 = NULL;
+static void ExecBoardWindow(void) {
+    f32 size[2];
+    f32 pos[2];
+    s32 i;
+    f32 *pos_win;
+    f32 *size_win;
+    WindowData *win_curr = NULL;
 
     f32 var_50[7][2] = {
         {384.0f,  64.0f}, {432.0f, 192.0f},
@@ -89,26 +89,26 @@ void BoardWinProc(void) {
     };
     
     if (windowID < 0) {
-        temp_r30 = var_50[winPosIdx];
-        temp_r29 = var_18[winPosIdx];
-        HuWinMesMaxSizeGet(1, sp10, winMess);
-        if (sp10[0] <= temp_r30[0]) {
-            sp10[0] = temp_r30[0];
-            sp8[0] = temp_r29[0];
+        size_win = var_50[winPosIdx];
+        pos_win = var_18[winPosIdx];
+        HuWinMesMaxSizeGet(1, size, winMess);
+        if (size[0] <= size_win[0]) {
+            size[0] = size_win[0];
+            pos[0] = pos_win[0];
         } else {
-            sp8[0] = -10000.0f;
+            pos[0] = -10000.0f;
         }
-        if (sp10[1] <= temp_r30[1]) {
-            sp10[1] = temp_r30[1];
+        if (size[1] <= size_win[1]) {
+            size[1] = size_win[1];
         }
-        sp8[1] = temp_r29[1];
+        pos[1] = pos_win[1];
         if ((winPosIdx == 5) || (winPosIdx == 6)) {
-            windowID = HuWinExCreateStyled(sp8[0], sp8[1], sp10[0], sp10[1], -1, 1);
+            windowID = HuWinExCreateStyled(pos[0], pos[1], size[0], size[1], -1, 1);
             HuWinMesPalSet(windowID, 7, 0, 0, 0);
         } else if (winPortrait == -1) {
-            windowID = HuWinExCreate(sp8[0], sp8[1], sp10[0], sp10[1], -1);
+            windowID = HuWinExCreate(pos[0], pos[1], size[0], size[1], -1);
         } else {
-            windowID = HuWinExCreate(sp8[0], sp8[1], sp10[0], sp10[1], winPortrait);
+            windowID = HuWinExCreate(pos[0], pos[1], size[0], size[1], winPortrait);
         }
         if (windowID == -1) {
             HuPrcEnd();
@@ -131,26 +131,26 @@ void BoardWinProc(void) {
     HuWinMesSpeedSet(windowID, messSpeed);
     HuWinMesSet(windowID, winMess);
     
-    for (var_r31 = 0; var_r31 < 8; var_r31++) {
-        if (winInsertMesTbl[var_r31] != -1) {
-            HuWinInsertMesSet(windowID, winInsertMesTbl[var_r31], var_r31);
+    for (i = 0; i < 8; i++) {
+        if (winInsertMesTbl[i] != -1) {
+            HuWinInsertMesSet(windowID, winInsertMesTbl[i], i);
         }
     }
     HuWinAttrSet(windowID, winAttr);
     
-    for (var_r31 = 0; var_r31 < 0x10; var_r31++) {
-        if (choiceDisableTbl[var_r31] != 0) {
-            HuWinChoiceDisable(windowID, var_r31);
+    for (i = 0; i < 16; i++) {
+        if (choiceDisableTbl[i] != 0) {
+            HuWinChoiceDisable(windowID, i);
         }
     }
     if (autoPickF != 0) {
         BoardWinStartComKeySet();
-        if (comKeyFunc != 0) {
+        if (comKeyFunc) {
             comKeyFunc();
         }
     } else if ((_CheckFlag(0x1000B) != 0) && ((winPosIdx == 5) || (winPosIdx == 6))) {
-        var_r28 = &winData[windowID];
-        var_r28->active_pad = 0xF;
+        win_curr = &winData[windowID];
+        win_curr->active_pad = 0xF;
         HuWinComKeyWait(-1, -1, -1, -1, 0);
     } else {
         BoardWinStartComKeySet();
@@ -180,16 +180,15 @@ void BoardWinPause(void) {
     winPause = 1;
 }
 
-void BoardWinCreateChoice(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 var_r31;
-    SystemState* temp_r3;
-    s32 var_r30;
+void BoardWinCreateChoice(s32 pos, u32 mess, s32 portrait, s32 choice) {
+    s32 i;
+    s32 speed;
     
 
-    winPosIdx = arg0;
+    winPosIdx = pos;
     winChoice = 0;
-    defaultChoice = arg3;
-    winPortrait = arg2;
+    defaultChoice = choice;
+    winPortrait = portrait;
     winAttr = 0;
     autoPickF = 1;
     winWait = 0;
@@ -199,35 +198,34 @@ void BoardWinCreateChoice(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     winPause = 0;
     HuWinComKeyReset();
     
-    for (var_r31 = 0; var_r31 < 0x10; var_r31++) {
-        choiceDisableTbl[var_r31] = 0;
+    for (i = 0; i < 16; i++) {
+        choiceDisableTbl[i] = 0;
     }
     
-    for (var_r31 = 0; var_r31 < 8; var_r31++) {
-        winInsertMesTbl[var_r31] = -1;
+    for (i = 0; i < 8; i++) {
+        winInsertMesTbl[i] = -1;
     }
     if (winProc == 0) {
-        winProc = HuPrcChildCreate(&BoardWinProc, 0x2009, 0x4000, 0, boardMainProc);
+        winProc = HuPrcChildCreate(&ExecBoardWindow, 0x2009, 0x4000, 0, boardMainProc);
         HuPrcDestructorSet2(winProc, &BoardWinDestroy);
     }
-    winMess = arg1;
+    winMess = mess;
     if (GWSystem.mess_speed == 3) {
         GWSystem.mess_speed = 1;
     }
-    var_r30 = GWSystem.mess_speed;
-    BoardWinSpeedSet(var_r30);
+    speed = GWSystem.mess_speed;
+    BoardWinSpeedSet(speed);
     BoardWinPlayerSet(GWSystem.player_curr);
 }
 
-void BoardWinCreate(s32 arg0, s32 arg1, s32 arg2) {
-    s32 var_r30;
-    s32 var_r31;
-    void* temp_r3;
+void BoardWinCreate(s32 pos, u32 mess, s32 portrait) {
+    s32 speed;
+    s32 i;
 
-    winPosIdx = arg0;
+    winPosIdx = pos;
     winChoice = 0;
     defaultChoice = -1;
-    winPortrait = arg2;
+    winPortrait = portrait;
     winAttr = 0;
     autoPickF = 1;
     winWait = 0;
@@ -237,28 +235,28 @@ void BoardWinCreate(s32 arg0, s32 arg1, s32 arg2) {
     winPause = 0;
     HuWinComKeyReset();
     
-    for (var_r31 = 0; var_r31 < 0x10; var_r31++) {
-        choiceDisableTbl[var_r31] = 0;
+    for (i = 0; i < 0x10; i++) {
+        choiceDisableTbl[i] = 0;
     }
     
-    for (var_r31 = 0; var_r31 < 8; var_r31++) {
-        winInsertMesTbl[var_r31] = -1;
+    for (i = 0; i < 8; i++) {
+        winInsertMesTbl[i] = -1;
     }
     if (winProc == 0) {
-        winProc = HuPrcChildCreate(&BoardWinProc, 0x2009U, 0x4000U, 0, boardMainProc);
+        winProc = HuPrcChildCreate(&ExecBoardWindow, 0x2009U, 0x4000U, 0, boardMainProc);
         HuPrcDestructorSet2(winProc, &BoardWinDestroy);
     }
-    winMess = arg1;
+    winMess = mess;
     if (GWSystem.mess_speed == 3) {
         GWSystem.mess_speed = 1;
     }
-    var_r30 = GWSystem.mess_speed;
-    BoardWinSpeedSet(var_r30);
+    speed = GWSystem.mess_speed;
+    BoardWinSpeedSet(speed);
     BoardWinPlayerSet(GWSystem.player_curr);
     autoPickF = 0;
 }
 
-void BoardWinInsertMesSet(s32 value, s32 index) {
+void BoardWinInsertMesSet(u32 value, s32 index) {
     winInsertMesTbl[index] = value;
 }
 
@@ -283,22 +281,22 @@ void BoardWinKill(void) {
     }
 }
 
-void BoardWinSetAttr(s32 arg0) {
-    winAttr |= arg0;
+void BoardWinSetAttr(s32 attr) {
+    winAttr |= attr;
     if (windowID >= 0) {
         HuWinAttrSet(windowID, winAttr);
     }
 }
 
-void BoardWinResetAttr(s32 arg0) {
-    winAttr &= ~arg0;
+void BoardWinResetAttr(s32 attr) {
+    winAttr &= ~attr;
     if (windowID >= 0) {
         HuWinAttrSet(windowID, winAttr);
     }
 }
 
-void BoardWinChoiceDisable(s32 index) {
-    choiceDisableTbl[index] = 1;
+void BoardWinChoiceDisable(s32 choice) {
+    choiceDisableTbl[choice] = 1;
 }
 
 void BoardWinKeyWait(void) {
@@ -306,17 +304,17 @@ void BoardWinKeyWait(void) {
 }
 
 int BoardWinSpeedGet(void) {
-    s32 temp_r31;
+    s32 speed;
 
     if (GWSystem.mess_speed == 3) {
         GWSystem.mess_speed = 1;
     }
-    temp_r31 = GWSystem.mess_speed;
-    return lbl_801D5318[temp_r31];
+    speed = GWSystem.mess_speed;
+    return winSpeedTbl[speed];
 }
 
-void BoardWinSpeedSet(s32 arg0) {
-    messSpeed = lbl_801D5318[arg0];
+void BoardWinSpeedSet(s32 value) {
+    messSpeed = winSpeedTbl[value];
     if (windowID != -1) {
         HuWinMesSpeedSet(windowID, messSpeed);
     }
@@ -329,10 +327,10 @@ s16 BoardWinChoiceNowGet(void) {
     return HuWinChoiceNowGet(windowID);
 }
 
-void BoardWinPriSet(s16 arg0) {
-    winPrio = arg0;
+void BoardWinPriSet(s16 prio) {
+    winPrio = prio;
     if (windowID != -1) {
-        HuWinPriSet(windowID, arg0);
+        HuWinPriSet(windowID, prio);
     }
 }
 
@@ -353,13 +351,13 @@ s32 BoardWinPortraitGetStar(void) {
     return StarPortraitTbl[temp];
 }
 
-void BoardWinPlayerSet(s32 arg0) {
-    s32 temp_r0;
+void BoardWinPlayerSet(s32 player) {
+    s32 temp;
     s32 i;
 
-    if (arg0 == -1) {
-        temp_r0 = GWSystem.story;
-        if (temp_r0 != 1) {
+    if (player == -1) {
+        temp = GWSystem.party;
+        if (temp != 1) {
             for (i = 0, disablePlayer = i; i < 4; i++) {
                 if (GWPlayer[i].com != 0) {
                     disablePlayer |= 1 << GWPlayer[i].port;
@@ -368,10 +366,10 @@ void BoardWinPlayerSet(s32 arg0) {
         } else {
             disablePlayer = 0;
         }
-    } else if (GWPlayer[arg0].com != 0) {
+    } else if (GWPlayer[player].com != 0) {
         disablePlayer = 0xF;
     } else {
-        disablePlayer = ~(1 << GWPlayer[arg0].port);
+        disablePlayer = ~(1 << GWPlayer[player].port);
     }
     if (_CheckFlag(0x1000BU) != 0) {
         disablePlayer = 0;
@@ -382,14 +380,13 @@ void BoardWinPlayerSet(s32 arg0) {
 }
 
 void BoardWinStartComKeySet(void) {
-    s32 sp8[4];
-    s16 temp_r28;
-    s32 temp_r30;
-    s32 var_r31;
-    s32 temp_r29;
+    s32 comkey[4];
+    s32 speed;
+    s32 waitnum;
+    s32 i;
 
     if (BoardPlayerIsAllCom() != 0) {
-        sp8[0] = sp8[1] = sp8[2] = sp8[3] = 0x100;
+        comkey[0] = comkey[1] = comkey[2] = comkey[3] = 0x100;
     } else {
         if (GWSystem.player_curr == -1) {
             if ((GWPlayer[0].com == 0) || (GWPlayer[1].com == 0) || (GWPlayer[2].com == 0) || (GWPlayer[3].com == 0)) {
@@ -399,30 +396,30 @@ void BoardWinStartComKeySet(void) {
             return;
         }
         if (GWSystem.player_curr != -1) {
-            for (var_r31 = 0; var_r31 < 4; var_r31++) {
-                temp_r29 = GWPlayer[var_r31].port;
-                if (GWSystem.player_curr == var_r31) {
-                    sp8[temp_r29] = 0x100;
+            for (i = 0; i < 4; i++) {
+                s32 port = GWPlayer[i].port;
+                if (GWSystem.player_curr == i) {
+                    comkey[port] = 0x100;
                 } else {
-                    sp8[temp_r29] = 0;
+                    comkey[port] = 0;
                 }
             }
         } else {
-            for (var_r31 = 0; var_r31 < 4; var_r31++) {
-                sp8[var_r31] = 0x100;
+            for (i = 0; i < 4; i++) {
+                comkey[i] = 0x100;
             }
         }
     }
-    temp_r28 = GWMessSpeedGet();
-    temp_r30 = HuWinKeyWaitNumGet(winMess);
-    if (temp_r30 != 0) {
+    speed = GWMessSpeedGet();
+    waitnum = HuWinKeyWaitNumGet(winMess);
+    if (waitnum != 0) {
         HuWinComKeyReset();
-        for (var_r31 = 0; var_r31 < temp_r30; var_r31++) {
-            HuWinComKeyWait(sp8[0], sp8[1], sp8[2], sp8[3], (s32)temp_r28);
+        for (i = 0; i < waitnum; i++) {
+            HuWinComKeyWait(comkey[0], comkey[1], comkey[2], comkey[3], speed);
         }
     }
 }
 
-void BoardWinComKeyFuncSet(void (*func)) {
+void BoardWinComKeyFuncSet(BoardWinComKeyFunc func) {
     comKeyFunc = func;
 }
