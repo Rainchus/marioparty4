@@ -1,7 +1,7 @@
 #include "REL/board_executor.h"
 
 static void InitBoard(void) {
-    BoardCommonInit(BoardInit, BoardDestroy);
+    BoardCommonInit(BoardCreate, BoardDestroy);
 }
 
 int _prolog(void) {

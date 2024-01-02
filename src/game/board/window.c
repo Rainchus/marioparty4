@@ -356,7 +356,7 @@ void BoardWinPlayerSet(s32 player) {
     s32 i;
 
     if (player == -1) {
-        temp = GWSystem.story;
+        temp = GWSystem.party;
         if (temp != 1) {
             for (i = 0, disablePlayer = i; i < 4; i++) {
                 if (GWPlayer[i].com != 0) {

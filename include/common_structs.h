@@ -14,10 +14,10 @@ typedef struct player_config {
 
 typedef struct system_state {
 /* 0x00 */ struct {
-        u8 story : 1;
+        u8 party : 1;
         u8 team : 1;
     };
-/* 0x01 */ s8 diff_story;
+/* 0x01 */ u8 diff_story;
 /* 0x02 */ struct {
         u16 bonus_star : 1;
         u16 explain_mg : 1;
@@ -26,8 +26,8 @@ typedef struct system_state {
         u16 mess_speed : 2;
         u16 save_mode : 2;
     };
-/* 0x04 */ s8 turn;
-/* 0x05 */ s8 max_turn;
+/* 0x04 */ u8 turn;
+/* 0x05 */ u8 max_turn;
 /* 0x06 */ u8 star_flag;
 /* 0x07 */ u8 star_total;
 /* 0x08 */ struct {
@@ -37,13 +37,14 @@ typedef struct system_state {
 /* 0x09 */ s8 last5_effect;
 /* 0x0A */ s8 player_curr;
 /* 0x0B */ char unk0B[3];
-/* 0x0E */ s16 hidden_block_pos;
+/* 0x0E */ s16 block_pos;
 /* 0x10 */ u8 ATTRIBUTE_ALIGN(4) board_data[32];
 /* 0x30 */ u8 mess_delay;
 /* 0x31 */ struct {
         u8 field31_bit0 : 4;
+		u8 field31_bit4 : 4;
     };
-/* 0x32 */ char unk_32[0x2];
+/* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
 /* 0x36 */ s16 mg_next_extra;
 /* 0x38 */ s16 unk_38;
@@ -53,10 +54,11 @@ typedef struct system_state {
 
 typedef struct player_state {
 /* 0x00 */ struct {
-        u8 diff : 2;
-        u8 com : 1;
-        u8 character : 4;
-        u8 auto_size : 2;
+        u16 diff : 2;
+        u16 com : 1;
+        u16 character : 4;
+        u16 auto_size : 2;
+		u16 field00_bit9 : 1;
     };
 /* 0x02 */ struct {
         u8 team : 1;
@@ -67,14 +69,14 @@ typedef struct player_state {
 /* 0x04 */ s8 port;
 /* 0x05 */ s8 items[3];
 /* 0x08 */ struct {
-        u8 color : 2;
-        u8 moving : 1;
-        u8 field08_bit3 : 1;
-        u8 show_next : 1;
-        u8 size : 2;
-        u8 field08_bit7 : 2;
-        u8 rank : 2;
-        u8 bowser_suit : 1;
+        u16 color : 2;
+        u16 moving : 1;
+        u16 field08_bit3 : 1;
+        u16 show_next : 1;
+        u16 size : 2;
+        u16 field08_bit7 : 2;
+        u16 rank : 2;
+        u16 bowser_suit : 1;
     };
 /* 0x0A */ s8 roll;
 /* 0x0C */ s16 space_curr;
