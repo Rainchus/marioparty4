@@ -104,7 +104,7 @@ void BoardCommonInit(VoidFunc create, VoidFunc destroy)
 	boardTurnStartFunc = NULL;
 	boardObjMan = omInitObjMan(64, 8192);
 	omSystemKeyCheckSetup(boardObjMan);
-	boardMainObj = omAddObjEx(boardObjMan, 0, 0, 0, 1, InitBoardFunc);
+	boardMainObj = omAddObjEx(boardObjMan, 0, 0, 0, -1, InitBoardFunc);
 	switch(omcurovl) {
 		case OVL_W01:
 			GWSystem.board = 0;

@@ -15,7 +15,7 @@ extern s32 BoardModelMotionEndCheck(s16);
 extern void BoardPlayerPosSetV(s32, Point3d*);
 void BoardPlayerRotSet(s32, f32, f32, f32);
 void BoardCameraVisibleSet(s32);
-void BoardCameraSTargetetSpace(s16);
+void BoardCameraTargetSpaceSet(s16);
 extern void BoardRotateDiceNumbers(s32);
 extern void BoardPlayerPosGet(s32, Vec*);
 void BoardPlayerMotionStart(s16, s32, s32);
@@ -146,7 +146,7 @@ void fn_800810A4(s32 arg0) {
     BoardSpacePosGet(0, GWPlayer[arg0].space_curr, &sp8);
     lbl_801D4030 = 1500.0f + sp8.y;
     BoardModelLayerSet(lbl_801D3748, 2);
-    BoardCameraTargetSetModel(lbl_801D3748);
+    BoardCameraTargetModelSet(lbl_801D3748);
     BoardModelMotionStart(lbl_801D3748, 0, 0);
     BoardModelHookSet(lbl_801D3748, lbl_801D3750, temp_r30);
     BoardModelPosSetV(lbl_801D3748, &sp8);
@@ -196,7 +196,7 @@ void fn_80081278(s32 arg0) {
     BoardModelVisibilitySet(lbl_801D374A, 0);
     BoardModelMotionSpeedSet(lbl_801D374A, 0.0f);
     BoardCameraVisibleSet(0);
-    BoardCameraSTargetetSpace(lbl_801D4034);
+    BoardCameraTargetSpaceSet(lbl_801D4034);
     HuPrcSleep(1);
     WipeCreate(1, 0, 0x15);
     while (WipeStatGet() != 0) {
