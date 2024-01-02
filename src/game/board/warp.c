@@ -24,6 +24,21 @@ extern Process* boardMainProc;
 extern s32 boardTutorialData[4];
 extern s16 boardPlayerMdl[4];
 
+Vec lbl_801A4AC0;
+
+s8 lbl_801D4038;
+s8 lbl_801D4037;
+s8 lbl_801D4036;
+s16 lbl_801D4034;
+f32 lbl_801D4030;
+f32 lbl_801D402C;
+Process* lbl_801D4028;
+
+s16 lbl_801D3748 = 0xFFFF;
+s16 lbl_801D374A = 0xFFFF;
+s8 lbl_801D374C[4] = {-1, -1, -1, -1};
+char lbl_801D3750[] = "warp01";
+
 void fn_80080D54(s32 arg0) {
     omVibrate(arg0, 0xC, 4, 2);
     lbl_801D4028 = HuPrcChildCreate(fn_80080DF8, 0x2003U, 0x3800U, 0, boardMainProc);
