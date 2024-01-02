@@ -13,6 +13,7 @@ extern "C" {
 
 #define OS_FASTCAST_U8 2
 #define OS_FASTCAST_U16 3
+#define OS_FASTCAST_S8 4
 #define OS_FASTCAST_S16 5
 // clang-format off
 static inline void OSInitFastCast(void) {
@@ -75,11 +76,52 @@ static inline u8 __OSf32tou8(register f32 inF)
 
 static inline void OSf32tou8(f32 *f, u8 *out) { *out = __OSf32tou8(*f); }
 
+static inline u16 __OSf32tou16(register f32 inF)
+{
+  u32 tmp;
+  register u32 *tmpPtr = &tmp;
+  register u16 out;
+  // clang-format off
+    asm {
+        psq_st inF, 0(tmpPtr), 0x1, OS_FASTCAST_U16
+        lbz out, 0(tmpPtr)
+    }
+  // clang-format on
+
+  return out;
+}
+
+static inline void OSf32tou16(f32 *f, u16 *out) { *out = __OSf32tou16(*f); }
+
+static inline float __OSs16tof32(register const s16* arg) {
+    register float ret;
+
+        asm {
+        psq_l ret, 0(arg), 1, OS_FASTCAST_S16
+    }
+    
+    return ret;
+}
+
+static inline void OSs16tof32(const s16* in, float* out) { *out = __OSs16tof32(in); }
+
+static inline float __OSu8tof32(register const u8* arg) {
+    register float ret;
+
+    asm {
+        psq_l ret, 0(arg), 1, OS_FASTCAST_U8
+    }
+    
+    return ret;
+}
+
+static inline void OSu8tof32(const u8* in, float* out) { *out = __OSu8tof32(in); }
+
 static inline float __OSu16tof32(register const u16* arg) {
     register float ret;
 
     asm {
-        psq_l ret, 0(arg), 1, 3
+        psq_l ret, 0(arg), 1, OS_FASTCAST_U16
     }
     
     return ret;

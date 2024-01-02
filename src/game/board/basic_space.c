@@ -1,4 +1,33 @@
 #include "game/board/basic_space.h"
+#include "game/data.h"
+#include "game/flag.h"
+
+#include "math.h"
+
+typedef struct bit_copy {
+    struct {
+        u8 hide : 1;
+        u8 minus : 1;
+        u8 update : 1;
+        u8 mode : 3;
+    };
+    s8 index;
+    s8 tens;
+    s8 ones;
+    u16 time;
+    u16 angle;
+    s16 sign_model;
+    s16 tens_model;
+    s16 ones_model;
+    s16 coin_model;
+} coinChg;
+
+static void CreateCoinChg(coinChg*, Vec*);
+static void UpdateCoinChg(omObjData*);
+static void CoinChgAppear(omObjData*, coinChg*);
+static void CoinChgSeparate(omObjData*, coinChg*);
+static void CoinChgShow(omObjData*, coinChg*);
+static void CoinChgDisappear(omObjData*, coinChg*);
 
 extern void BoardTutorialHookExec(s16, s32);
 extern void BoardCameraViewSet(s32);
@@ -12,400 +41,397 @@ extern void BoardRotateDiceNumbers(s32);
 extern void BoardCameraAnimBlendSet(s32, s16, s16);
 extern s32 BoardPlayerAnimBlendCheck(s32);
 
-omObjData *lbl_8013A1F0[4] = {
-    (omObjData *)NULL,
-    (omObjData *)NULL,
-    (omObjData *)NULL,
-    (omObjData *)NULL
+static omObjData *coinChgObj[4] = {
+    NULL,
+    NULL,
+    NULL,
+    NULL
 };
 
-s32 lbl_8013A200[10] = {
-    0x7000C, 0x7000D,
-    0x7000E, 0x7000F,
-    0x70010, 0x70011,
-    0x70012, 0x70013,
-    0x70014, 0x70015
+static s32 coinDigitMdl[10] = {
+	MAKE_DATA_NUM(DATADIR_BOARD, 12),
+	MAKE_DATA_NUM(DATADIR_BOARD, 13),
+	MAKE_DATA_NUM(DATADIR_BOARD, 14),
+	MAKE_DATA_NUM(DATADIR_BOARD, 15),
+	MAKE_DATA_NUM(DATADIR_BOARD, 16),
+	MAKE_DATA_NUM(DATADIR_BOARD, 17),
+	MAKE_DATA_NUM(DATADIR_BOARD, 18),
+	MAKE_DATA_NUM(DATADIR_BOARD, 19),
+	MAKE_DATA_NUM(DATADIR_BOARD, 20),
+	MAKE_DATA_NUM(DATADIR_BOARD, 21),
 };
 
-void BoardEventLandBlue(s32 arg0) {
-    Point3d sp8;
-    f32 temp_f1;
-    s32 var_r29;
-    s8 temp_r28;
-    s32 var_r30;
-
+void BoardEventLandBlue(s32 player, s16 space) {
+    Vec pos;
+    s32 i;
+    s8 coin_chg;
+    s32 coins;
+	
+	
     BoardCameraViewSet(2);
-    BoardPlayerAnimBlendSet(arg0, 0, 0xF);
-    while (BoardPlayerAnimBlendCheck(arg0) == 0) {
+    BoardPlayerAnimBlendSet(player, 0, 15);
+    while (BoardPlayerAnimBlendCheck(player) == 0) {
         HuPrcVSleep();
     }
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardCameraMotionWait();
-        BoardTutorialHookExec(0xA, 0);
+        BoardTutorialHookExec(10, 0);
     }
-    var_r30 = 3;
+    coins = 3;
     if (GWSystem.last5_effect == 1) {
-        var_r30 *= 2;
+        coins *= 2;
     }
-    BoardPlayerPosGet(arg0, &sp8);
-    sp8.y += 250.0f;
-    temp_r28 = fn_8007FE70(&sp8, var_r30);
-    HuAudFXPlay(0x347);
+    BoardPlayerPosGet(player, &pos);
+    pos.y += 250.0f;
+    coin_chg = BoardCoinChgCreate(&pos, coins);
+    HuAudFXPlay(839);
     BoardCameraMotionWait();
-    BoardPlayerMotionShiftSet(arg0, 0xC, 0.0f, 4.0f, 0);
+    BoardPlayerMotionShiftSet(player, 12, 0.0f, 4.0f, 0);
     
-    for (var_r29 = 0; var_r29 < var_r30; var_r29++) {
-        BoardPlayerCoinsAdd(arg0, 1);
+    for (i = 0; i < coins; i++) {
+        BoardPlayerCoinsAdd(player, 1);
         HuAudFXPlay(7);
         HuPrcSleep(6);
     }
-    HuAudFXPlay(0xF);
-    while (fn_80080058(temp_r28) == 0) {
+    HuAudFXPlay(15);
+    while (BoardCoinChgExist(coin_chg) == 0) {
         HuPrcVSleep();
     }
-    GWPlayer[arg0].color = 1;
-    BoardPlayerMotionEndWait(arg0);
-    BoardRotateDiceNumbers(arg0);
+    GWPlayer[player].color = 1;
+    BoardPlayerMotionEndWait(player);
+    BoardRotateDiceNumbers(player);
 }
 
-void BoardEventLandRed(s32 arg0) {
-    Point3d sp8;
-    s32 var_r29;
-    s8 temp_r28;
-    s32 var_r30;
-    void* temp_r3;
+void BoardEventLandRed(s32 player, s16 space) {
+    Vec pos;
+    s32 i;
+    s8 coin_chg;
+    s32 coins;
 
     BoardCameraViewSet(2);
-    omVibrate(arg0, 0xC, 6, 6);
-    BoardPlayerAnimBlendSet(arg0, 0, 0xF);
-    while (BoardPlayerAnimBlendCheck(arg0) == 0) {
+    omVibrate(player, 12, 6, 6);
+    BoardPlayerAnimBlendSet(player, 0, 15);
+    while (BoardPlayerAnimBlendCheck(player) == 0) {
         HuPrcVSleep();
     }
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardCameraMotionWait();
-        BoardTutorialHookExec(0xB, 0);
+        BoardTutorialHookExec(11, 0);
     }
-    var_r30 = 3;
+    coins = 3;
     if (GWSystem.last5_effect == 1) {
-        var_r30 *= 2;
+        coins *= 2;
     }
-    BoardPlayerPosGet(arg0, &sp8);
-    sp8.y += 250.0f;
-    temp_r28 = fn_8007FE70(&sp8, -var_r30);
-    HuAudFXPlay(0x348);
+    BoardPlayerPosGet(player, &pos);
+    pos.y += 250.0f;
+    coin_chg = BoardCoinChgCreate(&pos, -coins);
+    HuAudFXPlay(840);
     BoardCameraMotionWait();
-    BoardPlayerMotionShiftSet(arg0, 0xD, 0.0f, 4.0f, 0);
-    for (var_r29 = 0; var_r29 < var_r30; var_r29++) {
-        BoardPlayerCoinsAdd(arg0, -1);
+    BoardPlayerMotionShiftSet(player, 13, 0.0f, 4.0f, 0);
+    for (i = 0; i < coins; i++) {
+        BoardPlayerCoinsAdd(player, -1);
         HuAudFXPlay(14);
         HuPrcSleep(6);
     }
-    HuAudFXPlay(0xF);
+    HuAudFXPlay(15);
     
-    while (fn_80080058(temp_r28) == 0) {
+    while (BoardCoinChgExist(coin_chg) == 0) {
         HuPrcVSleep();
     }
-    GWPlayer[arg0].color = 2;
-    BoardPlayerMotionEndWait(arg0);
-    BoardRotateDiceNumbers(arg0);
+    GWPlayer[player].color = 2;
+    BoardPlayerMotionEndWait(player);
+    BoardRotateDiceNumbers(player);
 }
 
-s8 fn_8007FE70(Point3d* arg0, s8 arg1) {
-    omObjData* var_r30 = NULL;
-    bitcopy* temp_r31;
-    s8 var_r27;
-    s8 var_r29;
+s8 BoardCoinChgCreate(Vec *pos, s8 value) {
+    omObjData *obj = NULL;
+    coinChg *coin_chg;
+    s8 i;
     
-    for (var_r29 = 0; var_r29 < 4; var_r29++) {
-        if (lbl_8013A1F0[var_r29] == 0) {
+    for (i = 0; i < 4; i++) {
+        if (coinChgObj[i] == 0) {
             break;
         }
     }
-    if (var_r29 == 4) {
+    if (i == 4) {
         return -1;
     }
     
-    var_r30 = omAddObjEx(boardObjMan, 0x10A, 0, 0, -1, &fn_80080360);
-    lbl_8013A1F0[var_r29] = var_r30;
-    temp_r31 = (bitcopy *) var_r30->work;
-    temp_r31->hide = 0;
-    temp_r31->field08_bit2 = 0;
-    if (arg1 < 0) {
-        var_r27 = 1;
-    } else {
-        var_r27 = 0;
-    }
-    temp_r31->field08_bit1 = var_r27;
-    temp_r31->field08_bit3 = 0;
-    temp_r31->unk_02 = __abs(arg1) / 10;
-    temp_r31->unk_03 = __abs(arg1) % 10;
-    temp_r31->unk_01 = var_r29 + 1;
-    temp_r31->unk_04 = 0;
-    temp_r31->unk_06 = 0;
-    fn_80080124(temp_r31, arg0);
-    var_r30->trans.x = arg0->x;
-    var_r30->trans.y = arg0->y;
-    var_r30->trans.z = arg0->z;
-    var_r30->rot.x = 0.0f;
-    var_r30->rot.y = 0.01f;
-    temp_r31->field08_bit2 = 1;
-    return temp_r31->unk_01;
+    obj = omAddObjEx(boardObjMan, 266, 0, 0, -1, &UpdateCoinChg);
+    coinChgObj[i] = obj;
+    coin_chg = (coinChg *)obj->work;
+    coin_chg->hide = 0;
+    coin_chg->update = 0;
+    coin_chg->minus = (value < 0) ? 1 : 0;
+    coin_chg->mode = 0;
+    coin_chg->tens = abs(value) / 10;
+    coin_chg->ones = abs(value) % 10;
+    coin_chg->index = (s8) (i + 1);
+    coin_chg->time = 0;
+    coin_chg->angle = 0;
+    CreateCoinChg(coin_chg, pos);
+    obj->trans.x = pos->x;
+    obj->trans.y = pos->y;
+    obj->trans.z = pos->z;
+    obj->rot.x = 0.0f;
+    obj->rot.y = 0.01f;
+    coin_chg->update = 1;
+    return coin_chg->index;
 }
 
-s32 fn_80080058(s32 arg0) {
-    int *sp8;
+s32 BoardCoinChgExist(s32 index) {
+    coinChg *coin_chg;
 
-    if ((arg0 <= 0) || (arg0 > 4)) {
-        return arg0;
+    if ((index <= 0) || (index > 4)) {
+        return index;
     }
-    if (lbl_8013A1F0[arg0 - 1] != 0) {
-        sp8 = lbl_8013A1F0[arg0 - 1]->work;
+    if (coinChgObj[index - 1] != 0) {
+        coin_chg = (coinChg *)coinChgObj[index - 1]->work;
         return 0;
     }
     return 1;
 }
 
-void fn_800800C4(s32 arg0) {
-    bitcopy* temp_r4;
+void BoardCoinChgHide(s32 index) {
 
-    if ((arg0 <= 0) || (arg0 > 4)) {
+    if ((index <= 0) || (index > 4)) {
         return;
     }
-    if (lbl_8013A1F0[arg0 - 1] != 0) {
-        ((bitcopy*) lbl_8013A1F0[arg0 - 1]->work)->hide = 1;
+    if (coinChgObj[index - 1] != 0) {
+        ((coinChg *)coinChgObj[index - 1]->work)->hide = 1;
     }
 }
 
-const s32 lbl_801D56B0[2] = {0x70016, 0x70017};
+static const s32 coinSignMdl[2] = {
+	MAKE_DATA_NUM(DATADIR_BOARD, 22),
+	MAKE_DATA_NUM(DATADIR_BOARD, 23)
+};
 
-void fn_80080124(bitcopy* arg0, Vec* arg1) {
-    f32 var_f31;
+static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
+    f32 time;
 
-    if (arg0->field08_bit1 != 0) {
-        var_f31 = 2.5f;
+    if (coin_chg->minus != 0) {
+        time = 2.5f;
     } else {
-        var_f31 = 1.5f;
+        time = 1.5f;
     }
-    arg0->unk_08 = BoardModelCreate(lbl_801D56B0[arg0->field08_bit1], NULL, 0);
-    arg0->unk_0A = BoardModelCreate(lbl_8013A200[arg0->unk_02], NULL, 0);
-    arg0->unk_0C = BoardModelCreate(lbl_8013A200[arg0->unk_03], NULL, 0);
-    arg0->unk_0E = BoardModelCreate(0x7000A, NULL, 0);
-    BoardModelPosSetV(arg0->unk_08, arg1);
-    BoardModelPosSetV(arg0->unk_0A, arg1);
-    BoardModelPosSetV(arg0->unk_0C, arg1);
-    BoardModelPosSetV(arg0->unk_0E, arg1);
-    BoardModelMotionStart(arg0->unk_08, 0, 0);
-    BoardModelMotionStart(arg0->unk_0A, 0, 0);
-    BoardModelMotionStart(arg0->unk_0C, 0, 0);
-    BoardModelMotionTimeSet(arg0->unk_08, var_f31);
-    BoardModelMotionTimeSet(arg0->unk_0A, var_f31);
-    BoardModelMotionTimeSet(arg0->unk_0C, var_f31);
-    BoardModelMotionSpeedSet(arg0->unk_08, 0.0f);
-    BoardModelMotionSpeedSet(arg0->unk_0A, 0.0f);
-    BoardModelMotionSpeedSet(arg0->unk_0C, 0.0f);
-    BoardModelScaleSet(arg0->unk_08, 0.001, 0.001, 0.001);
-    BoardModelScaleSet(arg0->unk_0A, 0.001, 0.001, 0.001);
-    BoardModelScaleSet(arg0->unk_0C, 0.001, 0.001, 0.001);
-    BoardModelScaleSet(arg0->unk_0E, 0.001, 0.001, 0.001);
-    BoardModelLayerSet(arg0->unk_08, 1);
-    BoardModelLayerSet(arg0->unk_0A, 1);
-    BoardModelLayerSet(arg0->unk_0C, 1);
-    BoardModelLayerSet(arg0->unk_0E, 1);
-    if (arg0->unk_02 == 0) {
-        BoardModelVisibilitySet(arg0->unk_0A, 0);
+    coin_chg->sign_model = BoardModelCreate(coinSignMdl[coin_chg->minus], NULL, 0);
+    coin_chg->tens_model = BoardModelCreate(coinDigitMdl[coin_chg->tens], NULL, 0);
+    coin_chg->ones_model = BoardModelCreate(coinDigitMdl[coin_chg->ones], NULL, 0);
+    coin_chg->coin_model = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 10), NULL, 0);
+    BoardModelPosSetV(coin_chg->sign_model, pos);
+    BoardModelPosSetV(coin_chg->tens_model, pos);
+    BoardModelPosSetV(coin_chg->ones_model, pos);
+    BoardModelPosSetV(coin_chg->coin_model, pos);
+    BoardModelMotionStart(coin_chg->sign_model, 0, 0);
+    BoardModelMotionStart(coin_chg->tens_model, 0, 0);
+    BoardModelMotionStart(coin_chg->ones_model, 0, 0);
+    BoardModelMotionTimeSet(coin_chg->sign_model, time);
+    BoardModelMotionTimeSet(coin_chg->tens_model, time);
+    BoardModelMotionTimeSet(coin_chg->ones_model, time);
+    BoardModelMotionSpeedSet(coin_chg->sign_model, 0.0f);
+    BoardModelMotionSpeedSet(coin_chg->tens_model, 0.0f);
+    BoardModelMotionSpeedSet(coin_chg->ones_model, 0.0f);
+    BoardModelScaleSet(coin_chg->sign_model, 0.001, 0.001, 0.001);
+    BoardModelScaleSet(coin_chg->tens_model, 0.001, 0.001, 0.001);
+    BoardModelScaleSet(coin_chg->ones_model, 0.001, 0.001, 0.001);
+    BoardModelScaleSet(coin_chg->coin_model, 0.001, 0.001, 0.001);
+    BoardModelLayerSet(coin_chg->sign_model, 1);
+    BoardModelLayerSet(coin_chg->tens_model, 1);
+    BoardModelLayerSet(coin_chg->ones_model, 1);
+    BoardModelLayerSet(coin_chg->coin_model, 1);
+    if (coin_chg->tens == 0) {
+        BoardModelVisibilitySet(coin_chg->tens_model, 0);
     }
 }
 
-void fn_80080360(omObjData* arg0) {
-    s32 temp_r0;
-    bitcopy* temp_r31;
+static void UpdateCoinChg(omObjData *object) {
+    coinChg *coin_chg;
 
-    temp_r31 = (bitcopy*) arg0->work;
-    if ((temp_r31->hide != 0) || (BoardIsKill() != 0)) {
-        if (temp_r31->unk_0E != -1) {
-            BoardModelKill(temp_r31->unk_0E);
-            temp_r31->unk_0E = -1;
+    coin_chg = (coinChg *)object->work;
+    if ((coin_chg->hide != 0) || (BoardIsKill() != 0)) {
+        if (coin_chg->coin_model != -1) {
+            BoardModelKill(coin_chg->coin_model);
+            coin_chg->coin_model = -1;
         }
-        if (temp_r31->unk_08 != -1) {
-            BoardModelKill(temp_r31->unk_08);
-            temp_r31->unk_08 = -1;
+        if (coin_chg->sign_model != -1) {
+            BoardModelKill(coin_chg->sign_model);
+            coin_chg->sign_model = -1;
         }
-        if (temp_r31->unk_0A != -1) {
-            BoardModelKill(temp_r31->unk_0A);
-            temp_r31->unk_0A = -1;
+        if (coin_chg->tens_model != -1) {
+            BoardModelKill(coin_chg->tens_model);
+            coin_chg->tens_model = -1;
         }
-        if (temp_r31->unk_0C != -1) {
-            BoardModelKill(temp_r31->unk_0C);
-            temp_r31->unk_0C = -1;
+        if (coin_chg->ones_model != -1) {
+            BoardModelKill(coin_chg->ones_model);
+            coin_chg->ones_model = -1;
         }
-        lbl_8013A1F0[temp_r31->unk_01 - 1] = 0;
-        omDelObjEx(HuPrcCurrentGet(), arg0);
+        coinChgObj[coin_chg->index - 1] = 0;
+        omDelObjEx(HuPrcCurrentGet(), object);
         return;
     }
-    if (temp_r31->field08_bit2 != 0) {
-        if (temp_r31->unk_04 != 0) {
-            temp_r31->unk_04 -= 1;
+    if (coin_chg->update != 0) {
+        if (coin_chg->time != 0) {
+            coin_chg->time -= 1;
             return;
         }
         
-        switch (temp_r31->field08_bit3) {
-        case 0:
-            fn_800804F8(arg0, temp_r31);
-            return;
-        case 1:
-            fn_800806B0(arg0, temp_r31);
-            return;
-        case 3:
-            fn_8008094C(arg0, temp_r31);
-            return;
-        case 4:
-            fn_80080AF4(arg0, temp_r31);
-            break;
+        switch (coin_chg->mode) {
+			case 0:
+				CoinChgAppear(object, coin_chg);
+				return;
+			case 1:
+				CoinChgSeparate(object, coin_chg);
+				return;
+			case 3:
+				CoinChgShow(object, coin_chg);
+				return;
+			case 4:
+				CoinChgDisappear(object, coin_chg);
+				break;
         }
     }
 }
 
-void fn_800804F8(omObjData* arg0, bitcopy* arg1) {
-    f32 temp_f31;
-    f32 temp_f30;
-    f32 temp_f29;
-    f32 temp_f28;
+static void CoinChgAppear(omObjData *object, coinChg *coin_chg) {
+    f32 scale;
+    f32 angle;
 
-    OSu16tof32(&arg1->unk_06, &temp_f29);
-    temp_f29 = sin(M_PI * temp_f29 / 180.0);
-    temp_f30 = temp_f29;
-    arg0->rot.x = 405.0f * temp_f29;
-    BoardModelScaleSet(arg1->unk_0E, temp_f30, temp_f30, temp_f30);
-    BoardModelPosSet(arg1->unk_0E, arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    BoardModelRotYSet(arg1->unk_0E, arg0->rot.x);
-    if (arg1->unk_06 < 0x5A) {
-        arg1->unk_06 += 6;
+    OSu16tof32(&coin_chg->angle, &angle);
+    angle = sin(M_PI * angle / 180.0);
+    scale = angle;
+    object->rot.x = 405.0f * angle;
+    BoardModelScaleSet(coin_chg->coin_model, scale, scale, scale);
+    BoardModelPosSet(coin_chg->coin_model, object->trans.x, object->trans.y, object->trans.z);
+    BoardModelRotYSet(coin_chg->coin_model, object->rot.x);
+    if (coin_chg->angle < 90) {
+        coin_chg->angle += 6;
         return;
     }
     
-    arg1->field08_bit3 = 1;
-    arg1->unk_06 = 0;
-    BoardModelScaleSet(arg1->unk_08, temp_f30, temp_f30, temp_f30);
-    BoardModelPosSet(arg1->unk_08, arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    BoardModelRotYSet(arg1->unk_08, arg0->rot.x);
-    BoardModelScaleSet(arg1->unk_0C, temp_f30, temp_f30, temp_f30);
-    BoardModelPosSet(arg1->unk_0C, arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    BoardModelRotYSet(arg1->unk_0C, arg0->rot.x);
-    BoardModelScaleSet(arg1->unk_0A, temp_f30, temp_f30, temp_f30);
-    BoardModelPosSet(arg1->unk_0A, arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    BoardModelRotYSet(arg1->unk_0A, arg0->rot.x);
+    coin_chg->mode = 1;
+    coin_chg->angle = 0;
+    BoardModelScaleSet(coin_chg->sign_model, scale, scale, scale);
+    BoardModelPosSet(coin_chg->sign_model, object->trans.x, object->trans.y, object->trans.z);
+    BoardModelRotYSet(coin_chg->sign_model, object->rot.x);
+    BoardModelScaleSet(coin_chg->ones_model, scale, scale, scale);
+    BoardModelPosSet(coin_chg->ones_model, object->trans.x, object->trans.y, object->trans.z);
+    BoardModelRotYSet(coin_chg->ones_model, object->rot.x);
+    BoardModelScaleSet(coin_chg->tens_model, scale, scale, scale);
+    BoardModelPosSet(coin_chg->tens_model, object->trans.x, object->trans.y, object->trans.z);
+    BoardModelRotYSet(coin_chg->tens_model, object->rot.x);
 }
 
-void fn_800806B0(omObjData* arg0, bitcopy* arg1) {
-    f32 temp_f28;
-    f32 temp_f30;
-    f32 var_f29;
-    f32 var_f27;
-    f32 var_f26;
-    f32 var_f25;
-    f32 var_f24;
+static void CoinChgSeparate(omObjData *object, coinChg *coin_chg) {
+    f32 y_offset;
+    f32 x_scale;
+    f32 spacing;
+    f32 coin_x;
+    f32 ones_x;
+    f32 tens_x;
+    f32 sign_x;
 
-    OSu16tof32(&arg1->unk_06, &temp_f30);
+    OSu16tof32(&coin_chg->angle, &x_scale);
     
-    if (arg1->unk_02 != 0) {
-        var_f29 = 140.0f;
+    if (coin_chg->tens != 0) {
+        spacing = 140.0f;
     } else {
-        var_f29 = 105.0f;
+        spacing = 105.0f;
     }
-    temp_f28 = (200.0 * sin((M_PI * (2.0f * temp_f30)) / 180.0));
-    temp_f30 = sin((M_PI * temp_f30) / 180.0);
-    arg0->rot.x = 45.0f + (315.0f * temp_f30);
-    if (arg1->unk_02 != 0) {
-        var_f27 = arg0->trans.x + (temp_f30 * -var_f29);
-        var_f24 = arg0->trans.x + ((temp_f30 * -var_f29) / 3.0f);
-        var_f26 = arg0->trans.x + (temp_f30 * var_f29);
-        var_f25 = arg0->trans.x + ((temp_f30 * var_f29) / 3.0f);
+    y_offset = (200.0 * sin((M_PI * (2.0f * x_scale)) / 180.0));
+    x_scale = sin((M_PI * x_scale) / 180.0);
+    object->rot.x = 45.0f + (315.0f * x_scale);
+    if (coin_chg->tens != 0) {
+        coin_x = object->trans.x + (x_scale * -spacing);
+        sign_x = object->trans.x + ((x_scale * -spacing) / 3.0f);
+        ones_x = object->trans.x + (x_scale * spacing);
+        tens_x = object->trans.x + ((x_scale * spacing) / 3.0f);
     } else {
-        var_f24 = arg0->trans.x;
-        var_f25 = arg0->trans.x;
-        var_f26 = arg0->trans.x + (temp_f30 * var_f29);
-        var_f27 = arg0->trans.x + (temp_f30 * -var_f29);
+        sign_x = object->trans.x;
+        tens_x = object->trans.x;
+        ones_x = object->trans.x + (x_scale * spacing);
+        coin_x = object->trans.x + (x_scale * -spacing);
     }
-    BoardModelPosSet(arg1->unk_0E, var_f27, arg0->trans.y + temp_f28, arg0->trans.z);
-    BoardModelPosSet(arg1->unk_08, var_f24, arg0->trans.y + temp_f28, arg0->trans.z);
-    BoardModelPosSet(arg1->unk_0C, var_f26, arg0->trans.y + temp_f28, arg0->trans.z);
-    BoardModelPosSet(arg1->unk_0A, var_f25, arg0->trans.y + temp_f28, arg0->trans.z);
-    BoardModelRotYSet(arg1->unk_0E, arg0->rot.x);
-    BoardModelRotYSet(arg1->unk_08, arg0->rot.x);
-    BoardModelRotYSet(arg1->unk_0C, arg0->rot.x);
-    BoardModelRotYSet(arg1->unk_0A, arg0->rot.x);
-    if (arg1->unk_06 < 0x5A) {
-        arg1->unk_06 += 6;
+    BoardModelPosSet(coin_chg->coin_model, coin_x, object->trans.y + y_offset, object->trans.z);
+    BoardModelPosSet(coin_chg->sign_model, sign_x, object->trans.y + y_offset, object->trans.z);
+    BoardModelPosSet(coin_chg->ones_model, ones_x, object->trans.y + y_offset, object->trans.z);
+    BoardModelPosSet(coin_chg->tens_model, tens_x, object->trans.y + y_offset, object->trans.z);
+    BoardModelRotYSet(coin_chg->coin_model, object->rot.x);
+    BoardModelRotYSet(coin_chg->sign_model, object->rot.x);
+    BoardModelRotYSet(coin_chg->ones_model, object->rot.x);
+    BoardModelRotYSet(coin_chg->tens_model, object->rot.x);
+    if (coin_chg->angle < 90) {
+        coin_chg->angle += 6;
         return;
     }
-    arg0->trans.y += temp_f28;
-    arg1->field08_bit3 = 3;
-    arg1->unk_06 = 0;
+    object->trans.y += y_offset;
+    coin_chg->mode = 3;
+    coin_chg->angle = 0;
 }
 
-void fn_8008094C(omObjData* arg0, bitcopy* arg1) {
+static void CoinChgShow(omObjData* object, coinChg* coin_chg) {
     Vec sp8;
-    f32 temp_f29;
-    f32 var_f30;
+    f32 angle;
+    f32 y_pos;
 
-    OSu16tof32(&arg1->unk_06, &temp_f29);
-    temp_f29 = (f32) sin((M_PI * temp_f29) / 180.0);
-    if (arg1->field08_bit1 != 0) {
-        var_f30 = (-50.0f * temp_f29) + arg0->trans.y;
+    OSu16tof32(&coin_chg->angle, &angle);
+    angle = (f32) sin((M_PI * angle) / 180.0);
+    if (coin_chg->minus != 0) {
+        y_pos = (-50.0f * angle) + object->trans.y;
     } else {
-        var_f30 = (50.0f * temp_f29) + arg0->trans.y;
+        y_pos = (50.0f * angle) + object->trans.y;
     }
-    BoardModelPosGet(arg1->unk_0E, &sp8);
-    BoardModelPosSet(arg1->unk_0E, sp8.x, var_f30, sp8.z);
-    BoardModelPosGet(arg1->unk_08, &sp8);
-    BoardModelPosSet(arg1->unk_08, sp8.x, var_f30, sp8.z);
-    BoardModelPosGet(arg1->unk_0C, &sp8);
-    BoardModelPosSet(arg1->unk_0C, sp8.x, var_f30, sp8.z);
-    BoardModelPosGet(arg1->unk_0A, &sp8);
-    BoardModelPosSet(arg1->unk_0A, sp8.x, var_f30, sp8.z);
-    if (arg1->unk_06 < 0x5A) {
-        arg1->unk_06 += 6;
+    BoardModelPosGet(coin_chg->coin_model, &sp8);
+    BoardModelPosSet(coin_chg->coin_model, sp8.x, y_pos, sp8.z);
+    BoardModelPosGet(coin_chg->sign_model, &sp8);
+    BoardModelPosSet(coin_chg->sign_model, sp8.x, y_pos, sp8.z);
+    BoardModelPosGet(coin_chg->ones_model, &sp8);
+    BoardModelPosSet(coin_chg->ones_model, sp8.x, y_pos, sp8.z);
+    BoardModelPosGet(coin_chg->tens_model, &sp8);
+    BoardModelPosSet(coin_chg->tens_model, sp8.x, y_pos, sp8.z);
+    if (coin_chg->angle < 90) {
+        coin_chg->angle += 6;
         return;
     }
-    arg1->field08_bit3 = 4;
-    arg1->unk_06 = 0;
-    arg1->unk_04 = 0x12;
-    arg0->scale.x = 1.0f;
-    arg0->scale.y = 1.0f;
+    coin_chg->mode = 4;
+    coin_chg->angle = 0;
+    coin_chg->time = 18;
+    object->scale.x = 1.0f;
+    object->scale.y = 1.0f;
 }
 
-void fn_80080AF4(omObjData* arg0, bitcopy* arg1) {
-    const u16 sp8 = ((arg1->unk_06 * 2) % 180);
-    f32 temp_f31;
+static void CoinChgDisappear(omObjData* object, coinChg* coin_chg) {
+    const u16 angle = ((coin_chg->angle * 2) % 180);
+    f32 rot;
     
-    OSu16tof32(&sp8, &temp_f31);
-    if (sp8 <= 90.0f) {
-        arg0->scale.x = 0.5 * cos((M_PI * temp_f31) / 180.0);
-        arg0->scale.y = 2.5 * sin((M_PI * temp_f31) / 180.0);
+    OSu16tof32(&angle, &rot);
+    if (angle <= 90.0f) {
+        object->scale.x = 0.5 * cos((M_PI * rot) / 180.0);
+        object->scale.y = 2.5 * sin((M_PI * rot) / 180.0);
     } else {
-        arg0->scale.x = 2.5 * sin((M_PI * temp_f31) / 180.0);
-        arg0->scale.y = 0.5 * cos((M_PI * temp_f31) / 180.0);
+        object->scale.x = 2.5 * sin((M_PI * rot) / 180.0);
+        object->scale.y = 0.5 * cos((M_PI * rot) / 180.0);
     }
-    if (0.0f == arg0->scale.x) {
-        arg0->scale.x = 0.0001f;
+    if (0.0f == object->scale.x) {
+        object->scale.x = 0.0001f;
     }
-    if (0.0f == arg0->scale.y) {
-        arg0->scale.y = 0.0001f;
+    if (0.0f == object->scale.y) {
+        object->scale.y = 0.0001f;
     }
-    BoardModelScaleSet(arg1->unk_0E, arg0->scale.x, arg0->scale.y, 1.0f);
-    BoardModelScaleSet(arg1->unk_08, arg0->scale.x, arg0->scale.y, 1.0f);
-    BoardModelScaleSet(arg1->unk_0C, arg0->scale.x, arg0->scale.y, 1.0f);
-    BoardModelScaleSet(arg1->unk_0A, arg0->scale.x, arg0->scale.y, 1.0f);
-    if (arg1->unk_06 < 0x5A) {
-        arg1->unk_06 += 3;
-        if (arg1->unk_06 > 0x5A) {
-            arg1->unk_06 = 0x5A;
+    BoardModelScaleSet(coin_chg->coin_model, object->scale.x, object->scale.y, 1.0f);
+    BoardModelScaleSet(coin_chg->sign_model, object->scale.x, object->scale.y, 1.0f);
+    BoardModelScaleSet(coin_chg->ones_model, object->scale.x, object->scale.y, 1.0f);
+    BoardModelScaleSet(coin_chg->tens_model, object->scale.x, object->scale.y, 1.0f);
+    if (coin_chg->angle < 90) {
+        coin_chg->angle += 3;
+        if (coin_chg->angle > 90) {
+            coin_chg->angle = 90;
         }
     } else {
-        BoardModelVisibilitySet(arg1->unk_08, 0);
-        BoardModelVisibilitySet(arg1->unk_0A, 0);
-        BoardModelVisibilitySet(arg1->unk_0C, 0);
-        BoardModelVisibilitySet(arg1->unk_0E, 0);
-        arg1->hide = 1;
+        BoardModelVisibilitySet(coin_chg->sign_model, 0);
+        BoardModelVisibilitySet(coin_chg->tens_model, 0);
+        BoardModelVisibilitySet(coin_chg->ones_model, 0);
+        BoardModelVisibilitySet(coin_chg->coin_model, 0);
+        coin_chg->hide = 1;
     }
 }

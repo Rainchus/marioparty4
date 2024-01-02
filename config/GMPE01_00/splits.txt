@@ -316,7 +316,7 @@ game/sreset.c:
 	.sbss       start:0x801D3EB8 end:0x801D3ED0
 
 game/board/main.c:
-	.text       start:0x8005B150 end:0x80061F44
+	.text       start:0x8005B150 end:0x80061FC4
 	.rodata     start:0x8011DD60 end:0x8011DD90
 	.data       start:0x80139798 end:0x80139898
 	.bss        start:0x8019D7E0 end:0x8019D968
@@ -325,7 +325,7 @@ game/board/main.c:
 	.sdata2     start:0x801D5148 end:0x801D51F8
 
 game/board/player.c:
-	.text       start:0x80061F44 end:0x8006D308
+	.text       start:0x80061FC4 end:0x8006D308
 	.rodata     start:0x8011DD90 end:0x8011DE60
 	.data       start:0x80139898 end:0x80139AA0
 	.bss        start:0x8019D968 end:0x8019D998
