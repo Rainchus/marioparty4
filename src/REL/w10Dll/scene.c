@@ -210,7 +210,7 @@ void fn_1_13A4(void) {
     BoardCameraStartMotion2(lbl_1_bss_0->unk8, &sp8, 0, 3200.0f, -1.0f, 0x1E);
     BoardCameraMotionWait();
     fn_1_BA0(0x2E0032);
-    BoardCameraTargetSetModel(fn_80083F84());
+    BoardCameraTargetModelSet(fn_80083F84());
     BoardCameraMotionWait();
     fn_1_BA0(0x2E0033);
     fn_1_BA0(0x2E0034);

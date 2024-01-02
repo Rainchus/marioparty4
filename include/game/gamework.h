@@ -5,7 +5,7 @@
 
 void GWInit(void);
 void GWGameStatReset(void);
-s16 GWMessSpeedGet(void);
+s32 GWMessSpeedGet(void);
 void GWMGRecordSet(int index, s32 value);
 s32 GWMGRecordGet(int index);
 void GWCharColorGet(int character, GXColor *color);
