@@ -7,7 +7,7 @@
 #include "game/gamework.h"
 
 void BoardWinInit(void);
-void fn_8006FDA0(f32*);
+void BoardWinUnusedArraySet(f32*);
 void BoardWinKillAll(void);
 void BoardWinDestroy(void);
 void BoardWinProc(void);
