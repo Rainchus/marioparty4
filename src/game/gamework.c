@@ -134,7 +134,7 @@ void GWGameStatReset(void)
     ResetBoardSettings();
 }
 
-s16 GWMessSpeedGet(void)
+s32 GWMessSpeedGet(void)
 {
     if(GWSystem.mess_delay > 48) {
         GWSystem.mess_speed = 1;

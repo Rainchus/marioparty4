@@ -85,6 +85,8 @@ void omDLLNumEnd(s16 ovl, s16 arg2);
 
 void omSysPauseEnable(BOOL flag);
 
+void omSystemKeyCheckSetup(Process *objman_process);
+
 extern omObjData *omDBGSysKeyObj;
 extern Process *omwatchproc;
 extern OverlayID omnextovl;

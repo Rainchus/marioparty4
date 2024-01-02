@@ -65,7 +65,7 @@ inline s32 get_current_board(void) {
     return GWSystem.board;
 }
 
-void BoardInit(void) {
+void BoardCreate(void) {
     f32 sp10;
     f32 spC[2];
     s32 sp8;

@@ -12,9 +12,9 @@ typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
 
-extern void BoardCommonInit(VoidFunc init, VoidFunc destroy);
+extern void BoardCommonInit(VoidFunc create, VoidFunc destroy);
 
-extern void BoardInit(void);
+extern void BoardCreate(void);
 extern void BoardDestroy(void);
 
 #ifdef __cplusplus
