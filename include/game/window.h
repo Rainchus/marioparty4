@@ -126,7 +126,7 @@ void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...);
 void HuWinInsertMesSizeGet(s32 mess, s16 index);
 void HuWinMesSizeCancelCRSet(s32 cancel_cr);
 void HuWinMesMaxSizeBetGet(float *size, u32 start, u32 end);
-s32 HuWinKeyWaitNumGet(u32 mess);
+s16 HuWinKeyWaitNumGet(u32 mess);
 void HuWinPushKeySet(s16 window, s16 push_key);
 void HuWinDisablePlayerSet(s16 window, u8 player);
 void HuWinDisablePlayerReset(s16 window, u8 player);

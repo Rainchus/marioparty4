@@ -3,8 +3,8 @@
 
 ModelData Hu3DData[0x200];
 CameraData Hu3DCamera[0x10];
-s16 layerNum[8];
-void (*layerHook[8])(s16);
+static s16 layerNum[8];
+static void (*layerHook[8])(s16);
 AnimData *reflectAnim[5];
 AnimData *hiliteAnim[4];
 ThreeDProjectionStruct Hu3DProjection[4];
@@ -15,6 +15,7 @@ Mtx Hu3DCameraMtxXPose;
 LightData Hu3DGlobalLight[0x8];
 LightData Hu3DLocalLight[0x20];
 Mtx lbl_8018D39C;
+
 GXColor BGColor;
 s16 reflectMapNo;
 AnimData *toonAnim;
@@ -27,7 +28,7 @@ s16 Hu3DCameraBit;
 HsfData* Hu3DMallocNo;
 s16 Hu3DPauseF;
 u16 Hu3DCameraExistF;
-u16 NoSyncF;
+static u16 NoSyncF;
 s32 modelKillAllF;
 
 #include "refMapData0.inc"

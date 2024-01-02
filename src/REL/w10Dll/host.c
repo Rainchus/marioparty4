@@ -1,5 +1,6 @@
 #include "REL/w10Dll.h"
 #include "game/data.h"
+#include "game/board/window.h"
 
 s32 lbl_1_data_78[2] = {
     MAKE_DATA_NUM(DATADIR_W10, 16),
@@ -21,7 +22,7 @@ void fn_1_AEC(void) {
 }
 
 void fn_1_BA0(s32 arg0) {
-    s32 var_r31;
+    s16 var_r31;
 
     switch (lbl_1_bss_1C) {
     case 0:
