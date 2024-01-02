@@ -4,6 +4,7 @@
 extern s32 BoardIsStarted(void);
 //// #include "game/board/space.h"
 extern s32 BoardSpaceFlagPosGet(s32, s32, u32);
+extern void BoardSpaceDirPosGet(s32, s32, Vec*);
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
 //// #include "game/board/model.h"
@@ -11,6 +12,7 @@ extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
 extern void BoardModelExistDupe(s16, s32);
 extern void BoardModelCameraSet(s16, u16);
+extern void BoardItemStatusKill(s32);
 //// #include "game/chrman.h"
 extern void CharModelKillIndex(s16);
 ////
@@ -31,6 +33,8 @@ void BoardPlayerSizeSet(s32, s32);
 void fn_80062D90(s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
+void BoardPlayerCurrSpacePosDirGet(s32, Vec*);
+void BoardPlayerPosSetV(s32, Point3d*);
 
 static void (*playerMatCopy[4])();
 static void (*postTurnHook[4])();
@@ -47,6 +51,15 @@ static s8 rollType;
 static s16 suitMdl = -1;
 static s16 suitPlayerMdl = -1;
 static s16 suitCurrMot = -1;
+
+inline PlayerState* GetPlayer(s32 index) {
+    return &GWPlayer[index];
+}
+
+inline s16 GetBoardPlayer(s32 index) {
+    PlayerState *player = GetPlayer(index);
+    return boardPlayerMdl[player->player_idx];
+}
 
 s32 BoardRollTypeGet(void) {
     return rollType;
@@ -197,40 +210,115 @@ void BoardPlayerModelKill(void) {
 }
 
 void BoardPlayerLayerSet(s32 arg0, s32 arg1) {
-    PlayerState* playerCopy;
-    PlayerState* player;
-    s16 boardPlayerModel;
-    s16 boardPlayerModelCopy;
-    
-    player = &GWPlayer[arg0];
-    playerCopy = player;
-    boardPlayerModel = boardPlayerMdl[playerCopy->player_idx];
-    boardPlayerModelCopy = boardPlayerModel;
-    BoardModelLayerSet(boardPlayerModelCopy, arg1);
+    BoardModelLayerSet(GetBoardPlayer(arg0), arg1);
 }
 
 void BoardPlayerCameraSet(s32 arg0, u16 arg1) {
-    PlayerState* playerCopy;
-    PlayerState* player;
-    s16 boardPlayerModel;
-    s16 boardPlayerModelCopy;
-    
-    player = &GWPlayer[arg0];
-    playerCopy = player;
-    boardPlayerModel = boardPlayerMdl[playerCopy->player_idx];
-    boardPlayerModelCopy = boardPlayerModel;
-    BoardModelCameraSet(boardPlayerModelCopy, arg1);
+    BoardModelCameraSet(GetBoardPlayer(arg0), arg1);
 }
 
 void fn_80062A40(s32 arg0, f32 arg8) {
-    PlayerState* playerCopy;
-    PlayerState* player;
-    s16 boardPlayerModel;
-    s16 boardPlayerModelCopy;
+    fn_8006DDE8(GetBoardPlayer(arg0), arg8);
+}
+
+void BoardPlayerExistCheck(s32 arg0, s32 arg1) {
+    if (arg1 == 0) {
+        BoardModelExistCheck(GetBoardPlayer(arg0), 0);
+    } else {
+        BoardModelExistCheck(GetBoardPlayer(arg0), 1);
+    }
+}
+
+s32 BoardPlayerItemAdd(s32 arg0, s32 arg1) {
+    PlayerState* var_r30;
+    s32 var_r29;
+    s32 var_r31;
+
+    var_r29 = -1;
+    var_r30 = GetPlayer(arg0);
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        if (GWPlayer[arg0].items[var_r31] == -1) {
+            HuAudFXPlay(0x360);
+            var_r30->items[var_r31] = arg1;
+            BoardItemStatusKill(arg0);
+            var_r29 = var_r31;
+            break;
+        }
+    }
+    return var_r29;
+}
+
+s32 BoardPlayerItemRemove(s32 arg0, s32 arg1) {
+    s32 temp_r29;
+    PlayerState* temp_r28;
+
+    temp_r28 = GetPlayer(arg0);
+    temp_r29 = temp_r28->items[arg1];
+    if (temp_r28->items[arg1] == -1) {
+        return temp_r29;
+    }
+    if (arg1 == 0) {
+        temp_r28->items[0] = temp_r28->items[1];
+    }
+    if ((arg1 == 1) || (arg1 == 0)) {
+        temp_r28->items[1] = temp_r28->items[2];
+    }
+    temp_r28->items[2] = -1;
+    HuAudFXPlay(0x363);
+    BoardItemStatusKill(arg0);
+    return temp_r29;
+}
+
+s32 BoardPlayerItemFind(s32 arg0, s32 arg1) {
+    s32 var_r31;
+
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        if (arg1 == GWPlayer[arg0].items[var_r31]) {
+            return var_r31;
+        }
+    }
     
-    player = &GWPlayer[arg0];
-    playerCopy = player;
-    boardPlayerModel = boardPlayerMdl[playerCopy->player_idx];
-    boardPlayerModelCopy = boardPlayerModel;
-    fn_8006DDE8(boardPlayerModelCopy, arg8);
+    return -1;
+}
+
+s32 BoardPlayerItemCount(s32 arg0) {
+    s32 var_r30;
+    s32 var_r31;
+
+    for (var_r31 = 0, var_r30 = var_r31; var_r31 < 3; var_r31++) {
+        if (GWPlayer[arg0].items[var_r31] != -1) {
+            var_r30++;
+        }
+    }
+    
+    return var_r30;
+}
+
+void fn_80062D90(s32 arg0) {
+    Vec sp8;
+
+    BoardPlayerCurrSpacePosDirGet(arg0, &sp8);
+    BoardPlayerPosSetV(arg0, &sp8);
+}
+
+void BoardPlayerCurrSpacePosDirGet(s32 arg0, Point3d* arg1) {
+    s32 var_r31;
+    s32 var_r30;
+    s32 var_r29;
+    s32 temp_r28;
+
+    if (arg1 != 0) {
+        temp_r28 = GWPlayer[arg0].space_curr;
+        var_r31 = GWSystem.player_curr;
+        if (var_r31 == -1) {
+            var_r31 = 0;
+        }
+        for (var_r30 = 0, var_r29 = var_r30; var_r30 < 4; var_r31 = (var_r31 + 1) & 3, var_r30++) {
+            if (var_r31 == arg0) break;
+            if (temp_r28 == GWPlayer[var_r31].space_curr) {
+                var_r29 += 1;
+            }
+        }
+        BoardSpaceDirPosGet(temp_r28, var_r29, arg1);
+    }
 }
