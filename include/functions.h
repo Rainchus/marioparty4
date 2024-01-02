@@ -62,7 +62,7 @@ void BoardTutorialDirInputSet(s32, s32, s32);
 void BoardSpaceStarSetIndex(s32);
 void BoardModelRotYSet(s32, f32);
 f32 BoardModelRotYGet(s32);
-void BoardModelLayerSet(s16, s32);
+void BoardModelLayerSet(s16, u8);
 void BoardTutorialHostSet(s16);
 s16 BoardModelIDGet(s16);
 void BoardCommonInit(void*, void*);
