@@ -73,7 +73,7 @@ void BoardModelKill(s16);
 void fn_8006DDE8(s16, f32);
 void BoardModelMotionStart(s16, s32, s32);
 void BoardModelMotionSpeedSet(s16, f32);
-void BoardModelPosSetV(s16, void*);
+void BoardModelPosSetV(s16, Vec*);
 void BoardModelPosSet(s16, f32, f32, f32);
 s32 BoardModelRotSetV(s16 arg0, Vec* arg1);
 void BoardModelVisibilitySet(s16, s32);

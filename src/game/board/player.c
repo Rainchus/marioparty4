@@ -13,6 +13,7 @@ extern void BoardModelExistCheck(s16, s32);
 extern void BoardModelExistDupe(s16, s32);
 extern void BoardModelCameraSet(s16, u16);
 extern void BoardItemStatusKill(s32);
+extern void BoardModelAmbSet(s16, f32, f32, f32);
 //// #include "game/chrman.h"
 extern void CharModelKillIndex(s16);
 ////
@@ -26,15 +27,25 @@ void BoardPlayerInit(void);
 void BoardPlayerModelInit(void);
 void BoardPlayerModelKill(void);
 void BoardPlayerLayerSet(s32, s32);
+void BoardPlayerCameraSet(s32, u16);
+void fn_80062A40(s32, f32);
+void BoardPlayerExistCheck(s32, s32);
+s32 BoardPlayerItemAdd(s32, s32);
+s32 BoardPlayerItemRemove(s32, s32);
+s32 BoardPlayerItemFind(s32, s32);
+s32 BoardPlayerItemCount(s32);
+void fn_80062D90(s32);
+void BoardPlayerCurrSpacePosDirGet(s32, Vec*);
+void BoardPlayerAmbSet(s32, f32, f32, f32);
+void BoardPlayerMtxSet(s32, Mtx);
+void BoardPlayerPosSetV(s32, Vec*);
+void BoardPlayerPosSet(s32, f32, f32, f32);
 //...
 s32 BoardPlayerAutoSizeGet(s32);
 void BoardPlayerAutoSizeSet(s32, s32); 
 void BoardPlayerSizeSet(s32, s32);
-void fn_80062D90(s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
-void BoardPlayerCurrSpacePosDirGet(s32, Vec*);
-void BoardPlayerPosSetV(s32, Point3d*);
 
 static void (*playerMatCopy[4])();
 static void (*postTurnHook[4])();
@@ -320,5 +331,29 @@ void BoardPlayerCurrSpacePosDirGet(s32 arg0, Point3d* arg1) {
             }
         }
         BoardSpaceDirPosGet(temp_r28, var_r29, arg1);
+    }
+}
+
+void BoardPlayerAmbSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
+    BoardModelAmbSet(GetBoardPlayer(arg0), arg8, arg9, argA);
+}
+
+void BoardPlayerMtxSet(s32 arg0, Mtx arg1) {
+    BoardModelMtxSet(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerPosSetV(s32 arg0, Point3d* arg1) {
+    BoardModelPosSetV(GetBoardPlayer(arg0), arg1);
+
+    if (GWPlayer[arg0].rank != 0) {
+        BoardModelPosSetV(suitMdl, arg1);
+    }
+}
+
+void BoardPlayerPosSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
+    BoardModelPosSet(GetBoardPlayer(arg0), arg8, arg9, argA);
+    
+    if (GWPlayer[arg0].rank != 0) {
+        BoardModelPosSet(suitMdl, arg8, arg9, argA);
     }
 }
