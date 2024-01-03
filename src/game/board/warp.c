@@ -14,7 +14,7 @@ extern void Hu3DModelObjPosGet(s16, char*, Vec*);
 extern s32 BoardModelMotionEndCheck(s16);
 extern void BoardPlayerPosSetV(s32, Point3d*);
 void BoardPlayerRotSet(s32, f32, f32, f32);
-void BoardCameraVisibleSet(s32);
+void BoardCameraMoveSet(s32);
 void BoardCameraTargetSpaceSet(s16);
 extern void BoardRotateDiceNumbers(s32);
 extern void BoardPlayerPosGet(s32, Vec*);
@@ -195,14 +195,14 @@ void fn_80081278(s32 arg0) {
     lbl_801D374A = BoardModelCreate(0x70002, NULL, 0);
     BoardModelVisibilitySet(lbl_801D374A, 0);
     BoardModelMotionSpeedSet(lbl_801D374A, 0.0f);
-    BoardCameraVisibleSet(0);
+    BoardCameraMoveSet(0);
     BoardCameraTargetSpaceSet(lbl_801D4034);
     HuPrcSleep(1);
     WipeCreate(1, 0, 0x15);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    BoardCameraVisibleSet(1);
+    BoardCameraMoveSet(1);
     lbl_801D402C = -10.0f;
     lbl_801D4038 = 4;
 }

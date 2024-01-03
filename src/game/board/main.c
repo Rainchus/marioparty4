@@ -4,6 +4,60 @@
 #include "game/flag.h"
 #include "game/data.h"
 #include "game/wipe.h"
+#include "string.h"
+#include "game/hsfman.h"
+
+
+typedef struct board_focus_data {
+	u16 view_type;
+	s16 time;
+	s16 max_time;
+	float fov_start;
+	float fov_end;
+	float zoom_start;
+	float zoom_end;
+	Vec rot_start;
+	Vec rot_end;
+	Vec target_start;
+	Vec target_end;
+} BoardFocusData;
+
+typedef struct board_camera_data {
+	struct {
+		u8 hide_all : 1;
+		u8 moving : 1;
+		u8 quaking : 1;
+	};
+	u16 mask;
+	s16 target_mdl;
+	s16 target_space;
+	s32 quake_timer;
+	float quake_strength;
+	float fov;
+	float near;
+	float far;
+	float aspect;
+	float viewport_x;
+	float viewport_y;
+	float viewport_w;
+	float viewport_h;
+	float viewport_near;
+	float viewport_far;
+	Vec pos;
+	Vec up;
+	Vec target;
+	Vec offset;
+	Vec rot;
+	float zoom;
+	void (*pos_calc)(struct board_camera_data *camera);
+	BoardFocusData focus;
+} BoardCameraData;
+
+typedef struct camera_view {
+	s16 x_rot;
+	s16 zoom;
+	s16 fov;
+} CameraView;
 
 typedef void (*VoidFunc)(void);
 
@@ -27,20 +81,44 @@ static omObjData *cameraObj;
 Process *boardObjMan;
 Process *boardMainProc;
 
+static BoardCameraData cameraBackup;
+BoardCameraData boardCamera;
+
 static OverlayID nextOvl = OVL_INVALID;
+
+static CameraView camViewTbl[] = {
+	{ 0, 0, 25 },
+	{ -33, 3200, 25 },
+	{ -33, 2100, 25 },
+	{ -33, 1800, 25 },
+	{ -33, 12640, 25 },
+	{ -33, 3200, 25 },
+};
 
 extern void BoardPlayerCoinsSet(s32 player, s32 value);
 extern void BoardPlayerAutoSizeSet(s32 player, s32 value);
+extern void BoardModelPosGet(s16 model, Vec *pos);
 extern void fn_800A4A7C(void);
 extern void fn_800A6EE4(void);
 
 extern s8 boardTutorialF;
+extern s16 boardPlayerMdl[4];
 
 void BoardKill(void);
+void BoardCameraTargetPlayerSet(s32 player);
+void BoardCameraOffsetSet(float x, float y, float z);
+void BoardCameraMoveSet(s32 move);
+void BoardCameraMotionStartEx(s16 model_target, Vec *rot_target, Vec *offset_end, float zoom_target, float fov_target, s16 max_time);
+float BoardRandFloat(void);
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);
 static void KillBoardFunc(omObjData *object);
+static void UpdateCamera(omObjData *object);
+
+static void CalcCameraTarget(BoardCameraData *camera);
+static void CalcCameraPos(BoardCameraData *camera);
+
 
 static void MainFunc(void);
 static void DestroyMainFunc(void);
@@ -63,6 +141,35 @@ static inline s16 BoardHandicapGet(s32 player)
 {
 	return GWPlayer[player].handicap;
 }
+
+static inline s32 BoardPlayerCurrGetIdx()
+{
+	return GWSystem.player_curr;
+}
+
+static inline PlayerState *BoardPlayerGet(s32 player)
+{
+	return &GWPlayer[player];
+}
+
+static inline PlayerState *BoardPlayerCurrGet()
+{
+	return &GWPlayer[BoardPlayerCurrGetIdx()];
+}
+
+static inline s16 BoardPlayerModelGet(s32 player)
+{
+	PlayerState *player_ptr = BoardPlayerGet(player);
+	return boardPlayerMdl[player_ptr->player_idx];
+}
+
+static inline s16 BoardPlayerCurrModelGet()
+{
+	PlayerState *player = BoardPlayerCurrGet();
+	return boardPlayerMdl[player->player_idx];
+}
+
+#define BoardFAbs(value) ((value < 0) ? -(value) : (value))
 
 void BoardCommonInit(VoidFunc create, VoidFunc destroy)
 {
@@ -396,7 +503,7 @@ static void MainFunc(void)
 	} else {
 		fade_enable = 0;
 	}
-	if(BoardIsTurnCont()) {
+	if(ExecTurnStart()) {
 		turn_cont = 1;
 	}
 	if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && GWSystem.player_curr == 0 && !turn_cont) {
@@ -432,9 +539,9 @@ static void MainFunc(void)
 				BoardPlayerTurnExec(i);
 			} else {
 				if(!turn_cont) {
-					BoardCameraVisibleSet(0);
+					BoardCameraMoveSet(0);
 					GWSystem.player_curr = i;
-					BoardCameraTargetModelSet(i);
+					BoardCameraTargetPlayerSet(i);
 					BoardCameraMotionWait();
 					{
 						Vec pos;
@@ -508,7 +615,7 @@ static void MainFunc(void)
 			_SetFlag(FLAG_ID_MAKE(1, 28));
 			_SetFlag(FLAG_ID_MAKE(1, 14));
 			BoardPauseEnableSet(1);
-			_CheckFlag(FLAG_ID_MAKE(1, 9));
+			_ClearFlag(FLAG_ID_MAKE(1, 9));
 			if(_CheckFlag(FLAG_ID_MAKE(2, 0)) || _CheckFlag(FLAG_ID_MAKE(1, 11)) ) {
 				for(i=0; i<4; i++) {
 					GWPlayer[i].color = 0;
@@ -560,6 +667,540 @@ static void CreateBoard(void)
 static void DestroyBoard(void)
 {
 	
+}
+
+void BoardCameraBackup(void)
+{
+	cameraUseBackup = TRUE;
+	memcpy(&cameraBackup, &boardCamera, sizeof(BoardCameraData));
+}
+
+void BoardCameraRestore(void)
+{
+	if(cameraUseBackup) {
+		memcpy(&boardCamera, &cameraBackup, sizeof(BoardCameraData));
+		cameraUseBackup = FALSE;
+	}
+}
+
+void BoardCameraScissorSet(s32 x, s32 y, s32 w, s32 h)
+{
+	BoardCameraData *camera = &boardCamera;
+	Hu3DCameraScissorSet(camera->mask, x, y, w, h);
+}
+
+void BoardCameraViewSet(s32 type)
+{
+	BoardCameraData *camera = &boardCamera;
+	BoardFocusData *focus;
+	float size;
+	if(!cameraObj) {
+		return;
+	}
+	focus = &camera->focus;
+	if(type == 0) {
+		focus->view_type = 0;
+		return;
+	}
+	OSs16tof32(&camViewTbl[type].fov, &focus->fov_end);
+	focus->fov_start = camera->fov;
+	OSs16tof32(&camViewTbl[type].zoom, &focus->zoom_end);
+	focus->zoom_start = camera->zoom;
+	OSs16tof32(&camViewTbl[type].x_rot, &focus->rot_end.x);
+	focus->rot_end.y = 0;
+	focus->rot_end.z = 0;
+	focus->rot_start = camera->rot;
+	focus->target_start = camera->target;
+	if(BoardPlayerSizeGet(GWSystem.player_curr) == 2 || GWPlayer[GWSystem.player_curr].bowser_suit) {
+		focus->zoom_end += 400.0f;
+		size = 2.5f;
+	} else {
+		size = 1.0f;
+	}
+	BoardCameraTargetModelSet(BoardPlayerCurrModelGet());
+	BoardPlayerPosGet(GWSystem.player_curr, &focus->target_end);
+	BoardCameraOffsetSet(0.0f, 100.0f*size, 0.0f);
+	focus->target_end.y += 100.0f*size;
+	_SetFlag(FLAG_ID_MAKE(1, 21));
+	focus->view_type = type;
+	focus->time = 0;
+	if(camera->moving) {
+		focus->max_time = 21;
+	} else {
+		focus->max_time = 1;
+	}
+}
+
+s32 BoardCameraPosGet(Vec *dst)
+{
+	BoardCameraData *camera;
+	if(!dst) {
+		return -1;
+	}
+	camera = &boardCamera;
+	*dst = camera->pos;
+	return 0;
+}
+
+s32 BoardCameraTargetGet(Vec *dst)
+{
+	BoardCameraData *camera;
+	if(!dst) {
+		return -1;
+	}
+	camera = &boardCamera;
+	*dst = camera->target;
+	return 0;
+}
+
+s32 BoardCameraRotGet(Vec *dst)
+{
+	BoardCameraData *camera;
+	if(!dst) {
+		return -1;
+	}
+	camera = &boardCamera;
+	*dst = camera->rot;
+	return 0;
+}
+
+float BoardCameraZoomGet()
+{
+	BoardCameraData *camera;
+	camera = &boardCamera;
+	return camera->zoom;
+}
+
+s32 BoardCameraDirGet(Vec *dst)
+{
+	BoardCameraData *camera;
+	if(!dst) {
+		return -1;
+	}
+	camera = &boardCamera;
+	if(!camera) {
+		return -1;
+	}
+	VECSubtract(&camera->target, &camera->pos, dst);
+	if(dst->x != 0 || dst->y != 0 || dst->z != 0) {
+		VECNormalize(dst, dst);
+	}
+	return 0;
+}
+
+s32 BoardCameraPointDirGet(Vec *point, Vec *dst)
+{
+	BoardCameraData *camera;
+	if(!dst || !point) {
+		return -1;
+	}
+	camera = &boardCamera;
+	if(!camera) {
+		return -1;
+	}
+	VECSubtract(point, &camera->pos, dst);
+	if(dst->x != 0 || dst->y != 0 || dst->z != 0) {
+		VECNormalize(dst, dst);
+	}
+	return 0;
+}
+
+void BoardCameraMaskSet(u16 mask)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	camera->mask = mask;
+}
+
+void BoardCameraMoveSet(s32 move)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	if(!move) {
+		camera->moving = 0;
+	} else {
+		camera->moving = 1;
+	}
+}
+
+void BoardCameraOffsetSet(float x, float y, float z)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	camera->offset.x = x;
+	camera->offset.y = y;
+	camera->offset.z = z;
+}
+
+void BoardCameraTargetPlayerSet(s32 player)
+{
+	PlayerState *player_ptr = BoardPlayerGet(player);
+	if(!player_ptr) {
+		BoardCameraTargetModelSet(-1);
+		return;
+	}
+	BoardCameraTargetModelSet(BoardPlayerModelGet(player));
+	BoardCameraOffsetSet(0, 100, 0);
+}
+
+void BoardCameraTargetModelSet(s16 model)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	camera->target_mdl = model;
+	camera->target_space = -1;
+	camera->offset.x = camera->offset.y = camera->offset.z = 0;
+}
+
+void BoardCameraTargetSpaceSet(s32 space)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	camera->target_mdl = -1;
+	camera->target_space = space;
+	camera->offset.x = camera->offset.y = camera->offset.z = 0;
+}
+
+void BoardCameraPosCalcFuncSet(void (*func)(struct board_camera_data *camera))
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	camera->pos_calc = func;
+}
+
+void BoardCameraQuakeSet(s32 duration, float strength)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(!camera) {
+		return;
+	}
+	camera->quaking = 1;
+	camera->quake_strength = strength;
+	camera->quake_timer = duration;
+}
+
+void BoardCameraQuakeReset(s32 duration, float strength)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->quaking = 0;
+	camera->quake_strength = 0;
+	camera->quake_timer = 0;
+}
+
+void BoardCameraTargetSet(float x, float y, float z)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->target.x = x;
+	camera->target.y = y;
+	camera->target.z = z;
+}
+
+void BoardCameraPosSet(float x, float y, float z)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->pos.x = x;
+	camera->pos.y = y;
+	camera->pos.z = z;
+}
+
+void BoardCameraXRotZoomSet(float zoom, float x_rot)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->zoom = zoom;
+	camera->rot.x = x_rot;
+}
+
+void BoardCameraZoomSet(float zoom)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->zoom = zoom;
+}
+
+void BoardCameraRotSet(float x, float y)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->rot.x = x;
+	camera->rot.y = y;
+}
+
+void BoardCameraNearFarSet(float near, float far)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->near = near;
+	camera->far = far;
+}
+
+
+void BoardCameraNearFarGet(float *near, float *far)
+{
+	BoardCameraData *camera = &boardCamera;
+	if(near) {
+		*near = camera->near;
+	}
+	if(far) {
+		*far = camera->far;
+	}
+}
+
+void BoardCameraMotionStart(s16 model_target, Vec *rot_target, float zoom_target, float fov_target)
+{
+	BoardCameraMotionStartEx(model_target, rot_target, 0, zoom_target, fov_target, 21);
+}
+
+void BoardCameraMotionStartEx(s16 model_target, Vec *rot_target, Vec *offset_end, float zoom_target, float fov_target, s16 max_time)
+{
+	BoardCameraData *camera = &boardCamera;
+	BoardFocusData *focus;
+	if(!cameraObj) {
+		return;
+	}
+	focus = &camera->focus;
+	focus->fov_start = camera->fov;
+	focus->zoom_start = camera->zoom;
+	focus->rot_start = camera->rot;
+	focus->target_start = camera->target;
+	if(fov_target == -1) {
+		focus->fov_end = focus->fov_start;
+	} else {
+		focus->fov_end = fov_target;
+	}
+	if(zoom_target == -1) {
+		focus->zoom_end = focus->zoom_start;
+	} else {
+		focus->zoom_end = zoom_target;
+	}
+	if(!rot_target) {
+		focus->rot_end = focus->rot_start;
+	} else {
+		focus->rot_end = *rot_target;
+	}
+	if(model_target == -1) {
+		focus->target_end = focus->target_start;
+	} else {
+		BoardCameraTargetModelSet(model_target);
+		BoardModelPosGet(model_target, &focus->target_end);
+	}
+	if(offset_end) {
+		BoardCameraOffsetSet(offset_end->x, offset_end->y, offset_end->z);
+		VECAdd(offset_end, &focus->target_end, &focus->target_end);
+	}
+	_SetFlag(FLAG_ID_MAKE(1, 21));
+	focus->view_type = 5;
+	focus->time = 0;
+	if(max_time < 0) {
+		max_time = 1;
+	}
+	focus->max_time = max_time;
+}
+
+void BoardCameraFovSet(float fov)
+{
+	BoardCameraData *camera = &boardCamera;
+	camera->fov = fov;
+}
+
+s32 BoardCameraCullCheck(Vec *point, float radius)
+{
+	Vec dir;
+	Vec pos;
+	float dist;
+	float dot;
+	BoardCameraData *camera = &boardCamera;
+	if(!camera->hide_all) {
+		return 0;
+	}
+	BoardCameraDirGet(&dir);
+	VECSubtract(point, &camera->pos, &pos);
+	dist = sqrtf((pos.x*pos.x)+(pos.y*pos.y)+(pos.z*pos.z));
+	if(25000 < dist-(radius*2.0f)) {
+		return 0;
+	}
+	BoardCameraPointDirGet(point, &pos);
+	dot = VECDotProduct(&dir, &pos);
+	if(BoardFAbs(dot) < cos((camera->fov*M_PI)/180)) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+s32 BoardCameraMotionIsDone(void)
+{
+	return (_CheckFlag(FLAG_ID_MAKE(1, 21))) ? 0 : 1;
+}
+
+void BoardCameraMotionWait(void)
+{
+	while(!BoardCameraMotionIsDone()) {
+		HuPrcVSleep();
+	}
+	HuPrcVSleep();
+}
+
+void BoardCameraInit(void)
+{
+	BoardCameraData *camera;
+	cameraUseBackup = FALSE;
+	memset(&cameraBackup, 0, sizeof(BoardCameraData));
+	memset(&boardCamera, 0, sizeof(BoardCameraData));
+	camera = &boardCamera;
+	camera->fov = 25;
+	camera->near = 100;
+	camera->far = 13000;
+	camera->aspect = 1.2;
+	camera->viewport_x = 0;
+	camera->viewport_y = 0;
+	camera->viewport_h = 480;
+	camera->viewport_w = 640;
+	camera->viewport_near = 0;
+	camera->viewport_far = 1;
+	camera->up.y = 1;
+	camera->moving = 0;
+	camera->quaking = 0;
+	camera->quake_timer = 0;
+	camera->pos.x = 0;
+	camera->pos.y = 5000;
+	camera->pos.z = 5000;
+	camera->offset.x = 0;
+	camera->offset.y = 0;
+	camera->offset.z = 0;
+	camera->pos_calc = NULL;
+	BoardSpaceFlagPosGet(0, 0x80000000, &camera->target);
+	camera->rot.x = camViewTbl[1].x_rot;
+	camera->zoom = camViewTbl[1].zoom;
+	camera->hide_all = 1;
+	camera->mask = 1;
+	Hu3DCameraCreate(1);
+	Hu3DCameraScissorSet(1, camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h);
+	Hu3DCameraScissorSet(2, 0, 0, 0, 0);
+	Hu3DCameraPerspectiveSet(2, -1, 100, 13000, 1.2);
+	cameraObj = omAddObjEx(boardObjMan, 32258, 0, 0, -1, UpdateCamera);
+}
+
+static void CalcCameraView(void)
+{
+	BoardCameraData *camera = &boardCamera;
+	CalcCameraTarget(camera);
+	CalcCameraPos(camera);
+}
+
+static void UpdateCamera(omObjData *object)
+{
+	BoardCameraData *camera;
+	Vec *target;
+	float x, y, z;
+	if(BoardIsKill()) {
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	CalcCameraView();
+	camera = &boardCamera;
+	Hu3DCameraPerspectiveSet(camera->mask, camera->fov, camera->near, camera->far, camera->aspect);
+	Hu3DCameraViewportSet(camera->mask, camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h, camera->viewport_near, camera->viewport_far);
+	target = &camera->target;
+	if(camera->pos_calc) {
+		camera->pos_calc(camera);
+	} else {
+		
+		x = camera->rot.x;
+		y = camera->rot.y;
+		camera->pos.x = target->x+(sin((y*M_PI)/180.0)*cos((x*M_PI)/180.0)*camera->zoom);
+		camera->pos.y = target->y+(-sin((x*M_PI)/180.0)*camera->zoom);
+		camera->pos.z = target->z+(cos((y*M_PI)/180.0)*cos((x*M_PI)/180.0)*camera->zoom);
+		camera->up.x = sin((y*M_PI)/180.0)*sin((x*M_PI)/180.0);
+		camera->up.y = cos((x*M_PI)/180.0);
+		camera->up.z = cos((y*M_PI)/180.0)*sin((x*M_PI)/180.0);
+		if(camera->quaking) {
+			x = BoardRandFloat();
+			y = BoardRandFloat();
+			z = BoardRandFloat();
+			camera->pos.x += (x-0.5f)*camera->quake_strength;
+			camera->pos.y += (y-0.5f)*camera->quake_strength;
+			camera->pos.z += (z-0.5f)*camera->quake_strength;
+			if(--camera->quake_timer <= 0) {
+				camera->quaking = 0;
+				camera->quake_timer = 0;
+				camera->quake_strength = 0;
+			}
+		}
+	}
+	Hu3DCameraPosSetV(camera->mask, &camera->pos, &camera->up, target);
+}
+
+static void CalcCameraTarget(BoardCameraData *camera)
+{
+	Vec offset;
+	Vec pos = { 0, 0, 0 };
+	BoardFocusData *focus = &camera->focus;
+	if(camera->target_mdl != -1) {
+		BoardModelPosGet(camera->target_mdl, &pos);
+	} else {
+		if(camera->target_space != -1) {
+			BoardSpacePosGet(0, camera->target_space, &pos);
+		} else {
+			return;
+		}
+	}
+	VECAdd(&camera->offset, &pos, &pos);
+	VECSubtract(&pos, &camera->target, &offset);
+	if(camera->moving) {
+		VECScale(&offset, &offset, 0.2f);
+	}
+	VECAdd(&offset, &camera->target, &camera->target);
+}
+
+static void CalcCameraPos(BoardCameraData *camera)
+{
+	
+}
+
+float BoardArcSin(float value)
+{
+	float result;
+	s32 sign;
+	if(value < 0) {
+		sign = 1;
+		value = BoardFAbs(value);
+	} else {
+		sign = 0;
+	}
+	if(value > 1.0f) {
+		return 0;
+	}
+	if(value <= (float)(M_PI/2)) {
+		result = atanf(value/(float)sqrtf(1-(value*value)));
+	} else {
+		result = 1.0f-atanf((float)sqrtf(1-(value*value))/value);
+	}
+	if(sign) {
+		result = BoardFAbs(result);
+	}
+	return result;
+}
+
+float BoardArcCos(float value)
+{
+	if(BoardFAbs(value) > 1) {
+		return 0;
+	}
+	return 1.0f-BoardArcSin(value);
+}
+
+void BoardRandInit(void)
+{
+	boardRandSeed = OSGetTime();
 }
 
 u32 BoardRand(void)
