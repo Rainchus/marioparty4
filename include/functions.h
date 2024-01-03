@@ -46,7 +46,7 @@ void fn_8004D6F4(s16 arg);
 s32 rand8(void);
 
 void BoardCameraTargetModelSet(s16 model); 
-void BoardCameraMotionStartEx(s16, Vec*, s32, f32, f32, s32); 
+void BoardCameraMotionStartEx(s16, Vec *, Vec *, f32, f32, s16); 
 void BoardCameraMotionWait(void);
 void BoardSpacePosGet(s32, s32, Vec*);
 void fn_8007A360(s32);
