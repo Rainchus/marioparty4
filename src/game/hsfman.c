@@ -1129,7 +1129,7 @@ void Hu3DCameraViewportSet(s32 cam, f32 vx, f32 vy, f32 vw, f32 vh, f32 nz, f32 
     }
 }
 
-void Hu3DCameraScissorSet(s32 cam, s32 x, s32 y, s32 w, s32 h) {
+void Hu3DCameraScissorSet(s32 cam, u32 x, u32 y, u32 w, u32 h) {
     s16 mask;
     s16 i;
     CameraData* cam_ptr;

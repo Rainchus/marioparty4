@@ -63,10 +63,17 @@ float acosf(float x);
 
 #define abs(x) __abs(x)
 
+extern inline double fabs(double x)
+{
+   return __fabs(x);
+}
+
 _MATH_INLINE float fabsf(float x) { return (float)fabs((double)x); }
 _MATH_INLINE float sinf(float x) { return (float)sin((double)x); }
 _MATH_INLINE float cosf(float x) { return (float)cos((double)x); }
 _MATH_INLINE float atan2f(float y, float x) { return (float)atan2((double)y, (double)x); }
+_MATH_INLINE float atanf(float x) { return (float)atan((double)x); }
+
 _MATH_INLINE float fmodf(float x, float m) { return (float)fmod((double)x, (double)m); }
 
 _MATH_INLINE float floorf(float x) { return floor(x); }
