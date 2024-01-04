@@ -69,14 +69,16 @@ typedef struct player_state {
 /* 0x04 */ s8 port;
 /* 0x05 */ s8 items[3];
 /* 0x08 */ struct {
-        u8 color : 2;
-        u8 moving : 1;
-        u8 field08_bit3 : 1;
-        u8 show_next : 1;
-        u8 size : 2;
-        u8 field08_bit7 : 3;
-        u8 rank : 1;
-        u8 bowser_suit : 1;
+        u16 color : 2;
+        u16 moving : 1;
+        u16 field08_bit3 : 1;
+        u16 show_next : 1;
+        u16 size : 2;
+        u16 field08_bit7 : 2;
+        u16 field08_bit8 : 1;
+        u16 rank : 1;
+        u16 bowser_suit : 1;
+        u16 field08_bit11 : 1;
     };
 /* 0x0A */ s8 roll;
 /* 0x0C */ s16 space_curr;

@@ -7,14 +7,23 @@ extern void BoardCameraMoveSet(s32);
 extern void BoardCameraViewSet(s32);
 extern void BoardPauseEnableSet(s32);
 extern void BoardCameraTargetPlayerSet(s32);
+extern void BoardCameraOffsetSet(float, float, float);
+extern void BoardCameraTargetModelSet(s16);
+extern void BoardCameraTargetPlayerSet(s32);
 //// #include "game/board/space.h"
 extern s32 BoardSpaceFlagPosGet(s32, s32, u32);
 extern void BoardSpaceDirPosGet(s32, s32, Vec*);
-extern void BoardSpaceLandExec(s32, s16, s32);
+extern void BoardSpaceLandExec(s32, s16);
+extern s32 BoardSpaceFlagGet(s32, s16);
+extern s32 BoardSpaceHiddenBlockExec(s32, s16);
+extern void BoardSpaceLandExec(s32, s16);
+extern s32 BoardSpaceTypeGet(s32, s16);
+extern s32 BoardSpaceWalkEventExec(void);
+extern s32 BoardSpaceWalkExec(s32, s32);
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
 extern void BoardYourTurnExec(s32);
-extern s8 BoardItemUseExec(s32);
+extern s32 BoardItemUseExec(s32);
 //// #include "game/board/model.h"
 extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
@@ -115,14 +124,26 @@ s32 BoardPlayerSizeGet(s32);
 s32 BoardPlayerSameTeamFind(s32);
 s32 BoardPlayerTeamFind(s32);
 s32 BoardPlayerRankCalc(s32);
+void BoardPlayerPreTurnHookSet(s32, s32 (*)());
+void BoardPlayerPostTurnHookSet(s32, void (*)());
+void BoardPlayerTurnExec(s32);
+void BoardPlayerTurnRollExec(s32);
 //...
 s32 BoardPlayerAutoSizeGet(s32);
 void BoardPlayerAutoSizeSet(s32, s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
 void BoardPlayerTurnMoveExec(s32);
-void BoardPlayerTurnRollExec(s32);
 void SetRollPlayerSize(s32);
+void BoardDiceDigit2DUpdateEnable(s32);
+void BoardPlayerMoveTo(s32, s16);
+void BoardPlayerSizeRestore(s32);
+void BoardPlayerZoomRestore(s32);
+void BoardRotateDiceNumbers(s32);
+s32 DoDebugMove(s32, s16*);
+s32 DoSparkSpace(s32, s16*);
+s32 ExecJunction(s32, s16*);
+s32 MegaPlayerPassFunc(s32, s16);
 
 static void (*playerMatCopy[4])();
 static void (*postTurnHook[4])();
@@ -189,7 +210,7 @@ void BoardPlayerInit(void) {
             fn_80062D90(var_r31);
             BoardPlayerSizeSet(var_r31, 0);
             GWPlayer[var_r31].color = 0;
-            GWPlayer[var_r31].rank = 0;
+            GWPlayer[var_r31].bowser_suit = 0;
             GWPlayer[var_r31].field01_bit9 = 0;
             GWPlayer[var_r31].field08_bit3 = 0;
         }
@@ -226,7 +247,7 @@ void BoardPlayerModelInit(void) {
     suitPlayerMdl = -1;
     if ((_CheckFlag(0x10005U) != 0) || ((_CheckFlag(0x10006U) != 0) && (temp_r4 = GWSystem.board, temp_r4 == 5))) {
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
-            temp_r25 = GWPlayer[var_r31].bowser_suit;
+            temp_r25 = GWPlayer[var_r31].field08_bit11;
             GWPlayer[var_r31].team = temp_r25;
             GWPlayerCfg[var_r31].group = temp_r25;
         }
@@ -262,7 +283,7 @@ void BoardPlayerModelInit(void) {
             GWPlayerCfg[var_r31].group = temp_r24;
         }
         GWPlayer[var_r31].show_next = 1;
-        GWPlayer[var_r31].rank = 0;
+        GWPlayer[var_r31].bowser_suit = 0;
         BoardModelExistDupe(temp_r3, 1);
         BoardModelExistCheck(temp_r3, 1);
         fn_8006DDE8(temp_r3, -1.0f);
@@ -284,8 +305,7 @@ void BoardPlayerModelKill(void) {
     PlayerState* temp_r29;
 
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        temp_r29 = &GWPlayer[var_r31];
-        temp_r30 = temp_r29;
+        temp_r30 = GetPlayer(var_r31);
         if (boardPlayerMdl[temp_r30->player_idx] != -1) {
             BoardModelKill(boardPlayerMdl[temp_r30->player_idx]);
             boardPlayerMdl[temp_r30->player_idx] = -1;
@@ -423,7 +443,7 @@ void BoardPlayerMtxSet(s32 arg0, Mtx arg1) {
 void BoardPlayerPosSetV(s32 arg0, Vec* arg1) {
     BoardModelPosSetV(GetBoardPlayer(arg0), arg1);
 
-    if (GWPlayer[arg0].rank != 0) {
+    if (GWPlayer[arg0].bowser_suit != 0) {
         BoardModelPosSetV(suitMdl, arg1);
     }
 }
@@ -431,7 +451,7 @@ void BoardPlayerPosSetV(s32 arg0, Vec* arg1) {
 void BoardPlayerPosSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
     BoardModelPosSet(GetBoardPlayer(arg0), arg8, arg9, argA);
     
-    if (GWPlayer[arg0].rank != 0) {
+    if (GWPlayer[arg0].bowser_suit != 0) {
         BoardModelPosSet(suitMdl, arg8, arg9, argA);
     }
 }
@@ -443,7 +463,7 @@ void BoardPlayerPosGet(s32 arg0, Vec* arg1) {
 void BoardPlayerRotSetV(s32 arg0, Vec* arg1) {
     BoardModelRotSetV(GetBoardPlayer(arg0), arg1);
 
-    if (GWPlayer[arg0].rank != 0) {
+    if (GWPlayer[arg0].bowser_suit != 0) {
         BoardModelRotSetV(suitMdl, arg1);
     }
 }
@@ -451,7 +471,7 @@ void BoardPlayerRotSetV(s32 arg0, Vec* arg1) {
 void BoardPlayerRotSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
     BoardModelRotSet(GetBoardPlayer(arg0), arg8, arg9, argA);
     
-    if (GWPlayer[arg0].rank != 0) {
+    if (GWPlayer[arg0].bowser_suit != 0) {
         BoardModelRotSet(suitMdl, arg8, arg9, argA);
     }
 }
@@ -468,7 +488,7 @@ void BoardPlayerRotYSet(s32 arg0, f32 arg8) {
         arg8 -= 360.0f;
     }
     BoardModelRotYSet(GetBoardPlayer(arg0), arg8);
-    if (GWPlayer[arg0].rank != 0) {
+    if (GWPlayer[arg0].bowser_suit != 0) {
         BoardModelRotYSet(suitMdl, arg8);
     }
 }
@@ -476,7 +496,7 @@ void BoardPlayerRotYSet(s32 arg0, f32 arg8) {
 f32 BoardPlayerRotYGet(s32 arg0) {
     f32 var_f31;
 
-    if (GWPlayer[arg0].rank != 0) {
+    if (GWPlayer[arg0].bowser_suit != 0) {
         var_f31 = BoardModelRotYGet(suitMdl);
     } else {
         var_f31 = BoardModelRotYGet(GetBoardPlayer(arg0));
@@ -716,4 +736,45 @@ void BoardPlayerTurnExec(s32 arg0) {
         BoardCameraMotionWait();
     }
     BoardPlayerTurnMoveExec(arg0);
+}
+
+static inline s32 PlayerItemUseExec(s32 arg0) {
+    return BoardItemUseExec(arg0);
+}
+
+void BoardPlayerTurnRollExec(s32 arg0) {
+    s32 temp_r28;
+    s32 temp_r30;
+
+    GWPlayer[arg0].roll = 0;
+    GWPlayer[arg0].field08_bit7 = 1;
+    BoardPauseEnableSet(0);
+    do {
+        temp_r30 = fn_80085CC8(arg0);
+        switch (temp_r30) {
+        case -2:
+            BoardPauseEnableSet(1);
+            fn_80085EB4();
+            BoardCameraTargetPlayerSet(arg0);
+            BoardCameraMotionWait();
+            rollType = PlayerItemUseExec(arg0);
+            if (BoardRollTypeGet() == 0xC) {
+                _SetFlag(0x10016);
+                BoardSpaceLandExec(arg0, GWPlayer[arg0].space_curr);
+                BoardCameraMoveSet(1);
+                BoardCameraViewSet(2);
+                _ClearFlag(0x10016);
+            }
+            BoardPauseEnableSet(0);
+            break;
+        case -3:
+            fn_80085EB4();
+            fn_80072DA8(arg0);
+            break;
+        case -4:
+            fn_80085EB4();
+            fn_800729A4(arg0);
+            break;
+        }
+    } while (temp_r30 <= 0);
 }
