@@ -75,8 +75,7 @@ typedef struct player_state {
         u16 show_next : 1;
         u16 size : 2;
         u16 field08_bit7 : 2;
-        u16 field08_bit8 : 1;
-        u16 rank : 1;
+        u16 rank : 2;
         u16 bowser_suit : 1;
         u16 field08_bit11 : 1;
     };
