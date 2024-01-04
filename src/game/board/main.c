@@ -98,6 +98,8 @@ static CameraView camViewTbl[] = {
 extern void BoardPlayerCoinsSet(s32 player, s32 value);
 extern void BoardPlayerAutoSizeSet(s32 player, s32 value);
 extern void BoardModelPosGet(s16 model, Vec *pos);
+extern void BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
+
 extern void fn_800A4A7C(void);
 extern void fn_800A6EE4(void);
 
@@ -105,11 +107,17 @@ extern s8 boardTutorialF;
 extern s16 boardPlayerMdl[4];
 
 void BoardKill(void);
+void BoardCameraInit(void);
+void BoardCameraMotionWait(void);
 void BoardCameraTargetPlayerSet(s32 player);
+void BoardCameraViewSet(s32 type);
 void BoardCameraOffsetSet(float x, float y, float z);
 void BoardCameraMoveSet(s32 move);
 void BoardCameraMotionStartEx(s16 model_target, Vec *rot_target, Vec *offset_end, float zoom_target, float fov_target, s16 max_time);
+void BoardRandInit(void);
 float BoardRandFloat(void);
+s32 BoardDataDirReadAsync(s32 data_num);
+void BoardDataAsyncWait(s32 status);
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);
@@ -168,6 +176,17 @@ static inline s16 BoardPlayerCurrModelGet()
 	PlayerState *player = BoardPlayerCurrGet();
 	return boardPlayerMdl[player->player_idx];
 }
+
+static inline int GWMGTypeGet()
+{
+	return GWSystem.mg_type;
+}
+
+static inline int GWMessSpeedGet()
+{
+	return GWSystem.mess_speed;
+}
+
 
 #define BoardFAbs(value) ((value < 0) ? -(value) : (value))
 
@@ -661,12 +680,144 @@ BOOL BoardIsStarted(void)
 
 static void CreateBoard(void)
 {
+	s32 guest_status;
+	int mess_speed;
+	s32 clear_flags;
+	s32 reset_unk32;
 	
+	GWSystem.mg_next = -1;
+	if(!GWGameStat.field10E_bit5) {
+		s32 type_temp;
+		if(GWSystem.mg_type == 3) {
+			GWSystem.mg_type = 0;
+		}
+		if(GWMGTypeGet() == 2) {
+			GWSystem.mg_type = 0;
+		}
+	}
+	if(GWSystem.mess_speed == 3) {
+		GWSystem.mess_speed = 1;
+	}
+	mess_speed = GWMessSpeedGet();
+	GWSystem.mess_speed = mess_speed;
+	switch(mess_speed) {
+		case 0:
+			GWSystem.mess_delay = 16;
+			break;
+			
+		case 2:
+			GWSystem.mess_delay = 48;
+			break;
+			
+		default:
+			GWSystem.mess_delay = 32;
+			break;
+	}
+	if((int)GWSystem.explain_mg != 0) {
+		_SetFlag(FLAG_ID_MAKE(0, 11));
+	} else {
+		_ClearFlag(FLAG_ID_MAKE(0, 11));
+	}
+	if(_CheckFlag(FLAG_ID_MAKE(1, 2)) || _CheckFlag(FLAG_ID_MAKE(1, 3)) || _CheckFlag(FLAG_ID_MAKE(1, 4)) || _CheckFlag(FLAG_ID_MAKE(1, 5)) || _CheckFlag(FLAG_ID_MAKE(1, 6))) {
+		clear_flags = 1;
+	} else {
+		clear_flags = 0;
+	}
+	if(!clear_flags) {
+		_ClearFlag(FLAG_ID_MAKE(1, 2));
+		_ClearFlag(FLAG_ID_MAKE(1, 3));
+		_ClearFlag(FLAG_ID_MAKE(1, 4));
+		_ClearFlag(FLAG_ID_MAKE(1, 5));
+		_ClearFlag(FLAG_ID_MAKE(1, 6));
+	}
+	_ClearFlag(FLAG_ID_MAKE(1, 8));
+	if(_CheckFlag(FLAG_ID_MAKE(1, 2)) || _CheckFlag(FLAG_ID_MAKE(1, 3)) || _CheckFlag(FLAG_ID_MAKE(1, 4)) || _CheckFlag(FLAG_ID_MAKE(1, 5)) || _CheckFlag(FLAG_ID_MAKE(1, 6))) {
+		reset_unk32 = 1;
+	} else {
+		reset_unk32 = 0;
+	}
+	if(!reset_unk32) {
+		GWSystem.unk_32 = 1;
+	}
+	guest_status = BoardDataDirReadAsync(MAKE_DIR_NUM(DATADIR_BGUEST));
+	if(guest_status != -1) {
+		BoardDataAsyncWait(guest_status);
+	}
+	fn_8007111C();
+	BoardModelInit();
+	BoardRandInit();
+	BoardWinInit();
+	BoardPlayerModelInit();
+	createFunc();
+	BoardLightSetExec();
+	fn_8007A8D8();
+	fn_80077ABC();
+	fn_800A4F7C();
+	BoardCameraInit();
+	BoardStatusCreate();
+	CharModelKillIndex(-1);
+	BoardPlayerInit();
+	if(GWSystem.last5_effect == 2) {
+		BoardSpaceTypeForce(2, 3);
+	}
+	if(GWSystem.last5_effect == 3) {
+		BoardSpaceTypeForce(2, 7);
+	}
+	BoardCameraMoveSet(0);
+	BoardCameraTargetPlayerSet(0);
+	BoardCameraViewSet(2);
+	BoardCameraMotionWait();
+	BoardTauntInit();
+	_SetFlag(FLAG_ID_MAKE(1, 14));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPASUIT));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BBATTLE));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPA));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKUJIYA));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BPAUSE));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BLAST5));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_EFFECT));
+	_SetFlag(FLAG_ID_MAKE(1, 16));
 }
 
 static void DestroyBoard(void)
 {
-	
+	s32 dir_table[] = {
+		MAKE_DIR_NUM(DATADIR_W01),
+		MAKE_DIR_NUM(DATADIR_W02),
+		MAKE_DIR_NUM(DATADIR_W03),
+		MAKE_DIR_NUM(DATADIR_W04),
+		MAKE_DIR_NUM(DATADIR_W05),
+		MAKE_DIR_NUM(DATADIR_W06),
+		MAKE_DIR_NUM(DATADIR_W10),
+		MAKE_DIR_NUM(DATADIR_W20),
+		MAKE_DIR_NUM(DATADIR_W21),
+	};
+	BoardTauntKill();
+	fn_8007116C();
+	HuAudAllStop();
+	fn_80085EB4();
+	BoardStatusKill();
+	fn_800A5030();
+	fn_80077B90();
+	fn_8007AFF4(); 
+	BoardSpaceDestroy();
+	BoardPlayerModelKill();
+	if(destroyFunc) {
+		destroyFunc();
+	}
+	BoardModelKillAll();
+	BoardWinKillAll();
+	HuDataDirClose(dir_table[BoardCurrGet()]);
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_EFFECT));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BGUEST));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPASUIT));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BBATTLE));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPA));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKUJIYA));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
+	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BOARD));
+	createFunc = destroyFunc = NULL;
 }
 
 void BoardCameraBackup(void)
@@ -1156,14 +1307,56 @@ static void CalcCameraTarget(BoardCameraData *camera)
 	VECAdd(&camera->offset, &pos, &pos);
 	VECSubtract(&pos, &camera->target, &offset);
 	if(camera->moving) {
-		VECScale(&offset, &offset, 0.2f);
+		VECScale(&offset, &offset, 0.15f);
 	}
 	VECAdd(&offset, &camera->target, &camera->target);
 }
 
+#define CAM_LERP(t, x1, x2, out) \
+{ \
+	float result; \
+	float offset; \
+	float unit_scale; \
+	float lerp_t; \
+	lerp_x2 = x2; \
+	lerp_x1 = x1; \
+	lerp_t = t; \
+	if(lerp_t2 == lerp_t1) { \
+		result = lerp_x2; \
+	} else { \
+		unit_scale = (lerp_x1-lerp_x2)/((float)lerp_t1-(float)lerp_t2); \
+		offset = lerp_x2-(unit_scale*lerp_t2); \
+		result = offset+(unit_scale*lerp_t); \
+	} \
+	out = result; \
+}
+
+#define CAM_LERP_VEC(t, x1, x2, out) \
+CAM_LERP(t, (x1).x, (x2).x, (out).x) \
+CAM_LERP(t, (x1).y, (x2).y, (out).y) \
+CAM_LERP(t, (x1).z, (x2).z, (out).z)
+
 static void CalcCameraPos(BoardCameraData *camera)
 {
 	
+	volatile unsigned int lerp_t1, lerp_t2;
+	volatile float lerp_x1, lerp_x2;
+	float time;
+	
+	BoardFocusData *focus = &camera->focus;
+	if(focus->time > focus->max_time) {
+		focus->view_type = 0;
+		_ClearFlag(FLAG_ID_MAKE(1, 21));
+		return;
+	}
+	OSs16tof32(&focus->time, &time);
+	focus->time++;
+	lerp_t2 = focus->max_time;
+	lerp_t1 = 0;
+	CAM_LERP(time, focus->zoom_start, focus->zoom_end, camera->zoom)
+	CAM_LERP_VEC(time, focus->rot_start, focus->rot_end, camera->rot)
+	CAM_LERP(time, focus->fov_start, focus->fov_end, camera->fov)
+	CAM_LERP_VEC(time, focus->target_start, focus->target_end, camera->target)
 }
 
 float BoardArcSin(float value)
