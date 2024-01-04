@@ -33,7 +33,7 @@ extern void BoardTutorialHookExec(s16, s32);
 extern void BoardCameraViewSet(s32);
 extern void omVibrate(s16, s16, s16, s16);
 extern void BoardPlayerPosGet(s32, Vec*);
-extern s32 BoardModelPosGet(s16, Vec*);
+extern void BoardModelPosGet(s16, Vec*);
 extern void BoardPlayerMotionEndWait(s32);
 extern void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
 extern void BoardPlayerCoinsAdd(s32, s32);

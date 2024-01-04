@@ -112,7 +112,7 @@ void BoardCreate(void) {
         if (temp_r30->unk24 != -1) {
             lbl_1_bss_8 = NULL;
             lbl_1_bss_10[i] = BoardModelCreate(temp_r30->unk24, lbl_1_bss_8, 0);
-            BoardModelPosSetV(lbl_1_bss_10[i], temp_r30);
+            BoardModelPosSetV(lbl_1_bss_10[i], &temp_r30->unk0);
             BoardModelRotSetV(lbl_1_bss_10[i], &temp_r30->unk0C);
             BoardModelScaleSetV(lbl_1_bss_10[i], &temp_r30->unk18);
             BoardModelVisibilitySet(lbl_1_bss_10[i], 1);
@@ -201,7 +201,7 @@ void fn_1_918(void) {
 void fn_1_91C(void) {
 }
 
-s32 fn_1_920(s32 arg0, f32 arg8, f32 arg9) {
+s32 fn_1_920(s16 arg0, f32 arg8, f32 arg9) {
     s32 var_r31;
     f32 var_f29;
     f32 var_f31;

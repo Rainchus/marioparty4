@@ -29,7 +29,7 @@ void GWCoinsSet(int player, s16 value);
 void GWCoinsAdd(int player, s16 amount);
 void GWStarsSet(int player, s16 value);
 void GWStarsAdd(int player, s16 amount);
-s16 GWStarsGet(int player);
+s32 GWStarsGet(int player);
 void GWTotalStarsSet(s16 value);
 void GWTotalStarsAdd(s16 amount);
 u16 GWTotalStarsGet(void);

@@ -1,12 +1,20 @@
 #include "common.h"
+#include "game/gamework.h"
 
 //// #include "game/board/main.h"
 extern s32 BoardIsStarted(void);
+extern void BoardCameraMoveSet(s32);
+extern void BoardCameraViewSet(s32);
+extern void BoardPauseEnableSet(s32);
+extern void BoardCameraTargetPlayerSet(s32);
 //// #include "game/board/space.h"
 extern s32 BoardSpaceFlagPosGet(s32, s32, u32);
 extern void BoardSpaceDirPosGet(s32, s32, Vec*);
+extern void BoardSpaceLandExec(s32, s16, s32);
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
+extern void BoardYourTurnExec(s32);
+extern s8 BoardItemUseExec(s32);
 //// #include "game/board/model.h"
 extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
@@ -14,8 +22,44 @@ extern void BoardModelExistDupe(s16, s32);
 extern void BoardModelCameraSet(s16, u16);
 extern void BoardItemStatusKill(s32);
 extern void BoardModelAmbSet(s16, f32, f32, f32);
+extern void BoardModelMtxSet(s16, Mtx);
+extern void BoardModelPosSetV(s16, Vec*);
+extern void BoardModelPosSet(s16, f32, f32, f32);
+extern s32 BoardModelPosGet(s16, Vec*);
+extern void BoardModelRotSetV(s16, Vec*);
+extern void BoardModelRotSet(s16, f32, f32, f32);
+extern s32 BoardModelRotGet(s16, Vec*);
+extern void BoardModelRotYSet(s16, f32);
+extern f32 BoardModelRotYGet(s16);
+extern void BoardModelScaleSetV(s16, Vec*);
+extern void BoardModelScaleSet(s16, f32, f32, f32);
+extern void BoardModelScaleGet(s16, s32*);
+extern void BoardModelVoiceEnableSet(s16, s32, s32);
+extern void BoardModelMotionCreate(s16, s32);
+extern void BoardModelMotionKill(s16, s32);
+extern s32 BoardModelMotionEndCheck(s16);
+extern s32 BoardModelMotionStart(s16, s32, s32);
+extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, s32);
+extern void BoardModelMotionSpeedSet(s16, f32);
+extern void BoardModelMotionTimeSet(s16, f32);
+extern f32 BoardModelMotionTimeGet(s16);
+extern f32 BoardModelMotionMaxTimeGet(s16);
+extern void BoardModelMotionTimeRangeSet(s16, s32, s32);
+extern void BoardModelAttrSet(s16, s32);
+extern void BoardModelAttrReset(s16, s32);
+//// #include "game/board/tutorial.h"
+extern BoardTutorialHookExec(s16, s32);
+//// #include "game/board/com.h"
+extern void fn_8007185C(s32, s32);
+//// #include "game/board/overhead.h"
+extern void fn_800729A4(s32);
+extern void fn_80072DA8(s32);
+//// #include "game/board/dice_roll.h"
+extern s32 fn_80085CC8(s32);
+extern void fn_80085EB4(void);
 //// #include "game/chrman.h"
 extern void CharModelKillIndex(s16);
+extern void CharModelSetStepType(s16, s32);
 ////
 
 s32 BoardRollTypeGet(void);
@@ -40,16 +84,49 @@ void BoardPlayerAmbSet(s32, f32, f32, f32);
 void BoardPlayerMtxSet(s32, Mtx);
 void BoardPlayerPosSetV(s32, Vec*);
 void BoardPlayerPosSet(s32, f32, f32, f32);
+void BoardPlayerPosGet(s32, Vec*);
+void BoardPlayerRotSetV(s32, Vec*);
+void BoardPlayerRotSet(s32, f32, f32, f32);
+void BoardPlayerRotGet(s32, Vec*);
+void BoardPlayerRotYSet(s32, f32);
+f32 BoardPlayerRotYGet(s32);
+void BoardPlayerScaleSetV(s32, Vec*);
+void BoardPlayerScaleSet(s32, f32, f32, f32);
+s16 BoardPlayerCurrMotionGet(s32);
+void BoardPlayerMotionCreate(s32, s32);
+void BoardPlayerMotionKill(s32, s32);
+void BoardPlayerMotionEndCheck(s32);
+void BoardPlayerMotionEndWait(s32);
+void BoardPlayerMotionStart(s32, s32, s32);
+void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
+void BoardPlayerMotionSpeedSet(s32, f32);
+void BoardPlayerMotionTimeSet(s32, f32);
+f32 BoardPlayerMotionTimeGet(s32);
+f32 BoardPlayerMotionMaxTimeGet(s32);
+void BoardPlayerMotionTimeRangeSet(s32, f32, f32);
+void BoardPlayerModelAttrSet(s32, s32);
+void BoardPlayerModelAttrReset(s32, s32);
+void BoardPlayerCoinsSet(s32, s32);
+s32 BoardPlayerCoinsGet(s32);
+void BoardPlayerCoinsAdd(s32, s32);
+void BoardPlayerStarsAdd(s32, s32);
+void BoardPlayerSizeSet(s32, s32);
+s32 BoardPlayerSizeGet(s32);
+s32 BoardPlayerSameTeamFind(s32);
+s32 BoardPlayerTeamFind(s32);
+s32 BoardPlayerRankCalc(s32);
 //...
 s32 BoardPlayerAutoSizeGet(s32);
-void BoardPlayerAutoSizeSet(s32, s32); 
-void BoardPlayerSizeSet(s32, s32);
+void BoardPlayerAutoSizeSet(s32, s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
+void BoardPlayerTurnMoveExec(s32);
+void BoardPlayerTurnRollExec(s32);
+void SetRollPlayerSize(s32);
 
 static void (*playerMatCopy[4])();
 static void (*postTurnHook[4])();
-static void (*preTurnHook[4])();
+static s32 (*preTurnHook[4])();
 
 static s32 diceJumpObj[4] = {0, 0, 0, 0};
 static s32 animDoneF[4] = {0, 0, 0, 0};
@@ -58,6 +135,7 @@ static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
 s16 boardPlayerMdl[4];
 static s16 playerMot[4];
 static s8 rollType;
+static s32 rollResized;
 
 static s16 suitMdl = -1;
 static s16 suitPlayerMdl = -1;
@@ -342,7 +420,7 @@ void BoardPlayerMtxSet(s32 arg0, Mtx arg1) {
     BoardModelMtxSet(GetBoardPlayer(arg0), arg1);
 }
 
-void BoardPlayerPosSetV(s32 arg0, Point3d* arg1) {
+void BoardPlayerPosSetV(s32 arg0, Vec* arg1) {
     BoardModelPosSetV(GetBoardPlayer(arg0), arg1);
 
     if (GWPlayer[arg0].rank != 0) {
@@ -356,4 +434,286 @@ void BoardPlayerPosSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
     if (GWPlayer[arg0].rank != 0) {
         BoardModelPosSet(suitMdl, arg8, arg9, argA);
     }
+}
+
+void BoardPlayerPosGet(s32 arg0, Vec* arg1) {
+    BoardModelPosGet(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerRotSetV(s32 arg0, Vec* arg1) {
+    BoardModelRotSetV(GetBoardPlayer(arg0), arg1);
+
+    if (GWPlayer[arg0].rank != 0) {
+        BoardModelRotSetV(suitMdl, arg1);
+    }
+}
+
+void BoardPlayerRotSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
+    BoardModelRotSet(GetBoardPlayer(arg0), arg8, arg9, argA);
+    
+    if (GWPlayer[arg0].rank != 0) {
+        BoardModelRotSet(suitMdl, arg8, arg9, argA);
+    }
+}
+
+void BoardPlayerRotGet(s32 arg0, Vec* arg1) {
+    BoardModelRotGet(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerRotYSet(s32 arg0, f32 arg8) {
+    if (arg8 < 0.0f) {
+        arg8 += 360.0f;
+    }
+    if (arg8 > 360.0f) {
+        arg8 -= 360.0f;
+    }
+    BoardModelRotYSet(GetBoardPlayer(arg0), arg8);
+    if (GWPlayer[arg0].rank != 0) {
+        BoardModelRotYSet(suitMdl, arg8);
+    }
+}
+
+f32 BoardPlayerRotYGet(s32 arg0) {
+    f32 var_f31;
+
+    if (GWPlayer[arg0].rank != 0) {
+        var_f31 = BoardModelRotYGet(suitMdl);
+    } else {
+        var_f31 = BoardModelRotYGet(GetBoardPlayer(arg0));
+    }
+    return var_f31;
+}
+
+void BoardPlayerScaleSetV(s32 arg0, Vec* arg1) {
+    BoardModelScaleSetV(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerScaleSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
+    BoardModelScaleSet(GetBoardPlayer(arg0), arg8, arg9, argA);
+}
+
+void BoardPlayerScaleGet(s32 arg0, s32 *arg1) {
+    BoardModelScaleGet(GetBoardPlayer(arg0), arg1);
+}
+
+s16 BoardPlayerCurrMotionGet(s32 arg0) {
+    PlayerState* player = GetPlayer(arg0);
+    
+    return playerMot[player->player_idx];
+}
+
+void BoardPlayerVoiceEnableSet(s32 arg0, s32 arg1, s32 arg2) {
+    BoardModelVoiceEnableSet(GetBoardPlayer(arg0), arg1, arg2);
+}
+
+void BoardPlayerMotionCreate(s32 arg0, s32 arg1) {
+    BoardModelMotionCreate(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerMotionKill(s32 arg0, s32 arg1) {
+    BoardModelMotionKill(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerMotionEndCheck(s32 arg0) {
+    BoardModelMotionEndCheck(GetBoardPlayer(arg0));
+}
+
+void BoardPlayerMotionEndWait(s32 arg0) {
+    while (BoardModelMotionEndCheck(GetBoardPlayer(arg0)) == 0) {
+        HuPrcVSleep();
+    }
+}
+
+void BoardPlayerMotionStart(s32 arg0, s32 arg1, s32 arg2) {
+    PlayerState* player;
+    s32 temp_r29;
+    
+    player = GetPlayer(arg0);
+    if (arg1 == 0) {
+    }
+    if (arg1 != playerMot[player->player_idx]) {
+        temp_r29 = BoardModelMotionStart(GetBoardPlayer(arg0), arg1, arg2);
+        if (temp_r29 == 0) {
+            playerMot[player->player_idx] = arg1;
+        }
+    }
+}
+
+void BoardPlayerMotionShiftSet(s32 arg0, s32 arg1, f32 arg8, f32 arg9, s32 arg2) {
+    PlayerState* player;
+    s32 temp_r29;
+    
+    player = GetPlayer(arg0);
+    if (arg1 == 0) {
+    }
+    if (arg1 != playerMot[player->player_idx]) {
+        temp_r29 = BoardModelMotionShiftSet(GetBoardPlayer(arg0), arg1, arg8, arg9, arg2);
+        if (temp_r29 == 0) {
+            playerMot[player->player_idx] = arg1;
+        }
+    }
+}
+
+void BoardPlayerMotionSpeedSet(s32 arg0, f32 arg8) {
+    BoardModelMotionSpeedSet(GetBoardPlayer(arg0), arg8);
+}
+
+void BoardPlayerMotionTimeSet(s32 arg0, f32 arg8) {
+    BoardModelMotionTimeSet(GetBoardPlayer(arg0), arg8);
+}
+
+f32 BoardPlayerMotionTimeGet(s32 arg0) {
+    BoardModelMotionTimeGet(GetBoardPlayer(arg0));
+}
+
+f32 BoardPlayerMotionMaxTimeGet(s32 arg0) {
+    BoardModelMotionMaxTimeGet(GetBoardPlayer(arg0));
+}
+
+void BoardPlayerMotionTimeRangeSet(s32 arg0, f32 arg8, f32 arg9) {
+    BoardModelMotionTimeRangeSet(GetBoardPlayer(arg0), arg8, arg9);
+}
+
+void BoardPlayerModelAttrSet(s32 arg0, s32 arg1) {
+    BoardModelAttrSet(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerModelAttrReset(s32 arg0, s32 arg1) {
+    BoardModelAttrReset(GetBoardPlayer(arg0), arg1);
+}
+
+void BoardPlayerCoinsSet(s32 arg0, s32 arg1) {
+    GWCoinsSet(arg0, arg1);
+}
+
+s32 BoardPlayerCoinsGet(s32 arg0) {
+    return GWCoinsGet(arg0);
+}
+
+void BoardPlayerCoinsAdd(s32 arg0, s32 arg1) {
+    PlayerState* player;
+    s16 coins;
+
+    player = GetPlayer(arg0);
+    if ((arg1 > 0) && (player->coins_total < 0x3E7)) {
+        player->coins_total += arg1;
+        if (player->coins_total > 0x3E7) {
+            player->coins_total = 0x3E7;
+        }
+    }
+    BoardPlayerCoinsSet(arg0, arg1 + BoardPlayerCoinsGet(arg0));
+}
+
+void BoardPlayerStarsAdd(s32 arg0, s32 arg1) {
+    GWStarsSet(arg0, (arg1 + GWStarsGet(arg0)));
+}
+
+void BoardPlayerSizeSet(s32 arg0, s32 arg1) {
+    PlayerState* temp_r27;
+    Vec temp_r4[3] = { { 1, 1, 1 }, { 0.3, 0.3, 0.3 }, { 2.5, 2.5, 2.5 } };
+
+    temp_r27 = GetPlayer(arg0);
+    temp_r27->size = arg1;
+    if (arg1 == 2) {
+        CharModelSetStepType(GWPlayer[arg0].character, 4);
+    } else if (arg1 == 1) {
+        CharModelSetStepType(GWPlayer[arg0].character, 5);
+    } else {
+        CharModelSetStepType(GWPlayer[arg0].character, 0);
+    }
+    BoardModelScaleSetV(GetBoardPlayer(arg0), &temp_r4[arg1]);
+}
+
+s32 BoardPlayerSizeGet(s32 arg0) {
+    PlayerState* temp_r30;
+
+    temp_r30 = GetPlayer(arg0);
+    if (temp_r30 != 0) {
+        arg0 = temp_r30->size;
+    }
+    return arg0;
+}
+
+s32 BoardPlayerSameTeamFind(s32 arg0) {
+    s32 var_r31;
+    s32 team2;
+    s32 team;
+    
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        if (var_r31 == arg0) continue;
+        team2 = GWPlayer[var_r31].team;
+        team = GWPlayer[arg0].team;
+        if (team == team2) break;
+    }
+    return var_r31;
+}
+
+s32 BoardPlayerTeamFind(s32 arg0) {
+    s32 var_r31;
+    s32 team2;
+    s32 team;
+    
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        if (var_r31 == arg0) continue;
+        team2 = GWPlayer[var_r31].team;
+        team = GWPlayer[arg0].team;
+        if (team != team2) break;
+    }
+    return var_r31;
+}
+
+s32 BoardPlayerRankCalc(s32 arg0) {
+    s32 temp_r29;
+    s32 var_r30;
+    s32 var_r31;
+    s32 sp8[4];
+
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        temp_r29 = GWCoinsGet(var_r31);
+        sp8[var_r31] = temp_r29 | (GWStarsGet(var_r31) << 0xA);
+    }
+    for (var_r30 = 0, var_r31 = 0; var_r31 < 4; var_r31++) {
+        if ((var_r31 != arg0) && (sp8[arg0] < sp8[var_r31])) {
+            var_r30++;
+        }
+    }
+    return var_r30;
+}
+
+void BoardPlayerPreTurnHookSet(s32 arg0, s32 (*arg1)()) {
+    preTurnHook[arg0] = arg1;
+}
+
+void BoardPlayerPostTurnHookSet(s32 arg0, void (*arg1)()) {
+    postTurnHook[arg0] = arg1;
+}
+
+void BoardPlayerTurnExec(s32 arg0) {
+    BoardPauseEnableSet(1);
+    fn_8007185C(arg0, -1);
+    GWSystem.field31_bit4 = 0xF;
+    _ClearFlag(0x10016);
+    _ClearFlag(0x1000E);
+    BoardCameraMoveSet(1);
+    if (_CheckFlag(0x10006U) == 0) {
+        BoardCameraViewSet(2);
+        omVibrate((s16) arg0, 0xC, 4, 2);
+        rollType = -1;
+        BoardYourTurnExec(arg0);
+        rollResized = 0;
+        SetRollPlayerSize(arg0);
+        if (preTurnHook[arg0] != 0U) {
+            if (preTurnHook[arg0]() != 0) {
+                preTurnHook[arg0] = 0;
+            }
+        }
+        if (_CheckFlag(0x1000BU) != 0) {
+            BoardTutorialHookExec(5, 0);
+        }
+        BoardPlayerTurnRollExec(arg0);
+    } else {
+        BoardCameraViewSet(1);
+        BoardCameraMotionWait();
+    }
+    BoardPlayerTurnMoveExec(arg0);
 }
