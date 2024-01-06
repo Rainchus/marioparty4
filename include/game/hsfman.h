@@ -1,7 +1,6 @@
 #ifndef _GAME_HSFMAN_H
 #define _GAME_HSFMAN_H
 
-#include "common.h"
 #include "math.h"
 #include "game/memory.h"
 #include "game/hsfanim.h"
@@ -283,6 +282,7 @@ extern MotionData Hu3DMotion[0x100];
 extern u32 totalMatCnt;
 extern u32 totalMatCnted;
 extern u32 totalPolyCnt;
+extern u32 totalPolyCnted;
 extern u32 totalTexCacheCnt;
 extern u32 totalTexCacheCnted;
 extern u32 totalTexCnt;

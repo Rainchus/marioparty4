@@ -1,4 +1,7 @@
 #include "game/board/warp.h"
+#include "game/gamework_data.h"
+#include "board_unsplit.h"
+#include "math.h"
 
 extern void omVibrate(s16, s16, s16, s16);
 extern void fn_800816CC(s32, s32);

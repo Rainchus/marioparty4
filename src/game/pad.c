@@ -1,4 +1,3 @@
-#include "common.h"
 #include "dolphin.h"
 #include "game/msm.h"
 #include "game/pad.h"

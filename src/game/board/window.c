@@ -1,4 +1,5 @@
 #include "game/board/window.h"
+#include "game/gamework_data.h"
 
 extern s32 BoardPlayerIsAllCom(void);
 extern Process* boardMainProc;

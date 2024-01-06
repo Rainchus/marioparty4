@@ -1,5 +1,5 @@
-#include "common.h"
 #include "game/sprite.h"
+#include "game/hsfman.h"
 #include "game/init.h"
 #include "dolphin/mtx.h"
 #include "dolphin/gx.h"

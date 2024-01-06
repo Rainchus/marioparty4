@@ -63,5 +63,6 @@ void *HuDataReadNumHeapShortForce(s32 data_id, s32 num, HeapID heap);
 
 void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
 
+extern u32 DirDataSize;
 
 #endif

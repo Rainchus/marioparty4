@@ -1,4 +1,4 @@
-#include "common.h"
+#include "dolphin.h"
 
 static u32 frand_seed;
 

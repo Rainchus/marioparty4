@@ -1,4 +1,5 @@
-#include "common.h"
+#include "dolphin.h"
+#include "game/gamework_data.h"
 
 static u8 _Sys_Flag[16];
 
