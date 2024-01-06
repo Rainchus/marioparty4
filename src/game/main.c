@@ -14,7 +14,7 @@
 #include "game/gamework.h"
 
 extern FileListEntry _ovltbl[];
-s32 GlobalCounter;
+u32 GlobalCounter;
 u32 lbl_801D3A50;
 u32 lbl_801D3A4C;
 u32 lbl_801D3A48;
