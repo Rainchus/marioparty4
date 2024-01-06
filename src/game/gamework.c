@@ -336,7 +336,7 @@ void GWStarsAdd(int player, s16 amount)
     GWStarsSet(player, GWPlayer[player].stars+amount);
 }
 
-s16 GWStarsGet(int player)
+s32 GWStarsGet(int player)
 {
     return GWPlayer[player].stars;
 }

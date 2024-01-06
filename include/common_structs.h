@@ -58,7 +58,7 @@ typedef struct player_state {
         u16 com : 1;
         u16 character : 4;
         u16 auto_size : 2;
-		u16 field00_bit9 : 1;
+		u16 field01_bit9 : 1;
     };
 /* 0x02 */ struct {
         u8 team : 1;
@@ -77,6 +77,7 @@ typedef struct player_state {
         u16 field08_bit7 : 2;
         u16 rank : 2;
         u16 bowser_suit : 1;
+        u16 field08_bit11 : 1;
     };
 /* 0x0A */ s8 roll;
 /* 0x0C */ s16 space_curr;
