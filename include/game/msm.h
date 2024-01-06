@@ -1,7 +1,7 @@
 #ifndef _GAME_MSM_H
 #define _GAME_MSM_H
 
-#include "common.h"
+#include "dolphin.h"
 
 typedef struct {
     s32 unk00;

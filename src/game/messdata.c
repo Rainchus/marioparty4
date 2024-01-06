@@ -1,4 +1,4 @@
-#include "common.h"
+#include "dolphin.h"
 
 static void *MessData_MesDataGet(void *messdata, u32 id)
 {

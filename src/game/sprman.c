@@ -1,4 +1,3 @@
-#include "common.h"
 #include "game/sprite.h"
 #include "game/memory.h"
 #include "game/init.h"

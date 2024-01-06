@@ -1,6 +1,6 @@
-#include "common.h"
 #include "string.h"
 #include "game/gamework.h"
+#include "game/gamework_data.h"
 #include "game/flag.h"
 
 GameStat GWGameStatDefault;

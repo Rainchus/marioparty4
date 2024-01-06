@@ -1,4 +1,5 @@
-#include "common.h"
+#include "game/audio.h"
+#include "game/hsfman.h"
 #include "game/printfunc.h"
 #include "game/object.h"
 #include "game/pad.h"

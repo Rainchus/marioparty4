@@ -1,4 +1,3 @@
-#include "common.h"
 #include "game/data.h"
 
 #include "logoNintendoData.inc"

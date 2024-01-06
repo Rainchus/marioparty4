@@ -1,7 +1,7 @@
 #ifndef _GAME_SAVELOAD_H
 #define _GAME_SAVELOAD_H
 
-#include "common.h"
+#include "dolphin.h"
 
 s32 SLFileOpen(char *arg0);
 s32 SLFileCreate(char *arg0, u32 arg1, void *arg2);

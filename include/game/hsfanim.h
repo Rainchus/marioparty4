@@ -1,7 +1,6 @@
 #ifndef GAME_HSFANIM_H
 #define GAME_HSFANIM_H
 
-#include "common.h"
 #include "game/hsfformat.h"
 #include "game/hsfman.h"
 #include "game/sprite.h"

@@ -1,4 +1,3 @@
-#include "common.h"
 #include "game/process.h"
 #include "game/memory.h"
 #include "dolphin/os.h"

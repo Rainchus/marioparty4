@@ -1,7 +1,6 @@
-#ifndef _COMMON_STRUCTS_H
-#define _COMMON_STRUCTS_H
+#ifndef _GAMEWORK_DATA_H
+#define _GAMEWORK_DATA_H
 
-#include "types.h"
 #include "dolphin.h"
 
 typedef struct player_config {
@@ -142,5 +141,10 @@ typedef struct game_stat {
         u8 field110_bit6 : 2;
     };
 } GameStat;
+
+extern PlayerConfig GWPlayerCfg[4];
+extern PlayerState GWPlayer[4];
+extern SystemState GWSystem;
+extern GameStat GWGameStat;
 
 #endif

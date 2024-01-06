@@ -3,7 +3,7 @@
 #include "game/msm.h"
 #include "game/object.h"
 #include "game/wipe.h"
-
+#include "game/gamework_data.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;
