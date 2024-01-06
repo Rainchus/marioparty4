@@ -44,9 +44,9 @@ static inline void OSInitFastCast(void) {
 
 static inline s16 __OSf32tos16(register f32 inF)
 {
-	register s16 out;
 	u32 tmp;
 	register u32* tmpPtr = &tmp;
+	register s16 out;
 	// clang-format off
     asm {
         psq_st inF, 0(tmpPtr), 0x1, OS_FASTCAST_S16

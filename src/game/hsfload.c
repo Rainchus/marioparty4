@@ -216,7 +216,7 @@ static void MaterialLoad(void)
             new_mat->refAlpha = curr_mat->refAlpha;
             new_mat->unk2C = curr_mat->unk2C;
             new_mat->numAttrs = curr_mat->numAttrs;
-            new_mat->attrs = (HsfAttribute **)(NSymIndex+((u32)curr_mat->attrs));
+            new_mat->attrs = (s32 *)(NSymIndex+((u32)curr_mat->attrs));
             rgba[i].r = new_mat->litColor[0];
             rgba[i].g = new_mat->litColor[1];
             rgba[i].b = new_mat->litColor[2];

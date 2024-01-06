@@ -234,7 +234,7 @@ void Hu3DExec(void) {
                                         mtxTransCat(sp40, data->pos.x, data->pos.y, data->pos.z);
                                         PSMTXConcat(Hu3DCameraMtx, sp40, sp10);
                                         PSMTXConcat(sp10, data->unk_F0, sp10);
-                                        Hu3DDraw(data, sp10[0], &data->scale.x);
+                                        Hu3DDraw(data, sp10, &data->scale);
                                     }
                                     data->unk_00++;
                                     var_r23++;
@@ -1971,7 +1971,7 @@ void Hu3DShadowExec(void) {
             mtxTransCat(spB8, var_r31->pos.x, var_r31->pos.y, var_r31->pos.z);
             PSMTXConcat(Hu3DCameraMtx, spB8, sp88);
             PSMTXConcat(sp88, var_r31->unk_F0, sp88);
-            Hu3DDraw(var_r31, sp88[0], &var_r31->scale.x);
+            Hu3DDraw(var_r31, sp88, &var_r31->scale);
         }
     }
     Hu3DDrawPost();

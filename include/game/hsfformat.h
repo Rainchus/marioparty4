@@ -2,7 +2,7 @@
 #define _GAME_HSFFORMAT_H
 
 #include "dolphin.h"
-#include "game/hsfanim.h"
+#include "game/sprite.h"
 
 #define HSF_OBJ_NULL1 0
 #define HSF_OBJ_REPLICA 1
@@ -78,7 +78,7 @@ typedef struct hsf_scene {
 
 typedef struct hsf_bitmap {
     char *name;
-    s32 maxLod;
+    u32 maxLod;
     u8 dataFmt;
     u8 pixSize;
     s16 sizeX;
@@ -99,10 +99,23 @@ typedef struct hsf_palette {
 
 typedef struct hsf_attribute {
     char *name;
-    u8 unk4[96];
+    void *unk04;
+    u8 unk8[4];
+    float unk0C;
+    u8 unk10[4];
+    float unk14;
+    u8 unk18[8];
+    float unk20;
+    u8 unk24[4];
+    float unk28;
+    float unk2C;
+    float unk30;
+    float unk34;
+    u8 unk38[44];
     u32 wrap_s;
     u32 wrap_t;
-    u8 unk6C[16];
+    u8 unk6C[12];
+    u32 unk78;
     u32 flag;
     HsfBitmap *bitmap;
 } HsfAttribute;
@@ -123,7 +136,7 @@ typedef struct hsf_material {
     float unk2C;
     u32 flags;
     u32 numAttrs;
-    HsfAttribute **attrs;
+    s32 *attrs;
 } HsfMaterial;
 
 typedef struct hsf_vertex_buf {
@@ -153,7 +166,10 @@ typedef struct hsf_face {
 typedef struct hsf_const_data {
     u32 flags;
     s16 hook;
-    u8 unk6[0x3A];
+    u8 unk6[2];
+    void *unk08;
+    void *unk0C;
+    Mtx unk10;
     AnimData *hilite_map;
 } HsfConstData;
 
@@ -267,6 +283,7 @@ typedef struct hsf_object_data {
     HsfAttribute *attribute;
     u8 unk120[2];
     u8 shapeType;
+    u8 unk123;
     u32 vertexShapeCnt;
     HsfBuffer **vertexShape;
     u32 clusterCnt;
