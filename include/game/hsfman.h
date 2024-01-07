@@ -14,11 +14,13 @@
 
 #define Hu3DModelCreateFile(data_id) (Hu3DModelCreate(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 
+typedef struct particle_data ParticleData;
+
 typedef struct model_data {
     u8 unk_00;
     u8 unk_01;
     u8 unk_02;
-    s8 unk_03;
+    u8 unk_03;
     s8 unk_04;
     s8 unk_05;
     s16 layer;
@@ -119,7 +121,7 @@ extern void EnvelopeProc(HsfData*);                           /* extern */
 extern void GXWaitDrawDone();                                 /* extern */
 extern void Hu3DAnimExec();                                   /* extern */
 extern void Hu3DCameraMotionExec(s16);                        /* extern */
-extern void Hu3DDraw(ModelData*, f32*, f32*);          /* extern */
+extern void Hu3DDraw(ModelData*, Mtx, Vec*);          /* extern */
 extern void Hu3DDrawPost();                                   /* extern */
 extern void Hu3DDrawPreInit();                                /* extern */
 extern void Hu3DMotionNext(s16);                              /* extern */
@@ -258,6 +260,24 @@ void Hu3DProjectionKill(s16);
 void Hu3DProjectionPosSet(s16, Vec, Vec, Vec);
 void Hu3DProjectionTPLvlSet(s16, f32);
 void Hu3DMipMapSet(char*, s16, s32, f32);
+
+extern ModelData Hu3DData[0x200];
+extern CameraData Hu3DCamera[0x10];
+extern AnimData *reflectAnim[5];
+extern AnimData *hiliteAnim[4];
+extern ThreeDProjectionStruct Hu3DProjection[4];
+extern ShadowData Hu3DShadowData;
+extern Mtx Hu3DCameraMtx;
+extern Mtx Hu3DCameraMtxXPose;
+extern LightData Hu3DGlobalLight[0x8];
+extern s16 reflectMapNo;
+extern AnimData *toonAnim;
+extern s16 Hu3DShadowCamBit;
+extern s32 Hu3DShadowF;
+extern s32 shadowModelDrawF;
+extern s16 Hu3DCameraNo;
+extern s16 Hu3DCameraBit;
+extern s16 Hu3DPauseF;
 
 extern MotionData Hu3DMotion[0x100];
 extern u32 totalMatCnt;
