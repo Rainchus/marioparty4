@@ -1,4 +1,5 @@
-#include "common.h"
+#include "board_unsplit.h"
+#include "game/gamework_data.h"
 #include "math.h"
 #include "game/object.h"
 #include "game/flag.h"
@@ -6,52 +7,8 @@
 #include "game/wipe.h"
 #include "string.h"
 #include "game/hsfman.h"
-
-
-typedef struct board_focus_data {
-	u16 view_type;
-	s16 time;
-	s16 max_time;
-	float fov_start;
-	float fov_end;
-	float zoom_start;
-	float zoom_end;
-	Vec rot_start;
-	Vec rot_end;
-	Vec target_start;
-	Vec target_end;
-} BoardFocusData;
-
-typedef struct board_camera_data {
-	struct {
-		u8 hide_all : 1;
-		u8 moving : 1;
-		u8 quaking : 1;
-	};
-	u16 mask;
-	s16 target_mdl;
-	s16 target_space;
-	s32 quake_timer;
-	float quake_strength;
-	float fov;
-	float near;
-	float far;
-	float aspect;
-	float viewport_x;
-	float viewport_y;
-	float viewport_w;
-	float viewport_h;
-	float viewport_near;
-	float viewport_far;
-	Vec pos;
-	Vec up;
-	Vec target;
-	Vec offset;
-	Vec rot;
-	float zoom;
-	void (*pos_calc)(struct board_camera_data *camera);
-	BoardFocusData focus;
-} BoardCameraData;
+#include "game/board/main.h"
+#include "game/board/player.h"
 
 typedef struct camera_view {
 	s16 x_rot;
@@ -59,7 +16,6 @@ typedef struct camera_view {
 	s16 fov;
 } CameraView;
 
-typedef void (*VoidFunc)(void);
 
 omObjData *boardMainObj;
 u32 boardRandSeed;
@@ -70,11 +26,11 @@ void *boardTurnStartFunc;
 u32 lbl_801D3F00;
 u32 lbl_801D3EFC;
 u32 lbl_801D3EF8;
-VoidFunc boardTurnFunc;
-void *boardLightSetHook;
-void *boardLightResetHook;
-static VoidFunc destroyFunc;
-static VoidFunc createFunc;
+BoardFunc boardTurnFunc;
+BoardLightHook boardLightSetHook;
+BoardLightHook boardLightResetHook;
+static BoardFunc destroyFunc;
+static BoardFunc createFunc;
 static BOOL cameraUseBackup;
 static omObjData *tauntObj;
 static omObjData *cameraObj;
@@ -95,8 +51,7 @@ static CameraView camViewTbl[] = {
 	{ -33, 3200, 25 },
 };
 
-extern void BoardPlayerCoinsSet(s32 player, s32 value);
-extern void BoardPlayerAutoSizeSet(s32 player, s32 value);
+
 extern void BoardModelPosGet(s16 model, Vec *pos);
 extern void BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
@@ -134,49 +89,6 @@ static void DestroyMainFunc(void);
 static void CreateBoard(void);
 static void DestroyBoard(void);
 
-static inline s32 BoardCurrGet()
-{
-	return GWSystem.board;
-}
-
-static inline s32 BoardPartyFlagGet()
-{
-	s32 value = GWSystem.party;
-	return value;
-}
-
-static inline s16 BoardHandicapGet(s32 player)
-{
-	return GWPlayer[player].handicap;
-}
-
-static inline s32 BoardPlayerCurrGetIdx()
-{
-	return GWSystem.player_curr;
-}
-
-static inline PlayerState *BoardPlayerGet(s32 player)
-{
-	return &GWPlayer[player];
-}
-
-static inline PlayerState *BoardPlayerCurrGet()
-{
-	return &GWPlayer[BoardPlayerCurrGetIdx()];
-}
-
-static inline s16 BoardPlayerModelGet(s32 player)
-{
-	PlayerState *player_ptr = BoardPlayerGet(player);
-	return boardPlayerMdl[player_ptr->player_idx];
-}
-
-static inline s16 BoardPlayerCurrModelGet()
-{
-	PlayerState *player = BoardPlayerCurrGet();
-	return boardPlayerMdl[player->player_idx];
-}
-
 static inline int GWMGTypeGet()
 {
 	return GWSystem.mg_type;
@@ -187,10 +99,9 @@ static inline int GWMessSpeedGet()
 	return GWSystem.mess_speed;
 }
 
+#define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
 
-#define BoardFAbs(value) ((value < 0) ? -(value) : (value))
-
-void BoardCommonInit(VoidFunc create, VoidFunc destroy)
+void BoardCommonInit(BoardFunc create, BoardFunc destroy)
 {
 	omSysPauseEnable(FALSE);
 	if(!_CheckFlag(FLAG_ID_MAKE(1, 0))) {
@@ -339,7 +250,7 @@ void BoardKill(void)
 		BoardTutorialHookExec(29, 0);
 	}
 	HuAudFXAllStop();
-	if(!BoardIsStarted()) {
+	if(!BoardStartCheck()) {
 		WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
 		boardTutorialF = 1;
 		while(WipeStatGet()) {
@@ -439,7 +350,7 @@ void BoardSaveInit(s32 board)
 		if(!BoardPartyFlagGet() || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
 			GWStarsSet(i, 0);
 		} else {
-			GWStarsSet(i, BoardHandicapGet(i));
+			GWStarsSet(i, BoardPlayerHandicapGet(i));
 		}
 	}
 }
@@ -599,7 +510,7 @@ static void MainFunc(void)
 				while(WipeStatGet()) {
 					HuPrcVSleep();
 				}
-				BoardPlayerCurrMoveAwayStart(GWPlayer[i].space_curr, 1);
+				BoardPlayerMoveAwayStartCurr(GWPlayer[i].space_curr, 1);
 				fade_type = 0;
 			} else {
 				if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
@@ -609,7 +520,7 @@ static void MainFunc(void)
 						while(WipeStatGet()) {
 							HuPrcVSleep();
 						}
-						BoardPlayerCurrMoveAwayStart(GWPlayer[i].space_curr, 1);
+						BoardPlayerMoveAwayStartCurr(GWPlayer[i].space_curr, 1);
 						fade_type = 0;
 					}
 				} else {
@@ -669,7 +580,7 @@ void BoardNextOvlSet(OverlayID overlay)
 	BoardKill();
 }
 
-BOOL BoardIsStarted(void)
+s32 BoardStartCheck(void)
 {
 	if(_CheckFlag(FLAG_ID_MAKE(1, 2)) || _CheckFlag(FLAG_ID_MAKE(1, 3)) || _CheckFlag(FLAG_ID_MAKE(1, 4)) || _CheckFlag(FLAG_ID_MAKE(1, 5)) || _CheckFlag(FLAG_ID_MAKE(1, 6))) {
 		return 1;
@@ -868,7 +779,7 @@ void BoardCameraViewSet(s32 type)
 	} else {
 		size = 1.0f;
 	}
-	BoardCameraTargetModelSet(BoardPlayerCurrModelGet());
+	BoardCameraTargetModelSet(BoardPlayerModelGetCurr());
 	BoardPlayerPosGet(GWSystem.player_curr, &focus->target_end);
 	BoardCameraOffsetSet(0.0f, 100.0f*size, 0.0f);
 	focus->target_end.y += 100.0f*size;
@@ -1022,7 +933,7 @@ void BoardCameraTargetSpaceSet(s32 space)
 	camera->offset.x = camera->offset.y = camera->offset.z = 0;
 }
 
-void BoardCameraPosCalcFuncSet(void (*func)(struct board_camera_data *camera))
+void BoardCameraPosCalcFuncSet(BoardCameraPosCalcFunc func)
 {
 	BoardCameraData *camera = &boardCamera;
 	if(!camera) {
@@ -1042,7 +953,7 @@ void BoardCameraQuakeSet(s32 duration, float strength)
 	camera->quake_timer = duration;
 }
 
-void BoardCameraQuakeReset(s32 duration, float strength)
+void BoardCameraQuakeReset()
 {
 	BoardCameraData *camera = &boardCamera;
 	camera->quaking = 0;
@@ -1092,7 +1003,6 @@ void BoardCameraNearFarSet(float near, float far)
 	camera->near = near;
 	camera->far = far;
 }
-
 
 void BoardCameraNearFarGet(float *near, float *far)
 {
@@ -1180,7 +1090,7 @@ s32 BoardCameraCullCheck(Vec *point, float radius)
 	}
 	BoardCameraPointDirGet(point, &pos);
 	dot = VECDotProduct(&dir, &pos);
-	if(BoardFAbs(dot) < cos((camera->fov*M_PI)/180)) {
+	if(BOARD_FABS(dot) < cos((camera->fov*M_PI)/180)) {
 		return 0;
 	} else {
 		return 1;
@@ -1365,7 +1275,7 @@ float BoardArcSin(float value)
 	s32 sign;
 	if(value < 0) {
 		sign = 1;
-		value = BoardFAbs(value);
+		value = BOARD_FABS(value);
 	} else {
 		sign = 0;
 	}
@@ -1378,14 +1288,14 @@ float BoardArcSin(float value)
 		result = 1.0f-atanf((float)sqrtf(1-(value*value))/value);
 	}
 	if(sign) {
-		result = BoardFAbs(result);
+		result = BOARD_FABS(result);
 	}
 	return result;
 }
 
 float BoardArcCos(float value)
 {
-	if(BoardFAbs(value) > 1) {
+	if(BOARD_FABS(value) > 1) {
 		return 0;
 	}
 	return 1.0f-BoardArcSin(value);
