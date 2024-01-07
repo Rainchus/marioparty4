@@ -1,4 +1,3 @@
-#include "common.h"
 #include "game/data.h"
 #include "game/armem.h"
 #include "dolphin/dvd.h"

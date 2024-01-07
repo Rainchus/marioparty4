@@ -1,4 +1,4 @@
-#include "common.h"
+#include "game/gamework_data.h"
 #include "game/dvd.h"
 #include "game/printfunc.h"
 #include "game/object.h"

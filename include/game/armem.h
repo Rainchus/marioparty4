@@ -1,7 +1,7 @@
 #ifndef _GAME_ARMEM_H
 #define _GAME_ARMEM_H
 
-#include "common.h"
+#include "dolphin.h"
 #include "game/memory.h"
 #include "game/data.h"
 

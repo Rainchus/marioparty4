@@ -1,7 +1,7 @@
 #ifndef _GAME_AUDIO_H
 #define _GAME_AUDIO_H
 
-#include "common.h"
+#include "dolphin.h"
 
 void HuAudInit(void);
 s32 HuAudStreamPlay(void);
@@ -55,5 +55,7 @@ void HuAudPlayerVoicePlayEntry(s16 arg0, s16 arg1);
 s32 HuAudCharVoicePlay(s16 arg0, s16 arg1);
 s32 HuAudCharVoicePlayPos(s16 arg0, s16 arg1, Vec *arg2);
 void HuAudCharVoicePlayEntry(s16 arg0, s16 arg1);
+
+extern u8 fadeStat;
 
 #endif

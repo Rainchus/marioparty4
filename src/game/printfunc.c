@@ -1,4 +1,3 @@
-#include "common.h"
 #include "dolphin.h"
 #include "game/printfunc.h"
 #include "game/init.h"

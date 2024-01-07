@@ -4,6 +4,7 @@
 #include "game/window.h"
 #include "game/flag.h"
 #include "game/card.h"
+#include "game/gamework_data.h"
 
 #include "string.h"
 

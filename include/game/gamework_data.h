@@ -1,7 +1,6 @@
-#ifndef _COMMON_STRUCTS_H
-#define _COMMON_STRUCTS_H
+#ifndef _GAMEWORK_DATA_H
+#define _GAMEWORK_DATA_H
 
-#include "types.h"
 #include "dolphin.h"
 
 typedef struct player_config {
@@ -58,7 +57,7 @@ typedef struct player_state {
         u16 com : 1;
         u16 character : 4;
         u16 auto_size : 2;
-		u16 field01_bit9 : 1;
+		u16 field00_bit9 : 1;
     };
 /* 0x02 */ struct {
         u8 team : 1;
@@ -84,14 +83,14 @@ typedef struct player_state {
 /* 0x0E */ s16 space_prev;
 /* 0x10 */ s16 space_next;
 /* 0x12 */ s16 space_shock;
-/* 0x14 */ u8 blue_count;
-/* 0x15 */ u8 red_count;
-/* 0x16 */ u8 question_count;
-/* 0x17 */ u8 fortune_count;
-/* 0x18 */ u8 bowser_count;
-/* 0x19 */ u8 battle_count;
-/* 0x1A */ u8 mushroom_count;
-/* 0x1B */ u8 warp_count;
+/* 0x14 */ s8 blue_count;
+/* 0x15 */ s8 red_count;
+/* 0x16 */ s8 question_count;
+/* 0x17 */ s8 fortune_count;
+/* 0x18 */ s8 bowser_count;
+/* 0x19 */ s8 battle_count;
+/* 0x1A */ s8 mushroom_count;
+/* 0x1B */ s8 warp_count;
 /* 0x1C */ s16 coins;
 /* 0x1E */ s16 coins_mg;
 /* 0x20 */ s16 coins_total;
@@ -142,5 +141,10 @@ typedef struct game_stat {
         u8 field110_bit6 : 2;
     };
 } GameStat;
+
+extern PlayerConfig GWPlayerCfg[4];
+extern PlayerState GWPlayer[4];
+extern SystemState GWSystem;
+extern GameStat GWGameStat;
 
 #endif

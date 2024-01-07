@@ -1,7 +1,10 @@
-#include "common.h"
+#include "game/gamework_data.h"
 #include "dolphin.h"
 #include "REL/executor.h"
 #include "game/process.h"
+#include "game/window.h"
+#include "board_unsplit.h"
+#include "unsplit.h"
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
@@ -26,11 +29,6 @@ typedef struct w10DllUnk01 {
     f32 unkC;
     f32 unk10;
 } w10DllUnk01; //sizeof ?
-
-typedef struct m456DllUnk02 {
-    char unk00[0x5C];
-    w10DllUnk01* unk5C;
-} m456DllUnk02; //sizeof ?
 
 typedef struct w10DllUnk03 {
     s16 unk0;
