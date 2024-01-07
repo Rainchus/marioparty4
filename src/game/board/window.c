@@ -1,8 +1,7 @@
 #include "game/board/window.h"
+#include "game/board/main.h"
+#include "game/board/player.h"
 #include "game/gamework_data.h"
-
-extern s32 BoardPlayerIsAllCom(void);
-extern Process* boardMainProc;
 
 static s8 winChoice;
 static s8 autoPickF;

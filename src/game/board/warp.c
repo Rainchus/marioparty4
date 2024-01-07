@@ -1,7 +1,18 @@
 #include "game/board/warp.h"
+#include "game/board/main.h"
+#include "game/board/player.h"
+#include "game/wipe.h"
 #include "game/gamework_data.h"
 #include "board_unsplit.h"
+#include "unsplit.h"
 #include "math.h"
+
+static void WarpInit(s32);
+static void WarpLaunch(s32);
+static void WarpStartImpact(s32);
+static void WarpFall(s32);
+static void WarpImpact(s32);
+
 
 extern void omVibrate(s16, s16, s16, s16);
 extern void fn_800816CC(s32, s32);
@@ -15,102 +26,94 @@ extern void BoardPlayerPosSet(s32, f32, f32, f32);
 extern void BoardPlayerRotYSet(s32, f32);
 extern void Hu3DModelObjPosGet(s16, char*, Vec*);
 extern s32 BoardModelMotionEndCheck(s16);
-extern void BoardPlayerPosSetV(s32, Point3d*);
-void BoardPlayerRotSet(s32, f32, f32, f32);
-void BoardCameraMoveSet(s32);
-void BoardCameraTargetSpaceSet(s16);
-extern void BoardRotateDiceNumbers(s32);
-extern void BoardPlayerPosGet(s32, Vec*);
-void BoardPlayerMotionStart(s16, s32, s32);
 
-extern Process* boardMainProc;
 extern s32 boardTutorialData[4];
-extern s16 boardPlayerMdl[4];
 
-Vec lbl_801A4AC0;
+static Vec warpPos;
 
-s8 lbl_801D4038;
-s8 lbl_801D4037;
-s8 lbl_801D4036;
-s16 lbl_801D4034;
-f32 lbl_801D4030;
-f32 lbl_801D402C;
-Process* lbl_801D4028;
+static s8 warpState;
+static s8 warpTarget;
+static s8 warpImpactCnt;
+static s16 warpSpace;
+static f32 warpYFloor;
+static f32 warpYVel;
+static Process* warpProcess;
 
-s16 lbl_801D3748 = 0xFFFF;
-s16 lbl_801D374A = 0xFFFF;
-s8 lbl_801D374C[4] = {-1, -1, -1, -1};
-char lbl_801D3750[] = "warp01";
+static s16 warpSpringMdl = -1;
+static s16 warpImpactMdl = -1;
+static s8 warpImpactPlayer[4] = {-1, -1, -1, -1};
 
-void fn_80080D54(s32 arg0) {
-    omVibrate(arg0, 0xC, 4, 2);
-    lbl_801D4028 = HuPrcChildCreate(fn_80080DF8, 0x2003U, 0x3800U, 0, boardMainProc);
-    HuPrcDestructorSet2(lbl_801D4028, fn_80081048);
+static void WarpProcess(void);
+static void WarpKill(void);
 
-    while (lbl_801D4028 != NULL) {
+void BoardWarpExec(s32 player, s16 space) {
+    omVibrate(player, 12, 4, 2);
+    warpProcess = HuPrcChildCreate(WarpProcess, 8195, 14336, 0, boardMainProc);
+    HuPrcDestructorSet2(warpProcess, WarpKill);
+
+    while (warpProcess != NULL) {
         HuPrcVSleep();
     }
-    GWPlayer[arg0].color = 3;
+    GWPlayer[player].color = 3;
 }
 
-void fn_80080DF8(void) {
-    s32 currPlayer;
-    f32 var_f1;
-    s32 temp_r3[8] = {291, 355, 419, 483, 547, 611, 675, 739};
+void WarpProcess(void) {
+    s32 curr_player;
+    s32 warp_sound[8] = {291, 355, 419, 483, 547, 611, 675, 739};
     
-    lbl_801D4038 = 0;
-    currPlayer = GWSystem.player_curr;
-    HuAudFXPlay(0x34A);
+    warpState = 0;
+    curr_player = GWSystem.player_curr;
+    HuAudFXPlay(842);
     BoardCameraViewSet(3);
     BoardCameraMotionWait();
-    BoardPlayerAnimBlendSet(currPlayer, 0, 15);
+    BoardPlayerAnimBlendSet(curr_player, 0, 15);
 
-    while (BoardPlayerAnimBlendCheck(currPlayer) == 0) {
+    while (BoardPlayerAnimBlendCheck(curr_player) == 0) {
         HuPrcVSleep();
     }
     
-    BoardRotateDiceNumbers(currPlayer);
+    BoardRotateDiceNumbers(curr_player);
     if (_CheckFlag(0x1000B) != 0) {
-        BoardTutorialHookExec(0x12, 0);
+        BoardTutorialHookExec(18, 0);
         boardTutorialData[0] = 0;
     }
-    fn_800816CC(currPlayer, 3);
+    fn_800816CC(curr_player, 3);
     fn_80081884(18.0f);
     fn_8008181C();
-    lbl_801D4037 = fn_8008186C();
+    warpTarget = fn_8008186C();
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
-    fn_800810A4(currPlayer);
+    WarpInit(curr_player);
 
     while (1) {
-        switch (lbl_801D4038) {
+        switch (warpState) {
             case 0:
-                if (BoardModelMotionTimeGet(lbl_801D3748) < 15.0f) {
+                if (BoardModelMotionTimeGet(warpSpringMdl) < 15.0f) {
                     break;
                 }
-                BoardModelHookReset(lbl_801D3748);
-                Hu3DModelObjPosGet(BoardModelIDGet(lbl_801D3748), lbl_801D3750, &lbl_801A4AC0);
-                BoardSpacePosGet(0, GWPlayer[currPlayer].space_curr, &lbl_801A4AC0);
-                lbl_801A4AC0.y += 700.0f;
-                BoardPlayerPosSetV(currPlayer, &lbl_801A4AC0);
-                lbl_801D4038 = 1;
-                HuAudFXPlay(temp_r3[GWPlayer[currPlayer].character]);
+                BoardModelHookReset(warpSpringMdl);
+                Hu3DModelObjPosGet(BoardModelIDGet(warpSpringMdl), "warp01", &warpPos);
+                BoardSpacePosGet(0, GWPlayer[curr_player].space_curr, &warpPos);
+                warpPos.y += 700.0f;
+                BoardPlayerPosSetV(curr_player, &warpPos);
+                warpState = 1;
+                HuAudFXPlay(warp_sound[GWPlayer[curr_player].character]);
                 break;
             case 1:
-                fn_800811BC(currPlayer);
+                WarpLaunch(curr_player);
                 break;
             case 2:
-                if (BoardModelMotionEndCheck(lbl_801D3748) == 0) break;
-                lbl_801D4038 = 6;
+                if (BoardModelMotionEndCheck(warpSpringMdl) == 0) break;
+                warpState = 6;
                 break;
             case 3:
-                fn_80081278(currPlayer);
+                WarpStartImpact(curr_player);
                 break;
             case 4:
-                fn_80081428(currPlayer);
+                WarpFall(curr_player);
                 break;
             case 5:
-                fn_800814CC(currPlayer);
+                WarpImpact(curr_player);
                 break;
             case 6:
                 HuPrcEnd();
@@ -120,147 +123,135 @@ void fn_80080DF8(void) {
     }
 }
 
-void fn_80081048(void) {
-    if (lbl_801D3748 != -1) {
-        BoardModelKill(lbl_801D3748);
-        lbl_801D3748 = -1;
+void WarpKill(void) {
+    if (warpSpringMdl != -1) {
+        BoardModelKill(warpSpringMdl);
+        warpSpringMdl = -1;
     }
-    if (lbl_801D374A != -1) {
-        BoardModelKill(lbl_801D374A);
-        lbl_801D374A = -1;
+    if (warpImpactMdl != -1) {
+        BoardModelKill(warpImpactMdl);
+        warpImpactMdl = -1;
     }
-    lbl_801D4028 = NULL;
+    warpProcess = NULL;
 }
 
-static inline PlayerState* GetPlayer(s32 index) {
-    return &GWPlayer[index];
+static void WarpInit(s32 player) {
+    Vec pos;
+    s16 player_mdl = BoardPlayerModelGet(player);
+
+    warpSpringMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 1), NULL, 0);
+    BoardSpacePosGet(0, GWPlayer[player].space_curr, &pos);
+    warpYFloor = 1500.0f + pos.y;
+    BoardModelLayerSet(warpSpringMdl, 2);
+    BoardCameraTargetModelSet(warpSpringMdl);
+    BoardModelMotionStart(warpSpringMdl, 0, 0);
+    BoardModelHookSet(warpSpringMdl, "warp01", player_mdl);
+    BoardModelPosSetV(warpSpringMdl, &pos);
+    HuAudFXPlay(835);
+    BoardPlayerRotYSet(player, 0.0f);
+    BoardPlayerPosSet(player, 0.0f, 0.0f, 0.0f);
+    BoardRotateDiceNumbers(player);
 }
 
-static inline s16 GetBoardPlayer(s32 index) {
-    PlayerState *player = GetPlayer(index);
-    return boardPlayerMdl[player->player_idx];
-}
+static void WarpLaunch(s32 player) {
 
-void fn_800810A4(s32 arg0) {
-    Point3d sp8;
-    s16 temp_r30 = GetBoardPlayer(arg0);
-
-    lbl_801D3748 = BoardModelCreate(0x70001, NULL, 0);
-    BoardSpacePosGet(0, GWPlayer[arg0].space_curr, &sp8);
-    lbl_801D4030 = 1500.0f + sp8.y;
-    BoardModelLayerSet(lbl_801D3748, 2);
-    BoardCameraTargetModelSet(lbl_801D3748);
-    BoardModelMotionStart(lbl_801D3748, 0, 0);
-    BoardModelHookSet(lbl_801D3748, lbl_801D3750, temp_r30);
-    BoardModelPosSetV(lbl_801D3748, &sp8);
-    HuAudFXPlay(0x343);
-    BoardPlayerRotYSet(arg0, 0.0f);
-    BoardPlayerPosSet(arg0, 0.0f, 0.0f, 0.0f);
-    BoardRotateDiceNumbers(arg0);
-}
-
-void fn_800811BC(s32 arg0) {
-    f32 temp_f1;
-
-    lbl_801A4AC0.y += 20.0f;
-    BoardPlayerPosSetV(arg0, &lbl_801A4AC0);
-    if (!(lbl_801A4AC0.y < lbl_801D4030)) {
+    warpPos.y += 20.0f;
+    BoardPlayerPosSetV(player, &warpPos);
+    if (!(warpPos.y < warpYFloor)) {
         WipeColorSet(0U, 0U, 0U);
-        WipeCreate(2, 0, 0x15);
+        WipeCreate(2, 0, 21);
         
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
-        lbl_801A4AC0.y = lbl_801D4030;
-        BoardModelVisibilitySet(lbl_801D3748, 0);
-        lbl_801D4038 = 3;
+        warpPos.y = warpYFloor;
+        BoardModelVisibilitySet(warpSpringMdl, 0);
+        warpState = 3;
     }
 }
 
-void fn_80081278(s32 arg0) {
-    f32 temp_f1;
-    s32 var_r31;
+static void WarpStartImpact(s32 player) {
+    s32 i;
 
-    lbl_801D4034 = GWPlayer[lbl_801D4037].space_curr;
-    GWPlayer[arg0].space_curr = lbl_801D4034;
-    BoardSpacePosGet(0, lbl_801D4034, &lbl_801A4AC0);
-    lbl_801D4030 = lbl_801A4AC0.y;
-    lbl_801A4AC0.y += 1500.0f;
-    BoardPlayerPosSetV(arg0, &lbl_801A4AC0);
-    BoardPlayerRotSet(arg0, 180.0f, 180.0f, 0.0f);
+    warpSpace = GWPlayer[warpTarget].space_curr;
+    GWPlayer[player].space_curr = warpSpace;
+    BoardSpacePosGet(0, warpSpace, &warpPos);
+    warpYFloor = warpPos.y;
+    warpPos.y += 1500.0f;
+    BoardPlayerPosSetV(player, &warpPos);
+    BoardPlayerRotSet(player, 180.0f, 180.0f, 0.0f);
     
-    for (var_r31 = 0, lbl_801D4036 = var_r31; var_r31 < 4; var_r31++) {
-        if (lbl_801D4034 == GWPlayer[var_r31].space_curr) {
-            lbl_801D374C[lbl_801D4036] = var_r31;
-            lbl_801D4036++;
+    for (i = 0, warpImpactCnt = i; i < 4; i++) {
+        if (warpSpace == GWPlayer[i].space_curr) {
+            warpImpactPlayer[warpImpactCnt] = i;
+            warpImpactCnt++;
         }
     }
-    lbl_801D374A = BoardModelCreate(0x70002, NULL, 0);
-    BoardModelVisibilitySet(lbl_801D374A, 0);
-    BoardModelMotionSpeedSet(lbl_801D374A, 0.0f);
+    warpImpactMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 2), NULL, 0);
+    BoardModelVisibilitySet(warpImpactMdl, 0);
+    BoardModelMotionSpeedSet(warpImpactMdl, 0.0f);
     BoardCameraMoveSet(0);
-    BoardCameraTargetSpaceSet(lbl_801D4034);
+    BoardCameraTargetSpaceSet(warpSpace);
     HuPrcSleep(1);
     WipeCreate(1, 0, 0x15);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
     BoardCameraMoveSet(1);
-    lbl_801D402C = -10.0f;
-    lbl_801D4038 = 4;
+    warpYVel = -10.0f;
+    warpState = 4;
 }
 
-void fn_80081428(s32 arg0) {
-    lbl_801D402C += -2.0f;
-    lbl_801A4AC0.y += lbl_801D402C;
-    if (lbl_801A4AC0.y <= (150.0f + lbl_801D4030)) {
-        lbl_801A4AC0.y = lbl_801D4030;
-        lbl_801D4038 = 5;
-        HuAudFXPlay(0x345);
-        HuAudFXPlay(0x33D);
+static void WarpFall(s32 player) {
+    warpYVel += -2.0f;
+    warpPos.y += warpYVel;
+    if (warpPos.y <= (150.0f + warpYFloor)) {
+        warpPos.y = warpYFloor;
+        warpState = 5;
+        HuAudFXPlay(837);
+        HuAudFXPlay(829);
     }
-    BoardPlayerPosSetV(arg0, &lbl_801A4AC0);
+    BoardPlayerPosSetV(player, &warpPos);
 }
 
-void fn_800814CC(s32 arg0) {
-    Vec sp18;
-    Point3d spC;
-    s16 sp8;
-    f32 temp_f29;
+static void WarpImpact(s32 player) {
+    Vec pos;
+    Vec pos_player;
+    s16 temp;
+    f32 speed;
     f32 temp_f30;
-    f32 var_f31;
-    s16 var_r31;
-    s32 temp_r30;
+    f32 angle;
+    s16 i;
 
-    sp18.x = 288.0f;
-    sp18.y = 240.0f;
-    sp18.z = 700.0f;
-    Hu3D2Dto3D(&sp18, 1, &sp18);
-    BoardModelPosSetV(lbl_801D374A, &sp18);
-    BoardModelVisibilitySet(lbl_801D374A, 1);
-    BoardModelMotionStart(lbl_801D374A, 0, 0x40000001);
+    pos.x = 288.0f;
+    pos.y = 240.0f;
+    pos.z = 700.0f;
+    Hu3D2Dto3D(&pos, 1, &pos);
+    BoardModelPosSetV(warpImpactMdl, &pos);
+    BoardModelVisibilitySet(warpImpactMdl, 1);
+    BoardModelMotionStart(warpImpactMdl, 0, 0x40000001);
     
-    for (var_r31 = 0; var_r31 < lbl_801D4036; var_r31++) {
-        temp_r30 = lbl_801D374C[var_r31];
-        omVibrate(temp_r30, 0xC, 4, 2);
-        BoardPlayerMotionStart(temp_r30, 6, 0x40000001);
+    for (i = 0; i < warpImpactCnt; i++) {
+        s32 player = warpImpactPlayer[i];
+        omVibrate(player, 0xC, 4, 2);
+        BoardPlayerMotionStart(player, 6, 0x40000001);
     }
-    BoardPlayerRotSet(arg0, 0.0f, 0.0f, 0.0f);
-    BoardPlayerPosGet(arg0, &spC);
-    spC.y = lbl_801D4030;
-    BoardPlayerPosSetV(arg0, &spC);
-    temp_f29 = 4.0f;
+    BoardPlayerRotSet(player, 0.0f, 0.0f, 0.0f);
+    BoardPlayerPosGet(player, &pos_player);
+    pos_player.y = warpYFloor;
+    BoardPlayerPosSetV(player, &pos_player);
+    speed = 4.0f;
     
-    for (var_f31 = 0.0f, sp8 = var_f31; var_f31 < 180.0f; var_f31 += temp_f29) {
-        temp_f30 = sin((M_PI * var_f31) / 180.0);
-        BoardModelScaleSet(lbl_801D374A, 0.5f + temp_f30, 0.5f + temp_f30, 0.5f + temp_f30);
+    for (angle = 0.0f, temp = angle; angle < 180.0f; angle += speed) {
+        temp_f30 = sin((M_PI * angle) / 180.0);
+        BoardModelScaleSet(warpImpactMdl, 0.5f + temp_f30, 0.5f + temp_f30, 0.5f + temp_f30);
         HuPrcVSleep();
     }
-    BoardModelVisibilitySet(lbl_801D374A, 0);
-    HuPrcSleep(0x3C);
+    BoardModelVisibilitySet(warpImpactMdl, 0);
+    HuPrcSleep(60);
     
-    for (var_r31 = 0; var_r31 < lbl_801D4036; var_r31++) {
-        BoardRotateDiceNumbers(lbl_801D374C[var_r31]);
+    for (i = 0; i < warpImpactCnt; i++) {
+        BoardRotateDiceNumbers(warpImpactPlayer[i]);
     }
-    lbl_801D4038 = 6;
+    warpState = 6;
 }

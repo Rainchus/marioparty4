@@ -37,7 +37,11 @@ static inline s16 BoardPlayerModelGetCurr()
 	return boardPlayerMdl[player->player_idx];
 }
 
+s32 BoardPlayerIsAllCom(void);
+void BoardPlayerRotSet(s32, f32, f32, f32);
+void BoardPlayerPosGet(s32, Vec*);
 void BoardPlayerCoinsSet(s32 player, s32 value);
 void BoardPlayerAutoSizeSet(s32 player, s32 value);
+void BoardPlayerMotionStart(s16, s32, s32);
 
 #endif
