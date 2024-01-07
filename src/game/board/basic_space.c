@@ -64,7 +64,7 @@ static s32 coinDigitMdl[10] = {
 	MAKE_DATA_NUM(DATADIR_BOARD, 21),
 };
 
-void BoardLandBlueExec(s32 player, s16 space) {
+void BoardLandBlueExec(s32 player, s32 space) {
     Vec pos;
     s32 i;
     s8 coin_chg;
@@ -105,7 +105,7 @@ void BoardLandBlueExec(s32 player, s16 space) {
     BoardRotateDiceNumbers(player);
 }
 
-void BoardLandRedExec(s32 player, s16 space) {
+void BoardLandRedExec(s32 player, s32 space) {
     Vec pos;
     s32 i;
     s8 coin_chg;

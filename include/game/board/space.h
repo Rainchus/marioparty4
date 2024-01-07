@@ -32,6 +32,7 @@ s32 BoardSpaceTypeGet(s32 layer, s32 index);
 void BoardSpaceTypeSet(s32 layer, s32 index, s32 type);
 s32 BoardSpacePosGet(s32 layer, s32 index, Vec *pos);
 void BoardSpaceCornerPosGet(s32 index, s32 corner, Vec *pos);
+s32 BoardSpaceRotGet(s32 layer, s32 index, Vec *rot);
 s32 BoardSpaceFlagSearch(s32 layer, u32 flag);
 s32 BoardSpaceFlagPosGet(s32 layer, u32 flag, Vec *pos);
 s32 BoardSpaceLinkFlagSearch(s32 layer, s32 index, u32 flag);
@@ -48,5 +49,6 @@ s32 BoardSpaceStarGet(s32 index);
 s32 BoardSpaceStarGetCurr(void);
 s32 BoardSpaceStarCheck(s32 index);
 void BoardSpaceLandExec(s32 player, s32 space);
+void BoardSpaceBlockPosSet(void);
 
 #endif

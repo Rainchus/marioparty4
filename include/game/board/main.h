@@ -58,8 +58,7 @@ static inline s32 BoardCurrGet()
 
 static inline s32 BoardPartyFlagGet()
 {
-	s32 value = GWSystem.party;
-	return value;
+	return GWSystem.party;
 }
 
 extern BoardCameraData boardCamera;
@@ -117,6 +116,7 @@ s32 BoardCameraCullCheck(Vec *point, float radius);
 s32 BoardCameraMotionIsDone(void);
 void BoardCameraMotionWait(void);
 void BoardCameraInit(void);
+void BoardMGCreate(u16 param);
 float BoardArcSin(float value);
 float BoardArcCos(float value);
 void BoardRandInit(void);

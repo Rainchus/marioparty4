@@ -15,6 +15,8 @@
 
 typedef struct particle_data ParticleData;
 
+typedef void (*ModelHookFunc)(struct model_data *, Mtx);
+
 typedef struct model_data {
     u8 unk_00;
     u8 unk_01;
@@ -46,7 +48,10 @@ typedef struct model_data {
     char unk_78[0x1C];
     f32 unk_94;
     char unk_98[0x2C];
-    HsfData *hsfData;
+	union {
+		HsfData *hsfData;
+		ModelHookFunc hook;
+	};
     HsfData *unk_C8;
     Vec pos;
     Vec rot;
@@ -169,7 +174,7 @@ void Hu3DPauseSet(s32);
 void Hu3DNoSyncSet(s32);
 s16 Hu3DModelCreate(void *);
 s16 Hu3DModelLink(s16);
-s16 Hu3DHookFuncCreate(HsfData*);
+s16 Hu3DHookFuncCreate(ModelHookFunc);
 void Hu3DModelAllKill(void);
 void Hu3DModelPosSet(s16, f32, f32, f32);
 void Hu3DModelPosSetV(s16, Vec);

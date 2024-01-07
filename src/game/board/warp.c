@@ -46,7 +46,7 @@ static s8 warpImpactPlayer[4] = {-1, -1, -1, -1};
 static void WarpProcess(void);
 static void WarpKill(void);
 
-void BoardWarpExec(s32 player, s16 space) {
+void BoardWarpExec(s32 player, s32 space) {
     omVibrate(player, 12, 4, 2);
     warpProcess = HuPrcChildCreate(WarpProcess, 8195, 14336, 0, boardMainProc);
     HuPrcDestructorSet2(warpProcess, WarpKill);
