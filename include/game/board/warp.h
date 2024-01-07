@@ -4,6 +4,6 @@
 #include "game/process.h"
 #include "game/wipe.h"
 
-void BoardWarpExec(s32 player, s16 space);
+void BoardWarpExec(s32 player, s32 space);
 
 #endif
