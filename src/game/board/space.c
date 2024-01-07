@@ -213,7 +213,7 @@ s32 BoardSpaceLinkTypeListGet(s32 layer, s32 index, s32 type, s16 *list)
 	}
 	for(count=i=0; i<space->link_cnt; i++) {
 		BoardSpace *link_space = BoardSpaceGet(layer, space->link[i]);
-		if(link_space->type == type && count < 4) {
+		if(link_space->type == type && count < BOARD_SPACE_LINKMAX) {
 			list[count] = link_space-&spaceData[layer][0]+1;
 			count++;
 		}
@@ -226,11 +226,11 @@ s32 BoardSpaceLinkTargetListGet(s32 layer, s32 target, s16 *list)
 	s32 i, j;
 	s32 count;
 	BoardSpace *space;
-	memset(list, 0, 4*sizeof(s16));
+	memset(list, 0, BOARD_SPACE_LINKMAX*sizeof(s16));
 	space = &spaceData[layer][0];
 	for(count=i=0; i<spaceCnt[layer]; i++, space++) {
 		for(j=0; j<space->link_cnt; j++) {
-			if(space->link[j] == target && count < 4) {
+			if(space->link[j] == target && count < BOARD_SPACE_LINKMAX) {
 				list[count++] = space-&spaceData[layer][0]+1;
 			}
 		}
