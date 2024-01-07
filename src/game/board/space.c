@@ -1,23 +1,13 @@
 #include "game/gamework_data.h"
 #include "game/flag.h"
 #include "game/board/main.h"
+#include "game/board/space.h"
 
 #include "math.h"
 
 extern s16 BoardStarHostMdlGet(void);
 extern void BoardModelPosSetV(s16 model, Vec *pos);
 
-typedef s32 (*BoardSpaceEventFunc)(void);
-
-typedef struct board_space {
-	Vec pos;
-	u32 flag;
-	Vec scale;
-	Vec rot;
-	u16 type;
-	u16 link_cnt;
-	u16 link[5];
-} BoardSpace;
 
 static GXTexObj spaceHiliteTex;
 static GXTexObj spaceTex;
@@ -112,7 +102,7 @@ u32 BoardSpaceFlagGet(s32 layer, s32 index)
 	}
 }
 
-int BoardSpaceTypeGet(s32 layer, s32 index)
+s32 BoardSpaceTypeGet(s32 layer, s32 index)
 {
 	if(index <= 0 || index > spaceCnt[layer]) {
 		return 0;
@@ -121,7 +111,7 @@ int BoardSpaceTypeGet(s32 layer, s32 index)
 	}
 }
 
-void BoardSpaceTypeSet(s32 layer, s32 index, int type)
+void BoardSpaceTypeSet(s32 layer, s32 index, s32 type)
 {
 	if(index <= 0 || index > spaceCnt[layer]) {
 		return;
@@ -213,7 +203,7 @@ s32 BoardSpaceLinkFlagSearch(s32 layer, s32 index, u32 flag)
 	return -1;
 }
 
-s32 BoardSpaceLinkTypeListGet(s32 layer, s32 index, int type, s16 *list)
+s32 BoardSpaceLinkTypeListGet(s32 layer, s32 index, s32 type, s16 *list)
 {
 	s32 count;
 	BoardSpace *space = BoardSpaceGet(layer, index);
@@ -457,7 +447,6 @@ s32 BoardSpaceStarGetRandom(s32 excl_pos)
 	return new_pos;
 }
 
-//Fix GWSystem.star_total truncation and double GWSystem load
 void BoardSpaceStarMove(void)
 {
 	u8 star_total;

@@ -1,4 +1,5 @@
 #include "game/board/basic_space.h"
+#include "game/board/main.h"
 #include "game/data.h"
 #include "game/flag.h"
 #include "game/object.h"

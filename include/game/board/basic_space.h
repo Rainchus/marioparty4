@@ -2,9 +2,6 @@
 #define _BOARD_BASIC_SPACE_H
 
 #include "dolphin.h"
-#include "game/process.h"
-
-extern Process *boardObjMan;
 
 void BoardEventLandBlue(s32, s16);
 void BoardEventLandRed(s32, s16);
