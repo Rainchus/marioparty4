@@ -317,6 +317,7 @@ void BoardSaveInit(s32 board)
 	GWSystem.block_pos = 0;
 	memset(GWSystem.board_data, 0, 32);
 	for(i=0; i<4; i++) {
+		s32 party_flag;
 		BoardPlayerAutoSizeSet(i, 0);
 		GWPlayer[i].field00_bit9 = 0;
 		GWPlayer[i].color = 0;
@@ -347,7 +348,7 @@ void BoardSaveInit(s32 board)
 		GWPlayer[i].items[0] = -1;
 		GWPlayer[i].items[1] = -1;
 		GWPlayer[i].items[2] = -1;
-		if(!BoardPartyFlagGet() || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
+		if(BoardPartyFlagGet() == 0 || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
 			GWStarsSet(i, 0);
 		} else {
 			GWStarsSet(i, BoardPlayerHandicapGet(i));

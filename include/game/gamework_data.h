@@ -46,7 +46,7 @@ typedef struct system_state {
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
 /* 0x36 */ s16 mg_next_extra;
-/* 0x38 */ s16 unk_38;
+/* 0x38 */ u16 unk_38;
 /* 0x3A */ u8 flag[3][16];
 /* 0x6A */ u8 unk_6A[0x72];
 } SystemState; //8018fcf8, sizeof 0xDC

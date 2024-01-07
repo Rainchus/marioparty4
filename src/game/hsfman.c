@@ -458,7 +458,7 @@ s16 Hu3DModelLink(s16 arg0) {
     return var_r28;
 }
 
-s16 Hu3DHookFuncCreate(HsfData* arg0) {
+s16 Hu3DHookFuncCreate(ModelHookFunc hook) {
     HsfData* sp8;
     ModelData* var_r31;
     s16 var_r29;
@@ -473,8 +473,8 @@ s16 Hu3DHookFuncCreate(HsfData* arg0) {
     if (var_r29 == 0x200) {
         return -1;
     }
-    var_r31->hsfData = arg0;
-    var_r31->unk_48 = (HsfData *)(var_r29 + 0x2710);
+    var_r31->hook = hook;
+    var_r31->unk_48 = (HsfData *)(var_r29 + 10000);
     var_r31->attr = 0x10;
     var_r31->motion_attr = 0;
     var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = 0.0f;
@@ -1289,7 +1289,7 @@ s16 Hu3DModelCameraCreate(s16 arg0, u16 arg1) {
     ModelData* temp_r31;
     s16 temp_r3;
 
-    temp_r3 = Hu3DHookFuncCreate((HsfData* )-1);
+    temp_r3 = Hu3DHookFuncCreate((ModelHookFunc)-1);
     temp_r31 = &Hu3DData[(s16) temp_r3];
     temp_r31->attr &= ~0x10;
     temp_r31->attr |= 0x10000 | 0x2000;

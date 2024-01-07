@@ -46,7 +46,7 @@ extern void BoardModelMotionCreate(s16, s32);
 extern void BoardModelMotionKill(s16, s32);
 extern s32 BoardModelMotionEndCheck(s16);
 extern s32 BoardModelMotionStart(s16, s32, s32);
-extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, s32);
+extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, u32);
 extern void BoardModelMotionSpeedSet(s16, f32);
 extern void BoardModelMotionTimeSet(s16, f32);
 extern f32 BoardModelMotionTimeGet(s16);
@@ -105,7 +105,7 @@ void BoardPlayerMotionKill(s32, s32);
 void BoardPlayerMotionEndCheck(s32);
 void BoardPlayerMotionEndWait(s32);
 void BoardPlayerMotionStart(s32, s32, s32);
-void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
+void BoardPlayerMotionShiftSet(s32, s32, f32, f32, u32);
 void BoardPlayerMotionSpeedSet(s32, f32);
 void BoardPlayerMotionTimeSet(s32, f32);
 f32 BoardPlayerMotionTimeGet(s32);
@@ -557,7 +557,7 @@ void BoardPlayerMotionStart(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void BoardPlayerMotionShiftSet(s32 arg0, s32 arg1, f32 arg8, f32 arg9, s32 arg2) {
+void BoardPlayerMotionShiftSet(s32 arg0, s32 arg1, f32 arg8, f32 arg9, u32 arg2) {
     PlayerState* player;
     s32 temp_r29;
     
