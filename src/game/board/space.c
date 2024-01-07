@@ -4,7 +4,7 @@
 
 #include "math.h"
 
-extern s16 fn_80083F84(void);
+extern s16 BoardStarHostMdlGet(void);
 extern void BoardModelPosSetV(s16 model, Vec *pos);
 
 typedef s32 (*BoardSpaceEventFunc)(void);
@@ -293,13 +293,13 @@ s32 BoardSpaceLinkTransformGet(s32 flag, Vec *pos, Vec *rot, Vec *scale)
 
 void BoardSpaceStarSet(s32 space)
 {
-	s16 space_platid;
+	s16 host_space;
 	Vec pos;
 	BoardSpace *space_plat;
 	BoardSpaceTypeSet(0, space, 8);
-	space_platid = BoardSpaceLinkFlagSearch(0, space, 0x04000000);
-	BoardSpacePosGet(0, space_platid, &pos);
-	BoardModelPosSetV(fn_80083F84(), &pos);
+	host_space = BoardSpaceLinkFlagSearch(0, space, 0x04000000);
+	BoardSpacePosGet(0, host_space, &pos);
+	BoardModelPosSetV(BoardStarHostMdlGet(), &pos);
 }
 
 static inline s16 BoardStarMdlGet(void)
@@ -473,8 +473,7 @@ void BoardSpaceStarMove(void)
 			star_total = 99;
 			GWSystem.star_total = star_total;
 		} else {
-			star_total = GWSystem.star_total;
-			GWSystem.star_total = (u8)(1+star_total);
+			star_total = GWSystem.star_total++;
 		}
 	}
 	star_next = BoardSpaceStarGetNext();
@@ -508,4 +507,94 @@ s32 BoardSpaceStarCheck(s32 index)
 	}
 	end:
 	return ret;
+}
+
+void BoardSpaceLandExec(s32 player, s32 space)
+{
+	BoardSpace *space_ptr = BoardSpaceGet(0, space);
+	switch(space_ptr->type) {
+		case 1:
+			GWPlayer[player].blue_count++;
+			if(GWPlayer[player].blue_count > 99) {
+				GWPlayer[player].blue_count = 99;
+			}
+			BoardLandBlueExec(player, space);
+			break;
+			
+		case 2:
+			GWPlayer[player].red_count++;
+			if(GWPlayer[player].red_count > 99) {
+				GWPlayer[player].red_count = 99;
+			}
+			BoardLandRedExec(player, space);
+			break;
+			
+		case 3:
+			GWPlayer[player].bowser_count++;
+			if(GWPlayer[player].bowser_count > 99) {
+				GWPlayer[player].bowser_count = 99;
+			}
+			BoardBowserExec(player, space);
+			break;
+			
+		case 4:
+			GWPlayer[player].mushroom_count++;
+			if(GWPlayer[player].mushroom_count > 99) {
+				GWPlayer[player].mushroom_count = 99;
+			}
+			BoardMushroomExec(player, space);
+			break;
+			
+		case 5:
+			GWPlayer[player].battle_count++;
+			if(GWPlayer[player].battle_count > 99) {
+				GWPlayer[player].battle_count = 99;
+			}
+			BoardBattleExec(player, space);
+			break;
+			
+		case 6:
+			GWPlayer[player].question_count++;
+			if(GWPlayer[player].question_count > 99) {
+				GWPlayer[player].question_count = 99;
+			}
+			if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+				HuAudFXPlay(842);
+				BoardCameraViewSet(2);
+				BoardPlayerAnimBlendSet(player, 0, 15);
+				while(!BoardPlayerAnimBlendCheck(player)) {
+					HuPrcVSleep();
+				}
+				BoardCameraMotionWait();
+				BoardTutorialHookExec(16, 0);
+			} else {
+				if(landEventFunc) {
+					HuAudFXPlay(842);
+					omVibrate(player, 12, 4, 2);
+					landEventFunc();
+				}
+			}
+			GWPlayer[player].color = 3;
+			break;
+			
+		case 7:
+			GWPlayer[player].fortune_count++;
+			if(GWPlayer[player].fortune_count > 99) {
+				GWPlayer[player].fortune_count = 99;
+			}
+			BoardFortuneExec(player, space);
+			break;
+			
+		case 9:
+			GWPlayer[player].warp_count++;
+			if(GWPlayer[player].warp_count > 99) {
+				GWPlayer[player].warp_count = 99;
+			}
+			BoardWarpExec(player, space);
+			break;
+			
+		case 8:
+			BoardStarExec(player, space);
+			break;
+	}
 }
