@@ -3,6 +3,7 @@
 #include "game/window.h"
 #include "game/object.h"
 #include "game/process.h"
+#include "game/hsfman.h"
 
 //// #include "game/board/main.h"
 extern s32 BoardIsStarted(void);
@@ -156,13 +157,9 @@ s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
 s32 BoardPlayerAnimBlendCheck(s32);
 
-static void (*playerMatCopy[4])();
+static HsfMaterial *playerMatCopy[4];
 static s32 (*postTurnHook[4])();
 static s32 (*preTurnHook[4])();
-
-static s32 diceJumpObj[4] = {0, 0, 0, 0};
-static s32 animDoneF[4] = {0, 0, 0, 0};
-static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
 
 s16 boardPlayerMdl[4];
 static s16 playerMot[4];
@@ -175,6 +172,26 @@ static s32 rollResized;
 static s16 suitMdl = -1;
 static s16 suitPlayerMdl = -1;
 static s16 suitCurrMot = -1;
+
+static s32 diceJumpObj[4] = {0, 0, 0, 0};
+static s32 animDoneF[4] = {0, 0, 0, 0};
+static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
+char* lbl_8013993C[] = {
+    "eye1",
+    "eye2",
+    "mat14",
+    "mat16",
+    "mat65",
+    "mat66",
+    "Mario",
+    "Luigi",
+    "Peach",
+    "Yoshi",
+    "Wario",
+    "Donky",
+    "Daisy",
+    "Waluigi",
+};
 
 inline PlayerState* GetPlayer(s32 index) {
     return &GWPlayer[index];
@@ -979,4 +996,20 @@ void BoardJunctionMaskReset(s32 arg0) {
 
 void BoardJunctionMaskZero(void) {
     junctionMask = 0;
+}
+
+// ...
+
+void BoardPlayerCopyMat(s32 arg0) {
+    s16 modelID;
+    ModelData *model;
+    void* temp_r3;
+    HsfData* temp_r31;
+
+    modelID = BoardModelIDGet(GetBoardPlayer(arg0));
+    model = &Hu3DData[modelID];
+    temp_r31 = model->hsfData;
+    temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, temp_r31->materialCnt * 0x3C, 0x10000000U);
+    memcpy(temp_r3, temp_r31->material, temp_r31->materialCnt * 0x3C);
+    playerMatCopy[arg0] = temp_r3;
 }
