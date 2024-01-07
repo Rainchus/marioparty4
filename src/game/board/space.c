@@ -1,5 +1,7 @@
 #include "game/gamework_data.h"
 #include "game/flag.h"
+#include "game/board/main.h"
+
 #include "math.h"
 
 extern s16 fn_80083F84(void);
@@ -39,6 +41,8 @@ static s16 spaceDrawMdl = -1;
 static s16 starMdl = -1;
 
 s32 BoardSpaceRotGet(s32 layer, s32 index, Vec *rot);
+s32 BoardSpaceStarGet(s32 index);
+s32 BoardSpaceStarGetCurr(void);
 
 void BoardSpaceWalkEventFuncSet(BoardSpaceEventFunc func)
 {
@@ -108,7 +112,7 @@ u32 BoardSpaceFlagGet(s32 layer, s32 index)
 	}
 }
 
-u16 BoardSpaceTypeGet(s32 layer, s32 index)
+int BoardSpaceTypeGet(s32 layer, s32 index)
 {
 	if(index <= 0 || index > spaceCnt[layer]) {
 		return 0;
@@ -194,13 +198,14 @@ s32 BoardSpaceFlagPosGet(s32 layer, u32 flag, Vec *pos)
 
 s32 BoardSpaceLinkFlagSearch(s32 layer, s32 index, u32 flag)
 {
+	BoardSpace *link_space;
 	BoardSpace *space = BoardSpaceGet(layer, index);
 	s32 i;
 	if(!space) {
 		return -1;
 	}
 	for(i=0; i<space->link_cnt; i++) {
-		BoardSpace *link_space = BoardSpaceGet(layer, space->link[i]);
+		link_space = BoardSpaceGet(layer, space->link[i]);
 		if(link_space->flag & flag) {
 			return link_space-&spaceData[layer][0]+1;
 		}
@@ -289,13 +294,218 @@ s32 BoardSpaceLinkTransformGet(s32 flag, Vec *pos, Vec *rot, Vec *scale)
 void BoardSpaceStarSet(s32 space)
 {
 	s16 space_platid;
-	BoardSpace *space_plat;
 	Vec pos;
+	BoardSpace *space_plat;
 	BoardSpaceTypeSet(0, space, 8);
 	space_platid = BoardSpaceLinkFlagSearch(0, space, 0x04000000);
-	space_plat = BoardSpaceGet(0, space_platid);
-	if(space_plat) {
-		pos = space_plat->pos;
-	}
+	BoardSpacePosGet(0, space_platid, &pos);
 	BoardModelPosSetV(fn_80083F84(), &pos);
+}
+
+static inline s16 BoardStarMdlGet(void)
+{
+	return starMdl;
+}
+
+static inline s32 BoardStarSpaceTypeGet(s16 index)
+{
+	return BoardSpaceTypeGet(0, BoardSpaceStarGet(index));
+}
+
+void BoardSpaceStarSetIndex(s32 index)
+{
+	Vec pos;
+	Vec rot;
+	s16 space;
+	if(_CheckFlag(FLAG_ID_MAKE(1, 1))) {
+		BoardSpaceTypeSet(0, boardSpaceStarTbl[GWSystem.star_pos], 1);
+	}
+	GWSystem.star_pos = index & 0x7;
+	BoardSpaceStarSet(BoardSpaceStarGetCurr());
+	space = BoardSpaceLinkFlagSearch(0, BoardSpaceStarGetCurr(), 0x04000000);
+	BoardSpacePosGet(0, space, &pos);
+	BoardModelPosSetV(BoardStarMdlGet(), &pos);
+	BoardSpaceRotGet(0, space, &rot);
+	BoardModelRotYSet(BoardStarMdlGet(), rot.y);
+	BoardModelVisibilitySet(BoardStarMdlGet(), 1);
+}
+
+s32 BoardSpaceStarGetNext(void)
+{
+	s16 random_pos;
+	s16 star_total;
+	s16 star_pos;
+	star_total = GWSystem.star_total;
+	star_pos = GWSystem.star_pos;
+	if(BoardCurrGet() == 5) {
+		s16 i;
+		s32 count;
+		s32 last_free;
+		last_free = -1;
+		for(count=i=0; i<8; i++) {
+			if((1 << i) & GWSystem.star_flag) {
+				count++;
+			} else {
+				last_free = i;
+			}
+		}
+		if(count == 7) {
+			if(BoardSpaceTypeGet(0, BoardSpaceStarGet(last_free)) == 10) {
+				GWSystem.star_flag = 0;
+			}
+		}
+	}
+	begin:
+	random_pos = BoardRandMod(8);
+	if(star_pos == random_pos || BoardStarSpaceTypeGet(random_pos) == 10) {
+		goto begin;
+	}
+	switch(GWSystem.board) {
+		case 0:
+			if(star_total >= 2) {
+				break;
+			}
+			if(random_pos != 6 && random_pos != 7) {
+				break;
+			}
+			goto begin;
+			
+		case 1:
+			if(star_total >= 2) {
+				break;
+			}
+			if(random_pos != 6 && random_pos != 7) {
+				break;
+			}
+			goto begin;
+		
+		case 2:
+			if(star_total == 1) {
+				if(random_pos < 3 || random_pos > 5) {
+					break;
+				}
+				goto begin;
+			} else {
+				if(star_total != 2) {
+					break;
+				}
+				if(random_pos != 3 && random_pos != 4) {
+					break;
+				}
+				goto begin;
+			}
+			
+		case 3:
+			if(star_total == 1) {
+				if(random_pos < 5 || random_pos > 7) {
+					break;
+				}
+				goto begin;
+			} else {
+				if(star_total != 2) {
+					break;
+				}
+				if(random_pos == 5) {
+					goto begin;
+				}
+				break;
+			}
+			
+		case 4:
+			if(star_total == 1) {
+				if(random_pos <= 1 || random_pos >= 4) {
+					goto begin;
+				}
+			}
+			break;
+			
+		case 5:
+			if(star_total == 1) {
+				if(random_pos == 1 || random_pos == 4 || random_pos == 5) {
+					goto begin;
+				}
+			}
+			if(star_total != 2) {
+				break;
+			}
+			if(random_pos == 5) {
+				goto begin;
+			}
+	}
+	if((1 << random_pos) & GWSystem.star_flag) {
+		goto begin;
+	}
+	return random_pos;
+}
+
+s32 BoardSpaceStarGetRandom(s32 excl_pos)
+{
+	s8 new_pos;
+	int i;
+	for(i=0; i<1024; i++) {
+		new_pos = BoardRandMod(8);
+		if(new_pos == GWSystem.star_pos) {
+			continue;
+		}
+		if(GWSystem.turn == 1 && new_pos <= 2) {
+			continue;
+		}
+		if(new_pos != excl_pos) {
+			break;
+		}
+	}
+	return new_pos;
+}
+
+//Fix GWSystem.star_total truncation and double GWSystem load
+void BoardSpaceStarMove(void)
+{
+	u8 star_total;
+	s16 star_pos;
+	s16 star_next;
+	if(_CheckFlag(FLAG_ID_MAKE(1, 1))) {
+		star_pos = GWSystem.star_pos;
+		GWSystem.star_flag |= (u8)(1 << star_pos);
+		if(GWSystem.star_flag == 0xFF) {
+			GWSystem.star_flag = 0;
+		}
+		if(GWSystem.star_total >= 99) {
+			star_total = 99;
+			GWSystem.star_total = star_total;
+		} else {
+			star_total = GWSystem.star_total;
+			GWSystem.star_total = (u8)(1+star_total);
+		}
+	}
+	star_next = BoardSpaceStarGetNext();
+	BoardSpaceStarSetIndex(star_next);
+}
+
+s32 BoardSpaceStarGet(s32 index)
+{
+	return boardSpaceStarTbl[index & 0x7];
+}
+
+s32 BoardSpaceStarGetCurr(void)
+{
+	return BoardSpaceStarGet(GWSystem.star_pos);
+}
+
+s32 BoardSpaceStarCheck(s32 index)
+{
+	s32 ret;
+	BoardSpace *space = BoardSpaceGet(0, index);
+	BoardSpace *star_space;
+	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+		ret = 0;
+		goto end;
+	}
+	star_space = BoardSpaceGet(0, boardSpaceStarTbl[GWSystem.star_pos]);
+	if(space == star_space) {
+		ret = 1;
+	} else {
+		ret = 0;
+	}
+	end:
+	return ret;
 }
