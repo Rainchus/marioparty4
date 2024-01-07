@@ -9,7 +9,7 @@ void BoardCameraMotionWait(void);
 void BoardSpacePosGet(s32, s32, Vec*);
 void fn_8007A360(s32);
 void fn_8007F894(void);
-s16 fn_80083F84(void);
+s16 BoardStarHostMdlGet(void);
 void BoardStatusShowSetAll(s32);
 void fn_800A4C88(void);
 void fn_800A6B10(void);
