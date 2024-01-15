@@ -329,7 +329,7 @@ config.libs = [
             Object(Matching, "game/hsfman.c"),
             Object(NonMatching, "game/hsfmotion.c"),
             Object(Matching, "game/hsfanim.c"),
-            Object(NonMatching, "game/hsfex.c"),
+            Object(Matching, "game/hsfex.c"),
             Object(Matching, "game/perf.c"),
             Object(Matching, "game/objmain.c"),
             Object(NonMatching, "game/fault.c"),

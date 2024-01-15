@@ -3,7 +3,7 @@
 
 #include "dolphin.h"
 
-void Hu3D2Dto3D(Vec*, s32, Vec*);
+void Hu3D2Dto3D(Vec*, s16, Vec*);
 void HuAudFadeOut(s32 arg0);
 
 void Hu3DModelPosSet(s16 index, float x, float y, float z);
