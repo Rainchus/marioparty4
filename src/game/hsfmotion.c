@@ -1397,7 +1397,7 @@ void Hu3DMotionCalc(s16 arg0) {
     temp_r31->attr |= 0x800;
 }
 
-s32 SearchObjectIndex(HsfData *arg0, u32 arg1) {
+static s32 SearchObjectIndex(HsfData *arg0, u32 arg1) {
     s32 i;
     char *temp_r28;
     HsfObject *var_r30;
@@ -1412,7 +1412,7 @@ s32 SearchObjectIndex(HsfData *arg0, u32 arg1) {
     return -1;
 }
 
-s32 SearchAttributeIndex(HsfData *arg0, u32 arg1) {
+static s32 SearchAttributeIndex(HsfData *arg0, u32 arg1) {
     HsfAttribute *var_r31;
     size_t temp_r28;
     char *temp_r27;

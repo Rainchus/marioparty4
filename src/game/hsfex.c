@@ -470,15 +470,7 @@ void Hu3DMtxTransGet(Mtx arg0, Vec *arg1) {
     arg1->z = arg0[2][3];
 }
 
-static inline float Hu3DMtxRotGetInlineFunc01(float arg0, float arg1) {
-    return atan2(arg0, arg1);
-}
-
-static inline float Hu3DMtxRotGetInlineFunc02(float arg0) {
-    return asin(arg0);
-}
-
-static inline float Hu3DMtxRotGetInlineFunc03(float arg0, float arg1) {
+static inline float GetAngleXY(float arg0, float arg1) {
     if (arg1 == 0.0f) {
         if (arg0 >= 0.0f) {
             return M_PI / 2;
@@ -486,7 +478,7 @@ static inline float Hu3DMtxRotGetInlineFunc03(float arg0, float arg1) {
             return -(M_PI / 2);
         }
     } else {
-        return Hu3DMtxRotGetInlineFunc01(arg0, arg1);
+        return atan2f(arg0, arg1);
     }
 }
 
@@ -516,15 +508,15 @@ void Hu3DMtxRotGet(Mtx arg0, Vec *arg1) {
                 } else if (temp_f24 <= -1.0f) {
                     var_f25 = -(M_PI / 2);
                 } else {
-                    var_f25 = Hu3DMtxRotGetInlineFunc02(temp_f24);
+                    var_f25 = asinf(temp_f24);
                 }
                 arg1->y = var_f25;
                 sp48 = cos(arg1->y);
                 if (sp48 >= 0.00000001f) {
-                    arg1->x = Hu3DMtxRotGetInlineFunc03(arg0[2][1] / sp3C, arg0[2][2] / sp34);
-                    arg1->z = Hu3DMtxRotGetInlineFunc03(arg0[1][0], arg0[0][0]);
+                    arg1->x = GetAngleXY(arg0[2][1] / sp3C, arg0[2][2] / sp34);
+                    arg1->z = GetAngleXY(arg0[1][0], arg0[0][0]);
                 } else {
-                    arg1->x = Hu3DMtxRotGetInlineFunc03(arg0[0][1], arg0[1][1]);
+                    arg1->x = GetAngleXY(arg0[0][1], arg0[1][1]);
                     arg1->z = 0.0f;
                 }
                 arg1->x = arg1->x * 57.29578f;

@@ -35,13 +35,6 @@ Hu3DTexAnimDataStruct Hu3DTexAnimData[256];
 Hu3DTexScrDataStruct Hu3DTexScrData[16];
 static Process *parManProc[64];
 
-// TODO: move to GXVert
-static inline void GXUnknownu16(const u16 x, const u16 y, const u16 z) {
-    GXWGFifo.u16 = x;
-    GXWGFifo.u16 = y;
-    GXWGFifo.u16 = z;
-}
-
 void Hu3DAnimInit(void) {
     Hu3DTexAnimDataStruct *var_r30;
     Hu3DTexScrDataStruct *var_r29;
@@ -537,10 +530,18 @@ s16 Hu3DParticleCreate(AnimData *arg0, s16 arg1) {
     GXBeginDisplayList(temp_r24, 0x20000);
     GXBegin(GX_QUADS, GX_VTXFMT0, arg1 * 4);
     for (i = 0; i < arg1; i++) {
-        GXUnknownu16(i * 4, i, 0);
-        GXUnknownu16(i * 4 + 1, i, 1);
-        GXUnknownu16(i * 4 + 2, i, 2);
-        GXUnknownu16(i * 4 + 3, i, 3);
+		GXPosition1x16(i*4);
+		GXColor1x16(i);
+		GXTexCoord1x16(0);
+		GXPosition1x16((i*4)+1);
+		GXColor1x16(i);
+		GXTexCoord1x16(1);
+		GXPosition1x16((i*4)+2);
+		GXColor1x16(i);
+		GXTexCoord1x16(2);
+		GXPosition1x16((i*4)+3);
+		GXColor1x16(i);
+		GXTexCoord1x16(3);
     }
     temp_r31->unk_40 = GXEndDisplayList();
     return temp_r25;

@@ -149,6 +149,18 @@ static inline void GXColor1x8(u8 index) {
   GXWGFifo.u8 = index;
 }
 
+static inline void GXPosition1x16(u16 index) {
+  GXWGFifo.u16 = index;
+}
+
+static inline void GXColor1x16(u16 index) {
+  GXWGFifo.u16 = index;
+}
+
+static inline void GXTexCoord1x16(u16 index) {
+  GXWGFifo.u16 = index;
+}
+
 static inline void GXEnd(void) {}
 
 #endif
