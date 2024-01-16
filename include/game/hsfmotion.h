@@ -70,8 +70,6 @@ HsfBitmap *GetBitMap(s32 arg0, UnknownHsfMotionStruct01 *arg1, float arg2);
 s16 Hu3DJointMotion(s16 arg0, void *arg1);
 void JointModel_Motion(s16 arg0, s16 arg1);
 void Hu3DMotionCalc(s16 arg0);
-s32 SearchObjectIndex(HsfData *arg0, u32 arg1);
-s32 SearchAttributeIndex(HsfData *arg0, u32 arg1);
 
 extern MotionData Hu3DMotion[256];
 
