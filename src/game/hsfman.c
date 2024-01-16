@@ -1,5 +1,15 @@
 #include "game/hsfman.h"
+#include "game/data.h"
+#include "game/hsfdraw.h"
 #include "game/hsfload.h"
+#include "game/hsfmotion.h"
+#include "game/init.h"
+#include "game/memory.h"
+#include "game/perf.h"
+#include "game/sprite.h"
+#include "dolphin/gx/GXVert.h"
+
+#include "math.h"
 
 ModelData Hu3DData[0x200];
 CameraData Hu3DCamera[0x10];

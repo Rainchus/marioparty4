@@ -1,5 +1,6 @@
 #include "game/hsfanim.h"
 #include "game/hsfdraw.h"
+#include "game/init.h"
 #include "game/memory.h"
 #include "game/process.h"
 

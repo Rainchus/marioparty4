@@ -327,7 +327,7 @@ config.libs = [
             Object(Matching, "game/hsfload.c"),
             Object(NonMatching, "game/hsfdraw.c"),
             Object(Matching, "game/hsfman.c"),
-            Object(NonMatching, "game/hsfmotion.c"),
+            Object(Matching, "game/hsfmotion.c"),
             Object(Matching, "game/hsfanim.c"),
             Object(Matching, "game/hsfex.c"),
             Object(Matching, "game/perf.c"),

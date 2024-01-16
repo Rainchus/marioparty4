@@ -4,6 +4,30 @@
 #include "game/hsfman.h"
 #include "dolphin.h"
 
+typedef struct model_data ModelData;
+
+typedef struct {
+    /* 0x00 */ u16 unk00;
+    /* 0x02 */ s16 unk02;
+    /* 0x04 */ s16 unk04;
+    /* 0x06 */ char unk06[2];
+    /* 0x08 */ float unk08;
+    /* 0x0C */ float unk0C;
+    /* 0x10 */ float unk10;
+    /* 0x14 */ float unk14;
+    /* 0x18 */ float unk18;
+    /* 0x1C */ float unk1C;
+    /* 0x20 */ float unk20;
+    /* 0x24 */ float unk24;
+    /* 0x28 */ float unk28;
+    /* 0x2C */ float unk2C;
+    /* 0x30 */ float unk30;
+    /* 0x34 */ float unk34;
+    /* 0x38 */ float unk38;
+    /* 0x3C */ HsfBitmap *unk3C;
+    /* 0x40 */ char unk40[4];
+} HsfdrawStruct01; // Size 0x44
+
 void Hu3DDrawPreInit(void);
 void Hu3DDraw(ModelData *arg0, Mtx arg1, Vec *arg2);
 s32 ObjCullCheck(HsfData *arg0, HsfObject *arg1, Mtx arg2);
@@ -24,5 +48,14 @@ void PGObjReplica(ModelData *arg0, HsfObject *arg1);
 HsfObject *Hu3DObjDuplicate(HsfData *arg0, u32 arg1);
 void Hu3DModelObjDrawInit(void);
 void Hu3DModelObjDraw(s16 arg0, char *arg1, Mtx arg2);
+
+extern u32 totalPolyCnt;
+extern u32 totalPolyCnted;
+extern u32 totalMatCnt;
+extern u32 totalMatCnted;
+extern u32 totalTexCnt;
+extern u32 totalTexCnted;
+extern u32 totalTexCacheCnt;
+extern u32 totalTexCacheCnted;
 
 #endif
