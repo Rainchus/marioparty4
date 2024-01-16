@@ -530,18 +530,18 @@ s16 Hu3DParticleCreate(AnimData *arg0, s16 arg1) {
     GXBeginDisplayList(temp_r24, 0x20000);
     GXBegin(GX_QUADS, GX_VTXFMT0, arg1 * 4);
     for (i = 0; i < arg1; i++) {
-		GXPosition1x16(i*4);
-		GXColor1x16(i);
-		GXTexCoord1x16(0);
-		GXPosition1x16((i*4)+1);
-		GXColor1x16(i);
-		GXTexCoord1x16(1);
-		GXPosition1x16((i*4)+2);
-		GXColor1x16(i);
-		GXTexCoord1x16(2);
-		GXPosition1x16((i*4)+3);
-		GXColor1x16(i);
-		GXTexCoord1x16(3);
+        GXPosition1x16(i*4);
+        GXColor1x16(i);
+        GXTexCoord1x16(0);
+        GXPosition1x16((i*4)+1);
+        GXColor1x16(i);
+        GXTexCoord1x16(1);
+        GXPosition1x16((i*4)+2);
+        GXColor1x16(i);
+        GXTexCoord1x16(2);
+        GXPosition1x16((i*4)+3);
+        GXColor1x16(i);
+        GXTexCoord1x16(3);
     }
     temp_r31->unk_40 = GXEndDisplayList();
     return temp_r25;

@@ -519,9 +519,9 @@ void Hu3DMtxRotGet(Mtx arg0, Vec *arg1) {
                     arg1->x = GetAngleXY(arg0[0][1], arg0[1][1]);
                     arg1->z = 0.0f;
                 }
-                arg1->x = arg1->x * 57.29578f;
-                arg1->y = arg1->y * 57.29578f;
-                arg1->z = arg1->z * 57.29578f;
+                arg1->x = MTXRadToDeg(arg1->x);
+                arg1->y = MTXRadToDeg(arg1->y);
+                arg1->z = MTXRadToDeg(arg1->z);
                 return;
             }
         }

@@ -119,9 +119,7 @@ typedef struct light_data {
 
 extern void ClusterMotionExec(ModelData*);             /* extern */
 extern void ClusterProc(ModelData*);                   /* extern */
-extern void EnvelopeProc(HsfData*);                           /* extern */
 extern void GXWaitDrawDone();                                 /* extern */
-extern void InitVtxParm(HsfData*);                            /* extern */
 extern void ShapeProc(HsfData*);                              /* extern */
 extern void GXInitSpecularDir(GXLightObj*, f32, f32, f32);
 
