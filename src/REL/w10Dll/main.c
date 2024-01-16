@@ -129,7 +129,7 @@ void BoardCreate(void) {
     BoardSpaceLandEventFuncSet(&fn_1_908);
     fn_80083EDC(lbl_1_data_2C);
     fn_800A4F6C(lbl_1_data_32);
-    fn_80077AAC(lbl_1_data_2E);
+    BoardShopHostSet(lbl_1_data_2E);
     fn_8007A83C(lbl_1_data_30);
     HuWinMesMaxSizeGet(1, spC, 0x2E003A);
     lbl_1_bss_E = HuWinCreate(-10000.0f, 390.0f, spC[0], spC[1], 1);

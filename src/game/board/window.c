@@ -281,14 +281,14 @@ void BoardWinKill(void) {
     }
 }
 
-void BoardWinSetAttr(s32 attr) {
+void BoardWinAttrSet(s32 attr) {
     winAttr |= attr;
     if (windowID >= 0) {
         HuWinAttrSet(windowID, winAttr);
     }
 }
 
-void BoardWinResetAttr(s32 attr) {
+void BoardWinAttrReset(s32 attr) {
     winAttr &= ~attr;
     if (windowID >= 0) {
         HuWinAttrSet(windowID, winAttr);
