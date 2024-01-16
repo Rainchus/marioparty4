@@ -185,8 +185,8 @@ static void SetEnvelopMain(HsfData *arg0) {
             sp10 = temp_r30->data;
             spC = var_r31->data.file[0];
             sp8 = temp_r30->data;
-            DCStoreRangeNoSync(normenv, temp_r28->count * 0xC);
-            DCStoreRangeNoSync(vtxenv, temp_r30->count * 0xC);
+            DCStoreRangeNoSync(normenv, temp_r28->count * sizeof(Vec));
+            DCStoreRangeNoSync(vtxenv, temp_r30->count * sizeof(Vec));
             Meshno++;
         }
     }

@@ -7,4 +7,6 @@ void InitEnvelope(HsfData *arg0);
 void EnvelopeProc(HsfData *arg0);
 void InitVtxParm(HsfData *arg0);
 
+extern Vec *Vertextop;
+
 #endif

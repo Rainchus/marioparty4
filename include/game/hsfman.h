@@ -117,8 +117,6 @@ typedef struct light_data {
     GXColor color;
 } LightData;
 
-extern void ClusterMotionExec(ModelData*);             /* extern */
-extern void ClusterProc(ModelData*);                   /* extern */
 extern void GXWaitDrawDone();                                 /* extern */
 extern void ShapeProc(HsfData*);                              /* extern */
 extern void GXInitSpecularDir(GXLightObj*, f32, f32, f32);

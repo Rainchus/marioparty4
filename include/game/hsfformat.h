@@ -238,7 +238,7 @@ typedef struct hsf_cluster {
     char *name[2];
     union {
         char *targetName;
-        u32 target;
+        s32 target;
     };
     HsfPart *part;
     float unk10;

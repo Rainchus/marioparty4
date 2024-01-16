@@ -343,7 +343,7 @@ config.libs = [
             Object(Matching, "game/ovllist.c"),
             Object(NonMatching, "game/esprite.c"),
             Object(NonMatching, "game/code_8003FF68.c"),
-            Object(NonMatching, "game/ClusterExec.c"),
+            Object(Matching, "game/ClusterExec.c"),
             Object(NonMatching, "game/ShapeExec.c"),
             Object(Matching, "game/wipe.c"),
             Object(Matching, "game/window.c"),

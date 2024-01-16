@@ -1,4 +1,5 @@
 #include "game/hsfman.h"
+#include "game/ClusterExec.h"
 #include "game/data.h"
 #include "game/EnvelopeExec.h"
 #include "game/hsfdraw.h"
