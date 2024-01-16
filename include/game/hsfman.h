@@ -1,15 +1,8 @@
 #ifndef _GAME_HSFMAN_H
 #define _GAME_HSFMAN_H
 
-#include "math.h"
-#include "game/memory.h"
 #include "game/hsfanim.h"
 #include "game/hsfformat.h"
-#include "game/sprite.h"
-#include "game/init.h"
-#include "game/data.h"
-#include "game/memory.h"
-#include "dolphin/gx/GXVert.h"
 
 #define Hu3DModelCreateFile(data_id) (Hu3DModelCreate(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 
@@ -45,9 +38,19 @@ typedef struct model_data {
     f32 unk_64;
     Point3d unk_68;
     f32 unk_74;
-    char unk_78[0x1C];
+    f32 unk_78;
+    f32 unk_7C;
+    f32 unk_80;
+    f32 unk_84;
+    f32 unk_88;
+    f32 unk_8C;
+    f32 unk_90;
     f32 unk_94;
-    char unk_98[0x2C];
+    f32 unk_98;
+    f32 unk_9C;
+    f32 unk_A0;
+    f32 unk_A4[4];
+    f32 unk_B4[4];
 	union {
 		HsfData *hsfData;
 		ModelHookFunc hook;
@@ -102,11 +105,6 @@ typedef struct shadow_data {
     Mtx unk_38;
     Mtx unk_68;
 } ShadowData; // sizeof 0x98
-typedef struct motion_data {
-    s16 unk_00;
-    s16 unk_02;
-    HsfData *unk_04;
-} MotionData;
 typedef struct light_data {
     s16 unk_00;
     s16 unk_02;
@@ -123,45 +121,8 @@ extern void ClusterMotionExec(ModelData*);             /* extern */
 extern void ClusterProc(ModelData*);                   /* extern */
 extern void EnvelopeProc(HsfData*);                           /* extern */
 extern void GXWaitDrawDone();                                 /* extern */
-extern void Hu3DAnimExec();                                   /* extern */
-extern void Hu3DCameraMotionExec(s16);                        /* extern */
-extern void Hu3DDraw(ModelData*, Mtx, Vec*);          /* extern */
-extern void Hu3DDrawPost();                                   /* extern */
-extern void Hu3DDrawPreInit();                                /* extern */
-extern void Hu3DMotionNext(s16);                              /* extern */
-extern void Hu3DShadowExec();                                 /* extern */
-extern void Hu3DSubMotionExec(s16);                           /* extern */
-extern void HuPerfBegin(s32);                                   /* extern */
-extern void HuPerfEnd(s32);                                     /* extern */
-extern void HuSprBegin(void);                                     /* extern */
-extern void HuSprDispInit(void);                                  /* extern */
-extern void HuSprExec(s16);                                     /* extern */
-extern void HuSprFinish(void);                                    /* extern */
 extern void InitVtxParm(HsfData*);                            /* extern */
 extern void ShapeProc(HsfData*);                              /* extern */
-extern void mtxRot(Mtx, f32, f32, f32);                /* extern */
-extern void mtxScaleCat(Mtx, f32, f32, f32);           /* extern */
-extern void mtxTransCat(Mtx, f32, f32, f32);
-extern void Hu3DAnimInit(void);
-extern void Hu3DMotionInit(void);
-extern void Hu3DParManInit(void);
-extern void Hu3DMotionClusterSet(s16, s16);                   /* extern */
-extern void Hu3DMotionExec(s16, s16, f32, s32);
-extern f32 Hu3DMotionMaxTimeGet(s16);                      /* extern */
-extern s16 Hu3DMotionModelCreate(s16);                     /* extern */
-extern void Hu3DMotionShapeSet(s16, s16);                     /* extern */
-extern void MakeDisplayList(s16, HsfData*);                   /* extern */
-extern void ClusterAdjustObject(HsfData*, HsfData*);          /* extern */
-extern HsfObject* Hu3DObjDuplicate(HsfData*, u32);         /* extern */
-extern void Hu3DAnimModelKill(s16);                           /* extern */
-extern void Hu3DGLightKill(s16);                              /* extern */
-extern void Hu3DLLightKill(s16, s16);                         /* extern */
-extern s32 Hu3DMotionKill(s16);
-extern void Hu3DModelKill(s16);
-extern void Hu3DParManAllKill(void);
-extern f32 Hu3DMotionMotionMaxTimeGet(s16);
-extern void Hu3DMotionStartEndSet(s16, f32, f32);
-extern void Hu3DMotionTimeSet(s16, f32);
 extern void GXInitSpecularDir(GXLightObj*, f32, f32, f32);
 
 void Hu3DInit(void);
@@ -283,13 +244,4 @@ extern s16 Hu3DCameraNo;
 extern s16 Hu3DCameraBit;
 extern s16 Hu3DPauseF;
 
-extern MotionData Hu3DMotion[0x100];
-extern u32 totalMatCnt;
-extern u32 totalMatCnted;
-extern u32 totalPolyCnt;
-extern u32 totalPolyCnted;
-extern u32 totalTexCacheCnt;
-extern u32 totalTexCacheCnted;
-extern u32 totalTexCnt;
-extern u32 totalTexCnted;
 #endif

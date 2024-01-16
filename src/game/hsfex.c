@@ -1,5 +1,6 @@
 #include "game/hsfex.h"
 #include "game/hsfman.h"
+#include "game/hsfmotion.h"
 
 #include "math.h"
 
@@ -12,8 +13,6 @@ typedef struct {
 } HsfexStruct02; // Size 0x2C
 
 static void SetObjCamMotion(s16 arg0, HsfTrack *arg1, float arg2, HsfexStruct02 *arg3);
-
-float GetCurve(void*, float);
 
 void CamMotionEx2(s16 arg0, s16 arg1, float arg2, s16 arg3) {
     CameraData *temp_r30;
