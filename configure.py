@@ -911,7 +911,7 @@ config.libs = [
     Rel('w03Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w03Dll/main.c"),
+            Object(Matching, "REL/w03Dll/main.c"),
             Object(NonMatching, "REL/w03Dll/statue.c"),
             Object(NonMatching, "REL/w03Dll/condor.c"),
             Object(NonMatching, "REL/w03Dll/river.c"),

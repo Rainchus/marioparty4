@@ -54,7 +54,7 @@ void msmMusStop(s32 arg0, s32 arg1);
 s32 msmMusPlay(s32 arg0, s32 arg1);
 void msmSeDelListener(void);
 void msmSeUpdataListener(s32 arg0, s32 arg1);
-void msmSeSetListener(s32 arg0, s32 arg1, float arg2, float arg3, UnkMsmStruct_02 *arg4);
+void msmSeSetListener(Vec* arg0, Vec* arg1, float arg2, float arg3, UnkMsmStruct_02 *arg4);
 s32 msmSeGetEntryID(s32 arg0, void *arg1);
 s32 msmSeGetNumPlay(s32 arg0);
 s32 msmSeGetStatus(s32 arg0);
