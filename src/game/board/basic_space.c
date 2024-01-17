@@ -41,8 +41,8 @@ extern void BoardPlayerMotionEndWait(s32);
 extern void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
 extern void BoardPlayerCoinsAdd(s32, s32);
 extern void BoardRotateDiceNumbers(s32);
-extern void BoardCameraAnimBlendSet(s32, s16, s16);
-extern s32 BoardPlayerAnimBlendCheck(s32);
+extern void BoardCameraMotBlendSet(s32, s16, s16);
+extern s32 BoardPlayerMotBlendCheck(s32);
 
 static omObjData *coinChgObj[4] = {
     NULL,
@@ -72,8 +72,8 @@ void BoardLandBlueExec(s32 player, s32 space) {
 	
 	
     BoardCameraViewSet(2);
-    BoardPlayerAnimBlendSet(player, 0, 15);
-    while (BoardPlayerAnimBlendCheck(player) == 0) {
+    BoardPlayerMotBlendSet(player, 0, 15);
+    while (BoardPlayerMotBlendCheck(player) == 0) {
         HuPrcVSleep();
     }
     if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
@@ -113,8 +113,8 @@ void BoardLandRedExec(s32 player, s32 space) {
 
     BoardCameraViewSet(2);
     omVibrate(player, 12, 6, 6);
-    BoardPlayerAnimBlendSet(player, 0, 15);
-    while (BoardPlayerAnimBlendCheck(player) == 0) {
+    BoardPlayerMotBlendSet(player, 0, 15);
+    while (BoardPlayerMotBlendCheck(player) == 0) {
         HuPrcVSleep();
     }
     if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {

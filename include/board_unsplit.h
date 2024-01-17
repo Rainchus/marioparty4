@@ -42,7 +42,7 @@ void BoardSpaceInit(s32);
 void BoardSpaceDestroy(void);
 void BoardShopHostSet(s16);
 void BoardLotteryHostSet(s16);
-void fn_80083EDC(s16);
+void BoardStarHostSet(s16);
 void fn_800A4F6C(s16);
 void BoardTutorialHookSet(void*);
 void BoardTutorialBlockSetPos(s32, s32);

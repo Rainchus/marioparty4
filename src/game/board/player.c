@@ -58,11 +58,11 @@ extern void BoardModelAttrReset(s16, s32);
 //// #include "game/board/tutorial.h"
 extern BoardTutorialHookExec(s16, s32);
 //// #include "game/board/com.h"
-extern void fn_8007185C(s32, s32);
+extern void BoardComUseItemSet(s32, s32);
 //// #include "game/board/overhead.h"
-extern void fn_800729A4(s32);
-extern void fn_80072DA8(s32);
-//// #include "game/board/dice_roll.h"
+extern void BoardViewOverheadExec(s32);
+extern void BoardViewMapExec(s32);
+//// #include "game/board/roll.h"
 extern s32 fn_80085CC8(s32);
 extern void fn_80085EB4(void);
 //// #include "game/chrman.h"
@@ -733,7 +733,7 @@ void BoardPlayerPostTurnHookSet(s32 arg0, s32 (*arg1)()) {
 
 void BoardPlayerTurnExec(s32 arg0) {
     BoardPauseEnableSet(1);
-    fn_8007185C(arg0, -1);
+    BoardComUseItemSet(arg0, -1);
     GWSystem.field31_bit4 = 0xF;
     _ClearFlag(0x10016);
     _ClearFlag(0x1000E);
@@ -792,11 +792,11 @@ void BoardPlayerTurnRollExec(s32 arg0) {
             break;
         case -3:
             fn_80085EB4();
-            fn_80072DA8(arg0);
+            BoardViewMapExec(arg0);
             break;
         case -4:
             fn_80085EB4();
-            fn_800729A4(arg0);
+            BoardViewOverheadExec(arg0);
             break;
         }
     } while (temp_r30 <= 0);
