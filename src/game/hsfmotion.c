@@ -5,14 +5,13 @@
 #include "game/hsfload.h"
 #include "game/hsfman.h"
 #include "game/init.h"
+#include "game/ShapeExec.h"
 
 #include "math.h"
 #include "string.h"
 
 static s32 SearchObjectIndex(HsfData *arg0, u32 arg1);
 static s32 SearchAttributeIndex(HsfData *arg0, u32 arg1);
-
-void ShapeProc(HsfData*);
 
 MotionData Hu3DMotion[256];
 
