@@ -8,6 +8,7 @@
 #include "game/init.h"
 #include "game/memory.h"
 #include "game/perf.h"
+#include "game/ShapeExec.h"
 #include "game/sprite.h"
 #include "dolphin/gx/GXVert.h"
 

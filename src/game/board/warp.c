@@ -3,8 +3,8 @@
 #include "game/board/player.h"
 #include "game/wipe.h"
 #include "game/gamework_data.h"
+#include "game/hsfex.h"
 #include "board_unsplit.h"
-#include "unsplit.h"
 #include "math.h"
 
 static void WarpInit(s32);

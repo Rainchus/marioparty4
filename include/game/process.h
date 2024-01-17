@@ -1,22 +1,13 @@
 #ifndef _GAME_PROCESS_H
 #define _GAME_PROCESS_H
 
+#include "game/jmp.h"
 #include "dolphin/types.h"
 
 #define PROCESS_STAT_PAUSE 0x1
 #define PROCESS_STAT_UPAUSE 0x2
 #define PROCESS_STAT_PAUSE_EN 0x4
 #define PROCESS_STAT_UPAUSE_EN 0x8
-
-typedef struct jump_buf {
-    u32 lr;
-    u32 cr;
-    u32 sp;
-    u32 r2;
-    u32 pad;
-    u32 regs[19];
-    double flt_regs[19];
-} jmp_buf;
 
 typedef struct process {
     struct process *next;

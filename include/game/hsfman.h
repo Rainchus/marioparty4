@@ -118,7 +118,6 @@ typedef struct light_data {
 } LightData;
 
 extern void GXWaitDrawDone();                                 /* extern */
-extern void ShapeProc(HsfData*);                              /* extern */
 extern void GXInitSpecularDir(GXLightObj*, f32, f32, f32);
 
 void Hu3DInit(void);

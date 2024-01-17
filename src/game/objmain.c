@@ -1,4 +1,5 @@
 #include "game/audio.h"
+#include "game/esprite.h"
 #include "game/hsfdraw.h"
 #include "game/hsfman.h"
 #include "game/printfunc.h"

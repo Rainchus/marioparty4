@@ -1,4 +1,5 @@
 #include "REL/w10Dll.h"
+#include "game/esprite.h"
 #include "game/pad.h"
 #include "game/data.h"
 #include "game/wipe.h"
