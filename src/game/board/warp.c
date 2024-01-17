@@ -15,10 +15,10 @@ static void WarpImpact(s32);
 
 
 extern void omVibrate(s16, s16, s16, s16);
-extern void fn_800816CC(s32, s32);
-extern void fn_80081884(f32);
-extern void fn_8008181C(void);
-extern s32 fn_8008186C(void);
+extern void BoardCharWheelInit(s32, s32);
+extern void BoardCharWheelSpeedSet(f32);
+extern void BoardCharWheelWait(void);
+extern s32 BoardCharWheelResultGet(void);
 extern f32 BoardModelMotionTimeGet(s16);
 extern void BoardModelHookReset(s16);
 extern s32 BoardModelHookSet(s16, char*, s16);
@@ -77,10 +77,10 @@ void WarpProcess(void) {
         BoardTutorialHookExec(18, 0);
         boardTutorialData[0] = 0;
     }
-    fn_800816CC(curr_player, 3);
-    fn_80081884(18.0f);
-    fn_8008181C();
-    warpTarget = fn_8008186C();
+    BoardCharWheelInit(curr_player, 3);
+    BoardCharWheelSpeedSet(18.0f);
+    BoardCharWheelWait();
+    warpTarget = BoardCharWheelResultGet();
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
     WarpInit(curr_player);
