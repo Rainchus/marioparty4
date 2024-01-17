@@ -15,7 +15,7 @@ void fn_800A4C88(void);
 void fn_800A6B10(void);
 void BoardStatusItemSet(s32);
 void BoardTutorialItemSet(s32);
-void fn_80082AAC(s32);
+void BoardCharWheelSetTarget(s32);
 void BoardTutorialDirInputSet(s32, s32, s32);
 void BoardSpaceStarSetIndex(s32);
 void BoardModelRotYSet(s16, f32);
