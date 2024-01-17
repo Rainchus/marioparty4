@@ -662,8 +662,8 @@ static void CreateBoard(void)
 	BoardPlayerModelInit();
 	createFunc();
 	BoardLightSetExec();
-	fn_8007A8D8();
-	fn_80077ABC();
+	BoardLotteryInit();
+	BoardShopInit();
 	fn_800A4F7C();
 	BoardCameraInit();
 	BoardStatusCreate();
@@ -711,8 +711,8 @@ static void DestroyBoard(void)
 	fn_80085EB4();
 	BoardStatusKill();
 	fn_800A5030();
-	fn_80077B90();
-	fn_8007AFF4(); 
+	BoardShopKill();
+	BoardLotteryKill(); 
 	BoardSpaceDestroy();
 	BoardPlayerModelKill();
 	if(destroyFunc) {
