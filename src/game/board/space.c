@@ -304,7 +304,7 @@ s32 BoardSpaceLinkTransformGet(s32 flag, Vec *pos, Vec *rot, Vec *scale)
 	return -1;
 }
 
-void BoardSpaceStarSet(s32 space)
+void BoardSpaceHostSet(s32 space)
 {
 	s16 host_space;
 	Vec pos;
@@ -334,7 +334,7 @@ void BoardSpaceStarSetIndex(s32 index)
 		BoardSpaceTypeSet(0, boardSpaceStarTbl[GWSystem.star_pos], 1);
 	}
 	GWSystem.star_pos = index & 0x7;
-	BoardSpaceStarSet(BoardSpaceStarGetCurr());
+	BoardSpaceHostSet(BoardSpaceStarGetCurr());
 	space = BoardSpaceLinkFlagSearch(0, BoardSpaceStarGetCurr(), 0x04000000);
 	BoardSpacePosGet(0, space, &pos);
 	BoardModelPosSetV(StarPlatGetMdl(), &pos);

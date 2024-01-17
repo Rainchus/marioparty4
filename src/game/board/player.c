@@ -10,7 +10,7 @@
 
 //// #include "game/board/space.h"
 extern s32 BoardSpaceFlagPosGet(s32, s32, u32);
-extern void BoardSpaceDirPosGet(s32, s32, Vec*);
+extern void BoardSpaceCornerPosGet(s32, s32, Vec*);
 extern void BoardSpaceLandExec(s32, s16);
 extern s32 BoardSpaceFlagGet(s32, s16);
 extern s32 BoardSpaceHiddenBlockExec(s32, s16);
@@ -86,8 +86,8 @@ s32 BoardPlayerItemAdd(s32, s32);
 s32 BoardPlayerItemRemove(s32, s32);
 s32 BoardPlayerItemFind(s32, s32);
 s32 BoardPlayerItemCount(s32);
-void fn_80062D90(s32);
-void BoardPlayerCurrSpacePosDirGet(s32, Vec*);
+void BoardPlayerCornerPosSet(s32);
+void BoardPlayerCornerPosGet(s32, Vec*);
 void BoardPlayerAmbSet(s32, f32, f32, f32);
 void BoardPlayerMtxSet(s32, Mtx);
 void BoardPlayerPosSetV(s32, Vec*);
@@ -105,7 +105,6 @@ void BoardPlayerMotionCreate(s32, s32);
 void BoardPlayerMotionKill(s32, s32);
 void BoardPlayerMotionEndCheck(s32);
 void BoardPlayerMotionEndWait(s32);
-void BoardPlayerMotionStart(s32, s32, s32);
 void BoardPlayerMotionShiftSet(s32, s32, f32, f32, u32);
 void BoardPlayerMotionSpeedSet(s32, f32);
 void BoardPlayerMotionTimeSet(s32, f32);
@@ -148,7 +147,7 @@ s32 DoDebugMove(s32, s16*);
 s32 DoSparkSpace(s32, s16*);
 s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
-s32 BoardPlayerAnimBlendCheck(s32);
+s32 BoardPlayerMotBlendCheck(s32);
 
 static HsfMaterial *playerMatCopy[4];
 static s32 (*postTurnHook[4])();
@@ -167,7 +166,7 @@ static s16 suitPlayerMdl = -1;
 static s16 suitCurrMot = -1;
 
 static s32 diceJumpObj[4] = {0, 0, 0, 0};
-static s32 animDoneF[4] = {0, 0, 0, 0};
+static s32 motDoneF[4] = {0, 0, 0, 0};
 static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
 char* lbl_8013993C[] = {
     "eye1",
@@ -231,7 +230,7 @@ void BoardPlayerInit(void) {
         
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             GWPlayer[var_r31].space_curr = temp_r30;
-            fn_80062D90(var_r31);
+            BoardPlayerCornerPosSet(var_r31);
             BoardPlayerSizeSet(var_r31, 0);
             GWPlayer[var_r31].color = 0;
             GWPlayer[var_r31].bowser_suit = 0;
@@ -242,7 +241,7 @@ void BoardPlayerInit(void) {
     }
     
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        fn_80062D90(var_r31);
+        BoardPlayerCornerPosSet(var_r31);
         if (BoardPlayerAutoSizeGet(var_r31) != 0) {
             BoardPlayerAutoSizeSet(var_r31, BoardPlayerAutoSizeGet(var_r31));
             BoardStatusHammerShowSet(var_r31, 0);
@@ -279,7 +278,7 @@ void BoardPlayerModelInit(void) {
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         preTurnHook[var_r31] = 0;
         postTurnHook[var_r31] = 0;
-        animDoneF[var_r31] = 0;
+        motDoneF[var_r31] = 0;
         diceJumpObj[var_r31] = 0;
         temp_r22 = &GWPlayer[var_r31];
         temp_r27 = temp_r22;
@@ -427,14 +426,14 @@ s32 BoardPlayerItemCount(s32 arg0) {
     return var_r30;
 }
 
-void fn_80062D90(s32 arg0) {
+void BoardPlayerCornerPosSet(s32 arg0) {
     Vec sp8;
 
-    BoardPlayerCurrSpacePosDirGet(arg0, &sp8);
+    BoardPlayerCornerPosGet(arg0, &sp8);
     BoardPlayerPosSetV(arg0, &sp8);
 }
 
-void BoardPlayerCurrSpacePosDirGet(s32 arg0, Point3d* arg1) {
+void BoardPlayerCornerPosGet(s32 arg0, Point3d* arg1) {
     s32 var_r31;
     s32 var_r30;
     s32 var_r29;
@@ -452,7 +451,7 @@ void BoardPlayerCurrSpacePosDirGet(s32 arg0, Point3d* arg1) {
                 var_r29 += 1;
             }
         }
-        BoardSpaceDirPosGet(temp_r28, var_r29, arg1);
+        BoardSpaceCornerPosGet(temp_r28, var_r29, arg1);
     }
 }
 
@@ -970,10 +969,10 @@ void BoardPlayerZoomRestore(s32 arg0) {
         var_r31 = (var_r31 + 1) & 3;
         (void)var_r29; // 
     }
-    BoardSpaceDirPosGet(temp_r27, var_r29, &sp18);
-    BoardPlayerAnimBlendSet(arg0, 0, 0xF);
+    BoardSpaceCornerPosGet(temp_r27, var_r29, &sp18);
+    BoardPlayerMotBlendSet(arg0, 0, 0xF);
     
-    while (BoardPlayerAnimBlendCheck(arg0) == 0) {
+    while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
     BoardRotateDiceNumbers(arg0);

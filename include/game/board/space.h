@@ -39,7 +39,7 @@ s32 BoardSpaceLinkTypeListGet(s32 layer, s32 index, s32 type, s16 *list);
 s32 BoardSpaceLinkTargetListGet(s32 layer, s32 target, s16 *list);
 s32 BoardSpaceLinkTypeSearch(s32 layer, s32 target, u16 type);
 s32 BoardSpaceLinkTransformGet(s32 flag, Vec *pos, Vec *rot, Vec *scale);
-void BoardSpaceStarSet(s32 space);
+void BoardSpaceHostSet(s32 space);
 void BoardSpaceStarSetIndex(s32 index);
 s32 BoardSpaceStarGetNext(void);
 s32 BoardSpaceStarGetRandom(s32 excl_pos);
