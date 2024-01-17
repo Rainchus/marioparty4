@@ -407,14 +407,14 @@ game/board/warp.c:
 	.sbss       start:0x801D4028 end:0x801D4040
 	.sdata2     start:0x801D5730 end:0x801D5780
 
-game/board/char_roulette.c:
+game/board/char_wheel.c:
 	.text       start:0x800816CC end:0x80082C90
 	.data       start:0x8013A248 end:0x8013A2B0
 	.sdata      start:0x801D3758 end:0x801D3760
 	.sbss       start:0x801D4040 end:0x801D4060
 	.sdata2     start:0x801D5780 end:0x801D5810
 
-game/board/mushroom_space.c:
+game/board/mushroom.c:
 	.text       start:0x80082C90 end:0x80083EDC
 	.sdata      start:0x801D3760 end:0x801D3770
 	.sbss       start:0x801D4060 end:0x801D4070
@@ -429,7 +429,7 @@ game/board/star.c:
 	.sbss       start:0x801D4070 end:0x801D4088
 	.sdata2     start:0x801D5898 end:0x801D5938
 
-game/board/dice_roll.c:
+game/board/roll.c:
 	.text       start:0x80085CC8 end:0x80088368
 	.rodata     start:0x8011E0B0 end:0x8011E118
 	.data       start:0x8013A368 end:0x8013A408
@@ -483,7 +483,7 @@ game/board/battle.c:
 	.sbss       start:0x801D4178 end:0x801D41A0
 	.sdata2     start:0x801D5DE0 end:0x801D5E88
 
-game/board/fortune_space.c:
+game/board/fortune.c:
 	.text       start:0x8009D148 end:0x8009DFD0
 	.rodata     start:0x8011E380 end:0x8011E3A8
 	.data       start:0x8013AB10 end:0x8013AB28

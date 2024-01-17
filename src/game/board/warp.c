@@ -66,9 +66,9 @@ void WarpProcess(void) {
     HuAudFXPlay(842);
     BoardCameraViewSet(3);
     BoardCameraMotionWait();
-    BoardPlayerAnimBlendSet(curr_player, 0, 15);
+    BoardPlayerMotBlendSet(curr_player, 0, 15);
 
-    while (BoardPlayerAnimBlendCheck(curr_player) == 0) {
+    while (BoardPlayerMotBlendCheck(curr_player) == 0) {
         HuPrcVSleep();
     }
     
@@ -232,7 +232,7 @@ static void WarpImpact(s32 player) {
     BoardModelMotionStart(warpImpactMdl, 0, 0x40000001);
     
     for (i = 0; i < warpImpactCnt; i++) {
-        s32 player = warpImpactPlayer[i];
+        s16 player = warpImpactPlayer[i];
         omVibrate(player, 0xC, 4, 2);
         BoardPlayerMotionStart(player, 6, 0x40000001);
     }
