@@ -92,7 +92,7 @@ s32 BoardSpaceWalkMiniEventExec(void)
 	return ret;
 }
 
-s16 BoardSpaceCountGet(s32 layer)
+s32 BoardSpaceCountGet(s32 layer)
 {
 	return spaceCnt[layer];
 }
