@@ -130,7 +130,7 @@ void BoardCreate(void) {
     fn_80083EDC(lbl_1_data_2C);
     fn_800A4F6C(lbl_1_data_32);
     BoardShopHostSet(lbl_1_data_2E);
-    fn_8007A83C(lbl_1_data_30);
+    BoardLotteryHostSet(lbl_1_data_30);
     HuWinMesMaxSizeGet(1, spC, 0x2E003A);
     lbl_1_bss_E = HuWinCreate(-10000.0f, 390.0f, spC[0], spC[1], 1);
     HuWinMesSet(lbl_1_bss_E, 0x2E003A);
