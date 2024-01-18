@@ -10,9 +10,9 @@ s16 HuTHP3DCreate(char *path, s16 loop);
 void HuTHPStop(void);
 void HuTHPClose(void);
 void HuTHPRestart(void);
-int HuTHPEndCheck(void);
-int HuTHPFrameGet(void);
-int HuTHPTotalFrameGet(void);
-void HuTHPSetVolume(int left, int right);
+BOOL HuTHPEndCheck(void);
+s32 HuTHPFrameGet(void);
+s32 HuTHPTotalFrameGet(void);
+void HuTHPSetVolume(s32 left, s32 right);
 
 #endif
