@@ -8,6 +8,11 @@
 #include "game/object.h"
 #include "game/board/player.h"
 #include "math.h"
+#include "board_unsplit.h"
+#include "game/hsfman.h"
+
+void BoardModelPosSet(s16, f32, f32, f32);
+s32 BoardModelMotionStart(s16, s32, s32);
 
 void fn_8005B150(void*, void*);
 void fn_1_740(void);
@@ -22,14 +27,13 @@ void fn_1_DEC(void);
 void fn_1_10B0(void);
 s32 fn_1_12C8(void);
 void fn_8006DDE8(s16, f32);
-BoardSpace* BoardSpaceGet(s32, s32);
 void fn_1_10E4(omObjData* arg0);
 extern Process *boardObjMan;
 typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
-void BoardModelPosSet(s16, f32, f32, f32);
-void BoardModelMotionStart(s16, s32, s32);
+
+
 f32 BoardModelMotionTimeGet(s16);
 s16 BoardModelCreate(s32, void*, s32);
 void BoardModelKill(s16);
@@ -154,7 +158,7 @@ void BoardCreate(void) {
                 var_r29 = NULL;
             }
             lbl_1_bss_C[i]= BoardModelCreate(temp_r30->datanum, var_r29, 0);
-            BoardModelPosSetV(lbl_1_bss_C[i], temp_r30);
+            BoardModelPosSetV(lbl_1_bss_C[i], &temp_r30->unk_00);
             BoardModelRotSetV(lbl_1_bss_C[i], &temp_r30->unk_0C);
             BoardModelScaleSetV(lbl_1_bss_C[i], &temp_r30->unk_18);
             BoardModelVisibilitySet(lbl_1_bss_C[i], 1);
@@ -171,7 +175,7 @@ void BoardCreate(void) {
     fn_1_9A7C();
     BoardLightHookSet(&fn_1_884, &fn_1_8F0);
     BoardSpaceWalkEventFuncSet(&fn_1_910);
-    BoardSpaceWalkMiniEventFuncSet(&fn_1_A74);
+    BoardSpaceWalkMiniEventFuncSet((void*)&fn_1_A74);
     BoardSpaceLandEventFuncSet((void*)&fn_1_AF8);
     BoardStarHostSet(lbl_1_data_1E4);
     BoardBooHouseHostSet(lbl_1_data_1E6);
@@ -234,7 +238,7 @@ void BoardDestroy(void) {
 }
 
 void fn_1_884(void) {
-    s32 var = BoardModelIDGet(lbl_1_data_1E0);
+    s16 var = BoardModelIDGet(lbl_1_data_1E0);
     Hu3DModelLightInfoSet(var, 1);
     Hu3DFogSet(5000.0f, 30000.0f, 0xE4U, 0xF0U, 0xFFU);
 }
@@ -412,7 +416,7 @@ void fn_1_10E4(omObjData* arg0) {
 
     temp_r29 = (w03UnkStruct2*)&arg0->work[0];
     if (temp_r29->unk0 != 0 || (BoardIsKill() != 0)) {
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < ARRAY_COUNT(lbl_1_data_21C); i++) {
             if (lbl_1_data_21C[i] != -1) {
                 HuAudFXFadeOut(lbl_1_data_21C[i], 100);
             }            

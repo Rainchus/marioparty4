@@ -53,7 +53,7 @@ static CameraView camViewTbl[] = {
 
 
 extern void BoardModelPosGet(s16 model, Vec *pos);
-extern void BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
+extern s32 BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
 extern void BoardMGSetupPlayClear(void);
 extern void fn_800A6EE4(void);

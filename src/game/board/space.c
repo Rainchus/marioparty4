@@ -573,8 +573,8 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 				HuAudFXPlay(842);
 				BoardCameraViewSet(2);
-				BoardPlayerAnimBlendSet(player, 0, 15);
-				while(!BoardPlayerAnimBlendCheck(player)) {
+				BoardPlayerMotBlendSet(player, 0, 15);
+				while(!BoardPlayerMotBlendCheck(player)) {
 					HuPrcVSleep();
 				}
 				BoardCameraMotionWait();
