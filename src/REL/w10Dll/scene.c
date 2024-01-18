@@ -176,7 +176,7 @@ void fn_1_13A4(void) {
     for (i = 0; i < 4; i++) {
         GWPlayer[i].color = 1;
     }
-    fn_800A4C88();
+    BoardMGSetupTutorialExec();
     BoardStatusShowSetAll(0);
     fn_1_C10(0);
     fn_1_BA0(0x2E002B);
@@ -206,7 +206,7 @@ void fn_1_13A4(void) {
     BoardCameraMotionStartEx(lbl_1_bss_0->unk8, &sp8, NULL, 3200.0f, -1.0f, 30);
     BoardCameraMotionWait();
     fn_1_BA0(0x2E0030);
-    fn_800A6B10();
+    BoardBooHouseTutorialExec();
     BoardCameraMotionStartEx(lbl_1_bss_0->unk8, &sp8, NULL, 3200.0f, -1.0f, 30);
     BoardCameraMotionWait();
     fn_1_BA0(0x2E0032);
@@ -227,7 +227,7 @@ void fn_1_13A4(void) {
     fn_1_BA0(0x2E0039);
     if (lbl_1_bss_C == 0) {
         lbl_1_bss_C = 1;
-        fn_80070EE8(0, 0x1F3);
+        BoardAudSeqFadeOut(0, 0x1F3);
         BoardKill();
     }
     BoardTutorialHookSet(NULL);

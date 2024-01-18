@@ -128,7 +128,7 @@ void BoardCreate(void) {
     BoardSpaceWalkMiniEventFuncSet(&fn_1_91C);
     BoardSpaceLandEventFuncSet(&fn_1_908);
     BoardStarHostSet(lbl_1_data_2C);
-    fn_800A4F6C(lbl_1_data_32);
+    BoardBooHouseHostSet(lbl_1_data_32);
     BoardShopHostSet(lbl_1_data_2E);
     BoardLotteryHostSet(lbl_1_data_30);
     HuWinMesMaxSizeGet(1, spC, 0x2E003A);
