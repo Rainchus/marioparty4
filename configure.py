@@ -920,6 +920,28 @@ config.libs = [
             Object(NonMatching, "REL/w03Dll/mg_item.c"),
         }
     ),
+    Rel('w04Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w04Dll/main.c"),
+            Object(NonMatching, "REL/w04Dll/bridge.c"),
+            Object(NonMatching, "REL/w04Dll/boo_event.c"),
+            Object(NonMatching, "REL/w04Dll/big_boo.c"),
+            Object(NonMatching, "REL/w04Dll/mg_item.c"),
+            Object(NonMatching, "REL/w04Dll/mg_coin.c"),
+        }
+    ),
+    Rel('w05Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w05Dll/main.c"),
+            Object(NonMatching, "REL/w05Dll/hotel.c"),
+            Object(NonMatching, "REL/w05Dll/monkey.c"),
+            Object(NonMatching, "REL/w05Dll/dolphin.c"),
+            Object(NonMatching, "REL/w05Dll/mg_item.c"),
+            Object(NonMatching, "REL/w05Dll/mg_coin.c"),
+        }
+    ),
     Rel('w10Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
@@ -927,6 +949,18 @@ config.libs = [
             Object(Matching, "REL/w10Dll/host.c"),
             Object(Matching, "REL/w10Dll/scene.c"),
             Object(Matching, "REL/w10Dll/tutorial.c"),
+        }
+    ),
+    Rel('w20Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w20Dll/main.c"),
+        }
+    ),
+    Rel('w21Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w21Dll/main.c"),
         }
     ),
 ]
