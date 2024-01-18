@@ -816,6 +816,12 @@ config.libs = [
             Object(NonMatching, "REL/mentDll/main.c"),
         }
     ),
+    Rel('messDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/messDll/main.c"),
+        }
+    ),
     Rel('mgmodedll',
         objects = {
             Object(Matching, "REL/executor.c"),
@@ -846,6 +852,11 @@ config.libs = [
             Object(NonMatching, "REL/mpexDll/mgname.c"),
         }
     ),
+    Rel('mstory4Dll',
+        objects = {
+            Object(NonMatching, "REL/mstory4Dll/main.c"),
+        }
+    ),
     Rel('option',
         objects = {
             Object(Matching, "REL/executor.c"),
@@ -870,22 +881,27 @@ config.libs = [
             Object(NonMatching, "REL/present/common.c"),
         }
     ),
+    Rel('safDll',
+        objects = {
+            Object(NonMatching, "REL/safDll/main.c"),
+        }
+    ),
     Rel('selmenuDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/selmenuDll/selmenuDll.c"),
+            Object(NonMatching, "REL/selmenuDll/main.c"),
         }
     ),
     Rel('staffDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/staffDll/staffDll.c"),
+            Object(NonMatching, "REL/staffDll/main.c"),
         }
     ),
     Rel('subchrselDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/subchrselDll/subchrselDll.c"),
+            Object(Matching, "REL/subchrselDll/main.c"),
         }
     ),
     Rel('w01Dll',
@@ -940,6 +956,17 @@ config.libs = [
             Object(NonMatching, "REL/w05Dll/dolphin.c"),
             Object(NonMatching, "REL/w05Dll/mg_item.c"),
             Object(NonMatching, "REL/w05Dll/mg_coin.c"),
+        }
+    ),
+    Rel('w05Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w06Dll/main.c"),
+            Object(NonMatching, "REL/w06Dll/mg_item.c"),
+            Object(NonMatching, "REL/w06Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w06Dll/fire.c"),
+            Object(NonMatching, "REL/w06Dll/bridge.c"),
+            Object(NonMatching, "REL/w06Dll/bowser.c"),
         }
     ),
     Rel('w10Dll',
