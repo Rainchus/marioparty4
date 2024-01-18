@@ -174,7 +174,7 @@ void BoardCreate(void) {
     BoardSpaceWalkMiniEventFuncSet(&fn_1_A74);
     BoardSpaceLandEventFuncSet((void*)&fn_1_AF8);
     BoardStarHostSet(lbl_1_data_1E4);
-    fn_800A4F6C(lbl_1_data_1E6);
+    BoardBooHouseHostSet(lbl_1_data_1E6);
     BoardLotteryHostSet(lbl_1_data_1E6);
     BoardShopHostSet(lbl_1_data_1E6);
     BoardJunctionMaskSet(0x0000C000);

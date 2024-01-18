@@ -23,7 +23,7 @@ static omObjData *last5GfxObj;
 static omObjData *confettiObj;
 static omObjData *filterObj;
 void *boardTurnStartFunc;
-u32 lbl_801D3F00;
+void *boardBowserHook;
 u32 lbl_801D3EFC;
 u32 lbl_801D3EF8;
 BoardFunc boardTurnFunc;
@@ -55,7 +55,7 @@ static CameraView camViewTbl[] = {
 extern void BoardModelPosGet(s16 model, Vec *pos);
 extern void BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
-extern void fn_800A4A7C(void);
+extern void BoardMGSetupPlayClear(void);
 extern void fn_800A6EE4(void);
 
 extern s8 boardTutorialF;
@@ -116,7 +116,7 @@ void BoardCommonInit(BoardFunc create, BoardFunc destroy)
 		_ClearFlag(FLAG_ID_MAKE(1, 9));
 		_ClearFlag(FLAG_ID_MAKE(0, 8));
 		_ClearFlag(FLAG_ID_MAKE(0, 10));
-		fn_800A4A7C();
+		BoardMGSetupPlayClear();
 	}
 	
 	nextOvl = OVL_INVALID;
@@ -136,7 +136,7 @@ void BoardCommonInit(BoardFunc create, BoardFunc destroy)
 	destroyFunc = destroy;
 	boardTurnFunc = NULL;
 	lbl_801D3EFC = 0;
-	lbl_801D3F00 = 0;
+	boardBowserHook = NULL;
 	lbl_801D3EF8 = 0;
 	boardTurnStartFunc = NULL;
 	boardObjMan = omInitObjMan(64, 8192);
@@ -664,7 +664,7 @@ static void CreateBoard(void)
 	BoardLightSetExec();
 	BoardLotteryInit();
 	BoardShopInit();
-	fn_800A4F7C();
+	BoardBooHouseCreate();
 	BoardCameraInit();
 	BoardStatusCreate();
 	CharModelKillIndex(-1);
@@ -710,7 +710,7 @@ static void DestroyBoard(void)
 	HuAudAllStop();
 	fn_80085EB4();
 	BoardStatusKill();
-	fn_800A5030();
+	BoardBooHouseKill();
 	BoardShopKill();
 	BoardLotteryKill(); 
 	BoardSpaceDestroy();

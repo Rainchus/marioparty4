@@ -153,7 +153,7 @@ void fn_1_1984(void) {
         if (i != 4) {
             lbl_1_bss_C = 1;
             OSReport(lbl_1_data_98);
-            fn_80070EE8(0, 0x1F3);
+            BoardAudSeqFadeOut(0, 0x1F3);
             BoardKill();
             BoardTutorialHookSet(NULL);
         }
@@ -182,7 +182,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                     if (i != 4) {
                         lbl_1_bss_C = 1;
                         OSReport(lbl_1_data_98);
-                        fn_80070EE8(0, 0x1F3);
+                        BoardAudSeqFadeOut(0, 0x1F3);
                         BoardKill();
                         BoardTutorialHookSet(NULL);
                     }
