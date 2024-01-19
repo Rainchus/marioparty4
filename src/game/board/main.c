@@ -93,17 +93,6 @@ static s32 ExecTurnStart(void);
 static void CreateBoard(void);
 static void DestroyBoard(void);
 
-
-static inline int GWMGTypeGet()
-{
-	return GWSystem.mg_type;
-}
-
-static inline int GWMessSpeedGet()
-{
-	return GWSystem.mess_speed;
-}
-
 #define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
 
 void BoardCommonInit(BoardFunc create, BoardFunc destroy)
@@ -2042,13 +2031,8 @@ void BoardLast5GfxInit(void)
 				prio = 1400;
 			}
 			spr_file = last5GfxSprTbl[i];
-			if(i == 2 && work->is_last) {
-				//FIXME: unnecessary extsb during comparison
-				s8 language = GWGameStat.language;
-				if(language != 0) {
-					spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
-				}
-				
+			if(i == 2 && work->is_last && GWLanguageGet() != 0) {
+				spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
