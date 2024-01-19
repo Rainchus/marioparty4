@@ -135,6 +135,12 @@ float BoardRandFloat(void);
 float BoardVecDistXZCalc(Vec *vec1, Vec *vec2);
 s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist);
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
+
+void BoardConfettiKill(void);
+void BoardConfettiStop(void);
+
+void BoardLast5GfxInit(void);
+
 s32 BoardDataDirReadAsync(s32 data_num);
 void BoardDataAsyncWait(s32 status);
 
