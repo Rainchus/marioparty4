@@ -22,7 +22,7 @@ u32 boardRandSeed;
 static omObjData *last5GfxObj;
 static omObjData *confettiObj;
 static omObjData *filterObj;
-void *boardTurnStartFunc;
+BoardTurnStartHook boardTurnStartFunc;
 void *boardBowserHook;
 void *boardStarShowNextHook;
 void *boardStarGiveHook;
@@ -31,7 +31,7 @@ BoardLightHook boardLightSetHook;
 BoardLightHook boardLightResetHook;
 static BoardFunc destroyFunc;
 static BoardFunc createFunc;
-static BOOL cameraUseBackup;
+static s32 cameraUseBackup;
 static omObjData *tauntObj;
 static omObjData *cameraObj;
 Process *boardObjMan;
@@ -62,6 +62,7 @@ extern s8 boardTutorialF;
 extern s16 boardPlayerMdl[4];
 
 void BoardKill(void);
+s32 BoardTurnNext(void);
 void BoardCameraInit(void);
 void BoardCameraMotionWait(void);
 void BoardCameraTargetPlayerSet(s32 player);
@@ -85,6 +86,8 @@ static void CalcCameraPos(BoardCameraData *camera);
 
 static void MainFunc(void);
 static void DestroyMainFunc(void);
+
+static s32 ExecTurnStart(void);
 
 static void CreateBoard(void);
 static void DestroyBoard(void);
@@ -267,7 +270,7 @@ s32 BoardIsKill(void)
 	return (_CheckFlag(FLAG_ID_MAKE(1, 17))) ? 1 : 0;
 }
 
-void BoardPauseEnableSet(s32 value)
+void BoardPauseDisableSet(s32 value)
 {
 	if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		_SetFlag(FLAG_ID_MAKE(1, 25));
@@ -281,7 +284,7 @@ void BoardPauseEnableSet(s32 value)
 	}
 }
 
-s32 BoardPauseEnableGet()
+s32 BoardPauseDisableGet()
 {
 	return (_CheckFlag(FLAG_ID_MAKE(1, 25))) ? 1 : 0;
 }
@@ -409,7 +412,7 @@ static void MainFunc(void)
 	s32 fade_enable, turn_cont, fade_type;
 	fade_enable = 0;
 	turn_cont = 0;
-	BoardPauseEnableSet(1);
+	BoardPauseDisableSet(1);
 	if(_CheckFlag(FLAG_ID_MAKE(0, 10))) {
 		_ClearFlag(FLAG_ID_MAKE(0, 10));
 		_SetFlag(FLAG_ID_MAKE(1, 16));
@@ -458,7 +461,7 @@ static void MainFunc(void)
 			boardTurnFunc();
 			GWSystem.player_curr = 0;
 		}
-		fn_80070D84();
+		BoardMusStartBoard();
 		for(i=GWSystem.player_curr; i<4; i++) {
 			if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
 				if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && i == 0 && !turn_cont) {
@@ -537,7 +540,7 @@ static void MainFunc(void)
 		if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
 			GWSystem.player_curr = 0;
 			if(BoardTurnNext()) {
-				fn_80070EE8(0, 500);
+				BoardAudSeqFadeOut(0, 500);
 				BoardKill();
 				HuPrcEnd();
 				HuPrcSleep(-1);
@@ -545,7 +548,7 @@ static void MainFunc(void)
 		} else {
 			_SetFlag(FLAG_ID_MAKE(1, 28));
 			_SetFlag(FLAG_ID_MAKE(1, 14));
-			BoardPauseEnableSet(1);
+			BoardPauseDisableSet(1);
 			_ClearFlag(FLAG_ID_MAKE(1, 9));
 			if(_CheckFlag(FLAG_ID_MAKE(2, 0)) || _CheckFlag(FLAG_ID_MAKE(1, 11)) ) {
 				for(i=0; i<4; i++) {
@@ -553,14 +556,14 @@ static void MainFunc(void)
 				}
 				GWSystem.player_curr = (GWSystem.player_curr+1)&3;
 			} else {
-				fn_800A1A34();
+				BoardMGSetupExec();
 				HuPrcSleep(-1);
 			}
 		}
 	} while(1);
 }
 
-BOOL BoardTurnNext(void)
+s32 BoardTurnNext(void)
 {
 	s32 i;
 	for(i=0; i<4; i++) {
@@ -574,10 +577,49 @@ BOOL BoardTurnNext(void)
 	}
 }
 
+static s32 ExecTurnStart(void)
+{
+	s32 player;
+	s32 space;
+	if(!BoardStartCheck()) {
+		return 0;
+	}
+	player = GWSystem.player_curr;
+	space = GWPlayer[player].space_curr;
+	if(_CheckFlag(FLAG_ID_MAKE(1, 5))) {
+		BoardFortuneExec(player, space);
+		_ClearFlag(FLAG_ID_MAKE(1, 5));
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 4))) {
+		BoardMusStartBoard();
+		BoardBattleExec(player, space);
+		_ClearFlag(FLAG_ID_MAKE(1, 4));
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 3))) {
+		BoardBowserExec(player, space);
+		_ClearFlag(FLAG_ID_MAKE(1, 3));
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 2))) {
+		s32 turn_end = 0;
+		BoardCameraMoveSet(0);
+		BoardCameraViewSet(2);
+		BoardCameraMotionWait();
+		turn_end = BoardTurnNext();
+		if(turn_end) {
+			BoardKill();
+			HuPrcEnd();
+		}
+		_ClearFlag(FLAG_ID_MAKE(1, 2));
+		return 0;
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 6))) {
+		boardTurnStartFunc(player, space);
+		return 1;
+	}
+	BoardPlayerZoomRestore(player);
+	return 1;
+}
+
 void BoardNextOvlSet(OverlayID overlay)
 {
 	nextOvl = overlay;
-	fn_80070EE8(0, 1000);
+	BoardAudSeqFadeOut(0, 1000);
 	BoardKill();
 }
 
@@ -655,7 +697,7 @@ static void CreateBoard(void)
 	if(guest_status != -1) {
 		BoardDataAsyncWait(guest_status);
 	}
-	fn_8007111C();
+	BoardAudSeqClear();
 	BoardModelInit();
 	BoardRandInit();
 	BoardWinInit();
@@ -706,9 +748,9 @@ static void DestroyBoard(void)
 		MAKE_DIR_NUM(DATADIR_W21),
 	};
 	BoardTauntKill();
-	fn_8007116C();
+	BoardAudSeqFadeOutAll();
 	HuAudAllStop();
-	fn_80085EB4();
+	BoardRollKill();
 	BoardStatusKill();
 	BoardBooHouseKill();
 	BoardShopKill();
@@ -730,6 +772,30 @@ static void DestroyBoard(void)
 	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
 	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BOARD));
 	createFunc = destroyFunc = NULL;
+}
+
+void BoardLightHookSet(BoardLightHook set, BoardLightHook reset)
+{
+	boardLightSetHook = set;
+	boardLightResetHook = reset;
+}
+
+void BoardLightSetExec(void)
+{
+	Hu3DBGColorSet(0, 0, 0);
+	if(boardLightSetHook) {
+		boardLightSetHook();
+	}
+}
+
+void BoardLightResetExec(void)
+{
+	if(boardLightResetHook) {
+		boardLightResetHook();
+	}
+	Hu3DBGColorSet(0, 0, 0);
+	Hu3DFogClear();
+	Hu3DReflectNoSet(0);
 }
 
 void BoardCameraBackup(void)
@@ -1270,6 +1336,101 @@ static void CalcCameraPos(BoardCameraData *camera)
 	CAM_LERP_VEC(time, focus->target_start, focus->target_end, camera->target)
 }
 
+void BoardMGDoneFlagSet(s32 flag)
+{
+	if(flag) {
+		_SetFlag(FLAG_ID_MAKE(1, 20));
+	} else {
+		_ClearFlag(FLAG_ID_MAKE(1, 20));
+	}
+}
+
+s32 BoardMGDoneFlagGet()
+{
+	return (_CheckFlag(FLAG_ID_MAKE(1, 20))) ? 1 : 0;
+}
+
+void BoardMGExit(void)
+{
+	s32 player = GWSystem.player_curr;
+	BoardPlayerMoveToAsync(player, GWPlayer[GWSystem.player_curr].space_curr);
+	BoardCameraTargetPlayerSet(player);
+	BoardCameraMoveSet(1);
+	BoardCameraViewSet(1);
+	_ClearFlag(FLAG_ID_MAKE(1, 19));
+}
+
+static void KillBoardMG(omObjData *object)
+{
+	if(!BoardMGDoneFlagGet()) {
+		BoardEventFlagReset();
+		omDelObjEx(HuPrcCurrentGet(), object);
+	}
+}
+
+static void ExecBoardMG(omObjData *object)
+{
+	if(_CheckFlag(FLAG_ID_MAKE(1, 19))) {
+		return;
+	}
+	if(GWPlayer[GWSystem.player_curr].moving == 0) {
+		BoardPlayerMotionShiftSet(GWSystem.player_curr, 1, 0.0f, 10.0f, 0x40000001);
+		if(!_CheckFlag(FLAG_ID_MAKE(1, 21))) {
+			_SetFlag(FLAG_ID_MAKE(1, 20));
+			object->func = KillBoardMG;
+		}
+	}
+}
+
+void BoardMGCreate(s32 arg0)
+{
+	_SetFlag(FLAG_ID_MAKE(1, 19));
+	_ClearFlag(FLAG_ID_MAKE(1, 20));
+	GWSystem.unk_38 = arg0;
+	omAddObjEx(boardObjMan, 0x201, 0, 0, -1, ExecBoardMG);
+	BoardEventFlagSet();
+	BoardSpaceWalkMiniEventExec();
+}
+
+void BoardEventFlagSet(void)
+{
+	_SetFlag(FLAG_ID_MAKE(1, 18));
+}
+
+void BoardEventFlagReset(void)
+{
+	_ClearFlag(FLAG_ID_MAKE(1, 18));
+}
+
+s32 BoardEventFlagGet(void)
+{
+	return _CheckFlag(FLAG_ID_MAKE(1, 18)) ? 1 : 0;
+}
+
+void BoardMTXCalcLookAt(Mtx dest, Vec *eye, Vec *up, Vec *target)
+{
+	Vec f, u, s;
+	f.x = eye->x-target->x;
+	f.y = eye->y-target->y;
+	f.z = eye->z-target->z;
+	VECNormalize(&f, &f);
+	VECCrossProduct(up, &f, &u);
+	VECNormalize(&u, &u);
+	VECCrossProduct(&f, &u, &s);
+	dest[0][0] = u.x;
+	dest[0][1] = u.y;
+	dest[0][2] = u.z;
+	dest[0][3] = 0;
+	dest[1][0] = s.x;
+	dest[1][1] = s.y;
+	dest[1][2] = s.z;
+	dest[1][3] = 0;
+	dest[2][0] = f.x;
+	dest[2][1] = f.y;
+	dest[2][2] = f.z;
+	dest[2][3] = 0;
+}
+
 float BoardArcSin(float value)
 {
 	float result;
@@ -1286,7 +1447,7 @@ float BoardArcSin(float value)
 	if(value <= (float)(M_PI/2)) {
 		result = atanf(value/(float)sqrtf(1-(value*value)));
 	} else {
-		result = 1.0f-atanf((float)sqrtf(1-(value*value))/value);
+		result = ((float)M_PI/2.0f)-atanf((float)sqrtf(1-(value*value))/value);
 	}
 	if(sign) {
 		result = BOARD_FABS(result);
@@ -1299,7 +1460,7 @@ float BoardArcCos(float value)
 	if(BOARD_FABS(value) > 1) {
 		return 0;
 	}
-	return 1.0f-BoardArcSin(value);
+	return ((float)M_PI/2.0f)-BoardArcSin(value);
 }
 
 void BoardRandInit(void)
@@ -1354,6 +1515,58 @@ s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist)
 	} else {
 		return 1;
 	}
+}
+
+void BoardVecCalcDAngleVec(Vec *vec1)
+{
+	int i;
+	float *data = (float *)(&vec1->x);
+	for(i=0; i<3; i++) {
+		while(*data > 180.0f) {
+			*data -= 360.0f;
+		}
+		while(*data < -180.0f) {
+			*data += 360.0f;
+		}
+		data++;
+	}
+}
+
+float BoardVecCalcDAngle(float value)
+{
+	while(value > 180.0f) {
+		value -= 360.0f;
+	}
+	while(value < -180.0f) {
+		value += 360.0f;
+	}
+	return value;
+}
+
+s32 BoardVecCalcDAngleMod(float *value, float min, float range)
+{
+	float diff = min-(*value);
+	if(diff >= 180.0f) {
+		min -= 360.0f;
+	}
+	if(diff <= -180.0f) {
+		min += 360.0f;
+	}
+	if(min > *value) {
+		*value += range;
+		if(*value >= min) {
+			*value = BoardVecCalcDAngle(min);
+			return 1;
+		}
+	} else {
+		*value -= range;
+		if(*value <= min) {
+			*value = BoardVecCalcDAngle(min);
+			return 1;
+		}
+	}
+	*value = BoardVecCalcDAngle(*value);
+	return 0;
 }
 
 s32 BoardDataDirReadAsync(s32 data_num)

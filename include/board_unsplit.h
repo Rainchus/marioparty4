@@ -8,6 +8,10 @@
 typedef s32 (*BoardSpaceEventFunc)(void);
 #endif
 
+#ifndef _BOARD_MAIN_H
+typedef void (*BoardLightHook)(void);
+#endif
+
 void BoardCameraTargetModelSet(s16 model); 
 void BoardCameraMotionStartEx(s16, Vec *, Vec *, f32, f32, s16); 
 void BoardCameraMotionWait(void);
@@ -29,7 +33,7 @@ void BoardModelLayerSet(s16, u8);
 void BoardTutorialHostSet(s16);
 s16 BoardModelIDGet(s16);
 void BoardModelScaleSetV(s16, Vec*);
-void BoardLightHookSet(void*, void*);
+void BoardLightHookSet(BoardLightHook set, BoardLightHook reset);
 s16 BoardModelCreate(s32, void*, s32);
 void BoardModelKill(s16);
 void fn_8006DDE8(s16, f32);
@@ -56,5 +60,9 @@ void BoardModelScaleSet(s16, f32, f32, f32);
 s32 BoardIsKill(void);
 void BoardModelMtxSet(s16, Mtx);
 void BoardModelRotSet(s16, f32, f32, f32);
+
+void BoardBowserExec(s32 player, s32 space);
+void BoardBattleExec(s32 player, s32 space);
+void BoardFortuneExec(s32 player, s32 space);
 
 #endif
