@@ -359,7 +359,7 @@ config.libs = [
             Object(Matching, "game/flag.c"),
             Object(Matching, "game/saveload.c"),
             Object(NonMatching, "game/sreset.c"),
-            Object(NonMatching, "game/board/main.c"),
+            Object(Matching, "game/board/main.c"),
             Object(NonMatching, "game/board/player.c"),
             Object(NonMatching, "game/board/model.c"),
             Object(Matching, "game/board/window.c"),

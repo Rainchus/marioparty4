@@ -74,6 +74,11 @@ typedef void (*BoardCameraPosCalcFunc)(BoardCameraData *camera);
 
 typedef void (*BoardTurnStartHook)(s32 player, s32 space);
 
+extern BoardTurnStartHook boardTurnStartFunc;
+extern BoardFunc boardTurnFunc;
+extern BoardLightHook boardLightResetHook;
+extern BoardLightHook boardLightSetHook;
+
 void BoardCommonInit(BoardFunc create, BoardFunc destroy);
 void BoardKill(void);
 s32 BoardIsKill(void);
@@ -121,11 +126,14 @@ s32 BoardCameraCullCheck(Vec *point, float radius);
 s32 BoardCameraMotionIsDone(void);
 void BoardCameraMotionWait(void);
 void BoardCameraInit(void);
-void BoardMGCreate(s32 param);
+void BoardMGDoneFlagSet(s32 flag);
+s32 BoardMGDoneFlagGet();
+void BoardMGExit(void);
+void BoardMGCreate(s32 arg0);
 void BoardEventFlagSet(void);
 void BoardEventFlagReset(void);
 s32 BoardEventFlagGet(void);
-
+void BoardMTXCalcLookAt(Mtx dest, Vec *eye, Vec *up, Vec *target);
 float BoardArcSin(float value);
 float BoardArcCos(float value);
 void BoardRandInit(void);
@@ -134,13 +142,21 @@ u32 BoardRandMod(u32 value);
 float BoardRandFloat(void);
 float BoardVecDistXZCalc(Vec *vec1, Vec *vec2);
 s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist);
+void BoardVecDAngleCalcVec(Vec *vec1);
+float BoardVecDAngleCalc(float value);
+s32 BoardVecDAngleCalcRange(float *value, float min, float range);
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
-
+void BoardFilterFadeOut(s16 len);
+void BoardFilterFadeInit(s16 len, u8 max_alpha);
+s32 BoardFilterFadePauseCheck(void);
+s32 BoardFilterFadeCheck(void);
+void BoardConfettiCreate(Vec *pos, s16 count, float range);
 void BoardConfettiKill(void);
 void BoardConfettiStop(void);
-
 void BoardLast5GfxInit(void);
-
+void BoardLast5GfxShowSet(s32 show);
+void BoardTauntInit(void);
+void BoardTauntKill(void);
 s32 BoardDataDirReadAsync(s32 data_num);
 void BoardDataAsyncWait(s32 status);
 
