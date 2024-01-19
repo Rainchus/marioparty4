@@ -852,9 +852,39 @@ config.libs = [
             Object(NonMatching, "REL/mpexDll/mgname.c"),
         }
     ),
+    Rel('mstory2Dll',
+        objects = {
+            Object(NonMatching, "REL/mstory2Dll/main.c"),
+            Object(NonMatching, "REL/mstory2Dll/board_entrance.c"),
+            Object(NonMatching, "REL/mstory2Dll/board_clear.c"),
+            Object(NonMatching, "REL/mstory2Dll/board_miss.c"),
+            Object(NonMatching, "REL/mstory2Dll/mg_clear.c"),
+            Object(NonMatching, "REL/mstory2Dll/mg_miss.c"),
+            Object(NonMatching, "REL/mstory2Dll/ending.c"),
+            Object(NonMatching, "REL/mstory2Dll/save.c"),
+        }
+    ),
+    Rel('mstory3Dll',
+        objects = {
+            Object(NonMatching, "REL/mstory3Dll/main.c"),
+            Object(NonMatching, "REL/mstory3Dll/result_seq.c"),
+            Object(NonMatching, "REL/mstory3Dll/result.c"),
+            Object(NonMatching, "REL/mstory3Dll/win_effect.c"),
+        }
+    ),
     Rel('mstory4Dll',
         objects = {
             Object(NonMatching, "REL/mstory4Dll/main.c"),
+        }
+    ),
+    Rel('mstoryDll',
+        objects = {
+            Object(NonMatching, "REL/mstoryDll/main.c"),
+            Object(NonMatching, "REL/mstoryDll/board_clear.c"),
+            Object(NonMatching, "REL/mstoryDll/board_miss.c"),
+            Object(NonMatching, "REL/mstoryDll/mg_clear.c"),
+            Object(NonMatching, "REL/mstoryDll/mg_miss.c"),
+            Object(NonMatching, "REL/mstoryDll/save.c"),
         }
     ),
     Rel('option',
