@@ -162,7 +162,7 @@ s8 BoardCoinChgCreate(Vec *pos, s8 value) {
     
     obj = omAddObjEx(boardObjMan, 266, 0, 0, -1, &UpdateCoinChg);
     coinChgObj[i] = obj;
-    coin_chg = (coinChg *)obj->work;
+    coin_chg = OM_GET_WORK_PTR(obj, coinChg);
     coin_chg->hide = 0;
     coin_chg->update = 0;
     coin_chg->minus = (value < 0) ? 1 : 0;
@@ -189,7 +189,7 @@ s32 BoardCoinChgExist(s32 index) {
         return index;
     }
     if (coinChgObj[index - 1] != 0) {
-        coin_chg = (coinChg *)coinChgObj[index - 1]->work;
+        coin_chg = OM_GET_WORK_PTR(coinChgObj[index - 1], coinChg);
         return 0;
     }
     return 1;
@@ -201,7 +201,7 @@ void BoardCoinChgHide(s32 index) {
         return;
     }
     if (coinChgObj[index - 1] != 0) {
-        ((coinChg *)coinChgObj[index - 1]->work)->hide = 1;
+        OM_GET_WORK_PTR(coinChgObj[index - 1], coinChg)->hide = 1;
     }
 }
 
@@ -251,7 +251,7 @@ static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
 static void UpdateCoinChg(omObjData *object) {
     coinChg *coin_chg;
 
-    coin_chg = (coinChg *)object->work;
+    coin_chg = OM_GET_WORK_PTR(object, coinChg);
     if ((coin_chg->hide != 0) || (BoardIsKill() != 0)) {
         if (coin_chg->coin_model != -1) {
             BoardModelKill(coin_chg->coin_model);

@@ -24,7 +24,7 @@ void fn_1_2AC0(void);
 void fn_1_2818(void);
 void fn_1_2A40(void);
 void fn_1_2B44(void);
-s32 BoardVecCalcDAngleMod(f32*, f32, f32);
+s32 BoardVecDAngleCalcRange(f32*, f32, f32);
 s32 BoardPlayerMotBlendCheck(s32);
 void BoardPlayerMotBlendSet(s32, s32, s32);
 f32 BoardPlayerRotYGet(s32);
@@ -145,7 +145,7 @@ void fn_1_1358(void) {
 }
 
 void fn_1_152C(void) {
-    BoardConfettiStop();
+    BoardConfettiKill();
     if (lbl_1_data_282 != -1) {
         BoardPlayerMotionKill(GWSystem.player_curr, lbl_1_data_282);
         lbl_1_data_282 = -1;
@@ -232,7 +232,7 @@ s32 fn_1_1650(s32 arg0) {
     HuAudFXPlay(0x435);
     sp8.y = BoardModelRotYGet(lbl_1_bss_6C);
     
-    while (BoardVecCalcDAngleMod(&sp8.y, 180.0f, 2.0f) == 0) {
+    while (BoardVecDAngleCalcRange(&sp8.y, 180.0f, 2.0f) == 0) {
         BoardModelRotYSet(lbl_1_bss_6C, sp8.y);
         HuPrcVSleep();
     }
@@ -367,7 +367,7 @@ void fn_1_1ED4(s32 arg0) {
     BoardConfettiCreate(&spC, 0x64, 300.0f);
     sp8 = BoardModelRotYGet(lbl_1_bss_6C);
     
-    while (BoardVecCalcDAngleMod(&sp8, 0.0f, 30.0f) == 0) {
+    while (BoardVecDAngleCalcRange(&sp8, 0.0f, 30.0f) == 0) {
         BoardModelRotYSet(lbl_1_data_284, sp8);
         HuPrcVSleep();
     }
@@ -377,7 +377,7 @@ void fn_1_1ED4(s32 arg0) {
     BoardModelRotYSet(lbl_1_data_284, 0.0f);
     BoardModelRotYSet(lbl_1_bss_6C, 0.0f);
 
-    while (BoardFilterFadeDoneCheck() == 0) {
+    while (BoardFilterFadePauseCheck() == 0) {
         HuPrcVSleep();
     }
     BoardRotateDiceNumbers(arg0);
@@ -389,7 +389,7 @@ void fn_1_1ED4(s32 arg0) {
     BoardWinCreate(2, 0x160004, 2);
     BoardWinWait();
     BoardWinKill();
-    BoardConfettiKill();
+    BoardConfettiStop();
 }
 
 void fn_1_20E0(s32 arg0) {
@@ -408,7 +408,7 @@ void fn_1_20E0(s32 arg0) {
     BoardModelPosSetV(lbl_1_data_284, &spC);
     BoardFilterFadeOut(0x1E);
     sp8 = BoardModelRotYGet(lbl_1_bss_6C);
-    while (BoardVecCalcDAngleMod(&sp8, 0.0f, 30.0f) == 0) {
+    while (BoardVecDAngleCalcRange(&sp8, 0.0f, 30.0f) == 0) {
         BoardModelRotYSet(lbl_1_data_284, sp8);
         HuPrcVSleep();
     }
@@ -416,7 +416,7 @@ void fn_1_20E0(s32 arg0) {
     BoardModelRotYSet(lbl_1_data_284, 0.0f);
     BoardModelRotYSet(lbl_1_bss_6C, 0.0f);
     
-    while (BoardFilterFadeDoneCheck() == 0) {
+    while (BoardFilterFadePauseCheck() == 0) {
         HuPrcVSleep();
     }
     

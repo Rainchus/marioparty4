@@ -22,6 +22,9 @@ typedef enum {
 #define OM_STAT_NOPAUSE 0x20
 #define OM_STAT_MODEL_PAUSED 0x100
 
+
+#define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
+
 typedef void (*omObjFunc)(struct om_obj_data *);
 
 typedef struct om_ovl_his_data {
