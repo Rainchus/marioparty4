@@ -2042,13 +2042,8 @@ void BoardLast5GfxInit(void)
 				prio = 1400;
 			}
 			spr_file = last5GfxSprTbl[i];
-			if(i == 2 && work->is_last) {
-				//FIXME: unnecessary extsb during comparison
-				s8 language = GWGameStat.language;
-				if(language != 0) {
-					spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
-				}
-				
+			if(i == 2 && work->is_last && GWLanguageGet() != 0) {
+				spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);

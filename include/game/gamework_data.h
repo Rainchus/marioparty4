@@ -105,7 +105,7 @@ typedef struct player_state {
 
 typedef struct game_stat {
 /* 0x0 */ s16 unk_00;
-/* 0x2 */ s8 language;
+/* 0x2 */ u8 language;
 /* 0x3 */ u8 sound_mode;
 /* 0x4 */ s8 rumble;
 /* 0x6 */ u16 total_stars;
@@ -146,5 +146,10 @@ extern PlayerConfig GWPlayerCfg[4];
 extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
 extern GameStat GWGameStat;
+
+static inline s32 GWLanguageGet(void)
+{
+	return GWGameStat.language;
+}
 
 #endif

@@ -201,14 +201,12 @@ void HuWindowInit(void) {
 void HuWinInit(s32 mess_data_no) {
     s16 i;
     void *anim_data;
-    s8 language;
 
     if (!winProc) {
         HuAR_ARAMtoMRAM(winAMemP);
         winProc = HuPrcCreate(HuWinProc, 0x64, 0x1000, 0);
         HuPrcSetStat(winProc, 0xC);
-        language = GWGameStat.language;
-        LanguageNo = language;
+        LanguageNo = GWLanguageGet();
         messDataNo = mess_data_no;
         fontWidthP = (LanguageNo == 0) ? charWJTbl : charWETbl;
         HuWinMesRead(mess_data_no);
