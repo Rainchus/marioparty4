@@ -767,7 +767,7 @@ config.libs = [
     Rel('bootDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/bootDll/bootDll.c"),
+            Object(NonMatching, "REL/bootDll/main.c"),
             Object(Matching, "REL/bootDll/nintendo_data.c"),
         }
     ),
@@ -911,6 +911,14 @@ config.libs = [
             Object(NonMatching, "REL/present/common.c"),
         }
     ),
+    Rel('resultDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/resultDll/main.c"),
+            Object(NonMatching, "REL/resultDll/battle.c"),
+            Object(NonMatching, "REL/resultDll/datalist.c"),
+        }
+    ),
     Rel('safDll',
         objects = {
             Object(NonMatching, "REL/safDll/main.c"),
@@ -1018,6 +1026,14 @@ config.libs = [
         objects = {
             Object(Matching, "REL/board_executor.c"),
             Object(NonMatching, "REL/w21Dll/main.c"),
+        }
+    ),
+    Rel('ztardll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/ztardll/main.c"),
+            Object(NonMatching, "REL/ztardll/font.c"),
+            Object(NonMatching, "REL/ztardll/select.c"),
         }
     ),
 ]

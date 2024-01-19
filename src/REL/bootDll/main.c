@@ -1,4 +1,4 @@
-#include "common.h"
+#include "game/gamework_data.h"
 #include "game/process.h"
 #include "game/data.h"
 #include "game/sprite.h"
