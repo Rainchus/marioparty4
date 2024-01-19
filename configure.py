@@ -810,6 +810,32 @@ config.libs = [
             Object(NonMatching, "REL/m404Dll/main.c"),
         }
     ),
+    Rel('m405Dll',
+        objects = {
+            Object(NonMatching, "REL/m405Dll/main.c"),
+        }
+    ),
+    Rel('m406Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m406Dll/main.c"),
+            Object(NonMatching, "REL/m406Dll/map.c"),
+            Object(NonMatching, "REL/m406Dll/player.c"),
+        }
+    ),
+    Rel('m407dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m407dll/player.c"),
+            Object(NonMatching, "REL/m407dll/map.c"),
+            Object(NonMatching, "REL/m407dll/camera.c"),
+            Object(NonMatching, "REL/m407dll/whomp.c"),
+            Object(NonMatching, "REL/m407dll/whomp_score.c"),
+            Object(NonMatching, "REL/m407dll/effect.c"),
+            Object(NonMatching, "REL/m407dll/main.c"),
+            Object(NonMatching, "REL/m407dll/score.c"),
+        }
+    ),
     Rel('mentDll',
         objects = {
             Object(NonMatching, "REL/mentDll/common.c"),
