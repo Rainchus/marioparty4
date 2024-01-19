@@ -519,7 +519,7 @@ game/board/boo_house.c:
 game/board/start.c:
 	.text       start:0x800A6EE4 end:0x800A9708
 	.rodata     start:0x8011E3D0 end:0x8011E3F0
-	.data       start:0x8013AF70 end:0x8013B1F8
+	.data       start:0x8013AF70 end:0x8013B0D8
 	.bss        start:0x801A4CD8 end:0x801A4CF0
 	.sdata      start:0x801D3840 end:0x801D3850
 	.sbss       start:0x801D4230 end:0x801D4240
@@ -528,9 +528,9 @@ game/board/start.c:
 game/board/last5.c:
 	.text       start:0x800A9708 end:0x800ADB84
 	.rodata     start:0x8011E3F0 end:0x8011E430
-	.data       start:0x8013B1F8 end:0x8013B3F0
+	.data       start:0x8013B0D8 end:0x8013B3F0
 	.bss        start:0x801A4CF0 end:0x801A4D38
-	.sdata      start:0x801D3850 end:0x801D38B8
+	.sdata      start:0x801D3850 end:0x801D38A8
 	.sbss       start:0x801D4240 end:0x801D4260
 	.sdata2     start:0x801D6198 end:0x801D6298
 
@@ -538,6 +538,7 @@ game/board/pause.c:
 	.text       start:0x800ADB84 end:0x800B1974
 	.data       start:0x8013B3F0 end:0x8013B518
 	.bss        start:0x801A4D38 end:0x801A4D68
+	.sdata      start:0x801D38A8 end:0x801D38B8
 	.sbss       start:0x801D4260 end:0x801D4280
 	.sdata2     start:0x801D6298 end:0x801D6350
 
