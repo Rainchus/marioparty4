@@ -72,17 +72,22 @@ typedef void (*BoardFunc)(void);
 typedef void (*BoardLightHook)(void);
 typedef void (*BoardCameraPosCalcFunc)(BoardCameraData *camera);
 
+typedef void (*BoardTurnStartHook)(s32 player, s32 space);
+
 void BoardCommonInit(BoardFunc create, BoardFunc destroy);
 void BoardKill(void);
 s32 BoardIsKill(void);
-void BoardPauseEnableSet(s32 value);
-s32 BoardPauseEnableGet();
+void BoardPauseDisableSet(s32 value);
+s32 BoardPauseDisableGet();
 void BoardSaveInit(s32 board);
 void BoardStoryConfigSet(s32 mg_type, s32 diff_story);
 void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_type, s32 max_turn, s32 p1_handicap, s32 p2_handicap, s32 p3_handicap, s32 p4_handicap);
-BOOL BoardTurnNext(void);
+s32 BoardTurnNext(void);
 void BoardNextOvlSet(OverlayID overlay);
 s32 BoardStartCheck(void);
+void BoardLightHookSet(BoardLightHook set, BoardLightHook reset);
+void BoardLightSetExec(void);
+void BoardLightResetExec(void);
 void BoardCameraBackup(void);
 void BoardCameraRestore(void);
 void BoardCameraScissorSet(s32 x, s32 y, s32 w, s32 h);
@@ -116,7 +121,11 @@ s32 BoardCameraCullCheck(Vec *point, float radius);
 s32 BoardCameraMotionIsDone(void);
 void BoardCameraMotionWait(void);
 void BoardCameraInit(void);
-void BoardMGCreate(u16 param);
+void BoardMGCreate(s32 param);
+void BoardEventFlagSet(void);
+void BoardEventFlagReset(void);
+s32 BoardEventFlagGet(void);
+
 float BoardArcSin(float value);
 float BoardArcCos(float value);
 void BoardRandInit(void);

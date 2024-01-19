@@ -46,5 +46,6 @@ void BoardPlayerAutoSizeSet(s32 player, s32 value);
 void BoardPlayerMotionStart(s32, s32, s32);
 void BoardPlayerMotionShiftSet(s32 player, s32 arg1, float start, float end, u32 attr);
 void BoardPlayerRotYSet(s32 player, float rot_y);
+void BoardPlayerZoomRestore(s32 player);
 
 #endif
