@@ -9,7 +9,7 @@ Sections:
 REL/executor.c:
 	.text       start:0x00000000 end:0x000000A0
 
-REL/bootDll/bootDll.c:
+REL/bootDll/main.c:
 	.text       start:0x000000A0 end:0x00002944
 	.rodata     start:0x00000000 end:0x000000DC
 	.data       start:0x00000000 end:0x000000A0
