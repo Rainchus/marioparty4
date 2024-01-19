@@ -10,6 +10,8 @@
 #include "game/hsfdraw.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/pad.h"
+#include "game/msm.h"
 
 typedef struct camera_view {
 	s16 x_rot;
@@ -28,8 +30,8 @@ void *boardBowserHook;
 void *boardStarShowNextHook;
 void *boardStarGiveHook;
 BoardFunc boardTurnFunc;
-BoardLightHook boardLightSetHook;
 BoardLightHook boardLightResetHook;
+BoardLightHook boardLightSetHook;
 static BoardFunc destroyFunc;
 static BoardFunc createFunc;
 static s32 cameraUseBackup;
@@ -38,8 +40,8 @@ static omObjData *cameraObj;
 Process *boardObjMan;
 Process *boardMainProc;
 
-static BoardCameraData cameraBackup;
 BoardCameraData boardCamera;
+static BoardCameraData cameraBackup;
 
 static OverlayID nextOvl = OVL_INVALID;
 
@@ -60,21 +62,6 @@ extern void BoardMGSetupPlayClear(void);
 extern void BoardStartExec(void);
 
 extern s8 boardTutorialF;
-extern s16 boardPlayerMdl[4];
-
-void BoardKill(void);
-s32 BoardTurnNext(void);
-void BoardCameraInit(void);
-void BoardCameraMotionWait(void);
-void BoardCameraTargetPlayerSet(s32 player);
-void BoardCameraViewSet(s32 type);
-void BoardCameraOffsetSet(float x, float y, float z);
-void BoardCameraMoveSet(s32 move);
-void BoardCameraMotionStartEx(s16 model_target, Vec *rot_target, Vec *offset_end, float zoom_target, float fov_target, s16 max_time);
-void BoardRandInit(void);
-float BoardRandFloat(void);
-s32 BoardDataDirReadAsync(s32 data_num);
-void BoardDataAsyncWait(s32 status);
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);
@@ -83,7 +70,6 @@ static void UpdateCamera(omObjData *object);
 
 static void CalcCameraTarget(BoardCameraData *camera);
 static void CalcCameraPos(BoardCameraData *camera);
-
 
 static void MainFunc(void);
 static void DestroyMainFunc(void);
@@ -789,6 +775,11 @@ void BoardLightResetExec(void)
 	Hu3DReflectNoSet(0);
 }
 
+static BoardCameraData *BoardCameraGet(void)
+{
+	return &boardCamera;
+}
+
 void BoardCameraBackup(void)
 {
 	cameraUseBackup = TRUE;
@@ -1208,7 +1199,7 @@ void BoardCameraInit(void)
 	cameraObj = omAddObjEx(boardObjMan, 32258, 0, 0, -1, UpdateCamera);
 }
 
-static void CalcCameraView(void)
+static inline void CalcCameraView(void)
 {
 	BoardCameraData *camera = &boardCamera;
 	CalcCameraTarget(camera);
@@ -1785,6 +1776,31 @@ void BoardConfettiCreate(Vec *pos, s16 count, float range)
 	HuAudFXPlay(774);
 }
 
+void BoardConfettiKill(void)
+{
+	if(confettiObj) {
+		OM_GET_WORK_PTR(confettiObj, ConfettiWork)->kill = 1;
+	}
+}
+
+void BoardConfettiStop(void)
+{
+	if(confettiObj) {
+		s32 i;
+		ConfettiParticle *particle;
+		ConfettiWork *work = OM_GET_WORK_PTR(confettiObj, ConfettiWork);
+		work->paused = 1;
+		particle = work->data;
+		for(i=0; i<work->count; i++, particle++) {
+			if(particle->time != -1) { 
+				if(particle->time > 16) {
+					particle->time = 16;
+				}
+			}
+		}
+	}
+}
+
 static void UpdateConfetti(omObjData *object)
 {
 	ConfettiWork *work = OM_GET_WORK_PTR(object, ConfettiWork);
@@ -1930,31 +1946,6 @@ static void DrawConfetti(ModelData *model, Mtx matrix)
 			Hu3DModelTPLvlSet(BoardModelIDGet(work->gfx_mdl), a);
 			Hu3DModelAmbSet(BoardModelIDGet(work->gfx_mdl), r, g, b);
 			Hu3DModelObjDraw(BoardModelIDGet(work->gfx_mdl), "grid2", result);
-		}
-	}
-}
-
-void BoardConfettiKill(void)
-{
-	if(confettiObj) {
-		OM_GET_WORK_PTR(confettiObj, ConfettiWork)->kill = 1;
-	}
-}
-
-void BoardConfettiStop(void)
-{
-	if(confettiObj) {
-		s32 i;
-		ConfettiParticle *particle;
-		ConfettiWork *work = OM_GET_WORK_PTR(confettiObj, ConfettiWork);
-		work->paused = 1;
-		particle = work->data;
-		for(i=0; i<work->count; i++, particle++) {
-			if(particle->time != -1) { 
-				if(particle->time > 16) {
-					particle->time = 16;
-				}
-			}
 		}
 	}
 }
@@ -2112,7 +2103,7 @@ static void UpdateLast5Gfx(omObjData *object)
 	}
 }
 
-void BoardLast5GfxShowSet(s32 visible)
+void BoardLast5GfxShowSet(s32 show)
 {
 	s32 i;
 	Last5GfxWork *work;
@@ -2122,13 +2113,112 @@ void BoardLast5GfxShowSet(s32 visible)
 	
 	work = OM_GET_WORK_PTR(last5GfxObj, Last5GfxWork);
 	for(i=0; i<3; i++) {
-		if(visible) {
+		if(show) {
 			HuSprAttrReset(work->group, i, SPRITE_ATTR_HIDDEN);
 		} else {
 			HuSprAttrSet(work->group, i, SPRITE_ATTR_HIDDEN);
 		}
 		if(work->is_last) {
 			HuSprAttrSet(work->group, 1, SPRITE_ATTR_HIDDEN);
+		}
+	}
+}
+
+static s32 tauntActiveFXTbl[4] = { -1, -1, -1, -1 };
+static s32 tauntFXTbl[8] = {
+	294,
+	358,
+	422,
+	486,
+	550,
+	614,
+	678,
+	742
+};
+
+typedef struct taunt_work {
+	u8 kill : 1;
+} TauntWork;
+
+static void TauntUpdate(omObjData *object);
+
+void BoardTauntInit(void)
+{
+	int i;
+	tauntObj = omAddObjEx(boardObjMan, 32258, 0, 0, -1, TauntUpdate);
+	for(i=0; i<4; i++) {
+		tauntActiveFXTbl[i] = -1;
+	}
+	_SetFlag(FLAG_ID_MAKE(1, 14));
+}
+
+void BoardTauntKill(void)
+{
+	TauntWork *work;
+	if(!tauntObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(tauntObj, TauntWork);
+	work->kill = 1;
+	_SetFlag(FLAG_ID_MAKE(1, 14));
+}
+
+static void TauntUpdate(omObjData *object)
+{
+	int i;
+	s32 port;
+	s32 character;
+	TauntWork *work;
+	work = OM_GET_WORK_PTR(object, TauntWork);
+	if(work->kill || BoardIsKill()) {
+		for(i=0; i<4; i++) {
+			if(tauntActiveFXTbl[i] >= 0) {
+				HuAudFXStop(tauntActiveFXTbl[i]);
+				tauntActiveFXTbl[i] = -1;
+			}
+		}
+		tauntObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	for(i=0; i<4; i++) {
+		if(tauntActiveFXTbl[i] >= 0 && HuAudFXStatusGet(tauntActiveFXTbl[i]) == 0) {
+			tauntActiveFXTbl[i] = -1;
+		}
+	}
+	if(BoardPauseActiveCheck()) {
+		return;
+	}
+	if(_CheckFlag(FLAG_ID_MAKE(1, 14))) {
+		return;
+	}
+	if(WipeStatGet() != 0) {
+		return;
+	}
+	if(GWSystem.player_curr == -1) {
+		return;
+	}
+	for(i=0; i<4; i++) {
+		
+		if(i == GWSystem.player_curr || GWPlayer[i].com) {
+			continue;
+		}
+		port = GWPlayer[i].port & 0x3;
+		character = GWPlayer[i].character & 0x7;
+		if(tauntActiveFXTbl[port] >= 0) {
+			UnkMsmStruct_01 param;
+			float vol, pan;
+			vol = (64.0f*(HuPadSubStkX[port]/59.0f))+64.0f;
+			pan = 8191.0f*(HuPadSubStkY[port]/59.0f);
+			memset(&param, 0, sizeof(UnkMsmStruct_01));
+			param.unk00 = 6;
+			OSf32tos8(&vol, &param.unk05);
+			OSf32tos16(&pan, &param.unk06);
+			msmSeSetParam(tauntActiveFXTbl[port], &param);
+		} else {
+			if(HuPadBtnDown[port] & PAD_TRIGGER_L) {
+				tauntActiveFXTbl[port] = HuAudFXPlay(tauntFXTbl[character]);
+			}
 		}
 	}
 }

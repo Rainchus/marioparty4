@@ -28,7 +28,7 @@ s32 BoardVecDAngleCalcRange(f32*, f32, f32);
 s32 BoardPlayerMotBlendCheck(s32);
 void BoardPlayerMotBlendSet(s32, s32, s32);
 f32 BoardPlayerRotYGet(s32);
-void BoardConfettiCreate(Point3d*, s32, f32);
+void BoardConfettiCreate(Point3d*, s16, f32);
 double atan2(double y, double x);
 void omVibrate(s16, s16, s16, s16);
 f32 BoardModelMotionTimeGet(s16);
