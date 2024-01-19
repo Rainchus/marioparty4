@@ -93,17 +93,6 @@ static s32 ExecTurnStart(void);
 static void CreateBoard(void);
 static void DestroyBoard(void);
 
-
-static inline int GWMGTypeGet()
-{
-	return GWSystem.mg_type;
-}
-
-static inline int GWMessSpeedGet()
-{
-	return GWSystem.mess_speed;
-}
-
 #define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
 
 void BoardCommonInit(BoardFunc create, BoardFunc destroy)

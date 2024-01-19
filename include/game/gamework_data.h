@@ -152,4 +152,14 @@ static inline s32 GWLanguageGet(void)
 	return GWGameStat.language;
 }
 
+static inline s32 GWMGTypeGet()
+{
+	return GWSystem.mg_type;
+}
+
+static inline s32 GWMessSpeedGet()
+{
+	return GWSystem.mess_speed;
+}
+
 #endif
