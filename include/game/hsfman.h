@@ -3,6 +3,8 @@
 
 #include "game/hsfanim.h"
 #include "game/hsfformat.h"
+#include "game/memory.h"
+#include "game/data.h"
 
 #define Hu3DModelCreateFile(data_id) (Hu3DModelCreate(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 

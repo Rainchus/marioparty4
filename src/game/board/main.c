@@ -686,7 +686,7 @@ static void CreateBoard(void)
 	BoardBooHouseCreate();
 	BoardCameraInit();
 	BoardStatusCreate();
-	CharModelKillIndex(-1);
+	CharModelDataClose(-1);
 	BoardPlayerInit();
 	if(GWSystem.last5_effect == 2) {
 		BoardSpaceTypeForce(2, 3);
