@@ -995,7 +995,7 @@ config.libs = [
             Object(Matching, "REL/w03Dll/statue.c"),
             Object(NonMatching, "REL/w03Dll/condor.c"),
             Object(NonMatching, "REL/w03Dll/river.c"),
-            Object(NonMatching, "REL/w03Dll/smoke.c"),
+            Object(Matching, "REL/w03Dll/smoke.c"),
             Object(NonMatching, "REL/w03Dll/mg_coin.c"),
             Object(NonMatching, "REL/w03Dll/mg_item.c"),
         }
