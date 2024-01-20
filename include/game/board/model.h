@@ -36,13 +36,23 @@ s32 BoardModelExistDupe(s16 model, s32 arg1);
 s32 fn_8006DDE8(s16 model, float arg1);
 s32 BoardModelMotionStart(s16 model, s32 slot, u32 attr);
 s32 BoardModelMotionSpeedSet(s16 model, float speed);
-void BoardModelPosSet(s16 model, float x, float y, float z);
-void BoardModelPosSetV(s16 model, Vec *pos);
-void BoardModelRotSet(s16 model, float x, float y, float z);
-void BoardModelRotSetV(s16 model, Vec *rot);
-void BoardModelScaleSet(s16 model, float x, float y, float z);
-void BoardModelScaleSetV(s16 model, Vec *scale);
-void BoardModelVisibilitySet(s16 model, s32 flag);
-
+s32 BoardModelPosSet(s16 model, float x, float y, float z);
+s32 BoardModelPosSetV(s16 model, Vec *pos);
+s32 BoardModelRotSet(s16 model, float x, float y, float z);
+s32 BoardModelRotSetV(s16 model, Vec *rot);
+s32 BoardModelScaleSet(s16 model, float x, float y, float z);
+s32 BoardModelScaleSetV(s16 model, Vec *scale);
+s32 BoardModelPosGet(s16 model, Vec *dst);
+s32 BoardModelRotGet(s16 model, Vec *dst);
+s32 BoardModelScaleGet(s16 model, Vec *dst);
+s32 BoardModelVisibilitySet(s16 model, s32 flag);
+s32 BoardModelVisibilityGet(s16 model);
+s32 BoardModelCameraSet(s16 model, u16 camera);
+s32 BoardModelLayerSet(s16 model, u8 layer);
+s32 BoardModelLayerGet(s16 model);
+void BoardModelLayerSetAll(s32 layer);
+s32 BoardModelHookSet(s16 model, char *name, s16 hook);
+s32 BoardModelHookReset(s16 model);
+s32 BoardModelHookObjReset(s16 model, char *name);
 
 #endif

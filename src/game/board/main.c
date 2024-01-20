@@ -1487,7 +1487,7 @@ s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist)
 	}
 }
 
-void BoardVecDAngleCalcVec(Vec *vec1)
+void BoardDAngleCalcVec(Vec *vec1)
 {
 	int i;
 	float *data = (float *)(&vec1->x);
@@ -1502,7 +1502,7 @@ void BoardVecDAngleCalcVec(Vec *vec1)
 	}
 }
 
-float BoardVecDAngleCalc(float value)
+float BoardDAngleCalc(float value)
 {
 	while(value > 180.0f) {
 		value -= 360.0f;
@@ -1513,7 +1513,7 @@ float BoardVecDAngleCalc(float value)
 	return value;
 }
 
-s32 BoardVecDAngleCalcRange(float *value, float min, float range)
+s32 BoardDAngleCalcRange(float *value, float min, float range)
 {
 	float diff = min-(*value);
 	if(diff >= 180.0f) {
@@ -1525,17 +1525,17 @@ s32 BoardVecDAngleCalcRange(float *value, float min, float range)
 	if(min > *value) {
 		*value += range;
 		if(*value >= min) {
-			*value = BoardVecDAngleCalc(min);
+			*value = BoardDAngleCalc(min);
 			return 1;
 		}
 	} else {
 		*value -= range;
 		if(*value <= min) {
-			*value = BoardVecDAngleCalc(min);
+			*value = BoardDAngleCalc(min);
 			return 1;
 		}
 	}
-	*value = BoardVecDAngleCalc(*value);
+	*value = BoardDAngleCalc(*value);
 	return 0;
 }
 

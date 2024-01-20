@@ -112,8 +112,8 @@ void Hu3DMotionSet(s16 arg0, s16 arg1) {
     Hu3DData[arg0].unk_0C = -1;
     Hu3DData[arg0].unk_08 = arg1;
     Hu3DData[arg0].unk_64 = 0.0f;
-    Hu3DData[arg0].unk_68.y = 0.0f;
-    Hu3DData[arg0].unk_68.z = Hu3DMotionMaxTimeGet(arg0);
+    Hu3DData[arg0].unk_6C = 0.0f;
+    Hu3DData[arg0].unk_70 = Hu3DMotionMaxTimeGet(arg0);
 }
 
 void Hu3DMotionOverlaySet(s16 arg0, s16 arg1) {
@@ -148,9 +148,9 @@ void Hu3DMotionShiftSet(s16 arg0, s16 arg1, float arg2, float arg3, u32 arg4) {
     if (temp_r31->unk_0C != -1) {
         temp_r31->unk_08 = temp_r31->unk_0C;
         temp_r31->unk_64 = temp_r31->unk_84;
-        temp_r31->unk_68.x = temp_r31->unk_88;
-        temp_r31->unk_68.y = temp_r31->unk_8C;
-        temp_r31->unk_68.z = temp_r31->unk_90;
+        temp_r31->unk_68 = temp_r31->unk_88;
+        temp_r31->unk_6C = temp_r31->unk_8C;
+        temp_r31->unk_70 = temp_r31->unk_90;
         if (arg4 & 0x40000008) {
             var_r30 |= 0x40000000 | 1;
         }
@@ -373,8 +373,8 @@ float Hu3DMotionMotionMaxTimeGet(s16 arg0) {
 void Hu3DMotionStartEndSet(s16 arg0, float arg1, float arg2) {
     ModelData *temp_r31 = &Hu3DData[arg0];
 
-    temp_r31->unk_68.y = arg1;
-    temp_r31->unk_68.z = arg2;
+    temp_r31->unk_6C = arg1;
+    temp_r31->unk_70 = arg2;
 }
 
 s32 Hu3DMotionEndCheck(s16 arg0) {
@@ -388,7 +388,7 @@ s32 Hu3DMotionEndCheck(s16 arg0) {
 void Hu3DMotionSpeedSet(s16 arg0, float arg1) {
     ModelData *temp_r31 = &Hu3DData[arg0];
 
-    temp_r31->unk_68.x = arg1;
+    temp_r31->unk_68 = arg1;
 }
 
 void Hu3DMotionShiftSpeedSet(s16 arg0, float arg1) {
@@ -482,20 +482,20 @@ void Hu3DMotionNext(s16 arg0) {
         temp_r27 = &Hu3DMotion[temp_r31->unk_08];
         if (!(temp_r28 & 0x40000002)) {
             if (!(temp_r28 & 0x40000004)) {
-                temp_r31->unk_64 += temp_r31->unk_68.x * minimumVcountf;
+                temp_r31->unk_64 += temp_r31->unk_68 * minimumVcountf;
             } else {
-                temp_r31->unk_64 -= temp_r31->unk_68.x * minimumVcountf;
+                temp_r31->unk_64 -= temp_r31->unk_68 * minimumVcountf;
             }
             if (temp_r28 & 0x40000001) {
-                if (temp_r31->unk_64 < temp_r31->unk_68.y) {
-                    temp_r31->unk_64 = temp_r31->unk_68.z - (temp_r31->unk_68.y - temp_r31->unk_64);
-                } else if (temp_r31->unk_64 >= temp_r31->unk_68.z) {
-                    temp_r31->unk_64 = temp_r31->unk_68.y + (temp_r31->unk_64 - temp_r31->unk_68.z);
+                if (temp_r31->unk_64 < temp_r31->unk_6C) {
+                    temp_r31->unk_64 = temp_r31->unk_70 - (temp_r31->unk_6C - temp_r31->unk_64);
+                } else if (temp_r31->unk_64 >= temp_r31->unk_70) {
+                    temp_r31->unk_64 = temp_r31->unk_6C + (temp_r31->unk_64 - temp_r31->unk_70);
                 }
             } else if (temp_r31->unk_64 < 0.0f) {
                 temp_r31->unk_64 = 0.0f;
-            } else if (temp_r31->unk_64 >= temp_r31->unk_68.z) {
-                temp_r31->unk_64 = temp_r31->unk_68.z;
+            } else if (temp_r31->unk_64 >= temp_r31->unk_70) {
+                temp_r31->unk_64 = temp_r31->unk_70;
             }
         }
     }
@@ -526,9 +526,9 @@ void Hu3DMotionNext(s16 arg0) {
         if (temp_r31->unk_7C >= temp_r31->unk_80) {
             temp_r31->unk_08 = temp_r31->unk_0C;
             temp_r31->unk_64 = temp_r31->unk_84;
-            temp_r31->unk_68.x = temp_r31->unk_88;
-            temp_r31->unk_68.y = temp_r31->unk_8C;
-            temp_r31->unk_68.z = temp_r31->unk_90;
+            temp_r31->unk_68 = temp_r31->unk_88;
+            temp_r31->unk_6C = temp_r31->unk_8C;
+            temp_r31->unk_70 = temp_r31->unk_90;
             temp_r31->unk_0C = -1;
             temp_r28 = 0;
             if (temp_r31->motion_attr & 0x40000008) {
