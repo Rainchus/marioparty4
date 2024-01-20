@@ -37,7 +37,7 @@ extern const VoidFunc _dtors[];
 f32 BoardModelMotionTimeGet(s16);
 s16 BoardModelCreate(s32, void*, s32);
 void BoardModelKill(s16);
-void BoardModelMotionTimeRangeSet(s16, s32, s32);
+void BoardModelMotionStartEndSet(s16, s32, s32);
 void Hu3DFogSet(f32, f32, u8, u8, u8);
 void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6);
 u8 WipeStatGet(void);
@@ -194,9 +194,9 @@ void BoardCreate(void) {
         var_f31 = lbl_1_data_1EC.unk_04;
         fn_1_63F4(1);
     }
-    BoardModelMotionTimeRangeSet(lbl_1_bss_C[0], var_f30, var_f31);
+    BoardModelMotionStartEndSet(lbl_1_bss_C[0], var_f30, var_f31);
     BoardModelMotionStart(lbl_1_bss_C[2], 0, 0x40000001);
-    BoardModelMotionTimeRangeSet(lbl_1_bss_C[2], 1, 0x64);
+    BoardModelMotionStartEndSet(lbl_1_bss_C[2], 1, 0x64);
     fn_1_785C();
     if (lbl_1_bss_0->unk2 != 0) {
         for (i = 0; i < 4; i++) {
@@ -327,7 +327,7 @@ void fn_1_B5C(s32 arg0) {
     }
     BoardModelAttrSet(lbl_1_bss_C[0], 0x40000001);
     BoardModelMotionTimeSet(lbl_1_bss_C[0], var_f31);
-    BoardModelMotionTimeRangeSet(lbl_1_bss_C[0], (s32) var_f31, (s32) var_f28);
+    BoardModelMotionStartEndSet(lbl_1_bss_C[0], (s32) var_f31, (s32) var_f28);
 }
 
 void fn_1_CF4(void) {

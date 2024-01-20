@@ -66,8 +66,8 @@ extern void BoardViewMapExec(s32);
 extern s32 fn_80085CC8(s32);
 extern void fn_80085EB4(void);
 //// #include "game/chrman.h"
-extern void CharModelKillIndex(s16);
-extern void CharModelSetStepType(s16, s32);
+extern void CharModelDataClose(s16);
+extern void CharModelStepTypeSet(s16, s32);
 ////
 
 s32 BoardRollTypeGet(void);
@@ -317,7 +317,7 @@ void BoardPlayerModelInit(void) {
         GWPlayer[var_r31].diff = GWPlayerCfg[var_r31].diff;
         GWPlayerCfg[var_r31].diff = GWPlayerCfg[var_r31].diff;
         temp_r27->space_prev = -1;
-        CharModelKillIndex(GWPlayer[var_r31].character);
+        CharModelDataClose(GWPlayer[var_r31].character);
     }
     CharModelLayerSetAll(2);
 }
@@ -658,11 +658,11 @@ void BoardPlayerSizeSet(s32 arg0, s32 arg1) {
     temp_r27 = BoardPlayerGet(arg0);
     temp_r27->size = arg1;
     if (arg1 == 2) {
-        CharModelSetStepType(GWPlayer[arg0].character, 4);
+        CharModelStepTypeSet(GWPlayer[arg0].character, 4);
     } else if (arg1 == 1) {
-        CharModelSetStepType(GWPlayer[arg0].character, 5);
+        CharModelStepTypeSet(GWPlayer[arg0].character, 5);
     } else {
-        CharModelSetStepType(GWPlayer[arg0].character, 0);
+        CharModelStepTypeSet(GWPlayer[arg0].character, 0);
     }
     BoardModelScaleSetV(BoardPlayerModelGet(arg0), &temp_r4[arg1]);
 }
