@@ -607,7 +607,7 @@ void fn_1_2B44(void) {
     f32 temp_f27 = 0.0f;
     f32 temp_f29 = 480.0f;
 
-    sp18.a = __OSf32tou8(lbl_1_bss_30);
+    OSf32tou8(&lbl_1_bss_30, &sp18.a);
     GXInvalidateTexAll();
     GXLoadTexObj(&lbl_1_bss_48, GX_TEXMAP0);
     C_MTXOrtho(sp50, temp_f27, temp_f29, temp_f28, temp_f30, 0.0f, 10.0f);

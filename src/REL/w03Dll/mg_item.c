@@ -7,7 +7,7 @@
 #include "game/board/space.h"
 #include "game/object.h"
 #include "game/board/player.h"
-// #include "math.h"
+#include "math.h"
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 #include "dolphin/os/OSFastCast.h"
@@ -789,8 +789,7 @@ void fn_1_B748(omObjData* arg0, someBits2* arg1) {
     }
 
     if (arg1->unk1 < 90) {
-        f32 temp;
-        temp_f0 = __OSu8tof32((u8*)&arg1->unk1);
+        OSu8tof32((u8*)&arg1->unk1, &temp_f0);
         BoardModelPosGet(temp_r29, &sp8);
         sp8.y += arg0->trans.y;
         BoardModelPosSetV(temp_r29, &sp8);
