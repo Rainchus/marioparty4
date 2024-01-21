@@ -16,7 +16,7 @@ extern void BoardStatusHammerShowSet(s32, s32);
 extern void BoardYourTurnExec(s32);
 extern s32 BoardItemUseExec(s32);
 //// #include "game/board/main.h"
-extern f32 BoardVecCalcDAngle(f32);
+extern f32 BoardDAngleCalc(f32);
 //// #include "game/board/model.h"
 extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
@@ -24,7 +24,6 @@ extern void BoardModelExistDupe(s16, s32);
 extern void BoardModelCameraSet(s16, u16);
 extern void BoardItemStatusKill(s32);
 extern void BoardModelAmbSet(s16, f32, f32, f32);
-extern void BoardModelMtxSet(s16, Mtx);
 extern void BoardModelPosSetV(s16, Vec*);
 extern void BoardModelPosSet(s16, f32, f32, f32);
 extern s32 BoardModelPosGet(s16, Vec*);
@@ -408,7 +407,7 @@ void BoardPlayerAmbSet(s32 arg0, f32 arg8, f32 arg9, f32 argA) {
     BoardModelAmbSet(BoardPlayerModelGet(arg0), arg8, arg9, argA);
 }
 
-void BoardPlayerMtxSet(s32 arg0, Mtx arg1) {
+void BoardPlayerMtxSet(s32 arg0, Mtx *arg1) {
     BoardModelMtxSet(BoardPlayerModelGet(arg0), arg1);
 }
 
@@ -1150,11 +1149,11 @@ static void RestoreJunction(f32 arg8, s32 arg0) {
     }
 }
 
-static inline f32 BoardAbsAngle(f32 startA, f32 endA) {
-    if (BoardVecCalcDAngle(startA - endA) < 0.0f) {
-        return -BoardVecCalcDAngle(startA - endA);
+static inline f32 BoardDAngleAbs(f32 startA, f32 endA) {
+    if (BoardDAngleCalc(startA - endA) < 0.0f) {
+        return -BoardDAngleCalc(startA - endA);
     } else {
-        return BoardVecCalcDAngle(startA - endA);
+        return BoardDAngleCalc(startA - endA);
     }
 }
 
@@ -1166,12 +1165,12 @@ static s32 GetDefaultDirection(f32 arg0, f32* arg1, s32 arg2) {
     s32 var_r30;
     s32 var_r31;
 
-    temp_f30 = BoardVecCalcDAngle(arg0);
+    temp_f30 = BoardDAngleCalc(arg0);
     var_f28 = 999.0f;
     
     for (var_r31 = 0, var_r30 = var_r31; var_r31 < arg2; var_r31++) {
-        temp_f1 = BoardVecCalcDAngle(arg1[var_r31]);
-        var_f27 = BoardAbsAngle(temp_f1, temp_f30);
+        temp_f1 = BoardDAngleCalc(arg1[var_r31]);
+        var_f27 = BoardDAngleAbs(temp_f1, temp_f30);
         
         if (var_f27 < var_f28) {
             var_f28 = var_f27;
