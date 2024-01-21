@@ -1,5 +1,18 @@
 #include "game/hsfman.h"
+#include "game/ClusterExec.h"
+#include "game/data.h"
+#include "game/EnvelopeExec.h"
+#include "game/hsfdraw.h"
 #include "game/hsfload.h"
+#include "game/hsfmotion.h"
+#include "game/init.h"
+#include "game/memory.h"
+#include "game/perf.h"
+#include "game/ShapeExec.h"
+#include "game/sprite.h"
+#include "dolphin/gx/GXVert.h"
+
+#include "math.h"
 
 ModelData Hu3DData[0x200];
 CameraData Hu3DCamera[0x10];
@@ -335,7 +348,7 @@ s16 Hu3DModelCreate(void *arg0) {
     var_r31->motion_attr = 0;
     var_r31->unk_02 = 0;
     MakeDisplayList(var_r30, (HsfData* ) var_r31->unk_48);
-    var_r31->unk_68.x = 1.0f;
+    var_r31->unk_68 = 1.0f;
     for (i = 0; i < 4; i++) {
         var_r31->unk_10[i] = -1;
     }
@@ -356,8 +369,8 @@ s16 Hu3DModelCreate(void *arg0) {
         if (var_r31->hsfData->shapeCnt != 0) {
             Hu3DMotionShapeSet(var_r30, var_r31->unk_08);
         }
-        var_r31->unk_68.y = 0.0f;
-        var_r31->unk_68.z = Hu3DMotionMaxTimeGet(var_r30);
+        var_r31->unk_6C = 0.0f;
+        var_r31->unk_70 = Hu3DMotionMaxTimeGet(var_r30);
     } else {
         var_r31->unk_20 = var_r31->unk_08 = -1;
     }
@@ -426,8 +439,8 @@ s16 Hu3DModelLink(s16 arg0) {
     var_r31->scale.x = var_r31->scale.y = var_r31->scale.z = 1.0f;
     var_r31->unk_08 = temp_r30->unk_08;
     if (var_r31->unk_08 != -1) {
-        var_r31->unk_68.y = 0.0f;
-        var_r31->unk_68.z = Hu3DMotionMaxTimeGet(var_r28);
+        var_r31->unk_6C = 0.0f;
+        var_r31->unk_70 = Hu3DMotionMaxTimeGet(var_r28);
     }
     var_r31->unk_0C = var_r31->unk_0A = var_r31->unk_0E = -1;
     for (i = 0; i < 4; i++) {
@@ -438,7 +451,7 @@ s16 Hu3DModelLink(s16 arg0) {
         }
     }
     var_r31->unk_64 = temp_r30->unk_64;
-    var_r31->unk_68.x = temp_r30->unk_68.x;
+    var_r31->unk_68 = temp_r30->unk_68;
     var_r31->unk_20 = temp_r30->unk_20;
     var_r31->camera = -1;
     var_r31->layer = 0;
@@ -458,7 +471,7 @@ s16 Hu3DModelLink(s16 arg0) {
     return var_r28;
 }
 
-s16 Hu3DHookFuncCreate(HsfData* arg0) {
+s16 Hu3DHookFuncCreate(ModelHookFunc hook) {
     HsfData* sp8;
     ModelData* var_r31;
     s16 var_r29;
@@ -473,8 +486,8 @@ s16 Hu3DHookFuncCreate(HsfData* arg0) {
     if (var_r29 == 0x200) {
         return -1;
     }
-    var_r31->hsfData = arg0;
-    var_r31->unk_48 = (HsfData *)(var_r29 + 0x2710);
+    var_r31->hook = hook;
+    var_r31->unk_48 = (HsfData *)(var_r29 + 10000);
     var_r31->attr = 0x10;
     var_r31->motion_attr = 0;
     var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = 0.0f;
@@ -486,7 +499,7 @@ s16 Hu3DHookFuncCreate(HsfData* arg0) {
         var_r31->unk_10[i] = -1;
     }
     var_r31->unk_64 = 0.0f;
-    var_r31->unk_68.x = 1.0f;
+    var_r31->unk_68 = 1.0f;
     var_r31->unk_20 = -1;
     var_r31->camera = -1;
     var_r31->layer = 0;
@@ -628,11 +641,11 @@ void Hu3DModelPosSet(s16 index, f32 x, f32 y, f32 z) {
     temp_r31->pos.z = z;
 }
 
-void Hu3DModelPosSetV(s16 arg0, Vec arg1) {
+void Hu3DModelPosSetV(s16 arg0, Vec *arg1) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    temp_r31->pos = arg1;
+    temp_r31->pos = *arg1;
 }
 
 void Hu3DModelRotSet(s16 index, f32 x, f32 y, f32 z) {
@@ -644,11 +657,11 @@ void Hu3DModelRotSet(s16 index, f32 x, f32 y, f32 z) {
     temp_r31->rot.z = z;
 }
 
-void Hu3DModelRotSetV(s16 arg0, Vec arg1) {
+void Hu3DModelRotSetV(s16 arg0, Vec *arg1) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    temp_r31->rot = arg1;
+    temp_r31->rot = *arg1;
 }
 
 void Hu3DModelScaleSet(s16 index, f32 x, f32 y, f32 z) {
@@ -660,11 +673,11 @@ void Hu3DModelScaleSet(s16 index, f32 x, f32 y, f32 z) {
     temp_r31->scale.z = z;
 }
 
-void Hu3DModelScaleSetV(s16 arg0, Vec arg1) {
+void Hu3DModelScaleSetV(s16 arg0, Vec *arg1) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    temp_r31->scale = arg1;
+    temp_r31->scale = *arg1;
 }
 
 void Hu3DModelAttrSet(s16 arg0, u32 arg1) {
@@ -1289,7 +1302,7 @@ s16 Hu3DModelCameraCreate(s16 arg0, u16 arg1) {
     ModelData* temp_r31;
     s16 temp_r3;
 
-    temp_r3 = Hu3DHookFuncCreate((HsfData* )-1);
+    temp_r3 = Hu3DHookFuncCreate((ModelHookFunc)-1);
     temp_r31 = &Hu3DData[(s16) temp_r3];
     temp_r31->attr &= ~0x10;
     temp_r31->attr |= 0x10000 | 0x2000;

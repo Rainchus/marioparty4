@@ -4,9 +4,6 @@
 
 #define PROCESS_MEMORY_RETADDR 0xA5A5A5A5
 
-extern int gcsetjmp(jmp_buf *jump);
-extern void gclongjmp(jmp_buf *jump, int status);
-
 #define EXEC_NORMAL 0
 #define EXEC_SLEEP 1
 #define EXEC_CHILDWATCH 2

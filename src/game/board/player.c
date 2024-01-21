@@ -41,7 +41,7 @@ extern void BoardModelMotionCreate(s16, s32);
 extern void BoardModelMotionKill(s16, s32);
 extern s32 BoardModelMotionEndCheck(s16);
 extern s32 BoardModelMotionStart(s16, s32, s32);
-extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, s32);
+extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, u32);
 extern void BoardModelMotionSpeedSet(s16, f32);
 extern void BoardModelMotionTimeSet(s16, f32);
 extern f32 BoardModelMotionTimeGet(s16);
@@ -52,16 +52,16 @@ extern void BoardModelAttrReset(s16, s32);
 //// #include "game/board/tutorial.h"
 extern BoardTutorialHookExec(s16, s32);
 //// #include "game/board/com.h"
-extern void fn_8007185C(s32, s32);
+extern void BoardComUseItemSet(s32, s32);
 //// #include "game/board/overhead.h"
-extern void fn_800729A4(s32);
-extern void fn_80072DA8(s32);
-//// #include "game/board/dice_roll.h"
+extern void BoardViewOverheadExec(s32);
+extern void BoardViewMapExec(s32);
+//// #include "game/board/roll.h"
 extern s32 fn_80085CC8(s32);
 extern void fn_80085EB4(void);
 //// #include "game/chrman.h"
-extern void CharModelKillIndex(s16);
-extern void CharModelSetStepType(s16, s32);
+extern void CharModelDataClose(s16);
+extern void CharModelStepTypeSet(s16, s32);
 ////
 
 static void UpdateJunctionGfx(omObjData*);
@@ -82,7 +82,7 @@ s32 DoDebugMove(s32, s16*);
 s32 DoSparkSpace(s32, s16*);
 s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
-s32 BoardPlayerAnimBlendCheck(s32);
+s32 BoardPlayerMotBlendCheck(s32);
 
 typedef struct bitcopy {
     struct {
@@ -115,7 +115,7 @@ static s16 suitPlayerMdl = -1;
 static s16 suitCurrMot = -1;
 
 static s32 diceJumpObj[4] = {0, 0, 0, 0};
-static s32 animDoneF[4] = {0, 0, 0, 0};
+static s32 motDoneF[4] = {0, 0, 0, 0};
 static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
 char* lbl_8013993C[] = {
     "eye1",
@@ -179,7 +179,7 @@ void BoardPlayerInit(void) {
         
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             GWPlayer[var_r31].space_curr = temp_r30;
-            fn_80062D90(var_r31);
+            BoardPlayerCornerPosSet(var_r31);
             BoardPlayerSizeSet(var_r31, 0);
             GWPlayer[var_r31].color = 0;
             GWPlayer[var_r31].bowser_suit = 0;
@@ -190,7 +190,7 @@ void BoardPlayerInit(void) {
     }
     
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        fn_80062D90(var_r31);
+        BoardPlayerCornerPosSet(var_r31);
         if (BoardPlayerAutoSizeGet(var_r31) != 0) {
             BoardPlayerAutoSizeSet(var_r31, BoardPlayerAutoSizeGet(var_r31));
             BoardStatusHammerShowSet(var_r31, 0);
@@ -227,7 +227,7 @@ void BoardPlayerModelInit(void) {
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         preTurnHook[var_r31] = 0;
         postTurnHook[var_r31] = 0;
-        animDoneF[var_r31] = 0;
+        motDoneF[var_r31] = 0;
         diceJumpObj[var_r31] = 0;
         temp_r22 = &GWPlayer[var_r31];
         temp_r27 = temp_r22;
@@ -266,7 +266,7 @@ void BoardPlayerModelInit(void) {
         GWPlayer[var_r31].diff = GWPlayerCfg[var_r31].diff;
         GWPlayerCfg[var_r31].diff = GWPlayerCfg[var_r31].diff;
         temp_r27->space_prev = -1;
-        CharModelKillIndex(GWPlayer[var_r31].character);
+        CharModelDataClose(GWPlayer[var_r31].character);
     }
     CharModelLayerSetAll(2);
 }
@@ -375,14 +375,14 @@ s32 BoardPlayerItemCount(s32 arg0) {
     return var_r30;
 }
 
-void fn_80062D90(s32 arg0) {
+void BoardPlayerCornerPosSet(s32 arg0) {
     Vec sp8;
 
-    BoardPlayerCurrSpacePosDirGet(arg0, &sp8);
+    BoardPlayerCornerPosGet(arg0, &sp8);
     BoardPlayerPosSetV(arg0, &sp8);
 }
 
-void BoardPlayerCurrSpacePosDirGet(s32 arg0, Point3d* arg1) {
+void BoardPlayerCornerPosGet(s32 arg0, Point3d* arg1) {
     s32 var_r31;
     s32 var_r30;
     s32 var_r29;
@@ -400,7 +400,7 @@ void BoardPlayerCurrSpacePosDirGet(s32 arg0, Point3d* arg1) {
                 var_r29 += 1;
             }
         }
-        BoardSpaceDirPosGet(temp_r28, var_r29, arg1);
+        BoardSpaceCornerPosGet(temp_r28, var_r29, arg1);
     }
 }
 
@@ -531,7 +531,7 @@ void BoardPlayerMotionStart(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void BoardPlayerMotionShiftSet(s32 arg0, s32 arg1, f32 arg8, f32 arg9, s32 arg2) {
+void BoardPlayerMotionShiftSet(s32 arg0, s32 arg1, f32 arg8, f32 arg9, u32 arg2) {
     PlayerState* player;
     s32 temp_r29;
     
@@ -607,11 +607,11 @@ void BoardPlayerSizeSet(s32 arg0, s32 arg1) {
     temp_r27 = BoardPlayerGet(arg0);
     temp_r27->size = arg1;
     if (arg1 == 2) {
-        CharModelSetStepType(GWPlayer[arg0].character, 4);
+        CharModelStepTypeSet(GWPlayer[arg0].character, 4);
     } else if (arg1 == 1) {
-        CharModelSetStepType(GWPlayer[arg0].character, 5);
+        CharModelStepTypeSet(GWPlayer[arg0].character, 5);
     } else {
-        CharModelSetStepType(GWPlayer[arg0].character, 0);
+        CharModelStepTypeSet(GWPlayer[arg0].character, 0);
     }
     BoardModelScaleSetV(BoardPlayerModelGet(arg0), &temp_r4[arg1]);
 }
@@ -682,7 +682,7 @@ void BoardPlayerPostTurnHookSet(s32 arg0, s32 (*arg1)()) {
 
 void BoardPlayerTurnExec(s32 arg0) {
     BoardPauseEnableSet(1);
-    fn_8007185C(arg0, -1);
+    BoardComUseItemSet(arg0, -1);
     GWSystem.field31_bit4 = 0xF;
     _ClearFlag(0x10016);
     _ClearFlag(0x1000E);
@@ -741,11 +741,11 @@ void BoardPlayerTurnRollExec(s32 arg0) {
             break;
         case -3:
             fn_80085EB4();
-            fn_80072DA8(arg0);
+            BoardViewMapExec(arg0);
             break;
         case -4:
             fn_80085EB4();
-            fn_800729A4(arg0);
+            BoardViewOverheadExec(arg0);
             break;
         }
     } while (temp_r30 <= 0);
@@ -918,10 +918,10 @@ void BoardPlayerZoomRestore(s32 arg0) {
         var_r31 = (var_r31 + 1) & 3;
         (void)var_r29; // 
     }
-    BoardSpaceDirPosGet(temp_r27, var_r29, &sp18);
-    BoardPlayerAnimBlendSet(arg0, 0, 0xF);
+    BoardSpaceCornerPosGet(temp_r27, var_r29, &sp18);
+    BoardPlayerMotBlendSet(arg0, 0, 0xF);
     
-    while (BoardPlayerAnimBlendCheck(arg0) == 0) {
+    while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
     BoardRotateDiceNumbers(arg0);

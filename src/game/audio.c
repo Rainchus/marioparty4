@@ -160,7 +160,7 @@ void HuAudFXPanning(s32 arg0, s16 arg1) {
     }
 }
 
-void HuAudFXListnerSet(s32 arg0, s32 arg1, float arg2, float arg3) {
+void HuAudFXListnerSet(Vec* arg0, Vec* arg1, float arg2, float arg3) {
     if (omSysExitReq == 0) {
         HuAudFXListnerSetEX(arg0, arg1,
             arg2 + Snd3DDistOffset,
@@ -171,7 +171,7 @@ void HuAudFXListnerSet(s32 arg0, s32 arg1, float arg2, float arg3) {
     }
 }
 
-void HuAudFXListnerSetEX(s32 arg0, s32 arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6) {
+void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6) {
     UnkMsmStruct_02 sp1C;
 
     if (omSysExitReq == 0) {

@@ -1,5 +1,6 @@
-#include "common.h"
+#include "game/audio.h"
 #include "game/object.h"
+#include "game/gamework_data.h"
 #include "game/printfunc.h"
 #include "game/pad.h"
 #include "game/wipe.h"

@@ -58,8 +58,7 @@ static inline s32 BoardCurrGet()
 
 static inline s32 BoardPartyFlagGet()
 {
-	s32 value = GWSystem.party;
-	return value;
+	return GWSystem.party;
 }
 
 extern BoardCameraData boardCamera;
@@ -73,17 +72,27 @@ typedef void (*BoardFunc)(void);
 typedef void (*BoardLightHook)(void);
 typedef void (*BoardCameraPosCalcFunc)(BoardCameraData *camera);
 
+typedef void (*BoardTurnStartHook)(s32 player, s32 space);
+
+extern BoardTurnStartHook boardTurnStartFunc;
+extern BoardFunc boardTurnFunc;
+extern BoardLightHook boardLightResetHook;
+extern BoardLightHook boardLightSetHook;
+
 void BoardCommonInit(BoardFunc create, BoardFunc destroy);
 void BoardKill(void);
 s32 BoardIsKill(void);
-void BoardPauseEnableSet(s32 value);
-s32 BoardPauseEnableGet();
+void BoardPauseDisableSet(s32 value);
+s32 BoardPauseDisableGet();
 void BoardSaveInit(s32 board);
 void BoardStoryConfigSet(s32 mg_type, s32 diff_story);
 void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_type, s32 max_turn, s32 p1_handicap, s32 p2_handicap, s32 p3_handicap, s32 p4_handicap);
-BOOL BoardTurnNext(void);
+s32 BoardTurnNext(void);
 void BoardNextOvlSet(OverlayID overlay);
 s32 BoardStartCheck(void);
+void BoardLightHookSet(BoardLightHook set, BoardLightHook reset);
+void BoardLightSetExec(void);
+void BoardLightResetExec(void);
 void BoardCameraBackup(void);
 void BoardCameraRestore(void);
 void BoardCameraScissorSet(s32 x, s32 y, s32 w, s32 h);
@@ -117,6 +126,14 @@ s32 BoardCameraCullCheck(Vec *point, float radius);
 s32 BoardCameraMotionIsDone(void);
 void BoardCameraMotionWait(void);
 void BoardCameraInit(void);
+void BoardMGDoneFlagSet(s32 flag);
+s32 BoardMGDoneFlagGet();
+void BoardMGExit(void);
+void BoardMGCreate(s32 arg0);
+void BoardEventFlagSet(void);
+void BoardEventFlagReset(void);
+s32 BoardEventFlagGet(void);
+void BoardMTXCalcLookAt(Mtx dest, Vec *eye, Vec *up, Vec *target);
 float BoardArcSin(float value);
 float BoardArcCos(float value);
 void BoardRandInit(void);
@@ -125,7 +142,21 @@ u32 BoardRandMod(u32 value);
 float BoardRandFloat(void);
 float BoardVecDistXZCalc(Vec *vec1, Vec *vec2);
 s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist);
+void BoardDAngleCalcVec(Vec *vec1);
+float BoardDAngleCalc(float value);
+s32 BoardDAngleCalcRange(float *value, float min, float range);
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
+void BoardFilterFadeOut(s16 len);
+void BoardFilterFadeInit(s16 len, u8 max_alpha);
+s32 BoardFilterFadePauseCheck(void);
+s32 BoardFilterFadeCheck(void);
+void BoardConfettiCreate(Vec *pos, s16 count, float range);
+void BoardConfettiKill(void);
+void BoardConfettiStop(void);
+void BoardLast5GfxInit(void);
+void BoardLast5GfxShowSet(s32 show);
+void BoardTauntInit(void);
+void BoardTauntKill(void);
 s32 BoardDataDirReadAsync(s32 data_num);
 void BoardDataAsyncWait(s32 status);
 

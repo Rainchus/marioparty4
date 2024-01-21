@@ -113,10 +113,15 @@ void BoardDiceDigit2DUpdateEnable(s32);
 void BoardPlayerMoveTo(s32, s16);
 void BoardPlayerZoomRestore(s32);
 void BoardRotateDiceNumbers(s32);
-s32 DoDebugMove(s32, s16*);
 s32 DoSparkSpace(s32, s16*);
-s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
 s32 BoardPlayerAnimBlendCheck(s32);
+void BoardPlayerCoinsSet(s32 player, s32 value);
+s32 BoardPlayerSizeGet(s32 player);
+void BoardPlayerAutoSizeSet(s32 player, s32 value);
+void BoardPlayerMotionStart(s32, s32, s32);
+void BoardPlayerMotionShiftSet(s32 player, s32 arg1, float start, float end, u32 attr);
+void BoardPlayerRotYSet(s32 player, float rot_y);
+void BoardPlayerZoomRestore(s32 player);
 
 #endif

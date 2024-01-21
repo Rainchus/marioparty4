@@ -238,10 +238,12 @@ typedef struct hsf_cluster {
     char *name[2];
     union {
         char *targetName;
-        u32 target;
+        s32 target;
     };
     HsfPart *part;
-    u8 unk10[132];
+    float unk10;
+    float unk14[1]; // unknown array size
+    u8 unk18[124];
     u8 adjusted;
     u8 unk95;
     u16 type;
@@ -269,7 +271,7 @@ typedef struct hsf_object_data {
             HsfVector3f min;
             HsfVector3f max;
             float baseMorph;
-            float *morphWeight[33];
+            float morphWeight[33];
         } mesh;
         struct hsf_object *replica;
     };
@@ -339,9 +341,23 @@ typedef struct hsf_bitmap_keyframe {
 typedef struct hsf_track {
     u8 type;
     u8 start;
-    u16 target;
-    u16 param;
-    u16 channel;
+    union {
+        u16 target;
+        s16 target_s16;
+    };
+    union {
+        s32 unk04;
+        struct {
+            union {
+                s16 param;
+                u16 param_u16;
+            };
+            union {
+                u16 channel;
+                s16 channel_s16;
+            };
+        };
+    };
     u16 curveType;
     u16 numKeyframes;
     union {
@@ -352,7 +368,7 @@ typedef struct hsf_track {
 
 typedef struct hsf_motion {
     char *name;
-    u32 numTracks;
+    s32 numTracks;
     HsfTrack *track;
     float len;
 } HsfMotion;

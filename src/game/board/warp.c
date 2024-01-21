@@ -3,8 +3,8 @@
 #include "game/board/player.h"
 #include "game/wipe.h"
 #include "game/gamework_data.h"
+#include "game/hsfex.h"
 #include "board_unsplit.h"
-#include "unsplit.h"
 #include "math.h"
 
 static void WarpInit(s32);
@@ -15,10 +15,10 @@ static void WarpImpact(s32);
 
 
 extern void omVibrate(s16, s16, s16, s16);
-extern void fn_800816CC(s32, s32);
-extern void fn_80081884(f32);
-extern void fn_8008181C(void);
-extern s32 fn_8008186C(void);
+extern void BoardCharWheelInit(s32, s32);
+extern void BoardCharWheelSpeedSet(f32);
+extern void BoardCharWheelWait(void);
+extern s32 BoardCharWheelResultGet(void);
 extern f32 BoardModelMotionTimeGet(s16);
 extern void BoardModelHookReset(s16);
 extern s32 BoardModelHookSet(s16, char*, s16);
@@ -46,7 +46,7 @@ static s8 warpImpactPlayer[4] = {-1, -1, -1, -1};
 static void WarpProcess(void);
 static void WarpKill(void);
 
-void BoardWarpExec(s32 player, s16 space) {
+void BoardWarpExec(s32 player, s32 space) {
     omVibrate(player, 12, 4, 2);
     warpProcess = HuPrcChildCreate(WarpProcess, 8195, 14336, 0, boardMainProc);
     HuPrcDestructorSet2(warpProcess, WarpKill);
@@ -66,9 +66,9 @@ void WarpProcess(void) {
     HuAudFXPlay(842);
     BoardCameraViewSet(3);
     BoardCameraMotionWait();
-    BoardPlayerAnimBlendSet(curr_player, 0, 15);
+    BoardPlayerMotBlendSet(curr_player, 0, 15);
 
-    while (BoardPlayerAnimBlendCheck(curr_player) == 0) {
+    while (BoardPlayerMotBlendCheck(curr_player) == 0) {
         HuPrcVSleep();
     }
     
@@ -77,10 +77,10 @@ void WarpProcess(void) {
         BoardTutorialHookExec(18, 0);
         boardTutorialData[0] = 0;
     }
-    fn_800816CC(curr_player, 3);
-    fn_80081884(18.0f);
-    fn_8008181C();
-    warpTarget = fn_8008186C();
+    BoardCharWheelInit(curr_player, 3);
+    BoardCharWheelSpeedSet(18.0f);
+    BoardCharWheelWait();
+    warpTarget = BoardCharWheelResultGet();
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
     WarpInit(curr_player);
@@ -232,7 +232,7 @@ static void WarpImpact(s32 player) {
     BoardModelMotionStart(warpImpactMdl, 0, 0x40000001);
     
     for (i = 0; i < warpImpactCnt; i++) {
-        s32 player = warpImpactPlayer[i];
+        s16 player = warpImpactPlayer[i];
         omVibrate(player, 0xC, 4, 2);
         BoardPlayerMotionStart(player, 6, 0x40000001);
     }

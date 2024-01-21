@@ -41,8 +41,8 @@ extern void BoardPlayerMotionEndWait(s32);
 extern void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
 extern void BoardPlayerCoinsAdd(s32, s32);
 extern void BoardRotateDiceNumbers(s32);
-extern void BoardCameraAnimBlendSet(s32, s16, s16);
-extern s32 BoardPlayerAnimBlendCheck(s32);
+extern void BoardCameraMotBlendSet(s32, s16, s16);
+extern s32 BoardPlayerMotBlendCheck(s32);
 
 static omObjData *coinChgObj[4] = {
     NULL,
@@ -64,7 +64,7 @@ static s32 coinDigitMdl[10] = {
 	MAKE_DATA_NUM(DATADIR_BOARD, 21),
 };
 
-void BoardLandBlueExec(s32 player, s16 space) {
+void BoardLandBlueExec(s32 player, s32 space) {
     Vec pos;
     s32 i;
     s8 coin_chg;
@@ -72,8 +72,8 @@ void BoardLandBlueExec(s32 player, s16 space) {
 	
 	
     BoardCameraViewSet(2);
-    BoardPlayerAnimBlendSet(player, 0, 15);
-    while (BoardPlayerAnimBlendCheck(player) == 0) {
+    BoardPlayerMotBlendSet(player, 0, 15);
+    while (BoardPlayerMotBlendCheck(player) == 0) {
         HuPrcVSleep();
     }
     if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
@@ -105,7 +105,7 @@ void BoardLandBlueExec(s32 player, s16 space) {
     BoardRotateDiceNumbers(player);
 }
 
-void BoardLandRedExec(s32 player, s16 space) {
+void BoardLandRedExec(s32 player, s32 space) {
     Vec pos;
     s32 i;
     s8 coin_chg;
@@ -113,8 +113,8 @@ void BoardLandRedExec(s32 player, s16 space) {
 
     BoardCameraViewSet(2);
     omVibrate(player, 12, 6, 6);
-    BoardPlayerAnimBlendSet(player, 0, 15);
-    while (BoardPlayerAnimBlendCheck(player) == 0) {
+    BoardPlayerMotBlendSet(player, 0, 15);
+    while (BoardPlayerMotBlendCheck(player) == 0) {
         HuPrcVSleep();
     }
     if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
@@ -162,7 +162,7 @@ s8 BoardCoinChgCreate(Vec *pos, s8 value) {
     
     obj = omAddObjEx(boardObjMan, 266, 0, 0, -1, &UpdateCoinChg);
     coinChgObj[i] = obj;
-    coin_chg = (coinChg *)obj->work;
+    coin_chg = OM_GET_WORK_PTR(obj, coinChg);
     coin_chg->hide = 0;
     coin_chg->update = 0;
     coin_chg->minus = (value < 0) ? 1 : 0;
@@ -189,7 +189,7 @@ s32 BoardCoinChgExist(s32 index) {
         return index;
     }
     if (coinChgObj[index - 1] != 0) {
-        coin_chg = (coinChg *)coinChgObj[index - 1]->work;
+        coin_chg = OM_GET_WORK_PTR(coinChgObj[index - 1], coinChg);
         return 0;
     }
     return 1;
@@ -201,7 +201,7 @@ void BoardCoinChgHide(s32 index) {
         return;
     }
     if (coinChgObj[index - 1] != 0) {
-        ((coinChg *)coinChgObj[index - 1]->work)->hide = 1;
+        OM_GET_WORK_PTR(coinChgObj[index - 1], coinChg)->hide = 1;
     }
 }
 
@@ -251,7 +251,7 @@ static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
 static void UpdateCoinChg(omObjData *object) {
     coinChg *coin_chg;
 
-    coin_chg = (coinChg *)object->work;
+    coin_chg = OM_GET_WORK_PTR(object, coinChg);
     if ((coin_chg->hide != 0) || (BoardIsKill() != 0)) {
         if (coin_chg->coin_model != -1) {
             BoardModelKill(coin_chg->coin_model);

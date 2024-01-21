@@ -46,7 +46,7 @@ typedef struct system_state {
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
 /* 0x36 */ s16 mg_next_extra;
-/* 0x38 */ s16 unk_38;
+/* 0x38 */ u16 unk_38;
 /* 0x3A */ u8 flag[3][16];
 /* 0x6A */ u8 unk_6A[0x72];
 } SystemState; //8018fcf8, sizeof 0xDC
@@ -105,7 +105,7 @@ typedef struct player_state {
 
 typedef struct game_stat {
 /* 0x0 */ s16 unk_00;
-/* 0x2 */ s8 language;
+/* 0x2 */ u8 language;
 /* 0x3 */ u8 sound_mode;
 /* 0x4 */ s8 rumble;
 /* 0x6 */ u16 total_stars;
@@ -146,5 +146,20 @@ extern PlayerConfig GWPlayerCfg[4];
 extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
 extern GameStat GWGameStat;
+
+static inline s32 GWLanguageGet(void)
+{
+	return GWGameStat.language;
+}
+
+static inline s32 GWMGTypeGet()
+{
+	return GWSystem.mg_type;
+}
+
+static inline s32 GWMessSpeedGet()
+{
+	return GWSystem.mess_speed;
+}
 
 #endif

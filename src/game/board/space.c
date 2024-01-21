@@ -1,18 +1,39 @@
 #include "game/gamework_data.h"
 #include "game/flag.h"
 #include "game/board/main.h"
+#include "game/board/player.h"
 #include "game/board/space.h"
+#include "game/hsfman.h"
+#include "game/data.h"
+#include "game/sprite.h"
 
 #include "math.h"
+#include "string.h"
+
+extern void omVibrate(s16, s16, s16, s16);
+
 
 extern s16 BoardStarHostMdlGet(void);
 extern void BoardModelPosSetV(s16 model, Vec *pos);
+extern s16 BoardModelCreate(s32 file, s32 *data, s32 arg3);
+extern s16 BoardModelIDGet(s16 model);
 
-
+static BoardSpace spaceData[2][256];
+s16 boardSpaceStarTbl[8];
 static GXTexObj spaceHiliteTex;
 static GXTexObj spaceTex;
-s16 boardSpaceStarTbl[8];
-static BoardSpace spaceData[2][256];
+
+static s8 spaceImgIdx[12] = {
+	0, 1, 2, 7,
+	6, 5, 3, 4,
+	9, 10, 11, 0
+};
+
+static s8 spaceHiliteImgIdx[12] = {
+	-1, 0, 1, 1,
+	2, 2, 2, 2,
+	-1, 3, -1, -1
+};
 
 static s16 spaceCnt[2];
 static u32 spaceAttr[2];
@@ -28,11 +49,13 @@ static s32 spaceDrawCnt;
 static s16 spaceDrawF;
 
 static s16 spaceDrawMdl = -1;
-static s16 starMdl = -1;
+static s16 starPlatMdl = -1;
 
-s32 BoardSpaceRotGet(s32 layer, s32 index, Vec *rot);
-s32 BoardSpaceStarGet(s32 index);
-s32 BoardSpaceStarGetCurr(void);
+static s32 ExecPipeSpace(s32 player, s32 space);
+
+extern s8 boardTutorialBlockF;
+extern s32 boardTutorialBlockPos;
+
 
 void BoardSpaceWalkEventFuncSet(BoardSpaceEventFunc func)
 {
@@ -69,7 +92,7 @@ s32 BoardSpaceWalkMiniEventExec(void)
 	return ret;
 }
 
-s16 BoardSpaceCountGet(s32 layer)
+s32 BoardSpaceCountGet(s32 layer)
 {
 	return spaceCnt[layer];
 }
@@ -281,7 +304,7 @@ s32 BoardSpaceLinkTransformGet(s32 flag, Vec *pos, Vec *rot, Vec *scale)
 	return -1;
 }
 
-void BoardSpaceStarSet(s32 space)
+void BoardSpaceHostSet(s32 space)
 {
 	s16 host_space;
 	Vec pos;
@@ -292,9 +315,9 @@ void BoardSpaceStarSet(s32 space)
 	BoardModelPosSetV(BoardStarHostMdlGet(), &pos);
 }
 
-static inline s16 BoardStarMdlGet(void)
+static inline s16 StarPlatGetMdl(void)
 {
-	return starMdl;
+	return starPlatMdl;
 }
 
 static inline s32 BoardStarSpaceTypeGet(s16 index)
@@ -311,13 +334,13 @@ void BoardSpaceStarSetIndex(s32 index)
 		BoardSpaceTypeSet(0, boardSpaceStarTbl[GWSystem.star_pos], 1);
 	}
 	GWSystem.star_pos = index & 0x7;
-	BoardSpaceStarSet(BoardSpaceStarGetCurr());
+	BoardSpaceHostSet(BoardSpaceStarGetCurr());
 	space = BoardSpaceLinkFlagSearch(0, BoardSpaceStarGetCurr(), 0x04000000);
 	BoardSpacePosGet(0, space, &pos);
-	BoardModelPosSetV(BoardStarMdlGet(), &pos);
+	BoardModelPosSetV(StarPlatGetMdl(), &pos);
 	BoardSpaceRotGet(0, space, &rot);
-	BoardModelRotYSet(BoardStarMdlGet(), rot.y);
-	BoardModelVisibilitySet(BoardStarMdlGet(), 1);
+	BoardModelRotYSet(StarPlatGetMdl(), rot.y);
+	BoardModelVisibilitySet(StarPlatGetMdl(), 1);
 }
 
 s32 BoardSpaceStarGetNext(void)
@@ -550,8 +573,8 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 				HuAudFXPlay(842);
 				BoardCameraViewSet(2);
-				BoardPlayerAnimBlendSet(player, 0, 15);
-				while(!BoardPlayerAnimBlendCheck(player)) {
+				BoardPlayerMotBlendSet(player, 0, 15);
+				while(!BoardPlayerMotBlendCheck(player)) {
 					HuPrcVSleep();
 				}
 				BoardCameraMotionWait();
@@ -585,5 +608,493 @@ void BoardSpaceLandExec(s32 player, s32 space)
 		case 8:
 			BoardStarExec(player, space);
 			break;
+	}
+}
+
+s32 BoardSpaceWalkExec(s32 player, s32 space)
+{
+	s32 is_star;
+	BoardSpace *space_ptr;
+	BoardSpace *star_space;
+	if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+		space_ptr = BoardSpaceGet(0, space);
+		if(space_ptr->flag & 0x180000) {
+			BoardTutorialHookExec(25, 0);
+		}
+	}
+	if(BoardPlayerSizeGet(player) == 2 || GWPlayer[player].bowser_suit) {
+		return 0;
+	}
+	space_ptr = BoardSpaceGet(0, space);
+	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+		is_star = 0;
+	} else {
+		star_space = BoardSpaceGet(0, boardSpaceStarTbl[GWSystem.star_pos]);
+		if(space_ptr == star_space) {
+			is_star = 1;
+		} else {
+			is_star = 0;
+		}
+	}
+	if(is_star) {
+		BoardStarExec(player, space);
+		return 1;
+	}
+	if(space_ptr->flag & 0x600000) {
+		u16 mg_param = GWSystem.unk_38;
+		if(BoardPlayerSizeGet(player) == 1) {
+			BoardRotateDiceNumbers(player);
+			BoardMGCreate(mg_param);
+		}
+		return 1;
+	}
+	if(space_ptr->flag & 0x180000) {
+		BoardShopExec(player, space);
+		return 1;
+	}
+	if(space_ptr->flag & 0x08000000) {
+		BoardBooHouseExec(player, space);
+		return 1;
+	}
+	if(space_ptr->flag & 0x10000000) {
+		BoardLotteryExec();
+		return 1;
+	}
+	if(space_ptr->flag & 0x20000000) {
+		ExecPipeSpace(player, space);
+		return 1;
+	}
+	return 0;
+}
+
+s32 BoardSpaceBlockExec(s32 player, s32 space)
+{
+	s32 event_exec;
+	BoardSpace *space_ptr;
+	event_exec = 0;
+	if(BoardPlayerSizeGet(player) == 2 || GWPlayer[player].bowser_suit) {
+		return 0;
+	}
+	space_ptr = BoardSpaceGet(0, space);
+	event_exec = 0;
+	if(space == GWSystem.block_pos) {
+		event_exec = 1;
+	}
+	if((int)GWSystem.bonus_star == 0 && BoardPartyFlagGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+		event_exec = 0;
+	}
+	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+		event_exec = 0;
+	}
+	if(event_exec) {
+		BoardBlockExec(player, space);
+		if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+			BoardBlockExec(player, space);
+		}
+		BoardSpaceBlockPosSet();
+	}
+	return 0;
+}
+
+static s32 ExecPipeSpace(s32 player, s32 space)
+{
+	Vec pos_link;
+	Vec pos;
+	Vec dir;
+	float radius, y_vel;
+	s32 mot_disable;
+	BoardSpace *space_ptr;
+	mot_disable = 0;
+	if(BoardPlayerSizeGet(player) != 1) {
+		return 0;
+	}
+	BoardPlayerPosGet(player, &pos);
+	pos.y += 200.0f;
+	space_ptr = BoardSpaceGet(0, space);
+	BoardSpacePosGet(0, space_ptr->link[0], &pos_link);
+	VECSubtract(&pos_link, &pos, &dir);
+	VECNormalize(&dir, &dir);
+	BoardPlayerRotYSet(player, 90-((atan2(dir.z, dir.x)/M_PI)*180));
+	radius = 0.75f*BoardVecDistXZCalc(&pos_link, &pos);
+	BoardPlayerMotionStart(player, 4, 0);
+	y_vel = 0;
+	while(1) {
+		if(BoardVecDistXZCalc(&pos_link, &pos) < 2) {
+			break;
+		}
+		pos.x += (dir.x*radius)/60.0f;
+		pos.z += (dir.z*radius)/60.0f;
+		if(pos.y <= pos_link.y) {
+			pos.y = pos_link.y;
+			if(!mot_disable) {
+				BoardPlayerMotionShiftSet(player, 3, 0, 4, 0x40000001);
+				break;
+			}
+		} else {
+			pos.y += 10.0f+(-((1/2399.99f)+(1/50.0f))*y_vel*y_vel);
+			y_vel += 1.0f;
+		}
+		BoardPlayerPosSetV(player, &pos);
+		HuPrcVSleep();
+	}
+	return 0;
+}
+
+void BoardSpaceTypeForce(u16 from, u16 to)
+{
+	s32 i;
+	for(i=0; i<spaceCnt[0]; i++) {
+		BoardSpace *space = &spaceData[0][i];
+		if(space->type == from) {
+			space->type = to;
+		}
+	}
+}
+
+void BoardSpaceHide(s32 value)
+{
+	if(value) {
+		Hu3DModelAttrSet(spaceDrawMdl, 1);
+	} else {
+		Hu3DModelAttrReset(spaceDrawMdl, 1);
+	}
+}
+
+//Some stack allocation issues. code around BoardPlayerGetCurr is incorrect too
+static void DrawSpaces(ModelData *model, Mtx matrix)
+{
+	s32 i;
+
+	Vec player_pos;
+	Vec target;
+	Vec pos;
+	
+	Mtx lookat, final, rot_x, rot_y, rot_z, scale;
+	Mtx44 proj;
+	BoardCameraData *camera;
+	if(!spaceDrawF) {
+		return;
+	}
+	spaceDrawCnt = 0;
+	camera = &boardCamera;
+	BoardCameraPosGet(&pos);
+	BoardCameraTargetGet(&target);
+	MTXPerspective(proj, camera->fov, camera->aspect, camera->near, camera->far);
+	GXSetProjection(proj, GX_PERSPECTIVE);
+	MTXLookAt(lookat, &pos, &camera->up, &target);
+	GXSetViewport(camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h, camera->viewport_near, camera->viewport_far);
+	GXSetScissor(camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h);
+	{
+		GXColor color = { 0xFF, 0xFF, 0xFF, 0xFF };
+		BoardSpace *space_curr;
+		BoardSpace *space_hilite;
+		PlayerState *player;
+		PlayerState *player_temp;
+		s16 player_mdl;
+		float y_dist;
+		s32 space_img;
+		u16 space_type;
+		float uv_x, uv_y, uv_size;
+		
+		GXClearVtxDesc();
+		GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+		GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+		GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+		GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+		GXInvalidateTexAll();
+		GXLoadTexObj(&spaceTex, GX_TEXMAP0);
+		GXSetNumTexGens(1);
+		GXSetNumTevStages(1);
+		GXSetTevColor(GX_TEVREG0, color);
+		GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+		GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+		GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
+		GXSetNumChans(1);
+		GXSetChanAmbColor(GX_COLOR0A0, color);
+		GXSetChanMatColor(GX_COLOR0A0, color);
+		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+		GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 1, GX_DF_CLAMP, GX_AF_SPOT);
+		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+		GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+		GXSetCullMode(GX_CULL_BACK);
+		player = player_temp = BoardPlayerGetCurr();
+		BoardPlayerPosGet(GWSystem.player_curr, &player_pos);
+		player_mdl = BoardModelIDGet(BoardPlayerModelGetCurr());
+		space_curr = &spaceData[0][0];
+		space_hilite = NULL;
+		GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+		for(i=0; i<spaceCnt[0]; i++, space_curr++) {
+			if(space_curr->type == 0) {
+				continue;
+			}
+			if(!BoardCameraCullCheck(&space_curr->pos, 200.0f) || (space_curr->flag & spaceAttr[0])) {
+				continue;
+			}
+			if(!space_hilite) {
+				if(player_pos.x > space_curr->pos.x-100.0f
+					&& player_pos.z > space_curr->pos.z-100.0f
+					&& player_pos.x < space_curr->pos.x+100.0f
+					&& player_pos.z < space_curr->pos.z+100.0f) {
+					if(player_pos.y-space_curr->pos.y < 0.0f) {
+						y_dist = -(player_pos.y-space_curr->pos.y);
+					} else {
+						y_dist  = player_pos.y-space_curr->pos.y;
+					}
+					if(y_dist < 10.0f) {
+						space_hilite = space_curr;
+					}
+				}
+			}
+			space_type = space_curr->type;
+			space_img = spaceImgIdx[space_type]-1;
+			uv_x = (float)(space_img%4)/4.0f;
+			uv_y = (float)(space_img/4)/4.0f;
+			uv_size = 63.0f/256.0f;
+			MTXRotRad(rot_z, 'z', MTXDegToRad(space_curr->rot.y));
+			MTXRotRad(rot_y, 'y', MTXDegToRad(space_curr->rot.z));
+			MTXRotRad(rot_x, 'x', MTXDegToRad(space_curr->rot.x+90.0f));
+			MTXTrans(final, space_curr->pos.x, 3.0f+space_curr->pos.y, space_curr->pos.z);
+			MTXConcat(rot_x, rot_y, rot_y);
+			MTXConcat(rot_y, rot_z, rot_z);
+			MTXConcat(final, rot_z, final);
+			MTXConcat(lookat, final, final);
+			GXLoadPosMtxImm(final, GX_PNMTX0);
+			GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+			GXPosition3f32(-100, -100, 0);
+			GXTexCoord2f32(uv_x, uv_y);
+			GXPosition3f32(100, -100, 0);
+			GXTexCoord2f32(uv_x+uv_size, uv_y);
+			GXPosition3f32(100, 100, 0);
+			GXTexCoord2f32(uv_x+uv_size, uv_y+uv_size+(1.5f/256.0f));
+			GXPosition3f32(-100, 100, 0);
+			GXTexCoord2f32(uv_x, uv_y+uv_size+(1.5f/256.0f));
+			GXEnd();
+			spaceDrawCnt++;
+		}
+		if(space_hilite) {
+			space_curr = space_hilite;
+			space_type = space_curr->type;
+			if(player->show_next && space_type != 0 && (space_img = spaceHiliteImgIdx[space_type]) >= 0) {
+				GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
+				GXLoadTexObj(&spaceHiliteTex, GX_TEXMAP0);
+				GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
+				uv_x = (float)(space_img%4)/4.0f;
+				uv_y = (float)(space_img/4)/4.0f;
+				uv_size = 63.0f/256.0f;
+				MTXScale(scale, 1.5f, 1.5f, 1.5f);
+				MTXRotRad(rot_z, 'z', MTXDegToRad(space_curr->rot.y));
+				MTXRotRad(rot_y, 'y', MTXDegToRad(space_curr->rot.z));
+				MTXRotRad(rot_x, 'x', MTXDegToRad(space_curr->rot.x+90.0f));
+				MTXTrans(final, space_curr->pos.x, 3.5f+space_curr->pos.y, space_curr->pos.z);
+				MTXConcat(scale, rot_x, rot_x);
+				MTXConcat(rot_x, rot_y, rot_y);
+				MTXConcat(rot_y, rot_z, rot_z);
+				MTXConcat(final, rot_z, final);
+				MTXConcat(lookat, final, final);
+				GXLoadPosMtxImm(final, GX_PNMTX0);
+				GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+				GXPosition3f32(-100, -100, 0);
+				GXTexCoord2f32(uv_x, uv_y);
+				GXPosition3f32(100, -100, 0);
+				GXTexCoord2f32(uv_x+uv_size, uv_y);
+				GXPosition3f32(100, 100, 0);
+				GXTexCoord2f32(uv_x+uv_size, uv_y+uv_size);
+				GXPosition3f32(-100, 100, 0);
+				GXTexCoord2f32(uv_x, uv_y+uv_size);
+				GXEnd();
+				spaceDrawCnt++;
+				GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+				GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+				return;
+			}
+		}
+		GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+	}
+	
+}
+
+s32 BoardSpaceRead(s32 layer, s32 data_num)
+{
+	int j;
+	int i;
+	BoardSpace *space;
+	u8 *data;
+	s32 star_idx;
+	u8 *data_base;
+	data_base = data = HuDataSelHeapReadNum(data_num, MEMORY_DEFAULT_NUM, HEAP_DATA);
+	spaceCnt[layer] = *(u32 *)data;
+	data += sizeof(u32);
+	space = &spaceData[layer][0];
+	for(i=0; i<spaceCnt[layer]; i++, space++) {
+		memcpy(&space->pos, data, sizeof(Vec));
+		data += sizeof(Vec);
+		memcpy(&space->rot, data, sizeof(Vec));
+		data += sizeof(Vec);
+		memcpy(&space->scale, data, sizeof(Vec));
+		data += sizeof(Vec);
+		space->flag = *(u32 *)data;
+		data += sizeof(u32);
+		space->type = *(u16 *)data;
+		data += sizeof(u16);
+		space->link_cnt = *(u16 *)data;
+		data += sizeof(u16);
+		for(j=0; j<space->link_cnt; j++) {
+			space->link[j] = (*(u16 *)data)+1;
+			data += sizeof(u16);
+		}
+		if(space->type == 8) {
+			
+			space->type = 1;
+			star_idx = (space->flag & 0x70000) >> 16;
+			boardSpaceStarTbl[star_idx] = i+1;
+		}
+	}
+	HuDataClose(data_base);
+	return 0;
+}
+
+void BoardSpaceCameraSet(u16 mask)
+{
+	Hu3DModelCameraSet(spaceDrawMdl, mask);
+}
+
+void BoardSpaceBlockPosSet(void)
+{
+	BoardSpace *space;
+	s32 block_pos;
+	begin:
+	if(boardTutorialBlockF) {
+		GWSystem.block_pos = boardTutorialBlockPos;
+		return;
+	}
+	block_pos = BoardRandMod(spaceCnt[0])+1;
+	if(block_pos == GWSystem.block_pos) {
+		goto begin;
+	}
+	space = BoardSpaceGet(0, block_pos);
+	if(space->type != 1) {
+		goto begin;
+	}
+	GWSystem.block_pos = block_pos;
+}
+
+void BoardSpaceInit(s32 data_num)
+{
+	s32 board;
+	BoardJunctionMaskZero();
+	memset(spaceData, 0, sizeof(spaceData));
+	memset(spaceAttr, 0, sizeof(spaceAttr));
+	lbl_801D3FC4[0] = lbl_801D3FC4[1] = lbl_801D3FC4[2] = lbl_801D3FC4[3] = -1;
+	spaceDrawF = 0;
+	board = BoardCurrGet();
+	{
+		AnimBmpData *bmp;
+		AnimData *data;
+		void *data_base;
+		s32 size;
+		data = data_base = HuDataSelHeapReadNum(MAKE_DATA_NUM(DATADIR_BOARD, 29), MEMORY_DEFAULT_NUM, HEAP_DATA);
+		data->bmp = (void *)((u32)data_base+(u32)data->bmp);
+		data->pat = (void *)((u32)data_base+(u32)data->pat);
+		data->bank = (void *)((u32)data_base+(u32)data->bank);
+		bmp = data->bmp;
+		size = bmp->sizeX;
+		spaceHiliteTexFmt = -1;
+		switch(bmp->dataFmt) {
+			case SPRITE_BMP_RGBA8:
+				spaceHiliteTexFmt = GX_TF_RGBA8;
+				break;
+				
+			case SPRITE_BMP_RGB5A3_DUPE:
+				spaceHiliteTexFmt = GX_TF_RGB5A3;
+				break;
+				
+			case SPRITE_BMP_CMPR:
+				spaceHiliteTexFmt = GX_TF_CMPR;
+				break;
+		}
+		spaceHiliteTexData = HuMemDirectMallocNum(HEAP_SYSTEM, bmp->dataSize, MEMORY_DEFAULT_NUM);
+		bmp->data = (void *)((u32)bmp->data+(u32)data_base);
+		memcpy(spaceHiliteTexData, bmp->data, bmp->dataSize);
+		HuDataClose(data_base);
+		GXInitTexObj(&spaceHiliteTex, spaceHiliteTexData, size, size, spaceHiliteTexFmt, GX_CLAMP, GX_CLAMP, GX_FALSE);
+		GXInitTexObjLOD(&spaceHiliteTex, GX_LINEAR, GX_LINEAR, 0, 0, 0, GX_FALSE, GX_FALSE, GX_ANISO_1);
+	}
+	{
+		AnimBmpData *bmp;
+		AnimData *data;
+		void *data_base;
+		s32 size;
+		data = data_base = HuDataSelHeapReadNum(MAKE_DATA_NUM(DATADIR_BOARD, 28), MEMORY_DEFAULT_NUM, HEAP_DATA);
+		data->bmp = (void *)((u32)data_base+(u32)data->bmp);
+		data->pat = (void *)((u32)data_base+(u32)data->pat);
+		data->bank = (void *)((u32)data_base+(u32)data->bank);
+		bmp = data->bmp;
+		size = bmp->sizeX;
+		spaceTexFmt = -1;
+		switch(bmp->dataFmt) {
+			case SPRITE_BMP_RGBA8:
+				spaceTexFmt = GX_TF_RGBA8;
+				break;
+				
+			case SPRITE_BMP_RGB5A3_DUPE:
+				spaceTexFmt = GX_TF_RGB5A3;
+				break;
+				
+			case SPRITE_BMP_CMPR:
+				spaceTexFmt = GX_TF_CMPR;
+				break;
+		}
+		spaceTexData = HuMemDirectMallocNum(HEAP_SYSTEM, bmp->dataSize, MEMORY_DEFAULT_NUM);
+		bmp->data = (void *)((u32)bmp->data+(u32)data_base);
+		memcpy(spaceTexData, bmp->data, bmp->dataSize);
+		HuDataClose(data_base);
+		GXInitTexObj(&spaceTex, spaceTexData, size, size, spaceTexFmt, GX_CLAMP, GX_CLAMP, GX_FALSE);
+		GXInitTexObjLOD(&spaceTex, GX_LINEAR, GX_LINEAR, 0, 0, 0, GX_FALSE, GX_FALSE, GX_ANISO_1);
+	}
+	BoardSpaceRead(0, data_num);
+	spaceDrawMdl = Hu3DHookFuncCreate(DrawSpaces);
+	if(!BoardStartCheck() && !_CheckFlag(FLAG_ID_MAKE(1, 1))) {
+		BoardSpaceBlockPosSet();
+		GWSystem.star_total = 0;
+		GWSystem.star_flag = 0;
+	}
+	if(BoardCurrGet() != 7 && BoardCurrGet() != 8) {
+		starPlatMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 6), NULL, 0);
+		BoardModelMotionStart(starPlatMdl, 0, 0x40000001);
+		BoardModelVisibilitySet(starPlatMdl, 0);
+		if(_CheckFlag(FLAG_ID_MAKE(1, 1))) {
+			Vec pos;
+			Vec rot;
+			s16 space;
+			BoardModelVisibilitySet(starPlatMdl, 1);
+			GWSystem.star_flag |= (u8)(1 << GWSystem.star_pos);
+			BoardSpaceTypeSet(0, boardSpaceStarTbl[GWSystem.star_pos], 8);
+			{
+				int space;
+				BoardSpace *space_plat;
+				space = BoardSpaceLinkFlagSearch(0, BoardSpaceStarGetCurr(), 0x04000000);
+				BoardSpacePosGet(0, space, &pos);
+				BoardModelPosSetV(StarPlatGetMdl(), &pos);
+				BoardSpaceRotGet(0, space, &rot);
+				BoardModelRotYSet(StarPlatGetMdl(), rot.y);
+			}
+		}
+	}
+	spaceDrawF = 1;
+}
+
+void BoardSpaceDestroy(void)
+{
+	if(spaceDrawMdl >= 0) {
+		Hu3DModelKill(spaceDrawMdl);
+		spaceDrawMdl = -1;
+	}
+	if(spaceHiliteTexData) {
+		HuMemDirectFree(spaceHiliteTexData);
+		spaceHiliteTexData = NULL;
+	}
+	if(spaceTexData) {
+		HuMemDirectFree(spaceTexData);
+		spaceTexData = NULL;
 	}
 }

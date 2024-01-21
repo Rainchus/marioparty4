@@ -7,8 +7,11 @@
 #include "game/wipe.h"
 #include "string.h"
 #include "game/hsfman.h"
+#include "game/hsfdraw.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/pad.h"
+#include "game/msm.h"
 
 typedef struct camera_view {
 	s16 x_rot;
@@ -22,23 +25,23 @@ u32 boardRandSeed;
 static omObjData *last5GfxObj;
 static omObjData *confettiObj;
 static omObjData *filterObj;
-void *boardTurnStartFunc;
-u32 lbl_801D3F00;
-u32 lbl_801D3EFC;
-u32 lbl_801D3EF8;
+BoardTurnStartHook boardTurnStartFunc;
+void *boardBowserHook;
+void *boardStarShowNextHook;
+void *boardStarGiveHook;
 BoardFunc boardTurnFunc;
-BoardLightHook boardLightSetHook;
 BoardLightHook boardLightResetHook;
+BoardLightHook boardLightSetHook;
 static BoardFunc destroyFunc;
 static BoardFunc createFunc;
-static BOOL cameraUseBackup;
+static s32 cameraUseBackup;
 static omObjData *tauntObj;
 static omObjData *cameraObj;
 Process *boardObjMan;
 Process *boardMainProc;
 
-static BoardCameraData cameraBackup;
 BoardCameraData boardCamera;
+static BoardCameraData cameraBackup;
 
 static OverlayID nextOvl = OVL_INVALID;
 
@@ -53,26 +56,12 @@ static CameraView camViewTbl[] = {
 
 
 extern void BoardModelPosGet(s16 model, Vec *pos);
-extern void BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
+extern s32 BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
-extern void fn_800A4A7C(void);
-extern void fn_800A6EE4(void);
+extern void BoardMGSetupPlayClear(void);
+extern void BoardStartExec(void);
 
 extern s8 boardTutorialF;
-extern s16 boardPlayerMdl[4];
-
-void BoardKill(void);
-void BoardCameraInit(void);
-void BoardCameraMotionWait(void);
-void BoardCameraTargetPlayerSet(s32 player);
-void BoardCameraViewSet(s32 type);
-void BoardCameraOffsetSet(float x, float y, float z);
-void BoardCameraMoveSet(s32 move);
-void BoardCameraMotionStartEx(s16 model_target, Vec *rot_target, Vec *offset_end, float zoom_target, float fov_target, s16 max_time);
-void BoardRandInit(void);
-float BoardRandFloat(void);
-s32 BoardDataDirReadAsync(s32 data_num);
-void BoardDataAsyncWait(s32 status);
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);
@@ -82,22 +71,13 @@ static void UpdateCamera(omObjData *object);
 static void CalcCameraTarget(BoardCameraData *camera);
 static void CalcCameraPos(BoardCameraData *camera);
 
-
 static void MainFunc(void);
 static void DestroyMainFunc(void);
 
+static s32 ExecTurnStart(void);
+
 static void CreateBoard(void);
 static void DestroyBoard(void);
-
-static inline int GWMGTypeGet()
-{
-	return GWSystem.mg_type;
-}
-
-static inline int GWMessSpeedGet()
-{
-	return GWSystem.mess_speed;
-}
 
 #define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
 
@@ -116,7 +96,7 @@ void BoardCommonInit(BoardFunc create, BoardFunc destroy)
 		_ClearFlag(FLAG_ID_MAKE(1, 9));
 		_ClearFlag(FLAG_ID_MAKE(0, 8));
 		_ClearFlag(FLAG_ID_MAKE(0, 10));
-		fn_800A4A7C();
+		BoardMGSetupPlayClear();
 	}
 	
 	nextOvl = OVL_INVALID;
@@ -135,9 +115,9 @@ void BoardCommonInit(BoardFunc create, BoardFunc destroy)
 	createFunc = create;
 	destroyFunc = destroy;
 	boardTurnFunc = NULL;
-	lbl_801D3EFC = 0;
-	lbl_801D3F00 = 0;
-	lbl_801D3EF8 = 0;
+	boardStarShowNextHook = NULL;
+	boardBowserHook = NULL;
+	boardStarGiveHook = NULL;
 	boardTurnStartFunc = NULL;
 	boardObjMan = omInitObjMan(64, 8192);
 	omSystemKeyCheckSetup(boardObjMan);
@@ -267,7 +247,7 @@ s32 BoardIsKill(void)
 	return (_CheckFlag(FLAG_ID_MAKE(1, 17))) ? 1 : 0;
 }
 
-void BoardPauseEnableSet(s32 value)
+void BoardPauseDisableSet(s32 value)
 {
 	if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		_SetFlag(FLAG_ID_MAKE(1, 25));
@@ -281,7 +261,7 @@ void BoardPauseEnableSet(s32 value)
 	}
 }
 
-s32 BoardPauseEnableGet()
+s32 BoardPauseDisableGet()
 {
 	return (_CheckFlag(FLAG_ID_MAKE(1, 25))) ? 1 : 0;
 }
@@ -317,6 +297,7 @@ void BoardSaveInit(s32 board)
 	GWSystem.block_pos = 0;
 	memset(GWSystem.board_data, 0, 32);
 	for(i=0; i<4; i++) {
+		s32 party_flag;
 		BoardPlayerAutoSizeSet(i, 0);
 		GWPlayer[i].field00_bit9 = 0;
 		GWPlayer[i].color = 0;
@@ -347,7 +328,7 @@ void BoardSaveInit(s32 board)
 		GWPlayer[i].items[0] = -1;
 		GWPlayer[i].items[1] = -1;
 		GWPlayer[i].items[2] = -1;
-		if(!BoardPartyFlagGet() || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
+		if(BoardPartyFlagGet() == 0 || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
 			GWStarsSet(i, 0);
 		} else {
 			GWStarsSet(i, BoardPlayerHandicapGet(i));
@@ -408,7 +389,7 @@ static void MainFunc(void)
 	s32 fade_enable, turn_cont, fade_type;
 	fade_enable = 0;
 	turn_cont = 0;
-	BoardPauseEnableSet(1);
+	BoardPauseDisableSet(1);
 	if(_CheckFlag(FLAG_ID_MAKE(0, 10))) {
 		_ClearFlag(FLAG_ID_MAKE(0, 10));
 		_SetFlag(FLAG_ID_MAKE(1, 16));
@@ -426,7 +407,7 @@ static void MainFunc(void)
 	CreateBoard();
 	if(!_CheckFlag(FLAG_ID_MAKE(1, 1))) {
 		GWSystem.player_curr = -1;
-		fn_800A6EE4();
+		BoardStartExec();
 		GWSystem.player_curr = 0;
 		fade_enable = 1;
 		_SetFlag(FLAG_ID_MAKE(1, 1));
@@ -438,7 +419,7 @@ static void MainFunc(void)
 	}
 	if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && GWSystem.player_curr == 0 && !turn_cont) {
 		if(!_CheckFlag(FLAG_ID_MAKE(0, 8))) {
-			fn_800A9708();
+			BoardLast5Exec();
 			_SetFlag(FLAG_ID_MAKE(0, 8));
 		} else {
 			BoardLast5GfxInit();
@@ -457,7 +438,7 @@ static void MainFunc(void)
 			boardTurnFunc();
 			GWSystem.player_curr = 0;
 		}
-		fn_80070D84();
+		BoardMusStartBoard();
 		for(i=GWSystem.player_curr; i<4; i++) {
 			if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
 				if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && i == 0 && !turn_cont) {
@@ -536,7 +517,7 @@ static void MainFunc(void)
 		if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
 			GWSystem.player_curr = 0;
 			if(BoardTurnNext()) {
-				fn_80070EE8(0, 500);
+				BoardAudSeqFadeOut(0, 500);
 				BoardKill();
 				HuPrcEnd();
 				HuPrcSleep(-1);
@@ -544,7 +525,7 @@ static void MainFunc(void)
 		} else {
 			_SetFlag(FLAG_ID_MAKE(1, 28));
 			_SetFlag(FLAG_ID_MAKE(1, 14));
-			BoardPauseEnableSet(1);
+			BoardPauseDisableSet(1);
 			_ClearFlag(FLAG_ID_MAKE(1, 9));
 			if(_CheckFlag(FLAG_ID_MAKE(2, 0)) || _CheckFlag(FLAG_ID_MAKE(1, 11)) ) {
 				for(i=0; i<4; i++) {
@@ -552,14 +533,14 @@ static void MainFunc(void)
 				}
 				GWSystem.player_curr = (GWSystem.player_curr+1)&3;
 			} else {
-				fn_800A1A34();
+				BoardMGSetupExec();
 				HuPrcSleep(-1);
 			}
 		}
 	} while(1);
 }
 
-BOOL BoardTurnNext(void)
+s32 BoardTurnNext(void)
 {
 	s32 i;
 	for(i=0; i<4; i++) {
@@ -573,10 +554,49 @@ BOOL BoardTurnNext(void)
 	}
 }
 
+static s32 ExecTurnStart(void)
+{
+	s32 player;
+	s32 space;
+	if(!BoardStartCheck()) {
+		return 0;
+	}
+	player = GWSystem.player_curr;
+	space = GWPlayer[player].space_curr;
+	if(_CheckFlag(FLAG_ID_MAKE(1, 5))) {
+		BoardFortuneExec(player, space);
+		_ClearFlag(FLAG_ID_MAKE(1, 5));
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 4))) {
+		BoardMusStartBoard();
+		BoardBattleExec(player, space);
+		_ClearFlag(FLAG_ID_MAKE(1, 4));
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 3))) {
+		BoardBowserExec(player, space);
+		_ClearFlag(FLAG_ID_MAKE(1, 3));
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 2))) {
+		s32 turn_end = 0;
+		BoardCameraMoveSet(0);
+		BoardCameraViewSet(2);
+		BoardCameraMotionWait();
+		turn_end = BoardTurnNext();
+		if(turn_end) {
+			BoardKill();
+			HuPrcEnd();
+		}
+		_ClearFlag(FLAG_ID_MAKE(1, 2));
+		return 0;
+	} else if(_CheckFlag(FLAG_ID_MAKE(1, 6))) {
+		boardTurnStartFunc(player, space);
+		return 1;
+	}
+	BoardPlayerZoomRestore(player);
+	return 1;
+}
+
 void BoardNextOvlSet(OverlayID overlay)
 {
 	nextOvl = overlay;
-	fn_80070EE8(0, 1000);
+	BoardAudSeqFadeOut(0, 1000);
 	BoardKill();
 }
 
@@ -654,19 +674,19 @@ static void CreateBoard(void)
 	if(guest_status != -1) {
 		BoardDataAsyncWait(guest_status);
 	}
-	fn_8007111C();
+	BoardAudSeqClear();
 	BoardModelInit();
 	BoardRandInit();
 	BoardWinInit();
 	BoardPlayerModelInit();
 	createFunc();
 	BoardLightSetExec();
-	fn_8007A8D8();
-	fn_80077ABC();
-	fn_800A4F7C();
+	BoardLotteryInit();
+	BoardShopInit();
+	BoardBooHouseCreate();
 	BoardCameraInit();
 	BoardStatusCreate();
-	CharModelKillIndex(-1);
+	CharModelDataClose(-1);
 	BoardPlayerInit();
 	if(GWSystem.last5_effect == 2) {
 		BoardSpaceTypeForce(2, 3);
@@ -705,13 +725,13 @@ static void DestroyBoard(void)
 		MAKE_DIR_NUM(DATADIR_W21),
 	};
 	BoardTauntKill();
-	fn_8007116C();
+	BoardAudSeqFadeOutAll();
 	HuAudAllStop();
-	fn_80085EB4();
+	BoardRollKill();
 	BoardStatusKill();
-	fn_800A5030();
-	fn_80077B90();
-	fn_8007AFF4(); 
+	BoardBooHouseKill();
+	BoardShopKill();
+	BoardLotteryKill(); 
 	BoardSpaceDestroy();
 	BoardPlayerModelKill();
 	if(destroyFunc) {
@@ -729,6 +749,35 @@ static void DestroyBoard(void)
 	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
 	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BOARD));
 	createFunc = destroyFunc = NULL;
+}
+
+void BoardLightHookSet(BoardLightHook set, BoardLightHook reset)
+{
+	boardLightSetHook = set;
+	boardLightResetHook = reset;
+}
+
+void BoardLightSetExec(void)
+{
+	Hu3DBGColorSet(0, 0, 0);
+	if(boardLightSetHook) {
+		boardLightSetHook();
+	}
+}
+
+void BoardLightResetExec(void)
+{
+	if(boardLightResetHook) {
+		boardLightResetHook();
+	}
+	Hu3DBGColorSet(0, 0, 0);
+	Hu3DFogClear();
+	Hu3DReflectNoSet(0);
+}
+
+static BoardCameraData *BoardCameraGet(void)
+{
+	return &boardCamera;
 }
 
 void BoardCameraBackup(void)
@@ -1150,7 +1199,7 @@ void BoardCameraInit(void)
 	cameraObj = omAddObjEx(boardObjMan, 32258, 0, 0, -1, UpdateCamera);
 }
 
-static void CalcCameraView(void)
+static inline void CalcCameraView(void)
 {
 	BoardCameraData *camera = &boardCamera;
 	CalcCameraTarget(camera);
@@ -1269,6 +1318,101 @@ static void CalcCameraPos(BoardCameraData *camera)
 	CAM_LERP_VEC(time, focus->target_start, focus->target_end, camera->target)
 }
 
+void BoardMGDoneFlagSet(s32 flag)
+{
+	if(flag) {
+		_SetFlag(FLAG_ID_MAKE(1, 20));
+	} else {
+		_ClearFlag(FLAG_ID_MAKE(1, 20));
+	}
+}
+
+s32 BoardMGDoneFlagGet()
+{
+	return (_CheckFlag(FLAG_ID_MAKE(1, 20))) ? 1 : 0;
+}
+
+void BoardMGExit(void)
+{
+	s32 player = GWSystem.player_curr;
+	BoardPlayerMoveToAsync(player, GWPlayer[GWSystem.player_curr].space_curr);
+	BoardCameraTargetPlayerSet(player);
+	BoardCameraMoveSet(1);
+	BoardCameraViewSet(1);
+	_ClearFlag(FLAG_ID_MAKE(1, 19));
+}
+
+static void KillBoardMG(omObjData *object)
+{
+	if(!BoardMGDoneFlagGet()) {
+		BoardEventFlagReset();
+		omDelObjEx(HuPrcCurrentGet(), object);
+	}
+}
+
+static void ExecBoardMG(omObjData *object)
+{
+	if(_CheckFlag(FLAG_ID_MAKE(1, 19))) {
+		return;
+	}
+	if(GWPlayer[GWSystem.player_curr].moving == 0) {
+		BoardPlayerMotionShiftSet(GWSystem.player_curr, 1, 0.0f, 10.0f, 0x40000001);
+		if(!_CheckFlag(FLAG_ID_MAKE(1, 21))) {
+			_SetFlag(FLAG_ID_MAKE(1, 20));
+			object->func = KillBoardMG;
+		}
+	}
+}
+
+void BoardMGCreate(s32 arg0)
+{
+	_SetFlag(FLAG_ID_MAKE(1, 19));
+	_ClearFlag(FLAG_ID_MAKE(1, 20));
+	GWSystem.unk_38 = arg0;
+	omAddObjEx(boardObjMan, 0x201, 0, 0, -1, ExecBoardMG);
+	BoardEventFlagSet();
+	BoardSpaceWalkMiniEventExec();
+}
+
+void BoardEventFlagSet(void)
+{
+	_SetFlag(FLAG_ID_MAKE(1, 18));
+}
+
+void BoardEventFlagReset(void)
+{
+	_ClearFlag(FLAG_ID_MAKE(1, 18));
+}
+
+s32 BoardEventFlagGet(void)
+{
+	return _CheckFlag(FLAG_ID_MAKE(1, 18)) ? 1 : 0;
+}
+
+void BoardMTXCalcLookAt(Mtx dest, Vec *eye, Vec *up, Vec *target)
+{
+	Vec f, u, s;
+	f.x = eye->x-target->x;
+	f.y = eye->y-target->y;
+	f.z = eye->z-target->z;
+	VECNormalize(&f, &f);
+	VECCrossProduct(up, &f, &u);
+	VECNormalize(&u, &u);
+	VECCrossProduct(&f, &u, &s);
+	dest[0][0] = u.x;
+	dest[0][1] = u.y;
+	dest[0][2] = u.z;
+	dest[0][3] = 0;
+	dest[1][0] = s.x;
+	dest[1][1] = s.y;
+	dest[1][2] = s.z;
+	dest[1][3] = 0;
+	dest[2][0] = f.x;
+	dest[2][1] = f.y;
+	dest[2][2] = f.z;
+	dest[2][3] = 0;
+}
+
 float BoardArcSin(float value)
 {
 	float result;
@@ -1285,7 +1429,7 @@ float BoardArcSin(float value)
 	if(value <= (float)(M_PI/2)) {
 		result = atanf(value/(float)sqrtf(1-(value*value)));
 	} else {
-		result = 1.0f-atanf((float)sqrtf(1-(value*value))/value);
+		result = ((float)M_PI/2.0f)-atanf((float)sqrtf(1-(value*value))/value);
 	}
 	if(sign) {
 		result = BOARD_FABS(result);
@@ -1298,7 +1442,7 @@ float BoardArcCos(float value)
 	if(BOARD_FABS(value) > 1) {
 		return 0;
 	}
-	return 1.0f-BoardArcSin(value);
+	return ((float)M_PI/2.0f)-BoardArcSin(value);
 }
 
 void BoardRandInit(void)
@@ -1343,6 +1487,58 @@ s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist)
 	}
 }
 
+void BoardDAngleCalcVec(Vec *vec1)
+{
+	int i;
+	float *data = (float *)(&vec1->x);
+	for(i=0; i<3; i++) {
+		while(*data > 180.0f) {
+			*data -= 360.0f;
+		}
+		while(*data < -180.0f) {
+			*data += 360.0f;
+		}
+		data++;
+	}
+}
+
+float BoardDAngleCalc(float value)
+{
+	while(value > 180.0f) {
+		value -= 360.0f;
+	}
+	while(value < -180.0f) {
+		value += 360.0f;
+	}
+	return value;
+}
+
+s32 BoardDAngleCalcRange(float *value, float min, float range)
+{
+	float diff = min-(*value);
+	if(diff >= 180.0f) {
+		min -= 360.0f;
+	}
+	if(diff <= -180.0f) {
+		min += 360.0f;
+	}
+	if(min > *value) {
+		*value += range;
+		if(*value >= min) {
+			*value = BoardDAngleCalc(min);
+			return 1;
+		}
+	} else {
+		*value -= range;
+		if(*value <= min) {
+			*value = BoardDAngleCalc(min);
+			return 1;
+		}
+	}
+	*value = BoardDAngleCalc(*value);
+	return 0;
+}
+
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist)
 {
 	Vec temp;
@@ -1352,6 +1548,678 @@ s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist)
 		return 0;
 	} else {
 		return 1;
+	}
+}
+
+typedef struct filter_work {
+	struct {
+		u8 kill : 1;
+		u8 paused : 1;
+	};
+	u8 max_alpha;
+	s16 time;
+	s16 len;
+	s16 model;
+	GXColor color;
+	float speed;
+} FilterWork;
+
+static void UpdateFilter(omObjData *object);
+static void DrawFilter(ModelData *model, Mtx matrix);
+
+void BoardFilterFadeOut(s16 len)
+{
+	FilterWork *work;
+	float speed;
+	if(!filterObj) {
+		return;
+	}
+	if(len <= 0) {
+		len = 1;
+	}
+	work = OM_GET_WORK_PTR(filterObj, FilterWork);
+	work->len = len;
+	OSs16tof32(&len, &speed);
+	work->speed = -(work->color.a)/speed;
+	work->paused = 0;
+	work->time = work->len;
+}
+
+void BoardFilterFadeInit(s16 len, u8 max_alpha)
+{
+	FilterWork *work;
+	if(filterObj) {
+		work = OM_GET_WORK_PTR(filterObj, FilterWork);
+		work->kill = 1;
+		while(filterObj) {
+			HuPrcVSleep();
+		}
+	}
+	filterObj = omAddObjEx(boardObjMan, 32000, 0, 0, -1, UpdateFilter);
+	omSetStatBit(filterObj, OM_STAT_NOPAUSE|0x80);
+	if(len <= 0) {
+		len = 1;
+	}
+	work = OM_GET_WORK_PTR(filterObj, FilterWork);
+	work->kill = 0;
+	work->paused = 0;
+	work->color.r = 0;
+	work->color.g = 0;
+	work->color.b = 0;
+	work->color.a = 0;
+	work->max_alpha = max_alpha;
+	work->speed = (float)(max_alpha-work->color.a)/(float)len;
+	work->time = len;
+	work->len = len;
+	work->model = Hu3DHookFuncCreate(DrawFilter);
+	Hu3DModelLayerSet(work->model, 1);
+}
+
+s32 BoardFilterFadePauseCheck(void)
+{
+	FilterWork *work;
+	if(!filterObj) {
+		return 1;
+	}
+	work = OM_GET_WORK_PTR(filterObj, FilterWork);
+	return (work->paused) ? 1 : 0;
+}
+
+s32 BoardFilterFadeCheck(void)
+{
+	return (filterObj != NULL) ? 0 : 1;
+}
+
+static void UpdateFilter(omObjData *object)
+{
+	float alpha;
+	FilterWork *work = OM_GET_WORK_PTR(object, FilterWork);
+	if(work->kill || BoardIsKill()) {
+		if(work->model != -1) {
+			Hu3DModelKill(work->model);
+		}
+		filterObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	if(work->paused) {
+		return;
+	}
+	OSu8tof32(&work->color.a, &alpha);
+	alpha += work->speed;
+	OSf32tou8(&alpha, &work->color.a);
+	if(work->time > 0) {
+		work->time--;
+		return;
+	}
+	if(work->speed > 0) {
+		work->paused = 1;
+		work->color.a = work->max_alpha;
+	} else {
+		work->kill = 1;
+	}
+}
+
+static void DrawFilter(ModelData *model, Mtx matrix)
+{
+	static GXColor colorN = { 0xFF, 0xFF, 0xFF, 0xFF };
+	Mtx44 proj;
+	Mtx modelview;
+	
+	float x1, x2, y1, y2;
+	FilterWork *work;
+	if(!filterObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(filterObj, FilterWork);
+	x1 = 0.0f;
+	x2 = 640.0f;
+	y1 = 0.0f;
+	y2 = 480.0f;
+	MTXOrtho(proj, y1, y2, x1, x2, 0, 10);
+	GXSetProjection(proj, GX_ORTHOGRAPHIC);
+	MTXIdentity(modelview);
+	GXLoadPosMtxImm(modelview, GX_PNMTX0);
+	GXSetCurrentMtx(GX_PNMTX0);
+	GXSetViewport(0, 0, x2, 1.0f+y2, 0, 1);
+	GXSetScissor(0, 0, x2, 1.0f+y2);
+	GXClearVtxDesc();
+	GXSetChanMatColor(GX_COLOR0A0, work->color);
+	GXSetNumChans(1);
+	GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 0, GX_DF_NONE, GX_AF_NONE);
+	GXSetChanCtrl(GX_COLOR1A1, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 0, GX_DF_NONE, GX_AF_NONE);
+	GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+	GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+	GXSetNumTexGens(0);
+	GXSetNumTevStages(1);
+	GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+	GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_U16, 0);
+	GXSetZMode(GX_TRUE, GX_ALWAYS, GX_FALSE);
+	GXSetAlphaUpdate(GX_FALSE);
+	GXSetColorUpdate(GX_TRUE);
+	GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+	GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+	GXPosition2u16(x1, y1);
+	GXPosition2u16(x2, y1);
+	GXPosition2u16(x2, y2);
+	GXPosition2u16(x1, y2);
+	GXEnd();
+	GXSetChanMatColor(GX_COLOR0A0, colorN);
+	
+}
+
+typedef struct confetti_particle {
+	s16 time;
+	u8 alpha;
+	u8 light_col;
+	Vec pos;
+	Vec rot;
+	Vec pos_vel;
+	Vec rot_vel;
+} ConfettiParticle;
+
+typedef struct confetti_work {
+	struct {
+		u8 kill : 1;
+		u8 paused : 1;
+	};
+	s8 spawn_speed;
+	s8 time;
+	s8 delay;
+	s16 count;
+	s16 gfx_mdl;
+	s16 draw_mdl;
+	ConfettiParticle *data;
+} ConfettiWork;
+
+static void UpdateConfetti(omObjData *object);
+static void SpawnConfetti(omObjData *object);
+static void MoveConfetti(omObjData *object);
+static void DrawConfetti(ModelData *model, Mtx matrix);
+
+
+void BoardConfettiCreate(Vec *pos, s16 count, float range)
+{
+	omObjData *object;
+	ConfettiWork *work;
+	if(confettiObj) {
+		BoardConfettiStop();
+		HuPrcSleep(17);
+	}
+	object = omAddObjEx(boardObjMan, 257, 0, 0, -1, UpdateConfetti);
+	confettiObj = object;
+	work = OM_GET_WORK_PTR(object, ConfettiWork);
+	work->kill = 0;
+	work->paused = 0;
+	work->count = count;
+	work->spawn_speed = 1;
+	work->time = 0;
+	work->delay = 10;
+	work->draw_mdl = Hu3DHookFuncCreate(DrawConfetti);
+	work->data = HuMemDirectMallocNum(HEAP_SYSTEM, work->count*sizeof(ConfettiParticle), MEMORY_DEFAULT_NUM);
+	object->trans.x = pos->x;
+	object->trans.y = pos->y;
+	object->trans.z = pos->z;
+	object->rot.x = range;
+	work->gfx_mdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 7), NULL, 0);
+	BoardModelLayerSet(work->gfx_mdl, 2);
+	BoardModelVisibilitySet(work->gfx_mdl, 0);
+	{
+		ConfettiParticle *particle;
+		s32 i;
+		particle = work->data;
+		for(i=0; i<work->count; i++, particle++) {
+			particle->time = -1;
+		}
+	}
+	HuAudFXPlay(774);
+}
+
+void BoardConfettiKill(void)
+{
+	if(confettiObj) {
+		OM_GET_WORK_PTR(confettiObj, ConfettiWork)->kill = 1;
+	}
+}
+
+void BoardConfettiStop(void)
+{
+	if(confettiObj) {
+		s32 i;
+		ConfettiParticle *particle;
+		ConfettiWork *work = OM_GET_WORK_PTR(confettiObj, ConfettiWork);
+		work->paused = 1;
+		particle = work->data;
+		for(i=0; i<work->count; i++, particle++) {
+			if(particle->time != -1) { 
+				if(particle->time > 16) {
+					particle->time = 16;
+				}
+			}
+		}
+	}
+}
+
+static void UpdateConfetti(omObjData *object)
+{
+	ConfettiWork *work = OM_GET_WORK_PTR(object, ConfettiWork);
+	if(work->kill || BoardIsKill()) {
+		BoardModelKill(work->gfx_mdl);
+		Hu3DModelKill(work->draw_mdl);
+		HuMemDirectFree(work->data);
+		confettiObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+	} else {
+		SpawnConfetti(object);
+		MoveConfetti(object);
+	}
+}
+
+static void SpawnConfetti(omObjData *object)
+{
+	ConfettiWork *work = OM_GET_WORK_PTR(object, ConfettiWork);
+	int i;
+	if(work->paused) {
+		return;
+	}
+	if(work->spawn_speed < 5) {
+		if(work->time++ > work->delay) {
+			work->time = 0;
+			work->spawn_speed++;
+		}
+	}
+	for(i=0; i<work->spawn_speed; i++) {
+		ConfettiParticle *particle;
+		float angle;
+		int j;
+		particle = work->data;
+		for(j=0; j<work->count; j++, particle++) {
+			if(particle->time == -1) {
+				break;
+			}
+		}
+		if(j == work->count) {
+			break;
+		}
+		particle->time = BoardRandMod(60)+120;
+		angle = BoardRandFloat()*360.0f;
+		particle->pos.x = (sin((angle*M_PI)/180.0)*object->rot.x)+object->trans.x;
+		particle->pos.y = object->trans.y;
+		particle->pos.z = (cos((angle*M_PI)/180.0)*object->rot.x)+object->trans.z;
+		particle->pos_vel.x = 2.0f*(BoardRandFloat()-0.5f);
+		particle->pos_vel.y = (-98.00001f/15.0f)*BoardRandFloat();
+		particle->pos_vel.z = 2.0f*(BoardRandFloat()-0.5f);
+		particle->rot_vel.x = 8.0f+((BoardRandFloat()-0.5f)*20.0f);
+		particle->rot_vel.y = 8.0f+((BoardRandFloat()-0.5f)*20.0f);
+		particle->rot_vel.z = 8.0f+((BoardRandFloat()-0.5f)*20.0f);
+		particle->rot.x = 0;
+		particle->rot.y = 0;
+		particle->rot.z = 0;
+		particle->alpha = 255;
+		particle->light_col = BoardRandMod(6);
+	}
+}
+
+static void MoveConfetti(omObjData *object)
+{
+	ConfettiWork *work = OM_GET_WORK_PTR(object, ConfettiWork);
+	int i;
+	int existF;
+	ConfettiParticle *particle;
+	
+	existF = 0;
+	particle = work->data;
+	
+	for(i=0; i<work->count; i++, particle++) {
+		if(particle->time == -1) {
+			continue;
+		}
+		if(particle->time <= 0) {
+			particle->time = -1;
+			continue;
+		}
+		particle->time--;
+		particle->pos.x += particle->pos_vel.x;
+		particle->pos.y += particle->pos_vel.y;
+		particle->pos.z += particle->pos_vel.z;
+		particle->rot.x += particle->rot_vel.x;
+		particle->rot.y += particle->rot_vel.y;
+		particle->rot.z += particle->rot_vel.z;
+		if(particle->time < 16) {
+			if(particle->alpha >= 15) {
+				particle->alpha -= 15;
+			} else {
+				particle->alpha = 0;
+			}
+		}
+		if(!existF) {
+			existF = 1;
+		}
+	}
+	if(existF == 0 && work->paused) {
+		work->kill = 1;
+	}
+}
+
+static Vec confettiLightTbl[6] = {
+	{ 0.1, 0.4, 1 },
+	{ 0.2, 1, 0.1 },
+	{ 0.3, 1, 1 },
+	{ 1, 0.2, 0.1 },
+	{ 1, 0.2, 0.8 },
+	{ 1, 8, 0.3 }
+};
+
+static void DrawConfetti(ModelData *model, Mtx matrix)
+{
+	if(!confettiObj || BoardIsKill()) {
+		return;
+	} else {
+		ConfettiWork *work = OM_GET_WORK_PTR(confettiObj, ConfettiWork);
+		ModelData *model = &Hu3DData[work->gfx_mdl];
+		ConfettiParticle *particle;
+		int i;
+		if(!model->hsfData) {
+			return;
+		}
+		particle = work->data;
+		for(i=0; i<work->count; i++, particle++) {
+			Mtx result, temp;
+			float r, g, b, a;
+			if(particle->time == -1) {
+				continue;
+			}
+			MTXRotDeg(temp, 'z', particle->rot.z);
+			MTXRotDeg(result, 'x', particle->rot.x);
+			MTXConcat(temp, result, result);
+			MTXRotDeg(temp, 'y', particle->rot.y);
+			MTXConcat(temp, result, result);
+			MTXTrans(temp, particle->pos.x, particle->pos.y, particle->pos.z);
+			MTXConcat(temp, result, result);
+			MTXConcat(matrix, result, result);
+			r = confettiLightTbl[particle->light_col].x;
+			g = confettiLightTbl[particle->light_col].y;
+			b = confettiLightTbl[particle->light_col].z;
+			OSu8tof32(&particle->alpha, &a);
+			a = a*(1.0f/255.0f);
+			Hu3DModelTPLvlSet(BoardModelIDGet(work->gfx_mdl), a);
+			Hu3DModelAmbSet(BoardModelIDGet(work->gfx_mdl), r, g, b);
+			Hu3DModelObjDraw(BoardModelIDGet(work->gfx_mdl), "grid2", result);
+		}
+	}
+}
+
+typedef struct last5_gfx_work {
+	struct {
+		u8 kill : 1;
+		u8 state : 3;
+		u8 is_last : 1;
+		u8 : 4;
+	};
+	u8 stop_time;
+	s16 time;
+	s16 group;
+	s16 sprites[3];
+} Last5GfxWork;
+
+static s32 last5GfxSprTbl[3] = {
+	MAKE_DATA_NUM(DATADIR_BOARD, 95),
+	MAKE_DATA_NUM(DATADIR_BOARD, 97),
+	MAKE_DATA_NUM(DATADIR_BOARD, 96),
+};
+
+static float last5GfxPosTbl[2][3][2] = {
+	{
+		{ -80, 0 },
+		{ 0, 0 },
+		{ 80, 0 }
+	},
+	{
+		{ -52, 0 },
+		{ 0, 0 },
+		{ 52, 0 }
+	}
+};
+
+static void UpdateLast5Gfx(omObjData *object);
+
+void BoardSpriteCreate(s32 file, s16 prio, AnimData **anim, s16 *sprite);
+
+void BoardLast5GfxInit(void)
+{
+	Last5GfxWork *work;
+	omObjData *object;
+	s32 turn_remain;
+	s32 lastF;
+	turn_remain = GWSystem.max_turn-GWSystem.turn;
+	if(turn_remain > 4 || turn_remain < 0) {
+		return;
+	} else {
+		s32 i;
+		turn_remain = 4-turn_remain;
+		object = omAddObjEx(boardObjMan, 0, 0, 0, -1, UpdateLast5Gfx);
+		last5GfxObj = object;
+		work = OM_GET_WORK_PTR(object, Last5GfxWork);
+		work->kill = 0;
+		work->stop_time = 0;
+		work->time = 0;
+		work->group = HuSprGrpCreate(3);
+		if((s32)(GWSystem.max_turn-GWSystem.turn) == 0) {
+			work->is_last = 1;
+			lastF = 1;
+		} else {
+			work->is_last = 0;
+			lastF = 0;
+		}
+		for(i=0; i<3; i++) {
+			s16 prio;
+			s32 spr_file;
+			
+			if(i == 1) {
+				prio = 1000;
+			} else {
+				prio = 1400;
+			}
+			spr_file = last5GfxSprTbl[i];
+			if(i == 2 && work->is_last && GWLanguageGet() != 0) {
+				spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
+			}
+			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
+			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
+			HuSprAttrSet(work->group, i, SPIRTE_ATTR_BILINEAR);
+			HuSprPosSet(work->group, i, last5GfxPosTbl[lastF][i][0], last5GfxPosTbl[lastF][i][1]);
+		}
+		if(!work->is_last) {
+			SpriteData *sprite = &HuSprData[HuSprGrpData[work->group].members[1]];
+			HuSprBankSet(work->group, 1, 0);
+			sprite->frame = turn_remain;
+		} else {
+			HuSprAttrSet(work->group, 1, SPRITE_ATTR_HIDDEN);
+		}
+		HuSprAttrSet(work->group, 1, SPRITE_ATTR_PAUSED);
+		object->trans.x = 0.0f;
+		HuSprGrpTPLvlSet(work->group, object->trans.x);
+		HuSprGrpPosSet(work->group, 288, 72);
+		HuAudFXPlay(838);
+		work->time = 0;
+	}
+}
+
+static void UpdateLast5Gfx(omObjData *object)
+{
+	Last5GfxWork *work = OM_GET_WORK_PTR(object, Last5GfxWork);
+	if(work->kill || BoardIsKill()) {
+		HuSprGrpKill(work->group);
+		last5GfxObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	if(work->stop_time != 0) {
+		work->stop_time--;
+		return;
+	}
+	switch(work->state) {
+		case 0:
+			object->trans.x += 1.0f/30.0f;
+			if(object->trans.x > 1.0f) {
+				object->trans.x = 1.0f;
+				work->state = 1;
+			}
+			HuSprGrpTPLvlSet(work->group, object->trans.x);
+			break;
+			
+		case 1:
+			if(work->time >= 720) {
+				work->state = 2;
+				work->stop_time = 90;
+				if(work->is_last) {
+					HuSprGrpScaleSet(work->group, 1.0f, 1.0f);
+				} else {
+					HuSprScaleSet(work->group, 1, 1.0f, 1.0f);
+				}
+			} else {
+				s16 angle;
+				angle = work->time%180;
+				OSs16tof32(&angle, &object->trans.y);
+				object->trans.y = sin((object->trans.y*M_PI)/180.0)+0.5;
+				if(work->is_last) {
+					HuSprGrpScaleSet(work->group, object->trans.y, object->trans.y);
+				} else {
+					HuSprScaleSet(work->group, 1, object->trans.y, object->trans.y);
+				}
+				work->time += 9;
+			}
+			break;
+			
+		case 2:
+			object->trans.x -= 1.0f/30.0f;
+			if(object->trans.x < 0.0f) {
+				object->trans.x = 0.0f;
+				work->kill = 1;
+			}
+			HuSprGrpTPLvlSet(work->group, object->trans.x);
+			break;
+	}
+}
+
+void BoardLast5GfxShowSet(s32 show)
+{
+	s32 i;
+	Last5GfxWork *work;
+	if(!last5GfxObj) {
+		return;
+	}
+	
+	work = OM_GET_WORK_PTR(last5GfxObj, Last5GfxWork);
+	for(i=0; i<3; i++) {
+		if(show) {
+			HuSprAttrReset(work->group, i, SPRITE_ATTR_HIDDEN);
+		} else {
+			HuSprAttrSet(work->group, i, SPRITE_ATTR_HIDDEN);
+		}
+		if(work->is_last) {
+			HuSprAttrSet(work->group, 1, SPRITE_ATTR_HIDDEN);
+		}
+	}
+}
+
+static s32 tauntActiveFXTbl[4] = { -1, -1, -1, -1 };
+static s32 tauntFXTbl[8] = {
+	294,
+	358,
+	422,
+	486,
+	550,
+	614,
+	678,
+	742
+};
+
+typedef struct taunt_work {
+	u8 kill : 1;
+} TauntWork;
+
+static void TauntUpdate(omObjData *object);
+
+void BoardTauntInit(void)
+{
+	int i;
+	tauntObj = omAddObjEx(boardObjMan, 32258, 0, 0, -1, TauntUpdate);
+	for(i=0; i<4; i++) {
+		tauntActiveFXTbl[i] = -1;
+	}
+	_SetFlag(FLAG_ID_MAKE(1, 14));
+}
+
+void BoardTauntKill(void)
+{
+	TauntWork *work;
+	if(!tauntObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(tauntObj, TauntWork);
+	work->kill = 1;
+	_SetFlag(FLAG_ID_MAKE(1, 14));
+}
+
+static void TauntUpdate(omObjData *object)
+{
+	int i;
+	s32 port;
+	s32 character;
+	TauntWork *work;
+	work = OM_GET_WORK_PTR(object, TauntWork);
+	if(work->kill || BoardIsKill()) {
+		for(i=0; i<4; i++) {
+			if(tauntActiveFXTbl[i] >= 0) {
+				HuAudFXStop(tauntActiveFXTbl[i]);
+				tauntActiveFXTbl[i] = -1;
+			}
+		}
+		tauntObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	for(i=0; i<4; i++) {
+		if(tauntActiveFXTbl[i] >= 0 && HuAudFXStatusGet(tauntActiveFXTbl[i]) == 0) {
+			tauntActiveFXTbl[i] = -1;
+		}
+	}
+	if(BoardPauseActiveCheck()) {
+		return;
+	}
+	if(_CheckFlag(FLAG_ID_MAKE(1, 14))) {
+		return;
+	}
+	if(WipeStatGet() != 0) {
+		return;
+	}
+	if(GWSystem.player_curr == -1) {
+		return;
+	}
+	for(i=0; i<4; i++) {
+		
+		if(i == GWSystem.player_curr || GWPlayer[i].com) {
+			continue;
+		}
+		port = GWPlayer[i].port & 0x3;
+		character = GWPlayer[i].character & 0x7;
+		if(tauntActiveFXTbl[port] >= 0) {
+			UnkMsmStruct_01 param;
+			float vol, pan;
+			vol = (64.0f*(HuPadSubStkX[port]/59.0f))+64.0f;
+			pan = 8191.0f*(HuPadSubStkY[port]/59.0f);
+			memset(&param, 0, sizeof(UnkMsmStruct_01));
+			param.unk00 = 6;
+			OSf32tos8(&vol, &param.unk05);
+			OSf32tos16(&pan, &param.unk06);
+			msmSeSetParam(tauntActiveFXTbl[port], &param);
+		} else {
+			if(HuPadBtnDown[port] & PAD_TRIGGER_L) {
+				tauntActiveFXTbl[port] = HuAudFXPlay(tauntFXTbl[character]);
+			}
+		}
 	}
 }
 

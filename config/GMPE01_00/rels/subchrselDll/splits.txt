@@ -9,7 +9,7 @@ Sections:
 REL/executor.c:
 	.text       start:0x00000000 end:0x000000A0
 
-REL/subchrselDll/subchrselDll.c:
+REL/subchrselDll/main.c:
 	.text       start:0x000000A0 end:0x000007B8
 	.rodata     start:0x00000000 end:0x00000018
 	.data       start:0x00000000 end:0x000000E1

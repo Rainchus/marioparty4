@@ -1,4 +1,6 @@
 #include "game/audio.h"
+#include "game/esprite.h"
+#include "game/hsfdraw.h"
 #include "game/hsfman.h"
 #include "game/printfunc.h"
 #include "game/object.h"
@@ -140,7 +142,7 @@ void omOvlReturnEx(s16 level, s16 arg2)
 
 void omOvlKill(s16 arg)
 {
-    CharModelKillAll(-1);
+    CharModelKill(-1);
     MGSeqKillAll();
     Hu3DAllKill();
     HuWinAllKill();

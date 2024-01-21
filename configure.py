@@ -317,7 +317,7 @@ config.libs = [
             Object(Matching, "game/decode.c"),
             Object(Matching, "game/font.c"),
             Object(Matching, "game/init.c"),
-            Object(NonMatching, "game/jmp.c"),
+            Object(Matching, "game/jmp.c"),
             Object(Matching, "game/malloc.c"),
             Object(Matching, "game/memory.c"),
             Object(Matching, "game/printfunc.c"),
@@ -327,9 +327,9 @@ config.libs = [
             Object(Matching, "game/hsfload.c"),
             Object(NonMatching, "game/hsfdraw.c"),
             Object(Matching, "game/hsfman.c"),
-            Object(NonMatching, "game/hsfmotion.c"),
+            Object(Matching, "game/hsfmotion.c"),
             Object(Matching, "game/hsfanim.c"),
-            Object(NonMatching, "game/hsfex.c"),
+            Object(Matching, "game/hsfex.c"),
             Object(Matching, "game/perf.c"),
             Object(Matching, "game/objmain.c"),
             Object(NonMatching, "game/fault.c"),
@@ -338,13 +338,13 @@ config.libs = [
             Object(NonMatching, "game/objdll.c"),
             Object(Matching, "game/frand.c"),
             Object(Matching, "game/audio.c"),
-            Object(NonMatching, "game/EnvelopeExec.c"),
+            Object(Matching, "game/EnvelopeExec.c"),
             Object(NonMatching, "game/minigame_seq.c"),
             Object(Matching, "game/ovllist.c"),
-            Object(NonMatching, "game/esprite.c"),
+            Object(Matching, "game/esprite.c"),
             Object(NonMatching, "game/code_8003FF68.c"),
-            Object(NonMatching, "game/ClusterExec.c"),
-            Object(NonMatching, "game/ShapeExec.c"),
+            Object(Matching, "game/ClusterExec.c"),
+            Object(Matching, "game/ShapeExec.c"),
             Object(Matching, "game/wipe.c"),
             Object(Matching, "game/window.c"),
             Object(Matching, "game/messdata.c"),
@@ -352,35 +352,35 @@ config.libs = [
             Object(Matching, "game/armem.c"),
             Object(NonMatching, "game/chrman.c"),
             Object(NonMatching, "game/mapspace.c"),
-            Object(NonMatching, "game/THPSimple.c"),
-            Object(NonMatching, "game/THPDraw.c"),
-            Object(NonMatching, "game/thpmain.c"),
+            Object(Matching, "game/THPSimple.c"),
+            Object(Matching, "game/THPDraw.c"),
+            Object(Matching, "game/thpmain.c"),
             Object(NonMatching, "game/objsub.c"),
             Object(Matching, "game/flag.c"),
             Object(Matching, "game/saveload.c"),
             Object(NonMatching, "game/sreset.c"),
-            Object(NonMatching, "game/board/main.c"),
+            Object(Matching, "game/board/main.c"),
             Object(NonMatching, "game/board/player.c"),
-            Object(NonMatching, "game/board/model.c"),
+            Object(Matching, "game/board/model.c"),
             Object(Matching, "game/board/window.c"),
             Object(NonMatching, "game/board/audio.c"),
             Object(NonMatching, "game/board/com.c"),
-            Object(NonMatching, "game/board/overhead.c"),
+            Object(NonMatching, "game/board/view.c"),
             Object(NonMatching, "game/board/space.c"),
             Object(NonMatching, "game/board/shop.c"),
             Object(NonMatching, "game/board/lottery.c"),
             Object(Matching, "game/board/basic_space.c"),
             Object(Matching, "game/board/warp.c"),
-            Object(NonMatching, "game/board/char_roulette.c"),
-            Object(NonMatching, "game/board/mushroom_space.c"),
+            Object(NonMatching, "game/board/char_wheel.c"),
+            Object(NonMatching, "game/board/mushroom.c"),
             Object(NonMatching, "game/board/star.c"),
-            Object(NonMatching, "game/board/dice_roll.c"),
+            Object(NonMatching, "game/board/roll.c"),
             Object(NonMatching, "game/board/ui.c"),
-            Object(NonMatching, "game/board/hidden_block.c"),
+            Object(NonMatching, "game/board/block.c"),
             Object(NonMatching, "game/board/item.c"),
             Object(NonMatching, "game/board/bowser.c"),
             Object(NonMatching, "game/board/battle.c"),
-            Object(NonMatching, "game/board/fortune_space.c"),
+            Object(NonMatching, "game/board/fortune.c"),
             Object(NonMatching, "game/board/boo.c"),
             Object(NonMatching, "game/board/mg_setup.c"),
             Object(NonMatching, "game/board/boo_house.c"),
@@ -767,7 +767,7 @@ config.libs = [
     Rel('bootDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/bootDll/bootDll.c"),
+            Object(NonMatching, "REL/bootDll/main.c"),
             Object(Matching, "REL/bootDll/nintendo_data.c"),
         }
     ),
@@ -810,10 +810,42 @@ config.libs = [
             Object(NonMatching, "REL/m404Dll/main.c"),
         }
     ),
+    Rel('m405Dll',
+        objects = {
+            Object(NonMatching, "REL/m405Dll/main.c"),
+        }
+    ),
+    Rel('m406Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m406Dll/main.c"),
+            Object(NonMatching, "REL/m406Dll/map.c"),
+            Object(NonMatching, "REL/m406Dll/player.c"),
+        }
+    ),
+    Rel('m407dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m407dll/player.c"),
+            Object(NonMatching, "REL/m407dll/map.c"),
+            Object(NonMatching, "REL/m407dll/camera.c"),
+            Object(NonMatching, "REL/m407dll/whomp.c"),
+            Object(NonMatching, "REL/m407dll/whomp_score.c"),
+            Object(NonMatching, "REL/m407dll/effect.c"),
+            Object(NonMatching, "REL/m407dll/main.c"),
+            Object(NonMatching, "REL/m407dll/score.c"),
+        }
+    ),
     Rel('mentDll',
         objects = {
             Object(NonMatching, "REL/mentDll/common.c"),
             Object(NonMatching, "REL/mentDll/main.c"),
+        }
+    ),
+    Rel('messDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/messDll/main.c"),
         }
     ),
     Rel('mgmodedll',
@@ -846,6 +878,41 @@ config.libs = [
             Object(NonMatching, "REL/mpexDll/mgname.c"),
         }
     ),
+    Rel('mstory2Dll',
+        objects = {
+            Object(NonMatching, "REL/mstory2Dll/main.c"),
+            Object(NonMatching, "REL/mstory2Dll/board_entrance.c"),
+            Object(NonMatching, "REL/mstory2Dll/board_clear.c"),
+            Object(NonMatching, "REL/mstory2Dll/board_miss.c"),
+            Object(NonMatching, "REL/mstory2Dll/mg_clear.c"),
+            Object(NonMatching, "REL/mstory2Dll/mg_miss.c"),
+            Object(NonMatching, "REL/mstory2Dll/ending.c"),
+            Object(NonMatching, "REL/mstory2Dll/save.c"),
+        }
+    ),
+    Rel('mstory3Dll',
+        objects = {
+            Object(NonMatching, "REL/mstory3Dll/main.c"),
+            Object(NonMatching, "REL/mstory3Dll/result_seq.c"),
+            Object(NonMatching, "REL/mstory3Dll/result.c"),
+            Object(NonMatching, "REL/mstory3Dll/win_effect.c"),
+        }
+    ),
+    Rel('mstory4Dll',
+        objects = {
+            Object(NonMatching, "REL/mstory4Dll/main.c"),
+        }
+    ),
+    Rel('mstoryDll',
+        objects = {
+            Object(NonMatching, "REL/mstoryDll/main.c"),
+            Object(NonMatching, "REL/mstoryDll/board_clear.c"),
+            Object(NonMatching, "REL/mstoryDll/board_miss.c"),
+            Object(NonMatching, "REL/mstoryDll/mg_clear.c"),
+            Object(NonMatching, "REL/mstoryDll/mg_miss.c"),
+            Object(NonMatching, "REL/mstoryDll/save.c"),
+        }
+    ),
     Rel('option',
         objects = {
             Object(Matching, "REL/executor.c"),
@@ -870,22 +937,35 @@ config.libs = [
             Object(NonMatching, "REL/present/common.c"),
         }
     ),
+    Rel('resultDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/resultDll/main.c"),
+            Object(NonMatching, "REL/resultDll/battle.c"),
+            Object(NonMatching, "REL/resultDll/datalist.c"),
+        }
+    ),
+    Rel('safDll',
+        objects = {
+            Object(NonMatching, "REL/safDll/main.c"),
+        }
+    ),
     Rel('selmenuDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/selmenuDll/selmenuDll.c"),
+            Object(NonMatching, "REL/selmenuDll/main.c"),
         }
     ),
     Rel('staffDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/staffDll/staffDll.c"),
+            Object(NonMatching, "REL/staffDll/main.c"),
         }
     ),
     Rel('subchrselDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/subchrselDll/subchrselDll.c"),
+            Object(Matching, "REL/subchrselDll/main.c"),
         }
     ),
     Rel('w01Dll',
@@ -911,13 +991,46 @@ config.libs = [
     Rel('w03Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w03Dll/main.c"),
-            Object(NonMatching, "REL/w03Dll/statue.c"),
+            Object(Matching, "REL/w03Dll/main.c"),
+            Object(Matching, "REL/w03Dll/statue.c"),
             Object(NonMatching, "REL/w03Dll/condor.c"),
-            Object(NonMatching, "REL/w03Dll/river.c"),
-            Object(NonMatching, "REL/w03Dll/smoke.c"),
+            Object(Matching, "REL/w03Dll/river.c"),
+            Object(Matching, "REL/w03Dll/smoke.c"),
             Object(NonMatching, "REL/w03Dll/mg_coin.c"),
-            Object(NonMatching, "REL/w03Dll/mg_item.c"),
+            Object(Matching, "REL/w03Dll/mg_item.c"),
+        }
+    ),
+    Rel('w04Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w04Dll/main.c"),
+            Object(NonMatching, "REL/w04Dll/bridge.c"),
+            Object(NonMatching, "REL/w04Dll/boo_event.c"),
+            Object(NonMatching, "REL/w04Dll/big_boo.c"),
+            Object(NonMatching, "REL/w04Dll/mg_item.c"),
+            Object(NonMatching, "REL/w04Dll/mg_coin.c"),
+        }
+    ),
+    Rel('w05Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w05Dll/main.c"),
+            Object(NonMatching, "REL/w05Dll/hotel.c"),
+            Object(NonMatching, "REL/w05Dll/monkey.c"),
+            Object(NonMatching, "REL/w05Dll/dolphin.c"),
+            Object(NonMatching, "REL/w05Dll/mg_item.c"),
+            Object(NonMatching, "REL/w05Dll/mg_coin.c"),
+        }
+    ),
+    Rel('w05Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w06Dll/main.c"),
+            Object(NonMatching, "REL/w06Dll/mg_item.c"),
+            Object(NonMatching, "REL/w06Dll/mg_coin.c"),
+            Object(NonMatching, "REL/w06Dll/fire.c"),
+            Object(NonMatching, "REL/w06Dll/bridge.c"),
+            Object(NonMatching, "REL/w06Dll/bowser.c"),
         }
     ),
     Rel('w10Dll',
@@ -927,6 +1040,26 @@ config.libs = [
             Object(Matching, "REL/w10Dll/host.c"),
             Object(Matching, "REL/w10Dll/scene.c"),
             Object(Matching, "REL/w10Dll/tutorial.c"),
+        }
+    ),
+    Rel('w20Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w20Dll/main.c"),
+        }
+    ),
+    Rel('w21Dll',
+        objects = {
+            Object(Matching, "REL/board_executor.c"),
+            Object(NonMatching, "REL/w21Dll/main.c"),
+        }
+    ),
+    Rel('ztardll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/ztardll/main.c"),
+            Object(NonMatching, "REL/ztardll/font.c"),
+            Object(NonMatching, "REL/ztardll/select.c"),
         }
     ),
 ]

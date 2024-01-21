@@ -1,4 +1,5 @@
 #include "REL/w10Dll.h"
+#include "game/esprite.h"
 #include "game/pad.h"
 #include "game/data.h"
 #include "game/wipe.h"
@@ -152,7 +153,7 @@ void fn_1_1984(void) {
         if (i != 4) {
             lbl_1_bss_C = 1;
             OSReport(lbl_1_data_98);
-            fn_80070EE8(0, 0x1F3);
+            BoardAudSeqFadeOut(0, 0x1F3);
             BoardKill();
             BoardTutorialHookSet(NULL);
         }
@@ -181,7 +182,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
                     if (i != 4) {
                         lbl_1_bss_C = 1;
                         OSReport(lbl_1_data_98);
-                        fn_80070EE8(0, 0x1F3);
+                        BoardAudSeqFadeOut(0, 0x1F3);
                         BoardKill();
                         BoardTutorialHookSet(NULL);
                     }
@@ -197,7 +198,7 @@ int fn_1_1AAC(s16 arg0, s32 arg1) {
             lbl_1_bss_0->unk0, arg0, arg1, lbl_1_bss_0->unk4, lbl_1_bss_0->unk6);
         if (lbl_1_data_108[lbl_1_bss_0->unk0].unk0 != -1) {
             if (arg0 == 5) {
-                fn_8008831C(&lbl_1_data_C6[lbl_1_bss_0->unk4++]);
+                BoardRollTutorialSet(&lbl_1_data_C6[lbl_1_bss_0->unk4++]);
             }
             if (arg0 == lbl_1_data_108[lbl_1_bss_0->unk0].unk0) {
                 void (*temp_r3_3)() = lbl_1_data_108[lbl_1_bss_0->unk0++].unk4;

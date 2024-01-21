@@ -3,28 +3,23 @@
 
 #include "dolphin.h"
 
-void Hu3D2Dto3D(Vec*, s32, Vec*);
-void HuAudFadeOut(s32 arg0);
-
-void Hu3DModelPosSet(s16 index, float x, float y, float z);
-void Hu3DModelRotSet(s16 index, float x, float y, float z);
-void Hu3DModelScaleSet(s16 index, float x, float y, float z);
-
-void espInit(void);
-void espScaleSet(s16, f32, f32);
-s16 espEntry(s32, s32, s32);
-void espDispOff(s16);
-void espKill(s16);
-void espDispOn(s16);
-void espPosSet(s16, f32, f32);
-
-void HuAudFXListnerKill(void);
-void HuAudDllSndGrpSet(u16 ovl);
-void HuAudVoiceInit(s16 ovl);
-
 void MGSeqKillAll(void);
 
 void MGSeqPracticeStart(void);
-void fn_8004D6F4(s16 arg);
+void CharMotionClose(s16 character);
+void CharModelClose(s16 character);
+void CharModelKill(s16 character);
+s16 CharModelCreate(s16 character, s16 lod);
+s16 CharMotionCreate(s16 character, s32 data_num);
+void CharModelMotionSet(s16 character, s16 motion);
+float CharModelMotionMaxTimeGet(s16 character);
+float CharModelMotionTimeGet(s16 character);
+void CharModelMotionShiftSet(s16 model, s16 motion, float time, float shift_time, u32 attr);
+void CharModelMotionTimeSet(s16 character, float time);
+void CharModelMotionSpeedSet(s16 character, float speed);
+void CharMotionKill(s16 character, s32 motion);
+void CharModelVoiceEnableSet(s16 character, s16 motion, s32 flag);
+
+s32 CharModelMotionEndCheck(s16 character);
 
 #endif

@@ -182,7 +182,6 @@ void BoardWinPause(void) {
 
 void BoardWinCreateChoice(s32 pos, u32 mess, s32 portrait, s32 choice) {
     s32 i;
-    s32 speed;
     
 
     winPosIdx = pos;
@@ -213,13 +212,11 @@ void BoardWinCreateChoice(s32 pos, u32 mess, s32 portrait, s32 choice) {
     if (GWSystem.mess_speed == 3) {
         GWSystem.mess_speed = 1;
     }
-    speed = GWSystem.mess_speed;
-    BoardWinSpeedSet(speed);
+    BoardWinSpeedSet(GWMessSpeedGet());
     BoardWinPlayerSet(GWSystem.player_curr);
 }
 
 void BoardWinCreate(s32 pos, u32 mess, s32 portrait) {
-    s32 speed;
     s32 i;
 
     winPosIdx = pos;
@@ -250,8 +247,7 @@ void BoardWinCreate(s32 pos, u32 mess, s32 portrait) {
     if (GWSystem.mess_speed == 3) {
         GWSystem.mess_speed = 1;
     }
-    speed = GWSystem.mess_speed;
-    BoardWinSpeedSet(speed);
+    BoardWinSpeedSet(GWMessSpeedGet());
     BoardWinPlayerSet(GWSystem.player_curr);
     autoPickF = 0;
 }
@@ -281,14 +277,14 @@ void BoardWinKill(void) {
     }
 }
 
-void BoardWinSetAttr(s32 attr) {
+void BoardWinAttrSet(s32 attr) {
     winAttr |= attr;
     if (windowID >= 0) {
         HuWinAttrSet(windowID, winAttr);
     }
 }
 
-void BoardWinResetAttr(s32 attr) {
+void BoardWinAttrReset(s32 attr) {
     winAttr &= ~attr;
     if (windowID >= 0) {
         HuWinAttrSet(windowID, winAttr);
@@ -381,7 +377,7 @@ void BoardWinPlayerSet(s32 player) {
 
 void BoardWinStartComKeySet(void) {
     s32 comkey[4];
-    s32 speed;
+    s32 delay;
     s32 waitnum;
     s32 i;
 
@@ -410,12 +406,12 @@ void BoardWinStartComKeySet(void) {
             }
         }
     }
-    speed = GWMessSpeedGet();
+    delay = GWMessDelayGet();
     waitnum = HuWinKeyWaitNumGet(winMess);
     if (waitnum != 0) {
         HuWinComKeyReset();
         for (i = 0; i < waitnum; i++) {
-            HuWinComKeyWait(comkey[0], comkey[1], comkey[2], comkey[3], speed);
+            HuWinComKeyWait(comkey[0], comkey[1], comkey[2], comkey[3], delay);
         }
     }
 }
