@@ -449,3 +449,5 @@ void fn_1_10E4(omObjData* arg0) {
     }
     HuAudFXListnerUpdate(&sp14, &sp8);
 }
+
+f32 const padMain = 0.0f;

@@ -647,3 +647,5 @@ void fn_1_2B44(void) {
     GXPosition2f32(0.0f, 1.0f);
     GXSetChanMatColor(GX_COLOR0A0, sp1C);
 }
+
+f32 const padStatue = 0.0f;
