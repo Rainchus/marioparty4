@@ -58,7 +58,7 @@ void BoardTutorialBlockSetPos(s32, s32);
 s32 BoardCameraRotGet(Vec*);
 void BoardModelScaleSet(s16, f32, f32, f32);
 s32 BoardIsKill(void);
-void BoardModelMtxSet(s16, Mtx);
+void BoardModelMtxSet(s16, Mtx*);
 void BoardModelRotSet(s16, f32, f32, f32);
 
 void BoardBowserExec(s32 player, s32 space);

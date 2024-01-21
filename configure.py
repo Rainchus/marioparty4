@@ -997,7 +997,7 @@ config.libs = [
             Object(NonMatching, "REL/w03Dll/river.c"),
             Object(Matching, "REL/w03Dll/smoke.c"),
             Object(NonMatching, "REL/w03Dll/mg_coin.c"),
-            Object(NonMatching, "REL/w03Dll/mg_item.c"),
+            Object(Matching, "REL/w03Dll/mg_item.c"),
         }
     ),
     Rel('w04Dll',

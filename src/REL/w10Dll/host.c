@@ -56,7 +56,7 @@ void fn_1_C20(void) {
         BoardModelPosSetV(lbl_1_bss_1E, &sp14);
         BoardCameraRotGet(&sp8);
         PSMTXRotRad(sp20, 'y', 0.2617994f);
-        BoardModelMtxSet(lbl_1_bss_1E, sp20);
+        BoardModelMtxSet(lbl_1_bss_1E, &sp20);
         BoardModelRotSet(lbl_1_bss_1E, sp8.x, 0.0f, 0.0f);
         BoardModelScaleSet(lbl_1_bss_1E, 0.2f, 0.2f, 0.2f);
         HuPrcVSleep();        
