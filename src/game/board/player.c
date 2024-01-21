@@ -7,22 +7,16 @@
 #include "game/hsfman.h"
 #include "game/board/player.h"
 #include "game/board/main.h"
+#include "game/board/space.h"
+#include "dolphin/os/OSFastCast.h"
+#include "math.h"
 
-//// #include "game/board/space.h"
-extern s32 BoardSpaceFlagPosGet(s32, s32, u32);
-extern void BoardSpaceDirPosGet(s32, s32, Vec*);
-extern void BoardSpaceLandExec(s32, s16);
-extern s32 BoardSpaceFlagGet(s32, s16);
-extern s32 BoardSpaceHiddenBlockExec(s32, s16);
-extern void BoardSpaceLandExec(s32, s16);
-extern s32 BoardSpaceTypeGet(s32, s16);
-extern s32 BoardSpaceWalkEventExec(void);
-extern s32 BoardSpaceWalkExec(s32, s32);
-extern PlayerState* BoardSpaceGet(s32, s32);
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
 extern void BoardYourTurnExec(s32);
 extern s32 BoardItemUseExec(s32);
+//// #include "game/board/main.h"
+extern f32 BoardVecCalcDAngle(f32);
 //// #include "game/board/model.h"
 extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
@@ -70,70 +64,10 @@ extern void CharModelKillIndex(s16);
 extern void CharModelSetStepType(s16, s32);
 ////
 
-s32 BoardRollTypeGet(void);
-void BoardRollTypeSet(s32 type);
-s32 BoardPlayerGetCharMess(s32 player);
-char* BoardPlayerGetCharName(s32 player);
-s32 BoardPlayerIsAllCom(void);
-void BoardPlayerInit(void);
-void BoardPlayerModelInit(void);
-void BoardPlayerModelKill(void);
-void BoardPlayerLayerSet(s32, s32);
-void BoardPlayerCameraSet(s32, u16);
-void fn_80062A40(s32, f32);
-void BoardPlayerExistCheck(s32, s32);
-s32 BoardPlayerItemAdd(s32, s32);
-s32 BoardPlayerItemRemove(s32, s32);
-s32 BoardPlayerItemFind(s32, s32);
-s32 BoardPlayerItemCount(s32);
-void fn_80062D90(s32);
-void BoardPlayerCurrSpacePosDirGet(s32, Vec*);
-void BoardPlayerAmbSet(s32, f32, f32, f32);
-void BoardPlayerMtxSet(s32, Mtx);
-void BoardPlayerPosSetV(s32, Vec*);
-void BoardPlayerPosSet(s32, f32, f32, f32);
-void BoardPlayerPosGet(s32, Vec*);
-void BoardPlayerRotSetV(s32, Vec*);
-void BoardPlayerRotSet(s32, f32, f32, f32);
-void BoardPlayerRotGet(s32, Vec*);
-void BoardPlayerRotYSet(s32, f32);
-f32 BoardPlayerRotYGet(s32);
-void BoardPlayerScaleSetV(s32, Vec*);
-void BoardPlayerScaleSet(s32, f32, f32, f32);
-s16 BoardPlayerCurrMotionGet(s32);
-void BoardPlayerMotionCreate(s32, s32);
-void BoardPlayerMotionKill(s32, s32);
-void BoardPlayerMotionEndCheck(s32);
-void BoardPlayerMotionEndWait(s32);
-void BoardPlayerMotionStart(s32, s32, s32);
-void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
-void BoardPlayerMotionSpeedSet(s32, f32);
-void BoardPlayerMotionTimeSet(s32, f32);
-f32 BoardPlayerMotionTimeGet(s32);
-f32 BoardPlayerMotionMaxTimeGet(s32);
-void BoardPlayerMotionTimeRangeSet(s32, f32, f32);
-void BoardPlayerModelAttrSet(s32, s32);
-void BoardPlayerModelAttrReset(s32, s32);
-void BoardPlayerCoinsSet(s32, s32);
-s32 BoardPlayerCoinsGet(s32);
-void BoardPlayerCoinsAdd(s32, s32);
-void BoardPlayerStarsAdd(s32, s32);
-void BoardPlayerSizeSet(s32, s32);
-s32 BoardPlayerSizeGet(s32);
-s32 BoardPlayerSameTeamFind(s32);
-s32 BoardPlayerTeamFind(s32);
-s32 BoardPlayerRankCalc(s32);
-void BoardPlayerPreTurnHookSet(s32, s32 (*)());
-void BoardPlayerPostTurnHookSet(s32, s32 (*)());
-void BoardPlayerTurnExec(s32);
-void BoardPlayerTurnRollExec(s32);
-void BoardPlayerTurnMoveExec(s32);
-void BoardPlayerPostTurnHookExec(s32);
-void BoardPlayerSizeRestore(s32);
-void BoardPlayerZoomRestore(s32);
-void BoardJunctionMaskSet(s32);
-void BoardJunctionMaskReset(s32);
-void BoardJunctionMaskZero(void);
+static void UpdateJunctionGfx(omObjData*);
+static void StopJunctionPlayer(s32);
+static void RestoreJunction(f32, s32);
+static s32 GetDefaultDirection(f32, f32*, s32);
 //...
 s32 BoardPlayerAutoSizeGet(s32);
 void BoardPlayerAutoSizeSet(s32, s32);
@@ -149,6 +83,20 @@ s32 DoSparkSpace(s32, s16*);
 s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
 s32 BoardPlayerAnimBlendCheck(s32);
+
+typedef struct bitcopy {
+    struct {
+        u8 field00_bit0 : 1;
+        u8 field00_bit1 : 2;
+        u8 field00_bit3 : 2;
+        u8 field00_bit5 : 2;
+        u8 field00_bit7 : 1;
+    };
+    u8 unk_01;
+    s16 unk_02;
+    s16 unk_04;
+    s16 unk_06[6];
+} bitcopy;
 
 static HsfMaterial *playerMatCopy[4];
 static s32 (*postTurnHook[4])();
@@ -668,14 +616,14 @@ void BoardPlayerSizeSet(s32 arg0, s32 arg1) {
     BoardModelScaleSetV(BoardPlayerModelGet(arg0), &temp_r4[arg1]);
 }
 
-s32 BoardPlayerSizeGet(s32 arg0) {
-    PlayerState* temp_r30;
+s32 BoardPlayerSizeGet(s32 idx) {
+    PlayerState* player;
 
-    temp_r30 = BoardPlayerGet(arg0);
-    if (temp_r30 != 0) {
-        arg0 = temp_r30->size;
+    player = BoardPlayerGet(idx);
+    if(!player) {
+        return;
     }
-    return arg0;
+    return player->size;
 }
 
 s32 BoardPlayerSameTeamFind(s32 arg0) {
@@ -989,6 +937,248 @@ void BoardJunctionMaskReset(s32 arg0) {
 
 void BoardJunctionMaskZero(void) {
     junctionMask = 0;
+}
+
+static inline u32 BoardJunctionMaskGet(void) {
+    return junctionMask;
+}
+
+static inline GetLinkCount(s32 playerIdx, s32 boardIdx) {
+    s32 i;
+    s32 linkCount;
+    BoardSpace* boardSpaceLink;
+    BoardSpace* boardSpaceFlag;
+    PlayerState* player;
+    s32 color;
+    s32 temp;
+
+    linkCount = 0;
+    boardSpaceLink = BoardSpaceGet(0, boardIdx);
+    
+    if (boardSpaceLink->link_cnt <= 1) {
+        return 0;
+    }
+    linkCount = boardSpaceLink->link_cnt;
+    for (i = 0; i < boardSpaceLink->link_cnt; i++) {
+        boardSpaceFlag = BoardSpaceGet(0, boardSpaceLink->link[i]);
+        if (((boardSpaceFlag->flag & 0x20000000) != 0 && (BoardPlayerSizeGet(playerIdx) != 1))
+            || ((boardSpaceFlag->flag & 0x02000000) != 0)
+            || ((boardSpaceFlag->flag & 0x04000000) != 0)
+            || ((boardSpaceFlag->flag & BoardJunctionMaskGet()) != 0)) {
+            
+            linkCount -= 1;
+        }
+    }
+    return linkCount;
+}
+
+void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
+    Point3d sp68;
+    Point3d sp5C;
+    Point3d sp50;
+    Point3d sp44;
+    f32 sp40;
+    f32 sp3C;
+    s32 sp38;
+    s16 sp20;
+    s16 spE;
+    BoardSpace* temp_r26;
+    BoardSpace* temp_r25;
+    f32 var_f27;
+    f32 var_f28;
+    f32 var_f29;
+    omObjData* var_r28;
+    s32 var_r20;
+    bitcopy* temp_r29;
+    s32 var_r27;
+    s32 var_r22;
+    f32 angle;
+
+    if (junctionObj == 0) {
+        for (var_r20 = 0; var_r20 < 4; var_r20++) {
+            junctionArrowRot[var_r20] = -1;
+        }
+        
+        sp38 = GetLinkCount(arg0, arg1);
+        if (sp38 > 1) {
+            var_r28 = omAddObjEx(boardObjMan, 0x100, 0, 0, -1, UpdateJunctionGfx);
+            junctionObj = var_r28;
+            temp_r29 = (bitcopy*) var_r28->work;
+            temp_r29->field00_bit0 = 0;
+            temp_r29->field00_bit7 = 0;
+            temp_r29->field00_bit1 = arg0;
+            temp_r29->unk_02 = 0;
+            temp_r29->field00_bit5 = 0;
+            temp_r29->unk_01 = 0;
+            var_r28->scale.x = var_r28->scale.y = var_r28->scale.z = 3.0f;
+            HuWinMesMaxSizeGet(1, &sp3C, 0x90003);
+            var_f27 = 304.0f;
+            var_f28 = -10000.0f;
+            temp_r29->unk_04 = HuWinCreate(var_f27, var_f28, sp3C, sp40, 0);
+            HuWinBGTPLvlSet(temp_r29->unk_04, 0.0f);
+            HuWinMesSpeedSet(temp_r29->unk_04, 0);
+            HuWinMesSet(temp_r29->unk_04, 0x90003);
+            if (_CheckFlag(0x1000BU) != 0) {
+                HuWinDispOff(temp_r29->unk_04);
+            }
+            temp_r26 = BoardSpaceGet(0, arg1);
+            BoardSpacePosGet(0, arg1, &sp68);
+            spE = BoardPlayerSizeGet(arg0);
+            
+            for (var_r27 = 0, var_r22 = var_r27; var_r22 < temp_r26->link_cnt; var_r22++) {
+                if (temp_r26->link[var_r22] != 0) {
+                    temp_r25 = BoardSpaceGet(0, temp_r26->link[var_r22]);
+                    if (((((temp_r25->flag & 0x20000000) == 0) != 0) || (spE == 1)) && ((temp_r25->flag & 0x02000000) == 0) && ((temp_r25->flag & 0x04000000) == 0)) {
+                        if ((temp_r25->flag & BoardJunctionMaskGet()) == 0) {
+                            BoardSpacePosGet(0, temp_r26->link[var_r22], &sp50);
+                            PSVECSubtract(&sp50, &sp68, &sp44);
+                            PSVECNormalize(&sp44, &sp44);
+                            
+                            angle = (180.0 * (atan2(sp44.x, sp44.z) / M_PI));
+                            if (angle < 0.0f) {
+                                angle += 360.0f;
+                            }
+                            if (angle > 360.0f) {
+                                angle -= 360.0f;
+                            }
+                            
+                            OSf32tos16(&angle, &sp20);
+                            sp20 = ((sp20 + 0x16) / 45) * 0x2D;;
+                            junctionArrowRot[var_r27] = sp20;
+                            var_f29 = 0.0f;
+                            if (sp20 == 0) {
+                                var_f29 = 100.0f;
+                            } else if ((sp20 == 0xB4) && ((spE == 2) || (GWPlayer[arg0].bowser_suit != 0))) {
+                                var_f29 = -100.0f;
+                            }
+                            temp_r29->unk_06[var_r27] = BoardModelCreate(0x70000, NULL, 1);
+                            BoardModelRotSet(temp_r29->unk_06[var_r27], 0.0f, angle, 0.0f);
+                            BoardModelLayerSet(temp_r29->unk_06[var_r27], 6);
+                            sp5C.x = sp68.x + (100.0 * sin((M_PI * angle) / 180.0));
+                            sp5C.y = 300.0f + sp68.y;
+                            sp5C.z = (var_f29 + (sp68.z + (100.0 * cos((M_PI * angle) / 180.0))));
+                            BoardModelPosSetV(temp_r29->unk_06[var_r27], &sp5C);
+                            BoardModelScaleSet(temp_r29->unk_06[var_r27], var_r28->scale.x, var_r28->scale.y, var_r28->scale.z);
+                            var_r27++;
+                        }
+                    }
+                }
+            }
+            temp_r29->field00_bit3 = var_r27;
+            if (-1.0f != arg8) {
+                RestoreJunction(arg8, 0);
+            }
+        }
+    }
+    return;
+}
+
+static void UpdateJunctionGfx(omObjData* arg0) {
+    s32 var_r28;
+    bitcopy* temp_r30;
+
+    temp_r30 = (bitcopy*)arg0->work;
+    if ((temp_r30->field00_bit0 != 0) || (BoardIsKill() != 0)) {
+        for (var_r28 = 0; var_r28 < temp_r30->field00_bit3; var_r28++) {
+            BoardModelKill(temp_r30->unk_06[var_r28]);
+        }
+        HuWinKill(temp_r30->unk_04);
+        junctionObj = NULL;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        return;
+    }
+    if (temp_r30->unk_01 != 0) {
+        temp_r30->unk_01--;
+    } else if (temp_r30->field00_bit7 != 0) {
+        temp_r30->field00_bit0 = 1;
+    }
+    temp_r30->unk_02 += 8;
+    if (temp_r30->unk_02 > 0xB4) {
+        temp_r30->unk_02 -= 0xB4;
+    }
+    OSs16tof32(&temp_r30->unk_02, &arg0->scale.x);
+    arg0->scale.x = 3.0 + sin((M_PI * arg0->scale.x) / 180.0);
+    arg0->scale.y = arg0->scale.x;
+    arg0->scale.z = arg0->scale.x;
+    BoardModelScaleSet(temp_r30->unk_06[temp_r30->field00_bit5], arg0->scale.x, arg0->scale.y, arg0->scale.z);
+}
+
+static void StopJunctionPlayer(s32 arg0) {
+    bitcopy* temp_r31;
+
+    if (junctionObj != 0) {
+        temp_r31 = (bitcopy*)junctionObj->work;
+        temp_r31->field00_bit7 = 1;
+        temp_r31->unk_01 = 0;
+        if (arg0 != 0) {
+            HuAudFXPlay(2);
+        }
+        HuPrcSleep(0xA);
+    }
+}
+
+static void RestoreJunction(f32 arg8, s32 arg0) {
+    Point3d sp1C;
+    f32 spC[4];
+    s16 var_r30;
+    s16 temp_r29;
+    bitcopy* temp_r31;
+
+    if (junctionObj != 0) {
+        temp_r31 = (bitcopy*) junctionObj->work;
+        if (temp_r31->unk_01 == 0) {
+            arg8 = 90.0f * (((90.0f + arg8) - 1.0f) / 90.0f);
+            
+            for (var_r30 = 0; var_r30 < temp_r31->field00_bit3; var_r30++) {
+                BoardModelRotGet(temp_r31->unk_06[var_r30], &sp1C);
+                spC[var_r30] = 90.0f * (((90.0f + sp1C.y) - 1.0f) / 90.0f);
+            }
+            
+            for (;var_r30 < 4; var_r30++) {
+                spC[var_r30] = -999.0f;
+            }
+            
+            temp_r29 = GetDefaultDirection(arg8, spC, temp_r31->field00_bit3);
+            if ((temp_r29 != -1) && (temp_r31->field00_bit5 != temp_r29)) {
+                temp_r31->field00_bit5 = temp_r29;
+                if (arg0 != 0) {
+                    HuAudFXPlay(0);
+                }
+                temp_r31->unk_01 = 0x14U;
+            }
+        }
+    }
+}
+
+static inline f32 BoardAbsAngle(f32 startA, f32 endA) {
+    if (BoardVecCalcDAngle(startA - endA) < 0.0f) {
+        return -BoardVecCalcDAngle(startA - endA);
+    } else {
+        return BoardVecCalcDAngle(startA - endA);
+    }
+}
+
+static s32 GetDefaultDirection(f32 arg0, f32* arg1, s32 arg2) {
+    f32 temp_f1;
+    f32 temp_f30;
+    f32 var_f27;
+    f32 var_f28;
+    s32 var_r30;
+    s32 var_r31;
+
+    temp_f30 = BoardVecCalcDAngle(arg0);
+    var_f28 = 999.0f;
+    
+    for (var_r31 = 0, var_r30 = var_r31; var_r31 < arg2; var_r31++) {
+        temp_f1 = BoardVecCalcDAngle(arg1[var_r31]);
+        var_f27 = BoardAbsAngle(temp_f1, temp_f30);
+        
+        if (var_f27 < var_f28) {
+            var_f28 = var_f27;
+            var_r30 = var_r31;
+        }
+    }
+    return var_r30;
 }
 
 // ...

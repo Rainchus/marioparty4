@@ -6,7 +6,6 @@
 void BoardCameraTargetModelSet(s16 model); 
 void BoardCameraMotionStartEx(s16, Vec *, Vec *, f32, f32, s16); 
 void BoardCameraMotionWait(void);
-void BoardSpacePosGet(s32, s32, Vec*);
 void fn_8007A360(s32);
 void fn_8007F894(void);
 s16 BoardStarHostMdlGet(void);
@@ -34,10 +33,6 @@ void BoardModelPosSetV(s16, Vec*);
 void BoardModelPosSet(s16, f32, f32, f32);
 void BoardModelRotSetV(s16 arg0, Vec* arg1);
 void BoardModelVisibilitySet(s16, s32);
-void BoardSpaceWalkEventFuncSet(void*);
-void BoardSpaceWalkMiniEventFuncSet(void*);
-void BoardSpaceLandEventFuncSet(void*);
-s32 BoardSpaceFlagSearch(s32, s32);
 void BoardSpaceInit(s32);
 void BoardSpaceDestroy(void);
 void fn_80077AAC(s16);
