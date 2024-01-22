@@ -1,4 +1,5 @@
 #include "REL/board_executor.h"
+#include "rel_sqrt_consts.h"
 
 static void InitBoard(void) {
     BoardCommonInit(BoardCreate, BoardDestroy);
