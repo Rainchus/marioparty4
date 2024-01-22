@@ -44,7 +44,7 @@ typedef struct someBits2 {
     s8 unk1;
     s8 unk2;
     u8 unk3[3];
-    s16 unk_06[3];
+    s16 unk_06[4];
 } someBits2;
 
 typedef struct w03UnkMG {
@@ -338,7 +338,7 @@ void fn_1_A44C(s32 arg0) {
     s32 temp_r28;
 
     BoardMusStart(1, 0x17, 0x7F, 0);
-    temp_r30 = MGSeqCreate(3, 0U);
+    temp_r30 = MGSeqCreate(3, 0);
     while (MGSeqGetStat(temp_r30) != 0) {
         HuPrcVSleep();
     }
