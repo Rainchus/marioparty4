@@ -17,7 +17,7 @@ s32 BoardModelMotionStart(s16, s32, s32);
 void fn_8005B150(void*, void*);
 void fn_1_740(void);
 void fn_1_E0(void);
-void fn_1_2930(void);
+s32 fn_1_2930(s32 arg0);
 void fn_1_884(void);
 void fn_1_8F0(void);
 s32 fn_1_910(void);
