@@ -36,7 +36,7 @@ extern void BoardModelScaleSetV(s16, Vec*);
 extern void BoardModelScaleSet(s16, f32, f32, f32);
 extern void BoardModelScaleGet(s16, s32*);
 extern void BoardModelVoiceEnableSet(s16, s32, s32);
-extern void BoardModelMotionCreate(s16, s32);
+extern s32 BoardModelMotionCreate(s16, s32);
 extern void BoardModelMotionKill(s16, s32);
 extern s32 BoardModelMotionEndCheck(s16);
 extern s32 BoardModelMotionStart(s16, s32, s32);
