@@ -12,6 +12,7 @@
 #include "game/thpmain.h"
 #include "game/msm.h"
 #include "math.h"
+#include "rel_sqrt_consts.h"
 
 #define HU_PAD_BTN_ALL (HuPadBtn[0] | HuPadBtn[1] | HuPadBtn[2] | HuPadBtn[3])
 #define HU_PAD_BTNDOWN_ALL (HuPadBtnDown[0] | HuPadBtnDown[1] | HuPadBtnDown[2] | HuPadBtnDown[3])
@@ -386,60 +387,62 @@ void fn_1_1178(void)
 	}
 }
 
-//NON_MATCHING, only one in file
 void fn_1_152C(void) {
-    Point3d temp_f0;
-    Point3d temp_f0_4;
-    Point3d temp_f0_7;
-    Point3d sp8;
+    Vec pos;
+    Vec offset;
+    Vec dir;
+    Vec y_offset;
     
-    f32 temp_f31;
-    s32 var_r30;
-    s8 temp_r31;
+    f32 z_rot;
+    s8 stick_pos;
 
     if ((HuPadBtnDown[0] & 0x800)) {
-        if (lbl_1_bss_0 != 0) {
-            var_r30 = 0;
-        } else {
-            var_r30 = 1;
-        }
-        lbl_1_bss_0 = var_r30;
+        lbl_1_bss_0 = (lbl_1_bss_0) ? 0 : 1;
     }
     if (lbl_1_bss_0 != 0) {
-        lbl_1_bss_3C->y += 0.1f * HuPadStkX[0];
-        lbl_1_bss_3C->x += 0.1f * HuPadStkY[0];
-        *lbl_1_bss_1C += HuPadTrigL[0] / 2;
-        *lbl_1_bss_1C -= HuPadTrigR[0] / 2;
-        if (*lbl_1_bss_1C < 100.0f) {
-            *lbl_1_bss_1C = 100.0f;
+        lbl_1_bss_3C[0].y += 0.1f * HuPadStkX[0];
+        lbl_1_bss_3C[0].x += 0.1f * HuPadStkY[0];
+        lbl_1_bss_1C[0] += HuPadTrigL[0] / 2;
+        lbl_1_bss_1C[0] -= HuPadTrigR[0] / 2;
+        if (lbl_1_bss_1C[0] < 100.0f) {
+            lbl_1_bss_1C[0] = 100.0f;
         }
-        temp_f0.x = lbl_1_bss_24->x + (*lbl_1_bss_1C * (sin((M_PI * lbl_1_bss_3C->y) / 180.0) * cos((M_PI * lbl_1_bss_3C->x) / 180.0)));
-        temp_f0.y = (lbl_1_bss_24->y + (*lbl_1_bss_1C * -sin((M_PI * lbl_1_bss_3C->x) / 180.0)));
-        temp_f0.z = (lbl_1_bss_24->z + (*lbl_1_bss_1C * (cos((M_PI * lbl_1_bss_3C->y) / 180.0) * cos((M_PI * lbl_1_bss_3C->x) / 180.0))));
-        temp_f0_4.x = lbl_1_bss_24->x - temp_f0.x;
-        temp_f0_4.y = lbl_1_bss_24->y - temp_f0.y;
-        temp_f0_4.z = lbl_1_bss_24->z - temp_f0.z;
-        temp_f0_7.x = (sin((M_PI * lbl_1_bss_3C->y) / 180.0) * sin((M_PI * lbl_1_bss_3C->x) / 180.0));
-        temp_f0_7.y = cos((M_PI * lbl_1_bss_3C->x) / 180.0);
-        temp_f0_7.z = (cos((M_PI * lbl_1_bss_3C->y) / 180.0) * sin((M_PI * lbl_1_bss_3C->x) / 180.0));
-        temp_f31 = lbl_1_bss_3C->z;
-        sp8.x = ((temp_f0_7.x * ((temp_f0_4.x * temp_f0_4.x) + ((1.0f - (temp_f0_4.x * temp_f0_4.x)) * cos((M_PI * temp_f31) / 180.0)))) + temp_f0_7.y * (((temp_f0_4.x * temp_f0_4.y) * (1.0 - cos((M_PI * temp_f31) / 180.0))) - temp_f0_4.z * sin((M_PI * temp_f31) / 180.0)) + temp_f0_7.z * (((temp_f0_4.x * temp_f0_4.z) * (1.0 - cos((M_PI * temp_f31) / 180.0))) + temp_f0_4.y * sin((M_PI * temp_f31) / 180.0)));
-        sp8.y = ((temp_f0_7.y * ((temp_f0_4.y * temp_f0_4.y) + ((1.0f - (temp_f0_4.y * temp_f0_4.y)) * cos((M_PI * temp_f31) / 180.0)))) + temp_f0_7.x * (((temp_f0_4.x * temp_f0_4.y) * (1.0 - cos((M_PI * temp_f31) / 180.0))) + temp_f0_4.z * sin((M_PI * temp_f31) / 180.0)) + temp_f0_7.z * (((temp_f0_4.y * temp_f0_4.z) * (1.0 - cos((M_PI * temp_f31) / 180.0))) - temp_f0_4.x * sin((M_PI * temp_f31) / 180.0)));
-        sp8.z = ((temp_f0_7.z * (temp_f0_4.z * temp_f0_4.z + ((1.0f - (temp_f0_4.z * temp_f0_4.z)) * cos((M_PI * temp_f31) / 180.0)))) + (temp_f0_7.x * (((temp_f0_4.x * temp_f0_4.z) * (1.0 - cos((M_PI * temp_f31) / 180.0))) - temp_f0_4.y * sin((M_PI * temp_f31) / 180.0))) + temp_f0_7.y * (((temp_f0_4.y * temp_f0_4.z) * (1.0 - cos((M_PI * temp_f31) / 180.0))) + temp_f0_4.x * sin((M_PI * temp_f31) / 180.0)));
-        PSVECCrossProduct(&temp_f0_7, &temp_f0_4, &temp_f0_4);
-        PSVECNormalize(&temp_f0_4, &temp_f0_4);
-        temp_r31 = (HuPadSubStkX[0] & 0xF8);
-        if (temp_r31 != 0) {
-            lbl_1_bss_24->x += 0.05f * (temp_f0_4.x * temp_r31);
-            lbl_1_bss_24->y += 0.05f * (temp_f0_4.y * temp_r31);
-            lbl_1_bss_24->z += 0.05f * (temp_f0_4.z * temp_r31);
+        pos.x = lbl_1_bss_24[0].x + (lbl_1_bss_1C[0] * (sin((M_PI * lbl_1_bss_3C[0].y) / 180.0) * cos((M_PI * lbl_1_bss_3C[0].x) / 180.0)));
+        pos.y = (lbl_1_bss_24[0].y + (lbl_1_bss_1C[0] * -sin((M_PI * lbl_1_bss_3C[0].x) / 180.0)));
+        pos.z = (lbl_1_bss_24[0].z + (lbl_1_bss_1C[0] * (cos((M_PI * lbl_1_bss_3C[0].y) / 180.0) * cos((M_PI * lbl_1_bss_3C[0].x) / 180.0))));
+        offset.x = lbl_1_bss_24[0].x - pos.x;
+        offset.y = lbl_1_bss_24[0].y - pos.y;
+        offset.z = lbl_1_bss_24[0].z - pos.z;
+        dir.x = (sin((M_PI * lbl_1_bss_3C[0].y) / 180.0) * sin((M_PI * lbl_1_bss_3C[0].x) / 180.0));
+        dir.y = cos((M_PI * lbl_1_bss_3C[0].x) / 180.0);
+        dir.z = (cos((M_PI * lbl_1_bss_3C[0].y) / 180.0) * sin((M_PI * lbl_1_bss_3C[0].x) / 180.0));
+        z_rot = lbl_1_bss_3C[0].z;
+        y_offset.x = dir.x * (offset.x * offset.x + (1.0f - offset.x * offset.x) * cos((M_PI * z_rot) / 180.0))
+              + dir.y * (offset.x * offset.y * (1.0f - cos((M_PI * z_rot) / 180.0)) - offset.z * sin((M_PI * z_rot) / 180.0))
+              + dir.z * (offset.x * offset.z * (1.0f - cos((M_PI * z_rot) / 180.0)) + offset.y * sin((M_PI * z_rot) / 180.0));
+
+        y_offset.y = dir.y * (offset.y * offset.y + (1.0f - offset.y * offset.y) * cos((M_PI * z_rot) / 180.0))
+              + dir.x * (offset.x * offset.y * (1.0f - cos((M_PI * z_rot) / 180.0)) + offset.z * sin((M_PI * z_rot) / 180.0))
+              + dir.z * (offset.y * offset.z * (1.0f - cos((M_PI * z_rot) / 180.0)) - offset.x * sin((M_PI * z_rot) / 180.0));
+        
+        y_offset.z = dir.z * (offset.z * offset.z + (1.0f - offset.z * offset.z) * cos((M_PI * z_rot) / 180.0))
+                      + (dir.x * (offset.x * offset.z * (1.0 - cos((M_PI * z_rot) / 180.0)) - offset.y * sin((M_PI * z_rot) / 180.0))
+                      + dir.y * (offset.y * offset.z * (1.0 - cos((M_PI * z_rot) / 180.0)) + offset.x * sin((M_PI * z_rot) / 180.0)));
+
+        PSVECCrossProduct(&dir, &offset, &offset);
+        PSVECNormalize(&offset, &offset);
+        stick_pos = (HuPadSubStkX[0] & 0xF8);
+        if (stick_pos != 0) {
+            lbl_1_bss_24[0].x += 0.05f * (offset.x * stick_pos);
+            lbl_1_bss_24[0].y += 0.05f * (offset.y * stick_pos);
+            lbl_1_bss_24[0].z += 0.05f * (offset.z * stick_pos);
         }
-        PSVECNormalize(&sp8, &temp_f0_4);
-        temp_r31 = -(HuPadSubStkY[0] & 0xF8);
-        if (temp_r31 != 0) {
-            lbl_1_bss_24->x += 0.05f * (temp_f0_4.x * temp_r31);
-            lbl_1_bss_24->y += 0.05f * (temp_f0_4.y * temp_r31);
-            lbl_1_bss_24->z += 0.05f * (temp_f0_4.z * temp_r31);
+        PSVECNormalize(&y_offset, &offset);
+        stick_pos = -(HuPadSubStkY[0] & 0xF8);
+        if (stick_pos != 0) {
+            lbl_1_bss_24[0].x += 0.05f * (offset.x * stick_pos);
+            lbl_1_bss_24[0].y += 0.05f * (offset.y * stick_pos);
+            lbl_1_bss_24[0].z += 0.05f * (offset.z * stick_pos);
         }
     }
 }
@@ -488,13 +491,13 @@ static BOOL TitleProc(void)
 {
 	float scale;
 	float scale_time;
-	s32 sp8[32];
+	s32 y_offset[32];
 	s16 i;
 	Hu3DModelAttrReset(titleModel[0], 1);
 	Hu3DModelAttrReset(titleModel[1], 1);
 	HuSprAttrReset(titleGroup, 0, SPRITE_ATTR_HIDDEN);
 	HuSprAttrReset(titleGroup, 1, SPRITE_ATTR_HIDDEN);
-	OSReport(">>>>>>>>MSM_SE_SEL_01 %d\n", msmSeGetEntryID(2092, sp8));
+	OSReport(">>>>>>>>MSM_SE_SEL_01 %d\n", msmSeGetEntryID(2092, y_offset));
 	OSReport(">>>>>>>>SE Num %d\n", msmSeGetNumPlay(0));
 	HuAudSStreamPlay(20);
 	WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
@@ -541,6 +544,7 @@ static BOOL TitleProc(void)
 	HuSprAttrSet(titleGroup, 1, SPRITE_ATTR_HIDDEN);
 	HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN);
 	HuSprAttrSet(titleGroup, 3, SPRITE_ATTR_HIDDEN);
-	fn_1_152C();
 	return 0;
 }
+
+char data_pad[] = "\0\0\0\0\0\0\0";

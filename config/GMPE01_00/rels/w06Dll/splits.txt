@@ -8,10 +8,11 @@ Sections:
 
 REL/board_executor.c:
 	.text       start:0x00000000 end:0x000000E0
+	.rodata     start:0x00000000 end:0x00000010
 
 REL/w06Dll/main.c:
 	.text       start:0x000000E0 end:0x00000D70
-	.rodata     start:0x00000000 end:0x00000040
+	.rodata     start:0x00000010 end:0x00000040
 	.data       start:0x00000000 end:0x000001A8
 	.bss        start:0x00000000 end:0x00000018
 

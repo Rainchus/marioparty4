@@ -7,7 +7,7 @@
 #include "game/board/space.h"
 #include "game/object.h"
 #include "game/board/player.h"
-// #include "math.h"
+#include "math.h"
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 #include "dolphin/os/OSFastCast.h"
@@ -44,7 +44,7 @@ typedef struct someBits2 {
     s8 unk1;
     s8 unk2;
     u8 unk3[3];
-    s16 unk_06[3];
+    s16 unk_06[4];
 } someBits2;
 
 typedef struct w03UnkMG {
@@ -338,7 +338,7 @@ void fn_1_A44C(s32 arg0) {
     s32 temp_r28;
 
     BoardMusStart(1, 0x17, 0x7F, 0);
-    temp_r30 = MGSeqCreate(3, 0U);
+    temp_r30 = MGSeqCreate(3, 0);
     while (MGSeqGetStat(temp_r30) != 0) {
         HuPrcVSleep();
     }
@@ -789,8 +789,7 @@ void fn_1_B748(omObjData* arg0, someBits2* arg1) {
     }
 
     if (arg1->unk1 < 90) {
-        f32 temp;
-        temp_f0 = __OSu8tof32((u8*)&arg1->unk1);
+        OSu8tof32((u8*)&arg1->unk1, &temp_f0);
         BoardModelPosGet(temp_r29, &sp8);
         sp8.y += arg0->trans.y;
         BoardModelPosSetV(temp_r29, &sp8);

@@ -767,7 +767,7 @@ config.libs = [
     Rel('bootDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/bootDll/main.c"),
+            Object(Matching, "REL/bootDll/main.c"),
             Object(Matching, "REL/bootDll/nintendo_data.c"),
         }
     ),

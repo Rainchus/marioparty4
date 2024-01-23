@@ -25,7 +25,7 @@ extern void BoardModelScaleSetV(s16, Vec*);
 extern void BoardModelScaleSet(s16, f32, f32, f32);
 extern void BoardModelScaleGet(s16, s32*);
 extern void BoardModelVoiceEnableSet(s16, s32, s32);
-extern void BoardModelMotionCreate(s16, s32);
+extern s32 BoardModelMotionCreate(s16, s32);
 extern void BoardModelMotionKill(s16, s32);
 extern s32 BoardModelMotionEndCheck(s16);
 extern s32 BoardModelMotionStart(s16, s32, s32);
@@ -550,16 +550,16 @@ void BoardPlayerVoiceEnableSet(s32 arg0, s32 arg1, s32 arg2) {
     BoardModelVoiceEnableSet(BoardPlayerModelGet(arg0), arg1, arg2);
 }
 
-void BoardPlayerMotionCreate(s32 arg0, s32 arg1) {
-    BoardModelMotionCreate(BoardPlayerModelGet(arg0), arg1);
+s32 BoardPlayerMotionCreate(s32 arg0, s32 arg1) {
+    return BoardModelMotionCreate(BoardPlayerModelGet(arg0), arg1);
 }
 
 void BoardPlayerMotionKill(s32 arg0, s32 arg1) {
     BoardModelMotionKill(BoardPlayerModelGet(arg0), arg1);
 }
 
-void BoardPlayerMotionEndCheck(s32 arg0) {
-    BoardModelMotionEndCheck(BoardPlayerModelGet(arg0));
+s32 BoardPlayerMotionEndCheck(s32 arg0) {
+    return BoardModelMotionEndCheck(BoardPlayerModelGet(arg0));
 }
 
 void BoardPlayerMotionEndWait(s32 arg0) {
