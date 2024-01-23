@@ -1,7 +1,18 @@
 #ifndef _BOARD_PLAYER_H
 #define _BOARD_PLAYER_H
 
+#include "math.h"
+#include "board_unsplit.h"
+#include "dolphin/os/OSFastCast.h"
 #include "game/gamework_data.h"
+#include "game/gamework.h"
+#include "game/window.h"
+#include "game/object.h"
+#include "game/process.h"
+#include "game/hsfman.h"
+#include "game/gamework_data.h"
+#include "game/board/main.h"
+#include "game/board/space.h"
 
 extern s16 boardPlayerMdl[4];
 

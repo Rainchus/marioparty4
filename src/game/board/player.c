@@ -1,15 +1,4 @@
-#include "board_unsplit.h"
-#include "game/gamework_data.h"
-#include "game/gamework.h"
-#include "game/window.h"
-#include "game/object.h"
-#include "game/process.h"
-#include "game/hsfman.h"
 #include "game/board/player.h"
-#include "game/board/main.h"
-#include "game/board/space.h"
-#include "dolphin/os/OSFastCast.h"
-#include "math.h"
 
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
@@ -61,6 +50,13 @@ extern void fn_80085EB4(void);
 //// #include "game/chrman.h"
 extern void CharModelDataClose(s16);
 extern void CharModelStepTypeSet(s16, s32);
+//// #include "game/board/pad.h"
+extern s8 HuPadStkX[4];
+extern s8 HuPadStkY[4];
+extern u16 HuPadBtnDown[4];
+extern u8 HuPadDStk[4];
+//// #include "game/board/view.h"
+void BoardViewMapExec(s32);
 ////
 
 static void UpdateJunctionGfx(omObjData*);
@@ -77,6 +73,9 @@ void BoardDiceDigit2DUpdateEnable(s32);
 void BoardPlayerMoveTo(s32, s16);
 void BoardPlayerZoomRestore(s32);
 void BoardRotateDiceNumbers(s32);
+void BoardBowserSuitMotionSetWait(void);
+void BoardBowserSuitPlayerModelKill(void);
+void BoardDiceDigit2DShowSet(s32);
 s32 DoDebugMove(s32, s16*);
 s32 DoSparkSpace(s32, s16*);
 s32 ExecJunction(s32, s16*);
@@ -119,18 +118,72 @@ static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
 char* lbl_8013993C[] = {
     "eye1",
     "eye2",
+    "eye1",
+    "eye2",
     "mat14",
     "mat16",
+    "eye1",
+    "eye2",
+    "Clswario_eye_l1_AUTO14",
+    "Clswario_eye_l1_AUTO15",
+    "m_donkey_eye4",
+    "m_donkey_eye5",
     "mat65",
     "mat66",
-    "Mario",
-    "Luigi",
-    "Peach",
-    "Yoshi",
-    "Wario",
-    "Donky",
-    "Daisy",
-    "Waluigi",
+    "Clswaluigi_eye_l1_AUTO1",
+    "Clswaluigi_eye_l1_AUTO2",
+};
+
+s32 lbl_8013997C[] = {
+    0x10D,
+    0x14D,
+    0x18D,
+    0x1CD,
+    0x20D,
+    0x24D,
+    0x28D,
+    0x2CD,
+};
+
+static s32 boardMotTbl[] = {
+    0x5F0035, 0x1A0035, 0x6D0035, 0x8A0035,
+    0x850035, 0x110035, 0x0D0035, 0x810035,
+};
+
+static s32 boardMotRevTbl[] = {
+    0x5F0036, 0x1A0036, 0x6D0036, 0x8A0036,
+    0x850036, 0x110036, 0x0D0036, 0x810036,
+};
+
+static s32 bowserSuitCharMdlTbl[] = {
+    0x40000, 0x40003, 0x40006, 0x40009,
+    0x4000C, 0x4000F, 0x40012, 0x40015,
+};
+
+static s32 bowserSuitMotTbl[] = {
+    0x40019, 0x4001A, 0x4001B, 0x4001E,
+    0x4001F, 0x70095, 0x70096, 0x70097,
+    0x70098, 0x70099, 0x7009A, 0x7009B,
+    0x7009C,
+};
+
+static s32 boardSparkSfxTbl[] = {
+    0x128, 0x168, 0x1A8, 0x1E8,
+    0x228, 0x268, 0x2A8, 0x2E8,
+};
+
+static s32 boardSparkSfxTblAlt[] = {
+    0x123, 0x163, 0x1A3, 0x1E3,
+    0x223, 0x263, 0x2A3, 0x2E3,
+};
+
+static s32 megaSquishObj[] = {
+    0, 0, 0, 0,
+};
+
+static s32 megaSquishSfxTbl[] = {
+    0x128, 0x168, 0x1A8, 0x1E8,
+    0x228, 0x268, 0x2A8, 0x2E8,
 };
 
 inline PlayerState* GetPlayer(s32 index) {
@@ -915,7 +968,7 @@ void BoardPlayerZoomRestore(s32 arg0) {
             var_r29++;
         }
         var_r31 = (var_r31 + 1) & 3;
-        (void)var_r29; // 
+        (void)var_r29; // hack
     }
     BoardSpaceCornerPosGet(temp_r27, var_r29, &sp18);
     BoardPlayerMotBlendSet(arg0, 0, 0xF);
@@ -1143,25 +1196,17 @@ static void RestoreJunction(f32 arg8, s32 arg0) {
                 if (arg0 != 0) {
                     HuAudFXPlay(0);
                 }
-                temp_r31->unk_01 = 0x14U;
+                temp_r31->unk_01 = 0x14;
             }
         }
     }
 }
 
-static inline f32 BoardDAngleAbs(f32 startA, f32 endA) {
-    if (BoardDAngleCalc(startA - endA) < 0.0f) {
-        return -BoardDAngleCalc(startA - endA);
-    } else {
-        return BoardDAngleCalc(startA - endA);
-    }
-}
-
 static s32 GetDefaultDirection(f32 arg0, f32* arg1, s32 arg2) {
-    f32 temp_f1;
-    f32 temp_f30;
     f32 var_f27;
     f32 var_f28;
+    f32 temp_f1;
+    f32 temp_f30;
     s32 var_r30;
     s32 var_r31;
 
@@ -1170,7 +1215,7 @@ static s32 GetDefaultDirection(f32 arg0, f32* arg1, s32 arg2) {
     
     for (var_r31 = 0, var_r30 = var_r31; var_r31 < arg2; var_r31++) {
         temp_f1 = BoardDAngleCalc(arg1[var_r31]);
-        var_f27 = BoardDAngleAbs(temp_f1, temp_f30);
+        var_f27 = BOARD_FABS(BoardDAngleCalc(temp_f1 - temp_f30));
         
         if (var_f27 < var_f28) {
             var_f28 = var_f27;
@@ -1178,6 +1223,145 @@ static s32 GetDefaultDirection(f32 arg0, f32* arg1, s32 arg2) {
         }
     }
     return var_r30;
+}
+
+static inline s32 BoardPlayerMotGet(s32 player)
+{
+	PlayerState *player_ptr = BoardPlayerGet(player);
+	return playerMot[player_ptr->player_idx];
+}
+
+static s32 DoDebugMove(s32 arg0, s16* arg1) {
+    s16 spC0[10];
+    s16 spAC[10];
+    Vec spA0;
+    Vec sp94;
+    Vec sp88;
+    Vec sp7C;
+    BoardSpace* sp5C;
+    s32 sp58;
+    s32 sp54;
+    BoardCameraData* sp50;
+    f32 var_f30;
+    s32 var_r29;
+    s16 var_r26;
+    PlayerState* sp28;
+    BoardSpace* var_r23;
+    s32 var_r22;
+    s32 var_r21;
+    s32 var_r20;
+    s32 var_r18;
+    bitcopy* var_r17;
+
+    var_r18 = -1;
+    
+    memset(spC0, 0, 0x14);
+    memset(spAC, 0, 0x14);
+    while (1) {loop_1:
+        sp28 = BoardPlayerGet(arg0);
+        var_r23 = BoardSpaceGet(0, sp28->space_curr);
+        sp58 = BoardSpaceCountGet(0);
+        BoardPlayerPosGet(arg0, &sp88);
+        var_r20 = GWPlayer[arg0].port;
+        
+        for (var_r22 = 0, var_r29 = var_r22; var_r29 < var_r23->link_cnt; var_r29++) {
+            if ((BoardSpaceFlagGet(0, var_r23->link[var_r29]) & 0x06000000) == 0) {
+                if ((BoardSpaceFlagGet(0, var_r23->link[var_r29]) & 0x20000000) == 0 || (BoardPlayerSizeGet(arg0) == 1)) {
+                    spAC[var_r22++] = var_r23->link[var_r29];
+                }
+            }
+        }
+        var_r22 += BoardSpaceLinkTargetListGet(0, sp28->space_curr, &spAC[var_r22]);
+        
+        for (var_r29 = 0; var_r29 < var_r22; var_r29++) {
+            sp5C = BoardSpaceGet(0, spAC[var_r29]);
+            if (sp5C == 0) {
+                spAC[var_r29] = 0;
+            } else {
+                PSVECSubtract(&sp5C->pos, &sp88, &sp94);
+                var_f30 = 90.0 - (180.0 * (atan2(sp94.z, sp94.x) / M_PI));
+                OSf32tos16(&var_f30, &var_r26);
+                if (var_r26 < 0) {
+                    var_r26 += 0x168;
+                }
+                if (var_r26 > 0x168) {
+                    var_r26 -= 0x168;
+                }
+                
+                spC0[var_r29] = var_r26 = var_r26 = (((var_r26 + 0x16) / 45) * 0x2D);
+            }
+        }
+        sp54 = GWPlayer[arg0].space_curr;
+        InitJunction(arg0, sp28->space_curr, -1.0f);
+        do {loop_21:
+            if (sp54 != GWPlayer[arg0].space_curr) {
+                sp54 = GWPlayer[arg0].space_curr;
+                goto loop_1;
+            }
+            spA0.x = HuPadStkX[var_r20];
+            spA0.y = 0.0f;
+            spA0.z = HuPadStkY[var_r20];
+            if (HuPadBtnDown[var_r20] == 0x400) {
+                StopJunctionPlayer(0);
+                var_r18 = 1;
+                goto end;
+            } else {
+                if (HuPadBtnDown[var_r20] == 0x10) {
+                    BoardDiceDigit2DShowSet(0);
+                    BoardRotateDiceNumbers(arg0);
+                    StopJunctionPlayer(0);
+                    BoardViewMapExec(arg0);
+                    InitJunction(arg0, sp28->space_curr, -1.0f);
+                    BoardDiceDigit2DShowSet(1);
+                    goto loop_21;
+                }
+                if ((0.0f != spA0.x) || (0.0f != spA0.z)) {
+                    var_f30 = (90.0 + (180.0 * (atan2(spA0.z, spA0.x) / M_PI)));
+                    if (var_f30 < 0.0f) {
+                        var_f30 += 360.0f;
+                    }
+                    if (var_f30 > 360.0f) {
+                        var_f30 -= 360.0f;
+                    }
+                    RestoreJunction(var_f30, 1);
+                    sp50 = &boardCamera;
+                    PSVECSubtract(&sp50->target, &sp50->pos, &sp7C);
+                    var_f30 = (var_f30 + (90.0 - (180.0 * (atan2(-sp7C.z, -sp7C.x) / M_PI))));
+                    if (var_f30 < 0.0f) {
+                        var_f30 += 360.0f;
+                    }
+                    if (var_f30 > 360.0f) {
+                        var_f30 -= 360.0f;
+                    }
+                    var_r21 = var_f30;
+                    
+                    for (var_r29 = 0; var_r29 < var_r22; var_r29++) {
+                        if ((spC0[var_r29] + 0x2D > var_r21) && (spC0[var_r29] - 0x2D < var_r21)) {
+                            *arg1 = spAC[var_r29];
+                            var_r18 = 0;
+                            goto end;
+                        } else if ((var_r21 <= 0x168) && (var_r21 >= 0x13B) && ((s32) ((&spC0[0])[var_r29] + 0x195) > var_r21) && ((s32) ((&spC0[0])[var_r29] + 0x13B) < var_r21)) {
+                            *arg1 = spAC[var_r29];
+                            var_r18 = 0;
+                            goto end;
+                        }
+                    }
+                } else {
+                    if (BoardPlayerMotGet(arg0) != 1) {
+                        BoardRotateDiceNumbers(arg0);
+                    }
+                    if (GWPlayer[arg0].bowser_suit != 0) {
+                        BoardBowserSuitMotionSetWait();
+                        BoardBowserSuitPlayerModelKill();
+                    }
+                }
+                HuPrcVSleep();
+                goto loop_21;  
+            }
+        } while (1);
+    }
+    end:
+    return var_r18;
 }
 
 // ...

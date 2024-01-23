@@ -6,6 +6,8 @@
 #include "game/data.h"
 #include "dolphin.h"
 
+#define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
+
 typedef struct board_focus_data {
 	u16 view_type;
 	s16 time;
