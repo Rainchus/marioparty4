@@ -85,7 +85,7 @@ static void omWatchOverlayProc(void)
                 omovlstat = omnextovlstat;
                 omnextovl = OVL_INVALID;
                 if(_CheckFlag(FLAG_ID_MAKE(1, 12))) {
-                    MGSeqPracticeStart();
+                    MGSeqPracticeInit();
                 }
                 omSysPauseEnable(TRUE);
                 omcurdll = omDLLStart(omcurovl, 0);

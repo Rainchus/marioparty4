@@ -66,7 +66,7 @@ s32 BoardModelMotionShiftSet(s16, s32, f32, f32, u32);
 s32 BoardVecDAngleCalcRange(float *value, float min, float range);
 void BoardCameraQuakeSet(s32 duration, float strength);
 s16 MGSeqCreate(s32, ...);
-u8 MGSeqGetStat(s16);
+u8 MGSeqStatGet(s16);
 void omVibrate(s16, s16, s16, s16);
 void BoardPlayerMotBlendSet(s32, s32, s32);
 f32 BoardPlayerRotYGet(s32);
@@ -339,7 +339,7 @@ void fn_1_A44C(s32 arg0) {
 
     BoardMusStart(1, 0x17, 0x7F, 0);
     temp_r30 = MGSeqCreate(3, 0);
-    while (MGSeqGetStat(temp_r30) != 0) {
+    while (MGSeqStatGet(temp_r30) != 0) {
         HuPrcVSleep();
     }
     fn_1_A7A0(arg0);
@@ -448,7 +448,7 @@ void fn_1_A994(omObjData* arg0) {
     temp_r31 = (someBits*)&lbl_1_bss_188->work[0];
     if ((temp_r31->unk00_bit0 != 0)|| (BoardIsKill() != 0)) {
         if (temp_r31->unk4 != -1) {
-            MGSeqSetParam(temp_r31->unk4, 2, -1U);
+            MGSeqParamSet(temp_r31->unk4, 2, -1U);
             temp_r31->unk4 = -1;
         }
         lbl_1_bss_188 = NULL;
@@ -465,7 +465,7 @@ void fn_1_A994(omObjData* arg0) {
             } else {
                 fn_1_ACD8(2);
             }
-            MGSeqSetParam(temp_r31->unk4, 1, temp_r31->unk1);
+            MGSeqParamSet(temp_r31->unk4, 1, temp_r31->unk1);
             temp_r31->unk2 = 0x3CU;
         }
     }
@@ -544,7 +544,7 @@ void fn_1_ACD8(s32 arg0) {
             lbl_1_data_4D8 = -1;
         }
         if (temp_r31->unk4 != -1) {
-            MGSeqSetParam(temp_r31->unk4, 2, -1U);
+            MGSeqParamSet(temp_r31->unk4, 2, -1U);
             temp_r31->unk4 = -1;
         }
         BoardPlayerMotionShiftSet(temp_r31->unk00_bit4, 0xB, 0.0f, 10.0f, 0);
