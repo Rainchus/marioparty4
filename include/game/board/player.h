@@ -16,7 +16,7 @@
 
 extern s16 boardPlayerMdl[4];
 
-static inline s16 BoardPlayerHandicapGet(s32 player)
+static inline s32 BoardPlayerHandicapGet(s32 player)
 {
 	return GWPlayer[player].handicap;
 }

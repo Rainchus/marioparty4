@@ -1982,8 +1982,6 @@ static float last5GfxPosTbl[2][3][2] = {
 
 static void UpdateLast5Gfx(omObjData *object);
 
-void BoardSpriteCreate(s32 file, s16 prio, AnimData **anim, s16 *sprite);
-
 void BoardLast5GfxInit(void)
 {
 	Last5GfxWork *work;
@@ -2011,7 +2009,7 @@ void BoardLast5GfxInit(void)
 			lastF = 0;
 		}
 		for(i=0; i<3; i++) {
-			s16 prio;
+			s32 prio;
 			s32 spr_file;
 			
 			if(i == 1) {

@@ -375,7 +375,7 @@ config.libs = [
             Object(NonMatching, "game/board/mushroom.c"),
             Object(NonMatching, "game/board/star.c"),
             Object(NonMatching, "game/board/roll.c"),
-            Object(NonMatching, "game/board/ui.c"),
+            Object(Matching, "game/board/ui.c"),
             Object(NonMatching, "game/board/block.c"),
             Object(NonMatching, "game/board/item.c"),
             Object(NonMatching, "game/board/bowser.c"),
@@ -996,7 +996,7 @@ config.libs = [
             Object(NonMatching, "REL/w03Dll/condor.c"),
             Object(Matching, "REL/w03Dll/river.c"),
             Object(Matching, "REL/w03Dll/smoke.c"),
-            Object(NonMatching, "REL/w03Dll/mg_coin.c"),
+            Object(Matching, "REL/w03Dll/mg_coin.c"),
             Object(Matching, "REL/w03Dll/mg_item.c"),
         }
     ),
