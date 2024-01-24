@@ -55,6 +55,9 @@ extern s8 HuPadStkX[4];
 extern s8 HuPadStkY[4];
 extern u16 HuPadBtnDown[4];
 extern u8 HuPadDStk[4];
+extern s16 boardTutorialDirInputTime;
+extern s8 boardTutorialDirInputX;
+extern s8 boardTutorialDirInputY;
 //// #include "game/board/view.h"
 void BoardViewMapExec(s32);
 ////
@@ -63,6 +66,8 @@ static void UpdateJunctionGfx(omObjData*);
 static void StopJunctionPlayer(s32);
 static void RestoreJunction(f32, s32);
 static s32 GetDefaultDirection(f32, f32*, s32);
+static s32 DoDebugMove(s32, s16*);
+static s32 ExecJunction(s32, s16*);
 //...
 s32 BoardPlayerAutoSizeGet(s32);
 void BoardPlayerAutoSizeSet(s32, s32);
@@ -70,13 +75,13 @@ void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
 void SetRollPlayerSize(s32);
 void BoardDiceDigit2DUpdateEnable(s32);
-void BoardPlayerMoveTo(s32, s16);
+void BoardPlayerMoveTo(s32, s32);
 void BoardPlayerZoomRestore(s32);
 void BoardRotateDiceNumbers(s32);
 void BoardBowserSuitMotionSetWait(void);
 void BoardBowserSuitPlayerModelKill(void);
 void BoardDiceDigit2DShowSet(s32);
-s32 DoDebugMove(s32, s16*);
+void BoardPlayerPosLerpStart(s32, Vec*, Vec*, s32);
 s32 DoSparkSpace(s32, s16*);
 s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
@@ -1316,7 +1321,7 @@ static s32 DoDebugMove(s32 arg0, s16* arg1) {
                     goto loop_21;
                 }
                 if ((0.0f != spA0.x) || (0.0f != spA0.z)) {
-                    var_f30 = (90.0 + (180.0 * (atan2(spA0.z, spA0.x) / M_PI)));
+                    var_f30 = (90.0f + (180.0 * (atan2(spA0.z, spA0.x) / M_PI)));
                     if (var_f30 < 0.0f) {
                         var_f30 += 360.0f;
                     }
@@ -1362,6 +1367,208 @@ static s32 DoDebugMove(s32 arg0, s16* arg1) {
     }
     end:
     return var_r18;
+}
+
+static inline f32 JunctionArrowRotGetCurr(void) {
+    bitcopy* juncObj;
+    f32 ret;
+    
+    if (junctionObj == 0) {
+        return 0.0f;
+    } else {
+        juncObj = (bitcopy*) junctionObj->work;
+        OSs16tof32(&(junctionArrowRot[juncObj->field00_bit5]), &ret);
+        return ret;
+    }
+}
+
+static inline s32 CheckArrowRot(float value)
+{
+    s32 sp58;
+    bitcopy* sp5C;
+    s16 spE;
+    if (junctionObj == 0) {
+        return 0;
+    } else {
+        sp5C = (bitcopy*) junctionObj->work;
+        OSf32tos16(&value, &spE);
+        if (spE > 0x15E) {
+            spE = 0;
+        }
+        for (sp58 = 0; sp58 < sp5C->field00_bit3; sp58++) {
+            if (abs(junctionArrowRot[sp58] - spE) <= 0x1E) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+}
+
+static s32 ExecJunction(s32 arg0, s16* arg1) {
+    f32 spE4[10];
+    s16 spD0[10];
+    Vec spC4;
+    Vec spB8;
+    Vec spAC;
+    s32 sp8C;
+    BoardSpace* sp88;
+    s32 sp84;
+    PlayerState* sp30;
+    s8 sp8;
+    s32 var_r28;
+    s32 var_r24;
+    BoardSpace* var_r22;
+    s32 var_r21;
+    u32 var_r20;
+    f32 var_f29;
+    f32 var_f28;
+
+    sp8C = -1;
+    memset(spE4, 0, 40);
+    memset(spD0, 0, 20);
+    sp30 = BoardPlayerGet(arg0);
+    var_r22 = BoardSpaceGet(0, sp30->space_curr);
+    sp84 = BoardSpaceCountGet(0);
+    BoardPlayerPosGet(arg0, &spAC);
+    var_r24 = GWPlayer[arg0].port;
+    
+    for (var_r28 = var_r21 = 0; var_r28 < var_r22->link_cnt; var_r28++) {
+        if ((BoardSpaceFlagGet(0, var_r22->link[var_r28]) & 0x06000000) == 0) {
+            if ((BoardSpaceFlagGet(0, var_r22->link[var_r28]) & 0x20000000) == 0 || (BoardPlayerSizeGet(arg0) == 1)) {
+                spD0[var_r21++] = var_r22->link[var_r28];
+            }
+        }
+    }
+    if (var_r21 == 1) {
+        *arg1 = spD0[0];
+        return 0;
+    }
+    if (var_r21 <= 0) {
+        *arg1 = var_r22->link[0];
+        return 0;
+    }
+    
+    for (var_r28 = 0; var_r28 < var_r21; var_r28++) {
+        sp88 = BoardSpaceGet(0, spD0[var_r28]);
+        if (sp88 == 0) {
+            spD0[var_r28] = 0;
+        } else {
+            PSVECSubtract(&sp88->pos, &spAC, &spB8);
+            var_f29 = (90.0f - (180.0 * (atan2(spB8.z, spB8.x) / M_PI)));
+            if (var_f29 < 0.0f) {
+                var_f29 += 360.0f;
+            }
+            if (var_f29 > 360.0f) {
+                var_f29 -= 360.0f;
+            }
+            spE4[var_r28] = 45.0f * ((22.0f + var_f29) / 45.0f);
+        }
+    }
+    var_f28 = -1.0f;
+    sp8 = 0;
+    InitJunction(arg0, sp30->space_curr, var_f28);
+    BoardRotateDiceNumbers(arg0);
+    HuPrcSleep(10);
+    while (1) {
+        
+        if ((_CheckFlag(0x1000B) != 0) && (boardTutorialDirInputTime != -1)) {
+            if (boardTutorialDirInputTime > 0) {
+                spC4.x = boardTutorialDirInputX;
+                spC4.z = boardTutorialDirInputY;
+            } else {
+                var_r20 = 0x100;
+            }
+            boardTutorialDirInputTime -= 1;
+        } else if (GWPlayer[arg0].com != 0) {
+            if (sp8 == 0) {
+                BoardComJunctionInputGet(arg0, &spC4, var_r21, &spE4[0]);
+                var_r20 = 0;
+            } else if (sp8 > 6U) {
+                var_r20 = 0x100;
+            }
+            sp8++;
+        } else {
+            if (abs(HuPadStkX[var_r24]) > 10) {
+                spC4.x = HuPadStkX[var_r24];
+            } else {
+                spC4.x = 0.0f;
+            }
+            if (abs(HuPadStkY[var_r24]) > 10) {
+                spC4.z = HuPadStkY[var_r24];
+            } else {
+                spC4.z = 0.0f;
+            }
+            var_r20 = HuPadBtnDown[var_r24];
+        }
+        if (var_r20 == 0x100) {
+            var_f29 = JunctionArrowRotGetCurr();
+            var_r28 = GetDefaultDirection(var_f29, spE4, var_r21);
+            *arg1 = spD0[var_r28];
+            StopJunctionPlayer(1);
+            sp8C = 0;
+            break;
+        } else if (var_r20 == 0x20 || var_r20 == 0x10) {
+            HuAudFXPlay(1);
+            BoardDiceDigit2DShowSet(0);
+            BoardRotateDiceNumbers(arg0);
+            StopJunctionPlayer(0);
+            if (var_r20 == 0x10) {
+                BoardViewMapExec(arg0);
+            } else if (var_r20 == 0x20) {
+                BoardViewOverheadExec(arg0);
+            }
+            InitJunction(arg0, sp30->space_curr, var_f28);
+            BoardDiceDigit2DShowSet(1);
+        } else {
+            if ((0.0f != spC4.x) || (0.0f != spC4.z)) {
+                var_f29 = (90.0f + (180.0 * (atan2(spC4.z, spC4.x) / M_PI)));
+                if (var_f29 < 0.0f) {
+                    var_f29 += 360.0f;
+                }
+                if (var_f29 > 360.0f) {
+                    var_f29 -= 360.0f;
+                }
+                if (CheckArrowRot(var_f29) != 0) {
+                    var_f28 = var_f29;
+                    RestoreJunction(var_f29, 1);
+                }
+                
+                for (var_r28 = 0; var_r28 < var_r21; var_r28++) {
+                    if (((45.0f + spE4[var_r28]) > var_f29) && ((spE4[var_r28] - 45.0f) < var_f29)) {
+                        *arg1 = (&spD0[0])[var_r28];
+                    }
+                    if (var_f29 <= 360.0f) {
+                        if ((var_f29 >= 315.0f) && ((45.0f + (360.0f + spE4[var_r28])) > var_f29) && (((360.0f + spE4[var_r28]) - 45.0f) < var_f29)) {
+                            *arg1 = spD0[var_r28];
+                        }
+                    }
+                }
+            } else {
+                if (BoardPlayerMotGet(arg0) != 1) {
+                    BoardRotateDiceNumbers(arg0);
+                }
+                if (GWPlayer[arg0].bowser_suit != 0) {
+                    BoardBowserSuitMotionSetWait();
+                    BoardBowserSuitPlayerModelKill();
+                }
+            }
+            HuPrcVSleep();
+        }
+    }
+    return sp8C;
+}
+
+void BoardPlayerMoveTo(s32 arg0, s32 arg1) {
+    Vec sp18;
+    Vec spC;
+    PlayerState* player;
+
+    BoardModelPosGet(BoardPlayerModelGet(arg0), &sp18);
+    BoardSpacePosGet(0, arg1, &spC);
+    BoardPlayerPosLerpStart(arg0, &sp18, &spC, 0x19);
+    while (GWPlayer[arg0].moving != 0) {
+        HuPrcVSleep();
+    }
 }
 
 // ...
