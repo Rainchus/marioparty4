@@ -79,8 +79,6 @@ static s32 ExecTurnStart(void);
 static void CreateBoard(void);
 static void DestroyBoard(void);
 
-#define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
-
 void BoardCommonInit(BoardFunc create, BoardFunc destroy)
 {
 	omSysPauseEnable(FALSE);
