@@ -45,8 +45,8 @@ extern void BoardComUseItemSet(s32, s32);
 extern void BoardViewOverheadExec(s32);
 extern void BoardViewMapExec(s32);
 //// #include "game/board/roll.h"
-extern s32 fn_80085CC8(s32);
-extern void fn_80085EB4(void);
+extern s32 BoardRollExec(s32);
+extern void BoardRollKill(void);
 //// #include "game/chrman.h"
 extern void CharModelDataClose(s16);
 extern void CharModelStepTypeSet(s16, s32);
@@ -81,7 +81,8 @@ void BoardRotateDiceNumbers(s32);
 void BoardBowserSuitMotionSetWait(void);
 void BoardBowserSuitPlayerModelKill(void);
 void BoardDiceDigit2DShowSet(s32);
-void BoardPlayerPosLerpStart(s32, Vec*, Vec*, s32);
+void BoardPlayerPosLerpStart(s32, Vec*, Vec*, s16);
+void PlayerPosLerpFunc(omObjData*);
 s32 DoSparkSpace(s32, s16*);
 s32 ExecJunction(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
@@ -779,11 +780,11 @@ void BoardPlayerTurnRollExec(s32 arg0) {
     GWPlayer[arg0].field08_bit7 = 1;
     BoardPauseEnableSet(0);
     do {
-        temp_r30 = fn_80085CC8(arg0);
+        temp_r30 = BoardRollExec(arg0);
         switch (temp_r30) {
         case -2:
             BoardPauseEnableSet(1);
-            fn_80085EB4();
+            BoardRollKill();
             BoardCameraTargetPlayerSet(arg0);
             BoardCameraMotionWait();
             rollType = PlayerItemUseExec(arg0);
@@ -797,11 +798,11 @@ void BoardPlayerTurnRollExec(s32 arg0) {
             BoardPauseEnableSet(0);
             break;
         case -3:
-            fn_80085EB4();
+            BoardRollKill();
             BoardViewMapExec(arg0);
             break;
         case -4:
-            fn_80085EB4();
+            BoardRollKill();
             BoardViewOverheadExec(arg0);
             break;
         }
@@ -1321,7 +1322,7 @@ static s32 DoDebugMove(s32 arg0, s16* arg1) {
                     goto loop_21;
                 }
                 if ((0.0f != spA0.x) || (0.0f != spA0.z)) {
-                    var_f30 = (90.0f + (180.0 * (atan2(spA0.z, spA0.x) / M_PI)));
+                    var_f30 = (90.0 + (180.0 * (atan2(spA0.z, spA0.x) / M_PI)));
                     if (var_f30 < 0.0f) {
                         var_f30 += 360.0f;
                     }
@@ -1454,7 +1455,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
             spD0[var_r28] = 0;
         } else {
             PSVECSubtract(&sp88->pos, &spAC, &spB8);
-            var_f29 = (90.0f - (180.0 * (atan2(spB8.z, spB8.x) / M_PI)));
+            var_f29 = (90.0 - (180.0 * (atan2(spB8.z, spB8.x) / M_PI)));
             if (var_f29 < 0.0f) {
                 var_f29 += 360.0f;
             }
@@ -1521,7 +1522,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
             BoardDiceDigit2DShowSet(1);
         } else {
             if ((0.0f != spC4.x) || (0.0f != spC4.z)) {
-                var_f29 = (90.0f + (180.0 * (atan2(spC4.z, spC4.x) / M_PI)));
+                var_f29 = (90.0 + (180.0 * (atan2(spC4.z, spC4.x) / M_PI)));
                 if (var_f29 < 0.0f) {
                     var_f29 += 360.0f;
                 }
@@ -1569,6 +1570,139 @@ void BoardPlayerMoveTo(s32 arg0, s32 arg1) {
     while (GWPlayer[arg0].moving != 0) {
         HuPrcVSleep();
     }
+}
+
+void BoardPlayerMoveBetween(s32 arg0, s32 arg1, s32 arg2) {
+    Vec sp1C;
+    Vec sp10;
+    s32 spC;
+    s32 sp8;
+
+    BoardSpacePosGet(0, arg1, &sp1C);
+    BoardSpacePosGet(0, arg2, &sp10);
+    BoardPlayerPosLerpStart(arg0, &sp1C, &sp10, 0x19);
+    while (GWPlayer[arg0].moving != 0) {
+        HuPrcVSleep();
+    }
+}
+
+void BoardPlayerMoveToAsync(s32 arg0, s32 arg1) {
+    Point3d sp18;
+    Point3d spC;
+    s32 sp8;
+
+    BoardModelPosGet(BoardPlayerModelGet(arg0), &sp18);
+    BoardSpacePosGet(0, arg1, &spC);
+    BoardPlayerPosLerpStart(arg0, &sp18, &spC, 0x19);
+}
+
+void BoardPlayerPosLerpStart(s32 arg0, Point3d* arg1, Point3d* arg2, s16 arg3) {
+    Point3d sp18;
+    void* sp14;
+    s16 sp10;
+    s16 spE;
+    s16 spC;
+    s16 spA;
+    f32 var_f28;
+    f32 var_f27;
+    f32 var_f26;
+    f32 var_f29;
+    f32 var_f30;
+    omObjData* temp_r3;
+    s16 temp_r0;
+    s16 temp_r0_2;
+    s32 var_r25;
+    PlayerState* temp_r21;
+    void* temp_r3_2;
+
+    if ((arg1->x != arg2->x) || (arg1->y != arg2->y) || (arg1->z != arg2->z)) {
+        var_f28 = BoardVecDistXZCalc(arg2, arg1);
+        if (arg3 != 0) {
+            if (GWPlayer[arg0].bowser_suit != 0) {
+                arg3 *= 2;
+            }
+
+            OSs16tof32(&arg3, &var_f29);
+            var_f27 = var_f28 / var_f29;
+        } else {
+            var_f27 = var_f28;
+            var_f29 = 1.0f;
+        }
+        temp_r21 = BoardPlayerGet(arg0);
+
+        if (playerMot[temp_r21->player_idx] != 3) {
+            var_r25 = BoardModelMotionShiftSet(BoardPlayerModelGet(arg0), 3, 0.0f, 4.0f, 0x40000001);
+            if (var_r25 == 0) {
+                playerMot[temp_r21->player_idx] = 3;
+            }
+        }
+        if (GWPlayer[arg0].bowser_suit != 0) {
+            BoardBowserSuitMotionSetWalk();
+            BoardModelMotionSpeedSet(suitMdl, 1.5f);
+        }
+        PSVECSubtract(arg2, arg1, &sp18);
+        PSVECNormalize(&sp18, &sp18);
+        var_f26 = 90.0 - (180.0 * (atan2(sp18.z, sp18.x) / M_PI));
+        var_f30 = var_f26;
+        if (var_f30 < 0.0f) {
+            var_f30 += 360.0f;
+        }
+        if (var_f30 > 360.0f) {
+            var_f30 -= 360.0f;
+        }
+        BoardModelRotYSet(BoardPlayerModelGet(arg0), var_f30);
+        if (GWPlayer[arg0].bowser_suit != 0) {
+            BoardModelRotYSet(suitMdl, var_f30);
+        }
+        temp_r3 = omAddObjEx(boardObjMan, 0x100, 0U, 0U, -1, &PlayerPosLerpFunc);
+        temp_r3->trans.x = arg1->x;
+        temp_r3->trans.y = arg1->y;
+        temp_r3->trans.z = arg1->z;
+        temp_r3->rot.x = arg2->x;
+        temp_r3->rot.y = arg2->y;
+        temp_r3->rot.z = arg2->z;
+        temp_r3->scale.x = (arg2->x - arg1->x) / var_f29;
+        temp_r3->scale.y = (arg2->y - arg1->y) / var_f29;
+        temp_r3->scale.z = (arg2->z - arg1->z) / var_f29;
+        BoardModelPosSetV(BoardPlayerModelGet(arg0), arg1);
+        if (GWPlayer[arg0].bowser_suit != 0) {
+            BoardModelPosSetV(suitMdl, arg1);
+        }
+        temp_r3->work[0] = arg0;
+        *(f32 *)(&temp_r3->work[1]) = var_f27;
+        temp_r3->work[2] = arg3;
+        GWPlayer[arg0].moving = 1;
+    }
+}
+
+void PlayerPosLerpFunc(omObjData* arg0) {
+    f32 temp_f28;
+    f32 temp_f27;
+    f32 temp_f26;
+    f32 temp_f31;
+    f32 temp_f30;
+    f32 temp_f29;
+    s32 temp_r30;
+
+    temp_r30 = arg0->work[0];
+    arg0->trans.x += arg0->scale.x;
+    arg0->trans.y += arg0->scale.y;
+    arg0->trans.z += arg0->scale.z;
+    if (arg0->work[2] != 0U) {
+        arg0->work[2] -= 1;
+    } else {
+        GWPlayer[temp_r30].moving = 0;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        temp_f26 = arg0->rot.z;
+        temp_f27 = arg0->rot.y;
+        temp_f28 = arg0->rot.x;
+        BoardPlayerPosSet(temp_r30, temp_f28, temp_f27, temp_f26);
+        return;
+    }
+    temp_f29 = arg0->trans.z;
+    temp_f30 = arg0->trans.y;
+    temp_f31 = arg0->trans.x;
+    BoardPlayerPosSet(temp_r30, temp_f31, temp_f30, temp_f29);
 }
 
 // ...
