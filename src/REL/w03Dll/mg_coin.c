@@ -65,7 +65,7 @@ double sin(double x);
 double cos(double x);
 double atan2(double y, double x);
 extern s16 MGSeqCreate(s32, ...);
-u8 MGSeqGetStat(s16);
+u8 MGSeqStatGet(s16);
 float BoardModelMotionTimeGet(s16 model);
 float BoardModelMotionMaxTimeGet(s16 model);
 s32 BoardModelMotionShiftSet(s16 model, s32 motion, float time, float shift_time, u32 attr);
@@ -239,7 +239,7 @@ void fn_1_8140(s32 arg0) {
     fn_1_81E0(arg0);
     BoardMusStart(1, 0x16, 0x7F, 0);
     temp_r31 = MGSeqCreate(3, 0);
-    while (MGSeqGetStat(temp_r31)) {
+    while (MGSeqStatGet(temp_r31)) {
         HuPrcVSleep();
     }
     fn_1_9384();
@@ -321,7 +321,7 @@ void fn_1_8530(omObjData* arg0) {
     
     if ((temp_r31->unk00_bit0 != 0) || (BoardIsKill() != 0)) {
         if (temp_r31->unk_04 != -1) {
-            MGSeqSetParam(temp_r31->unk_04, 2, -1);
+            MGSeqParamSet(temp_r31->unk_04, 2, -1);
         }
         if (temp_r31->unk_06[1] != -1) {
             BoardPlayerMotionKill(temp_r31->unk00_bit5, temp_r31->unk_06[1]);
@@ -372,7 +372,7 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
         if (arg1->unk2 != 0) {
             arg1->unk2--;
         } else {
-            MGSeqSetParam(arg1->unk_04, 2, -1);
+            MGSeqParamSet(arg1->unk_04, 2, -1);
             arg1->unk_04 = -1;
             arg1->unk00_bit1 = 1;
             temp = BoardModelMotionTimeGet(lbl_1_bss_C[7]);
@@ -402,7 +402,7 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
             BoardCameraMotionStartEx(-1, 0, 0, 1900.0f, -1.0f, 0x15);
             return;
         }
-        MGSeqSetParam(arg1->unk_04, 1, arg1->unk2);
+        MGSeqParamSet(arg1->unk_04, 1, arg1->unk2);
         arg1->unk3 = 60;
     }
     
