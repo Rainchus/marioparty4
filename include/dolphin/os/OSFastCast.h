@@ -111,13 +111,25 @@ static inline u16 __OSf32tou16(register f32 inF)
 
 static inline void OSf32tou16(f32 *f, u16 *out) { *out = __OSf32tou16(*f); }
 
+static inline float __OSs8tof32(register const s8* arg) {
+    register float ret;
+
+    asm {
+        psq_l ret, 0(arg), 1, OS_FASTCAST_S8
+    }
+
+    return ret;
+}
+
+static inline void OSs8tof32(const s8* in, float* out) { *out = __OSs8tof32(in); }
+
 static inline float __OSs16tof32(register const s16* arg) {
     register float ret;
 
-        asm {
+    asm {
         psq_l ret, 0(arg), 1, OS_FASTCAST_S16
     }
-    
+
     return ret;
 }
 
@@ -129,7 +141,7 @@ static inline float __OSu8tof32(register const u8* arg) {
     asm {
         psq_l ret, 0(arg), 1, OS_FASTCAST_U8
     }
-    
+
     return ret;
 }
 
@@ -141,7 +153,7 @@ static inline float __OSu16tof32(register const u16* arg) {
     asm {
         psq_l ret, 0(arg), 1, OS_FASTCAST_U16
     }
-    
+
     return ret;
 }
 
