@@ -41,7 +41,7 @@ typedef struct system_state {
 /* 0x30 */ u8 mess_delay;
 /* 0x31 */ struct {
         u8 field31_bit0 : 4;
-		u8 field31_bit4 : 4;
+        u8 field31_bit4 : 4;
     };
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
@@ -57,7 +57,7 @@ typedef struct player_state {
         u16 com : 1;
         u16 character : 4;
         u16 auto_size : 2;
-		u16 field00_bit9 : 1;
+        u16 field00_bit9 : 1;
     };
 /* 0x02 */ struct {
         u8 team : 1;
@@ -147,19 +147,34 @@ extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
 extern GameStat GWGameStat;
 
+static inline s32 GWTeamGet(void)
+{
+    return GWSystem.team;
+}
+
 static inline s32 GWLanguageGet(void)
 {
-	return GWGameStat.language;
+    return GWGameStat.language;
 }
 
-static inline s32 GWMGTypeGet()
+static inline s32 GWMGTypeGet(void)
 {
-	return GWSystem.mg_type;
+    return GWSystem.mg_type;
 }
 
-static inline s32 GWMessSpeedGet()
+static inline s32 GWMessSpeedGet(void)
 {
-	return GWSystem.mess_speed;
+    return GWSystem.mess_speed;
+}
+
+static inline s32 GWBoardGet(void)
+{
+    return GWSystem.board;
+}
+
+static inline s32 GWPlayerTeamGet(s32 player)
+{
+    return GWPlayer[player].team;
 }
 
 #endif

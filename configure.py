@@ -375,7 +375,7 @@ config.libs = [
             Object(NonMatching, "game/board/mushroom.c"),
             Object(NonMatching, "game/board/star.c"),
             Object(NonMatching, "game/board/roll.c"),
-            Object(NonMatching, "game/board/ui.c"),
+            Object(Matching, "game/board/ui.c"),
             Object(NonMatching, "game/board/block.c"),
             Object(NonMatching, "game/board/item.c"),
             Object(NonMatching, "game/board/bowser.c"),
