@@ -188,7 +188,7 @@ void HuSprGrpCenterSet(short group, float x, float y);
 void HuSprGrpZRotSet(short group, float z_rot);
 void HuSprGrpScaleSet(short group, float x, float y);
 void HuSprGrpTPLvlSet(short group, float tp_lvl);
-void HuSprGrpDrawNoSet(short group, int draw_no);
+s32 HuSprGrpDrawNoSet(short group, int draw_no);
 void HuSprDrawNoSet(short group, short member, int draw_no);
 void HuSprPriSet(short group, short member, short prio);
 void HuSprGrpScissorSet(short group, short x, short y, short w, short h);
