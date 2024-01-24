@@ -555,7 +555,7 @@ void HuSprGrpTPLvlSet(short group, float tp_lvl)
     }
 }
 
-void HuSprGrpDrawNoSet(short group, int draw_no)
+s32 HuSprGrpDrawNoSet(short group, int draw_no)
 {
     SpriteGroupData *group_ptr = &HuSprGrpData[group];
     short i;
