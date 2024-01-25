@@ -26,7 +26,7 @@ void fn_1_2A40(void);
 void fn_1_2B44(void);
 s32 BoardDAngleCalcRange(f32*, f32, f32);
 s32 BoardPlayerMotBlendCheck(s32);
-void BoardPlayerMotBlendSet(s32, s32, s32);
+void BoardPlayerMotBlendSet(s32, s16, s16);
 f32 BoardPlayerRotYGet(s32);
 void BoardConfettiCreate(Point3d*, s16, f32);
 double atan2(double y, double x);
@@ -103,7 +103,7 @@ s32 fn_1_12C8(void) {
     while (lbl_1_bss_28) {
         HuPrcVSleep();
     }
-    return BoardDiceDigit2DShowSet(1);
+    BoardDiceDigit2DShowSet(1);
 }
 
 void fn_1_1358(void) {
