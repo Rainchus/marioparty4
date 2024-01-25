@@ -10,6 +10,7 @@
 #include "game/object.h"
 #include "game/process.h"
 #include "game/hsfman.h"
+#include "game/hsfmotion.h"
 #include "game/gamework_data.h"
 #include "game/board/main.h"
 #include "game/board/space.h"
@@ -113,17 +114,41 @@ void BoardJunctionMaskSet(s32);
 void BoardJunctionMaskReset(s32);
 void BoardJunctionMaskZero(void);
 void InitJunction(s32, s32, f32);
+static void UpdateJunctionGfx(omObjData*);
+static void StopJunctionPlayer(s32);
+static void RestoreJunction(f32, s32);
+static s32 GetDefaultDirection(f32, f32*, s32);
+static s32 DoDebugMove(s32, s16*);
+static s32 ExecJunction(s32, s16*);
 void BoardPlayerMoveTo(s32, s32);
+void BoardPlayerMoveBetween(s32, s32, s32);
+void BoardPlayerMoveToAsync(s32, s32);
+void BoardPlayerPosLerpStart(s32, Vec*, Vec*, s16);
+static void PlayerPosLerpFunc(omObjData*);
+void BoardPlayerDiceJumpStart(s32);
+s32 BoardPlayerDiceJumpCheck(s32);
+static void DiceJumpFunc(omObjData*);
+void BoardRotateDiceNumbers(s32);
+void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2);
 //...
+void BoardPlayerMotBlendExec(omObjData*);
 s32 BoardPlayerAutoSizeGet(s32);
 void BoardPlayerAutoSizeSet(s32, s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
 void SetRollPlayerSize(s32);
 void BoardDiceDigit2DUpdateEnable(s32);
-void BoardRotateDiceNumbers(s32);
 s32 DoSparkSpace(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
 s32 BoardPlayerAnimBlendCheck(s32);
+void BoardBowserSuitMotionSetWait(void);
+void BoardBowserSuitPlayerModelKill(void);
+void BoardDiceDigit2DShowSet(s32);
+s32 DoSparkSpace(s32, s16*);
+s32 MegaPlayerPassFunc(s32, s16);
+s32 BoardPlayerMotBlendCheck(s32);
+void BoardPlayerMoveAwayStartCurr(s16, s32);
+void BoardBowserSuitMotionSetWalk(void);
+s16 BoardBowserSuitModelGet(void);
 
 #endif
