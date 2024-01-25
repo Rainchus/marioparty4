@@ -1028,7 +1028,7 @@ static inline GetLinkCount(s32 playerIdx, s32 boardIdx) {
     return linkCount;
 }
 
-void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
+static void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
     Point3d sp68;
     Point3d sp5C;
     Point3d sp50;

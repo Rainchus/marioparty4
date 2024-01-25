@@ -5,7 +5,7 @@
 
 void MGSeqKillAll(void);
 
-void MGSeqPracticeStart(void);
+void MGSeqPracticeInit(void);
 void CharMotionClose(s16 character);
 void CharModelClose(s16 character);
 void CharModelKill(s16 character);
