@@ -78,36 +78,15 @@ typedef struct bitcopy {
     s16 unk_06[5];
 } bitcopy;
 
-typedef struct bitcopy2 {
-    struct {
-        u8 field00_bit0 : 1;
-        u8 field00_bit1 : 2;
-        u8 field00_bit3 : 1;
-        u8 field00_bit4 : 1;
-        u8 field00_bit5 : 2;
-        u8 field00_bit7 : 1;
-    };
-    s8 unk_01;
-    s16 unk_02;
-    union{
-        s32 unk_04;
-        struct {
-            s16 unk_04h;
-            s16 unk_06h;
-        };
-    };
-    f32 unk_08;
-    f32 unk_0C;
-} bitcopy2;
-
 static HsfMaterial *playerMatCopy[4];
 static s32 (*postTurnHook[4])();
 static s32 (*preTurnHook[4])();
 
 s16 boardPlayerMdl[4];
 static s16 playerMot[4];
-static s16 junctionArrowRot[4];
 static s8 rollType;
+static s16 junctionArrowRot[4];
+static omObjData* diceDigit2DObj;
 static omObjData* junctionObj;
 static s32 junctionMask;
 static s32 rollResized;
@@ -1695,6 +1674,34 @@ static void PlayerPosLerpFunc(omObjData* arg0) {
     BoardPlayerPosSet(temp_r30, temp_f31, temp_f30, temp_f29);
 }
 
+typedef struct bitcopy2 {
+    struct {
+        u8 field00_bit0 : 1;
+        u8 field00_bit1 : 2;
+        u8 field00_bit3 : 1;
+        u8 field00_bit4 : 1;
+        u8 field00_bit5 : 2;
+        u8 field00_bit7 : 1;
+    };
+    s8 unk_01;
+    s16 unk_02;
+    union{
+        struct {
+            s32 unk_04;
+            f32 unk_08;
+            f32 unk_0C;
+        };
+        struct {
+            s16 unk_04h;
+            s16 unk_06h;
+            s16 unk_08h;
+            s16 unk_0Ah;
+            s16 unk_0Ch;
+            s16 unk_0Eh;
+        };
+    };
+} bitcopy2;
+
 void BoardPlayerDiceJumpStart(s32 arg0) {
     Point3d sp8;
     PlayerState* temp_r25;
@@ -1881,6 +1888,155 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         OSs16tof32(&arg2, &var_f27);
         temp_r26->unk_0C = temp_f25 / var_f27;
         motDoneF[arg0] = temp_r3;
+    }
+}
+
+void BoardPlayerMotBlendExec(omObjData* arg0) {
+    f32 sp48;
+    f32 var_f27;
+    bitcopy2* temp_r30;
+
+    temp_r30 = (bitcopy2*) arg0->work;
+    if ((temp_r30->field00_bit0 != 0) || (BoardIsKill() != 0)) {
+        if (temp_r30->unk_04h > 0) {
+            BoardPlayerMotionKill(temp_r30->unk_01, temp_r30->unk_04h);
+        }
+        BoardPlayerRotYSet(temp_r30->unk_01, temp_r30->unk_08);
+        motDoneF[temp_r30->unk_01] = 0;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        return;
+    }
+    if (temp_r30->unk_02-- <= 0) {
+        temp_r30->field00_bit0 = 1;
+        BoardPlayerRotYSet(temp_r30->unk_01, temp_r30->unk_08);
+        if (GWPlayer[temp_r30->unk_01].bowser_suit != 0) {
+            BoardBowserSuitMotionSetWait();
+            BoardBowserSuitPlayerModelKill();
+        } else {
+            BoardPlayerMotionStart(temp_r30->unk_01, 1, 0x40000001);
+        }
+            return;
+    }
+    var_f27 = BoardPlayerRotYGet(temp_r30->unk_01);
+    OSs16tof32(&temp_r30->unk_08h, &sp48);
+    var_f27 += temp_r30->unk_0C;
+    BoardPlayerRotYSet(temp_r30->unk_01, var_f27);
+}
+
+s32 BoardPlayerMotBlendCheck(s32 arg0) {
+    if (motDoneF[arg0] != 0) {
+        return 0;
+    }
+    return 1;
+}
+
+typedef struct bitcopy3 {
+    struct {
+        u8 field00_bit0 : 1;
+        u8 field00_bit1 : 1;
+        u8 field00_bit2 : 1;
+        u8 field00_bit3 : 2;
+        u8 field00_bit5 : 2;
+        u8 field00_bit7 : 1;
+    };
+    u8 unk_01;
+    s8 unk_02;
+    s8 unk_03;
+    s16 unk_04;
+    s16 unk_06[5];
+} bitcopy3;
+
+void BoardDiceDigit2DInit(s32 arg0, s32 arg1) {
+    omObjData* temp_r3;
+    s32 var_r30;
+    bitcopy3* temp_r31;
+
+    temp_r3 = omAddObjEx(boardObjMan, 0x105, 0, 0, -1, &UpdateDiceDigit2D);
+    temp_r31 = (bitcopy3*) temp_r3->work;
+    temp_r31->field00_bit0 = 0;
+    temp_r31->field00_bit1 = 1;
+    temp_r31->unk_01 = 0;
+    temp_r31->unk_02 = arg0;
+    if (arg1 != 0) {
+        temp_r31->unk_03 = 0;
+    } else {
+        temp_r31->unk_03 = 1;
+    }
+    temp_r31->unk_04 = HuSprGrpCreate(2);
+    
+    for (var_r30 = 0; var_r30 < 2; var_r30++) {
+        BoardSpriteCreate(0x7002B, 0x4B0, 0, &temp_r31->unk_06[var_r30]);
+        HuSprGrpMemberSet(temp_r31->unk_04, var_r30, temp_r31->unk_06[var_r30]);
+        HuSprPosSet(temp_r31->unk_04, var_r30, 288.0f, 240.0f);
+        HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
+    }
+    diceDigit2DObj = temp_r3;
+}
+
+void BoardDiceDigit2DUpdateEnable(s32 arg0) {
+    bitcopy3* temp_r31;
+
+    if (diceDigit2DObj != 0) {
+        temp_r31 = (bitcopy3*) diceDigit2DObj->work;
+        temp_r31->field00_bit0 = 1;
+    }
+}
+
+void BoardDiceDigit2DShowSet(s32 arg0) {
+    s32 var_r30;
+    bitcopy3* temp_r31;
+
+    if (diceDigit2DObj != 0) {
+        temp_r31 = (bitcopy3*) diceDigit2DObj->work;
+        
+        for (var_r30 = 0; var_r30 < 2; var_r30++) {
+            if (arg0 != 0) {
+                temp_r31->field00_bit1 = 1;
+                if ((var_r30 == 1) && (GWPlayer[temp_r31->unk_02].roll / 10 == 0)) {
+                    HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
+                } else {
+                    HuSprAttrReset(temp_r31->unk_04, var_r30, 4);
+                }
+            } else {
+                temp_r31->field00_bit1 = 0;
+                HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
+            }
+        }
+        UpdateDiceDigitSprite(diceDigit2DObj);
+    }
+}
+
+static void UpdateDiceDigitSprite(omObjData* arg0) {
+    f32 sp1C[2];
+    s32 sp14[2];
+    f32 spC[2] = { 320.0f, 256.0f };
+    s32 var_r30;
+    s32 temp_r29;
+    bitcopy3* temp_r31;
+
+    temp_r31 = (bitcopy3*) arg0->work;
+    temp_r29 = GWPlayer[temp_r31->unk_02].roll;
+    if (temp_r29 != 0) {
+        sp14[0] = temp_r29 % 10;
+        sp14[1] = temp_r29 / 10;
+    } else {
+        temp_r31->field00_bit0 = 1;
+    }
+    
+    for (var_r30 = 0; var_r30 < 2; var_r30++) {
+        if (((var_r30 == 1) && (sp14[1] == 0)) || (temp_r31->field00_bit1 == 0)) {
+            HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
+        } else {
+            if ((sp14[1] == 0) && (var_r30 == 0)) {
+                sp1C[0] = 288.0f;
+            } else {
+                sp1C[0] = spC[var_r30];
+            }
+            sp1C[1] = 176.0f;
+            HuSprAttrReset(temp_r31->unk_04, var_r30, 4);
+            HuSprBankSet(temp_r31->unk_04, var_r30, sp14[var_r30]);
+            HuSprPosSet(temp_r31->unk_04, var_r30, sp1C[0], sp1C[1]);
+        }
     }
 }
 

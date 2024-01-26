@@ -3,18 +3,17 @@
 #include "REL/w03Dll.h"
 #include "board_unsplit.h"
 #include "game/board/main.h"
+#include "game/board/player.h"
 
 double sin(double x);
 double cos(double x);
 double atan2(double y, double x);
 s16 BoardModelIDGet(s16 model);
 void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
-void BoardPlayerMotBlendSet(s32, s32, s32);
 float BoardModelMotionTimeGet(s16 model);
 s32 BoardModelMotionShiftSet(s16 model, s32 motion, float time, float shift_time, u32 attr);
 void BoardPlayerPosSet(s32, f32, f32, f32);
 s32 BoardModelHookSet(s16 model, char *name, s16 hook);
-void BoardPlayerMotionShiftSet(s32, s32, f32, f32, s32);
 
 
 #define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
@@ -314,15 +313,6 @@ void fn_1_6B98(s32 arg0) {
 
 extern s32 lbl_1_data_368[];
 extern w03State* lbl_1_bss_0;
-    
-static inline PlayerState *BoardPlayerGet(s32 player) {
-	return &GWPlayer[player];
-}
-
-static inline s16 BoardPlayerModelGet(s32 player) {
-	PlayerState *player_ptr = BoardPlayerGet(player);
-	return boardPlayerMdl[player_ptr->player_idx];
-}   
 
 void fn_1_6F9C(s32 arg0) {
     Vec sp20;

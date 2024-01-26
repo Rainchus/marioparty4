@@ -130,6 +130,7 @@ s32 BoardPlayerDiceJumpCheck(s32);
 static void DiceJumpFunc(omObjData*);
 void BoardRotateDiceNumbers(s32);
 void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2);
+void UpdateDiceDigitSprite(omObjData*);
 //...
 void BoardPlayerMotBlendExec(omObjData*);
 s32 BoardPlayerAutoSizeGet(s32);
@@ -150,5 +151,6 @@ s32 BoardPlayerMotBlendCheck(s32);
 void BoardPlayerMoveAwayStartCurr(s16, s32);
 void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);
+void UpdateDiceDigit2D(omObjData*);
 
 #endif

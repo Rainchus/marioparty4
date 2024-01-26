@@ -68,7 +68,6 @@ void BoardCameraQuakeSet(s32 duration, float strength);
 s16 MGSeqCreate(s32, ...);
 u8 MGSeqStatGet(s16);
 void omVibrate(s16, s16, s16, s16);
-void BoardPlayerMotBlendSet(s32, s32, s32);
 f32 BoardPlayerRotYGet(s32);
 f32 BoardModelMotionTimeGet(s16);
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
