@@ -1,4 +1,4 @@
-#include "game/gamework_data.h"
+#include "game/fault.h"
 #include "stdarg.h"
 #include "stdio.h"
 
@@ -9,11 +9,10 @@ typedef struct rgb_color {
 } RGBColor;
 
 typedef struct xfb_geometry {
-    void* unk0[4];
-    u16 unk4;
-    u16 unk5;
-    u16 unk6;
-    u16 unk7;
+    void* frame_buffers[4];
+    u16 width;
+    u16 height;
+    u16 mode;
 } XFBGeometry;
 
 static RGBColor XFB_Colors[5] = {
@@ -28,23 +27,23 @@ static RGBColor XFB_Colors[5] = {
 
 XFBGeometry XFB_Geometry;
 
-static s32 (*XFB_putc)(u8 arg0, s32 arg1, s32 arg2);
+static s32 (*XFB_putc)(u8 c, s32 x, s32 y);
 
 static RGBColor Draw_Color;
 
 static s32 x_start;
 static s32 y_start;
 
-const char* lbl_801D34A0 = "OSPanic encounterd:";
-
-s32 XFB_putcProgressive(u8 arg0, s32 arg1, s32 arg2);
-s32 XFB_putcInterlace(u8 arg0, s32 arg1, s32 arg2);
-s32 XFB_puts(s8* arg0, s32 arg1, s32 arg2);
-s32 XFB_putcS(u8 arg0, s32 arg1, s32 arg2);
-void XFB_WriteBackCache(void);
-void XFB_CR(s32 arg0, s32* arg1, s32* arg2);
+static s32 XFB_putcProgressive(u8 arg0, s32 arg1, s32 arg2);
+static s32 XFB_putcInterlace(u8 arg0, s32 arg1, s32 arg2);
+static s32 XFB_puts(s8* arg0, s32 arg1, s32 arg2);
+static s32 XFB_putcS(u8 arg0, s32 arg1, s32 arg2);
+static void XFB_WriteBackCache(void);
+static void XFB_CR(s32 arg0, s32* arg1, s32* arg2);
 
 void OSPanic(const char* file, int line, const char* msg, ...) {
+    static char* titleMes = "OSPanic encounterd:";
+    
     va_list sp78;
     s32 sp74;
     s32 sp70;
@@ -53,7 +52,7 @@ void OSPanic(const char* file, int line, const char* msg, ...) {
 
     sp74 = x_start = 0x10;
     sp70 = y_start = 0x20;
-    puts = XFB_puts((s8*)lbl_801D34A0, sp74, sp70);
+    puts = XFB_puts((s8*)titleMes, sp74, sp70);
     XFB_CR(puts + 1, &sp74, &sp70);
     sprintf(sp84, "%s:%d", file, line);
     puts = XFB_puts((s8*)sp84, sp74, sp70);
@@ -71,77 +70,74 @@ void HuFaultInitXfbDirectDraw(GXRenderModeObj *mode) {
     s32 i;
     
     for (i = 0; i < 4; i++) {
-        XFB_Geometry.unk0[i] = 0;
+        XFB_Geometry.frame_buffers[i] = 0;
     }
     
-    XFB_Geometry.unk4 = 0;
-    XFB_Geometry.unk5 = 0;
-    XFB_Geometry.unk6 = 0;
+    XFB_Geometry.width = 0;
+    XFB_Geometry.height = 0;
+    XFB_Geometry.mode = 0;
     
     XFB_putc = XFB_putcProgressive;
     Draw_Color = XFB_Colors[1];
     
     if (mode) {
-        XFB_Geometry.unk4 = ((u16)mode->fbWidth + 0xF) & 0xFFFFFFF0;
-        XFB_Geometry.unk5 = mode->xfbHeight;
-        XFB_Geometry.unk6 = mode->xFBmode;
+        XFB_Geometry.width = ((u16)mode->fbWidth + 0xF) & 0xFFFFFFF0;
+        XFB_Geometry.height = mode->xfbHeight;
+        XFB_Geometry.mode = mode->xFBmode;
         
-        if (XFB_Geometry.unk6 == 0) {
+        if (XFB_Geometry.mode == 0) {
             XFB_putc = XFB_putcInterlace;
-            return;
+        } else {
+            XFB_putc = XFB_putcProgressive;
         }
-        XFB_putc = XFB_putcProgressive;
     }
 }
 
 void HuFaultSetXfbAddress(s16 index, void* value) {
     if (index >= 0 && index < 4) {
-        XFB_Geometry.unk0[index] = value;
+        XFB_Geometry.frame_buffers[index] = value;
     }
 }
 
-void XFB_WriteBackCache(void) {
-    s32 var_r31;
-    void* temp_r30;
+static void XFB_WriteBackCache(void) {
+    s32 i;
+    void* frame_buffer;
     u32 temp_r29;
 
-    temp_r29 = XFB_Geometry.unk4 * 2 * XFB_Geometry.unk5;
+    temp_r29 = XFB_Geometry.width * 2 * XFB_Geometry.height;
     
     if (temp_r29 != 0) {
-        var_r31 = 0;
-        
-        while (var_r31 < 4) {
-            temp_r30 = XFB_Geometry.unk0[var_r31];
-            if (temp_r30) {
-                DCStoreRange(temp_r30, temp_r29);
+        for (i = 0; i < 4; i += 1) {
+            frame_buffer = XFB_Geometry.frame_buffers[i];
+            
+            if (frame_buffer) {
+                DCStoreRange(frame_buffer, temp_r29);
             }
-            var_r31 += 1;
         }
     }
 }
 
-
-void XFB_CR(s32 arg0, s32* arg1, s32* arg2) {
+static void XFB_CR(s32 arg0, s32* x_ptr, s32* y_ptr) {
     s32 temp_r30;
-    s32 var_r31;
-    s32 var_r29;
+    s32 y;
+    s32 x;
 
-    var_r29 = *arg1;
-    var_r31 = *arg2;
+    x = *x_ptr;
+    y = *y_ptr;
     
-    var_r29 = x_start;
-    var_r31 += 0x12;
+    x = x_start;
+    y += 0x12;
     
     temp_r30 = arg0 & 7;
     if (temp_r30 != 0) {
-        var_r31 += temp_r30 * 0x12;
+        y += temp_r30 * 0x12;
     }
 
-    *arg1 = var_r29;
-    *arg2 = var_r31;
+    *x_ptr = x;
+    *y_ptr = y;
 }
 
-s32 XFB_puts(s8* arg0, s32 arg1, s32 arg2) {
+static s32 XFB_puts(s8* message, s32 x, s32 y) {
     s32 i;
     s32 temp_r31;
     s8 current_char;
@@ -149,24 +145,24 @@ s32 XFB_puts(s8* arg0, s32 arg1, s32 arg2) {
     i = 0;
     
     do {
-        current_char = *arg0++;
+        current_char = *message++;
         
         if (current_char == '\n') {
-            XFB_CR(0, &arg1, &arg2);
+            XFB_CR(0, &x, &y);
             
             i += 1;
         } else {
-            temp_r31 = XFB_putcS(current_char, arg1, arg2);
+            temp_r31 = XFB_putcS(current_char, x, y);
             
             if (temp_r31 >= 0) {
                 if (temp_r31 != 0) {
                     temp_r31 -= 1;
 
-                    XFB_CR(temp_r31, &arg1, &arg2);
+                    XFB_CR(temp_r31, &x, &y);
                     
                     i += temp_r31 + 1;
                 }
-                arg1 += 0x10;
+                x += 0x10;
             } else {
                 break;
             }
@@ -176,7 +172,7 @@ s32 XFB_puts(s8* arg0, s32 arg1, s32 arg2) {
     return i;
 }
 
-s32 XFB_putcS(u8 arg0, s32 arg1, s32 arg2) {
+static s32 XFB_putcS(u8 c, s32 x, s32 y) {
     RGBColor sp8;
     s32 var_r26;
     s32 var_r25;
@@ -187,91 +183,76 @@ s32 XFB_putcS(u8 arg0, s32 arg1, s32 arg2) {
     var_r27 = 0;
     sp8 = Draw_Color;
     
-    if (arg1 + 0x11 >= XFB_Geometry.unk4) {
-        var_r26 = arg1;
-        var_r29 = arg2;
-        if (0 != 0) {
-            var_r29 += 0 * 0x12;
-        }
-        var_r26 = x_start;
-        var_r29 += 0x12;
-        var_r25 = 0;
-
-        if (var_r25 != 0) {
-            var_r29 += var_r25 * 0x12;
-        }
-
-        arg1 = var_r26;
-        arg2 = var_r29;
+    if (x + 0x11 >= XFB_Geometry.width) {
+        XFB_CR(0, &x, &y);
         var_r27++;
     }
     
-    Draw_Color = *XFB_Colors;
-    XFB_putc(arg0, arg1, arg2 - 2);
-    XFB_putc(arg0, arg1, arg2 + 2);
-    XFB_putc(arg0, arg1 - 1, arg2);
-    XFB_putc(arg0, arg1 + 1, arg2);
+    Draw_Color = XFB_Colors[0];
+    XFB_putc(c, x, y - 2);
+    XFB_putc(c, x, y + 2);
+    XFB_putc(c, x - 1, y);
+    XFB_putc(c, x + 1, y);
     
     Draw_Color = sp8;
-    XFB_putc(arg0, arg1, arg2);
+    XFB_putc(c, x, y);
     
     return var_r27;
 }
 
-s32 XFB_putcProgressive(u8 arg0, s32 arg1, s32 arg2) {
-    s32 var_r21;
+static s32 XFB_putcProgressive(u8 c, s32 x, s32 y) {
+    s32 result;
     s32 temp_r20;
-    u8 spA;
-    u8 sp9;
-    u8 sp8;
-    s32 var_r25;
-    s32 var_r24;
+    u8 red;
+    u8 blue;
+    u8 green;
+    s32 i;
+    s32 j;
     s32 var_r23;
     u8* var_r29;
-    s32 var_r28;
+    s32 k;
     s32 var_r27;
     s32 var_r26;
     u32 temp_r31;
     u32 var_r30;
     u32 var_r22;
-    u8* var_r31;
+    u8* frame_buffer;
     
-    var_r21 = 0;
+    result = 0;
     
-    if (arg0 == 0) {
+    if (c == 0) {
         return -1;
     }
     
-    if (arg1 + 0x10 >= XFB_Geometry.unk4) {
-        arg2 += 0x12;
-        arg1 = x_start;
-        var_r21 = 1;
+    if (x + 0x10 >= XFB_Geometry.width) {
+        y += 0x12;
+        x = x_start;
+        result = 1;
     }
     
-    if (arg2 + 0x10 >= XFB_Geometry.unk5) {
+    if (y + 0x10 >= XFB_Geometry.height) {
         return -1;
     }
     
-    spA = Draw_Color.r;
-    sp8 = Draw_Color.g;
-    sp9 = Draw_Color.b;
+    red = Draw_Color.r;
+    green = Draw_Color.g;
+    blue = Draw_Color.b;
     
-    temp_r20 = XFB_Geometry.unk4 * 2;
-    var_r23 = (arg1 & 0xFFFE) * 2 + arg2 * temp_r20;
-    var_r29 = Ascii8x8_1bpp + (arg0 * 8);
-    var_r25 = 8;
+    temp_r20 = XFB_Geometry.width * 2;
+    var_r23 = (x & 0xFFFE) * 2 + y * temp_r20;
+    var_r29 = Ascii8x8_1bpp + (c * 8);
     
-    while (var_r25 != 0) {
-        var_r24 = 2;
+    i = 8;
+    
+    while (i != 0) {
+        j = 2;
         
-        while (var_r24 != 0) {
-            var_r28 = 0;
-            
-            while (var_r28 < 4) {
-                var_r31 = XFB_Geometry.unk0[var_r28];
+        while (j != 0) {
+            for (k = 0; k < 4; k ++) {
+                frame_buffer = XFB_Geometry.frame_buffers[k];
                 
-                if (var_r31 != 0) {
-                    var_r31 += var_r23;
+                if (frame_buffer != 0) {
+                    frame_buffer += var_r23;
                     
                     var_r22 = *var_r29;
                     var_r30 = 0;
@@ -284,99 +265,101 @@ s32 XFB_putcProgressive(u8 arg0, s32 arg1, s32 arg2) {
                         var_r22 >>= 1;
                     }
                     var_r27 = 8;
-                    if ((s32) (arg1 & 1) != 0) {
+                    if ((s32) (x & 1) != 0) {
                         var_r30 *= 2;
                         var_r27 = 0xA;
                     }
                     
                     while (var_r27 != 0) {
                         if ((u32) (var_r30 & 3) != 0) {
-                            var_r31[1] = sp9;
-                            var_r31[3] = sp8;
+                            frame_buffer[1] = blue;
+                            frame_buffer[3] = green;
                             
                             if ((u32) (var_r30 & 1) != 0) {
-                                var_r31[0] = spA;
+                                frame_buffer[0] = red;
                             }
                             if ((u32) (var_r30 & 2) != 0) {
-                                var_r31[2] = spA;
+                                frame_buffer[2] = red;
                             }
                         }
                         var_r27 -= 1;
-                        var_r31 += 4;
+                        frame_buffer += 4;
                         var_r30 = var_r30 >> 2;
                     }
                 }
-                var_r28 += 1;
             }
-            var_r24 -= 1;
+            
+            j -= 1;
             var_r23 += temp_r20;
         }
-        var_r25 -= 1;
+        i -= 1;
         var_r29 += 1;
     }
-    return var_r21;
+    
+    return result;
 }
 
-s32 XFB_putcInterlace(u8 arg0, s32 arg1, s32 arg2) {
-    u8 var_r24;
-    u8 var_r22;
-    u8 var_r21;
+static s32 XFB_putcInterlace(u8 c, s32 x, s32 y) {
+    u8 red;
+    u8 blue;
+    u8 green;
     s32 temp_r23;
-    s32 var_r26;
+    s32 i;
     s32 var_r25;
     u8* var_r28;
-    s32 var_r27;
+    s32 j;
     s16 var_r29;
     s32 var_r30;
     u8* var_r31;
     
-    if (arg0 == 0) {
+    if (c == 0) {
         return -1;
     }
     
-    if (arg1 + 8 >= XFB_Geometry.unk4 || arg2 + 8 >= XFB_Geometry.unk5) {
+    if (x + 8 >= XFB_Geometry.width || y + 8 >= XFB_Geometry.height) {
         return -1;
     }
 
-    var_r24 = Draw_Color.r;
-    var_r21 = Draw_Color.g;
-    var_r22 = Draw_Color.b;
+    red = Draw_Color.r;
+    green = Draw_Color.g;
+    blue = Draw_Color.b;
     
-    temp_r23 = XFB_Geometry.unk4 * 2;
-    var_r25 = ((arg1 & 0xFFFE) * 2) + ((arg2 >> 1) * temp_r23);
-    var_r28 = Ascii8x8_1bpp + arg0 * 8;
-    var_r26 = 8;
+    temp_r23 = XFB_Geometry.width * 2;
+    var_r25 = ((x & 0xFFFE) * 2) + ((y >> 1) * temp_r23);
+    var_r28 = Ascii8x8_1bpp + c * 8;
     
-    while (var_r26) {
-        for (var_r27 = 0; var_r27 < 4; var_r27 += 2) {
-            var_r30 = var_r27;
+    i = 8;
+    
+    while (i != 0) {
+        for (j = 0; j < 4; j += 2) {
+            var_r30 = j;
             
-            if ((s32) (arg2 & 1) != 0) {
+            if ((s32) (y & 1) != 0) {
                 var_r30 += 1;
             }
             
-            var_r31 = XFB_Geometry.unk0[var_r30];
+            var_r31 = XFB_Geometry.frame_buffers[var_r30];
             
             if (var_r31) {
                 var_r31 = var_r31 + var_r25;
                 var_r29 = *var_r28;
                 var_r30 = 4;
                 
-                if (arg1 & 1) {
+                if (x & 1) {
                     var_r29 = (s16)var_r29 * 2;
                     var_r30 = 5;
                 }
 
                 while (var_r30) {
                     if (var_r29 & 3) {
-                        var_r31[1] = var_r22;
-                        var_r31[3] = var_r21;
+                        var_r31[1] = blue;
+                        var_r31[3] = green;
                         
                         if (var_r29 & 1) {
-                            var_r31[0] = var_r24;
+                            var_r31[0] = red;
                         }
                         if (var_r29 & 2) {
-                            var_r31[2] = var_r24;
+                            var_r31[2] = red;
                         }
                     }
                     
@@ -387,8 +370,8 @@ s32 XFB_putcInterlace(u8 arg0, s32 arg1, s32 arg2) {
             }
         }
         
-        var_r26 -= 1;
-        arg2 += 1;
+        i -= 1;
+        y += 1;
         var_r28 += 1;
         var_r25 += temp_r23;
     }
