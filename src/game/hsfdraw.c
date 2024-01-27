@@ -441,6 +441,7 @@ static void FaceDraw(HsfdrawStruct00 *arg0, HsfdrawStruct02 *arg1) {
     s16 var_r24;
     s16 var_r31;
     s16 var_r17;
+    s16 var_r6;
     u32 temp_r19;
     HsfConstData *temp_r20;
     HsfMaterial *temp_r30;

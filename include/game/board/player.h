@@ -14,6 +14,7 @@
 #include "game/gamework_data.h"
 #include "game/board/main.h"
 #include "game/board/space.h"
+#include "game/board/ui.h"
 
 extern s16 boardPlayerMdl[4];
 
@@ -152,5 +153,6 @@ void BoardPlayerMoveAwayStartCurr(s16, s32);
 void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);
 void UpdateDiceDigit2D(omObjData*);
+void MoveAwayObjFunc(omObjData*);
 
 #endif

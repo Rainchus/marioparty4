@@ -85,7 +85,9 @@ static s32 (*preTurnHook[4])();
 s16 boardPlayerMdl[4];
 static s16 playerMot[4];
 static s8 rollType;
+static s8 moveAwayPlayer[4];
 static s16 junctionArrowRot[4];
+static omObjData* moveAwayObj;
 static omObjData* diceDigit2DObj;
 static omObjData* junctionObj;
 static s32 junctionMask;
@@ -1029,7 +1031,7 @@ static void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
     s32 var_r22;
     f32 angle;
 
-    if (junctionObj == 0) {
+    if (!junctionObj) {
         for (var_r20 = 0; var_r20 < 4; var_r20++) {
             junctionArrowRot[var_r20] = -1;
         }
@@ -1351,7 +1353,7 @@ static inline f32 JunctionArrowRotGetCurr(void) {
     bitcopy* juncObj;
     f32 ret;
     
-    if (junctionObj == 0) {
+    if (!junctionObj) {
         return 0.0f;
     } else {
         juncObj = (bitcopy*) junctionObj->work;
@@ -1365,7 +1367,7 @@ static inline s32 CheckArrowRot(float value)
     s32 sp58;
     bitcopy* sp5C;
     s16 spE;
-    if (junctionObj == 0) {
+    if (!junctionObj) {
         return 0;
     } else {
         sp5C = (bitcopy*) junctionObj->work;
@@ -1428,7 +1430,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
     
     for (var_r28 = 0; var_r28 < var_r21; var_r28++) {
         sp88 = BoardSpaceGet(0, spD0[var_r28]);
-        if (sp88 == 0) {
+        if (!sp88) {
             spD0[var_r28] = 0;
         } else {
             PSVECSubtract(&sp88->pos, &spAC, &spB8);
@@ -1731,7 +1733,7 @@ void BoardPlayerDiceJumpStart(s32 arg0) {
 }
 
 s32 BoardPlayerDiceJumpCheck(s32 arg0) {
-    if (diceJumpObj[arg0] == 0) {
+    if (!diceJumpObj[arg0]) {
         return 0;
     }
     if (diceJumpObj[arg0]->work[1] == 0) {
@@ -1939,7 +1941,7 @@ typedef struct bitcopy3 {
         u8 field00_bit5 : 2;
         u8 field00_bit7 : 1;
     };
-    u8 unk_01;
+    s8 unk_01;
     s8 unk_02;
     s8 unk_03;
     s16 unk_04;
@@ -2037,6 +2039,154 @@ static void UpdateDiceDigitSprite(omObjData* arg0) {
             HuSprBankSet(temp_r31->unk_04, var_r30, sp14[var_r30]);
             HuSprPosSet(temp_r31->unk_04, var_r30, sp1C[0], sp1C[1]);
         }
+    }
+}
+
+static void UpdateDiceDigit2D(omObjData* arg0) {
+    f32 var_f30;
+    bitcopy3* temp_r30;
+
+    temp_r30 = (bitcopy3*) diceDigit2DObj->work;
+    if ((temp_r30->field00_bit0 != 0) || (BoardIsKill() != 0)) {
+        if (temp_r30->unk_04 != -1) {
+            HuSprGrpKill(temp_r30->unk_04);
+            temp_r30->unk_04 = -1;
+        }
+        diceDigit2DObj = NULL;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        return;
+    }
+    if (temp_r30->unk_03 == 0) {
+        temp_r30->unk_01 += 4;
+        if (temp_r30->unk_01 >= 0x5A) {
+            temp_r30->unk_03 = 1;
+        }
+
+        OSs8tof32(&temp_r30->unk_01, &var_f30);
+        var_f30 *= 2.0f;
+        if (var_f30 >= 90.0f) {
+            var_f30 -= 90.0f;
+        }
+    }
+    
+    { // hack until the compiler does what we want
+        f32 sp1C[2];
+        f32 spC[2] = { 320.0f, 256.0f };
+        s32 sp14[2];
+        s32 var_r30;
+        s32 temp_r29;
+        bitcopy3* temp_r31;
+    
+        temp_r31 = (bitcopy3*) arg0->work;
+        temp_r29 = GWPlayer[temp_r31->unk_02].roll;
+        if (temp_r29 != 0) {
+            sp14[0] = temp_r29 % 10;
+            sp14[1] = temp_r29 / 10;
+        } else {
+            temp_r31->field00_bit0 = 1;
+        }
+        
+        for (var_r30 = 0; var_r30 < 2; var_r30++) {
+            if (((var_r30 == 1) && (sp14[1] == 0)) || (temp_r31->field00_bit1 == 0)) {
+                HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
+            } else {
+                if ((sp14[1] == 0) && (var_r30 == 0)) {
+                    sp1C[0] = 288.0f;
+                } else {
+                    sp1C[0] = spC[var_r30];
+                }
+                sp1C[1] = 176.0f;
+                HuSprAttrReset(temp_r31->unk_04, var_r30, 4);
+                HuSprBankSet(temp_r31->unk_04, var_r30, sp14[var_r30]);
+                HuSprPosSet(temp_r31->unk_04, var_r30, sp1C[0], sp1C[1]);
+            }
+        }
+    }
+}
+
+void BoardPlayerBtnDownWait(s32 arg0, u32 arg1) {
+    s32 spC;
+    s32 sp8;
+    s32 temp_r31;
+
+    temp_r31 = GWPlayer[arg0].port;
+    while (1) {
+        if ((HuPadBtnDown[temp_r31] & arg1) != 0) return;
+        HuPrcVSleep();
+    }
+}
+
+void BoardPlayerAutoSizeSet(s32 player, s32 value) {
+    PlayerState* temp_r28;
+
+    temp_r28 = BoardPlayerGet(player);
+    if ((temp_r28->auto_size != 0) || (value == 0)) {
+        BoardStatusHammerKill(player);
+    }
+    temp_r28->auto_size = value;
+    if (value != 0) {
+        BoardStatusHammerCreate(player);
+    }
+}
+
+s32 BoardPlayerAutoSizeGet(s32 arg0) {
+    PlayerState* temp_r30 = BoardPlayerGet(arg0);
+    
+    if (temp_r30 != 0 ) {
+        arg0 = temp_r30->auto_size;
+    }
+    return arg0;
+}
+
+u32 BoardPlayerMoveAwayIsDone(void) {
+    if (!moveAwayObj) {
+        return 0;
+    }
+    return 1;
+}
+
+void BoardPlayerMoveAwayStart(s32 arg0, s32 arg1, s32 arg2) {
+    bitcopy3* temp_r25;
+    Point3d sp28;
+    Point3d sp1C;
+    Point3d sp10;
+    s32 temp_r29;
+    s32 var_r30;
+    s32 var_r31;
+    s32 var_r28;
+    s32 var_r27;
+
+    moveAwayPlayer[0] = moveAwayPlayer[1] = moveAwayPlayer[2] = moveAwayPlayer[3] = -1;
+    var_r30 = arg0 + 1;
+
+    var_r27 = 0;
+    // hack
+    for (var_r28 = var_r28 = var_r27; var_r27 < 4; var_r27++, var_r30++) {
+        var_r30 &= 3;
+        
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            if ((var_r31 == var_r30) && (arg1 == GWPlayer[var_r31].space_curr)) {
+                moveAwayPlayer[var_r28++] = var_r31;
+            }
+        }
+    }
+    BoardSpaceRotGet(0, arg1, &sp28);
+    
+    for (var_r31 = 0; var_r31 < var_r28; var_r31++) {
+        BoardSpaceCornerPosGet(arg1, var_r31, &sp1C);
+        temp_r29 = moveAwayPlayer[var_r31];
+        if (arg2 != 0) {
+            BoardPlayerPosSetV(temp_r29, &sp1C);
+            moveAwayPlayer[var_r31] = -1;
+        } else {
+            BoardPlayerPosGet(temp_r29, &sp10);
+            BoardPlayerPosLerpStart(temp_r29, &sp10, &sp1C, 0x19);
+        }
+    }
+    if (arg2 == 0) {
+        moveAwayObj = omAddObjEx(boardObjMan, 0x100, 0U, 0U, -1, &MoveAwayObjFunc);
+        temp_r25 = (bitcopy3*) moveAwayObj->work;
+        temp_r25->field00_bit0 = 0;
     }
 }
 
