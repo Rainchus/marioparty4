@@ -1,4 +1,5 @@
 #include "game/init.h"
+#include "game/fault.h"
 #include "dolphin/os.h"
 #include "dolphin/gx.h"
 #include "dolphin/dvd.h"
@@ -14,8 +15,6 @@ extern void HuAudInit();
 extern void HuCardInit();
 extern void HuARInit();
 extern u32 frand();
-extern void HuFaultInitXfbDirectDraw(GXRenderModeObj *mode);
-extern void HuFaultSetXfbAddress(int fb, void *addr);
 
 static GXRenderModeObj rmodeobj;
 
