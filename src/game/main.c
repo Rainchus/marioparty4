@@ -115,7 +115,7 @@ void HuSysVWaitSet(s16 vcount)
     minimumVcountf = vcount;
 }
 
-s16 HuSysVWaitGet(void)
+s16 HuSysVWaitGet(s16 param)
 {
     return (s16) minimumVcount;
 }
