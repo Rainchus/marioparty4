@@ -2023,7 +2023,7 @@ void BoardLast5GfxInit(void)
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
-			HuSprAttrSet(work->group, i, SPIRTE_ATTR_BILINEAR);
+			HuSprAttrSet(work->group, i, SPRITE_ATTR_BILINEAR);
 			HuSprPosSet(work->group, i, last5GfxPosTbl[lastF][i][0], last5GfxPosTbl[lastF][i][1]);
 		}
 		if(!work->is_last) {
