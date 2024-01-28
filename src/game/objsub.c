@@ -1201,7 +1201,7 @@ MgInfo mgInfoTbl[] = {
         0, // advice_mess
     },
     {
-        65535, // ovl
+        0xFFFF, // ovl
         0, // type
         0, // flag
         65280, // unk_4
@@ -1223,41 +1223,41 @@ MgInfo mgInfoTbl[] = {
 
 void MGSeqPracticeExitCheck(omObjData*);
 
-s64 lbl_801D3EA0;
-s64 lbl_801D3E98;
-s32 lbl_801D3E94;
-s32 lbl_801D3E90;
-s32 lbl_801D3E8C;
-s32 lbl_801D3E88;
-s32 lbl_801D3E84;
-s32 lbl_801D3E80;
+s16 mgTypeCurr;
+s16 mgBattleStar[4];
+s16 mgBattleStarMax;
+u8 lbl_801D3E94;
+s32 mgRecordExtra;
+s32 mgQuitExtraF;
+s32 mgPracticeEnableF;
+s32 mgInstExitEnableF;
+u8 mgBoardHostEnableF;
 
-u8 lbl_801983F8[0x18];
-u8 lbl_801982F8[0x100];
-u8 GWGameStatBackup[0x118];
+s16 mgTicTacToeGrid[3][3];
+u8 mgIndexList[256];
+GameStat mgGameStatBackup;
 
-s16 omGetMGIndex(s16 overlay) {
+s16 omMgIndexGet(s16 overlay) {
     s32 i;
-    MgInfo* current_info;
+    MgInfo *info;
 
-    current_info = (MgInfo*)&mgInfoTbl;
+    info = mgInfoTbl;
     
-    for (i = 0; current_info->ovl != 0xffff; i++) {
-        if (current_info->ovl == overlay) {
+    for (i = 0; info->ovl != 0xFFFF; i++) {
+        if (info->ovl == overlay) {
             return i;
         }
-        
-        current_info++;
+        info++;
     }
 
     return -1;
 }
 
-void omGameSysInit(Process* process) {
+void omGameSysInit(Process *objman) {
     s32 i;
     omObjData* obj;
 
-    omSystemKeyCheckSetup(process);
+    omSystemKeyCheckSetup(objman);
     Hu3DCameraScissorSet(1, 0, 0, 0x280, 0x1E0);
     omSysPauseEnable(0);
     
@@ -1269,16 +1269,16 @@ void omGameSysInit(Process* process) {
         GWPlayer[i].unk_26 = 0;
     }
     
-    if (lbl_801D3E88 != 0) {
-        obj = omAddObjEx(process, 0x7FDC, 0, 0, -1, MGSeqPracticeExitCheck);
+    if (mgPracticeEnableF != 0) {
+        obj = omAddObjEx(objman, 0x7FDC, 0, 0, -1, MGSeqPracticeExitCheck);
         omSetStatBit(obj, 0xA0U);
     }
 }
 
-void omVibrate(s16 player_cfg_index, s16 duration, s16 off, s16 on) {
+void omVibrate(s16 player, s16 duration, s16 off, s16 on) {
     s32 rumble = GWGameStat.rumble;
     
-    if (rumble != 0 && GWPlayerCfg[player_cfg_index].iscom == 0) {
-        HuPadRumbleSet(GWPlayerCfg[player_cfg_index].pad_idx, duration, off, on);
+    if (rumble != 0 && GWPlayerCfg[player].iscom == 0) {
+        HuPadRumbleSet(GWPlayerCfg[player].pad_idx, duration, off, on);
     }
 }

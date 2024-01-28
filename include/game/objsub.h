@@ -3,6 +3,7 @@
 
 #include "dolphin.h"
 #include "game/process.h"
+#include "game/gamework_data.h"
 
 typedef struct mg_info {
     u16 ovl;
@@ -24,7 +25,24 @@ typedef struct mg_info {
 } MgInfo;
 
 s16 omGetMGIndex(s16 overlay);
-void omGameSysInit(Process* process);
+void omGameSysInit(Process *objman);
 void omVibrate(s16 player_cfg_index, s16 duration, s16 off, s16 on);
+
+
+extern s16 mgTypeCurr;
+extern s16 mgBattleStar[4];
+extern s16 mgBattleStarMax;
+extern u8 lbl_801D3E94;
+extern s32 mgRecordExtra;
+extern s32 mgQuitExtraF;
+extern s32 mgPracticeEnableF;
+extern s32 mgInstExitEnableF;
+extern u8 mgBoardHostEnableF;
+
+extern s16 mgTicTacToeGrid[3][3];
+extern u8 mgIndexList[256];
+extern GameStat mgGameStatBackup;
+
+extern MgInfo mgInfoTbl[];
 
 #endif
