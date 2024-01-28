@@ -4,6 +4,7 @@
 #include "game/data.h"
 #include "game/flag.h"
 #include "game/object.h"
+#include "game/objsub.h"
 #include "game/gamework_data.h"
 #include "board_unsplit.h"
 #include "math.h"
@@ -35,7 +36,6 @@ static void CoinChgDisappear(omObjData*, coinChg*);
 
 extern void BoardTutorialHookExec(s16, s32);
 extern void BoardCameraViewSet(s32);
-extern void omVibrate(s16, s16, s16, s16);
 extern void BoardPlayerPosGet(s32, Vec*);
 extern void BoardModelPosGet(s16, Vec*);
 extern void BoardPlayerMotionEndWait(s32);

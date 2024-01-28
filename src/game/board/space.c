@@ -6,11 +6,10 @@
 #include "game/hsfman.h"
 #include "game/data.h"
 #include "game/sprite.h"
+#include "game/objsub.h"
 
 #include "math.h"
 #include "string.h"
-
-extern void omVibrate(s16, s16, s16, s16);
 
 
 extern s16 BoardStarHostMdlGet(void);

@@ -1,7 +1,5 @@
 #include "game/board/player.h"
-
-//// #include "game/objsub.h"
-extern void omVibrate(s16, s16, s16, s16);
+#include "game/objsub.h"
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
 extern void BoardYourTurnExec(s32);

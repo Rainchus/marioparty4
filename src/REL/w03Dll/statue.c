@@ -10,6 +10,7 @@
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 #include "game/board/main.h"
+#include "game/objsub.h"
 
 void fn_1_1358(void);
 void fn_1_152C(void);
@@ -29,7 +30,6 @@ s32 BoardPlayerMotBlendCheck(s32);
 f32 BoardPlayerRotYGet(s32);
 void BoardConfettiCreate(Point3d*, s16, f32);
 double atan2(double y, double x);
-void omVibrate(s16, s16, s16, s16);
 f32 BoardModelMotionTimeGet(s16);
 
 //DATA
