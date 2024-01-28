@@ -4,6 +4,7 @@
 #include "game/wipe.h"
 #include "game/gamework_data.h"
 #include "game/hsfex.h"
+#include "game/objsub.h"
 #include "board_unsplit.h"
 #include "math.h"
 
@@ -14,7 +15,6 @@ static void WarpFall(s32);
 static void WarpImpact(s32);
 
 
-extern void omVibrate(s16, s16, s16, s16);
 extern void BoardCharWheelInit(s32, s32);
 extern void BoardCharWheelSpeedSet(f32);
 extern void BoardCharWheelWait(void);
