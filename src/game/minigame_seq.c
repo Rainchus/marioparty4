@@ -10,6 +10,8 @@
 
 void MGSeqStub(void);
 
+void MGSeqPauseEnableCtrl(s32 flag);
+
 extern s16 HuSysVWaitGet(s16 param);
 
 typedef struct seq_work SeqWork;
@@ -888,6 +890,13 @@ static s32 SeqMakeWord(SeqWork *work, char *str, s16 flags)
 	return grp_idx;
 }
 
+static s32 SeqCloneWord(SeqWork *work, s16 grp_idx)
+{
+	s16 i;
+	
+	return i;
+}
+
 static AnimData *SeqLoadFontChar(char *str, s16 flags)
 {
 	s32 data_num;
@@ -943,4 +952,312 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
 		list++;
 	}
 	return NULL;
+}
+
+static float ForceDefine480()
+{
+	return 480.0f;
+}
+
+static void SeqPlayStartFX(void);
+
+static int SeqInitMGBasic(SeqWork *work, va_list params)
+{
+	s16 i;
+	s16 word_grp;
+	
+	work->work_s16[1] = va_arg(params, int);
+	if(work->work_s16[1] == 2) {
+		return SeqInitDraw(work, params);
+	}
+	work->type = 0;
+	work->work_float[0] = 0;
+	
+	{
+		s32 word_katakana;
+		s32 word_flag;
+		s32 word_ofs;
+		word_katakana = 0;
+		if(work->work_s16[1] == 2 && seqLanguage == 0) {
+			word_katakana = 1;
+		}
+		if(word_katakana) {
+			word_flag = 1;
+		} else {
+			word_flag = 0;
+		}
+		if(seqLanguage == 0) {
+			word_ofs = 0;
+		} else {
+			word_ofs = 3;
+		}
+		word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+	}
+	HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
+	
+	for(i=0; i<work->work_s16[3]; i++) {
+		HuSprTPLvlSet(work->spr_grp[word_grp], i, 1.0f);
+		HuSprPosSet(work->spr_grp[word_grp], i, -100.0f, 240.0f);
+	}
+	if(seqPauseF) {
+		work->type = 2;
+		HuSprAttrSet(word_grp, 0, SPRITE_ATTR_HIDDEN);
+	} else {
+		work->param[0] = 3;
+	}
+	return 1;
+}
+
+static int SeqUpdateMGBasic(SeqWork *work)
+{
+	s16 idx;
+	float scale;
+	if(work->param[0] != 0 && work->type != -1) {
+		switch(work->param[0]) {
+			case 2:
+				if(work->param[1] != -1) {
+					(void)work; //HACK: to introduce extra branch
+				} else {
+					work->type = -1;
+					work->work_float[0] = 0.0f;
+				}
+				work->param[0] = 0;
+				break;
+				
+			case 1:
+				work->time_max = work->param[1];
+				work->param[0] = 0;
+				break;
+				
+			case 3:
+				work->type = 1;
+				work->param[0] = 0;
+				break;
+				
+			default:
+				work->param[0] = 0;
+				break;
+		}
+	}
+	if(work->type == 2) {
+		return 1;
+	}
+	work->time += seqSpeed;
+	if(work->time >= work->time_max && work->type != -1) {
+		work->type = -1;
+		work->work_float[0] = 0.0f;
+	}
+	if(work->type != 0) {
+		switch(work->type) {
+			case 1:
+			{
+				float pos_x;
+				float time;
+				s16 i;
+				if(work->work_s16[1] == 0) {
+					if(work->time <= 40) {
+						for(i=0; i<work->work_s16[3]; i++) {
+							time = work->time-((20/work->work_s16[3])*(work->work_s16[3]-i-1));
+							if(time < 0 || time > 20.0f) {
+								continue;
+							}
+							pos_x = (work->x-(0.5f*(work->work_s16[3]*56)))+28.0f+(i*56);
+							if(time == 20.0f) {
+								HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
+								HuSprZRotSet(work->spr_grp[0], i, 0.0f);
+							} else {
+								HuSprPosSet(work->spr_grp[0], i, pos_x-(((1.0-sin(((time*4.5f)*M_PI)/180.0))*(work->work_s16[3]*56*2))), work->y);
+								HuSprZRotSet(work->spr_grp[0], i, (time/20.0f)*390.0f);
+							}
+						}
+					} else {
+						time = work->time-40;
+						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
+						for(i=0; i<work->work_s16[3]; i++) {
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
+							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
+							HuSprScaleSet(work->spr_grp[0], i, scale, work->scale_y+sin(((time*9.0f)*M_PI)/180.0));
+						}
+					}
+					if(work->time == 40) {
+						idx = HuAudFXPlay(36);
+						work->stat |= 0x10;
+					}
+					if(work->time == 60) {
+						SeqPlayStartFX();
+						work->stat |= 0x4;
+					}
+					if(work->time >= 60) {
+						work->type = 0;
+					}
+				} else {
+					if(work->time == 1) {
+						if(work->work_s16[1] == 1) {
+							HuAudFXPlay(37);
+						} else {
+							HuAudFXPlay(40);
+						}
+						MGSeqPauseEnableCtrl(0);
+						work->stat |= 0x10;
+					}
+					if(work->time <= 20) {
+						time = work->time;
+						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
+						for(i=0; i<work->work_s16[3]; i++) {
+							HuSprAttrReset(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
+							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
+							HuSprScaleSet(work->spr_grp[0], i, work->scale_x+sin(((time*9.0f)*M_PI)/180.0), work->scale_y+sin(((time*9.0f)*M_PI)/180.0));
+						}
+						if(time == 20.0f) {
+							for(i=0; i<work->work_s16[3]; i++) {
+								HuSprAttrReset(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+							}
+						}
+					} else {
+						if(work->time > 80) {
+							for(i=0; i<work->work_s16[3]; i++) {
+								time = (work->time-80)-((20/work->work_s16[3])*(work->work_s16[3]-i-1));
+								if(time < 0.0f || time > 20.0f) {
+									continue;
+								}
+								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56);
+								if(time == 20.0f) {
+									HuSprAttrSet(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+								} else {
+									HuSprPosSet(work->spr_grp[0], i, pos_x+((1.0-cos(((time*4.5f)*M_PI)/180.0f))*(work->work_s16[3]*56*2)), work->y);
+									HuSprZRotSet(work->spr_grp[0], i, (time/20.0f)*390.0f);
+								}
+							}
+						}
+					}
+					if(work->time == 110) {
+						work->stat |= 0x4;
+					}
+					if(work->time >= 110) {
+						work->type = 0;
+						work->stat |= 8;
+					}
+				}
+			}
+				break;
+				
+			case -1:
+			{
+				work->work_float[0] += seqSpeed*0.1f;
+				scale = 1.0f-work->work_float[0];
+				if(scale <= 0.0f) {
+					scale = 0.0f;
+					work->type = 0;
+					work->stat |= 0x8;
+					if(work->work_s16[1] == 0) {
+						MGSeqPauseEnableCtrl(1);
+					}
+				}
+				for(idx=0; idx<work->work_s16[3]; idx++) {
+					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
+				}
+			}
+				break;
+				
+			default:
+				break;
+		}
+	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
+}
+
+static int SeqInitMGCommon(SeqWork *work, va_list params)
+{
+	s16 i;
+	float tp_lvl;
+	s16 j;
+	
+	s16 word_grp;
+	
+	work->work_s16[1] = va_arg(params, int);
+	if(work->work_s16[1] == 2) {
+		return SeqInitDraw(work, params);
+	}
+	work->type = 0;
+	work->work_float[0] = 0;
+	tp_lvl = 1.0f;
+	for(i=0; i<4; i++) {
+		
+		if(i == 0)
+		{
+			s32 word_katakana;
+			s32 word_flag;
+			s32 word_ofs;
+			word_katakana = 0;
+			if(work->work_s16[1] == 2 && seqLanguage == 0) {
+				word_katakana = 1;
+			}
+			if(word_katakana) {
+				word_flag = 1;
+			} else {
+				word_flag = 0;
+			}
+			if(seqLanguage == 0) {
+				word_ofs = 0;
+			} else {
+				word_ofs = 3;
+			}
+			word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+		} else {
+			s16 grp_idx;
+			s32 new_grp;
+			for(grp_idx=0; grp_idx<16; grp_idx++) {
+				if(work->spr_grp[grp_idx] == -1) {
+					break;
+				}
+			}
+			if(grp_idx == 16) {
+				new_grp = -1;
+			} else {
+				work->spr_grp[grp_idx] = HuSprGrpCopy(work->spr_grp[word_grp]);
+				new_grp = grp_idx;
+			}
+			(void)new_grp;
+			word_grp = new_grp;
+		}
+		HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
+		for(j=0; j<work->work_s16[3]; j++) {
+			HuSprTPLvlSet(work->spr_grp[word_grp], j, tp_lvl);
+			HuSprPosSet(work->spr_grp[word_grp], j, -100.0f, 240.0f);
+			HuSprPriSet(work->spr_grp[word_grp], j, i+5);
+			HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+		}
+		if(i == 0) {
+			tp_lvl -= 0.5;
+		} else {
+			tp_lvl -= 0.1f;
+		}
+	}
+	if(seqPauseF) {
+		work->type = 2;
+		HuSprAttrSet(word_grp, 0, SPRITE_ATTR_HIDDEN);
+	} else {
+		work->param[0] = 3;
+	}
+	return 1;
+}
+
+static int SeqInitDraw(SeqWork *work, va_list params)
+{
+	
+}
+
+static void SeqPlayStartFX(void)
+{
+	
+}
+
+void MGSeqPauseEnableCtrl(s32 flag)
+{
+	
 }
