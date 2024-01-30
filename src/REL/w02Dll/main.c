@@ -7,42 +7,90 @@
 #include "game/board/window.h"
 
 // Temporary defines
-#define MINI_MUSHROOM         0x0
-#define MEGA_MUSHROOM         0x1
-#define SUPER_MINI_MUSHROOM   0x2
-#define SUPER_MEGA_MUSHROOM   0x3
-#define MINI_MEGA_HAMMER      0x4
-#define WARP_PIPE             0x5
-#define SWAP_CARD             0x6
-#define SPARKY_STICKER        0x7 
-#define GADDLIGHT             0x8  
-#define CHOMP_CALL            0x9
-#define BOWSER_SUIT           0xA
-#define BOOS_CRYSTAL_BALL     0xB
-#define MAGIC_LAMP            0xC
-#define ITEM_BAG              0xD
-#define TOTAL_ITEMS           0xE
-#define NO_ITEM               -1
+#define BOARD_ITEM_MINI           0x0
+#define BOARD_ITEM_MEGA           0x1
+#define BOARD_ITEM_SUPERMINI      0x2
+#define BOARD_ITEM_SUPERMEGA      0x3
+#define BOARD_ITEM_HAMMER         0x4
+#define BOARD_ITEM_PIPE           0x5
+#define BOARD_ITEM_CARD           0x6
+#define BOARD_ITEM_SPARKY         0x7 
+#define BOARD_ITEM_GADDLIGHT      0x8  
+#define BOARD_ITEM_CHOMPCALL      0x9
+#define BOARD_ITEM_SUIT           0xA
+#define BOARD_ITEM_BOO            0xB
+#define BOARD_ITEM_LAMP           0xC
+#define BOARD_ITEM_BAG            0xD
+#define BOARD_ITEM_MAX            0xE
+#define BOARD_ITEM_NONE            -1
+
+typedef struct ModelTransform {
+/* 0x00 */ Vec pos;
+/* 0x0C */ Vec rot;
+/* 0x18 */ Vec scale;
+/* 0x24 */ s32 id;
+} ModelTransform;
 
 /* BSS */
-s16 lbl_1_bss_8[3]; // Item List
+u8* lbl_1_bss_0;
+Process* lbl_1_bss_4;
+s16 lbl_1_bss_8[4]; // Item List
+s32* lbl_1_bss_10;
+Point3d lbl_1_bss_14;
+Point3d lbl_1_bss_20;
+s16 lbl_1_bss_2C;
+s16 lbl_1_bss_2E;
 s16 lbl_1_bss_30[0x10]; // Model List
 
 /* DATA */
+ModelTransform lbl_1_data_0[0x10] = {
+{{2550.0f, 0.0f, -450.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000C)},
+{{-3150.0f, 0.0f, -1350.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000D)},
+{{-3150.0f, 0.0f, 1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000E)},
+{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0008)},
+{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0009)},
+{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000A)},
+{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000B)},
+{{1350.0f, 0.0f, -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0011)},
+{{1350.0f, 0.0f, -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0012)},
+{{1350.0f, 0.0f, -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0015)},
+{{-300.0f, 0.0f, -900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0016)},
+{{1175.0f, 0.0f, -125.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
+{{-525.0f, 0.0f, -825.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
+{{-2225.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
+{{1925.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
+{{150.0f, 0.0f, 1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
+};
+
 // Special Models
-s16 lbl_1_data_280;
-s16 lbl_1_data_282;
-s16 lbl_1_data_284;
-s16 lbl_1_data_286;
+s16 lbl_1_data_280 = -1;
+s16 lbl_1_data_282 = -1;
+s16 lbl_1_data_284 = -1;
+s16 lbl_1_data_286 = -1;
+
+s32 lbl_1_data_288[] = {
+    MAKE_DATA_NUM(0x0076, 0x0004),
+    DATA_NUM_LISTEND
+};
+s32 lbl_1_data_290[] = {
+    MAKE_DATA_NUM(0x0076, 0x0004),
+    MAKE_DATA_NUM(0x0076, 0x0004),
+    MAKE_DATA_NUM(0x0076, 0x0004),
+    MAKE_DATA_NUM(0x0076, 0x0004),
+    DATA_NUM_LISTEND,
+    0x00000000 // Padding
+};
 
 /* RODATA */
-f32 lbl_1_rodata_14;
-f32 lbl_1_rodata_1C;
-f32 lbl_1_rodata_20;
-f32 lbl_1_rodata_24;
-f32 lbl_1_rodata_28;
-f32 lbl_1_rodata_2C;
-f32 lbl_1_rodata_30;
+// f32 -1.0f;
+// f32 0.1f;
+// f32 0.0f;
+// f32 135.0f;
+// f32 1200.0f;
+// f32 25.0f;
+// f32 -30.0f;
+// f32 -250.0f;
+// f32 lbl_1_rodata_30;
 
 
 /* Functions */
@@ -52,20 +100,100 @@ extern void BoardAudSeqPause(s32, s32, s32);
 s8 BoardComPreferItemCheck(s32, s8, s8, s8);
 extern void BoardComKeySetLeft();
 extern void BoardComKeySetRight();
+extern void CharModelDataClose(s16);
 extern u32 frand();
 extern u32 frandmod(u32);
 
-// Local incomplete functions
-void fn_1_394C(s32);
-void fn_1_3BF4();
-void fn_1_39F4();
-void fn_1_5CF8();
-void fn_1_5D28();
-void fn_1_5F90(); 
-void fn_1_79BC(s16* itemList);
-void fn_1_8244(s32);
-void fn_1_93C8(s32 spaceFlag);
-void fn_1_E41C();
+// Local Functions
+void fn_1_770();
+void fn_1_72C();
+s32 fn_1_774();
+s32 fn_1_800();
+void fn_1_92C();
+s32 fn_1_1128(); 
+
+// Local Extern Functions
+extern void fn_1_394C(s32);
+extern void fn_1_3BF4();
+extern void fn_1_39F4();
+extern void fn_1_5CF8();
+extern void fn_1_5D28();
+extern void fn_1_5F90(); 
+extern void fn_1_79BC(s16* itemList);
+extern void fn_1_8244(s32);
+extern void fn_1_9250();
+extern void fn_1_93C8(s32 spaceFlag);
+extern void fn_1_BC1C(); 
+extern void fn_1_E41C();
+
+
+// function is probably global. only inlined in rels?
+inline s32 get_current_board(void) {
+    return GWSystem.board;
+}
+
+void BoardCreate(void) {
+    s32 i, boardData;
+    ModelTransform* modelTransform;
+
+    boardData = get_current_board();
+    lbl_1_bss_0 = GWSystem.board_data;
+    BoardSpaceInit(0x760000);
+    lbl_1_data_280 = BoardModelCreate(0x760001, NULL, 0);
+    fn_8006DDE8(lbl_1_data_280, -1.0f);
+    BoardModelPosSet(lbl_1_data_280, 0.0f, 0.0f, 0.0f);
+    BoardModelMotionStart(lbl_1_data_280, 0, 0x40000001);
+    BoardModelMotionSpeedSet(lbl_1_data_280, 0.1f);
+    lbl_1_data_282 = BoardModelCreate(0x760002, NULL, 0);
+    fn_8006DDE8(lbl_1_data_282, -1.0f);
+    BoardModelPosSet(lbl_1_data_282, 0.0f, 0.0f, 0.0f);
+    BoardModelMotionStart(lbl_1_data_282, 0, 0x40000001);
+    lbl_1_data_284 = BoardModelCreate(0x760003, lbl_1_data_288, 0);
+    BoardModelPosSet(lbl_1_data_284, 0.0f, 0.0f, 0.0f);
+    BoardModelMotionStart(lbl_1_data_284, 1, 0x40000001);
+    lbl_1_data_286 = BoardModelCreate(0x20005, lbl_1_data_290, 0);
+    BoardModelMotionStart(lbl_1_data_286, 1, 0x40000001);
+    BoardLightHookSet(fn_1_72C, fn_1_770);
+
+    for(i = 0; i < 0x10; i++) {
+        modelTransform = &lbl_1_data_0[i];
+        if (modelTransform->id != -1) {
+            if ((i == 0xB) || (i == 0xC) || (i == 0xD) || (i == 0xE) || (i == 0xF)) {
+                lbl_1_bss_10 = lbl_1_data_290;
+            } else {
+                lbl_1_bss_10 = NULL;
+            }
+            lbl_1_bss_30[i] = BoardModelCreate(modelTransform->id, lbl_1_bss_10, 0);
+            BoardModelPosSetV(lbl_1_bss_30[i], &modelTransform->pos);
+            BoardModelRotSetV(lbl_1_bss_30[i], &modelTransform->rot);
+            BoardModelScaleSetV(lbl_1_bss_30[i], &modelTransform->scale);
+            BoardModelVisibilitySet(lbl_1_bss_30[i], 1);
+            if (lbl_1_bss_10 != NULL) {
+                BoardModelMotionStart(lbl_1_bss_30[i], 1, 0x40000001);
+            }
+        }
+    }
+
+    BoardModelAttrSet(lbl_1_bss_30[0], 0x40000002);
+    BoardModelAttrSet(lbl_1_bss_30[1], 0x40000002);
+    BoardModelAttrSet(lbl_1_bss_30[2], 0x40000002);
+    fn_1_BC1C();
+    fn_1_92C();
+    BoardModelPosGet(lbl_1_bss_30[13], &lbl_1_bss_20);
+    BoardModelPosGet(lbl_1_bss_30[14], &lbl_1_bss_14);
+    lbl_1_bss_2E = BoardModelCreate(0x760010, NULL, 1);
+    lbl_1_bss_2C = BoardModelCreate(0x760010, NULL, 1);
+    fn_1_9250();
+    BoardSpaceWalkEventFuncSet(fn_1_800);
+    BoardSpaceWalkMiniEventFuncSet(fn_1_1128);
+    BoardSpaceLandEventFuncSet(fn_1_774);
+    BoardStarHostSet(lbl_1_data_284);
+    BoardBooHouseHostSet(lbl_1_data_286);
+    BoardLotteryHostSet(lbl_1_data_286);
+    BoardShopHostSet(lbl_1_data_286);
+    BoardJunctionMaskSet(0xE);
+    BoardJunctionMaskSet(0x30);
+}
 
 void BoardDestroy(void) {
     /* Kill Model List */
@@ -107,7 +235,7 @@ void fn_1_770(void) {
 }
 
 /* Decrement current space's [UNKNOWN] flag */
-void fn_1_774(void) {
+s32 fn_1_774(void) {
     u32 unkFlag;
     u32 currPlayer;
     u32 currSpace;
@@ -211,11 +339,11 @@ void fn_1_990(void) {
     }
     BoardAudSeqPause(0, 1, 0x3E8);
     HuPrcChildCreate(fn_1_954, 0x2003U, 0x1000U, 0, boardMainProc);
-    rotation.x = lbl_1_rodata_14;
-    rotation.y = rotation.z = lbl_1_rodata_14;
-    offset.y = lbl_1_rodata_1C;
-    offset.x = offset.z = lbl_1_rodata_14;
-    BoardCameraMotionStartEx(lbl_1_bss_30[8], &rotation, &offset, lbl_1_rodata_20, lbl_1_rodata_24, 0x15);
+    rotation.x = 0.0f;
+    rotation.y = rotation.z = 0.0f;
+    offset.y = 135.0f;
+    offset.x = offset.z = 0.0f;
+    BoardCameraMotionStartEx(lbl_1_bss_30[8], &rotation, &offset, 1200.0f, 25.0f, 0x15);
     currSpace = GWPlayer[currPlayer].space_curr;
     spaceLinkFlag = BoardSpaceLinkFlagSearch(0, currSpace, 0x02000000U);
     BoardSpacePosGet(0, spaceLinkFlag, &boardSpacePos);
@@ -261,16 +389,16 @@ void fn_1_C50(void) {
        the first item is MINI_MUSHROOM and the
        other two are not BOWSER_SUIT or ITEM_BAG.
     */
-    lbl_1_bss_8[0] = MINI_MUSHROOM;
+    lbl_1_bss_8[0] = BOARD_ITEM_MINI;
     for (i = 1; i < 3;) {
-        lbl_1_bss_8[i] = frandmod(TOTAL_ITEMS);
-        if (lbl_1_bss_8[i] != BOWSER_SUIT && lbl_1_bss_8[i] != ITEM_BAG) {
+        lbl_1_bss_8[i] = frandmod(BOARD_ITEM_MAX);
+        if (lbl_1_bss_8[i] != BOARD_ITEM_SUIT && lbl_1_bss_8[i] != BOARD_ITEM_BAG) {
             for (j = 0; j < i; j++) {
                 if (lbl_1_bss_8[i] == lbl_1_bss_8[j]) {
-                    lbl_1_bss_8[i] = NO_ITEM;
+                    lbl_1_bss_8[i] = BOARD_ITEM_NONE;
                 }
             }
-            if (lbl_1_bss_8[i] != NO_ITEM) {
+            if (lbl_1_bss_8[i] != BOARD_ITEM_NONE) {
                 i++;
             } 
         }
@@ -303,12 +431,12 @@ void fn_1_C50(void) {
         fn_1_5F90();
         HuPrcEnd();
     }
-    rotation.x = lbl_1_rodata_28;
-    rotation.y = rotation.z = lbl_1_rodata_14;
-    offset.x = lbl_1_rodata_14;
-    offset.y = lbl_1_rodata_14;
-    offset.z = lbl_1_rodata_2C;
-    BoardCameraMotionStartEx(lbl_1_bss_30[10], (Point3d* ) &rotation, (Point3d* ) &offset, lbl_1_rodata_30, lbl_1_rodata_24, 0x15);
+    rotation.x = -30.0f;
+    rotation.y = rotation.z = 0.0f;
+    offset.x = 0.0f;
+    offset.y = 0.0f;
+    offset.z = -250.0f;
+    BoardCameraMotionStartEx(lbl_1_bss_30[10], (Point3d* ) &rotation, (Point3d* ) &offset, 1500.0f, 25.0f, 0x15);
     currSpace = GWPlayer[currPlayer].space_curr;
     spaceLinkFlags = BoardSpaceLinkFlagSearch(0, currSpace, 0x02000000U);
     BoardPlayerMoveBetween(currPlayer, currSpace, spaceLinkFlags);
@@ -333,3 +461,45 @@ void fn_1_C50(void) {
     BoardPlayerMotionStart((s32) currPlayer, 1, 0x40000001);
     HuPrcEnd();
 }
+
+void fn_1_1070(void) {
+    BoardWinKill();
+    CharModelDataClose(-1);
+    lbl_1_bss_4 = 0;
+}
+
+void fn_1_10A8(void) {
+    lbl_1_bss_4 = HuPrcChildCreate(fn_1_C50, 0x2003U, 0x2000U, 0, boardMainProc);
+    HuPrcDestructorSet2(lbl_1_bss_4, fn_1_1070);
+    while (lbl_1_bss_4) {
+        HuPrcVSleep();
+    }
+}
+
+s32 fn_1_1128(void) {
+    u32 spaceFlags;
+    s16 currSpace;
+    currSpace = GWPlayer[GWSystem.player_curr].space_curr;
+    spaceFlags = BoardSpaceFlagGet(0, currSpace) & 0x600000;
+    BoardDiceDigit2DShowSet(0);
+
+    if (spaceFlags & 0x200000) {
+        fn_1_990();
+    } else if (spaceFlags & 0x400000) {
+        lbl_1_bss_4 = HuPrcChildCreate(fn_1_C50, 0x2003U, 0x2000U, 0, boardMainProc);
+        HuPrcDestructorSet2(lbl_1_bss_4, fn_1_1070);
+        while (lbl_1_bss_4) {
+            HuPrcVSleep();
+        }
+    }
+
+    BoardDiceDigit2DShowSet(1);
+}
+
+void fn_1_121C(u32 arg0) {
+    BoardWinCreate(2, arg0, 4);
+    BoardWinWait();
+    BoardWinKill();
+}
+
+f32 const padMain = 0.0f;
