@@ -81,18 +81,6 @@ s32 lbl_1_data_290[] = {
     0x00000000 // Padding
 };
 
-/* RODATA */
-// f32 -1.0f;
-// f32 0.1f;
-// f32 0.0f;
-// f32 135.0f;
-// f32 1200.0f;
-// f32 25.0f;
-// f32 -30.0f;
-// f32 -250.0f;
-// f32 lbl_1_rodata_30;
-
-
 /* Functions */
 //Actual externs
 extern void BoardMusStart(s32, s32, s32, s32);
