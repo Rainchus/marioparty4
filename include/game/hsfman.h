@@ -135,6 +135,7 @@ void Hu3DNoSyncSet(s32);
 s16 Hu3DModelCreate(void *);
 s16 Hu3DModelLink(s16);
 s16 Hu3DHookFuncCreate(ModelHookFunc);
+void Hu3DModelKill(s16);
 void Hu3DModelAllKill(void);
 void Hu3DModelPosSet(s16, f32, f32, f32);
 void Hu3DModelPosSetV(s16, Vec *);
