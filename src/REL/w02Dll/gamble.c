@@ -1,11 +1,7 @@
-#include "dolphin.h"
-#include "game/process.h"
-#include "game/gamework_data.h"
-#include "game/board/main.h"
+#include "REL/w02Dll.h"
 
 Process* lbl_1_bss_50;
 s32 lbl_1_bss_54;
-
 
 void fn_1_2D04();
 

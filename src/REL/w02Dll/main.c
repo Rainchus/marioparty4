@@ -1,10 +1,4 @@
-#include "dolphin.h"
-#include "game/process.h"
-#include "game/gamework_data.h"
-#include "game/board/model.h"
-#include "game/board/space.h"
-#include "game/board/main.h"
-#include "game/board/window.h"
+#include "REL/w02Dll.h"
 
 // Temporary defines
 #define BOARD_ITEM_MINI           0x0
@@ -32,15 +26,15 @@ typedef struct ModelTransform {
 } ModelTransform;
 
 /* BSS */
-u8* lbl_1_bss_0;
-Process* lbl_1_bss_4;
-s16 lbl_1_bss_8[4]; // Item List
-s32* lbl_1_bss_10;
-Point3d lbl_1_bss_14;
-Point3d lbl_1_bss_20;
-s16 lbl_1_bss_2C;
-s16 lbl_1_bss_2E;
 s16 lbl_1_bss_30[0x10]; // Model List
+s16 lbl_1_bss_2E;
+s16 lbl_1_bss_2C;
+Point3d lbl_1_bss_20;
+Point3d lbl_1_bss_14;
+s32* lbl_1_bss_10;
+s16 lbl_1_bss_8[4]; // Item List
+Process* lbl_1_bss_4;
+u8* lbl_1_bss_0;
 
 /* DATA */
 ModelTransform lbl_1_data_0[0x10] = {
@@ -91,29 +85,6 @@ extern void BoardComKeySetRight();
 extern void CharModelDataClose(s16);
 extern u32 frand();
 extern u32 frandmod(u32);
-
-// Local Functions
-void fn_1_770();
-void fn_1_72C();
-s32 fn_1_774();
-s32 fn_1_800();
-void fn_1_92C();
-s32 fn_1_1128(); 
-
-// Local Extern Functions
-extern void fn_1_394C(s32);
-extern void fn_1_3BF4();
-extern void fn_1_39F4();
-extern void fn_1_5CF8();
-extern void fn_1_5D28();
-extern void fn_1_5F90(); 
-extern void fn_1_79BC(s16* itemList);
-extern void fn_1_8244(s32);
-extern void fn_1_9250();
-extern void fn_1_93C8(s32 spaceFlag);
-extern void fn_1_BC1C(); 
-extern void fn_1_E41C();
-
 
 // function is probably global. only inlined in rels?
 inline s32 get_current_board(void) {
