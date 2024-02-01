@@ -455,8 +455,8 @@ s32 fn_1_1128(void) {
     BoardDiceDigit2DShowSet(1);
 }
 
-void fn_1_121C(u32 arg0) {
-    BoardWinCreate(2, arg0, 4);
+void fn_1_121C(u32 mesg) {
+    BoardWinCreate(2, mesg, 4);
     BoardWinWait();
     BoardWinKill();
 }
