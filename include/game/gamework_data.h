@@ -177,4 +177,9 @@ static inline s32 GWPlayerTeamGet(s32 player)
     return GWPlayer[player].team;
 }
 
+static inline s32 GWPlayerSpaceCurrGet(s32 player)
+{
+    return GWPlayer[player].space_curr;
+}
+
 #endif

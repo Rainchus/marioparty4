@@ -11,8 +11,8 @@
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 
-void BoardModelPosSet(s16, f32, f32, f32);
-s32 BoardModelMotionStart(s16, s32, s32);
+s32 BoardModelPosSet(s16, f32, f32, f32);
+s32 BoardModelMotionStart(s16, s32, u32);
 
 void fn_8005B150(void*, void*);
 void fn_1_740(void);
@@ -26,7 +26,7 @@ void fn_1_AF8(void);
 void fn_1_DEC(void);
 void fn_1_10B0(void);
 s32 fn_1_12C8(void);
-void fn_8006DDE8(s16, f32);
+s32 fn_8006DDE8(s16, f32);
 void fn_1_10E4(omObjData* arg0);
 extern Process *boardObjMan;
 typedef void (*VoidFunc)(void);
@@ -35,7 +35,7 @@ extern const VoidFunc _dtors[];
 
 
 f32 BoardModelMotionTimeGet(s16);
-s16 BoardModelCreate(s32, void*, s32);
+s16 BoardModelCreate(s32, s32*, s32);
 void BoardModelKill(s16);
 void BoardModelMotionStartEndSet(s16, s32, s32);
 void Hu3DFogSet(f32, f32, u8, u8, u8);
@@ -142,10 +142,10 @@ void BoardCreate(void) {
     fn_8006DDE8(lbl_1_data_1E2, -1.0f);
     BoardModelPosSet(lbl_1_data_1E2, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E2, 0, 0x40000001);
-    lbl_1_data_1E4 = BoardModelCreate(0x77001B, &lbl_1_data_20C, 0);
+    lbl_1_data_1E4 = BoardModelCreate(0x77001B, lbl_1_data_20C, 0);
     BoardModelPosSet(lbl_1_data_1E4, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E4, 1, 0x40000001);
-    lbl_1_data_1E6 = BoardModelCreate(0x2000D, &lbl_1_data_214, 0);
+    lbl_1_data_1E6 = BoardModelCreate(0x2000D, lbl_1_data_214, 0);
     BoardModelPosSet(lbl_1_data_1E6, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E6, 1, 0x40000001);
 
