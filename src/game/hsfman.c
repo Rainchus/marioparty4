@@ -2063,10 +2063,10 @@ void Hu3DProjectionKill(s16 arg0) {
     Hu3DProjection[arg0].unk_04 = NULL;
 }
 
-void Hu3DProjectionPosSet(s16 arg0, Vec arg1, Vec arg2, Vec arg3) {
-    Hu3DProjection[arg0].unk_14 = arg1;
-    Hu3DProjection[arg0].unk_20 = arg3;
-    Hu3DProjection[arg0].unk_2C = arg2;
+void Hu3DProjectionPosSet(s16 arg0, Vec* arg1, Vec* arg2, Vec* arg3) {
+    Hu3DProjection[arg0].unk_14 = *arg1;
+    Hu3DProjection[arg0].unk_20 = *arg3;
+    Hu3DProjection[arg0].unk_2C = *arg2;
 }
 
 void Hu3DProjectionTPLvlSet(s16 arg0, f32 arg8) {

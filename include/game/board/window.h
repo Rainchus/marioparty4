@@ -12,6 +12,7 @@ void BoardWinKillAll(void);
 void BoardWinDestroy(void);
 void BoardWinProc(void);
 int BoardWinChoiceGet(void);
+void BoardWinPause(void);
 void BoardWinCreateChoice(s32 pos, u32 mess, s32 portrait, s32 choice);
 void BoardWinCreate(s32 pos, u32 mess, s32 portrait);
 void BoardWinInsertMesSet(u32 value, s32 index);

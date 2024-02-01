@@ -222,7 +222,7 @@ void Hu3DShadowSizeSet(u16);
 void Hu3DShadowExec(void);
 s16 Hu3DProjectionCreate(void*, f32, f32, f32);
 void Hu3DProjectionKill(s16);
-void Hu3DProjectionPosSet(s16, Vec, Vec, Vec);
+void Hu3DProjectionPosSet(s16, Vec*, Vec*, Vec*);
 void Hu3DProjectionTPLvlSet(s16, f32);
 void Hu3DMipMapSet(char*, s16, s32, f32);
 
