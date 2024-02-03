@@ -9,7 +9,7 @@ typedef struct mg_info {
     u16 ovl;
     u8 type;
     u8 flag;
-    s8 unk_4;
+    u8 record_idx;
     u32 name_mess;
     u32 data_dir;
     u32 inst_pic[3];
