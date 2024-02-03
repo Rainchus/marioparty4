@@ -3,7 +3,7 @@
 
 #define DATADIR_DEFINE(name, path) DATADIR_ID_##name,
 
-typedef enum {
+enum {
     #include "datadir_table.h"
     DATADIR_ID_MAX
 };
@@ -12,7 +12,7 @@ typedef enum {
 
 #define DATADIR_DEFINE(name, path) DATADIR_##name = (DATADIR_ID_##name) << 16,
 
-typedef enum {
+enum {
     #include "datadir_table.h"
 };
 
