@@ -16,9 +16,46 @@ extern f32 lbl_1_rodata_408;
 extern f32 lbl_1_rodata_40C;
 extern f32 lbl_1_rodata_410;
 extern f32 lbl_1_rodata_414;
+extern f32 lbl_1_rodata_418;
+extern f32 lbl_1_rodata_41C;
+extern f32 lbl_1_rodata_420;
+extern f32 lbl_1_rodata_424;
+extern f32 lbl_1_rodata_428;
+extern f32 lbl_1_rodata_42C;
+extern f32 lbl_1_rodata_430;
+extern f32 lbl_1_rodata_434;
+extern f32 lbl_1_rodata_438;
+extern f32 lbl_1_rodata_43C;
+extern f32 lbl_1_rodata_440;
+extern f32 lbl_1_rodata_444;
+extern f32 lbl_1_rodata_448;
+extern f64 lbl_1_rodata_450;
+extern f64 lbl_1_rodata_458;
+extern f32 lbl_1_rodata_460;
+extern f32 lbl_1_rodata_464;
+extern f32 lbl_1_rodata_468;
+extern f32 lbl_1_rodata_46C;
+extern f32 lbl_1_rodata_470;
+extern f32 lbl_1_rodata_474;
+extern f32 lbl_1_rodata_478;
+extern f32 lbl_1_rodata_47C;
+extern f64 lbl_1_rodata_480;
+extern f64 lbl_1_rodata_488;
 extern f32 lbl_1_rodata_490;
+extern f32 lbl_1_rodata_494;
+extern f64 lbl_1_rodata_498;
+extern f64 lbl_1_rodata_4A0;
+extern f32 lbl_1_rodata_4A8;
+extern f32 lbl_1_rodata_4AC;
+extern f32 lbl_1_rodata_4B0;
+extern f32 lbl_1_rodata_4B8;
+
+/* DATA */
+extern s32 lbl_1_data_4D0[];
 
 /* BSS */
+extern s32 lbl_1_bss_384;
+extern s16 lbl_1_bss_388;
 extern s32 lbl_1_bss_38C;
 extern s16 lbl_1_bss_388;
 extern f32 lbl_1_bss_380;
@@ -26,6 +63,18 @@ extern f32 lbl_1_bss_380;
 //Function Externs
 extern void BoardComKeySetDown();
 extern void BoardComKeySetUp();
+extern void omVibrate(s16 player, s16 duration, s16 off, s16 on);
+extern u32 frand();
+
+//Local Functions
+s32 fn_1_E2AC(void);
+void fn_1_E310(f32);
+
+// Unknown Structures
+typedef struct UnkPoint {
+    f32 unk00;
+    Vec point;
+} UnkPoint;
 
 
 /* FUNCTIONS */
@@ -182,7 +231,213 @@ s32 fn_1_BE88(void) {
 }
 
 // https://decomp.me/scratch/rctvo
-// fn_1_C108 (98.34%)
+s32 fn_1_C108(s32 arg0) {
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    UnkPoint spC;
+
+
+    f32 var_f27;
+    f32 var_f26;
+    f32 var_f25;
+    f32 var_f28;
+    f32 var_f29;
+    f64 var_f30;
+    f32 var_f31;
+
+    s32 var_r26;
+    s32 var_r27;
+    s16 var_r28;
+    s32 var_r30;
+    s32 var_r29;
+    s32 i;
+
+    if ((s32) frandmod(0x64U) < arg0) {
+        s32 temp_r25 = fn_1_E2AC();
+        var_r27 = 4;
+        var_r29 = frandmod(3U);
+        if ((s32) frandmod(0x64U) < 0x14) {
+            var_r29 += 1;
+        }
+        var_r29 = var_r29 + (3 - temp_r25) * 4;
+    } else {
+        var_r29 = frandmod(0x10U);
+        var_r27 = frandmod(4U);
+    }
+    BoardModelPosGet(lbl_1_bss_30[4], &spC.point);
+    BoardCameraViewSet(1);
+    BoardCameraMotionWait();
+    var_r26 = BoardSpaceFlagSearch(0, 0x800U);
+    BoardCameraTargetSpaceSet(var_r26);
+    BoardPlayerMotBlendSet(lbl_1_bss_388, 0xB4, 0xF);
+    BoardModelRotGet(lbl_1_bss_30[15], &sp34);
+
+    for (i = 0; i < 0xF; i++) {
+        sp34.y -= lbl_1_rodata_418;
+        BoardModelRotSetV(lbl_1_bss_30[15], &sp34);
+        HuPrcVSleep();
+    }
+
+    sp34.y = lbl_1_rodata_41C;
+    BoardModelRotSetV(lbl_1_bss_30[15], &sp34);
+    BoardCameraMotionWait();
+    lbl_1_bss_384 = HuAudFXPlay(0x41D);
+    var_r28 = -0x1FFF;
+    var_f29 = lbl_1_rodata_410;
+    for (i = 0; i < 0x3C; i++) {
+        var_f29 -= lbl_1_rodata_420;
+        fn_1_E310(var_f29);
+        var_r28 = (s16) ((f32) (s16) var_r28 + lbl_1_rodata_424);
+        HuAudFXPitchSet(lbl_1_bss_384, var_r28);
+        HuPrcVSleep();
+    }
+    
+    var_f29 = lbl_1_rodata_428;
+    HuAudFXPitchSet(lbl_1_bss_384, 0);
+    BoardModelMotionStart(lbl_1_bss_30[15], 2, 0x40000001);
+    BoardModelPosGet(lbl_1_bss_30[15], &sp34);
+
+    for (i = 0; i < 0x1E; i++) {
+        sp34.z += lbl_1_rodata_42C;
+        BoardModelPosSetV(lbl_1_bss_30[15], &sp34);
+        fn_1_E310(var_f29);
+        HuPrcVSleep();
+    }
+    BoardModelMotionStart(lbl_1_bss_30[15], 1, 0x40000001);
+    while (var_r29) {
+        fn_1_E310(var_f29);
+        HuPrcVSleep();
+        var_r29 -= 1;
+    }
+    BoardModelMotionStart(lbl_1_bss_30[15], 3, 0x40000001);
+    BoardModelMotionSpeedSet(lbl_1_bss_30[15], lbl_1_rodata_430);
+    
+    for (i = 0; i < 0xA; i++) {
+        sp34.z -= lbl_1_rodata_434;
+        BoardModelPosSetV(lbl_1_bss_30[15], &sp34);
+        fn_1_E310(var_f29);
+        HuPrcVSleep();
+    }
+    BoardModelMotionStart(lbl_1_bss_30[15], 1, 0x40000001);
+    BoardModelMotionSpeedSet(lbl_1_bss_30[15], lbl_1_rodata_438);
+    HuAudFXPlay(0x41F);
+    HuAudFXPlay(0x42D);
+    omVibrate(lbl_1_bss_388, 0xC, 6, 6);
+    var_f31 = lbl_1_rodata_410;
+    var_f27 = lbl_1_rodata_43C;
+    sp1C.x = lbl_1_rodata_410;
+    sp1C.z = lbl_1_rodata_440;
+
+    // Roulette motion and ball ?
+    while(TRUE) {
+        sp1C.y = var_f27 - (lbl_1_rodata_444 * (lbl_1_rodata_448 * (var_f31 * var_f31)));
+        var_f31 += lbl_1_rodata_438;
+        BoardModelPosGet(lbl_1_bss_30[6], &sp28);
+        PSVECAdd(&sp28, &sp1C, &sp28);
+        var_f28 = (sp28.x - spC.point.x) * (sp28.x - spC.point.x) + ((sp28.z - spC.point.z) * (sp28.z - spC.point.z));
+        if (var_f28 > lbl_1_rodata_410) {
+            var_f30 = __frsqrte(var_f28);
+            var_f30 = lbl_1_rodata_450 * var_f30 * (lbl_1_rodata_458 - ((f64) var_f28 * (var_f30 * var_f30)));
+            var_f30 = lbl_1_rodata_450 * var_f30 * (lbl_1_rodata_458 - ((f64) var_f28 * (var_f30 * var_f30)));
+            var_f30 = (lbl_1_rodata_450 * var_f30 * (lbl_1_rodata_458 - (var_f28 * (var_f30 * var_f30))));
+            spC.unk00 = (var_f28 * var_f30);
+            var_f26 = spC.unk00;
+        } else {
+            var_f26 = var_f28;
+        }
+
+        var_f25 = var_f26;
+        if (var_f25 >= lbl_1_rodata_460) {
+            if (sp28.y <= (lbl_1_rodata_464 + spC.point.y)) {
+                PSVECSubtract(&sp28, &spC.point, (Vec* ) &sp1C);
+                PSVECNormalize((Vec* ) &sp1C, (Vec* ) &sp1C);
+                sp1C.y = lbl_1_rodata_410;
+                PSVECScale((Vec* ) &sp1C, (Vec* ) &sp1C, lbl_1_rodata_468);
+                PSVECAdd((Vec* ) &sp1C, &spC.point, (Vec* ) &sp1C);
+                sp28.x = sp1C.x;
+                sp28.z = sp1C.z;
+                sp1C.x = lbl_1_rodata_46C;
+                sp1C.z = lbl_1_rodata_470;
+            }
+        }
+
+        if (sp28.y < spC.point.y) {
+            sp28.y = spC.point.y;
+            if (var_r27 >=  3) {
+                break;
+            }
+            //var_f31 = (lbl_1_rodata_474 * (lbl_1_rodata_418 * (s32) (u8) frand()));
+            var_f27 = lbl_1_rodata_418 + (lbl_1_rodata_474 * (lbl_1_rodata_418 * (s32) (u8) frand()));
+            var_f31 = lbl_1_rodata_438;
+            var_r27 += 1;
+            //var_f31 = (lbl_1_rodata_474 * (lbl_1_rodata_47C * (s32) (u8) frand()));
+            sp1C.x = lbl_1_rodata_478 + (lbl_1_rodata_474 * (lbl_1_rodata_47C * (s32) (u8) frand()));
+            sp1C.z = lbl_1_rodata_478 + (lbl_1_rodata_474 * (lbl_1_rodata_47C * (s32) (u8) frand()));
+            HuAudFXPlay(0x41E);
+        }
+        
+        BoardModelPosSetV(lbl_1_bss_30[6], (Vec* ) &sp28);
+        fn_1_E310(var_f29);
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x41E);
+    PSVECSubtract(&sp28, &spC.point, (Vec* ) &sp1C);
+    PSVECNormalize((Vec* ) &sp1C, (Vec* ) &sp1C);
+    var_f31 = (f32) (lbl_1_rodata_480 * (atan2((f64) -sp1C.z, (f64) sp1C.x) / lbl_1_rodata_488));
+    BoardModelRotGet(lbl_1_bss_30[4], &sp34);
+    var_f31 = var_f31 - sp34.y;
+    if (var_f31 < lbl_1_rodata_410) {
+        var_f31 += lbl_1_rodata_490;
+    }
+    var_r30 = (s32) (var_f31 / lbl_1_rodata_494);
+    if (fmod(var_f31, lbl_1_rodata_498) > lbl_1_rodata_4A0) {
+        var_r30 += 1;
+    }
+    if (var_r30 >= 0x10) {
+        var_r30 -= 0x10;
+    }
+    sp1C.y = lbl_1_rodata_410;
+
+    while(TRUE) {
+        fn_1_E310(var_f29);
+        BoardModelRotGet(lbl_1_bss_30[4], &sp34);
+        var_f31 = (lbl_1_rodata_494 * var_r30) + sp34.y; // TODO: Update rodata for asm change
+        sp1C.x= cos((lbl_1_rodata_488 * var_f31) / lbl_1_rodata_480);
+        sp1C.z = -sin((lbl_1_rodata_488 * var_f31) / lbl_1_rodata_480);
+        PSVECScale(&sp1C, &sp1C, lbl_1_rodata_468);
+        PSVECAdd(&sp1C, &spC.point, &sp1C);
+        sp28.x = sp1C.x;
+        sp28.z = sp1C.z;
+        BoardModelPosSetV(lbl_1_bss_30[6], &sp28);
+        if (sp34.y >= lbl_1_rodata_4A8 &&
+            sp34.y < lbl_1_rodata_4AC) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 0x3C; i++) {
+        var_f29 += lbl_1_rodata_420;
+        fn_1_E310(var_f29);
+        BoardModelRotGet(lbl_1_bss_30[4], &sp34);
+        var_f31 = (lbl_1_rodata_494 * (f32) var_r30) + sp34.y; // TODO: Update rodata for asm change
+        sp1C.x = (f32) cos((lbl_1_rodata_488 * (f64) var_f31) / lbl_1_rodata_480);
+        sp1C.z = (f32) -sin((lbl_1_rodata_488 * (f64) var_f31) / lbl_1_rodata_480);
+        PSVECScale(&sp1C, &sp1C, lbl_1_rodata_468);
+        PSVECAdd((Vec* ) &sp1C, &spC.point, (Vec* ) &sp1C);
+        sp28.x = sp1C.x;
+        sp28.z = sp1C.z;
+        BoardModelPosSetV(lbl_1_bss_30[6], (Vec* ) &sp28);
+        var_r28 = var_r28 + lbl_1_rodata_4B0;
+        HuAudFXPitchSet(lbl_1_bss_384, var_r28);
+        HuPrcVSleep();
+    }
+    BoardModelRotYSet(lbl_1_bss_30[4], lbl_1_rodata_410);
+    HuAudFXStop(lbl_1_bss_384);
+    return lbl_1_data_4D0[var_r30];
+}
 
 /* Rotate (yaw) of model 4 */
 void fn_1_E310(f32 degrees) {

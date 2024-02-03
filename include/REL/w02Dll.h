@@ -1,16 +1,17 @@
 #ifndef W02DLL
 #define W02DLL
 
+#include "math.h"
 #include "dolphin.h"
 #include "game/process.h"
 #include "game/gamework_data.h"
 #include "game/board/model.h"
 #include "game/board/space.h"
 #include "game/board/main.h"
+#include "game/board/player.h"
 #include "game/board/window.h"
 
 extern s16 lbl_1_bss_30[0x10]; // Model List
-
 
 // main.c
 extern void fn_1_770();
