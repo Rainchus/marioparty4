@@ -1,1219 +1,1156 @@
 #include "game/objsub.h"
 #include "game/gamework_data.h"
 #include "game/object.h"
+#include "game/data.h"
 
 MgInfo mgInfoTbl[] = {
     {
-        9, // ovl
+        OVL_M401, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170001, // name_mess
-        0x200000, // data_dir
-        0x160000, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160000, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M401), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 0), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 0), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210000, // rules_mess
         0x210001, // control_mess[0]
         0, // control_mess[1]
         0x210003, // advice_mess
     },
     {
-        10, // ovl
+        OVL_M402, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170002, // name_mess
-        0x210000, // data_dir
-        0x160001, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160001, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M402), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 1), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 1), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210004, // rules_mess
         0x210005, // control_mess[0]
         0, // control_mess[1]
         0x210007, // advice_mess
     },
     {
-        11, // ovl
+        OVL_M403, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170003, // name_mess
-        0x220000, // data_dir
-        0x160002, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160002, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M403), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 2), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 2), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210008, // rules_mess
         0x210009, // control_mess[0]
         0, // control_mess[1]
         0x21000B, // advice_mess
     },
     {
-        12, // ovl
+        OVL_M404, // ovl
         4, // type
         2, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170004, // name_mess
-        0x230000, // data_dir
-        0x160003, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160003, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M404), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 3), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 3), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21000C, // rules_mess
         0x21000D, // control_mess[0]
         0, // control_mess[1]
         0x21000F, // advice_mess
     },
     {
-        13, // ovl
+        OVL_M405, // ovl
         0, // type
         2, // flag
-        0, // unk_4
-        0, // unk_6
+        0, // record_idx
         0x170005, // name_mess
-        0x240000, // data_dir
-        0x160004, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160004, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M405), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 4), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 4), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210010, // rules_mess
         0x210011, // control_mess[0]
         0, // control_mess[1]
         0x210013, // advice_mess
     },
     {
-        14, // ovl
+        OVL_M406, // ovl
         0, // type
         2, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170006, // name_mess
-        0x250000, // data_dir
-        0x160005, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160005, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M406), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 5), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 5), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210014, // rules_mess
         0x210015, // control_mess[0]
         0, // control_mess[1]
         0x210017, // advice_mess
     },
     {
-        15, // ovl
+        OVL_M407, // ovl
         0, // type
         3, // flag
-        256, // unk_4
-        0, // unk_6
+        1, // record_idx
         0x170007, // name_mess
-        0x260000, // data_dir
-        0x160006, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160006, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M407), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 6), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 6), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210018, // rules_mess
         0x210019, // control_mess[0]
         0, // control_mess[1]
         0x21001B, // advice_mess
     },
     {
-        16, // ovl
+        OVL_M408, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170008, // name_mess
-        0x270000, // data_dir
-        0x160007, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160007, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M408), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 7), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 7), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21001C, // rules_mess
         0x21001D, // control_mess[0]
         0, // control_mess[1]
         0x21001F, // advice_mess
     },
     {
-        17, // ovl
+        OVL_M409, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170009, // name_mess
-        0x280000, // data_dir
-        0x160008, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160008, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M409), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 8), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 8), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210020, // rules_mess
         0x210021, // control_mess[0]
         0, // control_mess[1]
         0x210023, // advice_mess
     },
     {
-        18, // ovl
+        OVL_M410, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17000A, // name_mess
-        0x290000, // data_dir
-        0x160009, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160009, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M410), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 9), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 9), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210024, // rules_mess
         0x210025, // control_mess[0]
         0, // control_mess[1]
         0x210027, // advice_mess
     },
     {
-        19, // ovl
+        OVL_M411, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17000B, // name_mess
-        0x2A0000, // data_dir
-        0x16000A, // inst_pic
-        0x16000B, // unk_14
-        0x16000C, // unk_18
-        0x16003E, // mg_pic
-        0x16000B, // unk_20
-        0x16000C, // unk_24
+        MAKE_DIR_NUM(DATADIR_M411), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 10), // inst_pic[0]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 11), // inst_pic[1]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 12), // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 62), // mg_pic[0]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 11), // mg_pic[1]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 12), // mg_pic[2]
         0x210028, // rules_mess
         0x210029, // control_mess[0]
         0, // control_mess[1]
         0x21002B, // advice_mess
     },
     {
-        20, // ovl
+        OVL_M412, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17000C, // name_mess
-        0x2B0000, // data_dir
-        0x16000D, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16000D, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M412), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 13), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 13), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21002C, // rules_mess
         0x21002D, // control_mess[0]
         0, // control_mess[1]
         0x21002F, // advice_mess
     },
     {
-        21, // ovl
+        OVL_M413, // ovl
         0, // type
         2, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17000D, // name_mess
-        0x2C0000, // data_dir
-        0x16000E, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16003F, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M413), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 14), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 63), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210030, // rules_mess
         0x210031, // control_mess[0]
         0, // control_mess[1]
         0x210033, // advice_mess
     },
     {
-        22, // ovl
+        OVL_M414, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17000E, // name_mess
-        0x2D0000, // data_dir
-        0x16000F, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16000F, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M414), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 15), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 15), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210034, // rules_mess
         0x210035, // control_mess[0]
         0, // control_mess[1]
         0x210037, // advice_mess
     },
     {
-        23, // ovl
+        OVL_M415, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17000F, // name_mess
-        0x2E0000, // data_dir
-        0x160010, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160010, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M415), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 16), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 16), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210038, // rules_mess
         0x210039, // control_mess[0]
         0, // control_mess[1]
         0x21003B, // advice_mess
     },
     {
-        24, // ovl
+        OVL_M416, // ovl
         1, // type
         1, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170010, // name_mess
-        0x2F0000, // data_dir
-        0x160011, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160011, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M416), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 17), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 17), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21003C, // rules_mess
         0x21003D, // control_mess[0]
         0x21003E, // control_mess[1]
         0x21003F, // advice_mess
     },
     {
-        25, // ovl
+        OVL_M417, // ovl
         1, // type
         1, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170011, // name_mess
-        0x300000, // data_dir
-        0x160012, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160012, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M417), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 18), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 18), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210040, // rules_mess
         0x210041, // control_mess[0]
         0x210042, // control_mess[1]
         0x210043, // advice_mess
     },
     {
-        26, // ovl
+        OVL_M418, // ovl
         1, // type
         1, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170012, // name_mess
-        0x310000, // data_dir
-        0x160013, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160013, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M418), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 19), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 19), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210044, // rules_mess
         0x210045, // control_mess[0]
         0x210046, // control_mess[1]
         0x210047, // advice_mess
     },
     {
-        27, // ovl
+        OVL_M419, // ovl
         1, // type
         1, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170013, // name_mess
-        0x320000, // data_dir
-        0x160014, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160014, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M419), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 20), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 20), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210048, // rules_mess
         0x210049, // control_mess[0]
         0x21004A, // control_mess[1]
         0x21004B, // advice_mess
     },
     {
-        28, // ovl
+        OVL_M420, // ovl
         1, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170014, // name_mess
-        0x330000, // data_dir
-        0x160015, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160015, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M420), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 21), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 21), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21004C, // rules_mess
         0x21004D, // control_mess[0]
         0x21004E, // control_mess[1]
         0x21004F, // advice_mess
     },
     {
-        29, // ovl
+        OVL_M421, // ovl
         1, // type
         1, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170015, // name_mess
-        0x340000, // data_dir
-        0x160016, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160016, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M421), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 22), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 22), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210050, // rules_mess
         0x210051, // control_mess[0]
         0x210052, // control_mess[1]
         0x210053, // advice_mess
     },
     {
-        30, // ovl
+        OVL_M422, // ovl
         1, // type
         1, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170016, // name_mess
-        0x350000, // data_dir
-        0x160017, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160017, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M422), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 23), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 23), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210054, // rules_mess
         0x210055, // control_mess[0]
         0x210056, // control_mess[1]
         0x210057, // advice_mess
     },
     {
-        31, // ovl
+        OVL_M423, // ovl
         1, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170017, // name_mess
-        0x360000, // data_dir
-        0x160018, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160018, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M423), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 24), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 24), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210058, // rules_mess
         0x210059, // control_mess[0]
         0x21005A, // control_mess[1]
         0x21005B, // advice_mess
     },
     {
-        32, // ovl
+        OVL_M424, // ovl
         1, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170018, // name_mess
-        0x370000, // data_dir
-        0x160019, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160019, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M424), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 25), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 25), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21005C, // rules_mess
         0x21005D, // control_mess[0]
         0x21005E, // control_mess[1]
         0x21005F, // advice_mess
     },
     {
-        33, // ovl
+        OVL_M425, // ovl
         2, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170019, // name_mess
-        0x380000, // data_dir
-        0x16001A, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16001A, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M425), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 26), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 26), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210060, // rules_mess
         0x210061, // control_mess[0]
         0, // control_mess[1]
         0x210063, // advice_mess
     },
     {
-        34, // ovl
+        OVL_M426, // ovl
         2, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17001A, // name_mess
-        0x390000, // data_dir
-        0x16001B, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16001B, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M426), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 27), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 27), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210064, // rules_mess
         0x210065, // control_mess[0]
         0, // control_mess[1]
         0x210067, // advice_mess
     },
     {
-        35, // ovl
+        OVL_M427, // ovl
         2, // type
         2, // flag
-        512, // unk_4
-        0, // unk_6
+        2, // record_idx
         0x17001B, // name_mess
-        0x3A0000, // data_dir
-        0x16001C, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16001C, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M427), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 28), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 28), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210068, // rules_mess
         0x210069, // control_mess[0]
         0, // control_mess[1]
         0x21006B, // advice_mess
     },
     {
-        36, // ovl
+        OVL_M428, // ovl
         2, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17001C, // name_mess
-        0x3B0000, // data_dir
-        0x16001D, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16001D, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M428), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 29), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 29), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21006C, // rules_mess
         0x21006D, // control_mess[0]
         0, // control_mess[1]
         0x21006F, // advice_mess
     },
     {
-        37, // ovl
+        OVL_M429, // ovl
         2, // type
         2, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17001D, // name_mess
-        0x3C0000, // data_dir
-        0x16001E, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160040, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M429), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 30), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 64), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210070, // rules_mess
         0x210071, // control_mess[0]
         0, // control_mess[1]
         0x210073, // advice_mess
     },
     {
-        38, // ovl
+        OVL_M430, // ovl
         2, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17001E, // name_mess
-        0x3D0000, // data_dir
-        0x16001F, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16001F, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M430), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 31), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 31), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210074, // rules_mess
         0x210075, // control_mess[0]
         0x210076, // control_mess[1]
         0x210077, // advice_mess
     },
     {
-        39, // ovl
+        OVL_M431, // ovl
         2, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17001F, // name_mess
-        0x3E0000, // data_dir
-        0x160020, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160020, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M431), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 32), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 32), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210078, // rules_mess
         0x210079, // control_mess[0]
         0, // control_mess[1]
         0x21007B, // advice_mess
     },
     {
-        40, // ovl
+        OVL_M432, // ovl
         2, // type
         3, // flag
-        768, // unk_4
-        0, // unk_6
+        3, // record_idx
         0x170020, // name_mess
-        0x3F0000, // data_dir
-        0x160021, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160021, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M432), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 33), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 33), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21007C, // rules_mess
         0x21007D, // control_mess[0]
         0x21007E, // control_mess[1]
         0x21007F, // advice_mess
     },
     {
-        41, // ovl
+        OVL_M433, // ovl
         7, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170021, // name_mess
-        0x400000, // data_dir
-        0x160022, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160022, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M433), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 34), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 34), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210080, // rules_mess
         0x37001F, // control_mess[0]
         0, // control_mess[1]
         0x210083, // advice_mess
     },
     {
-        42, // ovl
+        OVL_M434, // ovl
         2, // type
         2, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170022, // name_mess
-        0x410000, // data_dir
-        0x160023, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160023, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M434), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 35), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 35), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210084, // rules_mess
         0x210085, // control_mess[0]
         0, // control_mess[1]
         0x210087, // advice_mess
     },
     {
-        43, // ovl
+        OVL_M435, // ovl
         3, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170023, // name_mess
-        0x420000, // data_dir
-        0x160024, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160024, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M435), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 36), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 36), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x210089, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        44, // ovl
+        OVL_M436, // ovl
         3, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170024, // name_mess
-        0x430000, // data_dir
-        0x160025, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160025, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M436), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 37), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 37), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x21008D, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        45, // ovl
+        OVL_M437, // ovl
         3, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170025, // name_mess
-        0x440000, // data_dir
-        0x160026, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160026, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M437), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 38), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 38), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x210091, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        46, // ovl
+        OVL_M438, // ovl
         4, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170026, // name_mess
-        0x450000, // data_dir
-        0x160027, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160027, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M438), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 39), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 39), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210094, // rules_mess
         0x210095, // control_mess[0]
         0, // control_mess[1]
         0x210097, // advice_mess
     },
     {
-        47, // ovl
+        OVL_M439, // ovl
         4, // type
         2, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170027, // name_mess
-        0x460000, // data_dir
-        0x160028, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160028, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M439), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 40), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 40), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x210098, // rules_mess
         0x210099, // control_mess[0]
         0, // control_mess[1]
         0x21009B, // advice_mess
     },
     {
-        48, // ovl
+        OVL_M440, // ovl
         4, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170028, // name_mess
-        0x470000, // data_dir
-        0x160029, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160029, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M440), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 41), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 41), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x21009C, // rules_mess
         0x21009D, // control_mess[0]
         0, // control_mess[1]
         0x21009F, // advice_mess
     },
     {
-        49, // ovl
+        OVL_M441, // ovl
         4, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170029, // name_mess
-        0x480000, // data_dir
-        0x16002A, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16002A, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M441), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 42), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 42), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100A0, // rules_mess
         0x2100A1, // control_mess[0]
         0, // control_mess[1]
         0x2100A3, // advice_mess
     },
     {
-        50, // ovl
+        OVL_M442, // ovl
         7, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17002A, // name_mess
-        0x490000, // data_dir
-        0x16002B, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160041, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M442), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 43), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 65), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100A4, // rules_mess
         0x370010, // control_mess[0]
         0, // control_mess[1]
         0x2100A7, // advice_mess
     },
     {
-        51, // ovl
+        OVL_M443, // ovl
         0, // type
         2, // flag
-        1280, // unk_4
-        0, // unk_6
+        5, // record_idx
         0x17002B, // name_mess
-        0x4A0000, // data_dir
-        0x16002C, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16002C, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M443), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 44), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 44), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100A8, // rules_mess
         0x2100A9, // control_mess[0]
         0, // control_mess[1]
         0x2100AB, // advice_mess
     },
     {
-        52, // ovl
+        OVL_M444, // ovl
         5, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17002C, // name_mess
-        0x4B0000, // data_dir
-        0x16002D, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16002D, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M444), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 45), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 45), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        53, // ovl
+        OVL_M445, // ovl
         6, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17002D, // name_mess
-        0x4C0000, // data_dir
-        0x16002E, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16002E, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M445), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 46), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 46), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100AC, // rules_mess
         0x2100AD, // control_mess[0]
         0, // control_mess[1]
         0x2100AF, // advice_mess
     },
     {
-        54, // ovl
+        OVL_M446, // ovl
         6, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17002E, // name_mess
-        0x4D0000, // data_dir
-        0x16002F, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16002F, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M446), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 47), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 47), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100B0, // rules_mess
         0x2100B1, // control_mess[0]
         0, // control_mess[1]
         0x2100B3, // advice_mess
     },
     {
-        55, // ovl
+        OVL_M447, // ovl
         6, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x17002F, // name_mess
-        0x4E0000, // data_dir
-        0x160030, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160030, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M447), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 48), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 48), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100B4, // rules_mess
         0x2100B5, // control_mess[0]
         0, // control_mess[1]
         0x2100B7, // advice_mess
     },
     {
-        56, // ovl
+        OVL_M448, // ovl
         6, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170030, // name_mess
-        0x4F0000, // data_dir
-        0x160031, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160031, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M448), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 49), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 49), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100B8, // rules_mess
         0x2100B9, // control_mess[0]
         0, // control_mess[1]
         0x2100BB, // advice_mess
     },
     {
-        57, // ovl
+        OVL_M449, // ovl
         6, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170031, // name_mess
-        0x500000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M449), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100BC, // rules_mess
         0x2100BD, // control_mess[0]
         0, // control_mess[1]
         0x2100BF, // advice_mess
     },
     {
-        58, // ovl
+        OVL_M450, // ovl
         8, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170032, // name_mess
-        0x510000, // data_dir
-        0x160033, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160033, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M450), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 51), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 51), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100C0, // rules_mess
         0x2100C1, // control_mess[0]
         0, // control_mess[1]
         0x2100C3, // advice_mess
     },
     {
-        59, // ovl
+        OVL_M451, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170033, // name_mess
-        0x520000, // data_dir
-        0x160034, // inst_pic
-        0x160035, // unk_14
-        0x160036, // unk_18
-        0x160034, // mg_pic
-        0x160035, // unk_20
-        0x160036, // unk_24
+        MAKE_DIR_NUM(DATADIR_M451), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 52), // inst_pic[0]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 53), // inst_pic[1]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 54), // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 52), // mg_pic[0]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 53), // mg_pic[1]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 54), // mg_pic[2]
         0x2100C4, // rules_mess
         0x37000D, // control_mess[0]
         0, // control_mess[1]
         0x2100C7, // advice_mess
     },
     {
-        58, // ovl
+        OVL_M450, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170033, // name_mess
-        0x510000, // data_dir
-        0x160037, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160037, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M450), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        60, // ovl
+        OVL_M453, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170034, // name_mess
-        0x510000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M450), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100C8, // rules_mess
         0x37000A, // control_mess[0]
         0, // control_mess[1]
         0x2100CB, // advice_mess
     },
     {
-        58, // ovl
+        OVL_M450, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170033, // name_mess
-        0x510000, // data_dir
-        0x160037, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160037, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M450), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        61, // ovl
+        OVL_M455, // ovl
         4, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170035, // name_mess
-        0x540000, // data_dir
-        0x160038, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160038, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M455), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 56), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 56), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100CC, // rules_mess
         0x2100CD, // control_mess[0]
         0, // control_mess[1]
         0x2100CF, // advice_mess
     },
     {
-        62, // ovl
+        OVL_M456, // ovl
         0, // type
         3, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170036, // name_mess
-        0x550000, // data_dir
-        0x160039, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160039, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M456), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 57), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 57), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0x2100D0, // rules_mess
         0x2100D1, // control_mess[0]
         0, // control_mess[1]
         0x2100D3, // advice_mess
     },
     {
-        63, // ovl
+        OVL_M457, // ovl
         8, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170037, // name_mess
-        0x560000, // data_dir
-        0x16003A, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16003A, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M457), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 58), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 58), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        64, // ovl
+        OVL_M458, // ovl
         8, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170038, // name_mess
-        0x570000, // data_dir
-        0x16003B, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x16003B, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M458), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 59), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 59), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        65, // ovl
+        OVL_M459, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170038, // name_mess
-        0x570000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M458), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x370013, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        66, // ovl
+        OVL_M460, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170038, // name_mess
-        0x570000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M458), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x370016, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        67, // ovl
+        OVL_M461, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170038, // name_mess
-        0x570000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M458), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x370019, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        68, // ovl
+        OVL_M462, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170038, // name_mess
-        0x570000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M458), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x37001C, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        69, // ovl
+        OVL_M463, // ovl
         7, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0x170038, // name_mess
-        0x570000, // data_dir
-        0x160032, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0x160032, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        MAKE_DIR_NUM(DATADIR_M458), // data_dir
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0x370007, // control_mess[0]
         0, // control_mess[1]
         0, // advice_mess
     },
     {
-        0xFFFF, // ovl
+        ((u16)OVL_INVALID), // ovl
         0, // type
         0, // flag
-        65280, // unk_4
-        0, // unk_6
+        255, // record_idx
         0, // name_mess
         0, // data_dir
-        0, // inst_pic
-        0, // unk_14
-        0, // unk_18
-        0, // mg_pic
-        0, // unk_20
-        0, // unk_24
+        0, // inst_pic[0]
+        0, // inst_pic[1]
+        0, // inst_pic[2]
+        0, // mg_pic[0]
+        0, // mg_pic[1]
+        0, // mg_pic[2]
         0, // rules_mess
         0, // control_mess[0]
         0, // control_mess[1]
@@ -1243,7 +1180,7 @@ s16 omMgIndexGet(s16 overlay) {
 
     info = mgInfoTbl;
     
-    for (i = 0; info->ovl != 0xFFFF; i++) {
+    for (i = 0; info->ovl != ((u16)OVL_INVALID); i++) {
         if (info->ovl == overlay) {
             return i;
         }
