@@ -44,18 +44,18 @@ u8 WipeStatGet(void);
 
 //DATA
 w03StructUnk0 lbl_1_data_0[] = {
-{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0004)},
-{{145.0988f, 65.6173f, -2004.14f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0005)},
-{{-1548.14f, -1148.76f, -1095.54f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0006)},
-{{1050.0f, 50.0f, -1810.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000B)},
-{{-1950.0f, 50.0f, 1790.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000B)},
-{{1050.0f, 0.0f, -1750.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000A)},
-{{-1950.0f, 0.0f, 1850.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000A)},
-{{1950.0f, 0.0f, -1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0010)},
-{{-3150.0f, 0.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0011)},
-{{-3150.0f, 270.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0012)},
-{{2080.0f, 0.0f, -1635.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x000D)},
-{{-3000.0f, 0.0f, -500.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x000D)},
+{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0004)},
+{{145.0988f, 65.6173f, -2004.14f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0005)},
+{{-1548.14f, -1148.76f, -1095.54f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0006)},
+{{1050.0f, 50.0f, -1810.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000B)},
+{{-1950.0f, 50.0f, 1790.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000B)},
+{{1050.0f, 0.0f, -1750.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000A)},
+{{-1950.0f, 0.0f, 1850.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000A)},
+{{1950.0f, 0.0f, -1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0010)},
+{{-3150.0f, 0.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0011)},
+{{-3150.0f, 270.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0012)},
+{{2080.0f, 0.0f, -1635.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x000D)},
+{{-3000.0f, 0.0f, -500.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x000D)},
 };
 
 s16 lbl_1_data_1E0 = -1;
@@ -80,12 +80,12 @@ w03StructUnk1 lbl_1_data_1EC = {
 };
 
 s32 lbl_1_data_20C[] = {
-    MAKE_DATA_NUM(0x0077, 0x001C),
+    DATA_MAKE_NUM(DATADIR_W03, 0x001C),
 	DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_214[] = {
-    MAKE_DATA_NUM(0x0002, 0x000E),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 0x000E),
 	DATA_NUM_LISTEND
 };
 

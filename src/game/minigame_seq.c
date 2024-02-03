@@ -399,7 +399,7 @@ static int SeqInitTimer(SeqWork *work, va_list params)
 	work->work_float[0] = 0;
 	work->spr_grp[0] = spr_grp = HuSprGrpCreate(4);
 	HuSprGrpScaleSet(spr_grp, work->scale_x, work->scale_y);
-	spr_anim = HuSprAnimRead(SeqReadFile(MAKE_DATA_NUM(DATADIR_GAMEMES, 2)));
+	spr_anim = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 2)));
 	x = 12;
 	for(i=0; i<2; i++) {
 		sprite = HuSprCreate(spr_anim, 5, 0);
@@ -410,13 +410,13 @@ static int SeqInitTimer(SeqWork *work, va_list params)
 		x -= 24;
 		(void)i; //Hack for Matching
 	}
-	spr_anim = HuSprAnimRead(SeqReadFile(MAKE_DATA_NUM(DATADIR_GAMEMES, 1)));
+	spr_anim = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 1)));
 	sprite = HuSprCreate(spr_anim, 7, 0);
 	HuSprGrpMemberSet(spr_grp, 2, sprite);
 	HuSprPosSet(spr_grp, 2, 0, 0);
 	HuSprTPLvlSet(spr_grp, 2, 0.5f);
 	HuSprColorSet(spr_grp, 2, 0, 0, 0);
-	spr_anim = HuSprAnimRead(SeqReadFile(MAKE_DATA_NUM(DATADIR_GAMEMES, 0)));
+	spr_anim = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 0)));
 	sprite = HuSprCreate(spr_anim, 6, 0);
 	HuSprGrpMemberSet(spr_grp, 3, sprite);
 	HuSprPosSet(spr_grp, 3, 0, 0);
@@ -907,23 +907,23 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
 		return NULL;
 	}
 	if(c == 32) {
-		return HuSprAnimRead(SeqReadFile(MAKE_DATA_NUM(DATADIR_GAMEMES, 10)));
+		return HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 10)));
 	}
 	for(id = 0, list=seqFontAlphaTbl; *list != 0; id++, list++) {
 		if(*list == c) {
-			data_num = MAKE_DATA_NUM(DATADIR_GAMEMES, id+21);
+			data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id+21);
 			return HuSprAnimRead(SeqReadFile(data_num));
 		}
 	}
 	for(id = 0, list=seqFontNumTbl; *list != 0; id++, list++) {
 		if(*list == c) {
-			data_num = MAKE_DATA_NUM(DATADIR_GAMEMES, id+11);
+			data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id+11);
 			return HuSprAnimRead(SeqReadFile(data_num));
 		}
 	}
 	for(id = 0, list=seqPunctTbl; *list != 0; id++, list++) {
 		if(*list == c) {
-			data_num = MAKE_DATA_NUM(DATADIR_GAMEMES, id+154);
+			data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id+154);
 			return HuSprAnimRead(SeqReadFile(data_num));
 		}
 	}
@@ -942,9 +942,9 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
 	while(*list != 0) {
 		if(*list == c) {
 			if(flags & 0x1) {
-				data_num = MAKE_DATA_NUM(DATADIR_GAMEMES, id+156);
+				data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id+156);
 			} else {
-				data_num = MAKE_DATA_NUM(DATADIR_GAMEMES, id+73);
+				data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id+73);
 			}
 			return HuSprAnimRead(SeqReadFile(data_num));
 		}

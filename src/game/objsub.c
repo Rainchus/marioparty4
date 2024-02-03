@@ -10,11 +10,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170001, // name_mess
-        MAKE_DIR_NUM(DATADIR_M401), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 0), // inst_pic[0]
+        DATADIR_M401, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 0), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 0), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 0), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210000, // rules_mess
@@ -28,11 +28,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170002, // name_mess
-        MAKE_DIR_NUM(DATADIR_M402), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 1), // inst_pic[0]
+        DATADIR_M402, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 1), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 1), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 1), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210004, // rules_mess
@@ -46,11 +46,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170003, // name_mess
-        MAKE_DIR_NUM(DATADIR_M403), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 2), // inst_pic[0]
+        DATADIR_M403, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 2), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 2), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 2), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210008, // rules_mess
@@ -64,11 +64,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         255, // record_idx
         0x170004, // name_mess
-        MAKE_DIR_NUM(DATADIR_M404), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 3), // inst_pic[0]
+        DATADIR_M404, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 3), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 3), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 3), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21000C, // rules_mess
@@ -82,11 +82,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         0, // record_idx
         0x170005, // name_mess
-        MAKE_DIR_NUM(DATADIR_M405), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 4), // inst_pic[0]
+        DATADIR_M405, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 4), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 4), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 4), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210010, // rules_mess
@@ -100,11 +100,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         255, // record_idx
         0x170006, // name_mess
-        MAKE_DIR_NUM(DATADIR_M406), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 5), // inst_pic[0]
+        DATADIR_M406, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 5), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 5), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 5), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210014, // rules_mess
@@ -118,11 +118,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         1, // record_idx
         0x170007, // name_mess
-        MAKE_DIR_NUM(DATADIR_M407), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 6), // inst_pic[0]
+        DATADIR_M407, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 6), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 6), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 6), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210018, // rules_mess
@@ -136,11 +136,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170008, // name_mess
-        MAKE_DIR_NUM(DATADIR_M408), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 7), // inst_pic[0]
+        DATADIR_M408, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 7), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 7), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 7), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21001C, // rules_mess
@@ -154,11 +154,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170009, // name_mess
-        MAKE_DIR_NUM(DATADIR_M409), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 8), // inst_pic[0]
+        DATADIR_M409, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 8), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 8), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 8), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210020, // rules_mess
@@ -172,11 +172,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17000A, // name_mess
-        MAKE_DIR_NUM(DATADIR_M410), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 9), // inst_pic[0]
+        DATADIR_M410, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 9), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 9), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 9), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210024, // rules_mess
@@ -190,13 +190,13 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17000B, // name_mess
-        MAKE_DIR_NUM(DATADIR_M411), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 10), // inst_pic[0]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 11), // inst_pic[1]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 12), // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 62), // mg_pic[0]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 11), // mg_pic[1]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 12), // mg_pic[2]
+        DATADIR_M411, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 10), // inst_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 11), // inst_pic[1]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 12), // inst_pic[2]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 62), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 11), // mg_pic[1]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 12), // mg_pic[2]
         0x210028, // rules_mess
         0x210029, // control_mess[0]
         0, // control_mess[1]
@@ -208,11 +208,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17000C, // name_mess
-        MAKE_DIR_NUM(DATADIR_M412), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 13), // inst_pic[0]
+        DATADIR_M412, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 13), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 13), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 13), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21002C, // rules_mess
@@ -226,11 +226,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         255, // record_idx
         0x17000D, // name_mess
-        MAKE_DIR_NUM(DATADIR_M413), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 14), // inst_pic[0]
+        DATADIR_M413, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 14), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 63), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 63), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210030, // rules_mess
@@ -244,11 +244,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17000E, // name_mess
-        MAKE_DIR_NUM(DATADIR_M414), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 15), // inst_pic[0]
+        DATADIR_M414, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 15), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 15), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 15), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210034, // rules_mess
@@ -262,11 +262,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17000F, // name_mess
-        MAKE_DIR_NUM(DATADIR_M415), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 16), // inst_pic[0]
+        DATADIR_M415, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 16), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 16), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 16), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210038, // rules_mess
@@ -280,11 +280,11 @@ MgInfo mgInfoTbl[] = {
         1, // flag
         255, // record_idx
         0x170010, // name_mess
-        MAKE_DIR_NUM(DATADIR_M416), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 17), // inst_pic[0]
+        DATADIR_M416, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 17), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 17), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 17), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21003C, // rules_mess
@@ -298,11 +298,11 @@ MgInfo mgInfoTbl[] = {
         1, // flag
         255, // record_idx
         0x170011, // name_mess
-        MAKE_DIR_NUM(DATADIR_M417), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 18), // inst_pic[0]
+        DATADIR_M417, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 18), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 18), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 18), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210040, // rules_mess
@@ -316,11 +316,11 @@ MgInfo mgInfoTbl[] = {
         1, // flag
         255, // record_idx
         0x170012, // name_mess
-        MAKE_DIR_NUM(DATADIR_M418), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 19), // inst_pic[0]
+        DATADIR_M418, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 19), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 19), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 19), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210044, // rules_mess
@@ -334,11 +334,11 @@ MgInfo mgInfoTbl[] = {
         1, // flag
         255, // record_idx
         0x170013, // name_mess
-        MAKE_DIR_NUM(DATADIR_M419), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 20), // inst_pic[0]
+        DATADIR_M419, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 20), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 20), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 20), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210048, // rules_mess
@@ -352,11 +352,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170014, // name_mess
-        MAKE_DIR_NUM(DATADIR_M420), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 21), // inst_pic[0]
+        DATADIR_M420, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 21), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 21), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 21), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21004C, // rules_mess
@@ -370,11 +370,11 @@ MgInfo mgInfoTbl[] = {
         1, // flag
         255, // record_idx
         0x170015, // name_mess
-        MAKE_DIR_NUM(DATADIR_M421), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 22), // inst_pic[0]
+        DATADIR_M421, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 22), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 22), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 22), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210050, // rules_mess
@@ -388,11 +388,11 @@ MgInfo mgInfoTbl[] = {
         1, // flag
         255, // record_idx
         0x170016, // name_mess
-        MAKE_DIR_NUM(DATADIR_M422), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 23), // inst_pic[0]
+        DATADIR_M422, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 23), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 23), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 23), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210054, // rules_mess
@@ -406,11 +406,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170017, // name_mess
-        MAKE_DIR_NUM(DATADIR_M423), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 24), // inst_pic[0]
+        DATADIR_M423, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 24), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 24), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 24), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210058, // rules_mess
@@ -424,11 +424,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170018, // name_mess
-        MAKE_DIR_NUM(DATADIR_M424), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 25), // inst_pic[0]
+        DATADIR_M424, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 25), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 25), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 25), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21005C, // rules_mess
@@ -442,11 +442,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170019, // name_mess
-        MAKE_DIR_NUM(DATADIR_M425), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 26), // inst_pic[0]
+        DATADIR_M425, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 26), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 26), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 26), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210060, // rules_mess
@@ -460,11 +460,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17001A, // name_mess
-        MAKE_DIR_NUM(DATADIR_M426), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 27), // inst_pic[0]
+        DATADIR_M426, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 27), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 27), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 27), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210064, // rules_mess
@@ -478,11 +478,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         2, // record_idx
         0x17001B, // name_mess
-        MAKE_DIR_NUM(DATADIR_M427), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 28), // inst_pic[0]
+        DATADIR_M427, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 28), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 28), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 28), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210068, // rules_mess
@@ -496,11 +496,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17001C, // name_mess
-        MAKE_DIR_NUM(DATADIR_M428), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 29), // inst_pic[0]
+        DATADIR_M428, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 29), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 29), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 29), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21006C, // rules_mess
@@ -514,11 +514,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         255, // record_idx
         0x17001D, // name_mess
-        MAKE_DIR_NUM(DATADIR_M429), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 30), // inst_pic[0]
+        DATADIR_M429, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 30), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 64), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 64), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210070, // rules_mess
@@ -532,11 +532,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17001E, // name_mess
-        MAKE_DIR_NUM(DATADIR_M430), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 31), // inst_pic[0]
+        DATADIR_M430, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 31), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 31), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 31), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210074, // rules_mess
@@ -550,11 +550,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17001F, // name_mess
-        MAKE_DIR_NUM(DATADIR_M431), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 32), // inst_pic[0]
+        DATADIR_M431, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 32), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 32), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 32), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210078, // rules_mess
@@ -568,11 +568,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         3, // record_idx
         0x170020, // name_mess
-        MAKE_DIR_NUM(DATADIR_M432), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 33), // inst_pic[0]
+        DATADIR_M432, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 33), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 33), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 33), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21007C, // rules_mess
@@ -586,11 +586,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170021, // name_mess
-        MAKE_DIR_NUM(DATADIR_M433), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 34), // inst_pic[0]
+        DATADIR_M433, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 34), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 34), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 34), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210080, // rules_mess
@@ -604,11 +604,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         255, // record_idx
         0x170022, // name_mess
-        MAKE_DIR_NUM(DATADIR_M434), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 35), // inst_pic[0]
+        DATADIR_M434, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 35), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 35), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 35), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210084, // rules_mess
@@ -622,11 +622,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170023, // name_mess
-        MAKE_DIR_NUM(DATADIR_M435), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 36), // inst_pic[0]
+        DATADIR_M435, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 36), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 36), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 36), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -640,11 +640,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170024, // name_mess
-        MAKE_DIR_NUM(DATADIR_M436), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 37), // inst_pic[0]
+        DATADIR_M436, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 37), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 37), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 37), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -658,11 +658,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170025, // name_mess
-        MAKE_DIR_NUM(DATADIR_M437), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 38), // inst_pic[0]
+        DATADIR_M437, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 38), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 38), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 38), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -676,11 +676,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170026, // name_mess
-        MAKE_DIR_NUM(DATADIR_M438), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 39), // inst_pic[0]
+        DATADIR_M438, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 39), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 39), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 39), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210094, // rules_mess
@@ -694,11 +694,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         255, // record_idx
         0x170027, // name_mess
-        MAKE_DIR_NUM(DATADIR_M439), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 40), // inst_pic[0]
+        DATADIR_M439, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 40), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 40), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 40), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x210098, // rules_mess
@@ -712,11 +712,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170028, // name_mess
-        MAKE_DIR_NUM(DATADIR_M440), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 41), // inst_pic[0]
+        DATADIR_M440, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 41), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 41), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 41), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x21009C, // rules_mess
@@ -730,11 +730,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170029, // name_mess
-        MAKE_DIR_NUM(DATADIR_M441), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 42), // inst_pic[0]
+        DATADIR_M441, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 42), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 42), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 42), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100A0, // rules_mess
@@ -748,11 +748,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17002A, // name_mess
-        MAKE_DIR_NUM(DATADIR_M442), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 43), // inst_pic[0]
+        DATADIR_M442, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 43), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 65), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 65), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100A4, // rules_mess
@@ -766,11 +766,11 @@ MgInfo mgInfoTbl[] = {
         2, // flag
         5, // record_idx
         0x17002B, // name_mess
-        MAKE_DIR_NUM(DATADIR_M443), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 44), // inst_pic[0]
+        DATADIR_M443, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 44), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 44), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 44), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100A8, // rules_mess
@@ -784,11 +784,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x17002C, // name_mess
-        MAKE_DIR_NUM(DATADIR_M444), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 45), // inst_pic[0]
+        DATADIR_M444, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 45), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 45), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 45), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -802,11 +802,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x17002D, // name_mess
-        MAKE_DIR_NUM(DATADIR_M445), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 46), // inst_pic[0]
+        DATADIR_M445, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 46), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 46), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 46), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100AC, // rules_mess
@@ -820,11 +820,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x17002E, // name_mess
-        MAKE_DIR_NUM(DATADIR_M446), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 47), // inst_pic[0]
+        DATADIR_M446, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 47), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 47), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 47), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100B0, // rules_mess
@@ -838,11 +838,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x17002F, // name_mess
-        MAKE_DIR_NUM(DATADIR_M447), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 48), // inst_pic[0]
+        DATADIR_M447, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 48), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 48), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 48), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100B4, // rules_mess
@@ -856,11 +856,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170030, // name_mess
-        MAKE_DIR_NUM(DATADIR_M448), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 49), // inst_pic[0]
+        DATADIR_M448, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 49), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 49), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 49), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100B8, // rules_mess
@@ -874,11 +874,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170031, // name_mess
-        MAKE_DIR_NUM(DATADIR_M449), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M449, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100BC, // rules_mess
@@ -892,11 +892,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170032, // name_mess
-        MAKE_DIR_NUM(DATADIR_M450), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 51), // inst_pic[0]
+        DATADIR_M450, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 51), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 51), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 51), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100C0, // rules_mess
@@ -910,13 +910,13 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170033, // name_mess
-        MAKE_DIR_NUM(DATADIR_M451), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 52), // inst_pic[0]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 53), // inst_pic[1]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 54), // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 52), // mg_pic[0]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 53), // mg_pic[1]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 54), // mg_pic[2]
+        DATADIR_M451, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 52), // inst_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 53), // inst_pic[1]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 54), // inst_pic[2]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 52), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 53), // mg_pic[1]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 54), // mg_pic[2]
         0x2100C4, // rules_mess
         0x37000D, // control_mess[0]
         0, // control_mess[1]
@@ -928,11 +928,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170033, // name_mess
-        MAKE_DIR_NUM(DATADIR_M450), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // inst_pic[0]
+        DATADIR_M450, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 55), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -946,11 +946,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170034, // name_mess
-        MAKE_DIR_NUM(DATADIR_M450), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M450, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100C8, // rules_mess
@@ -964,11 +964,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170033, // name_mess
-        MAKE_DIR_NUM(DATADIR_M450), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // inst_pic[0]
+        DATADIR_M450, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 55), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -982,11 +982,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170035, // name_mess
-        MAKE_DIR_NUM(DATADIR_M455), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 56), // inst_pic[0]
+        DATADIR_M455, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 56), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 56), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 56), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100CC, // rules_mess
@@ -1000,11 +1000,11 @@ MgInfo mgInfoTbl[] = {
         3, // flag
         255, // record_idx
         0x170036, // name_mess
-        MAKE_DIR_NUM(DATADIR_M456), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 57), // inst_pic[0]
+        DATADIR_M456, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 57), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 57), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 57), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0x2100D0, // rules_mess
@@ -1018,11 +1018,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170037, // name_mess
-        MAKE_DIR_NUM(DATADIR_M457), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 58), // inst_pic[0]
+        DATADIR_M457, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 58), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 58), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 58), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -1036,11 +1036,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170038, // name_mess
-        MAKE_DIR_NUM(DATADIR_M458), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 59), // inst_pic[0]
+        DATADIR_M458, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 59), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 59), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 59), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -1054,11 +1054,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170038, // name_mess
-        MAKE_DIR_NUM(DATADIR_M458), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M458, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -1072,11 +1072,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170038, // name_mess
-        MAKE_DIR_NUM(DATADIR_M458), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M458, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -1090,11 +1090,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170038, // name_mess
-        MAKE_DIR_NUM(DATADIR_M458), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M458, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -1108,11 +1108,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170038, // name_mess
-        MAKE_DIR_NUM(DATADIR_M458), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M458, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess
@@ -1126,11 +1126,11 @@ MgInfo mgInfoTbl[] = {
         0, // flag
         255, // record_idx
         0x170038, // name_mess
-        MAKE_DIR_NUM(DATADIR_M458), // data_dir
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
+        DATADIR_M458, // data_dir
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // inst_pic[0]
         0, // inst_pic[1]
         0, // inst_pic[2]
-        MAKE_DATA_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
+        DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
         0, // rules_mess

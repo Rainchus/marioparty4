@@ -139,7 +139,7 @@ static void WarpInit(s32 player) {
     Vec pos;
     s16 player_mdl = BoardPlayerModelGet(player);
 
-    warpSpringMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 1), NULL, 0);
+    warpSpringMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 1), NULL, 0);
     BoardSpacePosGet(0, GWPlayer[player].space_curr, &pos);
     warpYFloor = 1500.0f + pos.y;
     BoardModelLayerSet(warpSpringMdl, 2);
@@ -187,7 +187,7 @@ static void WarpStartImpact(s32 player) {
             warpImpactCnt++;
         }
     }
-    warpImpactMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 2), NULL, 0);
+    warpImpactMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 2), NULL, 0);
     BoardModelVisibilitySet(warpImpactMdl, 0);
     BoardModelMotionSpeedSet(warpImpactMdl, 0.0f);
     BoardCameraMoveSet(0);

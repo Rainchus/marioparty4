@@ -13,7 +13,6 @@
 
 
 extern s16 BoardStarHostMdlGet(void);
-extern void BoardModelPosSetV(s16 model, Vec *pos);
 extern s16 BoardModelCreate(s32 file, s32 *data, s32 arg3);
 extern s16 BoardModelIDGet(s16 model);
 
@@ -991,7 +990,7 @@ void BoardSpaceInit(s32 data_num)
 		AnimData *data;
 		void *data_base;
 		s32 size;
-		data = data_base = HuDataSelHeapReadNum(MAKE_DATA_NUM(DATADIR_BOARD, 29), MEMORY_DEFAULT_NUM, HEAP_DATA);
+		data = data_base = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_BOARD, 29), MEMORY_DEFAULT_NUM, HEAP_DATA);
 		data->bmp = (void *)((u32)data_base+(u32)data->bmp);
 		data->pat = (void *)((u32)data_base+(u32)data->pat);
 		data->bank = (void *)((u32)data_base+(u32)data->bank);
@@ -1023,7 +1022,7 @@ void BoardSpaceInit(s32 data_num)
 		AnimData *data;
 		void *data_base;
 		s32 size;
-		data = data_base = HuDataSelHeapReadNum(MAKE_DATA_NUM(DATADIR_BOARD, 28), MEMORY_DEFAULT_NUM, HEAP_DATA);
+		data = data_base = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_BOARD, 28), MEMORY_DEFAULT_NUM, HEAP_DATA);
 		data->bmp = (void *)((u32)data_base+(u32)data->bmp);
 		data->pat = (void *)((u32)data_base+(u32)data->pat);
 		data->bank = (void *)((u32)data_base+(u32)data->bank);
@@ -1058,7 +1057,7 @@ void BoardSpaceInit(s32 data_num)
 		GWSystem.star_flag = 0;
 	}
 	if(BoardCurrGet() != 7 && BoardCurrGet() != 8) {
-		starPlatMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 6), NULL, 0);
+		starPlatMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 6), NULL, 0);
 		BoardModelMotionStart(starPlatMdl, 0, 0x40000001);
 		BoardModelVisibilitySet(starPlatMdl, 0);
 		if(_CheckFlag(FLAG_ID_MAKE(1, 1))) {
