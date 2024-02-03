@@ -222,14 +222,14 @@ void MGSeqMain(void)
 	}
 }
 
-static s16 CreateSeq(u8 seq_no, va_list params)
+static s16 CreateSeq(s16 seq_no, va_list params)
 {
 	SeqWork *work;
 	SeqInfo *info;
 	int i;
 	int temp;
 	work = seqWorkData;
-	info = &seqInfoTbl[seq_no];
+	info = &seqInfoTbl[(u8)seq_no];
 	for(i=0; i<8; i++, work++) {
 		if(work->stat == 0) {
 			break;
@@ -243,7 +243,7 @@ static s16 CreateSeq(u8 seq_no, va_list params)
 		HuMemDirectFree(work->data);
 	}
 	work->data = NULL;
-	work->seq_no = (s32)seq_no;
+	work->seq_no = (u8)seq_no;
 	work->time = 0;
 	work->x = info->x;
 	work->y = info->y;
@@ -1047,7 +1047,7 @@ static int SeqUpdateMGBasic(SeqWork *work)
 		work->type = -1;
 		work->work_float[0] = 0.0f;
 	}
-	if(work->type != 0) {
+	if(work->type) {
 		switch(work->type) {
 			case 1:
 			{
@@ -1176,7 +1176,6 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 	s16 i;
 	float tp_lvl;
 	s16 j;
-	
 	s16 word_grp;
 	
 	work->work_s16[1] = va_arg(params, int);
@@ -1187,7 +1186,6 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 	work->work_float[0] = 0;
 	tp_lvl = 1.0f;
 	for(i=0; i<4; i++) {
-		
 		if(i == 0)
 		{
 			s32 word_katakana;
@@ -1246,6 +1244,249 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 	}
 	return 1;
 }
+
+static int SeqUpdateMGBattle(SeqWork *work)
+{
+	s16 idx;
+	float scale;
+	if(work->param[0] != 0 && work->type != -1) {
+		switch(work->param[0]) {
+			case 2:
+				if(work->param[1] != -1) {
+					(void)work; //HACK: to introduce extra branch
+				} else {
+					work->type = -1;
+					work->work_float[0] = 0.0f;
+				}
+				work->param[0] = 0;
+				break;
+				
+			case 1:
+				work->time_max = work->param[1];
+				work->param[0] = 0;
+				break;
+				
+			case 3:
+				work->type = 1;
+				work->param[0] = 0;
+				break;
+				
+			default:
+				work->param[0] = 0;
+				break;
+		}
+	}
+	if(work->type == 2) {
+		return 1;
+	}
+	work->time += seqSpeed;
+	if(work->time >= work->time_max && work->type != -1) {
+		work->stat |= 0x4;
+		work->type = -1;
+		work->work_float[0] = 0.0f;
+	}
+	if(work->type) {
+		switch(work->type) {
+			case 1:
+			{
+				s16 i, j;
+				float time;
+				float pos_x;
+				if(work->work_s16[1] == 0) {
+					if(work->time < 45) {
+						if(work->time > 10 && work->time <= 40) {
+							time = work->time-10;
+							scale = 10.0f*(1.0f-(time/30.0f));
+							pos_x = (work->x-(0.5f*(work->work_s16[3]*56)))+28.0f;
+							HuSprPosSet(work->spr_grp[0], 0, pos_x, work->y);
+							HuSprScaleSet(work->spr_grp[0], 0, work->scale_x+scale, work->scale_y+scale);
+							scale = time/30.0f;
+							HuSprTPLvlSet(work->spr_grp[0], 0, scale);
+						}
+						for(i=0; i<4; i++) {
+							time = work->time-i;
+							if(time < 0 || time > 40) {
+								continue;
+							}
+							for(j=1; j<work->work_s16[3]; j++) {
+								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(j*56);
+								if(time == 40.0f) {
+									HuSprPosSet(work->spr_grp[i], j, pos_x, work->y);
+									HuSprZRotSet(work->spr_grp[i], j, 0.0f);
+									HuSprScaleSet(work->spr_grp[i], j, work->scale_x, work->scale_y);
+									if(i != 0) {
+										HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+									}
+								} else {
+									s16 discard_cnt;
+									static float letterOfs[] = {
+										30, 20,
+										20, 3,
+										-4, 20,
+										-30, 20,
+										20, 20,
+										-30, 20,
+										-10, 40,
+										10, -40
+									};
+									float x, y;
+									float ofs_x, ofs_y;
+									float zrot, scale_ang;
+									x = pos_x;
+									y = work->y;
+									ofs_x = letterOfs[((j-1)&0x7)*2];
+									ofs_y = letterOfs[(((j-1)&0x7)*2)+1];
+									zrot = 0.0f;
+									discard_cnt = 0;
+									scale_ang = 0.0f;
+									for(idx=0; idx<40.0f-time; idx++) {
+										if(x+ofs_x > 576 || x+ofs_x < 0) {
+											ofs_x = -ofs_x;
+											discard_cnt++;
+										}
+										if(y+ofs_y > 480 || y+ofs_y < 0) {
+											ofs_y = -ofs_y;
+											discard_cnt++;
+										}
+										if(discard_cnt) {
+											zrot += 20.0f;
+											scale_ang = 0.0f;
+										}
+										x += ofs_x;
+										y += ofs_y;
+									}
+									HuSprPosSet(work->spr_grp[i], j, x, y);
+									HuSprScaleSet(work->spr_grp[i], j, work->scale_x*cos((M_PI*scale_ang)/180.0), work->scale_y);
+									HuSprZRotSet(work->spr_grp[i], j, zrot);
+								}
+							}
+						}
+					} else {
+						if(work->time > 60) {
+							time = work->time-60;
+							scale = 0.5*sin((M_PI*(time*9.0f))/180.0);
+							for(j=0; j<work->work_s16[3]; j++) {
+								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
+								HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
+								HuSprScaleSet(work->spr_grp[0], j, work->scale_x+scale, work->scale_y+scale);
+							}
+						}
+					}
+					if(work->time == 60) {
+						HuAudFXPlay(36);
+						work->stat |= 0x10;
+					}
+					if(work->time == 80) {
+						work->stat |= 0x4;
+						SeqPlayStartFX();
+					}
+					if(work->time >= 80) {
+						work->type = 0;
+					}
+				} else {
+					if(work->time == 1) {
+						if(work->work_s16[1] == 1) {
+							HuAudFXPlay(37);
+						} else {
+							HuAudFXPlay(40);
+						}
+						MGSeqPauseEnableCtrl(0);
+						work->stat |= 0x10;
+					}
+					if(work->time <= 20) {
+						for(i=1; i<4; i++) {
+							for(j=0; j<work->work_s16[3]; j++) {
+								HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+							}
+						}
+						time = work->time;
+						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
+						for(j=0; j<work->work_s16[3]; j++) {
+							HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
+							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
+							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
+						}
+						if(time == 20.0f) {
+							for(j=0; j<work->work_s16[3]; j++) {
+								HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+							}
+						}
+					} else {
+						if(work->time > 80 && work->time <= 95) {
+							time = work->time-80;
+							for(j=0; j<work->work_s16[3]; j++) {
+								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(j*56);
+								HuSprPosSet(work->spr_grp[0], j, pos_x+((288.0f-pos_x)*(1.0-cos((M_PI*(time*6.0))/180.0))), work->y);
+							}
+							if(time == 15.0f) {
+								for(j=0; j<work->work_s16[3]; j++) {
+									HuSprAttrReset(work->spr_grp[1], j, SPRITE_ATTR_HIDDEN);
+									HuSprPosSet(work->spr_grp[1], j, 288.0f, work->y);
+									HuSprTPLvlSet(work->spr_grp[1], j, 1.0f);
+								}
+							}
+						} else {
+							if(work->time > 105) {
+								for(j=0; j<work->work_s16[3]; j++) {
+									time = work->time-105;
+									time -= j*3;
+									if(time < 0) {
+										continue;
+									}
+									scale = 1.0f-(time/15.0f);
+									if(scale < 0.0f) {
+										scale = 0.0f;
+									}
+									HuSprPosSet(work->spr_grp[0], j, 288.0f, work->y+((-100.0f-work->y)*(time/20.0f)));
+									HuSprTPLvlSet(work->spr_grp[0], j, scale);
+									HuSprPosSet(work->spr_grp[1], j, 288.0f, work->y+((580.0f-work->y)*(time/20.0f)));
+									HuSprTPLvlSet(work->spr_grp[1], j, scale);
+								}
+							}
+						}
+					}
+					if(work->time == 130) {
+						work->stat |= 0x4;
+					}
+					if(work->time >= 130) {
+						work->type = 0;
+						work->stat |= 0x8;
+					}
+				}
+				
+			}
+				break;
+				
+			case -1:
+			{
+				work->work_float[0] += seqSpeed*0.1f;
+				scale = 1.0f-work->work_float[0];
+				if(scale <= 0.0f) {
+					scale = 0.0f;
+					work->type = 0;
+					work->stat |= 0x8;
+					if(work->work_s16[1] == 0) {
+						MGSeqPauseEnableCtrl(1);
+					}
+				}
+				for(idx=0; idx<work->work_s16[3]; idx++) {
+					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
+				}
+			}
+				break;
+				
+			default:
+				break;
+		}
+	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
+}
+
 
 static int SeqInitDraw(SeqWork *work, va_list params)
 {
