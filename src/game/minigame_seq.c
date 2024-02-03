@@ -1493,12 +1493,12 @@ static int SeqInitDraw(SeqWork *work, va_list params)
 	
 }
 
-static void SeqPlayStartFX(void)
+void MGSeqPauseEnableCtrl(s32 flag)
 {
 	
 }
 
-void MGSeqPauseEnableCtrl(s32 flag)
+static void SeqPlayStartFX(void)
 {
 	
 }
