@@ -11,7 +11,7 @@ static void **HuDataReadMultiSub(s32 *data_ids, BOOL use_num, s32 num);
 
 #define DATADIR_DEFINE(name, path) { path, -1 },
 
-static FileListEntry DataDirStat[DATADIR_COUNT+1] = {
+static FileListEntry DataDirStat[DATADIR_ID_MAX+1] = {
     #include "datadir_table.h"
     { NULL, -1 }
 };

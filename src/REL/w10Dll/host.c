@@ -3,7 +3,7 @@
 #include "game/board/window.h"
 
 s32 lbl_1_data_78[2] = {
-    MAKE_DATA_NUM(DATADIR_W10, 16),
+    DATA_MAKE_NUM(DATADIR_W10, 16),
     -1
 };
 
@@ -14,7 +14,7 @@ Vec lbl_1_data_80[2] = {
 
 void fn_1_AEC(void) {
     lbl_1_bss_1C = 0;
-    lbl_1_bss_1E = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 15), lbl_1_data_78, 0);
+    lbl_1_bss_1E = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 15), lbl_1_data_78, 0);
     BoardModelMotionStart(lbl_1_bss_1E, 1, 0x40000001);
     BoardTutorialHostSet(lbl_1_bss_1E);
     BoardModelLayerSet(lbl_1_bss_1E, 6);

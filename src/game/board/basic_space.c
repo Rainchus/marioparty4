@@ -52,16 +52,16 @@ static omObjData *coinChgObj[4] = {
 };
 
 static s32 coinDigitMdl[10] = {
-	MAKE_DATA_NUM(DATADIR_BOARD, 12),
-	MAKE_DATA_NUM(DATADIR_BOARD, 13),
-	MAKE_DATA_NUM(DATADIR_BOARD, 14),
-	MAKE_DATA_NUM(DATADIR_BOARD, 15),
-	MAKE_DATA_NUM(DATADIR_BOARD, 16),
-	MAKE_DATA_NUM(DATADIR_BOARD, 17),
-	MAKE_DATA_NUM(DATADIR_BOARD, 18),
-	MAKE_DATA_NUM(DATADIR_BOARD, 19),
-	MAKE_DATA_NUM(DATADIR_BOARD, 20),
-	MAKE_DATA_NUM(DATADIR_BOARD, 21),
+	DATA_MAKE_NUM(DATADIR_BOARD, 12),
+	DATA_MAKE_NUM(DATADIR_BOARD, 13),
+	DATA_MAKE_NUM(DATADIR_BOARD, 14),
+	DATA_MAKE_NUM(DATADIR_BOARD, 15),
+	DATA_MAKE_NUM(DATADIR_BOARD, 16),
+	DATA_MAKE_NUM(DATADIR_BOARD, 17),
+	DATA_MAKE_NUM(DATADIR_BOARD, 18),
+	DATA_MAKE_NUM(DATADIR_BOARD, 19),
+	DATA_MAKE_NUM(DATADIR_BOARD, 20),
+	DATA_MAKE_NUM(DATADIR_BOARD, 21),
 };
 
 void BoardLandBlueExec(s32 player, s32 space) {
@@ -206,8 +206,8 @@ void BoardCoinChgHide(s32 index) {
 }
 
 static const s32 coinSignMdl[2] = {
-	MAKE_DATA_NUM(DATADIR_BOARD, 22),
-	MAKE_DATA_NUM(DATADIR_BOARD, 23)
+	DATA_MAKE_NUM(DATADIR_BOARD, 22),
+	DATA_MAKE_NUM(DATADIR_BOARD, 23)
 };
 
 static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
@@ -221,7 +221,7 @@ static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
     coin_chg->sign_model = BoardModelCreate(coinSignMdl[coin_chg->minus], NULL, 0);
     coin_chg->tens_model = BoardModelCreate(coinDigitMdl[coin_chg->tens], NULL, 0);
     coin_chg->ones_model = BoardModelCreate(coinDigitMdl[coin_chg->ones], NULL, 0);
-    coin_chg->coin_model = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 10), NULL, 0);
+    coin_chg->coin_model = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 10), NULL, 0);
     BoardModelPosSetV(coin_chg->sign_model, pos);
     BoardModelPosSetV(coin_chg->tens_model, pos);
     BoardModelPosSetV(coin_chg->ones_model, pos);

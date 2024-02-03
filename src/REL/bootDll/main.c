@@ -14,6 +14,8 @@
 #include "math.h"
 #include "rel_sqrt_consts.h"
 
+#include "data_num/title.h"
+
 #define HU_PAD_BTN_ALL (HuPadBtn[0] | HuPadBtn[1] | HuPadBtn[2] | HuPadBtn[3])
 #define HU_PAD_BTNDOWN_ALL (HuPadBtnDown[0] | HuPadBtnDown[1] | HuPadBtnDown[2] | HuPadBtnDown[3])
 #define HU_PAD_DSTK_ALL (HuPadDStkRep[0] | HuPadDStkRep[1] | HuPadDStkRep[2] | HuPadDStkRep[3])
@@ -86,7 +88,7 @@ static void BootProc(void)
 	HuSprAttrSet(group, 0, SPRITE_ATTR_HIDDEN);
 	if(omovlevtno != 0) {
 		HuAudSndGrpSetSet(0);
-		data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 1));
+		data = HuSprAnimReadFile(TITLE_HUDSON_ANM);
 		sprite_hudson = HuSprCreate(data, 0, 0);
 		HuSprGrpMemberSet(group, 1, sprite_hudson);
 		HuSprPosSet(group, 1, 288, 240);
@@ -116,7 +118,7 @@ static void BootProc(void)
 			MGSeqInit();
 			HuWinInit(1);
 			TitleInit();
-			data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 1));
+			data = HuSprAnimReadFile(TITLE_HUDSON_ANM);
 			sprite_hudson = HuSprCreate(data, 0, 0);
 			HuSprGrpMemberSet(group, 1, sprite_hudson);
 			HuSprPosSet(group, 1, 288, 240);
@@ -287,15 +289,15 @@ static void ProgressiveProc(void)
 		VIFlush();
 	}
 	group = HuSprGrpCreate(3);
-	data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 3));
+	data = HuSprAnimReadFile(TITLE_PROGRESSIVE_CHOOSE_ANM);
 	sprite = HuSprCreate(data, 0, 0);
 	HuSprGrpMemberSet(group, 0, sprite);
 	HuSprPosSet(group, 0, 288, 240);
-	data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 6));
+	data = HuSprAnimReadFile(TITLE_PROGRESSIVE_CURSOR_ON_ANM);
 	sprite = HuSprCreate(data, 0, 0);
 	HuSprGrpMemberSet(group, 1, sprite);
 	HuSprPosSet(group, 1, progressivePosTbl[option*2], progressivePosTbl[(option*2)+1]);
-	data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 7));
+	data = HuSprAnimReadFile(TITLE_PROGRESSIVE_CURSOR_OFF_ANM);
 	sprite = HuSprCreate(data, 0, 0);
 	HuSprGrpMemberSet(group, 2, sprite);
 	HuSprPosSet(group, 2, progressivePosTbl[option*2], progressivePosTbl[(option*2)+1]);
@@ -333,9 +335,9 @@ static void ProgressiveProc(void)
 	HuSprGrpKill(group);
 	group = HuSprGrpCreate(1);
 	if(!option) {
-		data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 4));
+		data = HuSprAnimReadFile(TITLE_PROGRESSIVE_ON_ANM);
 	} else {
-		data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 5));
+		data = HuSprAnimReadFile(TITLE_PROGRESSIVE_OFF_ANM);
 	}
 	sprite = HuSprCreate(data, 0, 0);
 	HuSprGrpMemberSet(group, 0, sprite);
@@ -452,35 +454,35 @@ static void TitleInit(void)
 	s16 model;
 	s16 sprite;
 	AnimData *sprite_data;
-	titleModel[0] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 11));
+	titleModel[0] = model = Hu3DModelCreateFile(TITLE_CHAR_HSF);
 	Hu3DModelAttrSet(model, 1);
 	Hu3DModelAttrSet(model, 0x40000001);
-	titleModel[1] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 12));
+	titleModel[1] = model = Hu3DModelCreateFile(TITLE_CUBE_HSF);
 	Hu3DModelAttrSet(model, 1);
 	Hu3DModelAttrSet(model, 0x40000001);
-	titleModel[2] = model = Hu3DModelCreateFile(MAKE_DATA_NUM(DATADIR_TITLE, 13));
+	titleModel[2] = model = Hu3DModelCreateFile(TITLE_SKY_HSF);
 	Hu3DModelAttrSet(model, 1);
 	Hu3DModelAttrSet(model, 0x40000001);
 	Hu3DModelCameraInfoSet(model, 1);
 	Hu3DModelLightInfoSet(model, 1);
 	titleGroup = HuSprGrpCreate(4);
-	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 8));
+	sprite_data = HuSprAnimReadFile(TITLE_BG_ANM);
 	sprite = HuSprCreate(sprite_data, 0, 0);
 	HuSprGrpMemberSet(titleGroup, 0, sprite);
 	HuSprAttrSet(titleGroup, 0, SPRITE_ATTR_HIDDEN);
 	HuSprDrawNoSet(titleGroup, 0, 127);
 	HuSprPosSet(titleGroup, 0, 288, 240);
-	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 10));
+	sprite_data = HuSprAnimReadFile(TITLE_COPYRIGHT_ANM);
 	sprite = HuSprCreate(sprite_data, 1, 0);
 	HuSprGrpMemberSet(titleGroup, 1, sprite);
 	HuSprAttrSet(titleGroup, 1, SPRITE_ATTR_HIDDEN);
 	HuSprPosSet(titleGroup, 1, 288, 420);
-	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 2));
+	sprite_data = HuSprAnimReadFile(TITLE_PRESS_START_ANM);
 	sprite = HuSprCreate(sprite_data, 2, 0);
 	HuSprGrpMemberSet(titleGroup, 2, sprite);
 	HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN|SPRITE_ATTR_BILINEAR);
 	HuSprPosSet(titleGroup, 2, 288, 380);
-	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 9));
+	sprite_data = HuSprAnimReadFile(TITLE_LOGO_ANM);
 	sprite = HuSprCreate(sprite_data, 0, 0);
 	HuSprGrpMemberSet(titleGroup, 3, sprite);
 	HuSprAttrSet(titleGroup, 3, SPRITE_ATTR_HIDDEN|SPRITE_ATTR_BILINEAR);

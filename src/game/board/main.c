@@ -210,7 +210,7 @@ static void KillBoardFunc(omObjData *object)
 				BoardTutorialWorkRestore();
 			}
 			_ClearFlag(FLAG_ID_MAKE(1, 0));
-			HuARDirFree(MAKE_DIR_NUM(DATADIR_BOARD));
+			HuARDirFree(DATADIR_BOARD);
 			if(_CheckFlag(FLAG_ID_MAKE(1, 27))) {
 				omOvlReturnEx(2, 1);
 			} else {
@@ -668,7 +668,7 @@ static void CreateBoard(void)
 	if(!reset_unk32) {
 		GWSystem.unk_32 = 1;
 	}
-	guest_status = BoardDataDirReadAsync(MAKE_DIR_NUM(DATADIR_BGUEST));
+	guest_status = BoardDataDirReadAsync(DATADIR_BGUEST);
 	if(guest_status != -1) {
 		BoardDataAsyncWait(guest_status);
 	}
@@ -698,29 +698,29 @@ static void CreateBoard(void)
 	BoardCameraMotionWait();
 	BoardTauntInit();
 	_SetFlag(FLAG_ID_MAKE(1, 14));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPASUIT));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BBATTLE));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKUJIYA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BPAUSE));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BLAST5));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_EFFECT));
+	HuDataDirClose(DATADIR_BKOOPASUIT);
+	HuDataDirClose(DATADIR_BBATTLE);
+	HuDataDirClose(DATADIR_BKOOPA);
+	HuDataDirClose(DATADIR_BKUJIYA);
+	HuDataDirClose(DATADIR_BYOKODORI);
+	HuDataDirClose(DATADIR_BPAUSE);
+	HuDataDirClose(DATADIR_BLAST5);
+	HuDataDirClose(DATADIR_EFFECT);
 	_SetFlag(FLAG_ID_MAKE(1, 16));
 }
 
 static void DestroyBoard(void)
 {
 	s32 dir_table[] = {
-		MAKE_DIR_NUM(DATADIR_W01),
-		MAKE_DIR_NUM(DATADIR_W02),
-		MAKE_DIR_NUM(DATADIR_W03),
-		MAKE_DIR_NUM(DATADIR_W04),
-		MAKE_DIR_NUM(DATADIR_W05),
-		MAKE_DIR_NUM(DATADIR_W06),
-		MAKE_DIR_NUM(DATADIR_W10),
-		MAKE_DIR_NUM(DATADIR_W20),
-		MAKE_DIR_NUM(DATADIR_W21),
+		DATADIR_W01,
+		DATADIR_W02,
+		DATADIR_W03,
+		DATADIR_W04,
+		DATADIR_W05,
+		DATADIR_W06,
+		DATADIR_W10,
+		DATADIR_W20,
+		DATADIR_W21
 	};
 	BoardTauntKill();
 	BoardAudSeqFadeOutAll();
@@ -738,14 +738,14 @@ static void DestroyBoard(void)
 	BoardModelKillAll();
 	BoardWinKillAll();
 	HuDataDirClose(dir_table[BoardCurrGet()]);
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_EFFECT));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BGUEST));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPASUIT));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BBATTLE));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKUJIYA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BOARD));
+	HuDataDirClose(DATADIR_EFFECT);
+	HuDataDirClose(DATADIR_BGUEST);
+	HuDataDirClose(DATADIR_BKOOPASUIT);
+	HuDataDirClose(DATADIR_BBATTLE);
+	HuDataDirClose(DATADIR_BKOOPA);
+	HuDataDirClose(DATADIR_BKUJIYA);
+	HuDataDirClose(DATADIR_BYOKODORI);
+	HuDataDirClose(DATADIR_BOARD);
 	createFunc = destroyFunc = NULL;
 }
 
@@ -1760,7 +1760,7 @@ void BoardConfettiCreate(Vec *pos, s16 count, float range)
 	object->trans.y = pos->y;
 	object->trans.z = pos->z;
 	object->rot.x = range;
-	work->gfx_mdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 7), NULL, 0);
+	work->gfx_mdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 7), NULL, 0);
 	BoardModelLayerSet(work->gfx_mdl, 2);
 	BoardModelVisibilitySet(work->gfx_mdl, 0);
 	{
@@ -1962,9 +1962,9 @@ typedef struct last5_gfx_work {
 } Last5GfxWork;
 
 static s32 last5GfxSprTbl[3] = {
-	MAKE_DATA_NUM(DATADIR_BOARD, 95),
-	MAKE_DATA_NUM(DATADIR_BOARD, 97),
-	MAKE_DATA_NUM(DATADIR_BOARD, 96),
+	DATA_MAKE_NUM(DATADIR_BOARD, 95),
+	DATA_MAKE_NUM(DATADIR_BOARD, 97),
+	DATA_MAKE_NUM(DATADIR_BOARD, 96),
 };
 
 static float last5GfxPosTbl[2][3][2] = {
@@ -2019,7 +2019,7 @@ void BoardLast5GfxInit(void)
 			}
 			spr_file = last5GfxSprTbl[i];
 			if(i == 2 && work->is_last && GWLanguageGet() != 0) {
-				spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
+				spr_file = DATA_MAKE_NUM(DATADIR_BOARD, 98);
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
