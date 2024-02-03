@@ -6,7 +6,7 @@
 #include "math.h"
 #include "string.h"
 
-#define ABS(x) ((x < 0) ? -x : x)
+#define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef struct {
     /* 0x00 */ ModelData *unk00;

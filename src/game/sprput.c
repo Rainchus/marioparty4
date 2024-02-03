@@ -123,7 +123,7 @@ void HuSprDisp(SpriteData *sprite)
                 continue;
             }
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
-            HuSprTexLoad(anim, layer->bmpNo, 0, sprite->wrap_s, sprite->wrap_t, (sprite->attr & SPIRTE_ATTR_BILINEAR) ? GX_LINEAR : GX_NEAR);
+            HuSprTexLoad(anim, layer->bmpNo, 0, sprite->wrap_s, sprite->wrap_t, (sprite->attr & SPRITE_ATTR_BILINEAR) ? GX_LINEAR : GX_NEAR);
             if(layer->alpha != 255 || color_sum != 255*4) {
                 color.a = (u16)(sprite->a*layer->alpha) >> 8;
                 GXSetTevColor(GX_TEVSTAGE1, color);

@@ -290,7 +290,7 @@ void BoardSaveInit(s32 board)
 	GWSystem.field31_bit4 = 0;
 	GWSystem.unk_32 = 1;
 	GWSystem.mg_next = 0;
-	GWSystem.mg_next_extra = 0;
+	GWSystem.mg_next_type = 0;
 	GWSystem.unk_38 = 0;
 	GWSystem.block_pos = 0;
 	memset(GWSystem.board_data, 0, 32);
@@ -334,13 +334,13 @@ void BoardSaveInit(s32 board)
 	}
 }
 
-void BoardStoryConfigSet(s32 mg_type, s32 diff_story)
+void BoardStoryConfigSet(s32 mg_list, s32 diff_story)
 {
 	GWSystem.party = 0;
 	GWSystem.team = 0;
 	GWSystem.diff_story = diff_story;
 	GWSystem.bonus_star = 0;
-	GWSystem.mg_type = mg_type;
+	GWSystem.mg_list = mg_list;
 	GWPlayer[0].handicap = 0;
 	GWPlayer[1].handicap = 0;
 	GWPlayer[2].handicap = 0;
@@ -358,13 +358,13 @@ void BoardStoryConfigSet(s32 mg_type, s32 diff_story)
 	_SetFlag(FLAG_ID_MAKE(1, 10));
 }
 
-void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_type, s32 max_turn, s32 p1_handicap, s32 p2_handicap, s32 p3_handicap, s32 p4_handicap)
+void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_list, s32 max_turn, s32 p1_handicap, s32 p2_handicap, s32 p3_handicap, s32 p4_handicap)
 {
 	GWSystem.party = 1;
 	GWSystem.team = team;
 	GWSystem.diff_story = 0;
 	GWSystem.bonus_star = bonus_star;
-	GWSystem.mg_type = mg_type;
+	GWSystem.mg_list = mg_list;
 	GWSystem.max_turn = max_turn;
 	memset(GWPlayer, 0, 4*sizeof(PlayerState));
 	GWPlayer[0].handicap = p1_handicap;
@@ -617,11 +617,11 @@ static void CreateBoard(void)
 	GWSystem.mg_next = -1;
 	if(!GWGameStat.field10E_bit5) {
 		s32 type_temp;
-		if(GWSystem.mg_type == 3) {
-			GWSystem.mg_type = 0;
+		if(GWSystem.mg_list == 3) {
+			GWSystem.mg_list = 0;
 		}
-		if(GWMGTypeGet() == 2) {
-			GWSystem.mg_type = 0;
+		if(GWMGListGet() == 2) {
+			GWSystem.mg_list = 0;
 		}
 	}
 	if(GWSystem.mess_speed == 3) {
@@ -2023,7 +2023,7 @@ void BoardLast5GfxInit(void)
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
-			HuSprAttrSet(work->group, i, SPIRTE_ATTR_BILINEAR);
+			HuSprAttrSet(work->group, i, SPRITE_ATTR_BILINEAR);
 			HuSprPosSet(work->group, i, last5GfxPosTbl[lastF][i][0], last5GfxPosTbl[lastF][i][1]);
 		}
 		if(!work->is_last) {

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "REL/executor.h"
 #include <dolphin/mtx.h>
+#include "game/objsub.h"
 
 // global data //
 typedef struct unkStruct18FC10 {
@@ -94,7 +95,6 @@ extern void espBankSet(s16, s16);
 extern void espDrawNoSet(s16, s16);
 extern void WipeCreate(s16, s16, s16);
 extern u8 WipeStatGet(void);
-extern void omGameSysInit(omObjData*);
 extern f32 PSVECNormalize(Vec3f*, Vec3f*);
 
 // local data //

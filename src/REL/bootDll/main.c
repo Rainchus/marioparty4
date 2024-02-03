@@ -478,12 +478,12 @@ static void TitleInit(void)
 	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 2));
 	sprite = HuSprCreate(sprite_data, 2, 0);
 	HuSprGrpMemberSet(titleGroup, 2, sprite);
-	HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN|SPIRTE_ATTR_BILINEAR);
+	HuSprAttrSet(titleGroup, 2, SPRITE_ATTR_HIDDEN|SPRITE_ATTR_BILINEAR);
 	HuSprPosSet(titleGroup, 2, 288, 380);
 	sprite_data = HuSprAnimReadFile(MAKE_DATA_NUM(DATADIR_TITLE, 9));
 	sprite = HuSprCreate(sprite_data, 0, 0);
 	HuSprGrpMemberSet(titleGroup, 3, sprite);
-	HuSprAttrSet(titleGroup, 3, SPRITE_ATTR_HIDDEN|SPIRTE_ATTR_BILINEAR);
+	HuSprAttrSet(titleGroup, 3, SPRITE_ATTR_HIDDEN|SPRITE_ATTR_BILINEAR);
 	HuSprPosSet(titleGroup, 3, 288, 200);
 }
 
