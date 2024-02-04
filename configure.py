@@ -313,7 +313,7 @@ config.libs = [
             Object(Matching, "game/main.c"),
             Object(Matching, "game/pad.c"),
             Object(Matching, "game/dvd.c"),
-            Object(NonMatching, "game/data.c"),
+            Object(Matching, "game/data.c"),
             Object(Matching, "game/decode.c"),
             Object(Matching, "game/font.c"),
             Object(Matching, "game/init.c"),
