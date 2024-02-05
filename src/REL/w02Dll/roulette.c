@@ -1,5 +1,5 @@
 #include "REL/w02Dll.h"
-
+#include "game/audio.h"
 
 #define ROULETTE_CHOICE_YES 0
 #define ROULETTE_CHOICE_NO  1
@@ -49,6 +49,13 @@ extern f32 lbl_1_rodata_4A8;
 extern f32 lbl_1_rodata_4AC;
 extern f32 lbl_1_rodata_4B0;
 extern f32 lbl_1_rodata_4B8;
+extern f32 lbl_1_rodata_4C0;
+extern f32 lbl_1_rodata_4C4;
+extern f32 lbl_1_rodata_4C8;
+extern f32 lbl_1_rodata_4CC;
+extern f64 lbl_1_rodata_4D0;
+extern f32 lbl_1_rodata_4D8;
+extern f32 lbl_1_rodata_4DC;
 
 /* DATA */
 extern s32 lbl_1_data_4D0[];
@@ -197,17 +204,17 @@ s32 fn_1_BE88(void) {
             case BRIBE_CHOICE_20:
                 mesg = 0x130004;
                 coinAmount = 0x14;
-                var_r30 = 0x5A;
+                var_r30 = 0x5A; // 90%
                 break;
             case BRIBE_CHOICE_10:
                 mesg = 0x130005;
                 coinAmount = 0xA;
-                var_r30 = 0x3C;
+                var_r30 = 0x3C; // 60%
                 break;
             case BRIBE_CHOICE_5:
                 mesg = 0x130006;
                 coinAmount = 5;
-                var_r30 = 0x1E;
+                var_r30 = 0x1E; // 30%
                 break;
             }
             fn_1_121C(mesg);
@@ -430,7 +437,7 @@ s32 fn_1_C108(s32 arg0) {
         sp28.x = sp1C.x;
         sp28.z = sp1C.z;
         BoardModelPosSetV(lbl_1_bss_30[6], (Vec* ) &sp28);
-        var_r28 = var_r28 + lbl_1_rodata_4B0;
+        var_r28 = var_r28 + lbl_1_rodata_4B0; // TODO: Weird extra rodata
         HuAudFXPitchSet(lbl_1_bss_384, var_r28);
         HuPrcVSleep();
     }
