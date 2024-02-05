@@ -3,6 +3,7 @@
 #include "game/process.h"
 #include "game/gamework_data.h"
 #include "game/objsub.h"
+#include "game/object.h"
 #include "game/hsfman.h"
 #include "math.h"
 
@@ -2072,14 +2073,596 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 	return 1;
 }
 
+static int SeqInitFlip(SeqWork *work, va_list params)
+{
+	s16 i;
+	s16 word_grp;
+	s16 word_ofs;
+	work->work_s16[1] = va_arg(params, int);
+	if(work->work_s16[1] == 2) {
+		return SeqInitDraw(work, params);
+	}
+	work->type = 0;
+	work->work_float[0] = 0;
+	{
+		s32 word_ofs_temp;
+		s32 word_katakana;
+		s32 word_flag;
+
+		if(seqLanguage == 0) {
+			word_ofs_temp = 3;
+		} else {
+			word_ofs_temp = 0;
+		}
+		word_ofs = word_ofs_temp;
+		word_katakana = 0;
+		if(work->work_s16[1] == 2 && word_ofs == 0) {
+			word_katakana = 1;
+		}
+		if(word_katakana) {
+			word_flag = 1;
+		} else {
+			word_flag = 0;
+		}
+		
+		word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+	}
+	HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
+	for(i=0; i<work->work_s16[3]; i++) {
+		HuSprTPLvlSet(work->spr_grp[word_grp], i, 0.0f);
+		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56), work->y);
+		HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+		HuSprAttrReset(work->spr_grp[word_grp], i, SPRITE_ATTR_HIDDEN);
+	}
+	work->work_s16[2] = work->work_s16[3];
+	{
+		s32 word_ofs_temp;
+		s32 word_katakana;
+		s32 word_flag;
+		
+		if(seqLanguage == 0) {
+			word_ofs_temp = 0;
+		} else {
+			word_ofs_temp = 3;
+		}
+		word_ofs = word_ofs_temp;
+		word_katakana = 0;
+		if(work->work_s16[1] == 2 && word_ofs == 0) {
+			word_katakana = 1;
+		}
+		if(word_katakana) {
+			word_flag = 1;
+		} else {
+			word_flag = 0;
+		}
+		
+		word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+	}
+	HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
+	for(i=0; i<work->work_s16[3]; i++) {
+		HuSprTPLvlSet(work->spr_grp[word_grp], i, 0.0f);
+		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56), work->y);
+		HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+		HuSprAttrReset(work->spr_grp[word_grp], i, SPRITE_ATTR_HIDDEN);
+	}
+	if(seqPauseF) {
+		work->type = 2;
+		HuSprAttrSet(word_grp, 0, SPRITE_ATTR_HIDDEN);
+	} else {
+		work->param[0] = 3;
+	}
+	return 1;
+}
+
+static int SeqUpdateFlip(SeqWork *work)
+{
+	s16 idx;
+	float scale;
+	if(work->param[0] != 0 && work->type != -1) {
+		switch(work->param[0]) {
+			case 2:
+				if(work->param[1] != -1) {
+					(void)work; //HACK: to introduce extra branch
+				} else {
+					work->type = -1;
+					work->work_float[0] = 0.0f;
+				}
+				work->param[0] = 0;
+				break;
+				
+			case 1:
+				work->time_max = work->param[1];
+				work->param[0] = 0;
+				break;
+				
+			case 3:
+				work->type = 1;
+				work->param[0] = 0;
+				break;
+				
+			default:
+				work->param[0] = 0;
+				break;
+		}
+	}
+	if(work->type == 2) {
+		return 1;
+	}
+	work->time += seqSpeed;
+	if(work->time >= work->time_max && work->type != -1) {
+		work->stat |= 0x4;
+		work->type = -1;
+		work->work_float[0] = 0.0f;
+	}
+	if(work->type) {
+		switch(work->type) {
+			case 1:
+			{
+				float time;
+				float pos_x;
+				s16 i;
+				if(work->work_s16[1] == 0) {
+					if(work->time <= 10) {
+						for(idx=0; idx<work->work_s16[2]; idx++) {
+							HuSprTPLvlSet(work->spr_grp[0], idx, work->time/10.0f);
+						}
+					} else {
+						if(work->time <= 30) {
+							time = work->time-10;
+							if(time <= 10) {
+								for(idx=0; idx<work->work_s16[2]; idx++) {
+									HuSprScaleSet(work->spr_grp[0], idx, cos(M_PI*((time/10.0f)*90.0f)/180.0), 1.0f);
+								}
+							} else {
+								time -= 10.0f;
+								for(idx=0; idx<work->work_s16[3]; idx++) {
+									HuSprTPLvlSet(work->spr_grp[1], idx, 1.0f);
+									HuSprScaleSet(work->spr_grp[1], idx, sin(M_PI*((time/10.0f)*90.0f)/180.0), 1.0f);
+								}
+							}
+						} else {
+							if(work->time > 35 && work->time <= 55) {
+								time = work->time-35;
+								scale = 0.5*sin(((time*9.0f)*M_PI)/180.0);
+								for(i=0; i<work->work_s16[3]; i++) {
+									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
+									HuSprPosSet(work->spr_grp[1], i, pos_x, work->y);
+									HuSprScaleSet(work->spr_grp[1], i, work->scale_x+scale, work->scale_y+scale);
+								}
+							}
+						}
+					}
+					if(work->time == 35) {
+						HuAudFXPlay(36);
+						work->stat |= 0x10;
+					}
+					if(work->time == 55) {
+						work->stat |= 0x4;
+						SeqPlayStartFX();
+					}
+					if(work->time >= 75) {
+						work->type = 0;
+					}
+				} else {
+					if(work->time == 1) {
+						if(work->work_s16[1] == 1) {
+							HuAudFXPlay(37);
+						} else {
+							HuAudFXPlay(40);
+						}
+						MGSeqPauseEnableCtrl(0);
+						work->stat |= 0x10;
+					}
+					if(work->time <= 20) {
+						time = work->time;
+						scale = 0.5*sin(M_PI*(9.0f*time)/180.0);
+						for(i=0; i<work->work_s16[3]; i++) {
+							HuSprTPLvlSet(work->spr_grp[1], i, 1.0f);
+							pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
+							HuSprPosSet(work->spr_grp[1], i, pos_x, work->y);
+							HuSprScaleSet(work->spr_grp[1], i, work->scale_x+scale, work->scale_y+scale);
+						}
+					} else {
+						if(work->time > 80 && work->time <= 160) {
+							time = work->time-80;
+							for(idx=0; idx<work->work_s16[3]; idx++) {
+								scale = time-(idx*2);
+								if(scale < 0 || scale > 15.0f) {
+									continue;
+								}
+								HuSprScaleSet(work->spr_grp[1], idx, cos(M_PI*((scale/15.0f)*90.0f)/180.0), 1.0f);
+							}
+							for(idx=0; idx<work->work_s16[2]; idx++) {
+								scale = (time-15.0f)-(idx*2);
+								if(scale < 0 || scale > 30.0f) {
+									continue;
+								}
+								HuSprTPLvlSet(work->spr_grp[0], idx, 1.0f);
+								HuSprScaleSet(work->spr_grp[0], idx, sin(M_PI*((scale/30.0f)*180.0f)/180.0), 1.0f);
+							}
+						}
+					}
+					if(work->time == 160) {
+						work->stat |= 0x4;
+					}
+					if(work->time >= 160) {
+						work->type = 0;
+						work->stat |= 0x8;
+					}
+				}
+			}
+			break;
+			
+			case -1:
+			{
+				work->work_float[0] += seqSpeed*0.1f;
+				scale = 1.0f-work->work_float[0];
+				if(scale <= 0.0f) {
+					scale = 0.0f;
+					work->type = 0;
+					work->stat |= 0x8;
+					if(work->work_s16[1] == 0) {
+						MGSeqPauseEnableCtrl(1);
+					}
+				}
+				for(idx=0; idx<work->work_s16[3]; idx++) {
+					HuSprTPLvlSet(work->spr_grp[1], idx, scale);
+				}
+			}
+			break;
+			
+			default:
+				break;
+		}
+	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
+}
+
+static int SeqUpdateMGBowser(SeqWork *work)
+{
+	s16 idx;
+	float scale;
+	if(work->param[0] != 0 && work->type != -1) {
+		switch(work->param[0]) {
+			case 2:
+				if(work->param[1] != -1) {
+					(void)work; //HACK: to introduce extra branch
+				} else {
+					work->type = -1;
+					work->work_float[0] = 0.0f;
+				}
+				work->param[0] = 0;
+				break;
+				
+			case 1:
+				work->time_max = work->param[1];
+				work->param[0] = 0;
+				break;
+				
+			case 3:
+				work->type = 1;
+				work->param[0] = 0;
+				break;
+				
+			default:
+				work->param[0] = 0;
+				break;
+		}
+	}
+	if(work->type == 2) {
+		return 1;
+	}
+	work->time += seqSpeed;
+	if(work->time >= work->time_max && work->type != -1) {
+		work->stat |= 0x4;
+		work->type = -1;
+		work->work_float[0] = 0.0f;
+	}
+	if(work->type) {
+		switch(work->type) {
+			case 1:
+			{
+				s16 i;
+				s16 j;
+				float angle;
+				float time_angle;
+				float time;
+				float pos_x, pos_y;
+				
+				float temp_f25;
+				float center_x;
+				s16 spr_idx[16];
+				float scale_arr[16];
+				
+				
+				if(work->work_s16[1] == 0) {
+					if(work->time <= 60) {
+						center_x = (0.5*(work->work_s16[3]*56))+20.0;
+						for(idx=0; idx<work->work_s16[3]; idx++) {
+							time = work->time-idx;
+							if(time < 0) {
+								scale_arr[idx] = 0.0f;
+								spr_idx[idx] = idx;
+							} else {
+								if(time > 50.0f) {
+									time = 50.0f;
+								}
+								time_angle = 540.0*(1.0f-(time/50.0f));
+								pos_x = (28.0f+(0.5f*-(work->work_s16[3]*56)))+(idx*56);
+								angle = 180.0*(atan2(pos_x, center_x)/M_PI);
+								pos_x = work->x+(center_x*sin(M_PI*(angle+time_angle)/180.0));
+								pos_y = work->y-(240.0*(1.0-(time/50.0f)));
+								HuSprPosSet(work->spr_grp[0], idx, pos_x, pos_y);
+								temp_f25 = 0.9+(0.1*cos(M_PI*(angle+time_angle)/180.0));
+								HuSprScaleSet(work->spr_grp[0], idx, temp_f25*cos(M_PI*(angle+time_angle)/180.0), temp_f25);
+								scale_arr[idx] = cos(M_PI*(angle+time_angle)/180.0);
+								spr_idx[idx] = idx;
+							}
+						}
+						for(i=1; i<work->work_s16[3]; i++) {
+							for(idx=0; idx<work->work_s16[3]-i; idx++) {
+								if(scale_arr[idx] > scale_arr[idx+1]) {
+									 j= spr_idx[idx];
+									spr_idx[idx] = spr_idx[idx+1];
+									spr_idx[idx+1] = j;
+									angle = scale_arr[idx];
+									scale_arr[idx] = scale_arr[idx+1];
+									scale_arr[idx+1] = angle;
+								}
+							}
+						}
+						for(idx=0; idx<work->work_s16[3]; idx++) {
+							HuSprPriSet(work->spr_grp[0], spr_idx[idx], idx+5);
+						}
+					} else {
+						if(work->time > 60 && work->time <= 80) {
+							time = work->time-60;
+							scale = 0.5*sin(((time*9.0f)*M_PI)/180.0);
+							for(i=0; i<work->work_s16[3]; i++) {
+								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
+								HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
+								HuSprScaleSet(work->spr_grp[0], i, work->scale_x+scale, work->scale_y+scale);
+							}
+						}
+						
+					}
+					if(work->time == 60) {
+						HuAudFXPlay(36);
+						work->stat |= 0x10;
+					}
+					if(work->time == 80) {
+						work->stat |= 0x4;
+						SeqPlayStartFX();
+					}
+					if(work->time >= 100) {
+						work->type = 0;
+					}
+				} else {
+					if(work->time == 1) {
+						if(work->work_s16[1] == 1) {
+							HuAudFXPlay(37);
+						} else {
+							HuAudFXPlay(40);
+						}
+						MGSeqPauseEnableCtrl(0);
+						work->stat |= 0x10;
+					}
+					if(work->time <= 20) {
+						for(j=1; j<4; j++) {
+							for(i=0; i<work->work_s16[3]; i++) {
+								HuSprAttrSet(work->spr_grp[j], i, SPRITE_ATTR_HIDDEN);
+							}
+						}
+						time = work->time;
+						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
+						for(i=0; i<work->work_s16[3]; i++) {
+							HuSprAttrReset(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
+							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
+							HuSprScaleSet(work->spr_grp[0], i, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
+						}
+						if(time == 20.0f) {
+							for(j=1; j<4; j++) {
+								for(i=0; i<work->work_s16[3]; i++) {
+									HuSprAttrReset(work->spr_grp[j], i, SPRITE_ATTR_HIDDEN);
+								}
+							}
+						}
+					} else {
+						if(work->time > 80 && work->time <= 125) {
+							static float letterOfs[] = {
+								-30, -30,
+								606, -30,
+								340, 510,
+								606, 510,
+								-30, 450,
+								606, 120,
+								450, -30,
+							};
+							for(i=0; i<4; i++) {
+								time = work->time-80-i;
+								if(time < 0.0f || time > 15.0f) {
+									continue;
+								}
+								for(idx=0; idx<work->work_s16[3]; idx++) {
+									pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(idx*56);
+									pos_x += (time/15.0f)*(letterOfs[(idx*2)]-pos_x);
+									pos_y = work->y+((time/15.0f)*(letterOfs[(idx*2)+1]-work->y));
+									HuSprPosSet(work->spr_grp[i], idx, pos_x, pos_y);
+								}
+							}
+						}
+					}
+					if(work->time == 125) {
+						work->stat |= 0x4;
+					}
+					if(work->time >= 135) {
+						work->type = 0;
+						work->stat |= 0x8;
+					}
+				}
+			}
+			break;
+			
+			case -1:
+			{
+				work->work_float[0] += seqSpeed*0.1f;
+				scale = 1.0f-work->work_float[0];
+				if(scale <= 0.0f) {
+					scale = 0.0f;
+					work->type = 0;
+					work->stat |= 0x8;
+					if(work->work_s16[1] == 0) {
+						MGSeqPauseEnableCtrl(1);
+					}
+				}
+				for(idx=0; idx<work->work_s16[3]; idx++) {
+					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
+				}
+			}
+			break;
+			
+			default:
+				break;
+		}
+	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
+}
+
 static int SeqInitDraw(SeqWork *work, va_list params)
 {
-	
+	s16 word_grp;
+	work->work_s16[1] = 2;
+	work->seq_no = 13;
+	work->type = 0;
+	work->work_float[0] = 0.0f;
+	{
+		s32 word_flag;
+		s32 word_ofs;
+
+		if(seqLanguage == 0) {
+			word_flag = 1;
+		} else {
+			word_flag = 0;
+		}
+		if(seqLanguage == 0) {
+			word_ofs = 0;
+		} else {
+			word_ofs = 3;
+		}
+		
+		word_grp = SeqMakeWord(work, wordMgTbl[2+word_ofs], word_flag);
+	}
+	HuSprGrpPosSet(work->spr_grp[word_grp], 288.0f, 240.0f);
+	work->param[0] = 3;
+	return 1;
+}
+
+static int SeqUpdateDraw(SeqWork *work)
+{
+	s16 idx;
+	float scale;
+	s16 group = work->spr_grp[0];
+	if(work->param[0] != 0 && work->type != -1) {
+		switch(work->param[0]) {
+			case 2:
+				if(work->param[1] != -1) {
+					(void)work; //HACK: to introduce extra branch
+				} else {
+					work->type = -1;
+					work->work_float[0] = 0.0f;
+				}
+				work->param[0] = 0;
+				break;
+				
+			case 1:
+				work->time_max = work->param[1];
+				work->param[0] = 0;
+				break;
+				
+			case 3:
+				work->type = 1;
+				work->param[0] = 0;
+				break;
+				
+			default:
+				work->param[0] = 0;
+				break;
+		}
+	}
+	work->time += seqSpeed;
+	if(work->time >= work->time_max && work->type != -1) {
+		work->stat |= 0x4;
+		work->type = -1;
+		work->work_float[0] = 0.0f;
+	}
+	if(work->type) {
+		switch(work->type) {
+			case 1:
+			{
+				float time;
+				float scale;
+				float zrot;
+				if(work->time <= 20) {
+					time = work->time;
+					zrot = 365.0f*(time/20.0f);
+					scale = (double)1.3*sin(M_PI*(90.0f*(time/20.0f))/180.0);
+					HuSprGrpScaleSet(group, scale, scale);
+					HuSprGrpZRotSet(group, zrot);
+				}
+				if(work->time > 20 && work->time <= 25) {
+					HuSprGrpZRotSet(group, 0.0f);
+					time = work->time-20;
+					scale = 1.0+(0.3*cos(M_PI*(90.0f*(time/5.0f))/180.0));
+					HuSprGrpScaleSet(group, scale, scale);
+				}
+				if(work->time == 5) {
+					HuAudFXPlay(40);
+				}
+				if(work->time == 60) {
+					work->type = 0;
+				}
+			}
+			break;
+			
+			case -1:
+			{
+				float tp_lvl;
+				work->work_float[0] += seqSpeed*0.1f;
+				tp_lvl = 1.0f-work->work_float[0];
+				if(tp_lvl <= 0.0f) {
+					tp_lvl = 0.0f;
+					work->work_s16[1] = 0;
+					work->stat |= 0x8;
+				}
+				HuSprGrpTPLvlSet(group, tp_lvl);
+			}
+			break;
+			
+			default:
+				break;
+		}
+	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
 }
 
 void MGSeqPauseEnableCtrl(s32 flag)
 {
-	
+	if(!_CheckFlag(0x10008)) {
+		omSysPauseEnable(flag);
+	}
 }
 
 static void SeqPlayStartFX(void)

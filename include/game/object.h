@@ -86,7 +86,7 @@ void omDLLInit(FileListEntry *ovl_list);
 int omDLLStart(s16 ovl, s16 dll);
 void omDLLNumEnd(s16 ovl, s16 arg2);
 
-void omSysPauseEnable(BOOL flag);
+void omSysPauseEnable(u8 flag);
 
 void omSystemKeyCheckSetup(Process *objman_process);
 
