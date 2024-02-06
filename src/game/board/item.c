@@ -9,6 +9,8 @@
 #include "game/process.h"
 #include "game/window.h"
 #include "game/wipe.h"
+#include "game/board/audio.h"
+#include "game/board/com.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
@@ -46,11 +48,9 @@ typedef struct {
 u32 frandmod(u32);
 void CharModelCreateParticle(s32, Vec*);
 void CharModelLayerSetAll(s32);
-void BoardComKeySetRight(void);
 void BoardBowserSuitInit(s32);
 s16 BoardBowserSuitPlayerModelGet(void);
 void fn_8004F578(s16, s32);
-void BoardAudSeqPause(s32, s32, s32);
 
 static void ItemProcess(void);
 static void RestoreProcess(void);
