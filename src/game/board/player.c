@@ -1,5 +1,7 @@
 #include "game/board/player.h"
 #include "game/objsub.h"
+#include "game/board/com.h"
+
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
 extern void BoardYourTurnExec(s32);
@@ -31,7 +33,6 @@ extern void BoardModelAttrReset(s16, s32);
 //// #include "game/board/tutorial.h"
 extern BoardTutorialHookExec(s16, s32);
 //// #include "game/board/com.h"
-extern void BoardComUseItemSet(s32, s32);
 //// #include "game/board/overhead.h"
 extern void BoardViewOverheadExec(s32);
 extern void BoardViewMapExec(s32);

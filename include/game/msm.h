@@ -35,6 +35,21 @@ typedef struct {
     /* 0x0C */ float backSurDis;
 } UnkMsmStruct_02; // Size (min: 0x10, max: 0x1C)
 
+typedef struct {
+    /* 0x00 */ s32 unk00;
+    /* 0x04 */ s8 unk04;
+    /* 0x05 */ s8 unk05;
+    /* 0x06 */ u16 unk06;
+} UnkMsmStruct_03; // Size unknown (min: 8, max: 0x10)
+
+typedef struct {
+    /* 0x00 */ s32 unk00;
+    /* 0x04 */ char unk04[1];
+    /* 0x05 */ s8 unk05;
+    /* 0x06 */ u16 unk06;
+    /* 0x08 */ char unk08[1];
+} UnkMsmStruct_04; // Size unknown (min: 9, max: 0x18)
+
 void msmSysRegularProc(void);
 void msmSysSetOutputMode(s32 arg0);
 void msmSysSetAux(s32 arg0, s32 arg1);
@@ -49,9 +64,10 @@ s32 msmMusGetNumPlay(s32 arg0);
 s32 msmMusGetStatus(s32 arg0);
 void msmMusPauseAll(s32 arg0, s32 arg1);
 void msmMusPause(s32 arg0, s32 arg1, s32 arg2);
+void msmMusSetParam(s16 arg0, UnkMsmStruct_04 *arg1);
 void msmMusStopAll(s32 arg0, s32 arg1);
 void msmMusStop(s32 arg0, s32 arg1);
-s32 msmMusPlay(s32 arg0, s32 arg1);
+s32 msmMusPlay(s32 arg0, UnkMsmStruct_03 *arg1);
 void msmSeDelListener(void);
 void msmSeUpdataListener(s32 arg0, s32 arg1);
 void msmSeSetListener(Vec* arg0, Vec* arg1, float arg2, float arg3, UnkMsmStruct_02 *arg4);
