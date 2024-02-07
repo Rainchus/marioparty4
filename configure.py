@@ -861,6 +861,14 @@ config.libs = [
             Object(NonMatching, "REL/mgmodedll/minigame.c"),
         }
     ),
+    Rel('modeltestDll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(Matching, "REL/modeltestDll/main.c"),
+            Object(NonMatching, "REL/modeltestDll/modeltest00.c"),
+            Object(NonMatching, "REL/modeltestDll/modeltest01.c"),
+        }
+    ),
     Rel('modeseldll',
         objects = {
             Object(Matching, "REL/executor.c"),

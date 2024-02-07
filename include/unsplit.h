@@ -8,6 +8,7 @@ void MGSeqKillAll(void);
 void MGSeqPracticeInit(void);
 void CharMotionClose(s16 character);
 void CharModelClose(s16 character);
+void CharMotionDataClose(s16 character);
 void CharModelKill(s16 character);
 s16 CharModelCreate(s16 character, s16 lod);
 s16 CharMotionCreate(s16 character, s32 data_num);
