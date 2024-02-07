@@ -913,11 +913,11 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
 			return HuSprAnimRead(SeqReadFile(data_num));
 		}
 	}
-	if(str[1] == 'ﾞ') {
+	if(str[1] == 222) { //ﾞ
 		list = seqFontKanaTbl;
 		list += 55;
 		id = 55;
-	} else if(str[1] == 'ﾟ') {
+	} else if(str[1] == 223) { //ﾟ
 		list = seqFontKanaTbl;
 		list += 75;
 		id = 75;
