@@ -1,6 +1,7 @@
 #include "game/board/player.h"
 #include "game/objsub.h"
 #include "game/board/com.h"
+#include "game/board/view.h"
 
 //// #include "game/board/ui.h"
 extern void BoardStatusHammerShowSet(s32, s32);
@@ -34,8 +35,6 @@ extern void BoardModelAttrReset(s16, s32);
 extern BoardTutorialHookExec(s16, s32);
 //// #include "game/board/com.h"
 //// #include "game/board/overhead.h"
-extern void BoardViewOverheadExec(s32);
-extern void BoardViewMapExec(s32);
 //// #include "game/board/roll.h"
 extern s32 BoardRollExec(s32);
 extern void BoardRollKill(void);
@@ -51,7 +50,6 @@ extern s16 boardTutorialDirInputTime;
 extern s8 boardTutorialDirInputX;
 extern s8 boardTutorialDirInputY;
 //// #include "game/board/view.h"
-void BoardViewMapExec(s32);
 ////
 
 typedef struct bitcopy {
