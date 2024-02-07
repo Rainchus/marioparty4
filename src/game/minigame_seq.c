@@ -5,6 +5,10 @@
 #include "game/objsub.h"
 #include "game/object.h"
 #include "game/hsfman.h"
+#include "game/window.h"
+#include "game/wipe.h"
+#include "game/pad.h"
+
 #include "math.h"
 
 #include "stdarg.h"
@@ -2604,7 +2608,7 @@ static int SeqUpdateDraw(SeqWork *work)
 				if(work->time <= 20) {
 					time = work->time;
 					zrot = 365.0f*(time/20.0f);
-					scale = (double)1.3*sin(M_PI*(90.0f*(time/20.0f))/180.0);
+					scale = 1.3f*sin(M_PI*(90.0f*(time/20.0f))/180.0);
 					HuSprGrpScaleSet(group, scale, scale);
 					HuSprGrpZRotSet(group, zrot);
 				}
@@ -2683,7 +2687,7 @@ static char *winCharNameTbl[] = {
 
 static char *winWordTbl[] = {
 	"ｶﾁ",
-	"WON",
+	"WON!",
 	"ﾊｲﾎﾞｸ",
 	"LOSE",
 	"ﾕｳｼｮｳ!",
@@ -2723,7 +2727,7 @@ static s16 winPosOfs[][5][2] = {
 
 static s16 winnerNameW[8];
 
-#define GET_WIN_WORD_OFS() ((seqLanguage == 0) ? 0 : 1)
+#define GET_LANG_IDX() ((seqLanguage == 0) ? 0 : 1)
 #define GET_WIN_KANAF() ((seqLanguage == 0) ? 1 : 0)
 
 
@@ -2741,12 +2745,12 @@ static int SeqInitWin(SeqWork *work, va_list params)
 		return 0;
 	}
 	if(win_type == 3) {
-		word_idx = GET_WIN_WORD_OFS();
+		word_idx = GET_LANG_IDX();
 	} else {
 		if(win_type == 4) {
-			word_idx = GET_WIN_WORD_OFS()+2;
+			word_idx = GET_LANG_IDX()+2;
 		} else {
-			word_idx = GET_WIN_WORD_OFS()+4;
+			word_idx = GET_LANG_IDX()+4;
 		}
 	}
 	word_grp = SeqMakeWord(work, winWordTbl[word_idx], GET_WIN_KANAF());
@@ -2762,9 +2766,9 @@ static int SeqInitWin(SeqWork *work, va_list params)
 		if(winner < 0) {
 			continue;
 		}
-		word_grp = SeqMakeWord(work, winCharNameTbl[(winner*2)+GET_WIN_WORD_OFS()], 0);
+		word_grp = SeqMakeWord(work, winCharNameTbl[(winner*2)+GET_LANG_IDX()], 0);
 		if(seqLanguage != 0) {
-			char *name = winCharNameTbl[(winner*2)+GET_WIN_WORD_OFS()];
+			char *name = winCharNameTbl[(winner*2)+GET_LANG_IDX()];
 			word_w = 0.0f;
 			for(i=word_w; i<work->work_s16[3]; i++, name++) {
 				if(*name == ' ') {
@@ -2773,7 +2777,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 					word_w += 50.0f;
 				}
 			}
-			name = winCharNameTbl[(winner*2)+GET_WIN_WORD_OFS()];
+			name = winCharNameTbl[(winner*2)+GET_LANG_IDX()];
 			word_x = 0.0f;
 			for(i=word_x; i<work->work_s16[3]; i++, name++) {
 				HuSprPosSet(work->spr_grp[word_grp], i, 25.0+(word_x-(0.5*word_w)), 0.0f);
@@ -3174,6 +3178,173 @@ static int SeqUpdateRecord(SeqWork *work)
 	return 1;
 }
 
+static void PauseProc(void);
+
+void MGSeqPauseInit(void)
+{
+	MGSeqPauseEnableCtrl(0);
+	HuWinInit(1);
+	pauseProcess = HuPrcCreate(PauseProc, 100, 4096, 0);
+	HuPrcSetStat(pauseProcess, PROCESS_STAT_PAUSE_EN|PROCESS_STAT_UPAUSE_EN);
+	pauseActiveF = 1;
+	pauseExitF = 0;
+	pauseWaitF = 0;
+}
+
+static void PauseProc(void)
+{
+	s16 mg;
+	s16 i;
+	s16 j;
+	
+	s16 char_mess_map[4];
+	s16 char_mess[4][4];
+	s16 window[3] = { -1, -1, -1 };
+	
+	SeqWork work;
+	static char *pauseStr[] = {
+		"ﾎﾟｰｽﾞ",
+		"PAUSE"
+	};
+	float ratio;
+	
+	HuAudFXPlay(5);
+	for(i=0; i<16; i++) {
+		work.sprite[i] = work.spr_grp[i] = -1;
+	}
+	SeqMakeWord(&work, pauseStr[GET_LANG_IDX()], 0);
+	for(i=0; i<work.work_s16[3]; i++) {
+		HuSprPriSet(work.spr_grp[0], i, 0);
+	}
+	for(i=0; i<4; i++) {
+		char_mess_map[i] = 0;
+	}
+	for(i=0; i<4; i++) {
+		char_mess[GWPlayerCfg[i].group][char_mess_map[GWPlayerCfg[i].group]] = GWPlayerCfg[i].character;
+		char_mess_map[GWPlayerCfg[i].group]++;
+	}
+	mg = omMgIndexGet(omcurovl);
+	if(mgInfoTbl[mg].control_mess[0] == 0 && mgInfoTbl[mg].control_mess[1] == 0) {
+		for(i=1; i<=20; i++) {
+			ratio = sin(M_PI*(i*4.5f)/180.0);
+			HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*290)-50.0f);
+			HuPrcVSleep();
+		}
+	} else {
+		if(mgPracticeEnableF && !_CheckFlag(0x1000C)) {
+			window[2] = HuWinExCreateStyled(-10000.0f, 400.0f, 412, 42, -1, 0);
+			HuWinPriSet(window[2], 0);
+			HuWinDispOn(window[2]);
+			HuWinMesSpeedSet(window[2], 0);
+			HuWinAttrSet(window[2], 0x800);
+			HuWinMesSet(window[2], 0x3300A1);
+		}
+		if(mgInfoTbl[mg].control_mess[1]) {
+			s16 insert_idx;
+			window[0] = HuWinExCreateStyled(-10000.0f, 140.0f, 412, 120, -1, 0);
+			HuWinPriSet(window[0], 0);
+			HuWinDispOn(window[0]);
+			HuWinMesSpeedSet(window[0], 0);
+			HuWinMesSet(window[0], mgInfoTbl[mg].control_mess[0]);
+			window[1] = HuWinExCreateStyled(-10000.0f, 276.0f, 412, 120, -1, 0);
+			HuWinPriSet(window[1], 0);
+			HuWinDispOn(window[1]);
+			HuWinMesSpeedSet(window[1], 0);
+			HuWinMesSet(window[1], mgInfoTbl[mg].control_mess[1]);
+			for(i=insert_idx=0; i<4; i++) {
+				for(j=0; j<char_mess_map[i]; j++) {
+					HuWinInsertMesSet(window[0], char_mess[i][j], (s16)insert_idx);
+					HuWinInsertMesSet(window[1], char_mess[i][j], (s16)insert_idx);
+					insert_idx++;
+				}
+			}
+			for(i=1; i<=20; i++) {
+				ratio = sin(M_PI*(i*4.5f)/180.0);
+				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (482*ratio)-400, 140);
+				HuWinPosSet(window[1], 400+(ratio*-318), 272);
+				if(window[2] != -1) {
+					HuWinPosSet(window[2], 82, 404+(100*(1.0-ratio)));
+				}
+				HuPrcVSleep();
+			}
+		} else {
+			window[0] = HuWinExCreateStyled(-10000.0f, 170.0f, 412, 120, -1, 0);
+			HuWinPriSet(window[0], 0);
+			HuWinDispOn(window[0]);
+			HuWinMesSpeedSet(window[0], 0);
+			HuWinMesSet(window[0], mgInfoTbl[mg].control_mess[0]);
+			for(i=1; i<=20; i++) {
+				ratio = sin(M_PI*(i*4.5f)/180.0);
+				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (482*ratio)-400, 170);
+				if(window[2] != -1) {
+					HuWinPosSet(window[2], 400+(ratio*-318), 404);
+				}
+				HuPrcVSleep();
+			}
+		}
+	}
+	MGSeqPauseEnableCtrl(1);
+	pauseWaitF = 1;
+	while(!pauseExitF) {
+		HuPrcVSleep();
+	}
+	pauseWaitF = 0;
+	if(window[0] == -1 && window[1] == -1) {
+		for(i=1; i<=10; i++) {
+			ratio = cos(M_PI*(i*9.0f)/180.0);
+			HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*290)-50.0f);
+			HuPrcVSleep();
+		}
+	} else {
+		if(window[1] != -1) {
+			for(i=1; i<=10; i++) {
+				ratio = cos(M_PI*(i*9.0f)/180.0);
+				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (482*ratio)-400, 140);
+				HuWinPosSet(window[1], 400+(ratio*-318), 272);
+				if(window[2] != -1) {
+					HuWinPosSet(window[2], 82, 404+(100*(1.0-ratio)));
+				}
+				HuPrcVSleep();
+			}
+		} else {
+			for(i=1; i<=10; i++) {
+				ratio = cos(M_PI*(i*9.0f)/180.0);
+				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (482*ratio)-400, 170);
+				if(window[2] != -1) {
+					HuWinPosSet(window[2], 400+(ratio*-318), 404);
+				}
+				HuPrcVSleep();
+			}
+		}
+	}
+	omSysPauseCtrl(0);
+	if(window[0] != -1) {
+		HuWinKill(window[0]);
+	}
+	if(window[1] != -1) {
+		HuWinKill(window[1]);
+	}
+	if(window[2] != -1) {
+		HuWinKill(window[2]);
+	}
+	HuSprGrpKill(work.spr_grp[0]);
+	pauseProcess = NULL;
+	pauseActiveF = 0;
+	HuPrcEnd();
+	do {
+		HuPrcVSleep();
+	} while(1);
+}
+
+void MGSeqPauseKill(void)
+{
+	pauseExitF = 1;
+}
+
 void MGSeqPauseEnableCtrl(s32 flag)
 {
 	if(!_CheckFlag(0x10008)) {
@@ -3181,7 +3352,229 @@ void MGSeqPauseEnableCtrl(s32 flag)
 	}
 }
 
-static void SeqPlayStartFX(void)
+static void PracticeProc(void);
+
+static s16 practiceTbl[][2] = {
+	OVL_M401, 1,
+	OVL_M402, 1,
+	OVL_M403, 1,
+	OVL_M405, 1,
+	OVL_M406, 0,
+	OVL_M407, 1,
+	OVL_M408, 0,
+	OVL_M409, 0,
+	OVL_M410, 1,
+	OVL_M411, 2,
+	OVL_M412, 1,
+	OVL_M413, 0,
+	OVL_M414, 2,
+	OVL_M415, 1,
+	OVL_M443, 2,
+	OVL_M416, 1,
+	OVL_M417, 1,
+	OVL_M418, 1,
+	OVL_M419, 1,
+	OVL_M420, 1,
+	OVL_M421, 1,
+	OVL_M422, 1,
+	OVL_M423, 1,
+	OVL_M424, 1,
+	OVL_M425, 1,
+	OVL_M426, 1,
+	OVL_M427, 0,
+	OVL_M428, 0,
+	OVL_M429, 2,
+	OVL_M430, 1,
+	OVL_M431, 1,
+	OVL_M432, 1,
+	OVL_M433, 0,
+	OVL_M434, 1,
+	OVL_M404, 0,
+	OVL_M438, 1,
+	OVL_M439, 2,
+	OVL_M440, 1,
+	OVL_M441, 1,
+	OVL_M442, 1,
+	OVL_M455, 0,
+	OVL_M456, 0,
+	OVL_INVALID, 0,
+};
+
+void MGSeqPracticeInit(void)
+{
+	Process *process;
+	s16 i;
+	process = HuPrcCurrentGet();
+	if(!_CheckFlag(0x1000C)) {
+		return;
+	}
+	wipeFadeInF = 0;
+	for(i=0; practiceTbl[i][0] != OVL_INVALID; i++) {
+		if(omcurovl == practiceTbl[i][0]) {
+			break;
+		}
+	}
+	if(practiceTbl[i][0] != -1) {
+		HuPrcChildCreate(PracticeProc, 10, 8192, 0, process);
+	}
+}
+
+static void PracticeProc(void)
 {
 	
+	s16 group;
+	s16 sprite;
+	AnimData *anim;
+	s16 i;
+	s16 *practice;
+	float time;
+	static float yPosTbl[] = {
+		53,
+		424,
+		240
+	};
+	time = 0.0f;
+	for(i=0; practiceTbl[i][0] != OVL_INVALID; i++) {
+		if(omcurovl == practiceTbl[i][0]) {
+			break;
+		}
+	}
+	practice = &practiceTbl[i][0];
+	group = HuSprGrpCreate(1);
+	HuSprGrpPosSet(group, 0, 0);
+	anim = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 5)));
+	sprite = HuSprCreate(anim, 1, 0);
+	HuSprGrpMemberSet(group, 0, sprite);
+	HuSprPosSet(group, 0, 288.0f, yPosTbl[practice[1]]);
+	do {
+		if(!wipeFadeInF || WipeStatGet()) {
+			HuSprAttrSet(group, 0, SPRITE_ATTR_HIDDEN);
+			HuPrcVSleep();
+			continue;
+		}
+		HuSprAttrReset(group, 0, SPRITE_ATTR_HIDDEN);
+		for(i=0; i<4; i++) {
+			if(!(HuPadBtnDown[GWPlayerCfg[i].pad_idx] & PAD_TRIGGER_Z)) {
+				continue;;
+			}
+			if(!GWPlayerCfg[i].iscom) {
+				break;
+			}
+		}
+		if(i != 4) {
+			break;
+		}
+		HuSprTPLvlSet(group, 0, fabs(sin(M_PI*time/180.0)));
+		time += 2.0f;
+		HuPrcVSleep();
+	} while(1);
+	omSysExitReq = 1;
+	HuPrcEnd();
+	do {
+		HuPrcVSleep();
+	} while(1);
+}
+
+static s16 seqStartFXTbl[][2] = {
+	OVL_M401, 17,
+	OVL_M402, 16,
+	OVL_M403, 12,
+	OVL_M404, 12,
+	OVL_M405, 17,
+	OVL_M406, 12,
+	OVL_M407, 16,
+	OVL_M408, 12,
+	OVL_M409, 16,
+	OVL_M410, 12,
+	OVL_M411, 16,
+	OVL_M412, 12,
+	OVL_M413, 16,
+	OVL_M414, 16,
+	OVL_M415, 16,
+	OVL_M416, 16,
+	OVL_M417, 17,
+	OVL_M418, 16,
+	OVL_M419, 16,
+	OVL_M420, 16,
+	OVL_M421, 16,
+	OVL_M422, 12,
+	OVL_M423, 12,
+	OVL_M424, 16,
+	OVL_M425, 16,
+	OVL_M426, 16,
+	OVL_M427, 12,
+	OVL_M428, 12,
+	OVL_M429, 16,
+	OVL_M430, 12,
+	OVL_M431, 16,
+	OVL_M432, 12,
+	OVL_M433, 12,
+	OVL_M434, 16,
+	OVL_M435, 12,
+	OVL_M436, 16,
+	OVL_M437, 12,
+	OVL_M438, 16,
+	OVL_M439, 12,
+	OVL_M440, 16,
+	OVL_M441, 16,
+	OVL_M442, 16,
+	OVL_M443, -1,
+	OVL_M444, -1,
+	OVL_M445, 12,
+	OVL_M446, -1,
+	OVL_M447, 12,
+	OVL_M448, -1,
+	OVL_M449, 16,
+	OVL_M450, 12,
+	OVL_M455, 17,
+	OVL_M456, 17,
+	OVL_M457, 12,
+	OVL_M458, 12,
+	OVL_M459, 17,
+	OVL_M460, 12,
+	OVL_M461, 12,
+	OVL_M462, 12,
+	OVL_INVALID, 0
+};
+
+static void SeqPlayStartFX(void)
+{
+	s16 i;
+	for(i=0; seqStartFXTbl[i][0] != OVL_INVALID; i++) {
+		if(omcurovl == seqStartFXTbl[i][0]) {
+			break;
+		}
+	}
+	if(seqStartFXTbl[i][0] == OVL_INVALID || seqStartFXTbl[i][1] == -1) {
+		return;
+	}
+	HuAudFXPlay(seqStartFXTbl[i][1]);
+}
+
+void MGSeqPracticeExitCheck(omObjData *object)
+{
+	s16 input;
+	s16 i;
+	mgQuitExtraF = 0;
+	if((u32)object->work[0] == 0) {
+		if(omMgIndexGet(omcurovl) == -1) {
+			omDelObjEx(HuPrcCurrentGet(), object);
+			return;
+		}
+		object->work[0]++;
+	}
+	if(!omPauseChk() || _CheckFlag(0x1000C) || !pauseWaitF) {
+		return;
+	}
+	for(i=input=0; i<4; i++) {
+		input |= HuPadBtnDown[i];
+	}
+	if(input & PAD_TRIGGER_Z) {
+		HuAudFXPlay(3);
+		pauseExitF = 1;
+		omSysPauseCtrl(0);
+		omSysExitReq = 1;
+		mgQuitExtraF = 1;
+		omDelObjEx(HuPrcCurrentGet(), object);
+	}
 }
