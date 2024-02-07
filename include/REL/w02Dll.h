@@ -22,6 +22,10 @@ extern void fn_1_92C();
 extern s32 fn_1_1128(); 
 extern void fn_1_121C(u32);
 
+// roulette.c
+extern void fn_1_D3AC();
+extern s32 fn_1_D8C4();
+extern void fn_1_DF48();
 // unorganized
 extern void fn_1_394C(s32);
 extern void fn_1_3BF4();

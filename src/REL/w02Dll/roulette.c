@@ -61,13 +61,14 @@ extern f32 lbl_1_rodata_4DC;
 extern s32 lbl_1_data_4D0[];
 
 /* BSS */
-extern s32 lbl_1_bss_384;
-extern s16 lbl_1_bss_388;
 extern s32 lbl_1_bss_38C;
 extern s16 lbl_1_bss_388;
+extern s32 lbl_1_bss_384;
 extern f32 lbl_1_bss_380;
 
 //Function Externs
+extern s16 BoardBowserSuitModelGet();
+extern s16 BoardBowserSuitPlayerModelGet();
 extern void BoardComKeySetDown();
 extern void BoardComKeySetUp();
 extern void omVibrate(s16 player, s16 duration, s16 off, s16 on);
@@ -444,6 +445,127 @@ s32 fn_1_C108(s32 arg0) {
     BoardModelRotYSet(lbl_1_bss_30[4], lbl_1_rodata_410);
     HuAudFXStop(lbl_1_bss_384);
     return lbl_1_data_4D0[var_r30];
+}
+
+// Place player on space post roulette?
+void fn_1_CD04(s32 arg0) {
+    Vec sp24;
+    Vec sp18;
+    Vec spC;
+
+    f32 temp_f30;
+    f32 temp_f29;
+    f32 var_f31;
+    
+    s16 var_r25;
+    u32 var_r26;
+    s32 var_r27;
+    s32 var_r29;
+    s32 var_r28;
+    s32 var_r30;
+    BoardSpace* temp_r31;
+
+    if (arg0 < 0) {
+        fn_1_D3AC();
+        arg0 = fn_1_D8C4();
+    }
+    temp_r31 = BoardSpaceGet(0, BoardSpaceFlagSearch(0, 0x800));
+    
+    for (var_r28 = 0; var_r28 < temp_r31->link_cnt; var_r28++) {
+        var_r29 = temp_r31->link[var_r28];
+        var_r26 = ( (BoardSpaceFlagGet(0, var_r29) & 0xE) >> 1U);
+        if ( var_r26 == (arg0 + 2)) {
+            break;
+        }
+    }
+    BoardSpacePosGet(0, var_r29, &sp24);
+    BoardModelAttrReset(lbl_1_bss_30[5], 0x40000002);
+    HuAudFXPlay(0x420);
+    if (BoardPlayerSizeGet(lbl_1_bss_388) == 2) {
+        while (BoardModelMotionTimeGet(lbl_1_bss_30[5]) < lbl_1_rodata_4C0) {
+            HuPrcVSleep();
+        }
+        BoardPlayerScaleGet(lbl_1_bss_388, &spC);
+
+        while (BoardModelMotionTimeGet(lbl_1_bss_30[5]) < lbl_1_rodata_4C4) {
+            spC.x -= lbl_1_rodata_448;
+            spC.y -= lbl_1_rodata_448;
+            //temp_f1 = spC.z;
+            spC.z = spC.z - lbl_1_rodata_448;
+            BoardPlayerScaleSetV(lbl_1_bss_388, &spC);
+            HuPrcVSleep();
+        }
+
+        spC.x = spC.y = spC.z = lbl_1_rodata_4C8;
+        BoardPlayerScaleSetV(lbl_1_bss_388, &spC);
+    }
+
+    while (BoardModelMotionTimeGet(lbl_1_bss_30[5]) < lbl_1_rodata_4C4) {
+        HuPrcVSleep();
+    }
+    if (GWPlayer[lbl_1_bss_388].bowser_suit) {
+        BoardModelVisibilitySet(BoardBowserSuitModelGet(), 0);
+        BoardModelVisibilitySet(BoardBowserSuitPlayerModelGet(), 0);
+    } else {
+        BoardModelVisibilitySet(BoardPlayerModelGet(lbl_1_bss_388), 0);
+    }
+    HuAudFXPlay(0x421);
+    omVibrate(lbl_1_bss_388, 0xC, 4, 2);
+
+    while (BoardModelMotionTimeGet(lbl_1_bss_30[5]) < lbl_1_rodata_4CC) {
+        HuPrcVSleep();
+    }
+
+    BoardModelPosGet(lbl_1_bss_30[5], &sp18);
+    temp_f30 = (f32) ((lbl_1_rodata_480 * (atan2(sp24.x - sp18.x, sp24.z - sp18.z) / lbl_1_rodata_488)) / lbl_1_rodata_4D0);
+
+    while (BoardModelMotionTimeGet(lbl_1_bss_30[5]) < lbl_1_rodata_408) {
+        BoardModelRotYSet(lbl_1_bss_30[5], temp_f30 + BoardModelRotYGet(lbl_1_bss_30[5]));
+        HuPrcVSleep();
+    }
+    BoardModelRotYSet(lbl_1_bss_30[5], (f32) (lbl_1_rodata_480 * (atan2(sp24.x - sp18.x, sp24.z - sp18.z) / lbl_1_rodata_488)));
+    omVibrate(lbl_1_bss_388, 0xC, 4, 2);
+    if (GWPlayer[lbl_1_bss_388].bowser_suit) {
+
+        BoardModelVisibilitySet(BoardBowserSuitModelGet(),1);
+        BoardModelVisibilitySet(BoardBowserSuitPlayerModelGet(),1);
+    } else {
+        BoardModelVisibilitySet(BoardPlayerModelGet(lbl_1_bss_388), 1);
+    }
+    GWPlayer[lbl_1_bss_388].space_curr =(s16) var_r29;
+    BoardPlayerPosSetV(lbl_1_bss_388, &sp24);
+    temp_r31 = BoardSpaceGet(0, var_r29);
+    
+    for ( var_r30 = 0; var_r30 < (s32) temp_r31->link_cnt; var_r30++) {
+        if (BoardSpaceTypeGet(0, temp_r31->link[var_r30])) {
+            break;
+        }
+    }
+
+    if (var_r30 != (s32) temp_r31->link_cnt) {
+        BoardSpacePosGet(0, temp_r31->link[var_r30], &sp18);
+        BoardPlayerRotYSet(lbl_1_bss_388, (f32) (lbl_1_rodata_480 * (atan2(sp18.x - sp24.x, sp18.z - sp24.z) / lbl_1_rodata_488)));
+    }
+    if (BoardPlayerSizeGet(lbl_1_bss_388) == 2) {
+        var_f31 = spC.x;
+
+        while (var_f31 < lbl_1_rodata_4DC) {
+            var_f31 += lbl_1_rodata_4D8;
+            if (var_f31 > lbl_1_rodata_4DC) {
+                var_f31 = lbl_1_rodata_4DC;
+            }
+            spC.z = var_f31;
+            spC.y = var_f31;
+            spC.x = var_f31;
+            BoardPlayerScaleSetV(lbl_1_bss_388, &spC);
+            HuPrcVSleep();
+        }
+    }
+    HuAudFXPlay(0x42A);
+    while (BoardModelMotionTimeGet(lbl_1_bss_30[5]) < BoardModelMotionMaxTimeGet(lbl_1_bss_30[5])) {
+        HuPrcVSleep();
+    }
+    HuPrcCreate(&fn_1_DF48, 0x2004, 0x1000, 0);
 }
 
 /* Rotate (yaw) of model 4 */
