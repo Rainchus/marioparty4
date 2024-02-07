@@ -339,7 +339,7 @@ config.libs = [
             Object(Matching, "game/frand.c"),
             Object(Matching, "game/audio.c"),
             Object(Matching, "game/EnvelopeExec.c"),
-            Object(NonMatching, "game/minigame_seq.c"),
+            Object(Matching, "game/minigame_seq.c"),
             Object(Matching, "game/ovllist.c"),
             Object(Matching, "game/esprite.c"),
             Object(NonMatching, "game/code_8003FF68.c"),

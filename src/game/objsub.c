@@ -1174,7 +1174,7 @@ s16 mgTicTacToeGrid[3][3];
 u8 mgIndexList[256];
 GameStat mgGameStatBackup;
 
-s16 omMgIndexGet(s16 overlay) {
+s32 omMgIndexGet(s16 overlay) {
     s32 i;
     MgInfo *info;
 
@@ -1182,7 +1182,7 @@ s16 omMgIndexGet(s16 overlay) {
     
     for (i = 0; info->ovl != ((u16)OVL_INVALID); i++) {
         if (info->ovl == overlay) {
-            return i;
+            return (s16)i;
         }
         info++;
     }

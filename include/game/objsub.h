@@ -19,7 +19,7 @@ typedef struct mg_info {
     u32 advice_mess;
 } MgInfo;
 
-s16 omMgIndexGet(s16 overlay);
+s32 omMgIndexGet(s16 overlay);
 void omGameSysInit(Process *objman);
 void omVibrate(s16 player_cfg_index, s16 duration, s16 off, s16 on);
 
