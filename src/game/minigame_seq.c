@@ -9,7 +9,10 @@
 
 #include "stdarg.h"
 
+#undef abs
+
 #define ABS(x) (((x) < 0) ? -(x) : (x))
+
 
 void MGSeqStub(void);
 
@@ -119,23 +122,22 @@ static s16 mgSeqTypeTbl[9] = {
 };
 
 static char lbl_8012F336[] = {
-	0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7, 0xB8,
-	0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF, 0xC0,
-	0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8,
-	0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0,
-	0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8,
-	0xD9, 0xDA, 0xDB, 0xDC, 0xA6, 0xDD, 0xA7, 0xA8,
-	0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB6,
-	0xB7, 0xB8, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF,
-	0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xCA, 0xCB, 0xCC,
-	0xCD, 0xCE, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0x21,
-	0x3F, 0xB0, 0x00
+	"ｱｲｳｴｵｶｷｸ"
+	"ｹｺｻｼｽｾｿﾀ"
+	"ﾁﾂﾃﾄﾅﾆﾇﾈ"
+	"ﾉﾊﾋﾌﾍﾎﾏﾐ"
+	"ﾑﾒﾓﾔﾕﾖﾗﾘ"
+	"ﾙﾚﾛﾜｦﾝｧｨ"
+	"ｩｪｫｬｭｮｯｶ"
+	"ｷｸｺｻｼｽｾｿ"
+	"ﾀﾁﾂﾃﾄﾊﾋﾌ"
+	"ﾍﾎﾊﾋﾌﾍﾎ"
+	"!?ｰ"
 };
 
 static char lbl_8012F389[] = "x first\n";
 static char lbl_8012F392[] = "y first\n";
 
-static s16 seqMaxTime[8];
 static SeqWork seqWorkData[8];
 
 static s16 seqTimer;
@@ -284,7 +286,6 @@ s16 MGSeqCreate(s16 type, ...)
 			type = mgSeqTypeTbl[mgInfoTbl[GWSystem.mg_next].type];
 		}
 	}
-	//FIXME: Fix truncation of type
 	ret = CreateSeq(type, params);
 	va_end(params);
 	return ret;
@@ -766,53 +767,42 @@ static int SeqUpdateType2(SeqWork *work)
 
 
 static char seqFontAlphaTbl[] = {
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-	'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-	'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-	'w', 'x', 'y', 'z', '\0'
+	"ABCDEFGH"
+	"IJKLMNOP"
+	"QRSTUVWX"
+	"YZabcdef"
+	"ghijklmn"
+	"opqrstuv"
+	"wxyz"
 };
 
 static char seqFontKanaTbl[] = {
-	0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7, 0xB8,
-	0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF, 0xC0,
-	0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8,
-	0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0,
-	0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8,
-	0xD9, 0xDA, 0xDB, 0xDC, 0xA6, 0xDD, 0xA7, 0xA8,
-	0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB6,
-	0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE,
-	0xBF, 0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xCA, 0xCB,
-	0xCC, 0xCD, 0xCE, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE,
-	0xB0, 0x00
+	"ｱｲｳｴｵｶｷｸ"
+	"ｹｺｻｼｽｾｿﾀ"
+	"ﾁﾂﾃﾄﾅﾆﾇﾈ"
+	"ﾉﾊﾋﾌﾍﾎﾏﾐ"
+	"ﾑﾒﾓﾔﾕﾖﾗﾘ"
+	"ﾙﾚﾛﾜｦﾝｧｨ"
+	"ｩｪｫｬｭｮｯｶ"
+	"ｷｸｹｺｻｼｽｾ"
+	"ｿﾀﾁﾂﾃﾄﾊﾋ"
+	"ﾌﾍﾎﾊﾋﾌﾍﾎ"
+	"ｰ"
 };
 
-static char seqFontNumTbl[] = {
-	'0', '1', '2', '3', '4', '5', '6', '7',
-	'8', '9', '\0'
-};
+static char seqFontNumTbl[] = "0123456789";
 
 static s32 *letterBufTbl[5] = { };
 
 static char wordStartE[] = "START!";
 
-static char seqPunctTbl[] = {
-	'!', '?', '\0'
-};
+static char seqPunctTbl[] = "!?";
 
-static char wordStartJ[] = {
-	0xBD, 0xC0, 0xB0, 0xC4, 0x21, 0x00
-};
+static char wordStartJ[] = "ｽﾀｰﾄ!";
 
-static char wordFinishJ[] = {
-	0xCC, 0xA8, 0xC6, 0xAF, 0xBC, 0xAD, 0x21, 0x00
-};
+static char wordFinishJ[] = "ﾌｨﾆｯｼｭ!";
 
-static char wordDrawJ[] = {
-	0xCB, 0xB7, 0xDC, 0xB9, 0x21, 0x00
-};
+static char wordDrawJ[] = "ﾋｷﾜｹ!";
 
 static char wordFinishE[] = "FINISH!";
 static char wordDrawE[] = "DRAW!";
@@ -923,11 +913,11 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
 			return HuSprAnimRead(SeqReadFile(data_num));
 		}
 	}
-	if(str[1] == 222) {
+	if(str[1] == 'ﾞ') {
 		list = seqFontKanaTbl;
 		list += 55;
 		id = 55;
-	} else if(str[1] == 223) {
+	} else if(str[1] == 'ﾟ') {
 		list = seqFontKanaTbl;
 		list += 75;
 		id = 75;
@@ -2651,6 +2641,532 @@ static int SeqUpdateDraw(SeqWork *work)
 				break;
 		}
 	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
+}
+
+static char *winCharNameTbl[] = {
+	"ﾏﾘｵ",
+	"MARIO",
+	"ﾙｲｰｼﾞ",
+	"LUIGI",
+	"ﾋﾟｰﾁ",
+	"PEACH",
+	"ﾖｯｼｰ",
+	"YOSHI",
+	"ﾜﾘｵ",
+	"WARIO",
+	"ﾄﾞﾝｷｰ",
+	" DK ",
+	"ﾃﾞｲｼﾞｰ",
+	"DAISY",
+	"ﾜﾙｲｰｼﾞ",
+	"WALUIGI",
+	"ｸｯﾊﾟ",
+	"BOWSER",
+	"ｷﾉﾋﾟｵ",
+	"TOAD",
+	"ﾍｲﾎｰ",
+	"SHY GUY",
+	"ﾃﾚｻ",
+	"BOO",
+	"ﾉｺﾉｺ",
+	"KOOPA",
+	"ﾐﾆｸｯﾊﾟ",
+	"KOOPA KID",
+	"ｸﾘﾎﾞｰ",
+	"GOOMBA"
+};
+
+static char *winWordTbl[] = {
+	"ｶﾁ",
+	"WON",
+	"ﾊｲﾎﾞｸ",
+	"LOSE",
+	"ﾕｳｼｮｳ!",
+	"CHAMPION!"
+};
+
+static s16 winPosOfs[][5][2] = {
+	{
+		{ 114, 0 },
+		{ -144, 0 },
+		{ 0, 0 },
+		{ 0, 0 },
+		{ 0, 0 }
+	},
+	{
+		{ 0, 35 },
+		{ -144, -35 },
+		{ 144, -35 },
+		{ 0, 0 },
+		{ 0, 0 }
+	},
+	{
+		{ 0, 105 },
+		{ 0, -105 },
+		{ -144, 0 },
+		{ 144, 0 },
+		{ 0, 0 }
+	},
+	{
+		{ 0, 105 },
+		{ -144, -105 },
+		{ 144, -105 },
+		{ -144, 0 },
+		{ 144, 0 }
+	}
+};
+
+static s16 winnerNameW[8];
+
+#define GET_WIN_WORD_OFS() ((seqLanguage == 0) ? 0 : 1)
+#define GET_WIN_KANAF() ((seqLanguage == 0) ? 1 : 0)
+
+
+static int SeqInitWin(SeqWork *work, va_list params)
+{
+	s32 win_type = va_arg(params, int);
+	s16 word_idx;
+	s16 word_grp;
+	s32 i;
+	s32 j;
+	s32 num_winners;
+	float word_w;
+	float word_x;
+	if(win_type < 0 && win_type >= 6) {
+		return 0;
+	}
+	if(win_type == 3) {
+		word_idx = GET_WIN_WORD_OFS();
+	} else {
+		if(win_type == 4) {
+			word_idx = GET_WIN_WORD_OFS()+2;
+		} else {
+			word_idx = GET_WIN_WORD_OFS()+4;
+		}
+	}
+	word_grp = SeqMakeWord(work, winWordTbl[word_idx], GET_WIN_KANAF());
+	winnerNameW[0] = work->work_s16[3]*50;
+	for(i=0; i<work->work_s16[3]; i++) {
+		HuSprPosSet(work->spr_grp[word_grp], i, 25.0f+((i*50)-(0.5f*(work->work_s16[3]*50))), 0.0f);
+		HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+	}
+	num_winners = 0;
+	work->work_float[1] = 1.0f;
+	for(j=0; j<4; j++) {
+		s32 winner = va_arg(params, int);
+		if(winner < 0) {
+			continue;
+		}
+		word_grp = SeqMakeWord(work, winCharNameTbl[(winner*2)+GET_WIN_WORD_OFS()], 0);
+		if(seqLanguage != 0) {
+			char *name = winCharNameTbl[(winner*2)+GET_WIN_WORD_OFS()];
+			word_w = 0.0f;
+			for(i=word_w; i<work->work_s16[3]; i++, name++) {
+				if(*name == ' ') {
+					word_w += 30.0f;
+				} else {
+					word_w += 50.0f;
+				}
+			}
+			name = winCharNameTbl[(winner*2)+GET_WIN_WORD_OFS()];
+			word_x = 0.0f;
+			for(i=word_x; i<work->work_s16[3]; i++, name++) {
+				HuSprPosSet(work->spr_grp[word_grp], i, 25.0+(word_x-(0.5*word_w)), 0.0f);
+				HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+				if(*name == ' ') {
+					word_x += 30.0f;
+				} else {
+					word_x += 50.0f;
+				}
+			}
+			if(work->work_float[1] == 0.6f || winner == 7 || winner == 13 || winner == 10) {
+				work->work_float[1] = 0.6f;
+			} else {
+				work->work_float[1] = 0.75f;
+			}
+			winnerNameW[num_winners+1] = word_w;
+		} else {
+			if(winner == 7 || winner == 13) {
+				for(i=0;i<work->work_s16[3]; i++) {
+					HuSprPosSet(work->spr_grp[word_grp], i, 26.0f+((i*52)-(0.5f*(work->work_s16[3]*52))), 0.0f);
+					HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+				}
+				work->work_float[1] = 0.8f;
+				winnerNameW[num_winners+1] = work->work_s16[3]*52;
+			} else {
+				work->work_float[1] = 1.0f;
+				winnerNameW[num_winners+1] = work->work_s16[3]*56;
+			}
+			
+		}
+		num_winners++;
+	}
+	if(num_winners == 0) {
+		return 0;
+	}
+	work->work_s16[1] = 0;
+	work->work_s16[3] = num_winners+1;
+	work->work_float[0] = 0.0f;
+	work->type = 0;
+	for(j=0; j<num_winners+1; j++) {
+		if(num_winners == 1) {
+			word_x = 32.0f+((float)winnerNameW[0]+(winnerNameW[1]*work->work_float[1]));
+			if(j == 0) {
+				word_x = (((576.0f-word_x)/2.0f)+(word_x-(winnerNameW[0]/2)))-288.0f;
+			} else {
+				word_x = (((576.0f-word_x)/2.0f)+(winnerNameW[1]/2))-288.0f;
+			}
+		} else {
+			if(abs(winPosOfs[num_winners-1][j][0]) == 144.0f) {
+				if(winnerNameW[j]+32 < 288.0f) {
+					word_x = 176.0f;
+				} else {
+					word_x = 32.0f+((winnerNameW[j]*work->work_float[1])/2.0f);
+				}
+				if(winPosOfs[num_winners-1][j][0] < 0) {
+					word_x = -(288.0f-word_x);
+				} else {
+					word_x = (576.0f-word_x)-288.0f;
+				}
+			} else {
+				word_x = winPosOfs[num_winners-1][j][0];
+			}
+		}
+		HuSprGrpPosSet(work->spr_grp[j], 288.0f+word_x, 240.0f+winPosOfs[num_winners-1][j][1]);
+	}
+	if(seqPauseF) {
+		work->type = 1;
+		num_winners++;
+		for(j=0; j<num_winners; j++) {
+			HuSprAttrSet(work->spr_grp[j], 0, SPRITE_ATTR_HIDDEN);
+		}
+	} else {
+		work->param[0] = 3;
+	}
+	return 1;
+}
+
+
+static int SeqUpdateWin(SeqWork *work)
+{
+	s32 idx;
+	float tp_lvl;
+	s16 group = work->spr_grp[0];
+	if(work->param[0] != 0 && work->type != -1) {
+		switch(work->param[0]) {
+			case 2:
+				if(work->param[1] != -1) {
+					(void)work; //HACK: to introduce extra branch
+				} else {
+					work->type = -1;
+					work->work_float[0] = 0.0f;
+				}
+				work->param[0] = 0;
+				break;
+				
+			case 1:
+				work->time_max = work->param[1];
+				work->param[0] = 0;
+				break;
+				
+			case 3:
+				work->type = 1;
+				work->param[0] = 0;
+				break;
+				
+			default:
+				work->param[0] = 0;
+				break;
+		}
+	}
+	work->time += seqSpeed;
+	if(work->time >= work->time_max && work->type != -1) {
+		work->stat |= 0x4;
+		work->type = -1;
+		work->work_float[0] = 0.0f;
+	}
+	if(work->type) {
+		switch(work->type) {
+			case 1:
+			{
+				float time;
+				float scale;
+				float zrot;
+				if(work->time <= 20) {
+					time = work->time;
+					zrot = 365.0f*(time/20.0f);
+					scale = sin(M_PI*(90.0f*(time/20.0f))/180.0);
+					HuSprGrpScaleSet(work->spr_grp[0], scale, scale);
+					HuSprGrpZRotSet(work->spr_grp[0], zrot);
+					scale = 1.0+(5.0*cos(M_PI*(90.0f*(time/20.0f))/180.0));
+					tp_lvl = time/20.0f;
+					for(idx=1; idx<work->work_s16[3]; idx++) {
+						HuSprGrpTPLvlSet(work->spr_grp[idx], tp_lvl);
+						HuSprGrpScaleSet(work->spr_grp[idx], scale*work->work_float[1], scale);
+					}
+				}
+				if(work->time > 20 && work->time <= 22) {
+					HuSprGrpZRotSet(work->spr_grp[0], 0.0f);
+					for(idx=1; idx<work->work_s16[3]; idx++) {
+						float pos_x;
+						float ofs[2];
+						if(work->time == 21) {
+							ofs[0] = ((idx & 0x1)*2)-1;
+							ofs[1] = (idx & 0x2) ? 2 : -1;
+						} else {
+							ofs[0] = ofs[1] = 0.0f;
+						}
+						if(work->work_s16[3] == 2) {
+							pos_x = winnerNameW[1]+winnerNameW[0]+32;
+							pos_x = (((576.0f-pos_x)/2.0f)+(winnerNameW[1]/2))-288.0f;
+						} else {
+							if(abs(winPosOfs[work->work_s16[3]-2][idx][0]) == 144.0f) {
+								if(winnerNameW[idx]+32 < 288.0f) {
+									pos_x = 176.0f;
+								} else {
+									pos_x = 32.0f+((winnerNameW[idx]*work->work_float[1])/2.0f);
+								}
+								if(winPosOfs[work->work_s16[3]-2][idx][0] < 0) {
+									pos_x = -(288.0f-pos_x);
+								} else {
+									pos_x = (576.0f-pos_x)-288.0f;
+								}
+							} else {
+								pos_x = winPosOfs[work->work_s16[3]-2][idx][0];
+							}
+						}
+						HuSprGrpPosSet(work->spr_grp[idx], (288.0f+pos_x)+ofs[0], ofs[1]+(240.0f+winPosOfs[work->work_s16[3]-2][idx][1]));
+					}
+				}
+				if(work->time == 125) {
+					work->type = 0;
+				}
+			}
+			break;
+			
+			case -1:
+			{
+				work->work_float[0] += seqSpeed*0.1f;
+				tp_lvl = 1.0f-work->work_float[0];
+				if(tp_lvl <= 0.0f) {
+					tp_lvl = 0.0f;
+					work->work_s16[1] = 0;
+					work->stat |= 0x8;
+				}
+				for(idx=0; idx<work->work_s16[3]; idx++) {
+					HuSprGrpTPLvlSet(work->spr_grp[idx], tp_lvl);
+				}
+			}
+			break;
+			
+			default:
+				break;
+		}
+	}
+	if(seqDoneF || (work->stat & 0x8)) {
+		MGSeqSprKill(work);
+		return 0;
+	}
+	return 1;
+}
+
+static int SeqInitRecord(SeqWork *work, va_list params)
+{
+	AnimData *spr_data;
+	s16 spr_grp;
+	s16 time_pos[2];
+	s16 i;
+	s16 sprite;
+	s16 digit_idx;
+	s32 digit;
+	seqRecordVal = va_arg(params, int);
+	work->type = 0;
+	work->work_float[0] = 0.0f;
+	work->spr_grp[0] = spr_grp = HuSprGrpCreate(10);
+	spr_data = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 9)));
+	sprite = HuSprCreate(spr_data, 0, 0);
+	HuSprGrpMemberSet(spr_grp, 0, sprite);
+	HuSprPosSet(spr_grp, 0, 0.0f, -32.0f);
+	spr_data = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 8)));
+	sprite = HuSprCreate(spr_data, 0, 0);
+	HuSprGrpMemberSet(spr_grp, 1, sprite);
+	spr_data = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 7)));
+	for(i=0; i<8; i++) {
+		sprite = HuSprCreate(spr_data, 0, 0);
+		HuSprGrpMemberSet(spr_grp, i+2, sprite);
+	}
+	if(omcurovl == OVL_M407 || omcurovl == OVL_M453 || omcurovl == OVL_M459 || omcurovl == OVL_M460 || omcurovl == OVL_M462 || omcurovl == OVL_M442) {
+		digit_idx = 0;
+		if(seqRecordVal > 9999) {
+			seqRecordVal = 9999;
+		}
+		digit = seqRecordVal/1000;
+		if(digit != 0) {
+			HuSprBankSet(spr_grp, digit_idx+2, digit);
+			seqRecordVal -= digit*1000;
+			digit_idx++;
+		}
+		
+		digit = seqRecordVal/100;
+		if(digit != 0 || digit_idx != 0) {
+			HuSprBankSet(spr_grp, digit_idx+2, digit);
+			seqRecordVal -= digit*100;
+			digit_idx++;
+		}
+		digit = seqRecordVal/10;
+		if(digit != 0 || digit_idx != 0) {
+			HuSprBankSet(spr_grp, digit_idx+2, digit);
+			seqRecordVal -= digit*10;
+			digit_idx++;
+		}
+		HuSprBankSet(spr_grp, digit_idx+2, seqRecordVal);
+		digit_idx++;
+		for(i=digit_idx; i<8; i++) {
+			HuSprAttrSet(spr_grp, i+2, SPRITE_ATTR_HIDDEN);
+		}
+		HuSprPosSet(spr_grp, 1, (-((digit_idx*44)+48)/2)+24, 32.0f);
+		for(i=0; i<digit_idx; i++) {
+			HuSprPosSet(spr_grp, i+2, (-((digit_idx*44)+48)/2)+70+(i*44), 32.0f);
+		}
+	} else {
+		s16 x;
+		digit_idx = 0;
+		digit = seqRecordVal/36000;
+		if(digit != 0) {
+			HuSprBankSet(spr_grp, digit_idx+2, digit);
+			seqRecordVal -= digit*36000;
+			digit_idx++;
+		}
+		digit = seqRecordVal/3600;
+		HuSprBankSet(spr_grp, digit_idx+2, digit);
+		seqRecordVal -= digit*3600;
+		digit_idx++;
+		HuSprBankSet(spr_grp, digit_idx+2, 10);
+		time_pos[0] = digit_idx;
+		digit_idx++;
+		digit = seqRecordVal/600;
+		HuSprBankSet(spr_grp, digit_idx+2, digit);
+		seqRecordVal -= digit*600;
+		digit_idx++;
+		digit = seqRecordVal/60;
+		HuSprBankSet(spr_grp, digit_idx+2, digit);
+		seqRecordVal -= digit*60;
+		digit_idx++;
+		HuSprBankSet(spr_grp, digit_idx+2, 11);
+		time_pos[1] = digit_idx;
+		digit_idx++;
+		if(omcurovl == OVL_M405 || omcurovl == OVL_M432 || omcurovl == OVL_M461) {
+			seqRecordVal = (float)seqRecordVal*(203.0/120.0);
+		} else {
+			seqRecordVal = (float)seqRecordVal*(200.0/120.0);
+		}
+		digit = seqRecordVal/10;
+		HuSprBankSet(spr_grp, digit_idx+2, digit);
+		seqRecordVal -= digit*10;
+		digit_idx++;
+		HuSprBankSet(spr_grp, digit_idx+2, seqRecordVal);
+		digit_idx++;
+		for(i=digit_idx; i<8; i++) {
+			HuSprAttrSet(spr_grp, i+2, SPRITE_ATTR_HIDDEN);
+		}
+		HuSprPosSet(spr_grp, 1, (-((digit_idx*44)+4)/2)+24, 32.0f);
+		x = (-((digit_idx*44)+4)/2)+70;
+		for(i=0; i<digit_idx; i++) {
+			HuSprPosSet(spr_grp, i+2, x, 32.0f);
+			if(time_pos[0] == i || time_pos[1] == i) {
+				x += 22;
+			} else {
+				x += 44;
+			}
+		}
+	}
+	HuSprGrpPosSet(spr_grp, 288.0f, 240.0f);
+	work->param[0] = 3;
+	return 1;
+}
+
+static int SeqUpdateRecord(SeqWork *work)
+{
+	s16 group;
+	if(_CheckFlag(0x1000C)) {
+		work->work_s16[1] = 0;
+		work->stat |= 0xC;
+	} else {
+		group = work->spr_grp[0];
+		if(work->param[0] != 0 && work->type != -1) {
+			switch(work->param[0]) {
+				case 2:
+					if(work->param[1] != -1) {
+						(void)work; //HACK: to introduce extra branch
+					} else {
+						work->type = -1;
+						work->work_float[0] = 0.0f;
+					}
+					work->param[0] = 0;
+					break;
+					
+				case 1:
+					work->time_max = work->param[1];
+					work->param[0] = 0;
+					break;
+					
+				case 3:
+					work->type = 1;
+					work->param[0] = 0;
+					break;
+					
+				default:
+					work->param[0] = 0;
+					break;
+			}
+		}
+		work->time += seqSpeed;
+		if(work->time >= work->time_max && work->type != -1) {
+			work->stat |= 0x4;
+			work->type = -1;
+			work->work_float[0] = 0.0f;
+		}
+		if(work->type) {
+			switch(work->type) {
+				case 1:
+				{
+					if(work->time <= 10) {
+						HuSprGrpTPLvlSet(group, work->time/10.0);
+					}
+					if(work->time == 5) {
+						HuAudFXPlay(38);
+					}
+					if(work->time == 30) {
+						work->type = 0;
+					}
+				}
+				break;
+				
+				case -1:
+				{
+					float tp_lvl;
+					work->work_float[0] += seqSpeed*0.1f;
+					tp_lvl = 1.0f-work->work_float[0];
+					if(tp_lvl <= 0.0f) {
+						tp_lvl = 0.0f;
+						work->work_s16[1] = 0;
+						work->stat |= 0x8;
+					}
+					HuSprGrpTPLvlSet(group, tp_lvl);
+				}
+				break;
+				
+				default:
+					break;
+			}
+		}
+	}
+	
 	if(seqDoneF || (work->stat & 0x8)) {
 		MGSeqSprKill(work);
 		return 0;
