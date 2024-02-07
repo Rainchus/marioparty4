@@ -145,20 +145,16 @@ typedef struct hsf_vertex_buf {
     void *data;
 } HsfBuffer;
 
-typedef struct hsf_tristrip {
-    u16 data[4];
-} HsfTristrip;
-
 typedef struct hsf_face {
-    u16 type;
-    u16 mat;
-    u16 indices[12];
+    s16 type;
+    s16 mat;
     union {
         struct {
+			s16 indices[3][4];
             u32 count;
-            HsfTristrip *data;
+            s16 *data;
         } strip;
-        u16 ext_indices[4];
+        s16 indices[4][4];
     };
     float nbt[3];
 } HsfFace;

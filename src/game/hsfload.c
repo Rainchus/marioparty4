@@ -3,6 +3,8 @@
 #include "ctype.h"
 
 #define AS_S16(field) (*((s16 *)&(field)))
+#define AS_U16(field) (*((u16 *)&(field)))
+
 GXColor rgba[100];
 HsfHeader head;
 HsfData Model;
@@ -401,7 +403,7 @@ static void FaceLoad(void)
     HsfFace *data;
     HsfFace *file_face_strip;
     HsfFace *new_face_strip;
-    HsfTristrip *strip;
+    u8 *strip;
     s32 i;
     s32 j;
     
@@ -418,14 +420,14 @@ static void FaceLoad(void)
             new_face->name = SetName((u32 *)&file_face->name);
             new_face->count = file_face->count;
             new_face->data = (void *)((u32)data+(u32)temp_data);
-            strip = (HsfTristrip *)(&((HsfFace *)new_face->data)[new_face->count]);
+            strip = (u8 *)(&((HsfFace *)new_face->data)[new_face->count]);
         }
         new_face = temp_face;
         for(i=0; i<head.face.count; i++, new_face++) {
             file_face_strip = new_face_strip = new_face->data;
             for(j=0; j<new_face->count; j++, new_face_strip++, file_face_strip++) {
-                if(file_face_strip->type == 4) {
-                    new_face_strip->strip.data = &strip[(u32)file_face_strip->strip.data];
+                if(AS_U16(file_face_strip->type) == 4) {
+                    new_face_strip->strip.data = (s16 *)(strip+(u32)file_face_strip->strip.data*(sizeof(s16)*4));
                 }
             }
         }
