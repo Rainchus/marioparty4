@@ -1,6 +1,7 @@
 #include "game/board/player.h"
 #include "game/objsub.h"
 #include "game/board/com.h"
+#include "game/board/roll.h"
 #include "game/board/view.h"
 
 //// #include "game/board/ui.h"
@@ -35,9 +36,6 @@ extern void BoardModelAttrReset(s16, s32);
 extern BoardTutorialHookExec(s16, s32);
 //// #include "game/board/com.h"
 //// #include "game/board/overhead.h"
-//// #include "game/board/roll.h"
-extern s32 BoardRollExec(s32);
-extern void BoardRollKill(void);
 //// #include "game/chrman.h"
 extern void CharModelDataClose(s16);
 extern void CharModelStepTypeSet(s16, s32);
