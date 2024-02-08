@@ -5,6 +5,7 @@
 #include "game/board/main.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
+#include "game/board/tutorial.h"
 #include "game/board/window.h"
 
 #include "math.h"
@@ -24,8 +25,6 @@ static BOOL CheckBoardChangeUse(s32 arg0, s32 arg1);
 static BOOL CheckSwapUse(s32 arg0, s32 arg1);
 static BOOL CheckBooUse(s32 arg0, s32 arg1);
 static BOOL CheckLampUse(s32 arg0, s32 arg1);
-
-extern s8 boardTutorialUseItem;
 
 static s8 itemUse = -1;
 
