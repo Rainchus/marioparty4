@@ -381,8 +381,8 @@ s32 BoardModelMotionCreate(s16 model, s32 data_num)
 			}
 			model = Hu3DJointMotion(model_ptr->id, model_ptr->mot_data[i]);
 		} else {
-			model = CharMotionCreate(model_ptr->character, data_num);
-			CharMotionDataClose(model_ptr->character);
+			model = CharModelMotionCreate(model_ptr->character, data_num);
+			CharModelMotionDataClose(model_ptr->character);
 		}
 		model_ptr->mot_id[i] = model;
 		model_ptr->mot_count++;
@@ -406,7 +406,7 @@ s32 BoardModelMotionKill(s16 model, s32 motion)
 			if(model_ptr->character == -1) {
 				Hu3DMotionKill(model_ptr->mot_id[motion]);
 			} else {
-				CharMotionKill(model_ptr->character, model_ptr->mot_id[motion]);
+				CharModelMotionKill(model_ptr->character, model_ptr->mot_id[motion]);
 			}
 			model_ptr->mot_id[motion] = -1;
 		}
@@ -1170,7 +1170,7 @@ static s32 CreateBoardModelMotion(BoardModel *model, s32 count, s32 *data_num)
 			}
 			index = Hu3DJointMotion(model->id, data);
 		} else {
-			index = CharMotionCreate(model->character, data_num[i]);
+			index = CharModelMotionCreate(model->character, data_num[i]);
 		}
 		if(index < 0) {
 			return -1;

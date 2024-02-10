@@ -197,13 +197,13 @@ void fn_1_46F0(void)
         var_r30 = var_r31;
         lbl_1_bss_9EC[var_r31] = CharModelCreate(var_r30, 8);
         Hu3DModelShadowSet(lbl_1_bss_9EC[var_r31]);
-        lbl_1_bss_9AC[var_r31][0] = CharMotionCreate(var_r30, 0x5F0002);
+        lbl_1_bss_9AC[var_r31][0] = CharModelMotionCreate(var_r30, 0x5F0002);
         CharModelMotionSet(var_r30, lbl_1_bss_9AC[var_r31][0]);
         Hu3DModelAttrSet(lbl_1_bss_9EC[var_r31], 0x40000001U);
         Hu3DModelCameraSet(lbl_1_bss_9EC[var_r31], lbl_1_data_358[var_r31]);
         Hu3DModelPosSet(lbl_1_bss_9EC[var_r31], ((( var_r31 / 4) * 200) - 100), 0.0f, (-( var_r31 % 4) * 150));
         Hu3DModelPosSet(lbl_1_bss_9EC[var_r31], 0.0f, 0.0f, 0.0f);
-        CharMotionDataClose(var_r30);
+        CharModelMotionDataClose(var_r30);
     }
 
     var_r31 = Hu3DModelCreateFile(0x700024);
@@ -220,7 +220,7 @@ void fn_1_46F0(void)
             sp20.z = 
             sp20.y = 0.0f;
             sp20.y += 200.0f;
-            CharModelCreateCoinParticle(4, &sp20);
+            CharModelCoinEffectCreate(4, &sp20);
         }
         HuPrcVSleep();
     }
