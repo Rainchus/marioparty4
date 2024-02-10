@@ -231,19 +231,19 @@ void fn_1_29C(omObjData * arg0)
             Hu3DModelLayerSet(lbl_1_bss_98A[var_r31], 1);
         }
         
-        lbl_1_bss_88A[var_r31][0] = CharMotionCreate(chrIdx, lbl_1_data_0[0]);
-        lbl_1_bss_88A[var_r31][1] = CharMotionCreate(chrIdx, lbl_1_data_0[1]);
-        lbl_1_bss_88A[var_r31][2] = CharMotionCreate(chrIdx, lbl_1_data_0[2]);
-        lbl_1_bss_88A[var_r31][3] = CharMotionCreate(chrIdx, lbl_1_data_0[3]);
-        lbl_1_bss_88A[var_r31][4] = CharMotionCreate(chrIdx, lbl_1_data_0[4]);
-        lbl_1_bss_88A[var_r31][5] = CharMotionCreate(chrIdx, lbl_1_data_0[5]);
-        lbl_1_bss_88A[var_r31][6] = CharMotionCreate(chrIdx, lbl_1_data_0[6]);
-        lbl_1_bss_88A[var_r31][7] = CharMotionCreate(chrIdx, lbl_1_data_0[7]);
-        lbl_1_bss_88A[var_r31][0] = CharMotionCreate(chrIdx, 0x5F004D);
+        lbl_1_bss_88A[var_r31][0] = CharModelMotionCreate(chrIdx, lbl_1_data_0[0]);
+        lbl_1_bss_88A[var_r31][1] = CharModelMotionCreate(chrIdx, lbl_1_data_0[1]);
+        lbl_1_bss_88A[var_r31][2] = CharModelMotionCreate(chrIdx, lbl_1_data_0[2]);
+        lbl_1_bss_88A[var_r31][3] = CharModelMotionCreate(chrIdx, lbl_1_data_0[3]);
+        lbl_1_bss_88A[var_r31][4] = CharModelMotionCreate(chrIdx, lbl_1_data_0[4]);
+        lbl_1_bss_88A[var_r31][5] = CharModelMotionCreate(chrIdx, lbl_1_data_0[5]);
+        lbl_1_bss_88A[var_r31][6] = CharModelMotionCreate(chrIdx, lbl_1_data_0[6]);
+        lbl_1_bss_88A[var_r31][7] = CharModelMotionCreate(chrIdx, lbl_1_data_0[7]);
+        lbl_1_bss_88A[var_r31][0] = CharModelMotionCreate(chrIdx, 0x5F004D);
         CharModelMotionSet(chrIdx, lbl_1_bss_88A[var_r31][0]);
         Hu3DModelAttrSet(lbl_1_bss_98A[var_r31], 0x40000001U);
         Hu3DModelPosSet(lbl_1_bss_98A[var_r31], (var_r31 / 4 * 0xC8) - 100, 0.0f, -(var_r31 % 4) * 0x96);
-        CharMotionDataClose(chrIdx);
+        CharModelMotionDataClose(chrIdx);
     }
     temp_r26 = OSGetTick();
     
