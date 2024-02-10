@@ -865,7 +865,7 @@ config.libs = [
         objects = {
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/modeltestDll/main.c"),
-            Object(NonMatching, "REL/modeltestDll/modeltest00.c"),
+            Object(Matching, "REL/modeltestDll/modeltest00.c"),
             Object(NonMatching, "REL/modeltestDll/modeltest01.c"),
         }
     ),
