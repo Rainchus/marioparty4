@@ -21,8 +21,6 @@ void fn_1_34B0()
 {
     Process * temp_r30;
     s16 var_r31;
-    s32 var_r29;
-    s32 var_r28;
     
     OSReport("******* MODELTESTObjectSetup *********\n");
 
@@ -39,22 +37,8 @@ void fn_1_34B0()
     {
         Hu3DCameraCreate(lbl_1_data_358[var_r31]);
         Hu3DCameraPerspectiveSet(lbl_1_data_358[var_r31], 45.0f, 20.0f, 20000.0f, 1.2f);
-
-        if ((var_r31 & 2) != 0) {
-            var_r29 = 0xF0;
-        } else {
-            var_r29 = 0;
-        }
-
-        Hu3DCameraViewportSet(lbl_1_data_358[var_r31], (var_r31 & 1) * 320, var_r29, 320.0f, 240.0f, 0.0f, 1.0f);
-
-        if ((var_r31 & 2) != 0) {
-            var_r28 = 0xF0;
-        } else {
-            var_r28 = 0;
-        }
-        
-        Hu3DCameraScissorSet(lbl_1_data_358[var_r31], (var_r31 & 1) * 320, var_r28, 320, 240);
+        Hu3DCameraViewportSet(lbl_1_data_358[var_r31], (var_r31 & 1) * 320, ((var_r31 & 2) != 0) ? 0xF0 : 0, 320.0f, 240.0f, 0.0f, 1.0f);
+        Hu3DCameraScissorSet(lbl_1_data_358[var_r31], (var_r31 & 1) * 320, ((var_r31 & 2) != 0) ? 0xF0 : 0, 320, 240);
     }
 
     lbl_1_bss_9F4 = omAddObjEx(temp_r30, 0, 0x20U, 0x20U, -1, fn_1_37DC);
