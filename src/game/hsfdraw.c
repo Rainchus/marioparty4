@@ -240,7 +240,7 @@ static void objMesh(ModelData *arg0, HsfObject *arg1) {
     temp_r25 = arg1->constData;
     if (!(temp_r25->flags & 0x1000)) {
         if (CancelTRXF == 0) {
-            if (arg1->data.hook != 0 && hookIdx == -1) {
+            if (arg1->data.cenvCnt != 0 && hookIdx == -1) {
                 temp_r21 = arg1 - temp_r20->object;
                 PSMTXConcat(MTXBuf[0], temp_r20->matrix->data[temp_r21 + temp_r20->matrix->base_idx], MTXBuf[MTXIdx]);
             } else {
@@ -2770,7 +2770,7 @@ static s32 MakeCalcNBT(HsfObject *arg0, HsfFace *arg1, s16 arg2, s16 arg3) {
     temp_r27 = arg1->indices[arg2][1];
     temp_r25 = arg1->indices[arg2][0];
     temp_r24 = arg1->indices[arg3][0];
-    if (arg0->data.hook != 0) {
+    if (arg0->data.cenvCnt != 0) {
         temp_r29 = arg0->data.normal->data;
         sp10.x = temp_r29[temp_r27].x;
         sp10.y = temp_r29[temp_r27].y;
@@ -2801,7 +2801,7 @@ static s32 MakeNBT(HsfObject *arg0, HsfFace *arg1, s16 arg2, s16 arg3) {
 
     spC = arg0->data.vertex->data;
     temp_r28 = arg1->indices[arg2][1];
-    if (arg0->data.hook != 0) {
+    if (arg0->data.cenvCnt != 0) {
         temp_r30 = arg0->data.normal->data;
         sp10.x = temp_r30[temp_r28].x;
         sp10.y = temp_r30[temp_r28].y;

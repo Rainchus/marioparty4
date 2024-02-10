@@ -27,7 +27,7 @@ s32 saveExecF;
 u8 curBoxNo;
 s16 curSlotNo;
 
-u8 saveComment[2][32] = {
+static u8 commentTbl[2][32] = {
     "Mario Party 4",
     "File 0  00/00/0000"
 };
@@ -258,10 +258,10 @@ void SLSaveDataMake(s32 erase, OSTime *time) {
         }
     }
     for (i = 0; i < 0x20; i++) {
-        buf[i] = (&saveComment[0][0])[i];
+        buf[i] = (&commentTbl[0][0])[i];
     }
     for (i = 0; i < 0x20; i++) {
-        (&buf[0x20])[i] = (&saveComment[0][0])[i+32];
+        (&buf[0x20])[i] = (&commentTbl[0][0])[i+32];
     }
     anim_data = HuSprAnimReadFile(WIN_CARD_BANNER_ANM);
     memcpy(buf + offsetof(SaveBufData, banner), anim_data->bmp->data, CARD_BANNER_WIDTH*CARD_BANNER_HEIGHT);
