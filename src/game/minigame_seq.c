@@ -3556,7 +3556,7 @@ void MGSeqPracticeExitCheck(omObjData *object)
 	s16 input;
 	s16 i;
 	mgQuitExtraF = 0;
-	if((u32)object->work[0] == 0) {
+	if(object->work[0] == 0) {
 		if(omMgIndexGet(omcurovl) == -1) {
 			omDelObjEx(HuPrcCurrentGet(), object);
 			return;

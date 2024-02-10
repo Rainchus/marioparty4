@@ -286,7 +286,7 @@ typedef struct hsf_object_data {
     HsfBuffer **vertexShape;
     u32 clusterCnt;
     HsfCluster **cluster;
-    u32 hook;
+    u32 cenvCnt;
     HsfCenv *cenv;
     void *file[2];
 } HsfObjectData;

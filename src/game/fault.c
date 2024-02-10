@@ -25,7 +25,7 @@ static RGBColor XFB_Colors[5] = {
 
 #include "Ascii8x8_1bpp.inc"
 
-XFBGeometry XFB_Geometry;
+static XFBGeometry XFB_Geometry;
 
 static s32 (*XFB_putc)(u8 c, s32 x, s32 y);
 
