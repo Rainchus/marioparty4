@@ -20,6 +20,7 @@ void CharModelMotionTimeSet(s16 character, float time);
 void CharModelMotionSpeedSet(s16 character, float speed);
 void CharMotionKill(s16 character, s32 motion);
 void CharModelVoiceEnableSet(s16 character, s16 motion, s32 flag);
+void CharModelCreateCoinParticle(s16, Vec *);
 
 s32 CharModelMotionEndCheck(s16 character);
 
