@@ -5,6 +5,8 @@
 #include "game/process.h"
 #include "game/dvd.h"
 
+#define OM_DLL_MAX 20
+
 #define OVL_DEFINE(name, path) name,
 
 typedef enum {
@@ -55,6 +57,13 @@ typedef struct om_obj_data {
 /* 0x5C */ void *data;
 } omObjData;
 
+typedef struct om_dll_data {
+	char *name;
+	OSModuleHeader *module;
+	void *bss;
+	s32 ret;
+} omDllData;
+
 void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl);
 void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat);
 void omOvlGotoEx(OverlayID overlay, s16 arg2, int event, int stat);
@@ -83,8 +92,14 @@ OverlayID omCurrentOvlGet(void);
 
 void omDLLDBGOut(void);
 void omDLLInit(FileListEntry *ovl_list);
-int omDLLStart(s16 ovl, s16 dll);
-void omDLLNumEnd(s16 ovl, s16 arg2);
+int omDLLStart(s16 overlay, s16 flag);
+void omDLLNumEnd(s16 overlay, s16 flag);
+void omDLLEnd(s16 dllno, s16 flag);
+omDllData *omDLLLink(omDllData **dll_ptr, s16 overlay, s16 flag);
+void omDLLUnlink(omDllData *dll_ptr, s16 flag);
+s32 omDLLSearch(s16 overlay);
+void omDLLInfoDump(OSModuleInfo *module);
+void omDLLHeaderDump(OSModuleHeader *module);
 
 void omSysPauseEnable(u8 flag);
 
@@ -102,7 +117,9 @@ extern int omovlstat;
 extern char omUPauseFlag;
 extern s16 omSysExitReq;
 extern s16 omdispinfo;
-extern char omSysPauseEnableFlag;
+extern u8 omSysPauseEnableFlag;
 extern OverlayID omprevovl;
+
+extern omDllData *omDLLinfoTbl[OM_DLL_MAX];
 
 #endif
