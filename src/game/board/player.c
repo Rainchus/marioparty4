@@ -2,6 +2,7 @@
 #include "game/objsub.h"
 #include "game/board/com.h"
 #include "game/board/roll.h"
+#include "game/board/tutorial.h"
 #include "game/board/view.h"
 
 //// #include "game/board/ui.h"
@@ -32,8 +33,6 @@ extern f32 BoardModelMotionMaxTimeGet(s16);
 extern void BoardModelMotionTimeRangeSet(s16, s32, s32);
 extern void BoardModelAttrSet(s16, s32);
 extern void BoardModelAttrReset(s16, s32);
-//// #include "game/board/tutorial.h"
-extern BoardTutorialHookExec(s16, s32);
 //// #include "game/board/com.h"
 //// #include "game/board/overhead.h"
 //// #include "game/chrman.h"
@@ -44,9 +43,6 @@ extern s8 HuPadStkX[4];
 extern s8 HuPadStkY[4];
 extern u16 HuPadBtnDown[4];
 extern u8 HuPadDStk[4];
-extern s16 boardTutorialDirInputTime;
-extern s8 boardTutorialDirInputX;
-extern s8 boardTutorialDirInputY;
 //// #include "game/board/view.h"
 ////
 

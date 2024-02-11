@@ -3,6 +3,7 @@
 #include "game/board/main.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
+#include "game/board/tutorial.h"
 #include "game/hsfman.h"
 #include "game/data.h"
 #include "game/sprite.h"
@@ -50,9 +51,6 @@ static s16 spaceDrawMdl = -1;
 static s16 starPlatMdl = -1;
 
 static s32 ExecPipeSpace(s32 player, s32 space);
-
-extern s8 boardTutorialBlockF;
-extern s32 boardTutorialBlockPos;
 
 
 void BoardSpaceWalkEventFuncSet(BoardSpaceEventFunc func)

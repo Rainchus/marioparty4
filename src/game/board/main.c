@@ -10,6 +10,7 @@
 #include "game/hsfdraw.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/board/tutorial.h"
 #include "game/pad.h"
 #include "game/msm.h"
 
@@ -60,8 +61,6 @@ extern s32 BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
 extern void BoardMGSetupPlayClear(void);
 extern void BoardStartExec(void);
-
-extern s8 boardTutorialF;
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);

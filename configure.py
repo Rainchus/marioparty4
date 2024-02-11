@@ -388,7 +388,7 @@ config.libs = [
             Object(NonMatching, "game/board/last5.c"),
             Object(NonMatching, "game/board/pause.c"),
             Object(Matching, "game/board/com_path.c"),
-            Object(NonMatching, "game/board/tutorial.c"),
+            Object(Matching, "game/board/tutorial.c"),
             Object(NonMatching, "game/kerent.c"),
         ],
     },

@@ -9,10 +9,12 @@
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/window.h"
+#include "game/board/com.h"
 #include "game/board/item.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/tutorial.h"
 #include "board_unsplit.h"
 
 #include "math.h"
@@ -93,12 +95,9 @@ typedef struct {
 } UnkUiWork04;
 
 void BoardPlayerSparkSet(s32);
-void BoardTutorialHookExec(s16, s32);
 void BoardBowserSuitMotionCreate(void);
 s16 BoardBowserSuitPlayerModelGet(void);
 void CharModelLayerSetAll(s32);
-s32 BoardComTutorialItemGet(s32);
-void BoardTutorialHostHide(s32);
 
 static void KillAllBoardStatus(void);
 static void CreateBoardStatusSprite(s32 arg0, UnkUiStatusStruct *arg1);
