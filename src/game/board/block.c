@@ -1,36 +1,38 @@
+#include "game/flag.h"
+#include "game/objsub.h"
 #include "game/process.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/board/model.h"
+#include "game/board/window.h"
 #include "math.h"
+
+#define BLOCK_SPAWN 0
+#define BLOCK_HIT 2
+#define BLOCK_OPEN 3
 
 typedef struct {
     struct {
-        u8 unk00_field0 : 1;
-        u8 unk00_field1 : 3;
+        u8 kill : 1;
+        u8 state : 3;
         u8 unk00_field2 : 1;
-        u8 unk00_field3 : 1;
-        u8 unk00_field4 : 1;
+        u8 contains_star : 1;
+        u8 opened : 1;
         u8 unk00_field5 : 1;
     };
     
-    u8 unk01;
-    s16 unk02;
-    s16 unk04;
+    s16 hit_y_velocity;
+    s16 target_y_pos;
 } BlockWork;
 
 typedef struct {
     struct {
-        u8 unk00_field0 : 1;
-        u8 unk00_field1 : 3;
-        u8 unk00_field2 : 1;
-        u8 unk00_field3 : 1;
-        u8 unk00_field4 : 1;
-        u8 unk00_field5 : 1;
+        u8 kill : 1;
     };
     
-    u8 unk01;
-    s8 unk02;
-    s16 unk04;
+    u8 lifetime;
+    s8 model_index;
+    s16 model;
 } CoinWork;
 
 static void BlockProc(void);
@@ -62,10 +64,7 @@ static f32 rotY;
 static omObjData* blockObj;
 static Process* blockProc;
 
-static s16 coinMdl[10] = {
-    -1, -1, -1, -1, 0, 0, 0, 0, 0, 0
-};
-
+static s16 coinMdl[10] = { -1, -1, -1, -1 };
 static s32 coinF[10];
 
 s32 BoardBlockExec(s32 arg0) {
@@ -87,23 +86,23 @@ static void BlockProc(void) {
     s32 sp14[8] = {0x005F0060, 0x001A0060, 0x006D0060, 0x008A0060, 0x00850060, 0x00110060, 0x000D0060, 0x00810060};
     Point3d sp8;
     s32 var_r28;
-    s32 var_r29;
-    s32 temp_r31;
-    BlockWork* temp_r30;
+    s32 i;
+    s32 player;
+    BlockWork* work;
     s32* temp_r4;
-    s32 var_r27;
+    s32 player_character;
     
-    temp_r31 = GWSystem.player_curr;
+    player = GWSystem.player_curr;
 
-    var_r27 = GWPlayer[temp_r31].character;
-    jumpMot = BoardPlayerMotionCreate(temp_r31, sp14[var_r27]);
-    BoardRotateDiceNumbers(temp_r31);
-    BoardPlayerMotBlendSet(temp_r31, 0, 0xF);
-    omVibrate((s16) temp_r31, 0xC, 0xC, 0);
-    CreateBlockObj(temp_r31);
+    player_character = GWPlayer[player].character;
+    jumpMot = BoardPlayerMotionCreate(player, sp14[player_character]);
+    BoardRotateDiceNumbers(player);
+    BoardPlayerMotBlendSet(player, 0, 0xF);
+    omVibrate(player, 12, 12, 0);
+    CreateBlockObj(player);
     
-    temp_r30 = OM_GET_WORK_PTR(blockObj, BlockWork);
-    while (temp_r30->unk00_field1 != 2) {
+    work = OM_GET_WORK_PTR(blockObj, BlockWork);
+    while (work->state != BLOCK_HIT) {
         HuPrcVSleep();
     }
     
@@ -112,64 +111,63 @@ static void BlockProc(void) {
     BoardWinCreate(0, 0x10000, -1);
     BoardWinWait();
     BoardWinKill();
-    BoardPlayerMotionShiftSet(temp_r31, 0xB, 0, 8.0, 0.0);
+    BoardPlayerMotionShiftSet(player, 0xB, 0, 8.0, 0.0);
     HuPrcSleep(9);
-    while (BoardPlayerMotionTimeGet(temp_r31) < 30.0f) {
+    while (BoardPlayerMotionTimeGet(player) < 30.0f) {
         HuPrcVSleep();
     }
     HuAudFXPlay(0x30C);
     SetBlockOpen();
-    while (BoardPlayerMotionEndCheck(temp_r31) == 0) {
+    while (BoardPlayerMotionEndCheck(player) == 0) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers((s32) temp_r31);
-    if (temp_r30->unk00_field3 != 0) {
+    BoardRotateDiceNumbers(player);
+    
+    if (work->contains_star != 0) {
         SetBlockStop();
         BoardModelPosGet(starMdl, &sp8);
-        if (_CheckFlag(0x1000BU) == 0) {
+        if (_CheckFlag(0x1000B) == 0) {
             BoardAudSeqPause(0, 1, 0x3E8);
         }
-        BoardStarGive(temp_r31, &sp8);
-        if (_CheckFlag(0x1000BU) == 0) {
+        BoardStarGive(player, &sp8);
+        if (_CheckFlag(0x1000B) == 0) {
             BoardAudSeqPause(0, 0, 0x3E8);
         }
     } else {
-        var_r29 = 0;
-        while (var_r29 < 0x14) {
+        for (i = 0; i < 0x14; i++) {
             WaitBlockHit();
-            BoardPlayerMotionStart(temp_r31, (s32) jumpMot, 0);
-            BoardPlayerMotionSpeedSet(temp_r31, 2);
-            while (BoardPlayerMotionTimeGet(temp_r31) < 4) {
+            BoardPlayerMotionStart(player, (s32) jumpMot, 0);
+            BoardPlayerMotionSpeedSet(player, 2);
+            while (BoardPlayerMotionTimeGet(player) < 4) {
                 HuPrcVSleep();
             }
             SetBlockOpen();
             PopupCoin();
-            while (BoardPlayerMotionEndCheck(temp_r31) == 0) {
+            while (BoardPlayerMotionEndCheck(player) == 0) {
                 HuPrcVSleep();
             }
-            BoardPlayerMotionStart(temp_r31, 1, 0);
-            BoardPlayerCoinsAdd(temp_r31, 1);
+            BoardPlayerMotionStart(player, 1, 0);
+            BoardPlayerCoinsAdd(player, 1);
             HuAudFXPlay(7);
             HuPrcVSleep();
-            var_r29 += 1;
         }
+        
         SetBlockStop();
     }
-    if (temp_r30->unk00_field3 != 0) {
-        var_r28 = 0x10001;
-    } else {
-        var_r28 = 0x10002;
-    }
-    BoardWinCreate(0, var_r28, -1);
+    
+    BoardWinCreate(0, work->contains_star != 0 ? 0x10001 : 0x10002, -1);
     BoardWinWait();
     BoardWinKill();
     KillCoinMdl();
-    temp_r30->unk00_field0 = 1;
-    BoardRotateDiceNumbers((s32) temp_r31);
+    work->kill = 1;
+    
+    BoardRotateDiceNumbers((s32) player);
     HuPrcVSleep();
-    if ((_CheckFlag(0x1000BU) != 0) && temp_r30->unk00_field3 == 0) {
+    
+    if ((_CheckFlag(0x1000B) != 0) && work->contains_star == 0) {
         BoardTutorialHookExec(0x16, 0);
     }
+    
     BoardCameraViewSet(2);
     BoardCameraMotionWait();
     HuPrcEnd();
@@ -177,20 +175,19 @@ static void BlockProc(void) {
 
 static void DestroyBlock(void) {
     if (jumpMot != -1) {
-        BoardPlayerMotionKill(GWSystem.player_curr, (s32) jumpMot);
+        BoardPlayerMotionKill(GWSystem.player_curr, jumpMot);
         jumpMot = -1;
     }
     KillCoinMdl();
     blockProc = 0;
 }
 
-
 static void CreateBlockObj(s32 arg0) {
-    Point3d spC;
-    BlockWork* temp_r31;
-    s8 var_r30;
+    Point3d player_pos;
+    BlockWork* work;
+    s8 contains_star;
     
-    BoardPlayerPosGet(arg0, &spC);
+    BoardPlayerPosGet(arg0, &player_pos);
     starMdl = BoardModelCreate(0x70004, NULL, 0);
     BoardModelVisibilitySet(starMdl, 0);
     BoardModelMotionSpeedSet(starMdl, 0);
@@ -198,16 +195,16 @@ static void CreateBlockObj(s32 arg0) {
     
     blockObj = omAddObjEx(boardObjMan, 0x101, 0U, 0U, -1, ExecBlockObj);
     
-    temp_r31 = OM_GET_WORK_PTR(blockObj, BlockWork);
-    temp_r31->unk00_field0 = 0;
-    temp_r31->unk00_field2 = 0;
-    temp_r31->unk00_field4 = 0;
-    temp_r31->unk00_field5 = 0;
-    temp_r31->unk00_field1 = 0;
+    work = OM_GET_WORK_PTR(blockObj, BlockWork);
+    work->kill = 0;
+    work->unk00_field2 = 0;
+    work->opened = 0;
+    work->unk00_field5 = 0;
+    work->state = BLOCK_SPAWN;
     
-    blockObj->trans.x = spC.x;
-    blockObj->trans.y = 270 + spC.y;
-    blockObj->trans.z = spC.z;
+    blockObj->trans.x = player_pos.x;
+    blockObj->trans.y = 270 + player_pos.y;
+    blockObj->trans.z = player_pos.z;
     
     blockObj->scale.x = blockObj->scale.y = blockObj->scale.z = 0.01;
     blockObj->rot.x = blockObj->rot.y = blockObj->rot.z = 0.0;
@@ -219,50 +216,50 @@ static void CreateBlockObj(s32 arg0) {
     BoardModelVisibilitySet(starMdl, 1);
     
     if (BoardRandFloat() > 0.5f) {
-        var_r30 = 0;
+        contains_star = 0;
     } else {
-        var_r30 = 1;
+        contains_star = 1;
     }
     
-    temp_r31->unk00_field3 = var_r30;
+    work->contains_star = contains_star;
     
     if (boardTutorialBlockF != 0) {
-        temp_r31->unk00_field3 = boardTutorialBlockItem;
+        work->contains_star = boardTutorialBlockItem;
         boardTutorialBlockF = 0;
     }
     
     HuAudFXPlay(0x302);
     
-    if (temp_r31->unk00_field3 == 0) {
+    if (work->contains_star == 0) {
         CreateCoinMdl();
     }
 }
 
 static void ExecBlockObj(omObjData* arg0) {
-    BlockWork* temp_r30;
+    BlockWork* work;
 
-    temp_r30 = OM_GET_WORK_PTR(arg0, BlockWork);
+    work = OM_GET_WORK_PTR(arg0, BlockWork);
     
-    if (temp_r30->unk00_field0 != 0 || BoardIsKill() != 0) {
-        DestroyBlockObj(temp_r30, arg0);
+    if (work->kill != 0 || BoardIsKill() != 0) {
+        DestroyBlockObj(work, arg0);
         blockObj = 0;
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
     
-    switch (temp_r30->unk00_field1) {
-        case 0:
-            SpawnBlock(temp_r30, arg0);
+    switch (work->state) {
+        case BLOCK_SPAWN:
+            SpawnBlock(work, arg0);
             break;
-        case 2:
-            HitBlock(temp_r30, arg0);
+        case BLOCK_HIT:
+            HitBlock(work, arg0);
             break;
-        case 3:
-            OpenBlock(temp_r30, arg0);
+        case BLOCK_OPEN:
+            OpenBlock(work, arg0);
             break;
     }
     
-    if (temp_r30->unk00_field5 != 0) {
+    if (work->unk00_field5 != 0) {
         BoardModelVisibilitySet(starMdl, 0);
     }
     
@@ -279,8 +276,6 @@ static void DestroyBlockObj(BlockWork* unused0, omObjData* unused1) {
 }
 
 static void SpawnBlock(BlockWork* arg0, omObjData* arg1) {
-    f32 temp_f0;
-
     if (scaleAngle < 90.0f) {
         scaleAngle += 3.75f;
         if (scaleAngle > 90.0f) {
@@ -291,8 +286,8 @@ static void SpawnBlock(BlockWork* arg0, omObjData* arg1) {
         if (rotMax < 0.8f) {
             rotY = 0.0f;
             rotMax = 0.0f;
-            arg0->unk02 = 0;
-            arg0->unk00_field1 = 2;
+            arg0->hit_y_velocity = 0;
+            arg0->state = BLOCK_HIT;
         }
     }
     
@@ -310,59 +305,60 @@ static void SpawnBlock(BlockWork* arg0, omObjData* arg1) {
 static void HitBlock(BlockWork* arg0, omObjData* arg1) {
     float var_f30;
 
-    arg0->unk02 += 3;
-    if (arg0->unk02 > 0x168) {
-        arg0->unk02 -= 0x168;
+    arg0->hit_y_velocity += 3;
+    if (arg0->hit_y_velocity > 0x168) {
+        arg0->hit_y_velocity -= 0x168;
     }
-    OSs16tof32(&arg0->unk02, &var_f30);
-    arg1->trans.y = arg1->trans.y + 0.2f * sin((M_PI * var_f30) / 180.0);
+    
+    OSs16tof32(&arg0->hit_y_velocity, &var_f30);
+    arg1->trans.y += 0.2f * sin((M_PI * var_f30) / 180.0);
 }
 
 static void OpenBlock(BlockWork* arg0, omObjData* arg1) {
-    s16 sp8;
-    f32 temp_f30;
+    f32 target_y_pos;
 
-    if (arg0->unk00_field4 == 0) {
-        arg0->unk00_field4 = 1;
+    if (arg0->opened == 0) {
+        arg0->opened = 1;
         HuAudFXPlay(0x33B);
         BoardModelMotionStart(starMdl, 0, 0);
     }
     
     if (arg0->unk00_field2 == 0) {
-        OSf32tos16(&arg1->trans.y, &arg0->unk04);
+        OSf32tos16(&arg1->trans.y, &arg0->target_y_pos);
+        
         arg1->trans.y += 80.0f;
         arg0->unk00_field2 = 1;
     } else {
-        OSs16tof32(&arg0->unk04, &temp_f30);
+        OSs16tof32(&arg0->target_y_pos, &target_y_pos);
         arg1->trans.y += -8.0f;
         
-        if (arg1->trans.y < temp_f30) {
-            arg1->trans.y = temp_f30;
-            arg0->unk00_field1 = 2;
+        if (arg1->trans.y < target_y_pos) {
+            arg1->trans.y = target_y_pos;
+            arg0->state = BLOCK_HIT;
         }
     }
 }
 
 static void SetBlockOpen(void) {
-    BlockWork* temp_r31;
+    BlockWork* work;
 
-    temp_r31 = OM_GET_WORK_PTR(blockObj, BlockWork);
-    temp_r31->unk00_field1 = 3;
+    work = OM_GET_WORK_PTR(blockObj, BlockWork);
+    work->state = BLOCK_OPEN;
 }
 
 static void SetBlockStop(void) {
-    BlockWork* temp_r31;
+    BlockWork* work;
 
-    temp_r31 = OM_GET_WORK_PTR(blockObj, BlockWork);
-    temp_r31->unk00_field5 = 1;
+    work = OM_GET_WORK_PTR(blockObj, BlockWork);
+    work->unk00_field5 = 1;
 }
 
 static void WaitBlockHit(void) {
-    BlockWork* temp_r31;
+    BlockWork* work;
 
-    temp_r31 = OM_GET_WORK_PTR(blockObj, BlockWork);
+    work = OM_GET_WORK_PTR(blockObj, BlockWork);
     
-    while (temp_r31->unk00_field1 != 2) {
+    while (work->state != BLOCK_HIT) {
         HuPrcVSleep();
     }
 }
@@ -389,12 +385,12 @@ static void KillCoinMdl(void) {
     }
 }
 
-static inline s32 UnkFunc(s16 *var_r26) {
+static inline s32 FindCoinModel(s16 *out_model) {
     s32 i;
     
     for (i = 0; i < 10; i++) {
         if (coinF[i] == 0) {
-            *var_r26 = coinMdl[i];
+            *out_model = coinMdl[i];
             return i;
         }
     }
@@ -403,63 +399,63 @@ static inline s32 UnkFunc(s16 *var_r26) {
 }
 
 static void PopupCoin(void) {
-    Point3d sp8;
-    omObjData* temp_r3;
-    s32 var_r28;
-    s16 var_r26;
-    CoinWork* temp_r31;
+    Point3d star_pos;
+    omObjData* coinObj;
+    s32 model_index;
+    s16 model;
+    CoinWork* work;
     
     do {
         HuPrcVSleep();
-        var_r28 = UnkFunc(&var_r26);
-    } while (var_r28 == -1);
+        model_index = FindCoinModel(&model);
+    } while (model_index == -1);
     
-    temp_r3 = omAddObjEx(boardObjMan, 0x101, 0, 0, -1, PopupCoinExec);
-    temp_r31 = OM_GET_WORK_PTR(temp_r3, CoinWork);
+    coinObj = omAddObjEx(boardObjMan, 0x101, 0, 0, -1, PopupCoinExec);
+    work = OM_GET_WORK_PTR(coinObj, CoinWork);
     
-    temp_r31->unk00_field0 = 0;
-    temp_r31->unk01 = 0xA;
-    temp_r31->unk04 = var_r26;
-    temp_r31->unk02 = var_r28;
+    work->kill = 0;
+    work->lifetime = 10;
+    work->model = model;
+    work->model_index = model_index;
     
-    temp_r3->trans.x = 15.0f;
-    temp_r3->trans.y = 40.0f;
+    coinObj->trans.x = 15.0f;
+    coinObj->trans.y = 40.0f;
     
-    BoardModelPosGet(starMdl, &sp8);
-    BoardModelPosSetV(temp_r31->unk04, &sp8);
-    BoardModelVisibilitySet(temp_r31->unk04, 1);
+    BoardModelPosGet(starMdl, &star_pos);
+    BoardModelPosSetV(work->model, &star_pos);
+    BoardModelVisibilitySet(work->model, 1);
 }
 
-static void PopupCoinExec(omObjData* arg0) {
-    Point3d sp14;
-    Point3d sp8;
-    CoinWork* temp_r31;
+static void PopupCoinExec(omObjData* obj) {
+    Point3d coin_pos;
+    Point3d coin_rot;
+    CoinWork* work;
 
-    temp_r31 = OM_GET_WORK_PTR(arg0, CoinWork);
+    work = OM_GET_WORK_PTR(obj, CoinWork);
     
-    if (temp_r31->unk00_field0 != 0 || BoardIsKill() != 0) {
-        BoardModelVisibilitySet(temp_r31->unk04, 0);
-        coinF[temp_r31->unk02] = 0;
-        omDelObjEx(HuPrcCurrentGet(), arg0);
+    if (work->kill != 0 || BoardIsKill() != 0) {
+        BoardModelVisibilitySet(work->model, 0);
+        coinF[work->model_index] = 0;
+        omDelObjEx(HuPrcCurrentGet(), obj);
         return;
     }
     
-    if (temp_r31->unk01 != 0) {
-        temp_r31->unk01 -= 1;
+    if (work->lifetime != 0) {
+        work->lifetime -= 1;
     } else {
-        temp_r31->unk00_field0 = 1;
+        work->kill = 1;
         return;
     }
     
-    BoardModelPosGet(temp_r31->unk04, &sp14);
-    sp14.y += arg0->trans.y;
-    BoardModelPosSetV(temp_r31->unk04, &sp14);
-    BoardModelRotGet(temp_r31->unk04, &sp8);
-    sp8.y += arg0->trans.x;
+    BoardModelPosGet(work->model, &coin_pos);
+    coin_pos.y += obj->trans.y;
+    BoardModelPosSetV(work->model, &coin_pos);
+    BoardModelRotGet(work->model, &coin_rot);
+    coin_rot.y += obj->trans.x;
     
-    if (sp8.y > 360.0f) {
-        sp8.y -= 360.0f;
+    if (coin_rot.y > 360.0f) {
+        coin_rot.y -= 360.0f;
     }
     
-    BoardModelRotSetV(temp_r31->unk04, &sp8);
+    BoardModelRotSetV(work->model, &coin_rot);
 }
