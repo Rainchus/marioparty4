@@ -8,6 +8,7 @@
 #include "game/window.h"
 #include "game/wipe.h"
 #include "game/pad.h"
+#include "game/minigame_seq.h"
 
 #include "math.h"
 
@@ -17,10 +18,6 @@
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 
-
-void MGSeqStub(void);
-
-void MGSeqPauseEnableCtrl(s32 flag);
 
 extern s16 HuSysVWaitGet(s16 param);
 
@@ -329,7 +326,7 @@ void MGSeqParamSet(s16 id, s16 param1, s16 param2)
 	}
 }
 
-void MGSeqKill(s16 id, s16 param1, s16 param2)
+void MGSeqKill(s16 id)
 {
 	if(id >= 0 && id < 8) {
 		if(seqWorkData[id].stat != 0) {
@@ -338,7 +335,7 @@ void MGSeqKill(s16 id, s16 param1, s16 param2)
 	}
 }
 
-void MGSeqKillAll(s16 id, s16 param1, s16 param2)
+void MGSeqKillAll(void)
 {
 	seqDoneF = 1;
 	MGSeqMain();
@@ -3170,7 +3167,6 @@ static int SeqUpdateRecord(SeqWork *work)
 			}
 		}
 	}
-	
 	if(seqDoneF || (work->stat & 0x8)) {
 		MGSeqSprKill(work);
 		return 0;
