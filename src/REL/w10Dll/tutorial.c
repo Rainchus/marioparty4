@@ -108,7 +108,7 @@ void fn_1_1834(void) {
 void fn_1_18BC(void) {
     fn_1_BA0(0x2E0028);
     fn_1_BA0(0x2E0029);
-    boardTutorialData = 0;
+    boardTutorialData[0] = 0;
     BoardStatusItemSet(0);
 }
 

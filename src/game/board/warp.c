@@ -1,8 +1,10 @@
 #include "game/board/warp.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/board/tutorial.h"
 #include "game/wipe.h"
 #include "game/gamework_data.h"
+#include "game/hsfdraw.h"
 #include "game/hsfex.h"
 #include "game/objsub.h"
 #include "board_unsplit.h"
@@ -22,12 +24,7 @@ extern s32 BoardCharWheelResultGet(void);
 extern f32 BoardModelMotionTimeGet(s16);
 extern void BoardModelHookReset(s16);
 extern s32 BoardModelHookSet(s16, char*, s16);
-extern void BoardPlayerPosSet(s32, f32, f32, f32);
-extern void BoardPlayerRotYSet(s32, f32);
-extern void Hu3DModelObjPosGet(s16, char*, Vec*);
 extern s32 BoardModelMotionEndCheck(s16);
-
-extern s32 boardTutorialData[4];
 
 static Vec warpPos;
 

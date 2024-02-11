@@ -40,7 +40,6 @@ typedef struct {
 
 s32 BoardRollResizeCheck(void);
 s32 BoardPauseActiveCheck(void);
-void BoardTutorialHookExec(s16, s32);
 
 static void RollMain(void);
 static void DiceCreate(s32 arg0);
