@@ -22,7 +22,7 @@ extern u8 HuPadDStkRep[4];
 extern s8 HuPadErr[4];
 extern u16 _PadBtn[4];
 extern u16 _PadBtnDown[4];
-extern u32 VCounter;
+extern s32 VCounter;
 
 void HuPadInit(void);
 void HuPadRead(void);

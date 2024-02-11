@@ -43,7 +43,7 @@ static u8 _PadDStkRepCnt[4];
 static u8 _PadDStkRepOld[4];
 static s8 _PadErr[4];
 static u32 RumbleBit;
-u32 VCounter;
+s32 VCounter;
 
 static u32 chanTbl[4] = { PAD_CHAN0_BIT, PAD_CHAN1_BIT, PAD_CHAN2_BIT, PAD_CHAN3_BIT };
 
