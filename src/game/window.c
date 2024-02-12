@@ -1202,7 +1202,7 @@ void HuWinAttrReset(s16 window, u32 attr) {
     window_ptr->attr &= ~attr;
 }
 
-u8 HuWinStatGet(s16 window) {
+s16 HuWinStatGet(s16 window) {
     WindowData *window_ptr = &winData[window];
 
     return window_ptr->stat;

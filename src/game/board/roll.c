@@ -8,6 +8,7 @@
 #include "game/window.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
+#include "game/board/pause.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
 
@@ -39,7 +40,6 @@ typedef struct {
 } DiceDigitWork;
 
 s32 BoardRollResizeCheck(void);
-s32 BoardPauseActiveCheck(void);
 
 static void RollMain(void);
 static void DiceCreate(s32 arg0);

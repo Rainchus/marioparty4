@@ -152,9 +152,29 @@ static inline s32 GWTeamGet(void)
     return GWSystem.team;
 }
 
+static inline s32 GWPartyGet(void)
+{
+    return GWSystem.party;
+}
+
 static inline s32 GWLanguageGet(void)
 {
     return GWGameStat.language;
+}
+
+static inline s32 GWRumbleGet(void)
+{
+    return GWGameStat.rumble;
+}
+
+static inline s32 GWMGExplainGet(void)
+{
+    return GWSystem.explain_mg;
+}
+
+static inline s32 GWMGShowComGet(void)
+{
+    return GWSystem.show_com_mg;
 }
 
 static inline s32 GWMGListGet(void)
@@ -165,6 +185,11 @@ static inline s32 GWMGListGet(void)
 static inline s32 GWMessSpeedGet(void)
 {
     return GWSystem.mess_speed;
+}
+
+static inline s32 GWTurnGet(void)
+{
+    return GWSystem.turn;
 }
 
 static inline s32 GWBoardGet(void)
