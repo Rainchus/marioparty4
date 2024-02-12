@@ -9,6 +9,7 @@
 #include "game/hsfman.h"
 #include "game/hsfdraw.h"
 #include "game/board/main.h"
+#include "game/board/pause.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
 #include "game/pad.h"
