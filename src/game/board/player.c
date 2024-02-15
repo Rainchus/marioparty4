@@ -1,4 +1,5 @@
 #include "game/board/player.h"
+#include "game/chrman.h"
 #include "game/objsub.h"
 #include "game/board/com.h"
 #include "game/board/roll.h"
@@ -35,9 +36,6 @@ extern void BoardModelAttrSet(s16, s32);
 extern void BoardModelAttrReset(s16, s32);
 //// #include "game/board/com.h"
 //// #include "game/board/overhead.h"
-//// #include "game/chrman.h"
-extern void CharModelDataClose(s16);
-extern void CharModelStepTypeSet(s16, s32);
 //// #include "game/board/pad.h"
 extern s8 HuPadStkX[4];
 extern s8 HuPadStkY[4];

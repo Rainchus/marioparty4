@@ -350,7 +350,7 @@ config.libs = [
             Object(Matching, "game/messdata.c"),
             Object(Matching, "game/card.c"),
             Object(Matching, "game/armem.c"),
-            Object(NonMatching, "game/chrman.c"),
+            Object(Matching, "game/chrman.c"),
             Object(NonMatching, "game/mapspace.c"),
             Object(Matching, "game/THPSimple.c"),
             Object(Matching, "game/THPDraw.c"),

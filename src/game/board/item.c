@@ -1,5 +1,6 @@
 #include "game/board/item.h"
 #include "game/audio.h"
+#include "game/chrman.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
 #include "game/hsfanim.h"
@@ -47,7 +48,6 @@ typedef struct {
 
 u32 frandmod(u32);
 void CharModelCreateParticle(s32, Vec*);
-void CharModelLayerSetAll(s32);
 void BoardBowserSuitInit(s32);
 s16 BoardBowserSuitPlayerModelGet(void);
 void fn_8004F578(s16, s32);

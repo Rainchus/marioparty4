@@ -1,5 +1,6 @@
 #include "game/gamework_data.h"
 #include "game/process.h"
+#include "game/chrman.h"
 #include "game/data.h"
 #include "game/sprite.h"
 #include "game/object.h"

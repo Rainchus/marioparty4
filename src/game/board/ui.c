@@ -1,5 +1,6 @@
 #include "game/board/ui.h"
 #include "game/audio.h"
+#include "game/chrman.h"
 #include "game/data.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
@@ -97,7 +98,6 @@ typedef struct {
 void BoardPlayerSparkSet(s32);
 void BoardBowserSuitMotionCreate(void);
 s16 BoardBowserSuitPlayerModelGet(void);
-void CharModelLayerSetAll(s32);
 
 static void KillAllBoardStatus(void);
 static void CreateBoardStatusSprite(s32 arg0, UnkUiStatusStruct *arg1);
