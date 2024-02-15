@@ -30,7 +30,8 @@ typedef struct particle_data {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ float unk_04;
-    /* 0x08 */ char unk_08[0x18];
+    /* 0x08 */ char unk_08[0x14];
+    /* 0x1C */ void *unk_1C;
     /* 0x20 */ s16 unk_20;
     /* 0x22 */ s16 unk_22;
     /* 0x24 */ float unk_24;
