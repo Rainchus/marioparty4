@@ -271,7 +271,7 @@ def DolphinLib(lib_name, objects):
         "objects": objects,
     }
 
-def MusyX(objects, mw_version="GC/2.6", debug=False, major=2, minor=0, patch=0):
+def MusyX(objects, mw_version="GC/1.3.2", debug=False, major=1, minor=5, patch=4):
     cflags = cflags_musyx if not debug else cflags_musyx_debug
     return {
         "lib": "musyx",
@@ -665,34 +665,34 @@ config.libs = [
     MusyX(
         objects={
             Object(Matching, "musyx/runtime/seq.c"),
-            Object(NonMatching, "musyx/runtime/synth.c"),
+            Object(Matching, "musyx/runtime/synth.c"),
             Object(Matching, "musyx/runtime/seq_api.c"),
             Object(Matching, "musyx/runtime/snd_synthapi.c"),
             Object(NonMatching, "musyx/runtime/stream.c"),
             Object(Matching, "musyx/runtime/synthdata.c"),
             Object(NonMatching, "musyx/runtime/synthmacros.c"),
-            Object(NonMatching, "musyx/runtime/synthvoice.c"),
+            Object(Matching, "musyx/runtime/synthvoice.c"),
             Object(Matching, "musyx/runtime/synth_ac.c"),
             Object(Matching, "musyx/runtime/synth_dbtab.c"),
-            Object(NonMatching, "musyx/runtime/synth_adsr.c"),
+            Object(Matching, "musyx/runtime/synth_adsr.c"),
             Object(NonMatching, "musyx/runtime/synth_vsamples.c"),
-            Object(NonMatching, "musyx/runtime/s_data.c"),
+            Object(Matching, "musyx/runtime/s_data.c"),
             Object(NonMatching, "musyx/runtime/hw_dspctrl.c"),
             Object(Matching, "musyx/runtime/hw_volconv.c"),
             Object(Matching, "musyx/runtime/snd3d.c"),
             Object(Matching, "musyx/runtime/snd_init.c"),
-            Object(NonMatching, "musyx/runtime/snd_math.c"),
+            Object(Matching, "musyx/runtime/snd_math.c"),
             Object(NonMatching, "musyx/runtime/snd_midictrl.c"),
-            Object(NonMatching, "musyx/runtime/snd_service.c"),
+            Object(Matching, "musyx/runtime/snd_service.c"),
             Object(Matching, "musyx/runtime/hardware.c"),
             Object(Matching, "musyx/runtime/dsp_import.c"),
             Object(Matching, "musyx/runtime/hw_aramdma.c"),
             Object(Matching, "musyx/runtime/hw_dolphin.c"),
             Object(Matching, "musyx/runtime/hw_memory.c"),
             Object(Matching, "musyx/runtime/CheapReverb/creverb_fx.c"),
-            Object(NonMatching, "musyx/runtime/CheapReverb/creverb.c"),
+            Object(Matching, "musyx/runtime/CheapReverb/creverb.c"),
             Object(Matching, "musyx/runtime/StdReverb/reverb_fx.c"),
-            Object(NonMatching, "musyx/runtime/StdReverb/reverb.c"),
+            Object(Matching, "musyx/runtime/StdReverb/reverb.c"),
             Object(Matching, "musyx/runtime/Delay/delay_fx.c"),
             Object(Matching, "musyx/runtime/Chorus/chorus_fx.c"),
         }
