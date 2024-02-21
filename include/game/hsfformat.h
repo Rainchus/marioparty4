@@ -374,7 +374,7 @@ typedef struct hsf_map_attr {
     float minZ;
     float maxX;
     float maxZ;
-    s16 *data;
+    u16 *data;
     u32 dataLen;
 } HsfMapAttr;
 

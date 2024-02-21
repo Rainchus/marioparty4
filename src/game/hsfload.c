@@ -894,14 +894,14 @@ static void MapAttrLoad(void)
     HsfMapAttr *mapattr_base;
     HsfMapAttr *mapattr_file;
     HsfMapAttr *mapattr_new;
-    s16 *data;
+    u16 *data;
     
     if(head.mapAttr.count) {
         mapattr_file = mapattr_base = (HsfMapAttr *)((u32)fileptr+head.mapAttr.ofs);
         mapattr_new = mapattr_base;
         Model.mapAttrCnt = head.mapAttr.count;
         Model.mapAttr = mapattr_base;
-        data = (s16 *)&mapattr_base[head.mapAttr.count];
+        data = (u16 *)&mapattr_base[head.mapAttr.count];
         for(i=0; i<head.mapAttr.count; i++, mapattr_file++, mapattr_new++) {
             mapattr_new->data = &data[(u32)mapattr_file->data];
         }
