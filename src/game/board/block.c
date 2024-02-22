@@ -4,6 +4,7 @@
 #include "game/board/main.h"
 #include "game/board/player.h"
 #include "game/board/model.h"
+#include "game/board/star.h"
 #include "game/board/window.h"
 #include "math.h"
 

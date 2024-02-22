@@ -35,6 +35,7 @@ s32 BoardModelExistCheck(s16 model, s32 arg1);
 s32 BoardModelExistDupe(s16 model, s32 arg1);
 s32 fn_8006DDE8(s16 model, float arg1);
 s32 BoardModelMotionCreate(s16 model, s32 data_num);
+s32 BoardModelMotionKill(s16 model, s32 motion);
 s32 BoardModelMotionStartEndSet(s16 model, s16 start, s16 end);
 s32 BoardModelMotionStart(s16 model, s32 slot, u32 attr);
 s32 BoardModelMotionShiftSet(s16 model, s32 motion, float time, float shift_time, u32 attr);

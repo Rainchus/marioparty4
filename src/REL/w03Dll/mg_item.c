@@ -4,6 +4,7 @@
 #include "game/data.h"
 #include "game/gamework_data.h"
 #include "REL/w03Dll.h"
+#include "game/board/main.h"
 #include "game/board/space.h"
 #include "game/object.h"
 #include "game/objsub.h"

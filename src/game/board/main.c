@@ -12,6 +12,7 @@
 #include "game/board/pause.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
+#include "game/board/ui.h"
 #include "game/pad.h"
 #include "game/msm.h"
 
@@ -29,8 +30,8 @@ static omObjData *confettiObj;
 static omObjData *filterObj;
 BoardTurnStartHook boardTurnStartFunc;
 void *boardBowserHook;
-void *boardStarShowNextHook;
-void *boardStarGiveHook;
+void (*boardStarShowNextHook)(void);
+void (*boardStarGiveHook)(void);
 BoardFunc boardTurnFunc;
 BoardLightHook boardLightResetHook;
 BoardLightHook boardLightSetHook;

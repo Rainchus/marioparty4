@@ -14,6 +14,7 @@
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/roll.h"
+#include "game/board/star.h"
 #include "game/board/ui.h"
 
 typedef struct {
@@ -38,8 +39,6 @@ typedef struct {
 } ConfigWork;
 
 extern void omSysPauseCtrl(s32);
-extern s16 BoardStarHostMdlGet(void);
-extern void BoardStarHostSet(s16);
 
 static void PauseExit(void);
 static void PauseProcess(void);

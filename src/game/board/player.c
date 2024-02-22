@@ -2,16 +2,12 @@
 #include "game/chrman.h"
 #include "game/objsub.h"
 #include "game/board/com.h"
+#include "game/board/main.h"
 #include "game/board/roll.h"
 #include "game/board/tutorial.h"
+#include "game/board/ui.h"
 #include "game/board/view.h"
 
-//// #include "game/board/ui.h"
-extern void BoardStatusHammerShowSet(s32, s32);
-extern void BoardYourTurnExec(s32);
-extern s32 BoardItemUseExec(s32);
-//// #include "game/board/main.h"
-extern f32 BoardDAngleCalc(f32);
 //// #include "game/board/model.h"
 extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
@@ -34,14 +30,12 @@ extern f32 BoardModelMotionMaxTimeGet(s16);
 extern void BoardModelMotionTimeRangeSet(s16, s32, s32);
 extern void BoardModelAttrSet(s16, s32);
 extern void BoardModelAttrReset(s16, s32);
-//// #include "game/board/com.h"
 //// #include "game/board/overhead.h"
 //// #include "game/board/pad.h"
 extern s8 HuPadStkX[4];
 extern s8 HuPadStkY[4];
 extern u16 HuPadBtnDown[4];
 extern u8 HuPadDStk[4];
-//// #include "game/board/view.h"
 ////
 
 typedef struct bitcopy {

@@ -3,6 +3,7 @@
 #include "game/board/main.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
+#include "game/board/star.h"
 #include "game/board/tutorial.h"
 #include "game/hsfman.h"
 #include "game/data.h"
@@ -13,7 +14,6 @@
 #include "string.h"
 
 
-extern s16 BoardStarHostMdlGet(void);
 extern s16 BoardModelCreate(s32 file, s32 *data, s32 arg3);
 extern s16 BoardModelIDGet(s16 model);
 

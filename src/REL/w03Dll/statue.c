@@ -7,6 +7,7 @@
 #include "game/audio.h"
 #include "game/board/space.h"
 #include "game/board/player.h"
+#include "game/board/ui.h"
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 #include "game/board/main.h"
