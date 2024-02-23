@@ -5,6 +5,7 @@
 #include "game/gamework_data.h"
 #include "REL/w03Dll.h"
 #include "game/board/space.h"
+#include "game/board/star.h"
 #include "game/object.h"
 #include "game/board/player.h"
 #include "math.h"

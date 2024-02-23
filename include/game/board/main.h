@@ -77,6 +77,8 @@ typedef void (*BoardCameraPosCalcFunc)(BoardCameraData *camera);
 typedef void (*BoardTurnStartHook)(s32 player, s32 space);
 
 extern BoardTurnStartHook boardTurnStartFunc;
+extern void (*boardStarShowNextHook)(void);
+extern void (*boardStarGiveHook)(void);
 extern BoardFunc boardTurnFunc;
 extern BoardLightHook boardLightResetHook;
 extern BoardLightHook boardLightSetHook;

@@ -53,4 +53,6 @@ s32 BoardSpaceStarCheck(s32 index);
 void BoardSpaceLandExec(s32 player, s32 space);
 void BoardSpaceBlockPosSet(void);
 
+extern s16 boardSpaceStarTbl[8];
+
 #endif
