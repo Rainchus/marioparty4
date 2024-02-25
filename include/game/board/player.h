@@ -155,5 +155,6 @@ void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);
 void UpdateDiceDigit2D(omObjData*);
 void MoveAwayObjFunc(omObjData*);
+void UpdateBowserSuit(omObjData*);
 
 #endif

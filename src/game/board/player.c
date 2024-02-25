@@ -65,6 +65,7 @@ static omObjData* moveAwayObj;
 static omObjData* diceDigit2DObj;
 static omObjData* junctionObj;
 static s32 junctionMask;
+static omObjData* bowserSuitObj;
 static s32 rollResized;
 
 static s16 suitMdl = -1;
@@ -1023,8 +1024,8 @@ static void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
             temp_r29->unk_01 = 0;
             var_r28->scale.x = var_r28->scale.y = var_r28->scale.z = 3.0f;
             HuWinMesMaxSizeGet(1, &sp3C, 0x90003);
-            var_f27 = 304.0f;
-            var_f28 = -10000.0f;
+            var_f27 = -10000.0f;
+            var_f28 = 304.0f;
             temp_r29->unk_04 = HuWinCreate(var_f27, var_f28, sp3C, sp40, 0);
             HuWinBGTPLvlSet(temp_r29->unk_04, 0.0f);
             HuWinMesSpeedSet(temp_r29->unk_04, 0);
@@ -1743,7 +1744,7 @@ static void DiceJumpFunc(omObjData* arg0) {
         temp_f31 = BoardPlayerMotionTimeGet(temp_r31->field00_bit1);
         if (BoardPlayerSizeGet(temp_r31->field00_bit1) == 1) {
             BoardPlayerPosGet(temp_r31->field00_bit1, &sp38);
-            sp38.y += 10.0f + (-(49.0f/2400.0f) * temp_r31->unk_08 * temp_r31->unk_08);
+            sp38.y += 10.0f + (-0.020416668f * temp_r31->unk_08 * temp_r31->unk_08);
             temp_r31->unk_08 += 1.0f;
             if (sp38.y < temp_r31->unk_0C) {
                 sp38.y = temp_r31->unk_0C;
@@ -2203,4 +2204,69 @@ void BoardPlayerCopyMat(s32 arg0) {
     temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, temp_r31->materialCnt * 0x3C, 0x10000000U);
     memcpy(temp_r3, temp_r31->material, temp_r31->materialCnt * 0x3C);
     playerMatCopy[arg0] = temp_r3;
+}
+
+void BoardBowserSuitInit(s32 arg0) {
+    omObjData* temp_r3;
+    s32 temp_r27;
+    s32 var_r29;
+    s32 temp;
+    bitcopy3* temp_r31;
+
+    
+    for (var_r29 = 0; var_r29 < 4; var_r29++) {
+    }
+    temp_r27 = GWPlayer[arg0].character;
+    temp = BoardDataDirReadAsync(0x40000);
+    BoardDataAsyncWait(temp);
+    suitMdl = BoardModelCreate(0x40018, NULL, 0);
+    BoardModelScaleSet(suitMdl, 1.2f, 1.2f, 1.2f);
+    suitPlayerMdl = BoardModelCreate(bowserSuitCharMdlTbl[temp_r27], NULL, 0);
+    GWPlayer[arg0].bowser_suit = 1;
+    temp_r3 = omAddObjEx(boardObjMan, 0x100, 0U, 0U, -1, &UpdateBowserSuit);
+    bowserSuitObj = temp_r3;
+    temp_r31 = (bitcopy3 *) temp_r3->work;
+    temp_r31->field00_bit0 = 0;
+    temp_r31->unk_01 = arg0;
+    temp_r31->unk_02 = 0;
+    BoardModelVoiceEnableSet(BoardPlayerModelGet(arg0), 3, 0);
+    BoardModelVoiceEnableSet(BoardPlayerModelGet(arg0), 4, 0);
+}
+
+void BoardBowserSuitKill(s32 arg0) {
+    bitcopy3* temp;
+
+    if (bowserSuitObj != 0) {
+        ((bitcopy3*) bowserSuitObj->work)->field00_bit0 = 1;
+    }
+    GWPlayer[arg0].bowser_suit = 0;
+    BoardModelVoiceEnableSet(BoardPlayerModelGet(arg0), 3, 1);
+    BoardModelVoiceEnableSet(BoardPlayerModelGet(arg0), 4, 1);
+    if (suitMdl != -1) {
+        BoardModelKill(suitMdl);
+        suitMdl = -1;
+    }
+    if (suitPlayerMdl != -1) {
+        BoardModelKill(suitPlayerMdl);
+        suitPlayerMdl = -1;
+    }
+    HuDataDirClose(0x40000);
+}
+
+s16 BoardBowserSuitModelGet(void) {
+    return suitMdl;
+}
+
+s16 BoardBowserSuitPlayerModelGet(void) {
+    return suitPlayerMdl;
+}
+
+void BoardBowserSuitMotionCreate(void) {
+    s32 var_r31;
+
+    
+    for (var_r31 = 0; var_r31 < 5; var_r31++) {
+        bowserSuitMot[var_r31] = (s16) BoardModelMotionCreate(suitMdl, bowserSuitMotTbl[var_r31]);
+    }
+    suitCurrMot = -1;
 }
