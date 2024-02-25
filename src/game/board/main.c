@@ -9,7 +9,10 @@
 #include "game/hsfman.h"
 #include "game/hsfdraw.h"
 #include "game/board/main.h"
+#include "game/board/pause.h"
 #include "game/board/player.h"
+#include "game/board/tutorial.h"
+#include "game/board/ui.h"
 #include "game/pad.h"
 #include "game/msm.h"
 
@@ -27,8 +30,8 @@ static omObjData *confettiObj;
 static omObjData *filterObj;
 BoardTurnStartHook boardTurnStartFunc;
 void *boardBowserHook;
-void *boardStarShowNextHook;
-void *boardStarGiveHook;
+void (*boardStarShowNextHook)(void);
+void (*boardStarGiveHook)(void);
 BoardFunc boardTurnFunc;
 BoardLightHook boardLightResetHook;
 BoardLightHook boardLightSetHook;
@@ -60,8 +63,6 @@ extern s32 BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
 extern void BoardMGSetupPlayClear(void);
 extern void BoardStartExec(void);
-
-extern s8 boardTutorialF;
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);
@@ -210,7 +211,7 @@ static void KillBoardFunc(omObjData *object)
 				BoardTutorialWorkRestore();
 			}
 			_ClearFlag(FLAG_ID_MAKE(1, 0));
-			HuARDirFree(MAKE_DIR_NUM(DATADIR_BOARD));
+			HuARDirFree(DATADIR_BOARD);
 			if(_CheckFlag(FLAG_ID_MAKE(1, 27))) {
 				omOvlReturnEx(2, 1);
 			} else {
@@ -290,7 +291,7 @@ void BoardSaveInit(s32 board)
 	GWSystem.field31_bit4 = 0;
 	GWSystem.unk_32 = 1;
 	GWSystem.mg_next = 0;
-	GWSystem.mg_next_extra = 0;
+	GWSystem.mg_next_type = 0;
 	GWSystem.unk_38 = 0;
 	GWSystem.block_pos = 0;
 	memset(GWSystem.board_data, 0, 32);
@@ -334,13 +335,13 @@ void BoardSaveInit(s32 board)
 	}
 }
 
-void BoardStoryConfigSet(s32 mg_type, s32 diff_story)
+void BoardStoryConfigSet(s32 mg_list, s32 diff_story)
 {
 	GWSystem.party = 0;
 	GWSystem.team = 0;
 	GWSystem.diff_story = diff_story;
 	GWSystem.bonus_star = 0;
-	GWSystem.mg_type = mg_type;
+	GWSystem.mg_list = mg_list;
 	GWPlayer[0].handicap = 0;
 	GWPlayer[1].handicap = 0;
 	GWPlayer[2].handicap = 0;
@@ -358,13 +359,13 @@ void BoardStoryConfigSet(s32 mg_type, s32 diff_story)
 	_SetFlag(FLAG_ID_MAKE(1, 10));
 }
 
-void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_type, s32 max_turn, s32 p1_handicap, s32 p2_handicap, s32 p3_handicap, s32 p4_handicap)
+void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_list, s32 max_turn, s32 p1_handicap, s32 p2_handicap, s32 p3_handicap, s32 p4_handicap)
 {
 	GWSystem.party = 1;
 	GWSystem.team = team;
 	GWSystem.diff_story = 0;
 	GWSystem.bonus_star = bonus_star;
-	GWSystem.mg_type = mg_type;
+	GWSystem.mg_list = mg_list;
 	GWSystem.max_turn = max_turn;
 	memset(GWPlayer, 0, 4*sizeof(PlayerState));
 	GWPlayer[0].handicap = p1_handicap;
@@ -617,11 +618,11 @@ static void CreateBoard(void)
 	GWSystem.mg_next = -1;
 	if(!GWGameStat.field10E_bit5) {
 		s32 type_temp;
-		if(GWSystem.mg_type == 3) {
-			GWSystem.mg_type = 0;
+		if(GWSystem.mg_list == 3) {
+			GWSystem.mg_list = 0;
 		}
-		if(GWMGTypeGet() == 2) {
-			GWSystem.mg_type = 0;
+		if(GWMGListGet() == 2) {
+			GWSystem.mg_list = 0;
 		}
 	}
 	if(GWSystem.mess_speed == 3) {
@@ -668,7 +669,7 @@ static void CreateBoard(void)
 	if(!reset_unk32) {
 		GWSystem.unk_32 = 1;
 	}
-	guest_status = BoardDataDirReadAsync(MAKE_DIR_NUM(DATADIR_BGUEST));
+	guest_status = BoardDataDirReadAsync(DATADIR_BGUEST);
 	if(guest_status != -1) {
 		BoardDataAsyncWait(guest_status);
 	}
@@ -698,29 +699,29 @@ static void CreateBoard(void)
 	BoardCameraMotionWait();
 	BoardTauntInit();
 	_SetFlag(FLAG_ID_MAKE(1, 14));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPASUIT));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BBATTLE));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKUJIYA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BPAUSE));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BLAST5));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_EFFECT));
+	HuDataDirClose(DATADIR_BKOOPASUIT);
+	HuDataDirClose(DATADIR_BBATTLE);
+	HuDataDirClose(DATADIR_BKOOPA);
+	HuDataDirClose(DATADIR_BKUJIYA);
+	HuDataDirClose(DATADIR_BYOKODORI);
+	HuDataDirClose(DATADIR_BPAUSE);
+	HuDataDirClose(DATADIR_BLAST5);
+	HuDataDirClose(DATADIR_EFFECT);
 	_SetFlag(FLAG_ID_MAKE(1, 16));
 }
 
 static void DestroyBoard(void)
 {
 	s32 dir_table[] = {
-		MAKE_DIR_NUM(DATADIR_W01),
-		MAKE_DIR_NUM(DATADIR_W02),
-		MAKE_DIR_NUM(DATADIR_W03),
-		MAKE_DIR_NUM(DATADIR_W04),
-		MAKE_DIR_NUM(DATADIR_W05),
-		MAKE_DIR_NUM(DATADIR_W06),
-		MAKE_DIR_NUM(DATADIR_W10),
-		MAKE_DIR_NUM(DATADIR_W20),
-		MAKE_DIR_NUM(DATADIR_W21),
+		DATADIR_W01,
+		DATADIR_W02,
+		DATADIR_W03,
+		DATADIR_W04,
+		DATADIR_W05,
+		DATADIR_W06,
+		DATADIR_W10,
+		DATADIR_W20,
+		DATADIR_W21
 	};
 	BoardTauntKill();
 	BoardAudSeqFadeOutAll();
@@ -738,14 +739,14 @@ static void DestroyBoard(void)
 	BoardModelKillAll();
 	BoardWinKillAll();
 	HuDataDirClose(dir_table[BoardCurrGet()]);
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_EFFECT));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BGUEST));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPASUIT));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BBATTLE));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKOOPA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BKUJIYA));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BYOKODORI));
-	HuDataDirClose(MAKE_DIR_NUM(DATADIR_BOARD));
+	HuDataDirClose(DATADIR_EFFECT);
+	HuDataDirClose(DATADIR_BGUEST);
+	HuDataDirClose(DATADIR_BKOOPASUIT);
+	HuDataDirClose(DATADIR_BBATTLE);
+	HuDataDirClose(DATADIR_BKOOPA);
+	HuDataDirClose(DATADIR_BKUJIYA);
+	HuDataDirClose(DATADIR_BYOKODORI);
+	HuDataDirClose(DATADIR_BOARD);
 	createFunc = destroyFunc = NULL;
 }
 
@@ -1760,7 +1761,7 @@ void BoardConfettiCreate(Vec *pos, s16 count, float range)
 	object->trans.y = pos->y;
 	object->trans.z = pos->z;
 	object->rot.x = range;
-	work->gfx_mdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 7), NULL, 0);
+	work->gfx_mdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 7), NULL, 0);
 	BoardModelLayerSet(work->gfx_mdl, 2);
 	BoardModelVisibilitySet(work->gfx_mdl, 0);
 	{
@@ -1962,9 +1963,9 @@ typedef struct last5_gfx_work {
 } Last5GfxWork;
 
 static s32 last5GfxSprTbl[3] = {
-	MAKE_DATA_NUM(DATADIR_BOARD, 95),
-	MAKE_DATA_NUM(DATADIR_BOARD, 97),
-	MAKE_DATA_NUM(DATADIR_BOARD, 96),
+	DATA_MAKE_NUM(DATADIR_BOARD, 95),
+	DATA_MAKE_NUM(DATADIR_BOARD, 97),
+	DATA_MAKE_NUM(DATADIR_BOARD, 96),
 };
 
 static float last5GfxPosTbl[2][3][2] = {
@@ -2019,11 +2020,11 @@ void BoardLast5GfxInit(void)
 			}
 			spr_file = last5GfxSprTbl[i];
 			if(i == 2 && work->is_last && GWLanguageGet() != 0) {
-				spr_file = MAKE_DATA_NUM(DATADIR_BOARD, 98);
+				spr_file = DATA_MAKE_NUM(DATADIR_BOARD, 98);
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
-			HuSprAttrSet(work->group, i, SPIRTE_ATTR_BILINEAR);
+			HuSprAttrSet(work->group, i, SPRITE_ATTR_BILINEAR);
 			HuSprPosSet(work->group, i, last5GfxPosTbl[lastF][i][0], last5GfxPosTbl[lastF][i][1]);
 		}
 		if(!work->is_last) {

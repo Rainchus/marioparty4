@@ -45,7 +45,7 @@ typedef struct w10DllUnk04 {
 extern s16 lbl_1_bss_20;
 extern s16 lbl_1_bss_22[];
 extern s16 lbl_1_bss_20;
-extern s32 boardTutorialData;
+extern s32 boardTutorialData[4];
 
 void fn_1_C10(s16);
 void fn_1_1FB0(void);

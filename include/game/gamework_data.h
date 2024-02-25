@@ -21,7 +21,7 @@ typedef struct system_state {
         u16 bonus_star : 1;
         u16 explain_mg : 1;
         u16 show_com_mg : 1;
-        u16 mg_type : 2;
+        u16 mg_list : 2;
         u16 mess_speed : 2;
         u16 save_mode : 2;
     };
@@ -45,7 +45,7 @@ typedef struct system_state {
     };
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
-/* 0x36 */ s16 mg_next_extra;
+/* 0x36 */ s16 mg_next_type;
 /* 0x38 */ u16 unk_38;
 /* 0x3A */ u8 flag[3][16];
 /* 0x6A */ u8 unk_6A[0x72];
@@ -152,19 +152,44 @@ static inline s32 GWTeamGet(void)
     return GWSystem.team;
 }
 
+static inline s32 GWPartyGet(void)
+{
+    return GWSystem.party;
+}
+
 static inline s32 GWLanguageGet(void)
 {
     return GWGameStat.language;
 }
 
-static inline s32 GWMGTypeGet(void)
+static inline s32 GWRumbleGet(void)
 {
-    return GWSystem.mg_type;
+    return GWGameStat.rumble;
+}
+
+static inline s32 GWMGExplainGet(void)
+{
+    return GWSystem.explain_mg;
+}
+
+static inline s32 GWMGShowComGet(void)
+{
+    return GWSystem.show_com_mg;
+}
+
+static inline s32 GWMGListGet(void)
+{
+    return GWSystem.mg_list;
 }
 
 static inline s32 GWMessSpeedGet(void)
 {
     return GWSystem.mess_speed;
+}
+
+static inline s32 GWTurnGet(void)
+{
+    return GWSystem.turn;
 }
 
 static inline s32 GWBoardGet(void)
@@ -175,6 +200,11 @@ static inline s32 GWBoardGet(void)
 static inline s32 GWPlayerTeamGet(s32 player)
 {
     return GWPlayer[player].team;
+}
+
+static inline s32 GWPlayerSpaceCurrGet(s32 player)
+{
+    return GWPlayer[player].space_curr;
 }
 
 #endif

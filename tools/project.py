@@ -886,7 +886,9 @@ def generate_objdiff_config(config, build_config):
             return
 
         lib, obj = result
-        unit_src_path = config.src_dir / obj.options["source"]
+        src_dir = Path(lib.get("src_dir", config.src_dir))
+
+        unit_src_path = src_dir / obj.options["source"]
         if not unit_src_path.exists():
             objdiff_config["units"].append(unit_config)
             return

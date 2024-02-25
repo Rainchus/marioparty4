@@ -49,6 +49,8 @@ HsfObject *Hu3DObjDuplicate(HsfData *arg0, u32 arg1);
 void Hu3DModelObjDrawInit(void);
 void Hu3DModelObjDraw(s16 arg0, char *arg1, Mtx arg2);
 
+extern Vec PGMaxPos;
+extern Vec PGMinPos;
 extern u32 totalPolyCnt;
 extern u32 totalPolyCnted;
 extern u32 totalMatCnt;

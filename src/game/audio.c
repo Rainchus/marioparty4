@@ -261,7 +261,7 @@ s32 HuAudSeqPlay(s16 arg0) {
     if (musicOffF != 0 || omSysExitReq != 0) {
         return 0;
     }
-    temp_r31 = msmMusPlay(arg0, 0);
+    temp_r31 = msmMusPlay(arg0, NULL);
     return temp_r31;
 }
 

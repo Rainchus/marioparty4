@@ -4,8 +4,10 @@
 #include "game/data.h"
 #include "game/gamework_data.h"
 #include "REL/w03Dll.h"
+#include "game/board/main.h"
 #include "game/board/space.h"
 #include "game/object.h"
+#include "game/objsub.h"
 #include "game/board/player.h"
 #include "math.h"
 #include "board_unsplit.h"
@@ -67,7 +69,6 @@ s32 BoardVecDAngleCalcRange(float *value, float min, float range);
 void BoardCameraQuakeSet(s32 duration, float strength);
 s16 MGSeqCreate(s32, ...);
 u8 MGSeqStatGet(s16);
-void omVibrate(s16, s16, s16, s16);
 f32 BoardPlayerRotYGet(s32);
 f32 BoardModelMotionTimeGet(s16);
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
@@ -130,20 +131,20 @@ char* lbl_1_data_508[] = {
 };
 
 s32 lbl_1_data_514[] = {
-    MAKE_DATA_NUM(7, 0x6D),
-    MAKE_DATA_NUM(7, 0x6E),
-    MAKE_DATA_NUM(7, 0x6F),
-    MAKE_DATA_NUM(7, 0x70),
-    MAKE_DATA_NUM(7, 0x71),
-    MAKE_DATA_NUM(7, 0x72),
-    MAKE_DATA_NUM(7, 0x73),
-    MAKE_DATA_NUM(7, 0x74),
-    MAKE_DATA_NUM(7, 0x76),
-    MAKE_DATA_NUM(7, 0x77),
-    MAKE_DATA_NUM(7, 0x78),
-    MAKE_DATA_NUM(7, 0x79),
-    MAKE_DATA_NUM(7, 0x7A),
-    MAKE_DATA_NUM(7, 0x7B),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x6D),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x6E),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x6F),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x70),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x71),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x72),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x73),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x74),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x76),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x77),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x78),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x79),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x7A),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x7B),
 };
 
 //BSS

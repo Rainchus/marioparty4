@@ -1,5 +1,6 @@
 #include "game/board/ui.h"
 #include "game/audio.h"
+#include "game/chrman.h"
 #include "game/data.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
@@ -9,13 +10,17 @@
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/window.h"
+#include "game/board/com.h"
+#include "game/board/item.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/tutorial.h"
 #include "board_unsplit.h"
 
 #include "math.h"
 
-#define ABS(x) ((x < 0) ? -x : x)
+#define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef struct {
     /* 0x00 */ struct {
@@ -91,20 +96,8 @@ typedef struct {
 } UnkUiWork04;
 
 void BoardPlayerSparkSet(s32);
-s32 BoardItemDoneCheck(void);
-void BoardItemStart(s32, s32);
-void BoardTutorialHookExec(s16, s32);
-s16 BoardBowserSuitModelGet(void);
 void BoardBowserSuitMotionCreate(void);
 s16 BoardBowserSuitPlayerModelGet(void);
-void CharModelLayerSetAll(s32);
-void BoardItemBagItemSet(void*);
-float BoardModelMotionTimeGet(s16);
-void BoardModelMotionStartEndSet(s16, s16, s16);
-void BoardModelMotionTimeSet(s16, float);
-void BoardModelPosGet(s16, Vec*);
-s32 BoardComTutorialItemGet(s32);
-void BoardTutorialHostHide(s32);
 
 static void KillAllBoardStatus(void);
 static void CreateBoardStatusSprite(s32 arg0, UnkUiStatusStruct *arg1);
@@ -1201,7 +1194,7 @@ void BoardMakeRandomItem(void) {
             itemRandTbl[i] = temp_r3;
         }
     }
-    BoardItemBagItemSet(&itemRandTbl);
+    BoardItemBagItemSet(itemRandTbl);
 }
 
 static inline void TeamItemPosSetInlineFunc01(s32 arg0, s32 arg1, Vec *arg2) {

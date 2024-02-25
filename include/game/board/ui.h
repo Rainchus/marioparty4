@@ -28,9 +28,12 @@ void BoardPickerBackFlagSet(s32 arg0);
 BOOL BoardPickerDoneCheck(void);
 s32 BoardPickerPosGet(Vec *arg0);
 s32 BoardPickerChoiceGet(void);
+void BoardYourTurnExec(s32 arg0);
 s32 BoardItemUseExec(s32 arg0);
 void BoardMakeRandomItem(void);
 void BoardItemGetDestPos(s32 arg0, Vec *arg1);
 void BoardItemStatusKill(s32 arg0);
+
+extern s8 boardItemUser;
 
 #endif

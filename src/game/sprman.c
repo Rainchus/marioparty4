@@ -675,7 +675,7 @@ void HuSprSprBGSet(short sprite, AnimData *bg, short bg_bank)
     sprite_ptr->bg = bg;
     sprite_ptr->bg_bank = bg_bank;
     sprite_ptr->wrap_t = sprite_ptr->wrap_s = GX_REPEAT;
-    sprite_ptr->attr &= ~SPIRTE_ATTR_BILINEAR;
+    sprite_ptr->attr &= ~SPRITE_ATTR_BILINEAR;
 }
 
 void AnimDebug(AnimData *anim)

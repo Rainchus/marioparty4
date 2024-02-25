@@ -2,8 +2,7 @@
 #include "game/wipe.h"
 #include "game/memory.h"
 #include "game/flag.h"
-
-extern s8 boardTutorialF;
+#include "game/board/tutorial.h"
 
 s16 HuSysVWaitGet(s16 old);
 

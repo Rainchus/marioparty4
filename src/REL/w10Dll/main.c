@@ -1,6 +1,8 @@
 #include "include/REL/w10Dll.h"
 #include "game/data.h"
 #include "game/hsfman.h"
+#include "game/board/star.h"
+#include "game/board/tutorial.h"
 
 #include "math.h"
 
@@ -22,7 +24,7 @@ unkw10Dll lbl_1_data_0[1] = {
     3300.0f, 100.0f, -900.0f,
     0.0f, 0.0f, 0.0f,
     1.0f, 1.0f, 1.0f,
-    MAKE_DATA_NUM(DATADIR_W10, 3)
+    DATA_MAKE_NUM(DATADIR_W10, 3)
 };
 
 
@@ -42,22 +44,22 @@ s32 lbl_1_data_34[] = {
 };
 
 s32 lbl_1_data_54[2] = {
-    MAKE_DATA_NUM(DATADIR_W10, 18),
+    DATA_MAKE_NUM(DATADIR_W10, 18),
     DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_5C[2] = {
-    MAKE_DATA_NUM(DATADIR_BGUEST, 9),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 9),
     DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_64[2] = {
-    MAKE_DATA_NUM(DATADIR_BGUEST, 24),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 24),
     DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_6C[2] = {
-    MAKE_DATA_NUM(DATADIR_BGUEST, 14),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 14),
     DATA_NUM_LISTEND
 };
 
@@ -85,26 +87,26 @@ void BoardCreate(void) {
     fn_1_AEC();
     fn_1_1D68();
     lbl_1_bss_C = 0;
-    BoardSpaceInit(MAKE_DATA_NUM(DATADIR_W10, 0));
+    BoardSpaceInit(DATA_MAKE_NUM(DATADIR_W10, 0));
     temp = BoardSpaceFlagSearch(0, 1);
     BoardTutorialBlockSetPos(temp, 1);
-    lbl_1_data_28 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 1), NULL, 0);
+    lbl_1_data_28 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_28, -1.0f);
     BoardModelPosSet(lbl_1_data_28, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_28, 0, 0x40000001);
     BoardModelMotionSpeedSet(lbl_1_data_28, 1.0f);
-    lbl_1_data_2A = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 2), NULL, 0);
+    lbl_1_data_2A = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 2), NULL, 0);
     fn_8006DDE8(lbl_1_data_2A, -1.0f);
     BoardModelPosSet(lbl_1_data_2A, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_2A, 0, 0x40000001);
-    lbl_1_data_2C = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 17), lbl_1_data_54, 0);
+    lbl_1_data_2C = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 17), lbl_1_data_54, 0);
     BoardModelPosSet(lbl_1_data_2C, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_2C, 1, 0x40000001);
-    lbl_1_data_2E = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 5), lbl_1_data_5C, 0);
+    lbl_1_data_2E = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 5), lbl_1_data_5C, 0);
     BoardModelMotionStart(lbl_1_data_2E, 1, 0x40000001);
-    lbl_1_data_32 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 18), lbl_1_data_64, 0);
+    lbl_1_data_32 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 18), lbl_1_data_64, 0);
     BoardModelMotionStart(lbl_1_data_32, 1, 0x40000001);
-    lbl_1_data_30 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 13), lbl_1_data_6C, 0);
+    lbl_1_data_30 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 13), lbl_1_data_6C, 0);
     BoardModelMotionStart(lbl_1_data_30, 1, 0x40000001);
     BoardLightHookSet(&fn_1_8C0, &fn_1_904);
     for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
