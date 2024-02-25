@@ -2139,7 +2139,7 @@ s32 BoardPlayerAutoSizeGet(s32 arg0) {
 }
 
 u32 BoardPlayerMoveAwayIsDone(void) {
-    if (!moveAwayObj) {
+    if (moveAwayObj) {
         return 0;
     }
     return 1;
@@ -2188,6 +2188,31 @@ void BoardPlayerMoveAwayStart(s32 arg0, s32 arg1, s32 arg2) {
         temp_r25 = (bitcopy3*) moveAwayObj->work;
         temp_r25->field00_bit0 = 0;
     }
+}
+
+void BoardPlayerMoveAwayStartCurr(s32 arg0, s32 arg1) {
+    BoardPlayerMoveAwayStart(GWSystem.player_curr, arg0, arg1);
+}
+
+static void MoveAwayObjFunc(omObjData* arg0) {
+    s32 var_r31;
+    bitcopy3* temp_r30;
+
+    temp_r30 = (bitcopy3*) arg0->work;
+    if ((temp_r30->field00_bit0 != 0) || (BoardIsKill() != 0)) {
+        moveAwayObj = 0;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        return;
+    }
+    
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        if (moveAwayPlayer[var_r31] != -1) {
+            if (GWPlayer[moveAwayPlayer[var_r31]].moving != 0) return;
+            BoardPlayerMotBlendSet(moveAwayPlayer[var_r31], 0, 15);
+            moveAwayPlayer[var_r31] = -1;
+        }
+    }
+    temp_r30->field00_bit0 = 1;
 }
 
 // ...

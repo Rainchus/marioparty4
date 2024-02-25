@@ -149,7 +149,7 @@ void BoardDiceDigit2DShowSet(s32);
 s32 DoSparkSpace(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);
 s32 BoardPlayerMotBlendCheck(s32);
-void BoardPlayerMoveAwayStartCurr(s16, s32);
+void BoardPlayerMoveAwayStartCurr(s32, s32);
 void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);
 void UpdateDiceDigit2D(omObjData*);
