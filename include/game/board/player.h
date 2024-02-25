@@ -131,7 +131,17 @@ s32 BoardPlayerDiceJumpCheck(s32);
 static void DiceJumpFunc(omObjData*);
 void BoardRotateDiceNumbers(s32);
 void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2);
-void UpdateDiceDigitSprite(omObjData*);
+static void UpdateDiceDigitSprite(omObjData*);
+static void UpdateDiceDigit2D(omObjData*);
+void BoardPlayerBtnDownWait(s32, u32);
+void BoardPlayerAutoSizeSet(s32, s32);
+s32 BoardPlayerAutoSizeGet(s32);
+u32 BoardPlayerMoveAwayIsDone(void);
+void BoardPlayerMoveAwayStart(s32, s32, s32);
+void BoardPlayerMoveAwayStartCurr(s32, s32);
+static void MoveAwayObjFunc(omObjData*);
+void BoardPlayerCopyMat(s32);
+void BoardBowserSuitMotionSetJump(void);
 //...
 void BoardPlayerMotBlendExec(omObjData*);
 s32 BoardPlayerAutoSizeGet(s32);

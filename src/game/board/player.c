@@ -2190,22 +2190,6 @@ static void MoveAwayObjFunc(omObjData* arg0) {
     temp_r30->field00_bit0 = 1;
 }
 
-// ...
-
-void BoardPlayerCopyMat(s32 arg0) {
-    s16 modelID;
-    ModelData *model;
-    void* temp_r3;
-    HsfData* temp_r31;
-
-    modelID = BoardModelIDGet(GetBoardPlayer(arg0));
-    model = &Hu3DData[modelID];
-    temp_r31 = model->hsfData;
-    temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, temp_r31->materialCnt * 0x3C, 0x10000000U);
-    memcpy(temp_r3, temp_r31->material, temp_r31->materialCnt * 0x3C);
-    playerMatCopy[arg0] = temp_r3;
-}
-
 void BoardBowserSuitInit(s32 arg0) {
     omObjData* temp_r3;
     s32 temp_r27;
@@ -2269,4 +2253,73 @@ void BoardBowserSuitMotionCreate(void) {
         bowserSuitMot[var_r31] = (s16) BoardModelMotionCreate(suitMdl, bowserSuitMotTbl[var_r31]);
     }
     suitCurrMot = -1;
+}
+
+void BoardBowserSuitMotionSetWait(void) {
+    if (suitCurrMot != 0) {
+        BoardModelMotionShiftSet(suitMdl, bowserSuitMot[0], 0.0f, 4.0f, 0x40000001);
+        suitCurrMot = 0;
+    }
+}
+
+void BoardBowserSuitMotionSetWalk(void) {
+    if (suitCurrMot != 1) {
+        BoardModelMotionStart(suitMdl, bowserSuitMot[1], 0x40000001);
+        suitCurrMot = 1;
+    }
+}
+
+void BoardBowserSuitMotionSetWin(void) {
+    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[3], 0.0f, 4.0f, 0);
+    suitCurrMot = 3;
+}
+
+void BoardBowserSuitMotionSetJump(void) {
+    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[2], 0.0f, 4.0f, 0);
+    suitCurrMot = 2;
+}
+
+void BoardBowserSuitPlayerModelKill(void) {
+    if (suitPlayerMdl != -1) {
+        BoardModelMotionStart(suitPlayerMdl, 1, 0);
+        BoardModelMotionSpeedSet(suitPlayerMdl, 0.0f);
+    }
+}
+
+void UpdateBowserSuit(omObjData* arg0) {
+    s16 temp_r30;
+    bitcopy3* temp_r31;
+
+    temp_r31 = (bitcopy3*) arg0->work;
+    if ((temp_r31->field00_bit0 != 0) || (BoardIsKill() != 0)) {
+        bowserSuitObj = NULL;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        return;
+    }
+    if ((suitMdl != -1) && (suitCurrMot == 1)) {
+        temp_r30 = BoardModelMotionTimeGet(suitMdl);
+        if ((temp_r31->unk_02 == 0) && (((temp_r30 < 15.0f) && (temp_r30 >= 13.0f)) || ((temp_r30 < 40.0f) && (temp_r30 >= 38.0f)))) {
+            HuAudFXPlay(0x328);
+            temp_r31->unk_02 = 1;
+        }
+        if ((temp_r31->unk_02 != 0) && ((temp_r30 >= 20.0f) || (temp_r30 >= 49.0f))) {
+            temp_r31->unk_02 = 0;
+        }
+    }
+}
+
+// ...
+
+void BoardPlayerCopyMat(s32 arg0) {
+    s16 modelID;
+    ModelData *model;
+    void* temp_r3;
+    HsfData* temp_r31;
+
+    modelID = BoardModelIDGet(GetBoardPlayer(arg0));
+    model = &Hu3DData[modelID];
+    temp_r31 = model->hsfData;
+    temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, temp_r31->materialCnt * 0x3C, 0x10000000U);
+    memcpy(temp_r3, temp_r31->material, temp_r31->materialCnt * 0x3C);
+    playerMatCopy[arg0] = temp_r3;
 }
