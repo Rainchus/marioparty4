@@ -179,7 +179,7 @@ static void SetEnvelopMain(HsfData *arg0) {
             normtop = var_r31->data.file[1];
             normenv = temp_r28->data;
             var_r25 = var_r31->data.cenv;
-            for (j = 0; j < var_r31->data.hook; j++, var_r25++) {
+            for (j = 0; j < var_r31->data.cenvCnt; j++, var_r25++) {
                 SetEnvelop(var_r25);
             }
             sp10 = temp_r30->data;

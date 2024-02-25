@@ -139,6 +139,7 @@ void BoardPlayerAutoSizeSet(s32, s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitKill(s32);
 void SetRollPlayerSize(s32);
+void BoardDiceDigit2DInit(s32, s32);
 void BoardDiceDigit2DUpdateEnable(s32);
 s32 DoSparkSpace(s32, s16*);
 s32 MegaPlayerPassFunc(s32, s16);

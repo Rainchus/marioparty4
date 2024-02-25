@@ -29,7 +29,9 @@ typedef struct {
 typedef struct particle_data {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
-    /* 0x04 */ char unk_04[0x1C];
+    /* 0x04 */ float unk_04;
+    /* 0x08 */ char unk_08[0x14];
+    /* 0x1C */ void *unk_1C;
     /* 0x20 */ s16 unk_20;
     /* 0x22 */ s16 unk_22;
     /* 0x24 */ float unk_24;
@@ -39,7 +41,7 @@ typedef struct particle_data {
     /* 0x2E */ char unk_2E[2];
     /* 0x30 */ s16 unk_30;
     /* 0x32 */ char unk_32[2];
-    /* 0x34 */ s32 unk_34;
+    /* 0x34 */ u32 unk_34;
     /* 0x38 */ s32 unk_38;
     /* 0x3C */ u32 unk_3C;
     /* 0x40 */ s32 unk_40;
@@ -115,6 +117,7 @@ void Hu3DParticleZRotSet(s16 arg0, float arg1);
 void Hu3DParticleColSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3);
 void Hu3DParticleTPLvlSet(s16 arg0, float arg1);
 void Hu3DParticleBlendModeSet(s16 arg0, u8 arg1);
+void Hu3DParticleHookSet(s16 arg0, void *arg1);
 void Hu3DParticleAttrSet(s16 arg0, u8 arg1);
 void Hu3DParticleAttrReset(s16 arg0, u8 arg1);
 void Hu3DParticleAnimModeSet(s16 arg0, s16 arg1);

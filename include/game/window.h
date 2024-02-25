@@ -95,7 +95,7 @@ void HuWinScissorSet(s16 window, s16 x, s16 y, s16 w, s16 h);
 void HuWinPriSet(s16 window, s16 prio);
 void HuWinAttrSet(s16 window, u32 attr);
 void HuWinAttrReset(s16 window, u32 attr);
-u8 HuWinStatGet(s16 window);
+s16 HuWinStatGet(s16 window);
 void HuWinMesColSet(s16 window, u8 color);
 void HuWinMesPalSet(s16 window, u8 index, u8 r, u8 g, u8 b);
 void HuWinBGTPLvlSet(s16 window, float tp_level);

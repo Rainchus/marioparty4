@@ -1,13 +1,13 @@
 #include "game/board/player.h"
+#include "game/chrman.h"
+#include "game/objsub.h"
+#include "game/board/com.h"
+#include "game/board/main.h"
+#include "game/board/roll.h"
+#include "game/board/tutorial.h"
+#include "game/board/ui.h"
+#include "game/board/view.h"
 
-//// #include "game/objsub.h"
-extern void omVibrate(s16, s16, s16, s16);
-//// #include "game/board/ui.h"
-extern void BoardStatusHammerShowSet(s32, s32);
-extern void BoardYourTurnExec(s32);
-extern s32 BoardItemUseExec(s32);
-//// #include "game/board/main.h"
-extern f32 BoardDAngleCalc(f32);
 //// #include "game/board/model.h"
 extern s16 BoardModelCreateCharacter(s32, s32, s32*, s32);
 extern void BoardModelExistCheck(s16, s32);
@@ -15,53 +15,27 @@ extern void BoardModelExistDupe(s16, s32);
 extern void BoardModelCameraSet(s16, u16);
 extern void BoardItemStatusKill(s32);
 extern void BoardModelAmbSet(s16, f32, f32, f32);
-extern void BoardModelPosSetV(s16, Vec*);
-extern void BoardModelPosSet(s16, f32, f32, f32);
 extern s32 BoardModelPosGet(s16, Vec*);
-extern void BoardModelRotSetV(s16, Vec*);
-extern void BoardModelRotSet(s16, f32, f32, f32);
 extern s32 BoardModelRotGet(s16, Vec*);
-extern void BoardModelRotYSet(s16, f32);
 extern f32 BoardModelRotYGet(s16);
-extern void BoardModelScaleSetV(s16, Vec*);
-extern void BoardModelScaleSet(s16, f32, f32, f32);
 extern void BoardModelScaleGet(s16, s32*);
 extern void BoardModelVoiceEnableSet(s16, s32, s32);
 extern s32 BoardModelMotionCreate(s16, s32);
 extern void BoardModelMotionKill(s16, s32);
 extern s32 BoardModelMotionEndCheck(s16);
-extern s32 BoardModelMotionStart(s16, s32, s32);
 extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, u32);
-extern void BoardModelMotionSpeedSet(s16, f32);
 extern void BoardModelMotionTimeSet(s16, f32);
 extern f32 BoardModelMotionTimeGet(s16);
 extern f32 BoardModelMotionMaxTimeGet(s16);
 extern void BoardModelMotionTimeRangeSet(s16, s32, s32);
 extern void BoardModelAttrSet(s16, s32);
 extern void BoardModelAttrReset(s16, s32);
-//// #include "game/board/tutorial.h"
-extern BoardTutorialHookExec(s16, s32);
-//// #include "game/board/com.h"
-extern void BoardComUseItemSet(s32, s32);
 //// #include "game/board/overhead.h"
-extern void BoardViewOverheadExec(s32);
-extern void BoardViewMapExec(s32);
-//// #include "game/board/roll.h"
-extern s32 BoardRollExec(s32);
-extern void BoardRollKill(void);
-//// #include "game/chrman.h"
-extern void CharModelDataClose(s16);
-extern void CharModelStepTypeSet(s16, s32);
 //// #include "game/board/pad.h"
 extern s8 HuPadStkX[4];
 extern s8 HuPadStkY[4];
 extern u16 HuPadBtnDown[4];
 extern u8 HuPadDStk[4];
-extern s16 boardTutorialDirInputTime;
-extern s8 boardTutorialDirInputX;
-extern s8 boardTutorialDirInputY;
-//// #include "game/board/view.h"
-void BoardViewMapExec(s32);
 ////
 
 typedef struct bitcopy {

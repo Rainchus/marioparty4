@@ -15,35 +15,34 @@
 
 extern FileListEntry _ovltbl[];
 u32 GlobalCounter;
-u32 lbl_801D3A50;
-u32 lbl_801D3A4C;
-u32 lbl_801D3A48;
-u32 lbl_801D3A44;
-u32 lbl_801D3A40;
-u32 lbl_801D3A3C;
-u32 lbl_801D3A38;
-u32 lbl_801D3A34;
-u32 lbl_801D3A30;
-u32 lbl_801D3A2C;
-u32 lbl_801D3A28;
-u32 lbl_801D3A24;
-u32 lbl_801D3A20;
-u32 lbl_801D3A1C;
-u32 lbl_801D3A18;
-u32 lbl_801D3A14;
-u32 lbl_801D3A10;
-u32 lbl_801D3A0C;
-u32 lbl_801D3A08;
+static u32 vcheck;
+static u32 vmiss;
+static u32 vstall;
+static u32 top_pixels_in;
+static u32 top_pixels_out;
+static u32 bot_pixels_in;
+static u32 bot_pixels_out;
+static u32 clr_pixels_in;
+static u32 total_copy_clks;
+static u32 cp_req;
+static u32 tc_req;
+static u32 cpu_rd_req;
+static u32 cpu_wr_req;
+static u32 dsp_req;
+static u32 io_req;
+static u32 vi_req;
+static u32 pe_req;
+static u32 rf_req;
+static u32 fi_req;
 s32 HuDvdErrWait;
 s32 SystemInitF;
 
-void main(void) {
-    u32 sp14;
-    u32 sp10;
-    s32 spC;
-    s32 sp8;
-    s16 var_r31;
-    s32 temp_r30;
+void main(void)
+{
+    u32 met0;
+    u32 met1;
+    s16 i;
+    s32 retrace;
 
     HuDvdErrWait = 0;
     SystemInitF = 0;
@@ -58,14 +57,14 @@ void main(void) {
     HuDataInit();
     HuPerfInit();
     HuPerfCreate("USR0", 0xFF, 0xFF, 0xFF, 0xFF);
-    HuPerfCreate("USR1", 0,    0xFF, 0xFF, 0xFF);
+    HuPerfCreate("USR1", 0, 0xFF, 0xFF, 0xFF);
     WipeInit(RenderMode);
     
-    for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        GWPlayerCfg[var_r31].character = -1;
+    for (i = 0; i < 4; i++) {
+        GWPlayerCfg[i].character = -1;
     }
     
-    omMasterInit(0, _ovltbl, 0x63, 1);
+    omMasterInit(0, _ovltbl, OVL_COUNT, OVL_BOOT);
     VIWaitForRetrace();
     
     if (VIGetNextField() == 0) {
@@ -73,7 +72,7 @@ void main(void) {
         VIWaitForRetrace();
     }
     while (1) {
-        temp_r30 = VIGetRetraceCount();
+        retrace = VIGetRetraceCount();
         if (HuSoftResetButtonCheck() != 0 || HuDvdErrWait != 0) {
             continue;
         }
@@ -100,28 +99,31 @@ void main(void) {
         pfDrawFonts();
         HuPerfEnd(1);
         msmMusFdoutEnd();
-        HuSysDoneRender(temp_r30);
-        GXReadGPMetric(&sp14, &sp10);
-        GXReadVCacheMetric(&lbl_801D3A50, &lbl_801D3A4C, &lbl_801D3A48);
-        GXReadPixMetric(&lbl_801D3A44, &lbl_801D3A40, &lbl_801D3A3C, &lbl_801D3A38, &lbl_801D3A34, &lbl_801D3A30);
-        GXReadMemMetric(&lbl_801D3A2C, &lbl_801D3A28, &lbl_801D3A24, &lbl_801D3A20, &lbl_801D3A1C, &lbl_801D3A18, &lbl_801D3A14, &lbl_801D3A10, &lbl_801D3A0C, &lbl_801D3A08);
+        HuSysDoneRender(retrace);
+        GXReadGPMetric(&met0, &met1);
+        GXReadVCacheMetric(&vcheck, &vmiss, &vstall);
+        GXReadPixMetric(&top_pixels_in, &top_pixels_out, &bot_pixels_in, &bot_pixels_out, &clr_pixels_in, &total_copy_clks);
+        GXReadMemMetric(&cp_req, &tc_req, &cpu_rd_req, &cpu_wr_req, &dsp_req, &io_req, &vi_req, &pe_req, &rf_req, &fi_req);
         HuPerfEnd(2);
         GlobalCounter++;
     }
 }
 
-void HuSysVWaitSet(s16 arg0) {
-    minimumVcount = arg0;
-    minimumVcountf = arg0;
+void HuSysVWaitSet(s16 vcount)
+{
+    minimumVcount = vcount;
+    minimumVcountf = vcount;
 }
 
-s16 HuSysVWaitGet(void) {
+s16 HuSysVWaitGet(s16 param)
+{
     return (s16) minimumVcount;
 }
 
 s32 rnd_seed = 0x0000D9ED;
 
-s32 rand8(void) {
+s32 rand8(void)
+{
     rnd_seed = (rnd_seed * 0x41C64E6D) + 0x3039;
-    return (u8)(((rnd_seed + 1) >> 0x10) & 0xFF);
+    return (u8)(((rnd_seed + 1) >> 16) & 0xFF);
 }

@@ -1,4 +1,8 @@
 #include "include/REL/w10Dll.h"
+#include "game/board/main.h"
+#include "game/board/star.h"
+#include "game/board/tutorial.h"
+#include "game/board/ui.h"
 
 void fn_1_D2C(void) {
     fn_1_BA0(0x2E0001);

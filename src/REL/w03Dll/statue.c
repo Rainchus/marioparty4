@@ -7,9 +7,11 @@
 #include "game/audio.h"
 #include "game/board/space.h"
 #include "game/board/player.h"
+#include "game/board/ui.h"
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 #include "game/board/main.h"
+#include "game/objsub.h"
 
 void fn_1_1358(void);
 void fn_1_152C(void);
@@ -29,7 +31,6 @@ s32 BoardPlayerMotBlendCheck(s32);
 f32 BoardPlayerRotYGet(s32);
 void BoardConfettiCreate(Point3d*, s16, f32);
 double atan2(double y, double x);
-void omVibrate(s16, s16, s16, s16);
 f32 BoardModelMotionTimeGet(s16);
 
 //DATA
@@ -41,26 +42,26 @@ s32 lbl_1_data_288 = -1;
 
 char lbl_1_data_28C[] = "%d";
 
-s32 lbl_1_data_290[] = { //TODO: make sure this actually uses MAKE_DATA_NUM macro
-    MAKE_DATA_NUM(0x5F, 0x62),
-    MAKE_DATA_NUM(0x1A, 0x62),
-    MAKE_DATA_NUM(0x6D, 0x62),
-    MAKE_DATA_NUM(0x8A, 0x62),
-    MAKE_DATA_NUM(0x85, 0x62),
-    MAKE_DATA_NUM(0x11, 0x62),
-    MAKE_DATA_NUM(0x0D, 0x62),
-    MAKE_DATA_NUM(0x81, 0x62),
+s32 lbl_1_data_290[] = { //TODO: make sure this actually uses DATA_MAKE_NUM macro
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x62),
 };
 
-s32 lbl_1_data_2B0[] = { //TODO: make sure this actually uses MAKE_DATA_NUM macro
-    MAKE_DATA_NUM(0x5F, 0x33),
-    MAKE_DATA_NUM(0x1A, 0x33),
-    MAKE_DATA_NUM(0x6D, 0x33),
-    MAKE_DATA_NUM(0x8A, 0x33),
-    MAKE_DATA_NUM(0x85, 0x33),
-    MAKE_DATA_NUM(0x11, 0x33),
-    MAKE_DATA_NUM(0x0D, 0x33),
-    MAKE_DATA_NUM(0x81, 0x33),
+s32 lbl_1_data_2B0[] = { //TODO: make sure this actually uses DATA_MAKE_NUM macro
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x33),
 };
 
 s32 lbl_1_data_2D0[] = {
