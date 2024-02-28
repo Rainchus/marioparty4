@@ -3,6 +3,7 @@
 #include "REL/w03Dll.h"
 #include "board_unsplit.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
 
 double sin(double x);
@@ -10,13 +11,7 @@ double cos(double x);
 double atan2(double y, double x);
 s16 BoardModelIDGet(s16 model);
 void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
-float BoardModelMotionTimeGet(s16 model);
-s32 BoardModelMotionShiftSet(s16 model, s32 motion, float time, float shift_time, u32 attr);
-void BoardPlayerPosSet(s32, f32, f32, f32);
-s32 BoardModelHookSet(s16 model, char *name, s16 hook);
 
-
-#define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
 
 extern s16 lbl_1_bss_C[14];
 extern s16 boardPlayerMdl[4];
@@ -244,9 +239,7 @@ s32 fn_1_6898(s32 arg0) {
     return 1;
 }
 
-float BoardModelRotYGet(s16 model);
 s32 BoardDAngleCalcRange(float *value, float min, float range);
-float BoardModelRotYGet(s16 model);
 
 void fn_1_6B98(s32 arg0) {
     Vec sp30;

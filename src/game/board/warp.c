@@ -1,5 +1,6 @@
 #include "game/board/warp.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
 #include "game/wipe.h"
@@ -21,10 +22,6 @@ extern void BoardCharWheelInit(s32, s32);
 extern void BoardCharWheelSpeedSet(f32);
 extern void BoardCharWheelWait(void);
 extern s32 BoardCharWheelResultGet(void);
-extern f32 BoardModelMotionTimeGet(s16);
-extern void BoardModelHookReset(s16);
-extern s32 BoardModelHookSet(s16, char*, s16);
-extern s32 BoardModelMotionEndCheck(s16);
 
 static Vec warpPos;
 

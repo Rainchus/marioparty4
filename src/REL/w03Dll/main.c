@@ -1,9 +1,13 @@
 #include "dolphin.h"
 #include "REL/executor.h"
-#include "game/process.h"
+#include "game/audio.h"
 #include "game/data.h"
 #include "game/gamework_data.h"
+#include "game/process.h"
+#include "game/wipe.h"
 #include "REL/w03Dll.h"
+#include "game/board/lottery.h"
+#include "game/board/model.h"
 #include "game/board/space.h"
 #include "game/board/star.h"
 #include "game/object.h"
@@ -11,9 +15,6 @@
 #include "math.h"
 #include "board_unsplit.h"
 #include "game/hsfman.h"
-
-s32 BoardModelPosSet(s16, f32, f32, f32);
-s32 BoardModelMotionStart(s16, s32, u32);
 
 void fn_8005B150(void*, void*);
 void fn_1_740(void);
@@ -34,14 +35,6 @@ typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
 
-
-f32 BoardModelMotionTimeGet(s16);
-s16 BoardModelCreate(s32, s32*, s32);
-void BoardModelKill(s16);
-void BoardModelMotionStartEndSet(s16, s32, s32);
-void Hu3DFogSet(f32, f32, u8, u8, u8);
-void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6);
-u8 WipeStatGet(void);
 
 //DATA
 w03StructUnk0 lbl_1_data_0[] = {
@@ -328,7 +321,7 @@ void fn_1_B5C(s32 arg0) {
     }
     BoardModelAttrSet(lbl_1_bss_C[0], 0x40000001);
     BoardModelMotionTimeSet(lbl_1_bss_C[0], var_f31);
-    BoardModelMotionStartEndSet(lbl_1_bss_C[0], (s32) var_f31, (s32) var_f28);
+    BoardModelMotionStartEndSet(lbl_1_bss_C[0], var_f31, var_f28);
 }
 
 void fn_1_CF4(void) {

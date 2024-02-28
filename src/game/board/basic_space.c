@@ -1,5 +1,6 @@
 #include "game/board/basic_space.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
 #include "game/data.h"
@@ -37,7 +38,6 @@ static void CoinChgDisappear(omObjData*, coinChg*);
 
 extern void BoardCameraViewSet(s32);
 extern void BoardPlayerPosGet(s32, Vec*);
-extern void BoardModelPosGet(s16, Vec*);
 extern void BoardPlayerMotionEndWait(s32);
 extern void BoardPlayerCoinsAdd(s32, s32);
 extern void BoardRotateDiceNumbers(s32);
