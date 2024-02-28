@@ -190,7 +190,7 @@ void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, fl
     }
 }
 
-void HuAudFXListnerUpdate(s32 arg0, s32 arg1) {
+void HuAudFXListnerUpdate(Vec *arg0, Vec *arg1) {
     if (omSysExitReq == 0) {
         msmSeUpdataListener(arg0, arg1);
     }

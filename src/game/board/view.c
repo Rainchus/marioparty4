@@ -578,8 +578,8 @@ static void UpdateOverheadView(omObjData *arg0) {
     sp20.y = var_r29[1];
     sp20.z = 1000.0f;
     BoardCameraRotGet(&sp8);
-    PSMTXRotRad(sp5C, 0x78, sp8.x * 0.017453292f);
-    PSMTXRotRad(sp2C, 0x79, sp8.y * 0.017453292f);
+    PSMTXRotRad(sp5C, 'x', MTXDegToRad(sp8.x));
+    PSMTXRotRad(sp2C, 'y', MTXDegToRad(sp8.y));
     PSMTXConcat(sp2C, sp5C, sp2C);
     BoardModelMtxSet(temp_r31->unk04, &sp2C);
     Hu3D2Dto3D(&sp20, 1, &sp20);

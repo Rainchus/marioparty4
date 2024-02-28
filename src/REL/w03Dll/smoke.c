@@ -3,6 +3,7 @@
 #include "REL/w03Dll.h"
 #include "board_unsplit.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 
 typedef struct w03UnkWorkStruct {
     s16 unk_00[5];
@@ -16,7 +17,6 @@ extern Process *boardObjMan;
 extern s16 lbl_1_data_1E0;
 
 void fn_1_79E0(omObjData* arg0);
-f32 BoardModelMotionMaxTimeGet(s16);
 
 char kemuri1[] = "kemuri1";
 char kemuri2[] = "kemuri2";

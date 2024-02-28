@@ -8,7 +8,9 @@
 #include "string.h"
 #include "game/hsfman.h"
 #include "game/hsfdraw.h"
+#include "game/board/lottery.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/pause.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
@@ -58,7 +60,6 @@ static CameraView camViewTbl[] = {
 };
 
 
-extern void BoardModelPosGet(s16 model, Vec *pos);
 extern s32 BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
 extern void BoardMGSetupPlayClear(void);

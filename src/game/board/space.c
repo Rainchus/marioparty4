@@ -1,6 +1,8 @@
 #include "game/gamework_data.h"
 #include "game/flag.h"
+#include "game/board/lottery.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
 #include "game/board/star.h"
@@ -13,9 +15,6 @@
 #include "math.h"
 #include "string.h"
 
-
-extern s16 BoardModelCreate(s32 file, s32 *data, s32 arg3);
-extern s16 BoardModelIDGet(s16 model);
 
 static BoardSpace spaceData[2][256];
 s16 boardSpaceStarTbl[8];
@@ -834,7 +833,7 @@ static void DrawSpaces(ModelData *model, Mtx matrix)
 					if(player_pos.y-space_curr->pos.y < 0.0f) {
 						y_dist = -(player_pos.y-space_curr->pos.y);
 					} else {
-						y_dist  = player_pos.y-space_curr->pos.y;
+						y_dist = player_pos.y-space_curr->pos.y;
 					}
 					if(y_dist < 10.0f) {
 						space_hilite = space_curr;
