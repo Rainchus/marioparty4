@@ -21,7 +21,7 @@ extern f32 BoardModelRotYGet(s16);
 extern void BoardModelScaleGet(s16, s32*);
 extern void BoardModelVoiceEnableSet(s16, s32, s32);
 extern s32 BoardModelMotionCreate(s16, s32);
-extern void BoardModelMotionKill(s16, s32);
+extern s32 BoardModelMotionKill(s16, s32);
 extern s32 BoardModelMotionEndCheck(s16);
 extern s32 BoardModelMotionShiftSet(s16, s32, f32, f32, u32);
 extern void BoardModelMotionTimeSet(s16, f32);
@@ -514,8 +514,8 @@ s32 BoardPlayerMotionCreate(s32 arg0, s32 arg1) {
     return BoardModelMotionCreate(BoardPlayerModelGet(arg0), arg1);
 }
 
-void BoardPlayerMotionKill(s32 arg0, s32 arg1) {
-    BoardModelMotionKill(BoardPlayerModelGet(arg0), arg1);
+s32 BoardPlayerMotionKill(s32 arg0, s32 arg1) {
+    return BoardModelMotionKill(BoardPlayerModelGet(arg0), arg1);
 }
 
 s32 BoardPlayerMotionEndCheck(s32 arg0) {
