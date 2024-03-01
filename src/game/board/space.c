@@ -636,7 +636,7 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 		return 1;
 	}
 	if(space_ptr->flag & 0x600000) {
-		u16 mg_param = GWSystem.unk_38;
+		s32 mg_param = GWSystem.unk_38;
 		if(BoardPlayerSizeGet(player) == 1) {
 			BoardRotateDiceNumbers(player);
 			BoardMGCreate(mg_param);
@@ -755,6 +755,32 @@ void BoardSpaceHide(s32 value)
 	}
 }
 
+static inline void InitGXSpace()
+{
+    GXColor color = {0xFF, 0xFF, 0xFF, 0xFF};
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXInvalidateTexAll();
+    GXLoadTexObj(&spaceTex, GX_TEXMAP0);
+    GXSetNumTexGens(1);
+    GXSetNumTevStages(1);
+    GXSetTevColor(GX_TEVREG0, color);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+    GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
+    GXSetNumChans(1);
+    GXSetChanAmbColor(GX_COLOR0A0, color);
+    GXSetChanMatColor(GX_COLOR0A0, color);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 1, GX_DF_CLAMP, GX_AF_SPOT);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+    GXSetCullMode(GX_CULL_BACK);
+}
+
 //Some stack allocation issues. code around BoardPlayerGetCurr is incorrect too
 static void DrawSpaces(ModelData *model, Mtx matrix)
 {
@@ -780,41 +806,19 @@ static void DrawSpaces(ModelData *model, Mtx matrix)
 	GXSetViewport(camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h, camera->viewport_near, camera->viewport_far);
 	GXSetScissor(camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h);
 	{
-		GXColor color = { 0xFF, 0xFF, 0xFF, 0xFF };
 		BoardSpace *space_curr;
 		BoardSpace *space_hilite;
 		PlayerState *player;
-		PlayerState *player_temp;
 		s16 player_mdl;
 		float y_dist;
 		s32 space_img;
 		u16 space_type;
 		float uv_x, uv_y, uv_size;
+		InitGXSpace();
 		
-		GXClearVtxDesc();
-		GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
-		GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
-		GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
-		GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-		GXInvalidateTexAll();
-		GXLoadTexObj(&spaceTex, GX_TEXMAP0);
-		GXSetNumTexGens(1);
-		GXSetNumTevStages(1);
-		GXSetTevColor(GX_TEVREG0, color);
-		GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
-		GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
-		GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
-		GXSetNumChans(1);
-		GXSetChanAmbColor(GX_COLOR0A0, color);
-		GXSetChanMatColor(GX_COLOR0A0, color);
-		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
-		GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 1, GX_DF_CLAMP, GX_AF_SPOT);
-		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
-		GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
-		GXSetCullMode(GX_CULL_BACK);
-		player = player_temp = BoardPlayerGetCurr();
+		player = BoardPlayerGet(GWSystem.player_curr);
 		BoardPlayerPosGet(GWSystem.player_curr, &player_pos);
-		player_mdl = BoardModelIDGet(BoardPlayerModelGetCurr());
+		player_mdl = BoardModelIDGet(BoardPlayerModelGet(GWSystem.player_curr));
 		space_curr = &spaceData[0][0];
 		space_hilite = NULL;
 		GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);

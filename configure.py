@@ -366,7 +366,7 @@ config.libs = [
             Object(Matching, "game/board/audio.c"),
             Object(Matching, "game/board/com.c"),
             Object(Matching, "game/board/view.c"),
-            Object(NonMatching, "game/board/space.c"),
+            Object(Matching, "game/board/space.c"),
             Object(NonMatching, "game/board/shop.c"),
             Object(Matching, "game/board/lottery.c"),
             Object(Matching, "game/board/basic_space.c"),

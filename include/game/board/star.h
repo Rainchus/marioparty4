@@ -7,7 +7,7 @@
 
 void BoardStarHostSet(s16 arg0);
 s16 BoardStarHostMdlGet(void);
-void BoardStarExec(s32 arg0, BoardSpace *arg1);
+void BoardStarExec(s32 arg0, s32 arg1);
 void BoardStarGive(s32 arg0, Vec *arg1);
 void BoardStarShowNext(s32 arg0);
 
