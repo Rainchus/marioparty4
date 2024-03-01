@@ -157,7 +157,7 @@ s16 BoardStarHostMdlGet(void) {
     return hostMdl;
 }
 
-void BoardStarExec(s32 arg0, BoardSpace *arg1) {
+void BoardStarExec(s32 arg0, s32 arg1) {
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
         return;
     }
