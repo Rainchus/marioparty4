@@ -126,6 +126,13 @@ config.wibo_tag = "0.6.11"
 # Project
 config.config_path = Path("config") / config.version / "config.yml"
 config.check_sha_path = Path("config") / config.version / "build.sha1"
+config.asflags = [
+    "-mgekko",
+    "--strip-local-absolute",
+    "-I include",
+    f"-I build/{config.version}/include",
+    f"--defsym version={version_num}",
+]
 config.ldflags = [
     "-fp hardware",
     "-nodefaults",
