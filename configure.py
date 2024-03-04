@@ -117,10 +117,11 @@ if not is_windows():
     config.wrapper = args.wrapper
 
 # Tool versions
+config.binutils_tag = "2.42-1"
 config.compilers_tag = "20231018"
-config.dtk_tag = "v0.6.3"
+config.dtk_tag = "v0.7.4"
 config.sjiswrap_tag = "v1.1.1"
-config.wibo_tag = "0.6.3"
+config.wibo_tag = "0.6.11"
 
 # Project
 config.config_path = Path("config") / config.version / "config.yml"
