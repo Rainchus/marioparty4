@@ -1000,7 +1000,7 @@ config.libs = [
     ),
     Rel('safDll',
         objects = {
-            Object(NonMatching, "REL/safDll/main.c"),
+            Object(Matching, "REL/safDll/main.c"),
         }
     ),
     Rel('selmenuDll',
