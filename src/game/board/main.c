@@ -8,6 +8,7 @@
 #include "string.h"
 #include "game/hsfman.h"
 #include "game/hsfdraw.h"
+#include "game/board/battle.h"
 #include "game/board/lottery.h"
 #include "game/board/main.h"
 #include "game/board/model.h"

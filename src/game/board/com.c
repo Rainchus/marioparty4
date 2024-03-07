@@ -510,7 +510,7 @@ static BOOL CheckSwapUse(s32 player, s32 item) {
     character = GWPlayer[player].character;
     switch (diff) {
         case 0:
-			chance = 0x32;
+            chance = 0x32;
             break;
         case 1:
             chance = 0x19;
