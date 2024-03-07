@@ -11,19 +11,16 @@
 #include "game/window.h"
 #include "game/wipe.h"
 #include "game/board/audio.h"
+#include "game/board/boo.h"
 #include "game/board/com.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
+#include "game/board/star.h"
 #include "game/board/ui.h"
 #include "game/board/window.h"
 #include "game/board/view.h"
-
-#include "game/board/star.h"
-#include "game/board/boo.h"
-
-void BoardCharWheelWait(void);
 
 typedef struct {
     /* 0x00 */ s16 unk00;
@@ -52,9 +49,10 @@ typedef struct {
     /* 0x04 */ Vec unk10;
 } UnkGenieCameraStruct; // Size 0x1C
 
-u32 frandmod(u32);
-void BoardBowserSuitInit(s32);
-s16 BoardBowserSuitPlayerModelGet(void);
+extern u32 frandmod(u32);
+extern void BoardBowserSuitInit(s32);
+extern s16 BoardBowserSuitPlayerModelGet(void);
+extern void BoardCharWheelWait(void);
 
 static void ItemProcess(void);
 static void RestoreProcess(void);
@@ -93,14 +91,12 @@ static void RestoreItemMiniSuper(void);
 static void RestoreItemMegaSuper(void);
 static void RestoreItemBowser(void);
 
-// BSS
 static Vec booBallScale;
 static Vec booBallPos;
 static Vec booCamUp;
 static Vec booCamTarget;
 static Vec booCamPos;
 
-// SBSS
 static s16 itemBagItems[3];
 static s8 currItemRestore;
 static s8 currItem;
@@ -110,16 +106,13 @@ static s32 suitCommonMot[2];
 static s16 booBallMdl;
 static float booBallAlpha;
 static char booCoinStr[8];
-// ...
 static float genieFov;
 static AnimData *genieParticleAnim;
 static s16 geniePlayerMot[3];
 static Process *itemProc;
 
-// SDATA
 s32 lbl_801D37A0[2] = { 0x00070075, -1 };
 
-// DATA
 static void (*itemFuncTbl[])(void) = {
     ExecItemMini,
     ExecItemMega,
@@ -137,7 +130,6 @@ static void (*itemFuncTbl[])(void) = {
     ExecItemBag
 };
 
-// DATA + 0x38
 static void (*itemRestoreFuncTbl[])(void) = {
     RestoreItemMini,
     RestoreItemMega,
@@ -155,7 +147,6 @@ static void (*itemRestoreFuncTbl[])(void) = {
     RestoreItemNull
 };
 
-// DATA + 0x70
 static s32 itemMdlTbl[] = {
     0x0007006D,
     0x0007006E,
@@ -173,12 +164,10 @@ static s32 itemMdlTbl[] = {
     0x0007007B
 };
 
-// DATA + 0xA8
 static s32 forceMoveSfxTbl[] = {
     0x38, 0x45, 0x42, 0x4D, 0x48, 0x3F
 };
 
-// DATA + 0xC0
 static s32 callMotTbl[] = {
     0x005F0052,
     0x001A0052,
@@ -190,10 +179,6 @@ static s32 callMotTbl[] = {
     0x00810052
 };
 
-// DATA + 0xE0
-// callHookTbl items
-
-// DATA + 0x178
 static char *callHookTbl[] = {
     "c000m01-itemhook-r",
     "c001m01-itemhook-r",
@@ -205,7 +190,6 @@ static char *callHookTbl[] = {
     "c007m01-itemhook-r"
 };
 
-// DATA + 0x198
 static s32 callAttackMotTbl[] = {
     0x0075001F,
     0x00760005,
@@ -215,7 +199,6 @@ static s32 callAttackMotTbl[] = {
     0x007A0013
 };
 
-// DATA + 0x1B0
 static s32 callAttackMotTbl2[] = {
     0x00750020,
     0x00760006,
@@ -225,7 +208,6 @@ static s32 callAttackMotTbl2[] = {
     0x007A0014
 };
 
-// DATA + 0x1C8
 static s32 suitMotTbl[][2] = {
     { 0x00040001, 0x00040002 },
     { 0x00040004, 0x00040005 },
@@ -301,7 +283,7 @@ static void ItemSizeShowAnim(void) {
     BoardModelRotSetV(suitMdl, &spC);
     BoardModelPosSetV(suitMdl, &sp24);
     for (i = 0; i < 120; i++) {
-        sp24.y += 3.0 * sin(M_PI * var_f31 / 180.0);
+        sp24.y += 3.0 * sin(var_f31 * M_PI / 180.0);
         BoardModelPosSetV(suitMdl, &sp24);
         var_f31 += 9.0f;
         if (var_f31 >= 360.0f) {
@@ -334,7 +316,7 @@ static void ItemRotProc(void) {
     while (1) {
         if (temp_r31->unk00 == 0) {
             sp14 = sp20;
-            sp14.y += temp_r31->unk04 * sin(M_PI * temp_r31->unk0C / 180.0);
+            sp14.y += temp_r31->unk04 * sin(temp_r31->unk0C * M_PI / 180.0);
             BoardModelPosSetV(temp_r31->unk02, &sp14);
             temp_r31->unk0C += temp_r31->unk08;
             if (temp_r31->unk0C >= 360.0f) {
@@ -446,8 +428,8 @@ static void BoardUiInlineFunc02(void) {
 static inline void BoardUiInlineFunc03(s32 arg0) {
     Vec sp8;
     Vec sp14;
-	s32 space = GWPlayer[arg0].space_curr;
-	
+    s32 space = GWPlayer[arg0].space_curr;
+
     BoardSpacePosGet(0, space, &sp14);
     BoardPlayerPosGet(arg0, &sp8);
     BoardPlayerPosLerpStart(arg0, &sp8, &sp14, 0x14);
@@ -774,7 +756,7 @@ static void ExecItemHammer(void) {
 }
 
 static void ExecItemPipe(void) {
-	Vec spE4[2];
+    Vec spE4[2];
     Vec spCC[2];
     Vec spB4[2];
     Vec spA8;
@@ -987,10 +969,10 @@ static void ExecItemPipe(void) {
     for (var_r31 = 0; var_r31 < 2; var_r31++) {
         BoardModelKill(sp30[var_r31]);
     }
-	HuPrcKill(NULL);
-	while (1) {
-		HuPrcVSleep();
-	}
+    HuPrcKill(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
 }
 
 static void ExecItemSwap(void) {
@@ -1140,12 +1122,12 @@ static void ExecItemSwap(void) {
     for (var_r31 = 0; var_r31 < 0x3C; var_r31++) {
         for (var_r30 = 0; var_r30 < var_r28 / 2; var_r30++) {
             sp6C = sp1A4[var_r30];
-            sp6C.x += 3.0 * sin((M_PI * (frand() % 360)) / 180.0);
-            sp6C.y += 3.0 * sin((M_PI * (frand() % 360)) / 180.0);
+            sp6C.x += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            sp6C.y += 3.0 * sin((frand() % 360) * M_PI / 180.0);
             BoardModelPosSetV(sp54[var_r30], &sp6C);
             sp6C = sp180[var_r30];
-            sp6C.x += 3.0 * sin((M_PI * (frand() % 360)) / 180.0);
-            sp6C.y += 3.0 * sin((M_PI * (frand() % 360)) / 180.0);
+            sp6C.x += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            sp6C.y += 3.0 * sin((frand() % 360) * M_PI / 180.0);
             BoardModelPosSetV(sp54[var_r30 + 3], &sp6C);
         }
         HuPrcSleep(2);
@@ -1227,8 +1209,8 @@ static void ExecItemSpark(void) {
     s32 temp_r28;
     s16 temp_r30;
     s32 i;
-	
-	(void)106.0;
+
+    (void)106.0;
     temp_r30 = BoardModelCreate(0x70067, NULL, 0);
     BoardModelLayerSet(temp_r30, 3);
     BoardModelVisibilitySet(temp_r30, 0);
@@ -1279,8 +1261,8 @@ static void ExecItemSpark(void) {
     BoardSpaceRotGet(0, GWPlayer[currItemRestore].space_curr, &sp20);
     BoardModelRotSetV(suitMdl, &sp20);
     BoardModelPosGet(suitMdl, &sp2C);
-    sp2C.z += 106.0 * sin(M_PI * sp20.x / 180.0);
-    sp2C.x -= 106.0 * sin(M_PI * sp20.z / 180.0);
+    sp2C.z += 106.0 * sin(sp20.x * M_PI / 180.0);
+    sp2C.x -= 106.0 * sin(sp20.z * M_PI / 180.0);
     BoardModelPosSetV(suitMdl, &sp2C);
     HuAudFXPlay(0x31B);
     BoardModelMotionStart(suitMdl, 1, 0);
@@ -1335,7 +1317,6 @@ static void ExecItemLight(void) {
     }
 }
 
-// https://decomp.me/scratch/gbgTk
 static void ExecItemWhistle(void) {
     Vec spF0[4];
     Vec spC0[4];
@@ -1354,22 +1335,21 @@ static void ExecItemWhistle(void) {
     s16 sp8;
     float var_f30;
     float var_f31;
-	s32 temp_r23;
-	char *temp_r22;
+    s32 temp_r23;
+    char *temp_r22;
     s32 temp_r18;
-	s16 temp_r17;
+    s16 temp_r17;
     s16 temp_r21;
     s16 temp_r20;
     s32 temp_r31;
     s16 temp_r28;
-	s16 temp_r19;
-	s32 var_r26;
+    s16 temp_r19;
+    s32 var_r26;
     s16 var_r25;
     s16 var_r27;
     s32 var_r29;
     s32 var_r31;
-	
-	
+
     var_r31 = GWPlayerCfg[currItemRestore].character;
     temp_r23 = BoardPlayerMotionCreate(currItemRestore, callMotTbl[var_r31]);
     temp_r22 = callHookTbl[var_r31];
@@ -1379,7 +1359,7 @@ static void ExecItemWhistle(void) {
     temp_r19 = GWBoardGet();
     temp_r21 = BoardModelMotionCreate(temp_r28, callAttackMotTbl[temp_r19]);
     temp_r20 = BoardModelMotionCreate(temp_r28, callAttackMotTbl2[temp_r19]);
-    var_f31 = 360.0f * (0.003921569f * (s32)((u8) frand()));
+    var_f31 = 0.003921569f * (frand() & 0xFF) * 360.0f;
     spA8.x = spA8.y = spA8.z = 0.5f;
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         sp20[var_r31] = BoardModelCreate(0x20027, NULL, 1);
@@ -1387,9 +1367,9 @@ static void ExecItemWhistle(void) {
         temp_r17 = BoardModelMotionCreate(sp20[var_r31], 0x20028);
         BoardModelMotionStart(sp20[var_r31], temp_r17, 0x40000001);
         sp28[var_r31] = 120.0f;
-        spF0[var_r31].x = spB4.x + 120.0 * sin(M_PI * var_f31 / 180.0);
+        spF0[var_r31].x = spB4.x + 120.0 * sin(var_f31 * M_PI / 180.0);
         spF0[var_r31].y = 1000.0f + spB4.y + 100.0f * var_r31;
-        spF0[var_r31].z = spB4.z + 120.0 * cos(M_PI * var_f31 / 180.0);
+        spF0[var_r31].z = spB4.z + 120.0 * cos(var_f31 * M_PI / 180.0);
         spC0[var_r31].x = spC0[var_r31].z = 0.0f;
         spC0[var_r31].y = var_f31 + 90.0f;
         if (spC0[var_r31].y >= 360.0f) {
@@ -1508,8 +1488,8 @@ static void ExecItemWhistle(void) {
             if (spC0[var_r31].y >= 360.0f) {
                 spC0[var_r31].y -= 360.0f;
             }
-            spF0[var_r31].x = spB4.x + 120.0 * sin(M_PI * sp38[var_r31] / 180.0);
-            spF0[var_r31].z = spB4.z + 120.0 * cos(M_PI * sp38[var_r31] / 180.0);
+            spF0[var_r31].x = spB4.x + 120.0 * sin(sp38[var_r31] * M_PI / 180.0);
+            spF0[var_r31].z = spB4.z + 120.0 * cos(sp38[var_r31] * M_PI / 180.0);
             BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
             BoardModelRotSetV(sp20[var_r31], &spC0[var_r31]);
         }
@@ -1541,8 +1521,8 @@ static void ExecItemWhistle(void) {
                     spF0[var_r31].y = spB4.y;
                     sp48[var_r31] = -1.0f;
                 }
-                spF0[var_r31].x = spB4.x + sp28[var_r31] * sin(M_PI * sp38[var_r31] / 180.0);
-                spF0[var_r31].z = spB4.z + sp28[var_r31] * cos(M_PI * sp38[var_r31] / 180.0);
+                spF0[var_r31].x = spB4.x + sp28[var_r31] * sin(sp38[var_r31] * M_PI / 180.0);
+                spF0[var_r31].z = spB4.z + sp28[var_r31] * cos(sp38[var_r31] * M_PI / 180.0);
                 BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
             }
         }
@@ -1571,7 +1551,7 @@ static void ExecItemWhistle(void) {
         BoardModelKill(sp20[var_r31]);
     }
     BoardModelMotionKill(temp_r28, temp_r21);
-	BoardModelMotionKill(temp_r28, temp_r20);
+    BoardModelMotionKill(temp_r28, temp_r20);
     BoardStarShowNext(currItemRestore);
     HuPrcKill(NULL);
     while (1) {
@@ -1654,9 +1634,9 @@ static void ExecItemBowser(void) {
 }
 
 static s32 booMotTbl[3] = {
-	0x00020018,
-	0x00020016,
-	-1
+    0x00020018,
+    0x00020016,
+    -1
 };
 
 static inline void ExecItemBooBallInlineFunc01(s32 speed) {
@@ -1715,7 +1695,7 @@ static inline void ExecItemBooBallInlineFunc02(s32 speed) {
         BoardModelPosSetV(booBallMdl, &booBallPos);
         HuPrcVSleep();
     }
-	booBallPos.y = sp20.y + 20.0f;
+    booBallPos.y = sp20.y + 20.0f;
     booBallScale.x = booBallScale.y = booBallScale.z = 1.0f;
     booBallAlpha = 255.0f;
     BoardModelPosSetV(booBallMdl, &booBallPos);
@@ -1723,7 +1703,6 @@ static inline void ExecItemBooBallInlineFunc02(s32 speed) {
     BoardModelAlphaSet(booBallMdl, booBallAlpha);
 }
 
-// https://decomp.me/scratch/0M6lm
 static void ExecItemBooBall(void) {
     UnkItemShowProcStruct spA0;
     UnkItemShowProcStruct sp80;
@@ -1747,7 +1726,6 @@ static void ExecItemBooBall(void) {
     BoardModelLayerSet(booBallMdl, 2);
     BoardModelAttrSet(booBallMdl, 2);
     BoardModelVisibilitySet(booBallMdl, 0);
-    // Inline? (same pattern in ExecItemGenie)
     spA0.unk02 = suitMdl;
     spA0.unk04 = 4.0f;
     spA0.unk08 = 3.0f;
@@ -1755,17 +1733,14 @@ static void ExecItemBooBall(void) {
     spA0.unk1C = 1;
     HuAudFXPlay(0x350);
     temp_r17 = ItemShowProc(&spA0, NULL);
-    // ======================================
     BoardModelPosGet(suitMdl, &booBallPos);
     ExecItemBooBallInlineFunc02(60);
-    // Inline? =================================
     sp80.unk02 = booBallMdl;
     sp80.unk04 = 4.0f;
     sp80.unk08 = 4.0f;
     sp80.unk10 = sp80.unk14 = sp80.unk18 = 0.0f;
     sp80.unk1C = 1;
     sp1C = BoardUiInlineFunc05(&sp80);
-    // ======================================
     BoardMusStart(1, 1, 0x7F, 0);
     HuAudFXPlay(0x4C);
     BoardWinCreate(2, 0x120015, 3);
@@ -1791,14 +1766,14 @@ static void ExecItemBooBall(void) {
         do {
             BoardWinCreateChoice(4, 0x120018, 3, 0);
             BoardWinAttrSet(0x10);
-            if (BoardPlayerCoinsGet(currItemRestore) < 0x32 || var_r28 == 0) {
+            if (BoardPlayerCoinsGet(currItemRestore) < 50 || var_r28 == 0) {
                 BoardWinChoiceDisable(1);
             }
             if (var_r26 == 0) {
                 BoardWinChoiceDisable(0);
             }
             if (GWPlayer[currItemRestore].com) {
-                if (var_r28 != 0 && BoardPlayerCoinsGet(currItemRestore) >= 0x32) {
+                if (var_r28 != 0 && BoardPlayerCoinsGet(currItemRestore) >= 50) {
                     BoardComKeySetDown();
                 } else {
                     BoardComKeySetUp();
@@ -1944,9 +1919,9 @@ static void ExecItemBooBall(void) {
 
 static void ForceConsts(void)
 {
-	(void)-0.5f;
-	(void)40.0f;
-	(void)125.0f;
+    (void)-0.5f;
+    (void)40.0f;
+    (void)125.0f;
 }
 
 static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
@@ -2071,7 +2046,6 @@ static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
     }
 }
 
-// DATA + 0x224
 static Vec shadowPos = { 0.0f, 4500.0f, 500.0f };
 static Vec shadowTarget = { 0.0f, 0.9f, -0.1f };
 static Vec shadowUp = { 0.0f, 0.0f, 500.0f };
@@ -2136,7 +2110,6 @@ static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Ve
     }
 }
 
-// DATA + 0x248
 static s32 armUpMotTbl[] = {
     0x005F005C,
     0x001A005C,
@@ -2148,7 +2121,6 @@ static s32 armUpMotTbl[] = {
     0x0081005C
 };
 
-// DATA + 0x268
 static s32 scareMotTbl[] = {
     0x005F001C,
     0x001A001C,
@@ -2160,7 +2132,6 @@ static s32 scareMotTbl[] = {
     0x0081001C
 };
 
-// DATA + 0x288
 static s32 impactMotTbl[] = {
     0x005F005E,
     0x001A005E,
@@ -2172,7 +2143,6 @@ static s32 impactMotTbl[] = {
     0x0081005E
 };
 
-// DATA + 0x2A8
 static UnkGenieCameraStruct cameraDataTbl[] = {
     60.0f, {    0.0f, 100.0f,  950.0f }, { 0.0f, 100.0f, 600.0f },
     60.0f, { -353.0f, 100.0f,  662.5f }, { 0.0f, 100.0f, 600.0f },
@@ -2187,7 +2157,6 @@ static UnkGenieCameraStruct cameraDataTbl[] = {
      5.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f }
 };
 
-// DATA + 0x3DC
 static s32 genieMotTbl[] = {
     0x0007007D,
     0x0007007E,
@@ -2594,7 +2563,7 @@ static void ExecItemBagShow(void) {
             break;
         }
         sp8 = sp14;
-        sp8.y += 15.0 * sin(M_PI * var_f31 / 180.0);
+        sp8.y += 15.0 * sin(var_f31 * M_PI / 180.0);
         BoardModelPosSetV(suitMdl, &sp8);
         var_f31 += 36.0f;
         HuPrcVSleep();
