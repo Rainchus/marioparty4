@@ -5,6 +5,7 @@
 #include "game/board/model.h"
 #include "game/board/star.h"
 #include "game/board/tutorial.h"
+#include "game/board/main.h"
 
 #include "math.h"
 
@@ -78,9 +79,9 @@ void BoardCreate(void) {
     s32 i;
     unkw10Dll* temp_r30;
     s32 temp;
-    s32 temp2;
+    s32 board;
 
-    temp2 = get_current_board();
+    board = BoardCurrGet();
     lbl_1_bss_0 = (W10State *)&GWSystem.board_data;
     lbl_1_bss_0->unk0 = 0;
     lbl_1_bss_0->unk4 = 0;

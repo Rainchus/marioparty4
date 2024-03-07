@@ -1339,7 +1339,7 @@ static void ExecItemPick(void) {
         itemPosTemp[j].x -= 8.0f;
         itemPosTemp[j].y += 16.0f;
     }
-    sp18 = BoardComTutorialItemGet(itemPlayer);
+    sp18 = BoardComUseItemSlotGet(itemPlayer);
     ExecItemPickInlineFunc02(itemPlayer, var_r23, sp18);
 }
 

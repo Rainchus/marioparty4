@@ -16,7 +16,7 @@ s32 BoardSpacePosGet(s32, s32, Vec*);
 void BoardShopTutorialExec(s32);
 void BoardMGSetupTutorialExec(void);
 void BoardBooHouseTutorialExec(void);
-void BoardCharWheelSetTarget(s32);
+void BoardCharWheelTargetSet(s32);
 void BoardSpaceStarSetIndex(s32);
 void BoardLightHookSet(BoardLightHook set, BoardLightHook reset);
 s32 fn_8006DDE8(s16, f32);

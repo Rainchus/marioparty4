@@ -180,12 +180,26 @@ static inline s32 GWMGShowComGet(void)
 
 static inline s32 GWMGListGet(void)
 {
+    if (GWSystem.mg_list == 3) {
+        GWSystem.mg_list = 0;
+    }
     return GWSystem.mg_list;
 }
 
 static inline s32 GWMessSpeedGet(void)
 {
+    if (GWSystem.mess_speed == 3) {
+        GWSystem.mess_speed = 1;
+    }
     return GWSystem.mess_speed;
+}
+
+static inline s32 GWSaveModeGet(void)
+{
+    if (GWSystem.save_mode == 3) {
+        GWSystem.save_mode = 1;
+    }
+    return GWSystem.save_mode;
 }
 
 static inline s32 GWTurnGet(void)

@@ -151,27 +151,6 @@ void BoardPauseStart(void) {
     HuPrcDestructorSet2(mainProcess, PauseExit);
 }
 
-static inline s32 PauseExitInlineFunc01(void) {
-    if (GWSystem.mg_list == 3) {
-        GWSystem.mg_list = 0;
-    }
-    return GWSystem.mg_list;
-}
-
-static inline s32 PauseExitInlineFunc02(void) {
-    if (GWSystem.mess_speed == 3) {
-        GWSystem.mess_speed = 1;
-    }
-    return GWSystem.mess_speed;
-}
-
-static inline s32 PauseExitInlineFunc03(void) {
-    if (GWSystem.save_mode == 3) {
-        GWSystem.save_mode = 1;
-    }
-    return GWSystem.save_mode;
-}
-
 static void PauseExit(void) {
     if (pauseQuitF == 0) {
         BoardRollWinDispSet(1);
@@ -200,15 +179,15 @@ static void PauseExit(void) {
     if (GWPartyGet() == 0) {
         GWGameStat.field10F_bit0 = GWMGExplainGet();
         GWGameStat.field10F_bit1 = GWMGShowComGet();
-        GWGameStat.field10F_bit2 = PauseExitInlineFunc01();
-        GWGameStat.field10F_bit4 = PauseExitInlineFunc02();
-        GWGameStat.field10F_bit6 = PauseExitInlineFunc03();
+        GWGameStat.field10F_bit2 = GWMGListGet();
+        GWGameStat.field10F_bit4 = GWMessSpeedGet();
+        GWGameStat.field10F_bit6 = GWSaveModeGet();
     } else {
         GWGameStat.field110_bit0 = GWMGExplainGet();
         GWGameStat.field110_bit1 = GWMGShowComGet();
-        GWGameStat.field110_bit2 = PauseExitInlineFunc01();
-        GWGameStat.field110_bit4 = PauseExitInlineFunc02();
-        GWGameStat.field110_bit6 = PauseExitInlineFunc03();
+        GWGameStat.field110_bit2 = GWMGListGet();
+        GWGameStat.field110_bit4 = GWMessSpeedGet();
+        GWGameStat.field110_bit6 = GWSaveModeGet();
     }
     mainProcess = NULL;
 }
@@ -390,7 +369,7 @@ void CreatePauseScreen(void) {
                 var_f31 = (var_r28 != 0) ? 0.0f : -90.0f;
                 break;
             case 3:
-                var_r28 = PauseExitInlineFunc01();
+                var_r28 = GWMGListGet();
                 switch (var_r28) {
                     case 1:
                         var_r28 = 0;
@@ -411,7 +390,7 @@ void CreatePauseScreen(void) {
                 var_f31 = (var_r28 != 0) ? 0.0f : -90.0f;
                 break;
             case 5:
-                var_r28 = PauseExitInlineFunc02();
+                var_r28 = GWMessSpeedGet();
                 switch (var_r28) {
                     case 2:
                         var_r28 = 0;
@@ -431,7 +410,7 @@ void CreatePauseScreen(void) {
                 if (temp_r29->unk00_field4 != 0) {
                     GWSystem.save_mode = 1;
                 }
-                var_r28 = PauseExitInlineFunc03();
+                var_r28 = GWSaveModeGet();
                 switch (var_r28) {
                     case 1:
                         var_r28 = 0;

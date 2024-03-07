@@ -24,7 +24,6 @@ typedef struct camera_view {
 	s16 fov;
 } CameraView;
 
-
 omObjData *boardMainObj;
 u32 boardRandSeed;
 static omObjData *last5GfxObj;
@@ -619,15 +618,9 @@ static void CreateBoard(void)
 	GWSystem.mg_next = -1;
 	if(!GWGameStat.field10E_bit5) {
 		s32 type_temp;
-		if(GWSystem.mg_list == 3) {
-			GWSystem.mg_list = 0;
-		}
 		if(GWMGListGet() == 2) {
 			GWSystem.mg_list = 0;
 		}
-	}
-	if(GWSystem.mess_speed == 3) {
-		GWSystem.mess_speed = 1;
 	}
 	mess_speed = GWMessSpeedGet();
 	GWSystem.mess_speed = mess_speed;
