@@ -182,7 +182,6 @@ void BoardWinPause(void) {
 
 void BoardWinCreateChoice(s32 pos, u32 mess, s32 portrait, s32 choice) {
     s32 i;
-    
 
     winPosIdx = pos;
     winChoice = 0;
@@ -209,9 +208,6 @@ void BoardWinCreateChoice(s32 pos, u32 mess, s32 portrait, s32 choice) {
         HuPrcDestructorSet2(winProc, &BoardWinDestroy);
     }
     winMess = mess;
-    if (GWSystem.mess_speed == 3) {
-        GWSystem.mess_speed = 1;
-    }
     BoardWinSpeedSet(GWMessSpeedGet());
     BoardWinPlayerSet(GWSystem.player_curr);
 }
@@ -244,9 +240,6 @@ void BoardWinCreate(s32 pos, u32 mess, s32 portrait) {
         HuPrcDestructorSet2(winProc, &BoardWinDestroy);
     }
     winMess = mess;
-    if (GWSystem.mess_speed == 3) {
-        GWSystem.mess_speed = 1;
-    }
     BoardWinSpeedSet(GWMessSpeedGet());
     BoardWinPlayerSet(GWSystem.player_curr);
     autoPickF = 0;
@@ -300,13 +293,7 @@ void BoardWinKeyWait(void) {
 }
 
 int BoardWinSpeedGet(void) {
-    s32 speed;
-
-    if (GWSystem.mess_speed == 3) {
-        GWSystem.mess_speed = 1;
-    }
-    speed = GWSystem.mess_speed;
-    return winSpeedTbl[speed];
+    return winSpeedTbl[GWMessSpeedGet()];
 }
 
 void BoardWinSpeedSet(s32 value) {
@@ -348,12 +335,10 @@ s32 BoardWinPortraitGetStar(void) {
 }
 
 void BoardWinPlayerSet(s32 player) {
-    s32 temp;
     s32 i;
 
     if (player == -1) {
-        temp = GWSystem.party;
-        if (temp != 1) {
+        if (GWPartyGet() != 1) {
             for (i = 0, disablePlayer = i; i < 4; i++) {
                 if (GWPlayer[i].com != 0) {
                     disablePlayer |= 1 << GWPlayer[i].port;
