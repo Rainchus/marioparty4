@@ -1,5 +1,7 @@
 #include "include/REL/w10Dll.h"
+#include "game/board/lottery.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/star.h"
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
@@ -185,7 +187,7 @@ void fn_1_13A4(void) {
     fn_1_C10(0);
     fn_1_BA0(0x2E002B);
     sp8.x = -33.0f;
-    sp8.y =  sp8.z = 0.0f;
+    sp8.y = sp8.z = 0.0f;
     temp_r3_2 = BoardSpaceFlagSearch(0, 0x80000);
     BoardSpacePosGet(0, temp_r3_2, &sp14);
     BoardModelPosSetV(lbl_1_bss_0->unk8, &sp14);

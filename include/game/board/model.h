@@ -1,5 +1,5 @@
-#ifndef _BOARD_WARP_H
-#define _BOARD_WARP_H
+#ifndef _BOARD_MODEL_H
+#define _BOARD_MODEL_H
 
 #include "game/hsfman.h"
 #include "game/data.h"
@@ -37,16 +37,21 @@ s32 fn_8006DDE8(s16 model, float arg1);
 s32 BoardModelMotionCreate(s16 model, s32 data_num);
 s32 BoardModelMotionKill(s16 model, s32 motion);
 s32 BoardModelMotionStartEndSet(s16 model, s16 start, s16 end);
+s32 BoardModelMotionUpdateSet(s16 model, s32 flag);
+s32 BoardModelVoiceEnableSet(s16 model, s32 motion, s32 flag);
 s32 BoardModelMotionStart(s16 model, s32 slot, u32 attr);
 s32 BoardModelMotionShiftSet(s16 model, s32 motion, float time, float shift_time, u32 attr);
 s32 BoardModelAttrSet(s16 model, u32 attr);
+s32 BoardModelAttrReset(s16 model, u32 attr);
 s32 BoardModelMotionTimeSet(s16 model, float time);
 float BoardModelMotionTimeGet(s16 model);
 float BoardModelMotionMaxTimeGet(s16 model);
 s32 BoardModelMotionSpeedSet(s16 model, float speed);
 s32 BoardModelMotionEndCheck(s16 model);
 s32 BoardModelAlphaSet(s16 model, u8 alpha);
+s32 BoardModelMtxSet(s16 model, Mtx *src);
 s32 BoardModelRotYSet(s16 model, float rot);
+float BoardModelRotYGet(s16 model);
 s32 BoardModelPosSet(s16 model, float x, float y, float z);
 s32 BoardModelPosSetV(s16 model, Vec *pos);
 s32 BoardModelRotSet(s16 model, float x, float y, float z);

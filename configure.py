@@ -117,14 +117,22 @@ if not is_windows():
     config.wrapper = args.wrapper
 
 # Tool versions
+config.binutils_tag = "2.42-1"
 config.compilers_tag = "20231018"
-config.dtk_tag = "v0.6.3"
+config.dtk_tag = "v0.7.4"
 config.sjiswrap_tag = "v1.1.1"
-config.wibo_tag = "0.6.3"
+config.wibo_tag = "0.6.11"
 
 # Project
 config.config_path = Path("config") / config.version / "config.yml"
 config.check_sha_path = Path("config") / config.version / "build.sha1"
+config.asflags = [
+    "-mgekko",
+    "--strip-local-absolute",
+    "-I include",
+    f"-I build/{config.version}/include",
+    f"--defsym version={version_num}",
+]
 config.ldflags = [
     "-fp hardware",
     "-nodefaults",
@@ -366,9 +374,9 @@ config.libs = [
             Object(Matching, "game/board/audio.c"),
             Object(Matching, "game/board/com.c"),
             Object(Matching, "game/board/view.c"),
-            Object(NonMatching, "game/board/space.c"),
+            Object(Matching, "game/board/space.c"),
             Object(NonMatching, "game/board/shop.c"),
-            Object(NonMatching, "game/board/lottery.c"),
+            Object(Matching, "game/board/lottery.c"),
             Object(Matching, "game/board/basic_space.c"),
             Object(Matching, "game/board/warp.c"),
             Object(NonMatching, "game/board/char_wheel.c"),
@@ -377,7 +385,7 @@ config.libs = [
             Object(Matching, "game/board/roll.c"),
             Object(Matching, "game/board/ui.c"),
             Object(Matching, "game/board/block.c"),
-            Object(NonMatching, "game/board/item.c"),
+            Object(Matching, "game/board/item.c"),
             Object(NonMatching, "game/board/bowser.c"),
             Object(NonMatching, "game/board/battle.c"),
             Object(NonMatching, "game/board/fortune.c"),
@@ -992,7 +1000,7 @@ config.libs = [
     ),
     Rel('safDll',
         objects = {
-            Object(NonMatching, "REL/safDll/main.c"),
+            Object(Matching, "REL/safDll/main.c"),
         }
     ),
     Rel('selmenuDll',

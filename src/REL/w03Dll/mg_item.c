@@ -5,6 +5,7 @@
 #include "game/gamework_data.h"
 #include "REL/w03Dll.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/space.h"
 #include "game/object.h"
 #include "game/objsub.h"
@@ -54,7 +55,7 @@ typedef struct w03UnkMG {
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s16 unk_14;
-    /* 0x16  */ s16 unk_16;
+    /* 0x16 */ s16 unk_16;
 } w03UnkMG;
 
 //external symbols
@@ -64,23 +65,13 @@ extern Process *boardObjMan;
 extern u16 HuPadBtnDown[4];
 
 //function signatures
-s32 BoardModelMotionShiftSet(s16, s32, f32, f32, u32);
 s32 BoardVecDAngleCalcRange(float *value, float min, float range);
 void BoardCameraQuakeSet(s32 duration, float strength);
 s16 MGSeqCreate(s32, ...);
 u8 MGSeqStatGet(s16);
-f32 BoardPlayerRotYGet(s32);
-f32 BoardModelMotionTimeGet(s16);
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
-s32 BoardModelScaleGet(s16 model, Vec *dst);
-s32 BoardModelMotionTimeSet(s16 model, float time);
-s32 BoardDAngleCalcRange(float *value, float min, float range);
-u32 BoardRandMod(u32 value);
-void BoardModelMotionStartEndSet(s16, s32, s32);
 void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
-s32 BoardModelPosGet(s16 model, Vec *dst);
 s16 Hu3DMotionShiftIDGet(s16 arg0);
-f32 BoardPlayerMotionTimeGet(s32);
 s32 frand(void);
 
 void fn_1_BE30(s32 arg0, ParticleData* arg1);
@@ -654,7 +645,7 @@ void fn_1_B0A4(s32 arg0) {
     temp_r30->unk00_bit4 = arg0;
 
     for (i = 0; i < 3;) {
-        spC[i] =  BoardRandMod(14);
+        spC[i] = BoardRandMod(14);
         if ((spC[i] != 10) && (spC[i] != 13)) {
             for (j = 0; j < i; j++) {
                 if (spC[i] == spC[j]) {

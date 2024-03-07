@@ -46,8 +46,6 @@ static BOOL TitleProc(void);
 
 void *logoReadNintendo(void);
 
-#define M_PI 3.141592653589793
-
 void ModuleProlog(void)
 {
 	omOvlHisData *history;

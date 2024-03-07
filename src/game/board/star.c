@@ -157,7 +157,7 @@ s16 BoardStarHostMdlGet(void) {
     return hostMdl;
 }
 
-void BoardStarExec(s32 arg0, BoardSpace *arg1) {
+void BoardStarExec(s32 arg0, s32 arg1) {
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
         return;
     }
@@ -717,8 +717,8 @@ void BoardStarShowNext(s32 arg0) {
     Hu3D2Dto3D(&sp44, 1, &sp44);
     BoardModelPosSetV(BoardStarHostMdlGet(), &sp44);
     BoardCameraRotGet(&sp2C);
-    PSMTXRotRad(sp5C, 'y', 0.17453292f);
-    PSMTXRotRad(sp8C, 'x', 0.017453292f * sp2C.x);
+    PSMTXRotRad(sp5C, 'y', MTXDegToRad(10.0f));
+    PSMTXRotRad(sp8C, 'x', MTXDegToRad(sp2C.x));
     PSMTXConcat(sp8C, sp5C, spBC);
     BoardModelMtxSet(BoardStarHostMdlGet(), &spBC);
     BoardModelRotSet(BoardStarHostMdlGet(), 0.0f, 0.0f, 0.0f);

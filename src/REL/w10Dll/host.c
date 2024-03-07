@@ -1,5 +1,6 @@
 #include "REL/w10Dll.h"
 #include "game/data.h"
+#include "game/board/model.h"
 #include "game/board/tutorial.h"
 #include "game/board/window.h"
 

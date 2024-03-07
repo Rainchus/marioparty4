@@ -5,8 +5,9 @@
 #include "game/gamework_data.h"
 #include "REL/w03Dll.h"
 #include "game/audio.h"
-#include "game/board/space.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
 #include "game/board/ui.h"
 #include "board_unsplit.h"
 #include "game/hsfman.h"
@@ -26,12 +27,7 @@ void fn_1_2AC0(void);
 void fn_1_2818(void);
 void fn_1_2A40(void);
 void fn_1_2B44(void);
-s32 BoardDAngleCalcRange(f32*, f32, f32);
-s32 BoardPlayerMotBlendCheck(s32);
-f32 BoardPlayerRotYGet(s32);
-void BoardConfettiCreate(Point3d*, s16, f32);
 double atan2(double y, double x);
-f32 BoardModelMotionTimeGet(s16);
 
 //DATA
 s16 lbl_1_data_280 = -1;
