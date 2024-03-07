@@ -101,7 +101,7 @@ static s32 handUpdateF;
 // ...
 static omObjData *lotteryTicketPickObj;
 static s8 (*comInputDrawP)[2];
-Process *lotteryProc;
+static Process *lotteryProc;
 
 static s16 hostMdl = -1;
 static s16 lotteryMot[4] = { -1, -1, -1, -1 };
@@ -1032,7 +1032,7 @@ static void ExecBallPrize(void) {
     }
 }
 
-const s32 lbl_8011DFD0[] = {
+static const s32 pickSpr[] = {
     0x0007001E,
     0x0007001F,
     0x00070020,
@@ -1043,7 +1043,7 @@ const s32 lbl_8011DFD0[] = {
     0x00070025
 };
 
-const s32 lbl_8011DFF0[] = {
+static const s32 handMdl[] = {
     0x00050009,
     0x0005000A,
     0x0005000B,
@@ -1054,7 +1054,7 @@ const s32 lbl_8011DFF0[] = {
     0x00050010
 };
 
-const s32 lbl_8011E010[] = {
+static const s32 ticketSpr[] = {
     0x0005001D,
     0x0005001E,
     0x0005001F,
@@ -1104,7 +1104,7 @@ static void ExecScratchTicket(s32 arg0) {
     var_r24 = GWPlayer[GWSystem.player_curr].character;
     var_r22 = ticketObj[arg0];
     temp_r30 = OM_GET_WORK_PTR(var_r22, TicketWork);
-    lotteryMdl[4] = BoardModelCreate(lbl_8011DFF0[var_r24], NULL, 0);
+    lotteryMdl[4] = BoardModelCreate(handMdl[var_r24], NULL, 0);
     BoardModelLayerSet(lotteryMdl[4], 6);
     BoardModelPassSet(lotteryMdl[4], 0);
     BoardCameraDirGet(&spC);
@@ -1295,7 +1295,7 @@ static void InitScratchSpr(void) {
         temp_r31->trans.y = 98.0f + 110.0f * (i / 4);
         temp_r31->rot.x = -56.0f;
         temp_r31->rot.y = temp_r31->trans.y;
-        BoardSpriteCreate(lbl_8011E010[ticketPrize[i]], 0x157C, NULL, &sp8);
+        BoardSpriteCreate(ticketSpr[ticketPrize[i]], 0x157C, NULL, &sp8);
         HuSprGrpMemberSet(temp_r28, i, sp8);
         HuSprPosSet(temp_r28, i, temp_r31->rot.x, temp_r31->rot.y);
         HuSprAttrSet(temp_r28, i, 8);
@@ -1417,7 +1417,7 @@ static void InitScratchPick(void) {
     var_r31->unk00_field0 = 0;
     var_r31->unk01 = GWPlayer[GWSystem.player_curr].character;
     var_r31->unk08 = HuSprGrpCreate(1);
-    BoardSpriteCreate(lbl_8011DFD0[var_r31->unk01], 0x1388, 0, &var_r31->unk06);
+    BoardSpriteCreate(pickSpr[var_r31->unk01], 0x1388, 0, &var_r31->unk06);
     HuSprGrpMemberSet(var_r31->unk08, 0, var_r31->unk06);
     HuSprAttrSet(var_r31->unk08, 0, 8);
     HuSprPosSet(var_r31->unk08, 0, temp_f31, temp_f30);
