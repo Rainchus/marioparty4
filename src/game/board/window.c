@@ -75,13 +75,13 @@ static void ExecBoardWindow(void) {
     f32 *size_win;
     WindowData *win_curr = NULL;
 
-    f32 var_50[7][2] = {
+    f32 size_all[7][2] = {
         {384.0f,  64.0f}, {432.0f, 192.0f},
         {504.0f,  96.0f}, {432.0f, 128.0f},
         {288.0f, 192.0f}, {432.0f,  96.0f},
         {432.0f,  96.0f},
     };
-    f32 var_18[7][2] = {
+    f32 pos_all[7][2] = {
         {96.0f, 328.0f},  {72.0f, 128.0f},
         {36.0f, 344.0f},  {128.0f, 312.0f},
         {144.0f, 144.0f}, {128.0f, 264.0f},
@@ -89,8 +89,8 @@ static void ExecBoardWindow(void) {
     };
     
     if (windowID < 0) {
-        size_win = var_50[winPosIdx];
-        pos_win = var_18[winPosIdx];
+        size_win = size_all[winPosIdx];
+        pos_win = pos_all[winPosIdx];
         HuWinMesMaxSizeGet(1, size, winMess);
         if (size[0] <= size_win[0]) {
             size[0] = size_win[0];
