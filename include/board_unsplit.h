@@ -16,7 +16,7 @@ s32 BoardSpacePosGet(s32, s32, Vec*);
 void BoardShopTutorialExec(s32);
 void BoardMGSetupTutorialExec(void);
 void BoardBooHouseTutorialExec(void);
-void BoardCharWheelSetTarget(s32);
+void BoardCharWheelTargetSet(s32);
 void BoardSpaceStarSetIndex(s32);
 void BoardLightHookSet(BoardLightHook set, BoardLightHook reset);
 s32 fn_8006DDE8(s16, f32);
@@ -32,7 +32,6 @@ s32 BoardCameraRotGet(Vec*);
 s32 BoardIsKill(void);
 
 void BoardBowserExec(s32 player, s32 space);
-void BoardBattleExec(s32 player, s32 space);
 void BoardFortuneExec(s32 player, s32 space);
 
 #endif

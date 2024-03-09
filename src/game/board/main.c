@@ -8,6 +8,7 @@
 #include "string.h"
 #include "game/hsfman.h"
 #include "game/hsfdraw.h"
+#include "game/board/battle.h"
 #include "game/board/lottery.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
@@ -23,7 +24,6 @@ typedef struct camera_view {
 	s16 zoom;
 	s16 fov;
 } CameraView;
-
 
 omObjData *boardMainObj;
 u32 boardRandSeed;
@@ -619,15 +619,9 @@ static void CreateBoard(void)
 	GWSystem.mg_next = -1;
 	if(!GWGameStat.field10E_bit5) {
 		s32 type_temp;
-		if(GWSystem.mg_list == 3) {
-			GWSystem.mg_list = 0;
-		}
 		if(GWMGListGet() == 2) {
 			GWSystem.mg_list = 0;
 		}
-	}
-	if(GWSystem.mess_speed == 3) {
-		GWSystem.mess_speed = 1;
 	}
 	mess_speed = GWMessSpeedGet();
 	GWSystem.mess_speed = mess_speed;

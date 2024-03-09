@@ -113,7 +113,7 @@ void fn_1_1134(void) {
     fn_1_1E3C(7, 0x122, 0x8C);
     fn_1_BA0(0x2E0017);
     fn_1_1FB0();
-    BoardCharWheelSetTarget(1);
+    BoardCharWheelTargetSet(1);
 }
 
 void fn_1_1178(void) {

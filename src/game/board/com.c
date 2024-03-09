@@ -7,28 +7,29 @@
 #include "game/board/space.h"
 #include "game/board/tutorial.h"
 #include "game/board/window.h"
+#include "game/board/boo.h"
 
 #include "math.h"
 
-s32 BoardBooComUseCheck(s32);
+typedef BOOL (*UseCheckFunc)(s32 player, s32 item);
 
 static void ExecComKeyLeft(void);
 static void ExecComKeyRight(void);
 static void ExecComKeyUp(void);
 static void ExecComKeyDown(void);
-static void ExecComKey(s32 arg0, s32 arg1, s32 arg2);
-static s32 ChooseUseItem(s32 arg0);
-static BOOL CheckMiniUse(s32 arg0, s32 arg1);
-static BOOL CheckMegaUse(s32 arg0, s32 arg1);
-static BOOL CheckSparkUse(s32 arg0, s32 arg1);
-static BOOL CheckBoardChangeUse(s32 arg0, s32 arg1);
-static BOOL CheckSwapUse(s32 arg0, s32 arg1);
-static BOOL CheckBooUse(s32 arg0, s32 arg1);
-static BOOL CheckLampUse(s32 arg0, s32 arg1);
+static void ExecComKey(s32 player, s32 move, s32 vertical);
+static s32 ChooseUseItem(s32 player);
+static BOOL CheckMiniUse(s32 player, s32 item);
+static BOOL CheckMegaUse(s32 player, s32 item);
+static BOOL CheckSparkUse(s32 player, s32 item);
+static BOOL CheckBoardChangeUse(s32 player, s32 item);
+static BOOL CheckSwapUse(s32 player, s32 item);
+static BOOL CheckBooUse(s32 player, s32 item);
+static BOOL CheckLampUse(s32 player, s32 item);
 
 static s8 itemUse = -1;
 
-static s8 comItemWeightTbl[8][12] = {
+static s8 comItemPreferTbl[8][12] = {
     { 0x0C, 0x0B, 0x05, 0x03, 0x01, 0x02, 0x06, 0x04, 0x00, 0x07, 0x09, 0x0A },
     { 0x0C, 0x0B, 0x05, 0x0A, 0x03, 0x01, 0x02, 0x00, 0x06, 0x04, 0x07, 0x09 },
     { 0x0C, 0x0B, 0x05, 0x06, 0x03, 0x01, 0x02, 0x0A, 0x07, 0x09, 0x00, 0x04 },
@@ -39,7 +40,7 @@ static s8 comItemWeightTbl[8][12] = {
     { 0x0C, 0x05, 0x07, 0x0B, 0x0A, 0x09, 0x04, 0x06, 0x03, 0x01, 0x02, 0x00 }
 };
 
-static BOOL (*comItemUseCheckFuncTbl[])(s32, s32) = {
+static UseCheckFunc comItemUseCheckFuncTbl[] = {
     CheckMiniUse,
     CheckMegaUse,
     CheckMiniUse,
@@ -95,322 +96,322 @@ void BoardComKeySetDown(void) {
     BoardWinComKeyFuncSet(ExecComKeyDown);
 }
 
-static void ExecComKey(s32 arg0, s32 arg1, s32 arg2) {
-    s32 sp14[4];
-    s32 temp_r31;
-    s16 temp_r30;
-    s32 var_r29;
+static void ExecComKey(s32 player, s32 move, s32 vertical) {
+    s32 comkey[4];
+    s32 port;
+    s16 delay;
+    s32 dpad;
 
-    sp14[0] = sp14[1] = sp14[2] = sp14[3] = 0;
-    temp_r31 = GWPlayer[arg0].port;
-    temp_r30 = GWMessDelayGet();
-    if (arg2 == 0) {
-        var_r29 = 4;
+    comkey[0] = comkey[1] = comkey[2] = comkey[3] = 0;
+    port = GWPlayer[player].port;
+    delay = GWMessDelayGet();
+    if (vertical == 0) {
+        dpad = PAD_BUTTON_DOWN;
     } else {
-        var_r29 = 2;
+        dpad = PAD_BUTTON_RIGHT;
     }
-    if (arg1 == 1) {
-        sp14[temp_r31] = var_r29;
-        HuWinComKeyWait(sp14[0], sp14[1], sp14[2], sp14[3], temp_r30);
+    if (move == 1) {
+        comkey[port] = dpad;
+        HuWinComKeyWait(comkey[0], comkey[1], comkey[2], comkey[3], delay);
     }
-    sp14[temp_r31] = 0x100;
-    HuWinComKeyWait(sp14[0], sp14[1], sp14[2], sp14[3], temp_r30);
+    comkey[port] = 0x100;
+    HuWinComKeyWait(comkey[0], comkey[1], comkey[2], comkey[3], delay);
 }
 
-s8 BoardComPreferItemGet(s32 arg0, s8 *arg1, s8 arg2) {
-    s32 temp_r26;
-    s32 var_r28;
-    s32 temp_r29;
-    s32 var_r27;
+s8 BoardComPreferItemGet(s32 player, s8 *items, s8 num_items) {
+    s32 character;
+    s32 weight;
+    s32 item;
+    s32 prefer;
     s32 i;
     s32 j;
 
-    temp_r26 = GWPlayer[arg0].character;
-    var_r27 = -1;
-    var_r28 = 0x64;
-    for (i = 0; i < arg2; i++) {
-        temp_r29 = arg1[i];
-        for (j = 0; j < 0xC; j++) {
-            if (temp_r29 == comItemWeightTbl[temp_r26][j]) {
-                if (j < var_r28 && (BoardPlayerItemFind(arg0, temp_r29) == -1 || temp_r29 == 0xC || temp_r29 == 0xB)) {
-                    var_r28 = j;
-                    var_r27 = i;
+    character = GWPlayer[player].character;
+    prefer = -1;
+    weight = 100;
+    for (i = 0; i < num_items; i++) {
+        item = items[i];
+        for (j = 0; j < 12; j++) {
+            if (item == comItemPreferTbl[character][j]) {
+                if (j < weight && (BoardPlayerItemFind(player, item) == -1 || item == 0xC || item == 0xB)) {
+                    weight = j;
+                    prefer = i;
                 }
                 break;
             }
         }
     }
-    if (var_r28 == 0x64) {
+    if (weight == 100) {
         return -1;
     }
-    return var_r27;
+    return prefer;
 }
 
-s8 BoardComPreferItemCheck(s32 arg0, s8 arg1, s8 arg2, s8 arg3) {
-    s8 spB[3];
-    s8 temp_r25;
+s8 BoardComPreferItemCheck(s32 player, s8 item1, s8 item2, s8 item3) {
+    s8 items[3];
+    s8 prefer;
 
-    spB[0] = arg1;
-    spB[1] = arg2;
-    spB[2] = arg3;
-    temp_r25 = BoardComPreferItemGet(arg0, spB, 3);
-    return temp_r25;
+    items[0] = item1;
+    items[1] = item2;
+    items[2] = item3;
+    prefer = BoardComPreferItemGet(player, items, 3);
+    return prefer;
 }
 
-s32 BoardComItemWeightGet(s32 arg0, s32 arg1) {
-    s32 var_r30;
+s32 BoardComItemWeightGet(s32 player, s32 item) {
+    s32 weight;
     s32 i;
 
-    for (i = 0; i < 0xC; i++) {
-        if (arg1 == comItemWeightTbl[GWPlayer[arg0].character][i]) {
+    for (i = 0; i < 12; i++) {
+        if (item == comItemPreferTbl[GWPlayer[player].character][i]) {
             break;
         }
     }
-    var_r30 = 0xB - i;
-    return var_r30;
+    weight = 12-1-i;
+    return weight;
 }
 
-s32 BoardComTutorialItemGet(s32 arg0) {
-    s32 var_r30;
-    s32 var_r31;
+s32 BoardComUseItemSlotGet(s32 player) {
+    s32 slot;
+    s32 item;
 
-    if (!GWPlayer[arg0].com) {
+    if (!GWPlayer[player].com) {
         return -1;
     }
     if (itemUse != -1) {
-        var_r31 = itemUse;
+        item = itemUse;
     }
-    if (boardTutorialUseItem >= 0 && boardTutorialUseItem <= 0xD) {
-        var_r31 = boardTutorialUseItem;
+    if (boardTutorialUseItem >= 0 && boardTutorialUseItem <= 13) {
+        item = boardTutorialUseItem;
         boardTutorialUseItem = -1;
     }
-    if (var_r31 != -1) {
-        var_r30 = BoardPlayerItemFind(arg0, var_r31);
+    if (item != -1) {
+        slot = BoardPlayerItemFind(player, item);
     } else {
-        var_r30 = -1;
+        slot = -1;
     }
-    return var_r30;
+    return slot;
 }
 
-s32 BoardComUseItemSet(s32 arg0, s32 arg1) {
-    if (arg1 == -1) {
+s32 BoardComUseItemSet(s32 player, s32 item) {
+    if (item == -1) {
         itemUse = -1;
         return 1;
     }
-    if (BoardPlayerItemFind(arg0, arg1) != -1) {
-        itemUse = arg1;
+    if (BoardPlayerItemFind(player, item) != -1) {
+        itemUse = item;
         return 1;
     }
     return 0;
 }
 
-BOOL BoardComUseItemCheck(s32 arg0) {
-    s32 var_r31;
+BOOL BoardComUseItemCheck(s32 player) {
+    s32 count;
 
-    var_r31 = BoardPlayerItemCount(arg0);
-    if (var_r31 <= 0) {
+    count = BoardPlayerItemCount(player);
+    if (count <= 0) {
         return FALSE;
     }
-    if (ChooseUseItem(arg0) != -1) {
+    if (ChooseUseItem(player) != -1) {
         return TRUE;
     }
     return FALSE;
 }
 
-static s32 ChooseUseItem(s32 arg0) {
+static s32 ChooseUseItem(s32 player) {
     s32 i;
     s32 j;
-    s32 temp_r29;
-    s32 var_r28;
-    s32 temp_r27;
-    s32 temp_r25;
-    BOOL (*temp_r24)(s32, s32);
-    s8 temp_r23;
+    s32 useItem;
+    s32 weight;
+    s32 item;
+    s32 character;
+    UseCheckFunc func;
+    s8 result;
 
-    temp_r29 = -1;
-    temp_r25 = GWPlayer[arg0].character;
-    var_r28 = 0x64;
+    useItem = -1;
+    character = GWPlayer[player].character;
+    weight = 0x64;
     for (i = 0; i < 3; i++) {
-        temp_r27 = GWPlayer[arg0].items[i];
-        if (temp_r27 == -1) {
+        item = GWPlayer[player].items[i];
+        if (item == -1) {
             continue;
         }
-        temp_r24 = comItemUseCheckFuncTbl[temp_r27];
-        if (!temp_r24) {
+        func = comItemUseCheckFuncTbl[item];
+        if (!func) {
             continue;
         }
-        temp_r23 = temp_r24(arg0, temp_r27);
-        if (temp_r23) {
+        result = func(player, item);
+        if (result) {
             for (j = 0; j < 0xC; j++) {
-                if (temp_r27 == comItemWeightTbl[temp_r25][j]) {
-                    if (j < var_r28) {
-                        var_r28 = j;
+                if (item == comItemPreferTbl[character][j]) {
+                    if (j < weight) {
+                        weight = j;
                     }
                     break;
                 }
             }
         }
     }
-    if (var_r28 == 0x64) {
+    if (weight == 0x64) {
         return -1;
     }
-    temp_r29 = comItemWeightTbl[temp_r25][var_r28];
-    if (temp_r29 == -1) {
+    useItem = comItemPreferTbl[character][weight];
+    if (useItem == -1) {
         itemUse = -1;
-    } else if (BoardPlayerItemFind(arg0, temp_r29) != -1) {
-        itemUse = temp_r29;
+    } else if (BoardPlayerItemFind(player, useItem) != -1) {
+        itemUse = useItem;
     }
-    return temp_r29;
+    return useItem;
 }
 
-static BOOL CheckMiniUse(s32 arg0, s32 arg1) {
-    s32 temp_r29;
-    s32 var_r26;
-    s32 var_r25;
-    s32 temp_r28;
-    s32 temp_r23;
-    s32 var_r24;
-    s32 var_r31;
-    s32 var_r30;
+static BOOL CheckMiniUse(s32 player, s32 item) {
+    s32 space;
+    s32 star_dist_pipe;
+    s32 star_dist_no_pipe;
+    s32 diff;
+    s32 character;
+    s32 force_use_mini;
+    s32 max_dist;
+    s32 chance;
 
-    var_r24 = 0;
-    temp_r29 = GWPlayer[arg0].space_curr;
-    temp_r28 = GWPlayer[arg0].diff;
-    temp_r23 = GWPlayer[arg0].character;
-    switch (temp_r28) {
+    force_use_mini = 0;
+    space = GWPlayer[player].space_curr;
+    diff = GWPlayer[player].diff;
+    character = GWPlayer[player].character;
+    switch (diff) {
         case 0:
-            var_r30 = 0x32;
+            chance = 50;
             break;
         case 1:
-            var_r30 = 0x19;
+            chance = 25;
             break;
         case 2:
-            var_r30 = 5;
+            chance = 5;
             break;
         case 3:
-            var_r30 = 0;
+            chance = 0;
             break;
     }
-    if ((temp_r28 == 0 || temp_r28 == 1) && temp_r23 == 1) {
-        var_r30 = 7;
+    if ((diff == 0 || diff == 1) && character == 1) {
+        chance = 7;
     }
     if (GWBoardGet() != 7 && GWBoardGet() != 8) {
-        var_r26 = BoardComPathReachCheck(temp_r29, 8, 0);
-        var_r25 = BoardComPathReachCheck(temp_r29, 8, 1);
+        star_dist_pipe = BoardComPathShortcutLenGet(space, 8, 0);
+        star_dist_no_pipe = BoardComPathShortcutLenGet(space, 8, 1);
     } else {
-        var_r26 = 0x3E7;
-        var_r25 = BoardComPathW20BestGet(temp_r29, 0x10000000, 0xA);
+        star_dist_pipe = 0x3E7;
+        star_dist_no_pipe = BoardComPathBestGetFlag(space, 0x10000000, 10);
         if ((GWBoardGet() == 8 || GWBoardGet() == 7) && BoardRandMod(0x64) < 0x3C) {
-            var_r24 = 1;
+            force_use_mini = 1;
         }
     }
-    switch (GWPlayer[arg0].diff) {
+    switch (GWPlayer[player].diff) {
         case 0:
-            var_r31 = 5;
+            max_dist = 5;
             break;
         case 1:
-            var_r31 = 7;
+            max_dist = 7;
             break;
         case 2:
-            var_r31 = 9;
+            max_dist = 9;
             break;
         case 3:
-            var_r31 = 0xA;
+            max_dist = 10;
             break;
     }
-    if ((var_r25 < var_r31 || var_r26 < var_r31 || var_r24 != 0) && BoardRandMod(0x64) >= var_r30) {
+    if ((star_dist_no_pipe < max_dist || star_dist_pipe < max_dist || force_use_mini != 0) && BoardRandMod(0x64) >= chance) {
         return TRUE;
     }
     return FALSE;
 }
 
-static BOOL CheckMegaUse(s32 arg0, s32 arg1) {
-    s32 temp_r27;
-    s32 temp_r26;
-    s32 temp_r24;
-    s32 temp_r29;
-    s16 temp_r25;
-    s16 var_r28;
-    s16 temp_r23;
-    s16 temp_r22;
+static BOOL CheckMegaUse(s32 player, s32 item) {
+    s32 short_len;
+    s32 character;
+    s32 space;
+    s32 diff;
+    s16 path_len;
+    s16 max_len;
+    s16 space_search;
+    s16 space_other;
     s16 i;
 
-    temp_r29 = GWPlayer[arg0].diff;
-    temp_r26 = GWPlayer[arg0].character;
-    switch (temp_r29) {
+    diff = GWPlayer[player].diff;
+    character = GWPlayer[player].character;
+    switch (diff) {
         case 0:
-            var_r28 = 5;
+            max_len = 5;
             break;
         case 1:
-            var_r28 = 7;
+            max_len = 7;
             break;
         case 2:
-            var_r28 = 9;
+            max_len = 9;
             break;
         case 3:
-            var_r28 = 0xA;
+            max_len = 10;
             break;
     }
-    if (((temp_r29 == 0 || temp_r29 == 1) && temp_r26 == 0) || ((temp_r29 == 0 || temp_r29 == 1) && temp_r26 == 5)) {
-        var_r28 = 8;
+    if (((diff == 0 || diff == 1) && character == 0) || ((diff == 0 || diff == 1) && character == 5)) {
+        max_len = 8;
     }
-    if (GWBoardGet() != 7 || BoardRandMod(0x64) >= 0x3C) {
-        temp_r24 = GWPlayer[arg0].space_curr;
-        temp_r27 = BoardComPathReachCheck(temp_r24, 8, 0);
-        temp_r23 = GWPlayer[arg0].space_curr;
+    if (GWBoardGet() != 7 || BoardRandMod(0x64) >= 60) {
+        space = GWPlayer[player].space_curr;
+        short_len = BoardComPathShortcutLenGet(space, 8, 0);
+        space_search = GWPlayer[player].space_curr;
         for (i = 0; i < 4; i++) {
-            if (i != arg0) {
-                temp_r22 = GWPlayer[i].space_curr;
-                temp_r25 = BoardComPathLenGet(temp_r23, temp_r22);
-                if (temp_r25 < var_r28 + 0x14 && temp_r25 > 0 && GWTeamGet() && i == BoardPlayerSameTeamFind(arg0)) {
+            if (i != player) {
+                space_other = GWPlayer[i].space_curr;
+                path_len = BoardComPathLenGet(space_search, space_other);
+                if (path_len < max_len + 20 && path_len > 0 && GWTeamGet() && i == BoardPlayerSameTeamFind(player)) {
                     return FALSE;
                 }
             }
         }
-        if (GWBoardGet() != 7 && GWBoardGet() != 8 && temp_r27 < 0xA && temp_r27 > 0) {
+        if (GWBoardGet() != 7 && GWBoardGet() != 8 && short_len < 10 && short_len > 0) {
             return FALSE;
         }
     }
-    if (BoardPlayerItemFind(arg0, arg1) != -1) {
+    if (BoardPlayerItemFind(player, item) != -1) {
         return TRUE;
     }
     return FALSE;
 }
 
-static BOOL CheckSparkUse(s32 arg0, s32 arg1) {
-    s32 temp_r27;
-    s32 temp_r28;
-    s32 temp_r26;
-    s32 temp_r25;
-    s32 temp_r24;
+static BOOL CheckSparkUse(s32 player, s32 item) {
+    s32 length;
+    s32 diff;
+    s32 space_other;
+    s32 space;
+    s32 character;
     s32 i;
-    s32 var_r30;
+    s32 chance;
 
-    temp_r25 = GWPlayer[arg0].space_curr;
-    temp_r28 = GWPlayer[arg0].diff;
-    temp_r24 = GWPlayer[arg0].character;
-    switch (temp_r28) {
+    space = GWPlayer[player].space_curr;
+    diff = GWPlayer[player].diff;
+    character = GWPlayer[player].character;
+    switch (diff) {
         case 0:
-            var_r30 = 0x32;
+            chance = 50;
             break;
         case 1:
-            var_r30 = 0x19;
+            chance = 25;
             break;
         case 2:
-            var_r30 = 5;
+            chance = 5;
             break;
         case 3:
-            var_r30 = 0;
+            chance = 0;
             break;
     }
-    if ((temp_r28 == 0 || temp_r28 == 1) && temp_r24 == 7) {
-        var_r30 = 7;
+    if ((diff == 0 || diff == 1) && character == 7) {
+        chance = 7;
     }
     for (i = 0; i < 4; i++) {
-        if (i != arg0) {
-            temp_r26 = GWPlayer[i].space_curr;
-            temp_r27 = BoardComPathLenGet(temp_r26, temp_r25);
-            if (temp_r27 > 0 && temp_r27 <= 0xF && BoardPlayerItemFind(arg0, arg1) != -1 && BoardRandMod(0x64) >= var_r30) {
+        if (i != player) {
+            space_other = GWPlayer[i].space_curr;
+            length = BoardComPathLenGet(space_other, space);
+            if (length > 0 && length <= 15 && BoardPlayerItemFind(player, item) != -1 && BoardRandMod(0x64) >= chance) {
                 return TRUE;
             }
         }
@@ -418,260 +419,260 @@ static BOOL CheckSparkUse(s32 arg0, s32 arg1) {
     return FALSE;
 }
 
-static BOOL CheckBoardChangeUse(s32 arg0, s32 arg1) {
-    s32 temp_r25;
-    s32 temp_r24;
-    s32 temp_r23;
-    s32 temp_r22;
-    s32 temp_r21;
-    s32 temp_r26;
-    s32 var_r30;
-    s32 var_r29;
-    s32 var_r27;
+static BOOL CheckBoardChangeUse(s32 player, s32 item) {
+    s32 diff;
+    s32 character;
+    s32 mini_len;
+    s32 non_mini_len;
+    s32 search_space;
+    s32 space;
+    s32 length_min;
+    s32 length;
+    s32 chance;
     s32 i;
 
-    temp_r25 = GWPlayer[arg0].diff;
-    temp_r24 = GWPlayer[arg0].character;
-    switch (temp_r25) {
+    diff = GWPlayer[player].diff;
+    character = GWPlayer[player].character;
+    switch (diff) {
         case 0:
-            var_r27 = 0x32;
+            chance = 0x32;
             break;
         case 1:
-            var_r27 = 0x19;
+            chance = 0x19;
             break;
         case 2:
-            var_r27 = 5;
+            chance = 5;
             break;
         case 3:
-            var_r27 = 0;
+            chance = 0;
             break;
     }
-    if (((arg1 == 4 && temp_r24 == 4) || (arg1 == 5 && (temp_r24 == 6 || temp_r24 == 3))) && (temp_r25 == 0 || temp_r25 == 1)) {
-        var_r27 = 7;
+    if (((item == 4 && character == 4) || (item == 5 && (character == 6 || character == 3))) && (diff == 0 || diff == 1)) {
+        chance = 7;
     }
-    var_r30 = 0x3E7;
+    length_min = 999;
     for (i = 0; i < 4; i++) {
-        if (arg0 == i) {
+        if (player == i) {
             continue;
         }
-        temp_r21 = GWPlayer[i].space_curr;
-        if (!GWTeamGet() || i != BoardPlayerSameTeamFind(arg0)) {
-            temp_r26 = GWPlayer[i].space_curr;
+        search_space = GWPlayer[i].space_curr;
+        if (!GWTeamGet() || i != BoardPlayerSameTeamFind(player)) {
+            space = GWPlayer[i].space_curr;
             if (GWBoardGet() == 7) {
-                if (BoardComPathW20BestGet(temp_r21, 0x10000000, 0xA) != -1) {
-                    var_r29 = 0xA;
+                if (BoardComPathBestGetFlag(search_space, 0x10000000, 10) != -1) {
+                    length = 10;
                 } else {
-                    var_r29 = 0;
+                    length = 0;
                 }
             } else if (GWBoardGet() == 8) {
-                if (BoardComPathW20BestGet(temp_r21, 0x200000, 0xA) != -1 || BoardComPathW20BestGet(temp_r21, 0x400000, 0xA) != -1) {
-                    var_r29 = 0xA;
+                if (BoardComPathBestGetFlag(search_space, 0x200000, 10) != -1 || BoardComPathBestGetFlag(search_space, 0x400000, 10) != -1) {
+                    length = 10;
                 } else {
-                    var_r29 = 0;
+                    length = 0;
                 }
             } else {
-                var_r29 = BoardComPathReachCheck(temp_r26, 8, 0);
+                length = BoardComPathShortcutLenGet(space, 8, 0);
             }
-            if (var_r29 != 0 && var_r29 < var_r30) {
-                var_r30 = var_r29;
+            if (length != 0 && length < length_min) {
+                length_min = length;
             }
         }
     }
-    if ((var_r30 > 0xF && var_r30 != 0x3E7) || (GWTeamGet() && i == BoardPlayerSameTeamFind(arg0))) {
+    if ((length_min > 0xF && length_min != 999) || (GWTeamGet() && i == BoardPlayerSameTeamFind(player))) {
         return FALSE;
     }
-    temp_r26 = GWPlayer[arg0].space_curr;
-    temp_r23 = BoardComPathReachCheck(temp_r26, 8, 0);
-    temp_r22 = BoardComPathReachCheck(temp_r26, 8, 1);
-    if (BoardPlayerItemFind(arg0, arg1) != -1 && BoardRandMod(0x64) >= var_r27) {
-        if ((temp_r23 == 0 || temp_r22 == 0) && var_r30 == 0x3E7) {
+    space = GWPlayer[player].space_curr;
+    mini_len = BoardComPathShortcutLenGet(space, 8, 0);
+    non_mini_len = BoardComPathShortcutLenGet(space, 8, 1);
+    if (BoardPlayerItemFind(player, item) != -1 && BoardRandMod(0x64) >= chance) {
+        if ((mini_len == 0 || non_mini_len == 0) && length_min == 999) {
             return TRUE;
         }
-        if (temp_r23 > var_r30 || temp_r22 > var_r30) {
+        if (mini_len > length_min || non_mini_len > length_min) {
             return TRUE;
         }
-        if (temp_r23 > 0xA || temp_r22 > 0xA) {
+        if (mini_len > 10 || non_mini_len > 10) {
             return TRUE;
         }
     }
     return FALSE;
 }
 
-BOOL CheckSwapUse(s32 arg0, s32 arg1) {
-    s32 temp_r27;
-    s32 temp_r26;
-    s32 temp_r25;
-    s32 var_r30;
-    s32 var_r29;
+static BOOL CheckSwapUse(s32 player, s32 item) {
+    s32 diff;
+    s32 team_player;
+    s32 character;
+    s32 item_count;
+    s32 chance;
     s32 i;
 
-    temp_r27 = GWPlayer[arg0].diff;
-    temp_r25 = GWPlayer[arg0].character;
-    switch (temp_r27) {
+    diff = GWPlayer[player].diff;
+    character = GWPlayer[player].character;
+    switch (diff) {
         case 0:
-            var_r29 = 0x32;
+            chance = 0x32;
             break;
         case 1:
-            var_r29 = 0x19;
+            chance = 0x19;
             break;
         case 2:
-            var_r29 = 5;
+            chance = 5;
             break;
         case 3:
-            var_r29 = 0;
+            chance = 0;
             break;
     }
-    if ((temp_r27 == 0 || temp_r27 == 1) && temp_r25 == 2) {
-        var_r29 = 7;
+    if ((diff == 0 || diff == 1) && character == 2) {
+        chance = 7;
     }
-    for (var_r30 = i = 0; i < 4; i++) {
-        if (i != arg0) {
-            var_r30 += BoardPlayerItemCount(i);
+    for (item_count = i = 0; i < 4; i++) {
+        if (i != player) {
+            item_count += BoardPlayerItemCount(i);
         }
     }
-    if (var_r30 == 0) {
+    if (item_count == 0) {
         return FALSE;
     }
     if (GWTeamGet()) {
-        temp_r26 = BoardPlayerSameTeamFind(arg0);
-        for (var_r30 = i = 0; i < 4; i++) {
-            if (temp_r26 != i && i != arg0) {
-                var_r30 += BoardPlayerItemCount(i);
+        team_player = BoardPlayerSameTeamFind(player);
+        for (item_count = i = 0; i < 4; i++) {
+            if (team_player != i && i != player) {
+                item_count += BoardPlayerItemCount(i);
             }
         }
-        if (var_r30 == 0) {
+        if (item_count == 0) {
             return FALSE;
         }
     }
-    if (BoardPlayerItemFind(arg0, arg1) != -1 && BoardRandMod(0x64) >= var_r29) {
+    if (BoardPlayerItemFind(player, item) != -1 && BoardRandMod(0x64) >= chance) {
         return TRUE;
     }
     return FALSE;
 }
 
-static BOOL CheckBooUse(s32 arg0, s32 arg1) {
-    if (BoardPlayerCoinsGet(arg0) < 5) {
+static BOOL CheckBooUse(s32 player, s32 item) {
+    if (BoardPlayerCoinsGet(player) < 5) {
         return FALSE;
     }
-    if (BoardBooComUseCheck(arg0) == 0) {
+    if (BoardBooComUseCheck(player) == 0) {
         return FALSE;
     }
-    if (BoardPlayerItemFind(arg0, arg1) == -1) {
+    if (BoardPlayerItemFind(player, item) == -1) {
         return FALSE;
     }
     return TRUE;
 }
 
-static BOOL CheckLampUse(s32 arg0, s32 arg1) {
-    if ((BoardPlayerCoinsGet(arg0) >= 0x14 || GWSystem.last5_effect == 4) && BoardPlayerItemFind(arg0, arg1) != -1) {
+static BOOL CheckLampUse(s32 player, s32 item) {
+    if ((BoardPlayerCoinsGet(player) >= 0x14 || GWSystem.last5_effect == 4) && BoardPlayerItemFind(player, item) != -1) {
         return TRUE;
     }
     return FALSE;
 }
 
-s32 BoardComJunctionInputGet(s32 arg0, Vec *arg1, s32 arg2, float *arg3) {
-    Vec sp28;
-    Vec sp1C;
-    Vec sp10;
-    float var_f30;
-    float var_f29;
-    float var_f31;
-    s32 var_r29;
-    s32 var_r27;
-    s32 temp_r26;
-    s32 var_r24;
-    s32 var_r23;
-    s32 var_r21;
+s32 BoardComJunctionInputGet(s32 item, Vec *input, s32 num_dirs, float *dirs) {
+    Vec pos_next;
+    Vec pos_junction;
+    Vec dir;
+    float dist_min;
+    float dist;
+    float angle;
+    s32 chance_random;
+    s32 best_dir;
+    s32 board;
+    s32 path_unknown;
+    s32 choose_path;
+    s32 dir_random;
     s32 i;
-    s16 var_r28;
-    s16 temp_r25;
-    s16 spC;
+    s16 space_next;
+    s16 space;
+    s16 roll;
 
-    temp_r26 = GWBoardGet();
-    var_r24 = 0;
-    temp_r25 = GWPlayer[arg0].space_curr;
-    var_r28 = -1;
-    spC = GWPlayer[arg0].roll;
-    switch (GWPlayer[arg0].diff) {
+    board = GWBoardGet();
+    path_unknown = 0;
+    space = GWPlayer[item].space_curr;
+    space_next = -1;
+    roll = GWPlayer[item].roll;
+    switch (GWPlayer[item].diff) {
         case 3:
-            var_r29 = 0;
+            chance_random = 0;
             break;
         case 2:
-            var_r29 = 0;
+            chance_random = 0;
             break;
         case 1:
-            var_r29 = 0xA;
+            chance_random = 10;
             break;
         default:
         case 0:
-            var_r29 = 0x1E;
+            chance_random = 0x1E;
             break;
     }
-    if (BoardRandMod(0x64) >= var_r29) {
-        var_r23 = 1;
+    if (BoardRandMod(0x64) >= chance_random) {
+        choose_path = 1;
     } else {
-        var_r23 = 0;
+        choose_path = 0;
     }
-    if (var_r23 != 0) {
-        if (temp_r26 >= 0 && temp_r26 <= 5) {
-            var_r28 = BoardComPathBestGet(temp_r25);
-        } else if (temp_r26 == 7) {
-            var_r28 = BoardComPathW20BestGet(temp_r25, 0x10000000, 0xA);
+    if (choose_path != 0) {
+        if (board >= 0 && board <= 5) {
+            space_next = BoardComPathBestGet(space);
+        } else if (board == 7) {
+            space_next = BoardComPathBestGetFlag(space, 0x10000000, 10);
         }
-        if (var_r28 == -1) {
-            var_r24 = 1;
+        if (space_next == -1) {
+            path_unknown = 1;
         } else {
-            BoardSpacePosGet(0, temp_r25, &sp1C);
-            BoardSpacePosGet(0, var_r28, &sp28);
-            PSVECSubtract(&sp28, &sp1C, &sp10);
-            var_f31 = BoardDAngleCalc(90.0 - 180.0 * (atan2(sp10.z, sp10.x) / M_PI));
-            if (var_f31 < 0.0f) {
-                var_f31 += 360.0f;
+            BoardSpacePosGet(0, space, &pos_junction);
+            BoardSpacePosGet(0, space_next, &pos_next);
+            PSVECSubtract(&pos_next, &pos_junction, &dir);
+            angle = BoardDAngleCalc(90.0 - 180.0 * (atan2(dir.z, dir.x) / M_PI));
+            if (angle < 0.0f) {
+                angle += 360.0f;
             }
-            if (var_f31 > 360.0f) {
-                var_f31 -= 360.0f;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
             }
         }
     }
-    if (var_r24 != 0) {
-        var_r21 = BoardRandMod(arg2);
-        var_f31 = arg3[var_r21];
+    if (path_unknown != 0) {
+        dir_random = BoardRandMod(num_dirs);
+        angle = dirs[dir_random];
     }
-    var_f30 = 999.0f;
-    for (var_r27 = i = 0; i < 4; i++) {
-        var_f29 = (comJunctionDirTbl[i].x - var_f31 < 0.0f)
-            ? -(comJunctionDirTbl[i].x - var_f31)
-            : (comJunctionDirTbl[i].x - var_f31);
-        if (var_f29 < var_f30) {
-            var_r27 = i;
-            var_f30 = var_f29;
+    dist_min = 999.0f;
+    for (best_dir = i = 0; i < 4; i++) {
+        dist = (comJunctionDirTbl[i].x - angle < 0.0f)
+            ? -(comJunctionDirTbl[i].x - angle)
+            : (comJunctionDirTbl[i].x - angle);
+        if (dist < dist_min) {
+            best_dir = i;
+            dist_min = dist;
         }
     }
-    arg1->x = comJunctionDirTbl[var_r27].y;
-    arg1->z = comJunctionDirTbl[var_r27].z;
-    arg1->y = 0.0f;
+    input->x = comJunctionDirTbl[best_dir].y;
+    input->z = comJunctionDirTbl[best_dir].z;
+    input->y = 0.0f;
     return 0;
 }
 
-s32 BoardComBestPlayerFind(void) {
-    s32 temp_r30;
-    s32 var_r29;
-    s32 var_r28;
-    s32 var_r27;
+s32 BoardComFarPlayerFind(void) {
+    s32 len;
+    s32 max_len;
+    s32 far_player;
+    s32 space;
     s32 i;
 
     if (_CheckFlag(0x1000B) != 0) {
         return -1;
     }
-    var_r28 = -1;
-    var_r29 = -1;
+    far_player = -1;
+    max_len = -1;
     for (i = 0; i < 4; i++) {
-        var_r27 = GWPlayer[i].space_curr;
-        temp_r30 = BoardComPathReachCheck(var_r27, 8, 0);
-        if (temp_r30 > 0 && temp_r30 > var_r29) {
-            var_r29 = temp_r30;
-            var_r28 = i;
+        space = GWPlayer[i].space_curr;
+        len = BoardComPathShortcutLenGet(space, 8, 0);
+        if (len > 0 && len > max_len) {
+            max_len = len;
+            far_player = i;
         }
     }
-    return var_r28;
+    return far_player;
 }
