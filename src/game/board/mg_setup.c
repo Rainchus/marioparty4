@@ -69,7 +69,7 @@ void BoardMGSetupExec(void) {
     }
 }
 
-void DestroyMGSetup(void) {
+static void DestroyMGSetup(void) {
     GWSystem.player_curr = 0;
     mgSetupProc = NULL;
 }
@@ -79,7 +79,7 @@ static inline s32 setupObjGet(void) {
     return work->field00_bit1;
 }
 
-void ExecMGSetup(void) {
+static void ExecMGSetup(void) {
     s32 sp60[9] = {
         0x750000, 0x760000, 0x770000,
         0x780000, 0x790000, 0x7A0000,
