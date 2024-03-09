@@ -53,8 +53,8 @@ static Process* mgSetupProc;
 
 // determined functions
 void BoardMGSetupExec(void);
-void DestroyMGSetup(void);
-void ExecMGSetup(void);
+static void DestroyMGSetup(void);
+static void ExecMGSetup(void);
 void CreateMGSetup(void);
 void HideLuckyValue(void);
 void BoardMGSetupPlayPop(s32, s16);
