@@ -1,6 +1,8 @@
 #include "game/board/player.h"
+
 #include "game/chrman.h"
 #include "game/objsub.h"
+#include "game/hsfman.h"
 #include "game/board/com.h"
 #include "game/board/main.h"
 #include "game/board/roll.h"
@@ -48,23 +50,15 @@ static s16 suitCurrMot = -1;
 static omObjData* diceJumpObj[4] = {0, 0, 0, 0};
 static omObjData* motDoneF[4] = {0, 0, 0, 0};
 static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
-char* lbl_8013993C[] = {
-    "eye1",
-    "eye2",
-    "eye1",
-    "eye2",
-    "mat14",
-    "mat16",
-    "eye1",
-    "eye2",
-    "Clswario_eye_l1_AUTO14",
-    "Clswario_eye_l1_AUTO15",
-    "m_donkey_eye4",
-    "m_donkey_eye5",
-    "mat65",
-    "mat66",
-    "Clswaluigi_eye_l1_AUTO1",
-    "Clswaluigi_eye_l1_AUTO2",
+char* lbl_8013993C[8][2] = {
+    { "eye1", "eye2" },
+    { "eye1", "eye2" },
+    { "mat14", "mat16" },
+    { "eye1", "eye2" },
+    { "Clswario_eye_l1_AUTO14", "Clswario_eye_l1_AUTO15" },
+    { "m_donkey_eye4", "m_donkey_eye5" },
+    { "mat65", "mat66" },
+    { "Clswaluigi_eye_l1_AUTO1", "Clswaluigi_eye_l1_AUTO2" }
 };
 
 s32 lbl_8013997C[] = {
@@ -2238,7 +2232,64 @@ void UpdateBowserSuit(omObjData* arg0) {
     }
 }
 
+void BoardPlayerSparkSet(s32 arg0) {
+    s16 currSpace = GWPlayer[arg0].space_curr;
+
+    GWPlayer[arg0].field02_bit1 = 1;
+    GWPlayer[arg0].space_shock = currSpace;
+}
+
 // ...
+
+static inline s32 test(s32 arg0) {
+    return BoardModelIDGet(BoardPlayerModelGet(arg0));
+}
+
+void BoardPlayerCopyEyeMat(s32 arg0, s32 arg1) {
+    HsfMaterial* var_r29;
+    s32 var_r24;
+    s32 var_r25;
+    u32 var_r27;
+    HsfAttribute* temp_r26;
+    char** temp_r28;
+    HsfData* hsfData;
+    HsfMaterial* material;
+    ModelData *model;
+    s16 modelId = BoardModelIDGet(BoardPlayerModelGet(arg0));
+    model = &Hu3DData[modelId];
+    hsfData = model->hsfData;
+    material = hsfData->material;
+    var_r29 = playerMatCopy[arg0];
+    if (arg1 != 0) {
+        temp_r28 = &lbl_8013993C[GWPlayer[arg0].character][0];
+        for (var_r25 = 0; var_r25 < hsfData->materialCnt; var_r25++, material++, var_r29++) {
+            var_r24 = 1;
+            
+            for (var_r27 = 0; var_r27 < material->numAttrs; var_r27++) {
+                temp_r26 = &hsfData->attribute[(s32) material->attrs[var_r27]];
+                if ((strcmp(temp_r28[0], temp_r26->bitmap->name) == 0) || (strcmp(temp_r28[1], temp_r26->bitmap->name) == 0)) {
+                    var_r24 = 0;
+                }
+            }
+            if (var_r24) {
+                if (arg1 != 0) {
+                    material->color[0] *= 0.0f;
+                    material->color[1] *= 0.0f;
+                    material->color[2] *= 0.0f;
+                } else {
+                    material->color[0] = var_r29->color[0];
+                    material->color[1] = var_r29->color[1];
+                    material->color[2] = var_r29->color[2];
+                }
+            }
+        }
+    } else {
+        memcpy(hsfData->material, var_r29, hsfData->materialCnt * 0x3C);
+        (void)temp_r28;
+    }
+    DCStoreRange(hsfData->material, hsfData->materialCnt * 0x3C);
+}
+
 
 void BoardPlayerCopyMat(s32 arg0) {
     s16 modelID;
