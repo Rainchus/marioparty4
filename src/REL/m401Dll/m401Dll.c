@@ -220,8 +220,8 @@ void fn_2_C1C(unkStructBSS114* arg0) {
 
 void fn_2_11D0(unkStructBSS114* arg0) {
     unkStructBSS114* sp1C;
-    Vec3f sp18;
-    Vec3f spC;
+    Vec sp18;
+    Vec spC;
     unkSubstructBSS114* sp8;
     unkSubstructBSS114* temp_r31;
     s32 i;
@@ -341,9 +341,9 @@ void fn_2_1858(s16 arg0, s16 arg1) {
 }
 
 // void fn_2_1A38(unkStructBSS114* arg0) {
-//     Vec3f sp20;
-//     Vec3f sp14;
-//     Vec3f sp8;
+//     Vec sp20;
+//     Vec sp14;
+//     Vec sp8;
 //     unkStructBSS114 *temp;
 //     unkStructBSS114 *temp2;
 
@@ -364,8 +364,8 @@ void fn_2_1858(s16 arg0, s16 arg1) {
 // }
 
 // void fn_2_1B80(unkStructBSS114* arg0) {
-//     Vec3f sp14;
-//     Vec3f sp8;
+//     Vec sp14;
+//     Vec sp8;
 //     unkStructBSS114* temp;
 //     unkStructBSS114* temp2;
 
@@ -384,9 +384,9 @@ void fn_2_1858(s16 arg0, s16 arg1) {
 // }
 
 // void fn_2_1CF0(unkStructBSS114* arg0) {
-//     Vec3f sp20;
-//     Vec3f sp14;
-//     Vec3f sp8;
+//     Vec sp20;
+//     Vec sp14;
+//     Vec sp8;
 //     unkStructBSS114 *temp;
 
 //     temp = Hu3DModelObjPtrGet(arg0->unk_40->unk_00[0], lbl_2_data_124[2]);
@@ -404,10 +404,10 @@ void fn_2_1858(s16 arg0, s16 arg1) {
 // }
 
 // void fn_2_1DE8(unkStructBSS114* arg0) {
-//     Vec3f sp2C;
-//     Vec3f sp20;
-//     Vec3f sp14;
-//     Vec3f sp8;
+//     Vec sp2C;
+//     Vec sp20;
+//     Vec sp14;
+//     Vec sp8;
 //     unkStructBSS114 *temp2;
 //     unkStructBSS114 *temp;
 
@@ -440,7 +440,7 @@ void fn_2_1858(s16 arg0, s16 arg1) {
 // }
 
 // void fn_2_20B0(omObjData* arg0) {
-//     Vec3f sp8;
+//     Vec sp8;
 //     omObjData* temp;
 
 //     temp = Hu3DModelObjPtrGet(arg0->model[0], lbl_2_data_124[4]);
@@ -461,10 +461,10 @@ void fn_2_1858(s16 arg0, s16 arg1) {
 // }
 
 // void fn_2_21F8(omObjData* arg0) {
-//     Vec3f sp2C;
-//     Vec3f sp20;
-//     Vec3f sp14;
-//     Vec3f sp8;
+//     Vec sp2C;
+//     Vec sp20;
+//     Vec sp14;
+//     Vec sp8;
 //     s32 i;
 //     s32 var_r30_2;
 //     unkStructBSS114* temp;

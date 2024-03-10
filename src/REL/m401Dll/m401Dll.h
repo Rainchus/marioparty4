@@ -1,7 +1,8 @@
-#include "common.h"
+#include "unsplit.h"
 #include "REL/executor.h"
 #include <dolphin/mtx.h>
 #include "game/objsub.h"
+#include "game/object.h"
 
 // global data //
 typedef struct unkStruct18FC10 {
@@ -35,7 +36,7 @@ typedef struct unkStructBSS114 {
     s32 unk_04;
     char unk_08[0xC];
     void *unk_14;
-    Vec3f unk_18;
+    Vec unk_18;
     char unk_24[0x1C];
     unkSubstructBSS114 *unk_40;
     char unk_44[0x8];
@@ -46,7 +47,7 @@ typedef struct unkStructBSS114 {
 } unkStructBSS114;
 typedef struct unkStruct18BFC0 {
     char unk_00[0x14];
-    Vec3f  unk_14;
+    Vec  unk_14;
 } unkStruct18BFC0;
 typedef struct unkStruct18C8FC {
     s16  unk_00;
@@ -61,12 +62,12 @@ extern s16 lbl_801D3CC2;
 extern void Hu3DModelAttrSet(s16, s32);
 extern void Hu3DModelAttrReset(s16, s32);
 extern omObjData* Hu3DModelObjPtrGet(s16, s32);
-extern void Hu3DCameraPosSetV(s32, Vec3f*, Vec3f*, Vec3f*);
-extern s16 Hu3DGLightCreateV(Vec3f*, Vec3f*, s32*);
+extern void Hu3DCameraPosSetV(s32, Vec*, Vec*, Vec*);
+extern s16 Hu3DGLightCreateV(Vec*, Vec*, s32*);
 extern void Hu3DGLightInfinitytSet(s16);
 extern void Hu3DReflectNoSet(s16);
 extern void Hu3DShadowCreate(f32, f32, f32);
-extern void Hu3DShadowPosSet(Vec3f*, Vec3f*, Vec3f*);
+extern void Hu3DShadowPosSet(Vec*, Vec*, Vec*);
 extern void Hu3DShadowTPLvlSet(f32);
 extern void Hu3DFogSet(f32, f32, u8, u8, u8);
 extern void omOvlReturnEx(s16, s16);
@@ -80,7 +81,7 @@ extern void omSetSca(omObjData*, f32, f32, f32);
 extern u8 frand(void);
 extern s32 HuAudFXPlay(s32);
 extern void HuAudFXStop(s32);
-extern s32 HuAudFXEmiterPlay(s32, Vec3f*);
+extern s32 HuAudFXEmiterPlay(s32, Vec*);
 extern void HuAudFXListnerKill(void);
 extern void HuAudSeqFadeOut(s32, s32);
 extern s16 MGSeqCreate(s32, ...);
@@ -95,11 +96,11 @@ extern void espBankSet(s16, s16);
 extern void espDrawNoSet(s16, s16);
 extern void WipeCreate(s16, s16, s16);
 extern u8 WipeStatGet(void);
-extern f32 PSVECNormalize(Vec3f*, Vec3f*);
+extern f32 PSVECNormalize(Vec*, Vec*);
 
 // local data //
 typedef struct unkStructBSS54 {
-    Vec3f unk_00;
+    Vec unk_00;
 } unkStructBSS54;
 typedef struct unkStructBSS100 {
     void *unk_00;
@@ -108,12 +109,12 @@ typedef struct unkStructBSS100 {
 
 extern f32 lbl_2_data_0 = -7.1875f;
 extern s16 lbl_2_data_4[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
-extern Vec3f lbl_2_data_14 = { 1500.0f, 2500.0f, 1500.0f };
-extern Vec3f lbl_2_data_20 = { 0.0f, -1.0f, 0.0f };
+extern Vec lbl_2_data_14 = { 1500.0f, 2500.0f, 1500.0f };
+extern Vec lbl_2_data_20 = { 0.0f, -1.0f, 0.0f };
 extern s32 lbl_2_data_2C = -1;
-extern Vec3f lbl_2_data_30 = { 0.0f, 2500.0f, 0.0f };
-extern Vec3f lbl_2_data_3C = { 0.0f, 1.0f, -1.0f };
-extern Vec3f lbl_2_data_48 = { 0.0f, 0.0f, 0.0f };
+extern Vec lbl_2_data_30 = { 0.0f, 2500.0f, 0.0f };
+extern Vec lbl_2_data_3C = { 0.0f, 1.0f, -1.0f };
+extern Vec lbl_2_data_48 = { 0.0f, 0.0f, 0.0f };
 extern char lbl_2_data_6F[] = "winnercnt:%d";
 extern s32 lbl_2_data_80[8] = { 0x610000, 0x610001, 0x610002, 0x610003, 0x610004, 0x610005, 0x610006, 0x610007 };
 extern s32 lbl_2_data_124[5];
@@ -121,13 +122,13 @@ extern s32 lbl_2_data_124[5];
 extern s32 lbl_2_bss_8;
 extern f32 lbl_2_bss_10;
 extern unkStruct18FC10* lbl_2_bss_1C;
-extern Vec3f lbl_2_bss_2C;
-extern Vec3f lbl_2_bss_38;
-extern Vec3f lbl_2_bss_44;
+extern Vec lbl_2_bss_2C;
+extern Vec lbl_2_bss_38;
+extern Vec lbl_2_bss_44;
 extern f32 lbl_2_bss_50;
 extern unkStructBSS54 lbl_2_bss_54;
-extern Vec3f lbl_2_bss_60;
-extern Vec3f lbl_2_bss_6C;
+extern Vec lbl_2_bss_60;
+extern Vec lbl_2_bss_6C;
 extern f32 lbl_2_bss_84;
 extern f32 lbl_2_bss_88;
 extern s32 lbl_2_bss_90[4];
@@ -180,7 +181,7 @@ void fn_2_48A0(void*);
 void fn_2_7CB4(void*);
 void fn_2_8E74(void*);
 void fn_2_95E4(void*);
-void fn_2_91AC(void*, Vec3f*);
+void fn_2_91AC(void*, Vec*);
 void fn_2_9D00(void*);
 void fn_2_BD90(void*);
 void fn_2_C6DC(void*);
@@ -188,10 +189,10 @@ void fn_2_C130(void);
 void fn_2_D088(void*);
 void fn_2_DBCC(s16);
 void fn_2_E6BC(s32, f32, f32, f32, f32, f32);
-unkStructBSS114* fn_2_FC40(s32, Vec3f*, Vec3f*, Vec3f*);
-void fn_2_10240(Vec3f*, Vec3f*);
+unkStructBSS114* fn_2_FC40(s32, Vec*, Vec*, Vec*);
+void fn_2_10240(Vec*, Vec*);
 void fn_2_1041C(void);
 s32 fn_2_14640(void*);
 void fn_2_10710(void);
 s16 fn_2_1079C(void);
-s32 fn_2_10A88(Vec3f*, s16);
+s32 fn_2_10A88(Vec*, s16);
