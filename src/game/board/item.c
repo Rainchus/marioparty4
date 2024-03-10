@@ -12,6 +12,7 @@
 #include "game/wipe.h"
 #include "game/board/audio.h"
 #include "game/board/boo.h"
+#include "game/board/char_wheel.h"
 #include "game/board/com.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
@@ -52,7 +53,6 @@ typedef struct {
 extern u32 frandmod(u32);
 extern void BoardBowserSuitInit(s32);
 extern s16 BoardBowserSuitPlayerModelGet(void);
-extern void BoardCharWheelWait(void);
 
 static void ItemProcess(void);
 static void RestoreProcess(void);

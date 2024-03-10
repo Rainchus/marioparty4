@@ -14,6 +14,7 @@
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
 #include "game/board/window.h"

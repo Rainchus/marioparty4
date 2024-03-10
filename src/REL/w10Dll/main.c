@@ -3,6 +3,7 @@
 #include "game/hsfman.h"
 #include "game/board/lottery.h"
 #include "game/board/model.h"
+#include "game/board/space.h"
 #include "game/board/star.h"
 #include "game/board/tutorial.h"
 #include "game/board/main.h"

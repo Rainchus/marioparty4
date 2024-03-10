@@ -14,6 +14,6 @@ s32 BoardComUseItemSlotGet(s32 arg0);
 s32 BoardComUseItemSet(s32 arg0, s32 arg1);
 BOOL BoardComUseItemCheck(s32 arg0);
 s32 BoardComJunctionInputGet(s32 arg0, Vec *arg1, s32 arg2, float *arg3);
-s32 BoardComBestPlayerFind(void);
+s32 BoardComFarPlayerFind(void);
 
 #endif
