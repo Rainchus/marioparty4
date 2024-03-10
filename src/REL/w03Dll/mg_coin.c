@@ -6,6 +6,7 @@
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
 
 extern u16 HuPadBtnDown[4];
 extern s16 lbl_1_bss_C[14];

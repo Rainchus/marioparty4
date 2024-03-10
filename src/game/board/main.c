@@ -14,6 +14,7 @@
 #include "game/board/model.h"
 #include "game/board/pause.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
 #include "game/pad.h"
@@ -59,8 +60,6 @@ static CameraView camViewTbl[] = {
 	{ -33, 3200, 25 },
 };
 
-
-extern s32 BoardSpacePosGet(s32 layer, s32 space, Vec *pos);
 
 extern void BoardMGSetupPlayClear(void);
 extern void BoardStartExec(void);

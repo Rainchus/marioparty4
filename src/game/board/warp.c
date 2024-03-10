@@ -1,7 +1,9 @@
 #include "game/board/warp.h"
+#include "game/board/char_wheel.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
 #include "game/board/tutorial.h"
 #include "game/wipe.h"
 #include "game/gamework_data.h"
@@ -16,12 +18,6 @@ static void WarpLaunch(s32);
 static void WarpStartImpact(s32);
 static void WarpFall(s32);
 static void WarpImpact(s32);
-
-
-extern void BoardCharWheelInit(s32, s32);
-extern void BoardCharWheelSpeedSet(f32);
-extern void BoardCharWheelWait(void);
-extern s32 BoardCharWheelResultGet(void);
 
 static Vec warpPos;
 
