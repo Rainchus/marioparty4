@@ -248,7 +248,7 @@ s32 fn_1_9CF4(s32 arg0) {
     while (GWPlayer[arg0].moving != 0) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     HuPrcSleep(0x3C);
     fn_1_B0A4(arg0);
     fn_1_9F78();
@@ -526,7 +526,7 @@ void fn_1_ACD8(s32 arg0) {
     temp_r31->unk00_bit1 = arg0;
     switch (arg0) {
     case 0:
-        BoardRotateDiceNumbers(temp_r31->unk00_bit4);
+        BoardPlayerIdleSet(temp_r31->unk00_bit4);
         return;
     case 2:
         temp_r31->unk00_bit6 = 1;

@@ -66,7 +66,7 @@ void WarpProcess(void) {
         HuPrcVSleep();
     }
     
-    BoardRotateDiceNumbers(curr_player);
+    BoardPlayerIdleSet(curr_player);
     if (_CheckFlag(0x1000B) != 0) {
         BoardTutorialHookExec(18, 0);
         boardTutorialData[0] = 0;
@@ -144,7 +144,7 @@ static void WarpInit(s32 player) {
     HuAudFXPlay(835);
     BoardPlayerRotYSet(player, 0.0f);
     BoardPlayerPosSet(player, 0.0f, 0.0f, 0.0f);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
 }
 
 static void WarpLaunch(s32 player) {
@@ -245,7 +245,7 @@ static void WarpImpact(s32 player) {
     HuPrcSleep(60);
     
     for (i = 0; i < warpImpactCnt; i++) {
-        BoardRotateDiceNumbers(warpImpactPlayer[i]);
+        BoardPlayerIdleSet(warpImpactPlayer[i]);
     }
     warpState = 6;
 }

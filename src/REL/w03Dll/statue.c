@@ -172,7 +172,7 @@ s32 fn_1_1650(s32 arg0) {
     f32 temp;
     s32 temp2;
 
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     
     if (lbl_1_bss_0->unk2) {
         BoardWinCreate(0, 0x160000, -1);
@@ -207,7 +207,7 @@ s32 fn_1_1650(s32 arg0) {
         HuPrcVSleep();
     }
     
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     BoardWinCreate(2, 0x160001, 2);
     BoardWinWait();
     BoardWinCreateChoice(0, 0x160002, -1, 0);
@@ -284,7 +284,7 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
             HuPrcVSleep();
         }
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     HuPrcSleep(0x14);
     temp = (180.0f + BoardPlayerRotYGet(arg0));
     BoardPlayerMotBlendSet(arg0, temp, 0xF);
@@ -376,7 +376,7 @@ void fn_1_1ED4(s32 arg0) {
     while (BoardFilterFadePauseCheck() == 0) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     
     while (BoardMusStatusGet(1) != 0) {
         HuPrcVSleep();
@@ -448,7 +448,7 @@ void fn_1_20E0(s32 arg0) {
         BoardCameraMotionWait();
     }
     
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     while (BoardMusStatusGet(1) != 0) {
         HuPrcVSleep();
     }
@@ -520,7 +520,7 @@ void fn_1_26E0(s32 arg0) {
     }
     BoardCameraMotionWait();
     BoardModelMotionStart(lbl_1_bss_C[1], 0, 0);
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
 }
 
 void fn_1_2818(void) {

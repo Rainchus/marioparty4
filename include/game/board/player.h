@@ -123,7 +123,7 @@ void BoardPlayerMoveToAsync(s32, s32);
 void BoardPlayerPosLerpStart(s32, Vec*, Vec*, s16);
 void BoardPlayerDiceJumpStart(s32);
 s32 BoardPlayerDiceJumpCheck(s32);
-void BoardRotateDiceNumbers(s32);
+void BoardPlayerIdleSet(s32);
 void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2);
 
 void BoardPlayerBtnDownWait(s32, u32);
@@ -151,7 +151,5 @@ s32 BoardPlayerMotBlendCheck(s32);
 void BoardPlayerMoveAwayStartCurr(s32, s32);
 void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);
-void MoveAwayObjFunc(omObjData*);
-void UpdateBowserSuit(omObjData*);
 
 #endif

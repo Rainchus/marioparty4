@@ -168,7 +168,7 @@ s32 fn_1_6898(s32 arg0) {
     s32 i, j;
     s32 temp, temp2;
 
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     BoardCameraViewSet(2);
     BoardCameraMotionWait();
     
@@ -351,7 +351,7 @@ void fn_1_6F9C(s32 arg0) {
     
     BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, 0U);
     HuPrcSleep(10);
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     if (GWPlayer[arg0].bowser_suit != 0) {
         BoardModelHookSet(lbl_1_data_388, "chara01", BoardPlayerModelGet(arg0));
     } else {
@@ -410,7 +410,7 @@ void fn_1_735C(s32 arg0) {
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     GWPlayer[arg0].space_curr = temp_r29;
     GWPlayer[arg0].space_prev = -1;
     BoardPlayerPostTurnHookSet(arg0, fn_1_6698);

@@ -418,7 +418,7 @@ static void ExecLottery(void) {
     temp_r29 = BoardDataDirReadAsync(0x50000);
     temp_r31 = GWSystem.player_curr;
     temp_r28 = GWPlayer[temp_r31].space_curr;
-    BoardRotateDiceNumbers(temp_r31);
+    BoardPlayerIdleSet(temp_r31);
     BoardWinCreateChoice(0, 0x60000, -1, 0);
     if (GWPlayer[temp_r31].com) {
         if (BoardPlayerCoinsGet(temp_r31) >= 5) {
@@ -503,7 +503,7 @@ static void ExecLottery(void) {
         }
     }
     BoardMusStart(1, 2, 0x7F, 0);
-    BoardRotateDiceNumbers(temp_r31);
+    BoardPlayerIdleSet(temp_r31);
     while (!BoardStatusStopCheck(temp_r31)) {
         HuPrcVSleep();
     }
@@ -533,7 +533,7 @@ static void ExecLottery(void) {
     while (GWPlayer[temp_r31].moving) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(temp_r31);
+    BoardPlayerIdleSet(temp_r31);
     BoardModelVisibilitySet(ballMdl[currPrize & 3], 0);
     BoardAudSeqFadeOut(1, 1000);
     BoardCameraTargetPlayerSet(temp_r31);
@@ -591,7 +591,7 @@ static void DoMiniJumpUp(s32 arg0) {
     }
     sp1C.y = sp28.y;
     BoardPlayerPosSetV(arg0, &sp1C);
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
 }
 
 static void DoMiniJumpDown(s32 arg0) {
