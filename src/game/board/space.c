@@ -639,7 +639,7 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 	if(space_ptr->flag & 0x600000) {
 		s32 mg_param = GWSystem.unk_38;
 		if(BoardPlayerSizeGet(player) == 1) {
-			BoardRotateDiceNumbers(player);
+			BoardPlayerIdleSet(player);
 			BoardMGCreate(mg_param);
 		}
 		return 1;

@@ -211,7 +211,7 @@ static void ExecStar(void) {
     temp_f30 = 90.0 - 180.0 * (atan2(spC.z, spC.x) / M_PI);
     temp_f30 = 90.0f * ((temp_f30 + 3.0f) / 90.0f);
     temp_f29 = BoardPlayerRotYGet(temp_r31);
-    BoardRotateDiceNumbers(temp_r31);
+    BoardPlayerIdleSet(temp_r31);
     if (BoardDAngleCalc(temp_f30 - temp_f29) < 0.0f) {
         var_f28 = -BoardDAngleCalc(temp_f30 - temp_f29);
     } else {
@@ -689,7 +689,7 @@ void BoardStarShowNext(s32 arg0) {
         BoardAudSeqFadeOut(0, 1000);
     }
     showNextObj = omAddObjEx(boardObjMan, 0x7E03, 0, 0, -1, ShowNextUpdate);
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     BoardModelMotionStart(BoardStarHostMdlGet(), 1, 0x40000001);
     BoardModelPosGet(BoardStarHostMdlGet(), &sp50);
     showNextObj->scale.x = sp50.x;

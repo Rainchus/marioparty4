@@ -34,10 +34,14 @@ static void MoveAwayObjFunc(omObjData*);
 static void MoveAwayObjFunc(omObjData*);
 static void UpdateBowserSuit(omObjData*);
 
+static void MegaSquishFunc(omObjData *object);
+
+
 static s32 DoSparkSpace(s32 player, s32 pause_cam);
 static void RemoveSparkSpace(s32 player);
 static void SetRollPlayerSize(s32 player);
-static s32 MegaPlayerPassFunc(s32, s16);
+static s32 MegaPlayerPassFunc(s32 player, s32 space);
+static s32 MegaExecJump(s32 player, s32 space);
 
 //TODO: Give better name
 typedef struct bitcopy {
@@ -134,7 +138,7 @@ static s32 boardSparkSfxTblAlt[] = {
     0x223, 0x263, 0x2A3, 0x2E3,
 };
 
-static s32 megaSquishObj[] = {
+static omObjData *megaSquishObj[] = {
     0, 0, 0, 0,
 };
 
@@ -826,7 +830,7 @@ block_14:
     } while (1);
     BoardPauseDisableSet(1);
     BoardDiceDigit2DUpdateEnable(arg0);
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     if (GWPlayer[arg0].bowser_suit != 0) {
         BoardCameraTargetPlayerSet(arg0);
     }
@@ -911,7 +915,7 @@ void BoardPlayerZoomRestore(s32 arg0) {
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
 }
 
 void BoardJunctionMaskSet(s32 arg0) {
@@ -1243,7 +1247,7 @@ static s32 DoDebugMove(s32 arg0, s16* arg1) {
             } else {
                 if (HuPadBtnDown[var_r20] == 0x10) {
                     BoardDiceDigit2DShowSet(0);
-                    BoardRotateDiceNumbers(arg0);
+                    BoardPlayerIdleSet(arg0);
                     StopJunctionPlayer(0);
                     BoardViewMapExec(arg0);
                     InitJunction(arg0, sp28->space_curr, -1.0f);
@@ -1283,7 +1287,7 @@ static s32 DoDebugMove(s32 arg0, s16* arg1) {
                     }
                 } else {
                     if (BoardPlayerMotGet(arg0) != 1) {
-                        BoardRotateDiceNumbers(arg0);
+                        BoardPlayerIdleSet(arg0);
                     }
                     if (GWPlayer[arg0].bowser_suit != 0) {
                         BoardBowserSuitMotionSetWait();
@@ -1397,7 +1401,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
     var_f28 = -1.0f;
     sp8 = 0;
     InitJunction(arg0, sp30->space_curr, var_f28);
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
     HuPrcSleep(10);
     while (1) {
         
@@ -1440,7 +1444,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
         } else if (var_r20 == 0x20 || var_r20 == 0x10) {
             HuAudFXPlay(1);
             BoardDiceDigit2DShowSet(0);
-            BoardRotateDiceNumbers(arg0);
+            BoardPlayerIdleSet(arg0);
             StopJunctionPlayer(0);
             if (var_r20 == 0x10) {
                 BoardViewMapExec(arg0);
@@ -1475,7 +1479,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
                 }
             } else {
                 if (BoardPlayerMotGet(arg0) != 1) {
-                    BoardRotateDiceNumbers(arg0);
+                    BoardPlayerIdleSet(arg0);
                 }
                 if (GWPlayer[arg0].bowser_suit != 0) {
                     BoardBowserSuitMotionSetWait();
@@ -1706,7 +1710,7 @@ static void DiceJumpFunc(omObjData* arg0) {
     temp_r31 = OM_GET_WORK_PTR(arg0, bitcopy2);
     if ((temp_r31->field00_bit0 != 0) || (BoardIsKill() != 0)) {
         GWPlayer[temp_r31->field00_bit1].field08_bit3 = 0;
-        BoardRotateDiceNumbers(temp_r31->field00_bit1);
+        BoardPlayerIdleSet(temp_r31->field00_bit1);
         diceJumpObj[temp_r31->field00_bit1] = 0;
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
@@ -1748,7 +1752,7 @@ static void DiceJumpFunc(omObjData* arg0) {
 }
 
 
-void BoardRotateDiceNumbers(s32 arg0)
+void BoardPlayerIdleSet(s32 arg0)
 {
     if (GWPlayer[arg0].bowser_suit) {
         BoardBowserSuitMotionSetWait();
@@ -2299,7 +2303,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 	}
 	BoardCameraMotionWait();
 	BoardCameraTargetPlayerSet(player);
-	BoardRotateDiceNumbers(player);
+	BoardPlayerIdleSet(player);
 	temp_r28 = BoardModelCreate(0x70074, NULL, 0);
 	BoardModelMotionStart(temp_r28, 0, 0x40000002);
 	BoardModelMotionTimeSet(temp_r28, 30.0f);
@@ -2348,7 +2352,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 	temp_r17 = BoardRollTypeGet();
 	if(temp_r17 == 0 || temp_r17 == 1 || temp_r17 == 2 || temp_r17 == 3 || temp_r17 == 10) {
 		BoardCameraTargetPlayerSet(player);
-		BoardRotateDiceNumbers(player);
+		BoardPlayerIdleSet(player);
 		HuPrcSleep(12);
 		BoardItemPlayerRestore(player, temp_r17);
 		while(!BoardItemDoneCheck()) {
@@ -2393,7 +2397,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 	BoardModelKill(temp_r28);
 	BoardModelKill(sp2E);
 	for(i=0; i<4; i++) {
-		BoardRotateDiceNumbers(sp124[i]);
+		BoardPlayerIdleSet(sp124[i]);
 	}
 	HuPrcSleep(10);
 	GWSystem.player_curr = -1;
@@ -2498,6 +2502,337 @@ void BoardPlayerResizeAnimExec(s32 player, s32 size)
 	BoardPlayerSizeSet(player, size);
 }
 
+typedef struct mega_squish_work {
+	struct {
+		u8 kill : 1;
+		u8 no_coinchg : 1;
+		u8 played_snd : 1;
+		u8 gain_player : 2;
+	};
+	s8 player;
+	s8 state;
+	s8 coinchg;
+	s8 loss;
+	s8 disappear_time;
+	s8 disappear_len;
+	u16 hide_time;
+} MegaSquishWork;
+
+static void MegaSquishFunc(omObjData *object)
+{
+	MegaSquishWork *work = OM_GET_WORK_PTR(object, MegaSquishWork);
+	Vec pos;
+	if(work->kill || BoardIsKill()) {
+		if(work->coinchg != -1) {
+			BoardCoinChgHide(work->coinchg);
+		}
+		megaSquishObj[work->player] = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	if(work->hide_time != 0) {
+		work->hide_time--;
+		return;
+	}
+	switch(work->state) {
+		case 1:
+			if(!work->played_snd) {
+				HuAudFXPlay(798);
+				HuAudFXPlay(megaSquishSfxTbl[GWPlayer[work->player].character]);
+				work->played_snd = 1;
+			}
+			BoardPlayerMotionStart(work->player, 10, 0);
+			BoardPlayerMotionSpeedSet(work->player, 2.0f);
+			work->state = 2;
+			break;
+			
+		case 2:
+		{
+			if(!BoardModelMotionTimeGet(BoardPlayerModelGet(work->player) >= 50.0f)) {
+				return;
+			}
+			BoardPlayerMotionSpeedSet(work->player, 0.0f);
+			BoardPlayerPosGet(work->player, &pos);
+			pos.y += 10.0f;
+			BoardPlayerPosSetV(work->player, &pos);
+			work->hide_time = 20;
+			work->state = 3;
+			work->coinchg = -1;
+			work->disappear_time = 0;
+		}
+			
+			break;
+			
+		case 3:
+			if(work->coinchg == -1) {
+				BoardPlayerPosGet(work->player, &pos);
+				
+				pos.y += 250.0f;
+				if(!work->no_coinchg) {
+					work->coinchg = BoardCoinChgCreate(&pos, -work->loss);
+				} else {
+					work->state = 4;
+					work->hide_time = work->disappear_len;
+				}
+			}
+			if(work->disappear_time++ < work->disappear_len) {
+				return;
+			}
+			work->disappear_time = 0;
+			if(work->loss <= 0) {
+				work->state = 4;
+				HuAudFXPlay(15);
+			} else {
+				work->loss--;
+				BoardPlayerCoinsAdd(work->player, -1);
+				HuAudFXPlay(14);
+				BoardPlayerCoinsAdd(work->gain_player, 1);
+			}
+			break;
+			
+		case 4:
+			BoardPlayerMotionSpeedSet(work->player, 2.0f);
+			BoardPlayerPosGet(work->player, &pos);
+			pos.y -= 10.0f;
+			BoardPlayerPosSetV(work->player, &pos);
+			work->state = 5;
+			break;
+			
+		case 5:
+			if(!BoardPlayerMotionEndCheck(work->player)) {
+				return;
+			}
+			BoardPlayerIdleSet(work->player);
+			work->kill = 1;
+			break;
+			
+		case 0:
+			break;
+			
+		default:
+			break;
+	}
+}
+
+static s32 MegaPlayerPassFunc(s32 player, s32 space)
+{
+	float temp_f30;
+	float temp_f29;
+	MegaSquishWork *temp_r31;
+	s32 temp_r29;
+	MegaSquishWork *temp_r28;
+	s32 temp_r27;
+	s32 temp_r26;
+	s32 temp_r24;
+	omObjData *temp_r23;
+	s32 spD0[4];
+	Vec spC4;
+	Vec spB8;
+	Vec spAC;
+	Vec spA0;
+	float sp98[2];
+	
+	
+	if(GWPlayer[player].bowser_suit) {
+		return MegaExecJump(player, space);
+	}
+	if(BoardPlayerSizeGet(player) != 2) {
+		return 0;
+	}
+	spD0[0] = spD0[1] = spD0[2] = -1;
+	for(temp_r26=temp_r29=0; temp_r29<4; temp_r29++) {
+		if(temp_r29 != player && GWPlayer[temp_r29].space_curr == space) {
+			spD0[temp_r26++] = temp_r29;
+			BoardPlayerPosGet(temp_r29, &spA0);
+			temp_r23 = omAddObjEx(boardObjMan, 256, 0, 0, -1, MegaSquishFunc);
+			megaSquishObj[temp_r29] = temp_r23;
+			temp_r31 = OM_GET_WORK_PTR(temp_r23, MegaSquishWork);
+			temp_r31->kill = 0;
+			temp_r31->player = temp_r29;
+			temp_r31->gain_player = player;
+			temp_r31->state = 0;
+			temp_r31->hide_time = 0;
+			temp_r31->loss = 0;
+			temp_r31->disappear_len = 3;
+			temp_r31->disappear_time = 0;
+			temp_r31->played_snd = 0;
+			if(BoardPlayerCoinsGet(temp_r31->player) <= 0) {
+				temp_r31->no_coinchg = 1;
+			} else {
+				temp_r31->no_coinchg = 0;
+			}
+			if(BoardPlayerCoinsGet(temp_r31->player) >= 10) {
+				temp_r31->loss = 10;
+			} else {
+				temp_r31->loss = BoardPlayerCoinsGet(temp_r31->player);
+			}
+		}
+	}
+	if(temp_r26 == 0) {
+		return 0;
+	}
+	if (_CheckFlag(0x1000BU) != 0) {
+        BoardTutorialHookExec(24, 0);
+    }
+	BoardPlayerPosGet(player, &spB8);
+	BoardSpacePosGet(0, space, &spC4);
+	sp98[0] = spB8.y;
+	if(spC4.y > spB8.y) {
+		spB8.y += 300.0f;
+	} else {
+		spB8.y += 200.0f;
+	}
+	VECSubtract(&spC4, &spB8, &spAC);
+	spAC.x /= 60.0f;
+	spAC.z /= 60.0f;
+	BoardPlayerRotYSet(player, 90.0-(180.0*(atan2(spAC.z, spAC.x)/M_PI)));
+	sp98[1] = BoardVecDistXZCalc(&spC4, &spB8);
+	BoardPlayerMotionShiftSet(player, 4, 0, 8, 0);
+	HuPrcSleep(8);
+	temp_r24 = 0;
+	for(temp_f30=0; temp_f30<60.0f; temp_f30++) {
+		temp_f29 = spB8.y;
+		spB8.x += spAC.x;
+		spB8.z += spAC.z;
+		spB8.y += 10.0f + (0.9f*(-0.020416668f * temp_f30 * temp_f30));
+		if(temp_f29 > spB8.y) {
+			temp_r24 = 1;
+		}
+		if(spB8.y <= 200.0f+spC4.y && temp_r24) {
+			for(temp_r27=0; temp_r27<4; temp_r27++) {
+				if(megaSquishObj[temp_r27]) {
+					temp_r28 = OM_GET_WORK_PTR(megaSquishObj[temp_r27], MegaSquishWork);
+					if((s16)space == GWPlayer[temp_r28->player].space_curr && temp_r28->state != 1) {
+						temp_r28->state = 1;
+					}
+				}
+			}
+		}
+		if(spB8.y <= spC4.y) {
+			spB8.y = spC4.y;
+			BoardPlayerMotionShiftSet(player, 5, 0, 4, 0);
+		}
+		BoardPlayerPosSetV(player, &spB8);
+		HuPrcVSleep();
+	}
+	BoardCameraQuakeSet(30, 500.0f);
+	omVibrate(0, 12, 4, 2);
+	omVibrate(1, 12, 4, 2);
+	omVibrate(2, 12, 4, 2);
+	omVibrate(3, 12, 4, 2);
+	BoardPlayerIdleSet(player);
+	HuPrcSleep(30);
+}
+
+static s32 MegaExecJump(s32 player, s32 space)
+{
+	float temp_f30;
+	float temp_f29;
+	MegaSquishWork *temp_r31;
+	s32 temp_r29;
+	MegaSquishWork *temp_r28;
+	s32 temp_r27;
+	s32 temp_r26;
+	s32 temp_r25;
+	s32 temp_r24;
+	omObjData *temp_r23;
+	s32 spD0[4];
+	Vec spC4;
+	Vec spB8;
+	Vec spAC;
+	Vec spA0;
+	float sp90[2];
+	spD0[0] = spD0[1] = spD0[2] = -1;
+	for(temp_r26=temp_r29=0; temp_r29<4; temp_r29++) {
+		if(temp_r29 != player && GWPlayer[temp_r29].space_curr == space) {
+			spD0[temp_r26++] = temp_r29;
+			BoardPlayerPosGet(temp_r29, &spA0);
+			temp_r23 = omAddObjEx(boardObjMan, 256, 0, 0, -1, MegaSquishFunc);
+			megaSquishObj[temp_r29] = temp_r23;
+			temp_r31 = OM_GET_WORK_PTR(temp_r23, MegaSquishWork);
+			temp_r31->kill = 0;
+			temp_r31->player = temp_r29;
+			temp_r31->gain_player = player;
+			temp_r31->state = 0;
+			temp_r31->hide_time = 0;
+			temp_r31->loss = 0;
+			temp_r31->disappear_len = 3;
+			temp_r31->disappear_time = 0;
+			if(BoardPlayerCoinsGet(temp_r31->player) <= 0) {
+				temp_r31->no_coinchg = 1;
+			} else {
+				temp_r31->no_coinchg = 0;
+			}
+			if(BoardPlayerCoinsGet(temp_r31->player) >= 30) {
+				temp_r31->loss = 30;
+			} else {
+				temp_r31->loss = BoardPlayerCoinsGet(temp_r31->player);
+			}
+		}
+	}
+	if(temp_r26 == 0) {
+		return 0;
+	}
+	BoardPlayerPosGet(player, &spB8);
+	BoardSpacePosGet(0, space, &spC4);
+	sp90[0] = spB8.y;
+	if(spC4.y > spB8.y) {
+		spB8.y += 300.0f;
+	} else {
+		spB8.y += 200.0f;
+	}
+	VECSubtract(&spC4, &spB8, &spAC);
+	spAC.x /= 60.0f;
+	spAC.z /= 60.0f;
+	BoardPlayerRotYSet(player, 90.0-(180.0*(atan2(spAC.z, spAC.x)/M_PI)));
+	BoardPlayerIdleSet(player);
+	HuPrcSleep(10);
+	sp90[1] = BoardVecDistXZCalc(&spC4, &spB8);
+	BoardModelMotionShiftSet(suitMdl, bowserSuitMot[3], 0.0f, 8.0f, 0);
+	BoardModelMotionSpeedSet(suitMdl, 2.0f);
+	HuPrcSleep(8);
+	HuAudFXPlay(809);
+	temp_r24 = 0;
+	temp_r25 = 0;
+	for(temp_f30=0; temp_f30<60.0f; temp_f30++) {
+		temp_f29 = spB8.y;
+		spB8.x += spAC.x;
+		spB8.z += spAC.z;
+		spB8.y += 10.0f + (0.9f*(-0.020416668f * temp_f30 * temp_f30));
+		if(temp_f29 > spB8.y) {
+			temp_r25 = 1;
+		}
+		if(spB8.y <= 200.0f+spC4.y && temp_r25) {
+			for(temp_r27=0; temp_r27<4; temp_r27++) {
+				if(megaSquishObj[temp_r27]) {
+					temp_r28 = OM_GET_WORK_PTR(megaSquishObj[temp_r27], MegaSquishWork);
+					if((s16)space == GWPlayer[temp_r28->player].space_curr && temp_r28->state != 1) {
+						temp_r28->state = 1;
+					}
+				}
+			}
+		}
+		if(spB8.y <= spC4.y) {
+			spB8.y = spC4.y;
+			if(!temp_r24) {
+				BoardPlayerIdleSet(player);
+				HuAudFXPlay(810);
+				temp_r24 = 1;
+			}
+			
+		}
+		BoardPlayerPosSetV(player, &spB8);
+		HuPrcVSleep();
+	}
+	BoardCameraQuakeSet(30, 500.0f);
+	omVibrate(0, 12, 4, 2);
+	omVibrate(1, 12, 4, 2);
+	omVibrate(2, 12, 4, 2);
+	omVibrate(3, 12, 4, 2);
+	BoardPlayerIdleSet(player);
+	HuPrcSleep(30);
+}
+
 void BoardPlayerCopyEyeMat(s32 arg0, s32 arg1) {
     HsfMaterial* var_r29;
     s32 var_r24;
@@ -2542,7 +2877,6 @@ void BoardPlayerCopyEyeMat(s32 arg0, s32 arg1) {
     }
     DCStoreRange(hsfData->material, hsfData->materialCnt * 0x3C);
 }
-
 
 void BoardPlayerCopyMat(s32 arg0) {
     s16 modelID;

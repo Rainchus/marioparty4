@@ -40,7 +40,7 @@ extern void BoardCameraViewSet(s32);
 extern void BoardPlayerPosGet(s32, Vec*);
 extern void BoardPlayerMotionEndWait(s32);
 extern void BoardPlayerCoinsAdd(s32, s32);
-extern void BoardRotateDiceNumbers(s32);
+extern void BoardPlayerIdleSet(s32);
 extern void BoardCameraMotBlendSet(s32, s16, s16);
 extern s32 BoardPlayerMotBlendCheck(s32);
 
@@ -102,7 +102,7 @@ void BoardLandBlueExec(s32 player, s32 space) {
     }
     GWPlayer[player].color = 1;
     BoardPlayerMotionEndWait(player);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
 }
 
 void BoardLandRedExec(s32 player, s32 space) {
@@ -143,7 +143,7 @@ void BoardLandRedExec(s32 player, s32 space) {
     }
     GWPlayer[player].color = 2;
     BoardPlayerMotionEndWait(player);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
 }
 
 s8 BoardCoinChgCreate(Vec *pos, s8 value) {

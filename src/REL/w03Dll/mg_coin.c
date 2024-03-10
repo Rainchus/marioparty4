@@ -541,7 +541,7 @@ void fn_1_9044(omObjData* arg0, someBits3* arg1) {
             arg0->trans.x *= 0.5f;
             if (arg0->trans.x <= 1.0f) {
                 arg0->trans.y = 0.0f;
-                BoardRotateDiceNumbers(arg1->unk00_bit5);
+                BoardPlayerIdleSet(arg1->unk00_bit5);
                 BoardModelMotionShiftSet(lbl_1_bss_C[10], 1, 0.0f, 10.0f, 0x40000001U);
                 arg1->unk00_bit0 = 1;
             }

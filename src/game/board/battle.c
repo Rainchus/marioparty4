@@ -320,7 +320,7 @@ static void ExecBattle(void) {
     }
     StopBattleBomb();
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        BoardRotateDiceNumbers(var_r31);
+        BoardPlayerIdleSet(var_r31);
         BoardPlayerVoiceEnableSet(var_r31, 6, 1);
     }
     BoardAudSeqPause(0, 0, 1000);

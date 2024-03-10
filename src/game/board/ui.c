@@ -1152,7 +1152,7 @@ static void FinishItemUse(s16 arg0, s32 arg1) {
         case 10:
             HuPrcSleep(2);
             BoardBowserSuitMotionCreate();
-            BoardRotateDiceNumbers(itemPlayer);
+            BoardPlayerIdleSet(itemPlayer);
             BoardModelLayerSet(BoardBowserSuitModelGet(), 0);
             BoardModelLayerSet(BoardBowserSuitPlayerModelGet(), 0);
             break;
