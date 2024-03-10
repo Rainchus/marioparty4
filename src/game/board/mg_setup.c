@@ -625,7 +625,7 @@ static void CreateMGSetup(void) {
     HuSprGrpPosSet(temp_r31->unk_00[0], 288.0f, 240.0f);
 }
 
-void UpdateMGSetup(omObjData* arg0) {
+static void UpdateMGSetup(omObjData* arg0) {
     bitcopy* var_r31;
     s32 var_r29;
 
@@ -670,7 +670,7 @@ void UpdateMGSetup(omObjData* arg0) {
     }
 }
 
-void CenterStatus(bitcopy* arg0, omObjData* arg1) {
+static void CenterStatus(bitcopy* arg0, omObjData* arg1) {
     s32 var_r31;
     bitcopy* temp_r30;
 
@@ -711,7 +711,7 @@ void CenterStatus(bitcopy* arg0, omObjData* arg1) {
     temp_r30->unk_04 = 0;
 }
 
-void SeparateStatus(bitcopy* arg0, omObjData* arg1) {
+static void SeparateStatus(bitcopy* arg0, omObjData* arg1) {
     Vec sp8;
     f32 temp_f30;
     f32 temp_f29;
@@ -757,7 +757,7 @@ void SeparateStatus(bitcopy* arg0, omObjData* arg1) {
     }
 }
 
-void PopupVS(bitcopy* arg0, omObjData* arg1) {
+static void PopupVS(bitcopy* arg0, omObjData* arg1) {
     f32 var_f30;
     f32 temp_f31;
     bitcopy* temp_r28;
