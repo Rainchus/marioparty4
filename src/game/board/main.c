@@ -2018,17 +2018,17 @@ void BoardLast5GfxInit(void)
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
-			HuSprAttrSet(work->group, i, SPRITE_ATTR_BILINEAR);
+			HuSprAttrSet(work->group, i, HUSPR_ATTR_LINEAR);
 			HuSprPosSet(work->group, i, last5GfxPosTbl[lastF][i][0], last5GfxPosTbl[lastF][i][1]);
 		}
 		if(!work->is_last) {
-			SpriteData *sprite = &HuSprData[HuSprGrpData[work->group].members[1]];
+			HuSprite *sprite = &HuSprData[HuSprGrpData[work->group].members[1]];
 			HuSprBankSet(work->group, 1, 0);
 			sprite->frame = turn_remain;
 		} else {
-			HuSprAttrSet(work->group, 1, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(work->group, 1, HUSPR_ATTR_DISPOFF);
 		}
-		HuSprAttrSet(work->group, 1, SPRITE_ATTR_PAUSED);
+		HuSprAttrSet(work->group, 1, HUSPR_ATTR_NOANIM);
 		object->trans.x = 0.0f;
 		HuSprGrpTPLvlSet(work->group, object->trans.x);
 		HuSprGrpPosSet(work->group, 288, 72);
@@ -2105,12 +2105,12 @@ void BoardLast5GfxShowSet(s32 show)
 	work = OM_GET_WORK_PTR(last5GfxObj, Last5GfxWork);
 	for(i=0; i<3; i++) {
 		if(show) {
-			HuSprAttrReset(work->group, i, SPRITE_ATTR_HIDDEN);
+			HuSprAttrReset(work->group, i, HUSPR_ATTR_DISPOFF);
 		} else {
-			HuSprAttrSet(work->group, i, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(work->group, i, HUSPR_ATTR_DISPOFF);
 		}
 		if(work->is_last) {
-			HuSprAttrSet(work->group, 1, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(work->group, 1, HUSPR_ATTR_DISPOFF);
 		}
 	}
 }

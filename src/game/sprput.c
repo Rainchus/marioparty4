@@ -40,7 +40,7 @@ void HuSprDispInit(void)
     GXSetZMode(GX_FALSE, GX_ALWAYS, GX_FALSE);
 }
 
-void HuSprDisp(SpriteData *sprite)
+void HuSprDisp(HuSprite *sprite)
 {
     short i;
     AnimData *anim = sprite->data;
@@ -48,10 +48,10 @@ void HuSprDisp(SpriteData *sprite)
     Vec axis = {0, 0, 1};
     Mtx modelview, rot;
     short color_sum;
-    SpriteFunc func;
+    HuSprFunc func;
     
     GXSetScissor(sprite->scissor_x, sprite->scissor_y, sprite->scissor_w, sprite->scissor_h);
-    if(sprite->attr & SPRITE_ATTR_FUNC) {
+    if(sprite->attr & HUSPR_ATTR_FUNC) {
         if(sprite->func) {
             func = sprite->func;
             func(sprite);
@@ -80,9 +80,9 @@ void HuSprDisp(SpriteData *sprite)
         GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
         GXSetNumChans(1);
         GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, GX_LIGHT0, GX_DF_CLAMP, GX_AF_SPOT);
-        if(sprite->attr & SPRITE_ATTR_ADDITIVE) {
+        if(sprite->attr & HUSPR_ATTR_ADDCOL) {
             GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
-        } else if(sprite->attr & SPRITE_ATTR_INVERT) {
+        } else if(sprite->attr & HUSPR_ATTR_INVCOL) {
             GXSetBlendMode(GX_BM_BLEND, GX_BL_ZERO, GX_BL_INVDSTCLR, GX_LO_NOOP);
         } else {
             GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
@@ -123,7 +123,7 @@ void HuSprDisp(SpriteData *sprite)
                 continue;
             }
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
-            HuSprTexLoad(anim, layer->bmpNo, 0, sprite->wrap_s, sprite->wrap_t, (sprite->attr & SPRITE_ATTR_BILINEAR) ? GX_LINEAR : GX_NEAR);
+            HuSprTexLoad(anim, layer->bmpNo, 0, sprite->wrap_s, sprite->wrap_t, (sprite->attr & HUSPR_ATTR_LINEAR) ? GX_LINEAR : GX_NEAR);
             if(layer->alpha != 255 || color_sum != 255*4) {
                 color.a = (u16)(sprite->a*layer->alpha) >> 8;
                 GXSetTevColor(GX_TEVSTAGE1, color);
@@ -140,14 +140,14 @@ void HuSprDisp(SpriteData *sprite)
                 pos[2][1] = layer->vtx[5]-pat->centerY;
                 pos[3][0] = layer->vtx[6]-pat->centerX;
                 pos[3][1] = layer->vtx[7]-pat->centerY;
-                if(layer->flip & SPRITE_LAYER_FLIPX) {
+                if(layer->flip & ANIM_LAYER_FLIPX) {
                     texcoord_x2 = layer->startX/(float)bmp->sizeX;
                     texcoord_x1 = (layer->startX+layer->sizeX)/(float)bmp->sizeX;
                 } else {
                     texcoord_x1 = layer->startX/(float)bmp->sizeX;
                     texcoord_x2 = (layer->startX+layer->sizeX)/(float)bmp->sizeX;
                 }
-                if(layer->flip & SPRITE_LAYER_FLIPY) {
+                if(layer->flip & ANIM_LAYER_FLIPY) {
                     texcoord_y2 = layer->startY/(float)bmp->sizeY;
                     texcoord_y1 = (layer->startY+layer->sizeY)/(float)bmp->sizeY;
                 } else {
@@ -188,49 +188,49 @@ void HuSprTexLoad(AnimData *anim, short bmp, short slot, GXTexWrapMode wrap_s, G
     AnimBmpData *bmp_ptr = &anim->bmp[bmp];
     short sizeX = bmp_ptr->sizeX;
     short sizeY = bmp_ptr->sizeY;
-    switch(bmp_ptr->dataFmt & SPRITE_BMP_FMTMASK) {
-        case SPRITE_BMP_RGBA8:
+    switch(bmp_ptr->dataFmt & ANIM_BMP_FMTMASK) {
+        case ANIM_BMP_RGBA8:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_RGBA8, wrap_s, wrap_t, GX_FALSE);
             break;
             
-        case SPRITE_BMP_RGB5A3:
-        case SPRITE_BMP_RGB5A3_DUPE:
+        case ANIM_BMP_RGB5A3:
+        case ANIM_BMP_RGB5A3_DUPE:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_RGB5A3, wrap_s, wrap_t, GX_FALSE);
             break;
             
-        case SPRITE_BMP_C8:
+        case ANIM_BMP_C8:
             GXInitTlutObj(&tlut_obj, bmp_ptr->palData, GX_TL_RGB5A3, bmp_ptr->palNum);
             GXLoadTlut(&tlut_obj, slot);
             GXInitTexObjCI(&tex_obj,bmp_ptr->data, sizeX, sizeY, GX_TF_C8, wrap_s, wrap_t, GX_FALSE, slot);
             break;
             
-        case SPRITE_BMP_C4:
+        case ANIM_BMP_C4:
             GXInitTlutObj(&tlut_obj, bmp_ptr->palData, GX_TL_RGB5A3, bmp_ptr->palNum);
             GXLoadTlut(&tlut_obj, slot);
             GXInitTexObjCI(&tex_obj,bmp_ptr->data, sizeX, sizeY, GX_TF_C4, wrap_s, wrap_t, GX_FALSE, slot);
             break;
             
-        case SPRITE_BMP_IA8:
+        case ANIM_BMP_IA8:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_IA8, wrap_s, wrap_t, GX_FALSE);
             break;
             
-        case SPRITE_BMP_IA4:
+        case ANIM_BMP_IA4:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_IA4, wrap_s, wrap_t, GX_FALSE);
             break;
             
-        case SPRITE_BMP_I8:
+        case ANIM_BMP_I8:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_I8, wrap_s, wrap_t, GX_FALSE);
             break;
         
-        case SPRITE_BMP_I4:
+        case ANIM_BMP_I4:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_I4, wrap_s, wrap_t, GX_FALSE);
             break;
             
-        case SPRITE_BMP_A8:
+        case ANIM_BMP_A8:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_CTF_A8, wrap_s, wrap_t, GX_FALSE);
             break;
             
-        case SPRITE_BMP_CMPR:
+        case ANIM_BMP_CMPR:
             GXInitTexObj(&tex_obj, bmp_ptr->data, sizeX, sizeY, GX_TF_CMPR, wrap_s, wrap_t, GX_FALSE);
             break;
             

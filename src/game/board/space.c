@@ -1000,15 +1000,15 @@ void BoardSpaceInit(s32 data_num)
 		size = bmp->sizeX;
 		spaceHiliteTexFmt = -1;
 		switch(bmp->dataFmt) {
-			case SPRITE_BMP_RGBA8:
+			case ANIM_BMP_RGBA8:
 				spaceHiliteTexFmt = GX_TF_RGBA8;
 				break;
 				
-			case SPRITE_BMP_RGB5A3_DUPE:
+			case ANIM_BMP_RGB5A3_DUPE:
 				spaceHiliteTexFmt = GX_TF_RGB5A3;
 				break;
 				
-			case SPRITE_BMP_CMPR:
+			case ANIM_BMP_CMPR:
 				spaceHiliteTexFmt = GX_TF_CMPR;
 				break;
 		}
@@ -1032,15 +1032,15 @@ void BoardSpaceInit(s32 data_num)
 		size = bmp->sizeX;
 		spaceTexFmt = -1;
 		switch(bmp->dataFmt) {
-			case SPRITE_BMP_RGBA8:
+			case ANIM_BMP_RGBA8:
 				spaceTexFmt = GX_TF_RGBA8;
 				break;
 				
-			case SPRITE_BMP_RGB5A3_DUPE:
+			case ANIM_BMP_RGB5A3_DUPE:
 				spaceTexFmt = GX_TF_RGB5A3;
 				break;
 				
-			case SPRITE_BMP_CMPR:
+			case ANIM_BMP_CMPR:
 				spaceTexFmt = GX_TF_CMPR;
 				break;
 		}
