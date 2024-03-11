@@ -141,11 +141,14 @@ static char *hiliteObjNameTbl[] = {
 	"lite",
 	"lite1",
 	"lite2",
-	"lite3",
+	"lite3"
+};
+
+static char *faceObjNameTbl[] = {
 	"kao",
 	"kao1",
 	"kao2",
-	"kao3",
+	"kao3"
 };
 
 static s32 resultRankFX12Tbl[] = {
@@ -203,7 +206,7 @@ static s32 lotteryWheelMdlTbl[] = {
 	DATA_MAKE_NUM(DATADIR_BLAST5, 20),
 };
 
-static s16 lotterySprPrioTbl[] = {
+static s16 teamSprPrioTbl[] = {
 	1520,
 	1510,
 	1500,
@@ -221,7 +224,7 @@ static s16 lotterySprPrioTbl[] = {
 	1500
 };
 
-static s32 lotterySprTbl[] = {
+static s32 teamSprTbl[] = {
 	DATA_MAKE_NUM(DATADIR_BOARD, 39),
 	DATA_MAKE_NUM(DATADIR_BOARD, 38),
 	DATA_MAKE_NUM(DATADIR_BOARD, 41),
@@ -237,7 +240,7 @@ static s32 lotterySprTbl[] = {
 	DATA_MAKE_NUM(DATADIR_BOARD, 42),
 };
 
-static float lotterySprPosTbl[][2] = {
+static float teamSprPosTbl[][2] = {
 	{ 0, -35 },
 	{ 0, 0 },
 	{ -68, -38 },
@@ -297,35 +300,43 @@ static void Last5Main(void);
 
 static s32 CheckJump(s32 player);
 
-static void CreateBlock(Vec *pos);
-
 static void CreateLotteryDrawWheel(void);
-
+static void CreateLotteryDraw(Vec *pos);
+static void UpdateLotteryDraw(omObjData *object);
 static void SetLotteryDrawState(s32 state);
 static s32 GetLotteryDrawState();
-
 static void KillLotteryDrawWheel(void);
-
+static void UpdateLotteryDrawWheel(omObjData *object);
+static void SetLotteryDrawWheelState(s32 state);
 static void ExecLotteryDraw(void);
 
-static void InitLotteryTicket(void);
 static void KillLotteryTicket(void);
+static void InitLotteryTicket(void);
+static void UpdateLotteryTicket(omObjData *object);
+static void SetLotteryTicketState(s32 player, s32 state);
+static s32 GetLotteryTicketPlayer(void);
+static s32 CheckLotteryTicket(void);
+static void UpdateLotteryTicketMatch(s32 progress, s32 character);
 
-static void StartHostMove(Vec *from, Vec *to, s32 time);
+static void StartHostMove(Vec *from, Vec *to, s16 time);
+static void ExecHostMove(omObjData *object);
 static s32 CheckHostMove(void);
 
-
 static void CreateStopWin(void);
+
 static void CreateLast5Roulette(void);
+static void UpdateLast5Roulette(omObjData *object);
+
 static void SetLast5RouletteFade(s32 flag);
 static void SetLast5RouletteState(s32 state);
-static s32 GetLast5RouletteState();
-static s32 GetLast5RouletteResult();
+static s32 GetLast5RouletteState(void);
+static s32 GetLast5RouletteResult(void);
 
 static void CreateTeamResult(void);
-static void GetTeamResultTaget(s32 team, Vec *pos);
-static void SetTeamResultTaget(s32 team, Vec *pos);
+static void GetTeamResultTarget(s32 team, Vec *pos);
+static void SetTeamResultTarget(s32 team, Vec *pos);
 static void KillTeamResult(void);
+static void UpdateTeamResult(omObjData *object);
 
 void BoardLast5Exec()
 {
@@ -559,11 +570,11 @@ static void Last5Main(void)
 		BoardWinCreate(2, temp_r24, BoardWinPortraitGetStar());
 		BoardWinWait();
 		for(temp_r31=0; temp_r31<2; temp_r31++) {
-			GetTeamResultTaget(temp_r31, &sp6C[temp_r31]);
+			GetTeamResultTarget(temp_r31, &sp6C[temp_r31]);
 			sp2C[temp_r31] = (122.0f-sp6C[temp_r31].x)/15.0f;
 			for(temp_r29=0; temp_r29<15; temp_r29++) {
 				sp6C[temp_r31].x += sp2C[temp_r31];
-				SetTeamResultTaget(temp_r31, &sp6C[temp_r31]);
+				SetTeamResultTarget(temp_r31, &sp6C[temp_r31]);
 				HuPrcVSleep();
 			}
 		}
@@ -579,9 +590,9 @@ static void Last5Main(void)
 		}
 		for(temp_r29=0; temp_r29<15; temp_r29++) {
 			for(temp_r31=0; temp_r31<2; temp_r31++) {
-				GetTeamResultTaget(temp_r31, &sp6C[temp_r31]);
+				GetTeamResultTarget(temp_r31, &sp6C[temp_r31]);
 				sp6C[temp_r31].x += sp2C[temp_r31];
-				SetTeamResultTaget(temp_r31, &sp6C[temp_r31]);
+				SetTeamResultTarget(temp_r31, &sp6C[temp_r31]);
 			}
 			HuPrcVSleep();
 		}
@@ -637,7 +648,7 @@ static void Last5Main(void)
 	temp_r19 = 0;
 	temp_r29 = 3;
 	for(temp_f31=0; temp_r29>0; temp_f31++) {
-		sp48.y += (float)(5.0+((9.8/120)*temp_f31*temp_f31));
+		sp48.y += (float)(5.0+((-9.8/120)*temp_f31*temp_f31));
 		if(sp60.y > sp48.y) {
 			omVibrate(temp_r30, 12, 6, 6);
 			if(!temp_r19) {
@@ -665,7 +676,7 @@ static void Last5Main(void)
 	sp48.x = sp60.x-100.0f;
 	sp48.y = sp60.y;
 	sp48.z = sp60.z;
-	CreateBlock(&sp48);
+	CreateLotteryDraw(&sp48);
 	SetLotteryDrawState(2);
 	while(GetLotteryDrawState() != 0) {
 		HuPrcVSleep();
@@ -729,14 +740,1250 @@ static s32 CheckJump(s32 player)
 	if(GWPlayer[player].com) {
 		if(BoardRandMod(100) >= 90) {
 			return 1;
+		}
+	} else if(HuPadBtnDown[GWPlayer[player].port] == PAD_BUTTON_A) {
+		return 1;
+	}
+	return 0;
+}
+
+typedef struct draw_wheel_mdl {
+	s16 plate[4];
+	s16 face[4];
+	s16 center;
+} DrawWheelMdl;
+
+typedef struct draw_wheel_work {
+	struct {
+		u8 kill : 1;
+	};
+	s8 state;
+	s8 hilite;
+	u16 timer;
+	u8 hilite_vel;
+	u8 hilite_accel;
+	DrawWheelMdl *mdl;
+} DrawWheelWork;
+
+typedef struct lottery_draw_work {
+	struct {
+		u8 kill : 1;
+	};
+	u8 state;
+	s16 block_mdl;
+	float min_y;
+} LotteryDrawWork;
+
+static void CreateLotteryDrawWheel(void)
+{
+	omObjData *object;
+	DrawWheelWork *work;
+	DrawWheelMdl *mdl;
+	s32 i;
+	object = omAddObjEx(boardObjMan, 257, 0, 0, -1, UpdateLotteryDrawWheel);
+	lotteryDrawWheelObj = object;
+	work = OM_GET_WORK_PTR(object, DrawWheelWork);
+	work->kill = 0;
+	work->state = 0;
+	work->mdl = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(DrawWheelMdl), MEMORY_DEFAULT_NUM);
+	work->hilite = 0;
+	work->hilite_vel = 2;
+	work->hilite_accel = 5;
+	mdl = work->mdl;
+	object->trans.x = spacePos.x + -300.0f;
+	object->trans.y = spacePos.y;
+	object->trans.z = spacePos.z + -50.0f;
+	wheelMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 12), NULL, 0);
+	BoardModelPosSet(wheelMdl, object->trans.x, object->trans.y, object->trans.z);
+	mdl->center = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 22), NULL, 0);
+	BoardModelVisibilitySet(mdl->center, 0);
+	for(i=0; i<4; i++) {
+		s32 character = GWPlayer[i].character;
+		mdl->face[i] = BoardModelCreate(lotteryWheelMdlTbl[character], NULL, 0);
+		BoardModelPosSet(mdl->face[i], 0, 0, -10);
+		mdl->plate[i] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 21), NULL, 1);
+		BoardModelHookSet(wheelMdl, faceObjNameTbl[i], mdl->face[i]);
+		BoardModelHookSet(wheelMdl, plateObjNameTbl[i], mdl->plate[i]);
+	}
+}
+
+static void CreateLotteryDraw(Vec *pos)
+{
+	omObjData *object;
+	LotteryDrawWork *work;
+	object = omAddObjEx(boardObjMan, 257, 0, 0, -1, UpdateLotteryDraw);
+	lotteryDrawObj = object;
+	work = OM_GET_WORK_PTR(object, LotteryDrawWork);
+	work->kill = 0;
+	work->state = 0;
+	work->block_mdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 11), NULL, 0);
+	work->min_y = pos->y+300.0f;
+	pos->y += 700.0f;
+	BoardModelPosSetV(work->block_mdl, pos);
+	object->trans.x = 1.0f;
+	BoardModelAlphaSet(work->block_mdl, 255);
+}
+
+static void UpdateLotteryDraw(omObjData *object)
+{
+	LotteryDrawWork *work = OM_GET_WORK_PTR(object, LotteryDrawWork);
+	Vec pos;
+	if(work->kill || BoardIsKill()) {
+		BoardModelKill(work->block_mdl);
+		lotteryDrawObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	switch(work->state) {
+		case 1:
+			BoardModelPosGet(work->block_mdl, &pos);
+			pos.y += 50.0f;
+			BoardModelPosSetV(work->block_mdl, &pos);
+			SetLotteryDrawState(2);
+			break;
+			
+		case 2:
+			BoardModelPosGet(work->block_mdl, &pos);
+			if(pos.y < work->min_y) {
+				pos.y = work->min_y;
+				SetLotteryDrawState(0);
+			}
+			pos.y -= 20.0f;
+			BoardModelPosSetV(work->block_mdl, &pos);
+			break;
+			
+		case 3:
+			object->trans.x -= 0.1f;
+			if(object->trans.x < 0.0f) {
+				object->trans.x = 0;
+				SetLotteryDrawState(0);
+			}
+			BoardModelAlphaSet(work->block_mdl, 255.0f*object->trans.x);
+			break;
+			
+		case 0:
+			break;
+			
+		default:
+			break;
+	}
+}
+
+static void SetLotteryDrawState(s32 state)
+{
+	LotteryDrawWork *work;
+	if(!lotteryDrawObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(lotteryDrawObj, LotteryDrawWork);
+	work->state = state;
+	if(state == 4) {
+		work->kill = 1;
+	}
+	if(state == 3) {
+		lotteryDrawObj->trans.x = 1.0f;
+	}
+	if(state == 1) {
+		HuAudFXPlay(780);
+	}
+}
+
+static s32 GetLotteryDrawState(void)
+{
+	LotteryDrawWork *work = OM_GET_WORK_PTR(lotteryDrawObj, LotteryDrawWork);
+	return work->state;
+}
+
+static void KillLotteryDrawWheel(void)
+{
+	SetLotteryDrawWheelState(5);
+}
+
+static void UpdateLotteryDrawWheel(omObjData *object)
+{
+	DrawWheelWork *work = OM_GET_WORK_PTR(object, DrawWheelWork);
+	DrawWheelMdl *mdl = work->mdl;
+	s32 i;
+	if(work->kill || BoardIsKill()) {
+		BoardModelHookReset(wheelMdl);
+		for(i=0; i<4; i++) {
+			if(mdl->face[i] != -1) {
+				BoardModelKill(mdl->face[i]);
+			}
+			if(mdl->plate[i] != -1) {
+				BoardModelKill(mdl->plate[i]);
+			}
+		}
+		if(wheelMdl != -1) {
+			BoardModelKill(wheelMdl);
+			wheelMdl = -1;
+		}
+		if(lbl_801D3854 != -1) {
+			BoardModelKill(lbl_801D3854);
+			lbl_801D3854 = -1;
+		}
+		if(mdl->center != -1) {
+			BoardModelKill(mdl->center);
+		}
+		HuMemDirectFree(work->mdl);
+		lotteryDrawWheelObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	switch(work->state) {
+		case 4:
+			if(work->timer == 0) {
+				work->hilite_vel += work->hilite_accel;
+				work->hilite_accel++;
+				if(work->hilite_vel > 60 || (work->hilite_vel > 40 && BoardRandMod(100) > 80)) {
+					BoardModelMotionStart(mdl->center, 0, 0x40000001);
+					HuAudFXPlay(870);
+					SetLotteryDrawWheelState(0);
+					break;
+				}
+			}
+			
+		case 3:
+			if(work->timer < work->hilite_vel) {
+				work->timer++;
+			} else {
+				BoardModelHookObjReset(wheelMdl, hiliteObjNameTbl[work->hilite]);
+				work->hilite = (work->hilite+1)  & 0x3;
+				HuAudFXPlay(855);
+				BoardModelHookSet(wheelMdl, hiliteObjNameTbl[work->hilite], mdl->center);
+				work->timer = 0;
+			}
+			break;
+		
+		case 1:
+		case 2:
+			if(work->timer != 0) {
+				object->trans.x += object->rot.x;
+				object->trans.z += object->rot.z;
+				work->timer--;
+			} else {
+				BoardModelMotionSpeedSet(wheelMdl, 0);
+				work->state = 0;
+			}
+			break;
+			
+		case 0:
+			break;
+			
+		default:
+			break;
+	}
+	BoardModelPosSet(wheelMdl, object->trans.x, object->trans.y, object->trans.z);
+}
+
+static void SetLotteryDrawWheelState(s32 state)
+{
+	DrawWheelWork *work;
+	DrawWheelMdl *mdl;
+	Vec pos_wheel, pos_space, dist;
+	if(!lotteryDrawWheelObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(lotteryDrawWheelObj, DrawWheelWork);
+	
+	work->state = state;
+	mdl = work->mdl;
+	switch(state) {
+		case 5:
+			work->kill = 1;
+			break;
+		
+		case 3:
+			work->timer = 0;
+			work->hilite = 0;
+			work->hilite_vel = 2;
+			BoardModelVisibilitySet(mdl->center, 1);
+			BoardModelMotionStart(mdl->center, 0, 0);
+			BoardModelMotionSpeedSet(mdl->center, 0.0f);
+			BoardModelMotionTimeSet(mdl->center, 3.0f);
+			BoardModelHookSet(wheelMdl, hiliteObjNameTbl[work->hilite], mdl->center);
+			break;
+			
+		default:
+			if(state == 2 || state == 1) {
+				BoardModelPosGet(wheelMdl, &pos_wheel);
+				if(state == 2) {
+					pos_space = spacePos;
+				} else {
+					pos_space.x = -300.0f+pos_wheel.x;
+					pos_space.y = pos_wheel.y;
+					pos_space.z = -50.0f+pos_wheel.z;
+				}
+				VECSubtract(&pos_space, &pos_wheel, &dist);
+				lotteryDrawWheelObj->rot.x = dist.x/26.0f;
+				lotteryDrawWheelObj->rot.z = dist.z/26.0f;
+				BoardModelMotionStart(wheelMdl, 0, 0x40000001);
+				BoardModelMotionSpeedSet(wheelMdl, 3.0f);
+				work->timer = 26;
+			}
+			break;
+	}
+}
+
+static s32 GetLotteryDrawWheelState()
+{
+	DrawWheelWork *work;
+	if(!lotteryDrawWheelObj) {
+		return -1;
+	}
+	work = OM_GET_WORK_PTR(lotteryDrawWheelObj, DrawWheelWork);
+	return work->state;
+}
+
+static s32 GetLotteryDrawWheelResult()
+{
+	DrawWheelWork *work;
+	if(!lotteryDrawWheelObj) {
+		return -1;
+	}
+	work = OM_GET_WORK_PTR(lotteryDrawWheelObj, DrawWheelWork);
+	return GWPlayer[work->hilite].character;
+}
+
+static void ExecLotteryDraw(void)
+{
+	s32 ticket;
+	s32 valid;
+	s32 character;
+	s32 stream;
+	s32 player;
+	Vec rot;
+	Vec offset;
+	Vec confetti_pos;
+	Vec pos;
+	Vec star_pos;
+	Vec host_end;
+	Vec host_start;
+	Vec player_end;
+	Vec player_start;
+
+	if(GWPlayer[0].field00_bit9 || GWPlayer[1].field00_bit9 || GWPlayer[2].field00_bit9 || GWPlayer[3].field00_bit9) {
+		BoardWinCreate(2, messBase+1, BoardWinPortraitGetStar());
+		BoardWinWait();
+		BoardModelPosGet(hostMdl, &host_end);
+		250.0f+host_end.y;
+		CreateLotteryDraw(&host_end);
+		SetLotteryDrawState(2);
+		SetLotteryDrawWheelState(2);
+		for(ticket=0; ticket<4; ticket++) {
+			SetLotteryTicketState(ticket, 3);
+		}
+		HuPrcSleep(15);
+		while(GetLotteryDrawWheelState() != 0) {
+			HuPrcVSleep();
+		}
+		offset.x = 50.0f;
+		offset.z = 0.0f;
+		offset.y = 100.0f;
+		valid = 0;
+		for(currTicket=ticket=0; ticket<3; ticket++, currTicket++) {
+			BoardCameraBackup();
+			SetLotteryDrawWheelState(3);
+			BoardWinCreate(2, 2+messBase+ticket, BoardWinPortraitGetStar());
+			BoardWinWait();
+			BoardModelMotionShiftSet(hostMdl, hostMot[7], 0, 8, 0);
+			HuPrcSleep(8);
+			while(BoardModelMotionTimeGet(hostMdl) < 26.0f) {
+				HuPrcVSleep();
+			}
+			SetLotteryDrawState(1);
+			HuPrcSleep(BoardRandMod(20));
+			SetLotteryDrawWheelState(4);
+			BoardCameraMotionStartEx(wheelMdl, NULL, &offset, 700, -1, 21);
+			while(!BoardModelMotionEndCheck(hostMdl)) {
+				HuPrcVSleep();
+			}
+			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, 0x40000001);
+			while(GetLotteryDrawWheelState() != 0) {
+				HuPrcVSleep();
+			}
+			character = GetLotteryDrawWheelResult();
+			UpdateLotteryTicketMatch(ticket, character);
+			HuPrcSleep(120);
+			if(CheckLotteryTicket()) {
+				valid = 1;
+				break;
+			}
+			if(ticket == 2) {
+				player = GetLotteryTicketPlayer();
+				BoardModelPosGet(hostMdl, &confetti_pos);
+				confetti_pos.y += 400.0f;
+				BoardConfettiCreate(&confetti_pos, 100, 200.0f);
+				break;
+			}
+			BoardCameraRestore();
+			BoardCameraMotionWait();
+		}
+		rot.x = -10.0f;
+		rot.y = 0.0f;
+		rot.z = 0.0f;
+		BoardCameraMotionStartEx(focusMdl, &rot, NULL, 1480.0f, 25.0f, 20);
+		if(valid) {
+			BoardWinCreate(2, 9+messBase, BoardWinPortraitGetStar());
+			BoardWinWait();
+			SetLotteryDrawState(3);
+			SetLotteryDrawWheelState(1);
+			for(ticket=0; ticket<4; ticket++) {
+				SetLotteryTicketState(ticket, 4);
+			}
 		} else {
-			goto return0;
+			BoardAudSeqPause(1, 1, 1000);
+			BoardModelMotionShiftSet(hostMdl, hostMot[3], 0, 8, 0x40000001);
+			stream = HuAudSStreamPlay(10);
+			while(HuAudSStreamStatGet(stream)) {
+				HuPrcVSleep();
+			}
+			BoardAudSeqPause(1, 0, 1000);
+			BoardWinCreate(2, 5+messBase, BoardWinPortraitGetStar());
+			BoardWinWait();
+			BoardCameraRestore();
+			BoardCameraMotionWait();
+			SetLotteryDrawState(3);
+			SetLotteryDrawWheelState(1);
+			for(ticket=0; ticket<4; ticket++) {
+				SetLotteryTicketState(ticket, 4);
+			}
+			player_end.x = spacePos.x + -300.0f;
+			player_end.y = spacePos.y;
+			player_end.z = spacePos.z + -50.0f;
+			BoardPlayerPosSetV(player, &player_end);
+			BoardModelVisibilitySet(BoardPlayerModelGet(player), 1);
+			BoardModelPosGet(hostMdl, &host_end);
+			player_start = host_end;
+			host_start.x = host_end.x+200.0f;
+			host_start.y = host_end.y;
+			host_start.z = host_end.z;
+			StartHostMove(&host_end, &host_start, 25);
+			BoardPlayerPosLerpStart(player, &player_end, &player_start, 25);
+			while(GWPlayer[player].moving) {
+				HuPrcVSleep();
+			}
+			BoardPlayerIdleSet(player);
+			BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, 0x40000001);
+			while(!CheckHostMove()) {
+				HuPrcVSleep();
+			}
+			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, 0x40000001);
+			BoardStatusShowSetForce(player);
+			BoardStatusShowSet(player, 1);
+			BoardPlayerMotBlendSet(player, 0, 7);
+			while(!BoardPlayerMotBlendCheck(player)) {
+				HuPrcVSleep();
+			}
+			BoardWinCreate(2, 6+messBase, BoardWinPortraitGetStar());
+			BoardWinWait();
+			BoardAudSeqPause(1, 1, 1000);
+			BoardModelMotionShiftSet(hostMdl, hostMot[1], 0, 8, 0);
+			star_pos.x = host_start.x;
+			star_pos.y = 60.0f+host_start.y;
+			star_pos.z = host_start.z;
+			HuPrcSleep(30);
+			BoardStarGive(player, &star_pos);
+			BoardAudSeqPause(1, 0, 1000);
+			BoardStatusShowSet(player, 0);
+			StartHostMove(&host_start, &host_end, 25);
+			BoardPlayerPosLerpStart(player, &player_start, &player_end, 25);
+			BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, 0x40000001);
+			while(!CheckHostMove()) {
+				HuPrcVSleep();
+			}
+			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, 0x40000001);
+			while(GWPlayer[player].moving) {
+				HuPrcVSleep();
+			}
+			BoardPlayerIdleSet(player);
+			BoardModelVisibilitySet(BoardPlayerModelGet(player), 0);
+			BoardConfettiStop();
+			BoardModelVisibilitySet(wheelMdl, 0);
+		}
+		SetLotteryDrawState(4);
+		BoardWinCreate(2, 7+messBase, BoardWinPortraitGetStar());
+		BoardWinWait();
+		BoardWinKill();
+	}
+}
+
+static void KillLotteryTicket(void)
+{
+	s32 i;
+	for(i=0; i<numTickets; i++) {
+		SetLotteryTicketState(i, 5);
+	}
+}
+
+typedef struct ticket_work {
+	struct {
+		u8 kill : 1;
+		u8 player : 2;
+		u8 done : 1;
+		u8 index : 2;
+	};
+	s8 state;
+	u8 unk02;
+	s8 character[3];
+	u16 angle;
+	s16 group;
+} TicketWork;
+
+static void InitLotteryTicket(void)
+{
+	s32 i;
+	s32 j;
+	s32 playerSprTbl[] = {
+		DATA_MAKE_NUM(DATADIR_BLAST5, 0),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 1),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 2),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 3),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 4),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 5),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 6),
+		DATA_MAKE_NUM(DATADIR_BLAST5, 7),
+	};
+	s32 ownerSprTbl[] = {
+		DATA_MAKE_NUM(DATADIR_BOARD, 46),
+		DATA_MAKE_NUM(DATADIR_BOARD, 47),
+		DATA_MAKE_NUM(DATADIR_BOARD, 48),
+		DATA_MAKE_NUM(DATADIR_BOARD, 49),
+		DATA_MAKE_NUM(DATADIR_BOARD, 50),
+		DATA_MAKE_NUM(DATADIR_BOARD, 51),
+		DATA_MAKE_NUM(DATADIR_BOARD, 52),
+		DATA_MAKE_NUM(DATADIR_BOARD, 53),
+	};
+	s32 character;
+	s16 sprite;
+	s32 member;
+	u8 ticket_mask;
+	omObjData *object;
+	TicketWork *work;
+	currTicket = 0;
+	lotteryTicketObj[0] = lotteryTicketObj[1] = lotteryTicketObj[2] = lotteryTicketObj[3] = NULL;
+	for(numTickets=i=0; i<4; i++) {
+		if(!GWPlayer[i].field00_bit9) {
+			continue;
+		}
+		object = omAddObjEx(boardObjMan, 257, 0, 0, -1, UpdateLotteryTicket);
+		lotteryTicketObj[numTickets] = object;
+		work = OM_GET_WORK_PTR(object, TicketWork);
+		work->kill = 0;
+		work->player = i;
+		work->index = numTickets;
+		work->angle = 0;
+		work->unk02 = 0;
+		work->done = 0;
+		work->group = HuSprGrpCreate(6);
+		object->trans.x = 680.0f;
+		object->trans.y = 64.0f+(82.0f*numTickets);
+		object->rot.x = 0.0f;
+		object->rot.y = 0.0f;
+		HuSprGrpPosSet(work->group, object->trans.x, object->trans.y);
+		HuSprGrpScaleSet(work->group, 0.4f, 0.4f);
+		BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 9), 2000, NULL, &sprite);
+		HuSprGrpMemberSet(work->group, 0, sprite);
+		HuSprAttrSet(work->group, 0, HUSPR_ATTR_LINEAR);
+		HuSprScaleSet(work->group, 0, 2.5f, 2.5f);
+		character = GWPlayer[i].character;
+		BoardSpriteCreate(ownerSprTbl[character], 1200, NULL, &sprite);
+		HuSprGrpMemberSet(work->group, 5, sprite);
+		HuSprAttrSet(work->group, 5, HUSPR_ATTR_LINEAR);
+		HuSprScaleSet(work->group, 5, 2.5f, 2.5f);
+		HuSprPosSet(work->group, 5, -200, -32);
+		HuSprScaleSet(work->group, 5, 1.75f, 1.75f);
+		BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 8), 1200, NULL, &sprite);
+		HuSprGrpMemberSet(work->group, 4, sprite);
+		HuSprAttrSet(work->group, 4, HUSPR_ATTR_LINEAR);
+		HuSprAttrSet(work->group, 4, HUSPR_ATTR_DISPOFF);
+		HuSprAttrSet(work->group, 4, HUSPR_ATTR_ADDCOL);
+		HuSprScaleSet(work->group, 4, 1.3f, 1.3f);
+		ticket_mask = GWPlayer[i].field00_bitA;
+		j=3;
+		while(j>=0) {
+			s32 player_spr;
+			
+			j--;
+			work->character[j] = GWPlayer[ticket_mask & 0x3].character;
+			player_spr = playerSprTbl[work->character[j]];
+			member = j+1;
+			BoardSpriteCreate(player_spr, 1500, NULL, &sprite);
+			HuSprGrpMemberSet(work->group, member, sprite);
+			HuSprAttrSet(work->group, member, HUSPR_ATTR_LINEAR);
+			HuSprPosSet(work->group, member, playerOfsTbl[j][0], playerOfsTbl[j][1]);
+			ticket_mask >>= 2;
+		}
+		numTickets++;
+	}
+}
+
+static void UpdateLotteryTicket(omObjData *object)
+{
+	TicketWork *work = OM_GET_WORK_PTR(object, TicketWork);
+	if(work->kill || BoardIsKill()) {
+		HuSprGrpKill(work->group);
+		omDelObjEx(HuPrcCurrentGet(), object);
+		lotteryTicketObj[work->index] = NULL;
+		return;
+	}
+	switch(work->state) {
+		case 2:
+			if(work->angle < 540) {
+				float scale = 0.4f+(0.1f*sin(M_PI*(float)(work->angle%180)/180.0));
+				HuSprGrpScaleSet(work->group, scale, scale);
+				work->angle += 9;
+			} else {
+				work->angle = 0;
+				work->state = 0;
+				HuSprGrpScaleSet(work->group, 0.4f, 0.4f);
+			}
+			break;
+			
+		case 1:
+			if(work->angle > 96) {
+				u16 color = work->angle;
+				HuSprColorSet(work->group, 0, color, color, color);
+				HuSprColorSet(work->group, 1, color, color, color);
+				HuSprColorSet(work->group, 2, color, color, color);
+				HuSprColorSet(work->group, 3, color, color, color);
+				HuSprColorSet(work->group, 5, color, color, color);
+				work->angle -= 3;
+			} else {
+				work->angle = 0;
+				work->state = 0;
+			}
+			break;
+			
+		case 3:
+		case 4:
+			if(work->angle != 0) {
+				object->trans.x += object->rot.x;
+				
+				HuSprGrpPosSet(work->group, object->trans.x, object->trans.y);
+				work->angle--;
+			} else {
+				if(work->state == 4) {
+					BoardModelVisibilitySet(wheelMdl, 0);
+				}
+				SetLotteryTicketState(work->player, 0);
+			}
+			break;
+			
+		case 0:
+			break;
+		
+		default:
+			break;
+			
+			
+	}
+}
+
+static void SetLotteryTicketState(s32 player, s32 state)
+{
+	TicketWork *work;
+	omObjData *object;
+	s32 i;
+	for(i=0; i<numTickets; i++) {
+		object = lotteryTicketObj[i];
+		if(!object) {
+			continue;
+		}
+		work = OM_GET_WORK_PTR(object, TicketWork);
+		if(work->player == player) {
+			work->state = state;
+			work->angle = 0;
+			switch(state) {
+				case 2:
+					HuSprAttrReset(work->group, 4, HUSPR_ATTR_DISPOFF);
+					HuSprPosSet(work->group, 4, playerOfsTbl[currTicket][0], playerOfsTbl[currTicket][1]);
+					break;
+					
+				case 1:
+					work->angle = 255;
+					work->done = 1;
+					HuSprAttrSet(work->group, 4, HUSPR_ATTR_DISPOFF);
+					break;
+					
+				case 3:
+					object->rot.x = 472.0f-object->trans.x;
+					object->rot.x /= 15.0f;
+					work->angle = 15;
+					break;
+					
+				case 4:
+					object->rot.x = 680.0f-object->trans.x;
+					object->rot.x /= 15.0f;
+					work->angle = 15;
+					break;
+					
+				case 5:
+					work->kill = 1;
+					
+				default:
+					break;
+			}
+			return;
+		}
+		
+	}
+}
+
+static s32 GetLotteryTicketPlayer(void)
+{
+	s32 i;
+	for(i=0; i<numTickets; i++) {
+		omObjData *object = lotteryTicketObj[i];
+		TicketWork *work = OM_GET_WORK_PTR(object, TicketWork);
+		if(!work->done) {
+			return work->player;
 		}
 	}
-	if(HuPadBtnDown[GWPlayer[player].port] == PAD_BUTTON_A) {
-		return 1;
-	} else {
-		return0:
+	return -1;
+}
+
+static s32 CheckLotteryTicket(void)
+{
+	TicketWork *work;
+	omObjData *object;
+	
+	s32 i;
+	for(i=0; i<numTickets; i++) {
+		object = lotteryTicketObj[i];
+		work = OM_GET_WORK_PTR(object, TicketWork);
+		if(!work->done) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+static void UpdateLotteryTicketMatch(s32 progress, s32 character)
+{
+	s32 i;
+	TicketWork *work;
+	omObjData *object;
+	s32 match_state;
+	
+	for(i=0; i<numTickets; i++) {
+		object = lotteryTicketObj[i];
+		work = OM_GET_WORK_PTR(object, TicketWork);
+		if(!work->done) {
+			if(work->character[progress] == character) {
+				match_state = 2;
+			} else {
+				match_state = 1;
+			}
+			SetLotteryTicketState(work->player, match_state);
+		}
+	}
+}
+
+typedef struct host_move_work {
+	struct {
+		u8 kill : 1;
+		u8 finish : 1;
+	};
+	u8 state;
+	s16 time;
+	s16 angle;
+	s16 angle_end;
+} HostMoveWork;
+
+static void StartHostMove(Vec *from, Vec *to, s16 time)
+{
+	HostMoveWork *work;
+	omObjData *object;
+	float duration;
+	float angle;
+	if(time <= 0) {
+		time = 1;
+	}
+	object = omAddObjEx(boardObjMan, 257, 0, 0, -1, ExecHostMove);
+	hostMoveObj = object;
+	work = OM_GET_WORK_PTR(object, HostMoveWork);
+	work->kill = 0;
+	work->finish = 0;
+	work->time = time;
+	work->state = 0;
+	OSs16tof32(&time, &duration);
+	omSetTra(object, from->x, from->y, from->z);
+	omSetRot(object, (to->x-from->x)/duration, 0.0f, (to->z-from->z)/duration);
+	omSetSca(object, to->x, to->y, to->z);
+	angle = 180.0*(atan2(object->rot.x, object->rot.z)/M_PI);
+	work->angle = 0;
+	OSf32tos16(&angle, &work->angle_end);
+	BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, 0x40000001);
+	BoardModelMotionSpeedSet(hostMdl, 3.0f);
+}
+
+static void ExecHostMove(omObjData *object)
+{
+	HostMoveWork *work = OM_GET_WORK_PTR(object, HostMoveWork);
+	float angle;
+	float angle_end;
+	if(work->kill || BoardIsKill()) {
+		hostMoveObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	OSs16tof32(&work->angle, &angle);
+	OSs16tof32(&work->angle_end, &angle_end);
+	switch(work->state) {
+		case 0:
+			if(BoardDAngleCalcRange(&angle, angle_end, 10.0f)) {
+				if(work->finish) {
+					work->kill = 1;
+				} else {
+					work->state = 1;
+				}
+				BoardModelMotionSpeedSet(hostMdl, 1.0f);
+			}
+			OSf32tos16(&angle, &work->angle);
+			BoardModelRotYSet(hostMdl, angle);
+			break;
+			
+		case 1:
+			if(work->time) {
+				work->time--;
+				object->trans.x += object->rot.x;
+				object->trans.y += object->rot.y;
+				object->trans.z += object->rot.z;
+			} else {
+				object->trans.x = object->scale.x;
+				object->trans.y = object->scale.y;
+				object->trans.z = object->scale.z;
+				work->angle_end = 0;
+				work->finish = 1;
+				work->state = 0;
+				BoardModelMotionSpeedSet(hostMdl, 3.0f);
+			}
+			break;
+			
+		default:
+			break;
+	}
+	BoardModelPosSet(hostMdl, object->trans.x, object->trans.y, object->trans.z);
+}
+
+static s32 CheckHostMove(void)
+{
+	if(hostMoveObj) {
 		return 0;
+	} else {
+		return 1;
+	}
+}
+
+static void CreateStopWin(void)
+{
+	s32 mess = 0x120011;
+	float size[2];
+	float pos_x, pos_y;
+	HuWinMesMaxSizeGet(1, size, mess);
+	pos_x = -10000;
+	pos_y = 352;
+	stopWin = HuWinCreate(pos_x, pos_y, size[0], size[1], 0);
+	HuWinBGTPLvlSet(stopWin, 0.0f);
+	HuWinMesSpeedSet(stopWin, 0);
+	HuWinMesSet(stopWin, mess);
+}
+
+typedef struct last5_roulette_work {
+	struct {
+		u8 kill : 1;
+		u8 state : 3;
+	};
+	s8 choice;
+	s8 fade_speed;
+	s8 choices[4];
+	s16 alpha;
+	u16 switch_timer;
+	u8 switch_vel;
+	u8 switch_accel;
+	s16 model;
+} Last5RouletteWork;
+
+static void CreateLast5Roulette(void)
+{
+	Last5RouletteWork *work;
+	omObjData *object;
+	s32 choice1, choice2;
+	Vec pos;
+	object = omAddObjEx(boardObjMan, 257, 0, 0, -1, UpdateLast5Roulette);
+	last5RouletteObj = object;
+	work = OM_GET_WORK_PTR(object, Last5RouletteWork);
+	work->kill = 0;
+	work->choice = 0;
+	work->switch_timer = 0;
+	work->switch_vel = 4;
+	work->state = 2;
+	work->alpha = 0;
+	work->fade_speed = 0;
+	work->switch_accel = 5;
+	choice1 = BoardRandMod(3)+2;
+	do {
+		choice2 = BoardRandMod(3)+2;
+	} while(choice1 == choice2);
+	work->choices[0] = 1;
+	work->choices[1] = 1;
+	work->choices[2] = choice1;
+	work->choices[3] = choice2;
+	work->model = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BLAST5, 10), NULL, 0);
+	pos.x = 150.0f+spacePos.x;
+	pos.y = 177.0f+spacePos.y;
+	pos.z = -135.0f+spacePos.z;
+	BoardModelPosSetV(work->model, &pos);
+	BoardModelMotionStart(work->model, 0, 0);
+	BoardModelMotionSpeedSet(work->model, 0);
+}
+
+static void UpdateLast5Roulette(omObjData *object)
+{
+	Last5RouletteWork *work = OM_GET_WORK_PTR(object, Last5RouletteWork);
+	if(work->kill || BoardIsKill()) {
+		BoardModelHookReset(wheelMdl);
+		if(work->model != -1) {
+			BoardModelKill(work->model);
+		}
+		last5RouletteObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	
+	switch(work->state) {
+		case 3:
+			if(work->switch_timer == 0) {
+				work->switch_vel += work->switch_accel;
+				work->switch_accel++;
+				if(work->switch_vel > 60 || (work->switch_vel > 40 && BoardRandMod(100) > 80)) {
+					if((GWBoardGet() == 0 || GWBoardGet() == 2) && work->choices[work->choice] == 2) {
+						work->switch_timer++;
+						return;
+					} else {
+						HuAudFXPlay(870);
+						SetLast5RouletteState(0);
+						break;
+					}
+				}
+			}
+			
+		case 2:
+			if(work->switch_timer < work->switch_vel) {
+				work->switch_timer++;
+			} else {
+				s32 choice = work->choices[work->choice];
+				float time;
+				do {
+					work->choice = BoardRandMod(4);
+				} while(work->choices[work->choice] == choice);
+				OSs8tof32(&work->choices[work->choice], &time);
+				HuAudFXPlay(855);
+				BoardModelMotionTimeSet(work->model, 0.1f+time);
+				work->switch_timer = 0;
+			}
+			break;
+			
+		case 0:
+			break;
+			
+		default:
+			break;
+	}
+	if(work->fade_speed) {
+		work->alpha += work->fade_speed;
+		if(work->alpha >= 255) {
+			work->alpha = 255;
+			work->fade_speed = 0;
+		}
+		if(work->alpha < 0) {
+			work->alpha = 0;
+			work->fade_speed = 0;
+		}
+		BoardModelAlphaSet(work->model, work->alpha);
+	}
+}
+
+static void SetLast5RouletteFade(s32 flag)
+{
+	Last5RouletteWork *work;
+	if(!last5RouletteObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(last5RouletteObj, Last5RouletteWork);
+	if(flag) {
+		work->fade_speed = 4;
+	} else {
+		work->fade_speed = -4;
+	}
+}
+
+static void SetLast5RouletteState(s32 state)
+{
+	Last5RouletteWork *work;
+	if(!last5RouletteObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(last5RouletteObj, Last5RouletteWork);
+	work->state = state;
+}
+
+static s32 GetLast5RouletteState(void)
+{
+	Last5RouletteWork *work;
+	if(!last5RouletteObj) {
+		return -1;
+	}
+	work = OM_GET_WORK_PTR(last5RouletteObj, Last5RouletteWork);
+	return work->state;
+}
+
+static s32 GetLast5RouletteResult(void)
+{
+	Last5RouletteWork *work;
+	if(!last5RouletteObj) {
+		return -1;
+	}
+	work = OM_GET_WORK_PTR(last5RouletteObj, Last5RouletteWork);
+	return work->choices[work->choice];
+}
+
+typedef struct team_result_work {
+	struct {
+		u8 kill : 1;
+	};
+	u8 delay;
+	u8 player[2][2];
+	s16 group[2];
+} TeamResultWork;
+
+static void CreateTeamResultWork(TeamResultWork *work);
+
+static void CreateTeamResult(void)
+{
+	TeamResultWork *work;
+	omObjData *object;
+	s32 i;
+	s32 j;
+	s32 coins[2];
+	s32 stars[2];
+	u32 score[2];
+	s32 team, player;
+	s32 rank1, rank2;
+	object = omAddObjEx(boardObjMan, 268, 0, 0, -1, UpdateTeamResult);
+	teamResultObj = object;
+	work = OM_GET_WORK_PTR(object, TeamResultWork);
+	CreateTeamResultWork(work);
+	coins[0] = coins[1] = stars[0] = stars[1] = 0;
+	for(i=0; i<2; i++) {
+		for(j=0; j<2; j++) {
+			coins[i] += BoardPlayerCoinsGet(work->player[i][j]);
+			stars[i] += GWStarsGet(work->player[i][j]);
+		}
+	}
+	for(i=0; i<2; i++) {
+		score[i] = coins[i]+(stars[i] << 11);
+	}
+	team = BoardRandMod(2);
+	player = BoardRandMod(2);
+	if(score[0] >= score[1]) {
+		object->trans.x = -108.0f;
+		object->trans.y = 152.0f;
+		object->rot.x = -108.0f;
+		object->rot.y = 302.0f;
+		if(score[0] == score[1]) {
+			last5Player = work->player[team][player];
+		} else {
+			rank1 = GWPlayer[work->player[1][0]].rank;
+			rank2 = GWPlayer[work->player[1][1]].rank;
+			if(rank1 == rank2) {
+				last5Player = work->player[1][player];
+			} else {
+				if(rank1 < rank2) {
+					last5Player = work->player[1][1];
+				} else {
+					last5Player = work->player[1][0];
+				}
+			}
+		}
+	} else {
+		object->rot.x = -108.0f;
+		object->rot.y = 152.0f;
+		object->trans.x = -108.0f;
+		object->trans.y = 302.0f;
+		rank1 = GWPlayer[work->player[0][0]].rank;
+		rank2 = GWPlayer[work->player[0][1]].rank;
+		if(rank1 == rank2) {
+			last5Player = work->player[0][player];
+		} else {
+			if(rank1 < rank2) {
+				last5Player = work->player[0][1];
+			} else {
+				last5Player = work->player[0][0];
+			}
+		}
+	}
+}
+
+static void CreateTeamResultWork(TeamResultWork *work)
+{
+	GXColor color = { 128, 128, 128, 0 };
+	s32 i;
+	s32 character;
+	s16 group;
+	s32 j;
+	s32 team1_idx, team2_idx;
+	s16 sprite;
+	s32 spr_file;
+	s16 prio;
+	float x, y;
+	for(team1_idx=team2_idx=i=0; i<4; i++) {
+		s32 team = GWPlayer[i].team;
+		if(team == 0) {
+			work->player[0][team1_idx] = i;
+			team1_idx++;
+		} else {
+			work->player[1][team2_idx] = i;
+			team2_idx++;
+		}
+	}
+	for(j=0; j<2; j++) {
+		group = HuSprGrpCreate(15);
+		work->group[j] = group;
+		for(i=0; i<13; i++) {
+			spr_file = teamSprTbl[i];
+			prio = teamSprPrioTbl[i];
+			
+			BoardSpriteCreate(spr_file, prio, NULL, &sprite);
+			HuSprGrpMemberSet(group, i, sprite);
+			HuSprAttrSet(group, i, HUSPR_ATTR_NOANIM);
+			HuSprAttrSet(group, i, HUSPR_ATTR_LINEAR);
+			HuSprPosSet(group, i, teamSprPosTbl[i][0], teamSprPosTbl[i][1]);
+		}
+		HuSprTPLvlSet(group, 0, 0.7f);
+		HuSprScaleSet(group, 0, 1.0f, 2.5f);
+		HuSprColorSet(group, 0, color.r, color.g, color.b);
+		if(!GWPlayer[work->player[j][0]].com) {
+			HuSprAttrSet(group, 11, HUSPR_ATTR_DISPOFF);
+		}
+		if(!GWPlayer[work->player[j][1]].com) {
+			HuSprAttrSet(group, 12, HUSPR_ATTR_DISPOFF);
+		}
+		if(j == 0) {
+			HuSprBankSet(group, 1, 2);
+		} else {
+			HuSprBankSet(group, 1, 1);
+		}
+		for(i=0; i<2; i++) {
+			character = GWPlayer[work->player[j][i]].character;
+			BoardSpriteCreate(teamCharSprTbl[character], 1500, NULL, &sprite);
+			HuSprGrpMemberSet(group, i+13, sprite);
+			HuSprAttrSet(group, i+13, HUSPR_ATTR_LINEAR);
+			x = teamSprPosTbl[i+13][0];
+			y = teamSprPosTbl[i+13][1];
+			HuSprPosSet(group, i+13, x, y);
+		}
+	}
+}
+
+static void SetTeamResultTarget(s32 team, Vec *pos)
+{
+	if(!teamResultObj || !pos) {
+		return;
+	}
+	if(team) {
+		teamResultObj->rot.x = pos->x;
+		teamResultObj->rot.y = pos->y;
+	} else {
+		teamResultObj->trans.x = pos->x;
+		teamResultObj->trans.y = pos->y;
+	}
+}
+
+static void GetTeamResultTarget(s32 team, Vec *pos)
+{
+	if(!teamResultObj || !pos) {
+		return;
+	}
+	if(team) {
+		pos->x = teamResultObj->rot.x;
+		pos->y = teamResultObj->rot.y;
+	} else {
+		pos->x = teamResultObj->trans.x;
+		pos->y = teamResultObj->trans.y;
+	}
+}
+
+static void KillTeamResult(void)
+{
+	TeamResultWork *work;
+	if(!teamResultObj) {
+		return;
+	}
+	work = OM_GET_WORK_PTR(teamResultObj, TeamResultWork);
+	work->kill = 1;
+}
+
+static void UpdateTeamResult(omObjData *object)
+{
+	TeamResultWork *work;
+	s32 i, j;
+	work = OM_GET_WORK_PTR(object, TeamResultWork);
+	if(work->kill || BoardIsKill()) {
+		HuSprGrpKill(work->group[0]);
+		HuSprGrpKill(work->group[1]);
+		teamResultObj = NULL;
+		omDelObjEx(HuPrcCurrentGet(), object);
+		return;
+	}
+	if(work->delay) {
+		work->delay--;
+		return;
+	}
+	{
+		s8 rank[2];
+		u32 score[2];
+		s32 coins[2];
+		s32 stars[2];
+		
+		
+		
+		coins[0] = coins[1] = stars[0] = stars[1] = 0;
+		for(i=0; i<2; i++) {
+			for(j=0; j<2; j++) {
+				coins[i] += BoardPlayerCoinsGet(work->player[i][j]);
+				stars[i] += GWStarsGet(work->player[i][j]);
+			}
+		}
+		for(i=0; i<2; i++) {
+			s32 star_val;
+			s32 coin_val;
+			
+			score[i] = coins[i]+(stars[i] << 11);
+			coin_val = coins[i];
+			if(coin_val > 999) {
+				coin_val = 999;
+			}
+			star_val = stars[i];
+			if(star_val > 999) {
+				star_val = 999;
+			}
+			BoardSpriteDigitUpdate(work->group[i], 3, coin_val);
+			BoardSpriteDigitUpdate(work->group[i], 7, star_val);
+		}
+		if(score[0] == score[1]) {
+			rank[0] = rank[1] = 0;
+		} else if(score[0] > score[1]) {
+			rank[0] = 0;
+			rank[1] = 1;
+		} else {
+			rank[1] = 0;
+			rank[0] = 1;
+		}
+		HuSprBankSet(work->group[0], 2, rank[0]);
+		HuSprBankSet(work->group[1], 2, rank[1]);
+		HuSprGrpPosSet(work->group[0], object->trans.x, object->trans.y);
+		HuSprGrpPosSet(work->group[1], object->rot.x, object->rot.y);
 	}
 }
