@@ -10,7 +10,7 @@
 
 static void THPTestProc(void);
 static void THPViewFunc(ModelData *arg0, Mtx arg1);
-static void THPViewSprFunc(SpriteData *arg0);
+static void THPViewSprFunc(HuSprite *arg0);
 static void THPDecodeFunc(void *param);
 
 static char THPFileName[64];
@@ -210,7 +210,7 @@ static void THPViewFunc(ModelData *arg0, Mtx arg1) {
     }
 }
 
-static void THPViewSprFunc(SpriteData *arg0) {
+static void THPViewSprFunc(HuSprite *arg0) {
     Vec spC = { 0.0f, 0.0f, 1.0f };
     GXColor sp8;
     s32 temp_r30;

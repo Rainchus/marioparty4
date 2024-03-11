@@ -30,7 +30,7 @@ typedef struct {
     /* 0x04 */ u32 player[4];
 } keyBufData; // Size 0x14
 
-static void MesDispFunc(SpriteData *sprite);
+static void MesDispFunc(HuSprite *sprite);
 static u8 winBGMake(AnimData *bg, AnimData *frame);
 static void HuWinProc(void);
 static void HuWinDrawMes(s16 window);
@@ -252,7 +252,7 @@ void HuWinInit(s32 mess_data_no) {
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     AnimData *bg_anim;
     WindowData *window;
-    SpriteData *sprite_ptr;
+    HuSprite *sprite_ptr;
     s16 group;
     s16 sprite;
     s16 window_id;
@@ -407,9 +407,9 @@ void HuWinAllKill(void) {
     HuDataDirClose(DATADIR_WIN);
 }
 
-static void MesDispFunc(SpriteData *sprite) {
+static void MesDispFunc(HuSprite *sprite) {
     WindowData *window = &winData[sprite->work[0]];
-    SpriteGroupData *group;
+    HuSprGrp *group;
     float uv_maxx;
     float uv_maxy;
     float uv_minx;
@@ -608,7 +608,7 @@ static inline void charEntry(s16 window, s16 x, s16 y, s16 char_idx, s16 color) 
 
 static void HuWinDrawMes(s16 window) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
     s16 c;
     s16 i;
     s16 char_w;
@@ -888,7 +888,7 @@ static void HuWinKeyWait(s16 window) {
 }
 
 static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y) {
-    SpriteGroupData *group = &HuSprGrpData[window->group];
+    HuSprGrp *group = &HuSprGrpData[window->group];
     s16 sprite;
     s16 i;
     AnimData *anim;
@@ -906,7 +906,7 @@ static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y) {
 }
 
 static void HuWinSpcFontPosSet(WindowData *window, s16 index, s16 x, s16 y) {
-    SpriteGroupData *group = &HuSprGrpData[window->group];
+    HuSprGrp *group = &HuSprGrpData[window->group];
 
     HuSprPosSet(window->group, index, x - window->w / 2, y - window->h / 2);
 }
@@ -1372,7 +1372,7 @@ void HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y) {
 
 s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
     s16 i;
 
     for (i=2; i<=9; i++) {
@@ -1388,14 +1388,14 @@ s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
 
 void HuWinSprPosSet(s16 window, s16 index, float x, float y) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
 
     HuSprPosSet(window_ptr->group, index, x - group->center_x, y - group->center_y);
 }
 
 void HuWinSprPriSet(s16 window, s16 index, s16 prio) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
 
     HuSprPriSet(window_ptr->group, index, prio);
 }
@@ -1419,7 +1419,7 @@ void HuWinDispOff(s16 window) {
 
     for(i=0; i<30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
-            HuSprAttrSet(window_ptr->group, i, SPRITE_ATTR_HIDDEN);
+            HuSprAttrSet(window_ptr->group, i, HUSPR_ATTR_DISPOFF);
         }
     }
     window_ptr->attr |= 8;
@@ -1431,7 +1431,7 @@ void HuWinDispOn(s16 window) {
 
     for (i=0; i<30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
-            HuSprAttrReset(window_ptr->group, i, SPRITE_ATTR_HIDDEN);
+            HuSprAttrReset(window_ptr->group, i, HUSPR_ATTR_DISPOFF);
         }
     }
     window_ptr->attr = window_ptr->attr & ~8;
