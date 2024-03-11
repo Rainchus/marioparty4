@@ -22,8 +22,6 @@
 #define ANIM_LAYER_FLIPX 0x1
 #define ANIM_LAYER_FLIPY 0x2
 
-typedef void (*SpriteFunc)(struct sprite_data *);
-
 typedef struct anim_frame_data {
     s16 pat;
     s16 time;
