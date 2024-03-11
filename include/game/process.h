@@ -38,7 +38,7 @@ Process *HuPrcCurrentGet(void);
 int HuPrcKill(Process *process);
 void HuPrcChildKill(Process *process);
 void HuPrcSleep(int time);
-void HuPrcVSleep(void);
+void HuPrcVSleep();
 void HuPrcWakeup(Process *process);
 void HuPrcDestructorSet2(Process *process, void (*func)(void));
 void HuPrcDestructorSet(void (*func)(void));

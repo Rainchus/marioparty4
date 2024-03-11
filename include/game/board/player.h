@@ -8,7 +8,6 @@
 #include "game/gamework.h"
 #include "game/window.h"
 #include "game/object.h"
-#include "game/process.h"
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 #include "game/gamework_data.h"

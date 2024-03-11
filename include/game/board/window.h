@@ -2,7 +2,6 @@
 #define _BOARD_WINDOW_H
 
 #include "game/window.h"
-#include "game/process.h"
 
 typedef void (*BoardWinComKeyFunc)();
 
