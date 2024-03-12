@@ -39,7 +39,7 @@ typedef struct bitcopy {
     s8 unk_03;
     s16 unk_04;
     u8 unk_06;
-    s32 unk_08;
+    f32 unk_08;
     unkSubstructR31* unk_0C;
 } bitcopy;
 
@@ -81,11 +81,13 @@ static s32 luckyMessTbl[9] = {
 // sbss
 static u8 mgType;
 static s32 luckyF;
+static f32 hilitePos;
 static s16 mgNext;
 static omObjData* mgSetupObj;
 static Process* mgSetupProc;
 
 // sdata
+static u8 luckyValue = 0xFF;
 
 // sdata2
 
@@ -102,12 +104,12 @@ static void UpdateMGSetup(omObjData*);
 static void CenterStatus(bitcopy*, omObjData*);
 static void SeparateStatus(bitcopy*, omObjData*);
 static void PopupVS(bitcopy*, omObjData*);
-// ...
 static void FallMGType(bitcopy*, omObjData*);
 static void LuckyMGFall(bitcopy*, omObjData*);
+static void HideLuckyValue(void);
+// ...
 static void UpdateLuckyValue(bitcopy*, omObjData*);
 static void UpdateMGList(bitcopy*, omObjData*);
-static void HideLuckyValue(void);
 s32 BoardMGSetupPlayPush(s32, s16);
 void BoardMGSetupPlayPop(s32, s16);
 
@@ -795,5 +797,202 @@ static void PopupVS(bitcopy* arg0, omObjData* arg1) {
         if (*boardTutorialData == 1) {
             arg0->field00_bit1 = 0;
         }
+    }
+}
+
+static void FallMGType(bitcopy* arg0, omObjData* arg1) {
+    Vec sp10;
+    s16 sp8[3] = { 3, 1, 2 };
+    Vec* temp_r4;
+    Vec* temp_r5;
+    s16 temp_r30;
+    bitcopy* temp_r29;
+    unkSubstructR31* temp_r31;
+
+    temp_r31 = arg0->unk_0C;
+    temp_r30 = sp8[mgType];
+    if (arg0->unk_02 == 0) {
+        HuSprAttrReset(temp_r31->unk_00[0], temp_r30, 4);
+        temp_r31->unk_1C[0][temp_r30].y = -284.0f;
+        temp_r31->unk_1C[1][temp_r30].y = -128.0f;
+        arg0->unk_02 = 1;
+    }
+    PSVECSubtract(&temp_r31->unk_1C[1][temp_r30], &temp_r31->unk_1C[0][temp_r30], &sp10);
+    if (PSVECMag(&sp10) <= 1.0f) {
+        temp_r31->unk_1C[0][temp_r30] = temp_r31->unk_1C[1][temp_r30];
+        temp_r29 = (bitcopy*) mgSetupObj->work;
+        temp_r29->field00_bit1 = 7;
+        temp_r29->unk_02 = 0;
+        temp_r29->unk_03 = 0;
+        temp_r29->unk_04 = 0;
+    } else {
+        PSVECScale(&sp10, &sp10, 0.1f);
+        PSVECAdd(&sp10, &temp_r31->unk_1C[0][temp_r30], &temp_r31->unk_1C[0][temp_r30]);
+    }
+    HuSprPosSet(temp_r31->unk_00[0], temp_r30, temp_r31->unk_1C[0][temp_r30].x, temp_r31->unk_1C[0][temp_r30].y);
+}
+
+static void LuckyMGFall(bitcopy* arg0, omObjData* arg1) {
+    u16 spC;
+    u16 spA;
+    s16 sp8[3] = { 3, 1, 2 };
+    Vec* temp_r25;
+    Vec* temp_r27;
+    Vec* temp_r28;
+    s16 temp_r24;
+    bitcopy* temp_r26;
+    u8 temp_r0;
+    unkSubstructR31* temp_r29;
+    f32 var_f30;
+    
+    temp_r29 = arg0->unk_0C;
+    temp_r24 = sp8[mgType];
+    temp_r28 = &temp_r29->unk_1C[0][4];
+    temp_r25 = &temp_r29->unk_1C[1][4];
+    temp_r27 = &temp_r29->unk_1C[0][temp_r24];
+    switch (arg0->unk_02) {
+        case 0:
+            HuSprAttrReset(temp_r29->unk_00[0], 4, 4);
+            temp_r28->y = -284.0f;
+            temp_r25->y = -128.0f;
+            arg0->unk_02 = 1;
+            break;
+        case 1:
+            temp_r28->y += 10.0f;
+            if (temp_r25->y < temp_r28->y) {
+                arg0->unk_02 = 2;
+                arg0->unk_03 = 0;
+                temp_r28->y = temp_r25->y;
+                HuAudFXPlay(0x35D);
+            }
+            break;
+        case 2:
+            temp_r27->y += 10.0f;
+            if (328.0f < temp_r27->y) {
+                HuSprAttrReset(temp_r29->unk_00[0], temp_r24, 4);
+                temp_r26 = (bitcopy*) mgSetupObj->work;
+                temp_r26->field00_bit1 = 7;
+                temp_r26->unk_02 = 0;
+                temp_r26->unk_03 = 0;
+                temp_r26->unk_04 = 0;
+            } else if (arg0->unk_03 < 0x1E) {
+                OSs8tof32(&arg0->unk_03, &var_f30);
+                HuSprZRotSet(temp_r29->unk_00[0], temp_r24, var_f30);
+                arg0->unk_03++;
+            }
+            break;
+    }
+    HuSprPosSet(temp_r29->unk_00[0], 4, temp_r28->x, temp_r28->y);
+    HuSprPosSet(temp_r29->unk_00[0], temp_r24, temp_r27->x, temp_r27->y);
+}
+
+static void HideLuckyValue(void) {
+    f32 var_f31;
+    bitcopy* temp;
+    unkSubstructR31* temp_r31;
+
+    temp = (bitcopy*) mgSetupObj->work;
+    temp_r31 = temp->unk_0C;
+    
+    for (var_f31 = 1.0f; var_f31 > 0.1f; var_f31 -= 0.1f) {
+        HuSprTPLvlSet(temp_r31->unk_00[0], 8, var_f31);
+        HuSprTPLvlSet(temp_r31->unk_00[0], 9, var_f31);
+        HuPrcVSleep();
+    }
+    HuSprAttrSet(temp_r31->unk_00[0], 8, 4);
+    HuSprAttrSet(temp_r31->unk_00[0], 9, 4);
+}
+
+static inline s32 GWMGUnk32Get(void) {
+    return GWSystem.unk_32;
+}
+
+void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
+    s32 var_r23;
+    f32 temp_f29;
+    s32 temp_r3;
+    bitcopy* temp_r26;
+    unkSubstructR31* temp_r27;
+    f32 temp_f28;
+    u8 spC;
+
+    temp_r27 = arg0->unk_0C;
+    switch (arg0->unk_02) {
+        case 0:
+            HuSprAttrReset(temp_r27->unk_00[0], 8, 4);
+            HuSprAttrReset(temp_r27->unk_00[0], 9, 4);
+            HuSprAttrSet(temp_r27->unk_00[0], 8, 8);
+            HuSprAttrSet(temp_r27->unk_00[0], 9, 8);
+            HuSprPosSet(temp_r27->unk_00[0], 8, 0.0f, 0.0f);
+            HuSprPosSet(temp_r27->unk_00[0], 9, 0.0f, 0.0f);
+            HuSprScaleSet(temp_r27->unk_00[0], 8, 0.001f, 0.001f);
+            HuSprScaleSet(temp_r27->unk_00[0], 9, 0.001f, 0.001f);
+            HuSprBankSet(temp_r27->unk_00[0], 9, 1);
+            arg0->unk_04 = 0;
+            arg0->unk_02 = 1;
+            arg0->unk_03 = 0;
+            temp_r3 = BoardRandMod(0x64U);
+            if (temp_r3 < 0x55) {
+                GWSystem.unk_32 = 2;
+                return;
+            }
+            if (temp_r3 >= 0x5F) return;
+            GWSystem.unk_32 = 3;
+            return;
+        case 1:
+            if (arg0->unk_03 < 0x5A) {
+                OSu8tof32((u8*) &arg0->unk_03, &temp_f28);
+                temp_f29 = sin((M_PI * temp_f28) / 180.0);
+                HuSprScaleSet(temp_r27->unk_00[0], 8, temp_f29, temp_f29);
+                HuSprScaleSet(temp_r27->unk_00[0], 9, temp_f29, temp_f29);
+                arg0->unk_03 += 2;
+                return;
+            }
+            arg0->unk_02 = 2;
+            arg0->unk_06 = BoardRandMod(0xCU) + 0x12;
+            arg0->unk_03 = 0;
+            arg0->unk_08 = 0.8f;
+            return;
+        case 2:
+            arg0->unk_08 *= 0.97f;
+            hilitePos += arg0->unk_08;
+            if (hilitePos >= 3.0f) {
+                hilitePos = 0.0f;
+            }
+            OSf32tos8(&hilitePos, (s8*)&spC);
+            if (spC != luckyValue) {
+                HuAudFXPlay(0x304);
+                luckyValue = spC;
+            }
+            HuSprBankSet(temp_r27->unk_00[0], 9, luckyValue);
+            if (arg0->unk_08 < 0.05f) {
+                if (luckyValue != GWMGUnk32Get() - 1) {
+                    arg0->unk_08 *= 1.0309278f;
+                    return;
+                }
+                HuAudFXPlay(0x305);
+                HuAudFXPlay(0x357);
+                HuAudFXPlay(0x358);
+                arg0->unk_02 = 3;
+                arg0->unk_03 = 0;
+                arg0->unk_04 = 0;
+                return;
+            }
+            break;
+        case 3:
+            arg0->unk_04 += 8;
+            if (arg0->unk_04 >= 0x438) {
+                temp_r26 = (bitcopy*) mgSetupObj->work;
+                temp_r26->field00_bit1 = 7;
+                temp_r26->unk_02 = 0;
+                temp_r26->unk_03 = 0;
+                temp_r26->unk_04 = 0;
+                return;
+            }
+            temp_f28 = (arg0->unk_04 % 360);
+            temp_f29 = (1.0 + (0.5 * sin((M_PI * temp_f28) / 180.0)));
+            HuSprScaleSet(temp_r27->unk_00[0], 8, temp_f29, temp_f29);
+            HuSprScaleSet(temp_r27->unk_00[0], 9, temp_f29, temp_f29);
+            break;
     }
 }
