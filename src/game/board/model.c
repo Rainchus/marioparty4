@@ -249,16 +249,16 @@ s16 BoardModelCreateCharacter(s32 character, s32 data_num, s32 *mot_list, s32 li
 s16 BoardModelCreateParam(BoardModelParam *param, Vec *pos, Vec *rot)
 {
 	float unk_param;
-	s16 model = BoardModelCreate(param->data_num, NULL, param->link);
+	s16 model = BoardModelCreate(param->data_num, NULL, param->unk4.link);
 	if(model == -1) {
 		return -1;
 	}
-	BoardModelMotionStart(model, 0, (param->pause) ? 0x40000001 : 0);
-	if(!param->start_mot) {
+	BoardModelMotionStart(model, 0, (param->unk4.pause) ? 0x40000001 : 0);
+	if(!param->unk4.start_mot) {
 		BoardModelMotionSpeedSet(model, 0.0f);
 	}
-	BoardModelExistDupe(model, param->field04_bit0);
-	BoardModelVisibilitySet(model, param->visible);
+	BoardModelExistDupe(model, param->unk4.field04_bit0);
+	BoardModelVisibilitySet(model, param->unk4.visible);
 	if(pos) {
 		BoardModelPosSetV(model, pos);
 	}

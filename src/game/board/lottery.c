@@ -51,8 +51,6 @@ typedef struct {
     s16 unk08;
 } LotteryTicketPickWork;
 
-extern s32 BoardShopHostGet(void);
-
 static void CreateModel(void);
 static void KillModel(void);
 static void DestroyLottery(void);
