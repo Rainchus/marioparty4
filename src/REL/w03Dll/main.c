@@ -7,7 +7,9 @@
 #include "game/wipe.h"
 #include "REL/w03Dll.h"
 #include "game/board/lottery.h"
+#include "game/board/main.h"
 #include "game/board/model.h"
+#include "game/board/shop.h"
 #include "game/board/space.h"
 #include "game/board/star.h"
 #include "game/object.h"
@@ -30,7 +32,6 @@ void fn_1_10B0(void);
 s32 fn_1_12C8(void);
 s32 fn_8006DDE8(s16, f32);
 void fn_1_10E4(omObjData* arg0);
-extern Process *boardObjMan;
 typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];

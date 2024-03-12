@@ -17,13 +17,13 @@
 
 s32 lbl_1_data_0[8] = {
     0x005F001B,
-	0x005F0015,
-	0x005F0016,
-	0x005F0006,
-	0x005F0000,
-	0x005F0000,
-	0x005F0000,
-	0x005F0004,
+    0x005F0015,
+    0x005F0016,
+    0x005F0006,
+    0x005F0000,
+    0x005F0000,
+    0x005F0000,
+    0x005F0004,
 };
 
 const f64 unk_rodata_0 = 0.5;
@@ -33,14 +33,14 @@ omObjData * lbl_1_bss_9A0;
 
 // -------------------------------------------------------------------------- //
 
-void fn_1_A0(void) 
+void fn_1_A0(void)
 {
     Process * prc;
     OSReport("******* MODELTESTObjectSetup *********\n");
-    
+
     prc = omInitObjMan(0x32, 0x2000);
     omGameSysInit(prc);
-    
+
     CRot.x = -30.0f;
     CRot.y = 0.0f;
     CRot.z = 0.0f;
@@ -48,14 +48,14 @@ void fn_1_A0(void)
     Center.y = 0.0f;
     Center.z = 0.0f;
     CZoom = 800.0f;
-    
+
     Hu3DCameraCreate(1);
     Hu3DCameraPerspectiveSet(1, 45.0f, 20.0f, 20000.0f, 1.2f);
     Hu3DCameraViewportSet(1, 0.0f, 0.0f, 640.0f, 480.0f, 0.0f, 1.0f);
-    
+
     lbl_1_bss_9A4 = omAddObjEx(prc, 0, 0x20, 0x20, -1, fn_1_29C);
     lbl_1_bss_9A0 = omAddObjEx(prc, 0x7FDA, 0, 0, -1, omOutView);
-    
+
     Hu3DBGColorSet(0x20U, 0x80U, 0x80U);
     WipeCreate(1, 0, 0x1E);
 }
@@ -83,83 +83,83 @@ char * lbl_1_data_D8[16] = {
 
 
 HsfanimStruct00 lbl_1_data_118 = {
-	  /* unk00 */ 40, 
-	  /* unk02 */ {0, 0},
-	  /* unk04 */ 50.0f, 
-	  /* unk08 */ 0.0f, 
-	  /* unk0C */ 90.0f, 
-	  /* unk10 */ {  /* x */ 0.0f,   /* y */ -0.05000000074505806f,   /* z */ 0.0f}, 
-	  /* unk1C */ 50.0f, 
-	  /* unk20 */ 0.800000011920929f, 
-	  /* unk24 */ 20.0f, 
-	  /* unk28 */ 0.9900000095367432f, 
-	  /* unk2C */ 4, 
-	  /* unk2E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 32,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 0,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 128,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 255}},
-	  /* unk3E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}},
+      /* unk00 */ 40,
+      /* unk02 */ {0, 0},
+      /* unk04 */ 50.0f,
+      /* unk08 */ 0.0f,
+      /* unk0C */ 90.0f,
+      /* unk10 */ {  /* x */ 0.0f,   /* y */ -0.05000000074505806f,   /* z */ 0.0f},
+      /* unk1C */ 50.0f,
+      /* unk20 */ 0.800000011920929f,
+      /* unk24 */ 20.0f,
+      /* unk28 */ 0.9900000095367432f,
+      /* unk2C */ 4,
+      /* unk2E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 32,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 0,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 128,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 255}},
+      /* unk3E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 0}},
 };
 
 HsfanimStruct00 lbl_1_data_168[2] = {
 {
-	  /* unk00 */ 50, 
-	  /* unk02 */ {0, 0},
-	  /* unk04 */ 5.0f, 
-	  /* unk08 */ 10.0f, 
-	  /* unk0C */ 10.0f, 
-	  /* unk10 */ {  /* x */ 0.0f,   /* y */ 0.0f,   /* z */ 0.0f}, 
-	  /* unk1C */ 2.0f, 
-	  /* unk20 */ 1.0099999904632568f, 
-	  /* unk24 */ 30.0f, 
-	  /* unk28 */ 0.9900000095367432f, 
-	  /* unk2C */ 2, 
-	  /* unk2E */ {{  /* r */ 48,   /* g */ 48,   /* b */ 8,   /* a */ 255}, {  /* r */ 64,   /* g */ 48,   /* b */ 8,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
-	  /* unk3E */ {{  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+      /* unk00 */ 50,
+      /* unk02 */ {0, 0},
+      /* unk04 */ 5.0f,
+      /* unk08 */ 10.0f,
+      /* unk0C */ 10.0f,
+      /* unk10 */ {  /* x */ 0.0f,   /* y */ 0.0f,   /* z */ 0.0f},
+      /* unk1C */ 2.0f,
+      /* unk20 */ 1.0099999904632568f,
+      /* unk24 */ 30.0f,
+      /* unk28 */ 0.9900000095367432f,
+      /* unk2C */ 2,
+      /* unk2E */ {{  /* r */ 48,   /* g */ 48,   /* b */ 8,   /* a */ 255}, {  /* r */ 64,   /* g */ 48,   /* b */ 8,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+      /* unk3E */ {{  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
 },
-{	
-	  /* unk00 */ 30, 
-	  /* unk02 */ {0, 0},
-	  /* unk04 */ 3.299999952316284f, 
-	  /* unk08 */ 10.0f, 
-	  /* unk0C */ 0.0f, 
-	  /* unk10 */ {  /* x */ 0.0f,   /* y */ -0.05000000074505806f,   /* z */ 0.0f}, 
-	  /* unk1C */ 2.0f, 
-	  /* unk20 */ 1.0f, 
-	  /* unk24 */ 20.0f, 
-	  /* unk28 */ 0.9800000190734863f, 
-	  /* unk2C */ 2, 
-	  /* unk2E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 64,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
-	  /* unk3E */ {{  /* r */ 255,   /* g */ 128,   /* b */ 128,   /* a */ 0}, {  /* r */ 255,   /* g */ 64,   /* b */ 32,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+{
+      /* unk00 */ 30,
+      /* unk02 */ {0, 0},
+      /* unk04 */ 3.299999952316284f,
+      /* unk08 */ 10.0f,
+      /* unk0C */ 0.0f,
+      /* unk10 */ {  /* x */ 0.0f,   /* y */ -0.05000000074505806f,   /* z */ 0.0f},
+      /* unk1C */ 2.0f,
+      /* unk20 */ 1.0f,
+      /* unk24 */ 20.0f,
+      /* unk28 */ 0.9800000190734863f,
+      /* unk2C */ 2,
+      /* unk2E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 64,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+      /* unk3E */ {{  /* r */ 255,   /* g */ 128,   /* b */ 128,   /* a */ 0}, {  /* r */ 255,   /* g */ 64,   /* b */ 32,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
 }};
 
 HsfanimStruct00 lbl_1_data_208 = {
-	  /* unk00 */ 40, 
-	  /* unk02 */ {0, 0},
-	  /* unk04 */ 50.0f, 
-	  /* unk08 */ 0.0f, 
-	  /* unk0C */ 180.0f, 
-	  /* unk10 */ {  /* x */ 0.0f,   /* y */ 0.0f,   /* z */ 0.0f}, 
-	  /* unk1C */ 30.0f, 
-	  /* unk20 */ 0.8999999761581421f, 
-	  /* unk24 */ 20.0f, 
-	  /* unk28 */ 0.9900000095367432f, 
-	  /* unk2C */ 4, 
-	  /* unk2E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 32,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 0,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 128,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 255}},
-	  /* unk3E */ {{  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+      /* unk00 */ 40,
+      /* unk02 */ {0, 0},
+      /* unk04 */ 50.0f,
+      /* unk08 */ 0.0f,
+      /* unk0C */ 180.0f,
+      /* unk10 */ {  /* x */ 0.0f,   /* y */ 0.0f,   /* z */ 0.0f},
+      /* unk1C */ 30.0f,
+      /* unk20 */ 0.8999999761581421f,
+      /* unk24 */ 20.0f,
+      /* unk28 */ 0.9900000095367432f,
+      /* unk2C */ 4,
+      /* unk2E */ {{  /* r */ 255,   /* g */ 255,   /* b */ 32,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 0,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 128,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 255,   /* a */ 255}},
+      /* unk3E */ {{  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
 };
 
 HsfanimStruct00 lbl_1_data_258 = {
-	  /* unk00 */ 30, 
-	  /* unk02 */ {0, 0},
-	  /* unk04 */ 50.0f, 
-	  /* unk08 */ 0.0f, 
-	  /* unk0C */ 90.0f, 
-	  /* unk10 */ {  /* x */ 0.0f,   /* y */ 0.0f,   /* z */ 0.0f}, 
-	  /* unk1C */ 30.0f, 
-	  /* unk20 */ 0.949999988079071f, 
-	  /* unk24 */ 20.0f, 
-	  /* unk28 */ 0.9900000095367432f, 
-	  /* unk2C */ 2, 
-	  /* unk2E */ {{  /* r */ 255,   /* g */ 16,   /* b */ 16,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 16,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
-	  /* unk3E */ {{  /* r */ 255,   /* g */ 16,   /* b */ 16,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 16,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+      /* unk00 */ 30,
+      /* unk02 */ {0, 0},
+      /* unk04 */ 50.0f,
+      /* unk08 */ 0.0f,
+      /* unk0C */ 90.0f,
+      /* unk10 */ {  /* x */ 0.0f,   /* y */ 0.0f,   /* z */ 0.0f},
+      /* unk1C */ 30.0f,
+      /* unk20 */ 0.949999988079071f,
+      /* unk24 */ 20.0f,
+      /* unk28 */ 0.9900000095367432f,
+      /* unk2C */ 2,
+      /* unk2E */ {{  /* r */ 255,   /* g */ 16,   /* b */ 16,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 16,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
+      /* unk3E */ {{  /* r */ 255,   /* g */ 16,   /* b */ 16,   /* a */ 255}, {  /* r */ 255,   /* g */ 255,   /* b */ 16,   /* a */ 255}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}, {  /* r */ 0,   /* g */ 0,   /* b */ 0,   /* a */ 0}},
 };
 
 const Point3d lbl_1_rodata_38 = {0.0f, 0.0f, 0.0f};
@@ -209,29 +209,29 @@ void fn_1_29C(omObjData * arg0)
     f32 temp_f30;
     s16 chrIdx;
     s32 temp_r0;
-    
+
     sp14 = lbl_1_rodata_38;
     sp8 = lbl_1_rodata_44;
-    
+
     var_r31 = Hu3DGLightCreate(0.0f, 500.0f, 1000.0f, 0.0f, -0.5f, -1.0f, 0xFFU, 0xFFU, 0xFFU);
     Hu3DGLightInfinitytSet(var_r31);
     Hu3DShadowCreate(45.0f, 500.0f, 8000.0f);
     Hu3DShadowTPLvlSet(0.5f);
-    
+
     Hu3DShadowSizeSet(0xC0U);
     sp20.x = -500.0f;
     sp20.y = 1000.0f;
     sp20.z = 1000.0f;
     Hu3DShadowPosSet(&sp20, &sp8, &sp14);
 
-    for (var_r31 = 0; var_r31 < 1; ++var_r31) 
+    for (var_r31 = 0; var_r31 < 1; ++var_r31)
     {
         chrIdx = 0;
         lbl_1_bss_98A[var_r31] = CharModelCreate(chrIdx, 2);
         if (var_r31 == 1) {
             Hu3DModelLayerSet(lbl_1_bss_98A[var_r31], 1);
         }
-        
+
         lbl_1_bss_88A[var_r31][0] = CharModelMotionCreate(chrIdx, lbl_1_data_0[0]);
         lbl_1_bss_88A[var_r31][1] = CharModelMotionCreate(chrIdx, lbl_1_data_0[1]);
         lbl_1_bss_88A[var_r31][2] = CharModelMotionCreate(chrIdx, lbl_1_data_0[2]);
@@ -247,7 +247,7 @@ void fn_1_29C(omObjData * arg0)
         CharModelMotionDataClose(chrIdx);
     }
     temp_r26 = OSGetTick();
-    
+
     for (var_r31 = 0; var_r31 < 8; ++var_r31) {
         Hu3DModelObjMtxGet(lbl_1_bss_98A[0], "test11_tex_we-ske_R_shoe1", sp2C);
     }
@@ -328,7 +328,7 @@ void fn_1_F38(void)
 {
     f32 var_f31;
     var_f31 = 0.0f;
-    
+
     while(TRUE) {
         Hu3DModelRotSet(lbl_1_bss_460[0], 0.0f, var_f31, 0.0f);
         var_f31 += 1.0f;
@@ -374,7 +374,7 @@ void fn_1_F9C(struct om_obj_data * omData)
     s32 var_r31;
     s16 var_r30;
     HuUnkF9C2 teropPatterns;
-    
+
     if (omSysExitReq != 0) {
         if (lbl_1_bss_10 != 0) {
             HuPrcKill(lbl_1_bss_10);
@@ -455,7 +455,7 @@ void fn_1_F9C(struct om_obj_data * omData)
             (void) var_fake;
         }
     }
-    
+
     if (lbl_1_bss_458 > 0) {
         MGSeqParamSet(lbl_1_bss_45A[0], 1, lbl_1_bss_458 / 60);
         --lbl_1_bss_458;
@@ -474,7 +474,7 @@ void fn_1_F9C(struct om_obj_data * omData)
     sp24.y = cos((M_PI * CRot.x) / 180.0);
     sp24.z = (cos((M_PI * CRot.y) / 180.0) * sin((M_PI * CRot.x) / 180.0));
     temp_f31 = CRot.z;
-    
+
     sp18.x = sp24.x * (sp30.x * sp30.x + (1.0f - sp30.x * sp30.x) * cos((M_PI * temp_f31) / 180.0))
             + sp24.y * (sp30.x * sp30.y * (1.0f - cos((M_PI * temp_f31) / 180.0)) - sp30.z * sin((M_PI * temp_f31) / 180.0))
             + sp24.z * (sp30.x * sp30.z * (1.0f - cos((M_PI * temp_f31) / 180.0)) + sp30.y * sin((M_PI * temp_f31) / 180.0));
@@ -482,7 +482,7 @@ void fn_1_F9C(struct om_obj_data * omData)
     sp18.y = sp24.y * (sp30.y * sp30.y + (1.0f - sp30.y * sp30.y) * cos((M_PI * temp_f31) / 180.0))
             + sp24.x * (sp30.x * sp30.y * (1.0f - cos((M_PI * temp_f31) / 180.0)) + sp30.z * sin((M_PI * temp_f31) / 180.0))
             + sp24.z * (sp30.y * sp30.z * (1.0f - cos((M_PI * temp_f31) / 180.0)) - sp30.x * sin((M_PI * temp_f31) / 180.0));
-        
+
     sp18.z = sp24.z * (sp30.z * sp30.z + (1.0f - sp30.z * sp30.z) * cos((M_PI * temp_f31) / 180.0))
             + (sp24.x * (sp30.x * sp30.z * (1.0 - cos((M_PI * temp_f31) / 180.0)) - sp30.y * sin((M_PI * temp_f31) / 180.0))
             + sp24.y * (sp30.y * sp30.z * (1.0 - cos((M_PI * temp_f31) / 180.0)) + sp30.x * sin((M_PI * temp_f31) / 180.0)));
@@ -495,7 +495,7 @@ void fn_1_F9C(struct om_obj_data * omData)
     }
 
     teropPatterns = lbl_1_rodata_B8;
-    
+
     if ((HuPadBtnDown[0] & PAD_BUTTON_X) != 0) {
         ++lbl_1_bss_24;
         if (lbl_1_bss_24 >= 7) {
@@ -512,7 +512,7 @@ void fn_1_F9C(struct om_obj_data * omData)
     if ((HuPadBtnDown[0] & PAD_BUTTON_Y) != 0) {
         var_r30 = MGSeqCreate(0xE, 0x3B);
     }
-    
+
     if ((HuPadBtnDown[0] & (PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT | PAD_BUTTON_UP | PAD_BUTTON_DOWN)) != 0) {
         if ((HuPadBtnDown[0] & PAD_BUTTON_UP) != 0) {
             MGSeqCreate(0xC, 5, GWPlayerCfg[0].character, -1, -1, -1);
@@ -536,7 +536,7 @@ void fn_1_F9C(struct om_obj_data * omData)
 }
 
 // -------------------------------------------------------------------------- //
-    
+
 void fn_1_20F4(void)
 {
     s16 temp_r3;
@@ -564,7 +564,7 @@ void fn_1_20F4(void)
         OSReport("%s\n", lbl_1_data_D8[var_r29]);
         temp_r3_2 = Hu3DModelObjPtrGet(temp_r3, lbl_1_data_D8[var_r29]);
         lbl_1_bss_40[var_r29].obj = temp_r3_2;
-        
+
         Hu3DMotionNoMotSet(temp_r3, lbl_1_data_D8[var_r29], 0x380);
 
         lbl_1_bss_40[var_r29].pos.x   = temp_r3_2->data.base.pos.x;
@@ -578,13 +578,13 @@ void fn_1_20F4(void)
         lbl_1_bss_40[var_r29].scale.z = temp_r3_2->data.base.scale.z;
 
         OSReport(
-            "%d:(%3.2f,%3.2f,%3.2f),(%3.2f,%3.2f,%3.2f)\n", 
-            var_r29, 
-            temp_r3_2->data.base.pos.x, 
-            temp_r3_2->data.base.pos.y, 
-            temp_r3_2->data.base.pos.z, 
-            temp_r3_2->data.base.rot.x, 
-            temp_r3_2->data.base.rot.y, 
+            "%d:(%3.2f,%3.2f,%3.2f),(%3.2f,%3.2f,%3.2f)\n",
+            var_r29,
+            temp_r3_2->data.base.pos.x,
+            temp_r3_2->data.base.pos.y,
+            temp_r3_2->data.base.pos.z,
+            temp_r3_2->data.base.rot.x,
+            temp_r3_2->data.base.rot.y,
             temp_r3_2->data.base.rot.z
         );
     }
@@ -636,7 +636,7 @@ void fn_1_20F4(void)
             var_r26 = HuPadSubStkX[1];
         }
 
-        
+
         if (var_r26 < 0xA && ABS(HuPadSubStkY[1]) < 0xA) {
             var_r27 = 0x168;
             var_f29 = 0.0f;
@@ -648,7 +648,7 @@ void fn_1_20F4(void)
                 var_f29 = 80.0f;
             }
         }
-        
+
         HuPrcVSleep();
     }
 }
@@ -666,7 +666,7 @@ void fn_1_28F8(Point3d * arg0, Point3d * arg1)
     cam = &Hu3DCamera[0];
     C_MTXLookAt(sp18, &cam->pos, &cam->up, &cam->target);
     PSMTXMultVec(sp18, arg0, &spC);
-    
+
     temp_f31 = (1.2f * (spC.z * (sin((M_PI * (cam->fov / 2)) / 180.0) / (cos((M_PI * (cam->fov / 2)) / 180.0)))));
     temp_f30 = (spC.z * (sin((M_PI * (cam->fov / 2)) / 180.0) / (cos((M_PI * (cam->fov / 2)) / 180.0))));
     arg1->x = 288.0f + (spC.x * (288.0f / -temp_f31));
@@ -679,7 +679,7 @@ void fn_1_2AFC(void) {
     HuWinInit(1);
     temp_r3 = HuWinCreate(-10000.0f, -10000.0f, 480, 0x80, 0);
     HuWinMesSpeedSet(temp_r3, 3);
-    
+
     while (TRUE) {
         HuWinMesSet(temp_r3, 0x200011);
         HuWinMesWait(temp_r3);
@@ -712,7 +712,7 @@ void fn_1_2B68(ModelData * mdl, Mtx arg1)
     f32 var_f29; // ! - uninitialized
     f32 var_f28; // ! - uninitialized
     f32 var_f27; // ! - uninitialized
-    
+
     if (!lbl_1_bss_30[0]) {
         lbl_1_bss_30[0] = HuMemDirectMallocNum(HEAP_SYSTEM, FB_SIZE(640, 480), 0x10000000);
     }
@@ -739,14 +739,14 @@ void fn_1_2B68(ModelData * mdl, Mtx arg1)
     GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, 0x3CU, 0U, 0x7DU);
     GXSetNumTevStages(1);
 
-    sp17.r = 
-    sp17.g = 
-    sp17.b = 
+    sp17.r =
+    sp17.g =
+    sp17.b =
     sp17.a = 255;
     GXSetChanMatColor(GX_COLOR0A0, sp17);
 
     sp17.r =
-    sp17.g = 
+    sp17.g =
     sp17.b = 128;
     sp17.a = 255;
     GXSetChanAmbColor(GX_COLOR0A0, sp17);
@@ -767,7 +767,7 @@ void fn_1_2B68(ModelData * mdl, Mtx arg1)
     sp10 = lbl_1_bss_454->bmp;
     lbl_1_bss_2C += 1;
     HuSprTexLoad(lbl_1_bss_454, 0, 1, GX_REPEAT, GX_REPEAT, GX_LINEAR);
-    
+
     PPCSync();
     GXInitTexObj(&sp30, lbl_1_bss_30[0], 0x280U, 0x1E0U, 4U, GX_CLAMP, GX_CLAMP, 0U);
     GXInitTexObjLOD(&sp30, GX_LINEAR, GX_LINEAR, 0.0f, 0.0f, 0.0f, 0U, 0U, GX_ANISO_1);
@@ -781,7 +781,7 @@ void fn_1_2B68(ModelData * mdl, Mtx arg1)
     sp18[1][0] = sp150[1][0];
     sp18[1][1] = sp150[1][1];
     sp18[1][2] = 0.0f;
-    
+
     PSMTXRotRad(spF0, 0x58, -1.5707964f);
     mtxRot(spF0, 0.0f, 0.0f, 0.0f);
     temp_f31 = 0.0015625f;
@@ -794,18 +794,18 @@ void fn_1_2B68(ModelData * mdl, Mtx arg1)
     GXSetIndTexCoordScale(GX_INDTEXSTAGE0, GX_ITS_4, GX_ITS_4);
     GXSetIndTexMtx(GX_ITM_0, sp18, 0);
     GXSetTevIndWarp(GX_TEVSTAGE0, GX_INDTEXSTAGE0, 1, 0, GX_ITM_0);
-    
+
     lbl_1_bss_28 += 5.0f;
     if (lbl_1_bss_28 > 360.0f) {
         lbl_1_bss_28 -= 360.0f;
     }
 
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-    
+
     GXPosition3f32(0.0f, 0.0f, 0.0f);
     GXTexCoord2f32(0.0f, 1.0f);
     GXNormal3f32(0.0f, var_f30 / 640.0f, var_f29 / 480.0f);
-    
+
     GXPosition3f32(640.0f, 0.0f, 0.0f);
     GXTexCoord2f32(0.0f, 1.0f);
     GXNormal3f32(0.0f, var_f28 / 640.0f, var_f29 / 480.0f);

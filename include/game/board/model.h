@@ -12,7 +12,7 @@ typedef struct board_model_param {
 		u8 link : 1;
 		u8 start_mot : 1;
 		u8 pause : 1;
-	};
+	} unk4;
 	s16 unk6;
 } BoardModelParam;
 
