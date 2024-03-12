@@ -87,10 +87,10 @@ static u8 mgType;
 static s32 luckyF;
 static f32 hilitePos;
 static s16 mgNext;
-static u8 mgPlayBattleLen;
-static u8 mgPlay2Vs2Len;
-static u8 mgPlay1Vs3Len;
 static u8 mgPlay4PLen;
+static u8 mgPlay1Vs3Len;
+static u8 mgPlay2Vs2Len;
+static u8 mgPlayBattleLen;
 static s16 mgPlay1Vs3[3];
 static s16 mgPlay2Vs2[3];
 static s16 mgPlayBattle[2];
@@ -124,8 +124,8 @@ static void HideLuckyValue(void);
 static void UpdateLuckyValue(bitcopy*, omObjData*);
 static void UpdateMGList(bitcopy*, omObjData*);
 // ...
-s32 BoardMGSetupPlayPush(s32, s16);
-void BoardMGSetupPlayPop(s32, s16);
+s32 BoardMGSetupPlaySearch(s32, s16);
+void BoardMGSetupPlayPush(s32, s16);
 
 // FUNCTIONS //
 
@@ -285,7 +285,7 @@ static void ExecMGSetup(void) {
     ((bitcopy*) (mgSetupObj->work))->field00_bit0 = 1;
     BoardDataAsyncWait(var_r22);
     var_r24 = mgNext + 0x191;
-    BoardMGSetupPlayPop(mgType, var_r24);
+    BoardMGSetupPlayPush(mgType, var_r24);
     GWSystem.mg_next_type = -1;
     GWMGAvailSet(var_r24);
     GWSystem.mg_next = var_r24 - 0x191;
@@ -357,7 +357,7 @@ static void DetermineMGList(bitcopy* arg0) {
         temp_r23 = temp_r25[var_r29];
         temp_r18 = temp_r23 + 0x191;
 
-        if (GWMGListGet() == 2 || BoardMGSetupPlayPush(mgType, temp_r18) == 0) {
+        if (GWMGListGet() == 2 || BoardMGSetupPlaySearch(mgType, temp_r18) == 0) {
             var_r22 = 0;
             for (var_r29 = 0; var_r29 < var_r30; var_r29++) {
                 if (temp_r20 == activeMG[var_r29].unk_04) {
@@ -537,6 +537,13 @@ static s32 GetMGType(void) {
     }
 }
 
+static void UnusedFloat(void)
+{
+	(void)288.0f;
+	(void)-98.0f;
+	(void)674.0f;
+}
+
 static s32 GetMGTypeTeam(void) {
     s8 sp12[4];
     s8 spE[4];
@@ -661,27 +668,30 @@ static void UpdateMGSetup(omObjData* arg0) {
         var_r31->unk_06--;
     } else {
         switch (var_r31->field00_bit1) {
-            case 1:
+            case 0:
                 CenterStatus(var_r31, arg0);
                 break;
-            case 2:
+            case 1:
                 SeparateStatus(var_r31, arg0);
                 break;
-            case 3:
+            case 2:
                 PopupVS(var_r31, arg0);
                 break;
-            case 4:
+            case 3:
                 FallMGType(var_r31, arg0);
                 break;
-            case 5:
+            case 4:
                 LuckyMGFall(var_r31, arg0);
                 break;
-            case 6:
+            case 5:
                 UpdateLuckyValue(var_r31, arg0);
                 break;
-            case 7:
+            case 6:
                 UpdateMGList(var_r31, arg0);
                 break;
+				
+			case 7:
+				break;
         }
     }
 }
@@ -921,7 +931,7 @@ static inline s32 GWMGUnk32Get(void) {
     return GWSystem.unk_32;
 }
 
-void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
+static void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
     s32 var_r23;
     f32 temp_f29;
     s32 temp_r3;
@@ -1023,7 +1033,7 @@ static GXColor hiliteColTbl[3] = {
     { 0xF8, 0xF2, 0x13, 0x00 }
 };
 
-void UpdateMGList(bitcopy* arg0, omObjData* arg1) {
+static void UpdateMGList(bitcopy* arg0, omObjData* arg1) {
     f32 sp1C;
     f32 sp18;
     s32 sp14;
@@ -1201,7 +1211,7 @@ void BoardMGSetupPlayClear(void) {
     memset(mgPlayBattle, 0, 4);
 }
 
-s32 BoardMGSetupPlayPush(s32 arg0, s16 arg1) {
+s32 BoardMGSetupPlaySearch(s32 arg0, s16 arg1) {
     s16* var_r31;
     s16 var_r30;
     s16 var_r29;
@@ -1237,7 +1247,7 @@ s32 BoardMGSetupPlayPush(s32 arg0, s16 arg1) {
     return 0;
 }
 
-void BoardMGSetupPlayPop(s32 arg0, s16 arg1) {
+void BoardMGSetupPlayPush(s32 arg0, s16 arg1) {
     s16 var_r29;
     s16 temp_r28;
     u8* var_r31;

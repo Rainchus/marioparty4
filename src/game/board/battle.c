@@ -42,8 +42,8 @@ typedef struct {
     s16 unk08;
 } BattleWork;
 
-extern s32 BoardMGSetupPlayPush(s32, s16);
-extern void BoardMGSetupPlayPop(s32, s16);
+extern s32 BoardMGSetupPlaySearch(s32, s16);
+extern void BoardMGSetupPlayPush(s32, s16);
 
 static void DestroyBattle(void);
 static void ExecBattle(void);
@@ -181,7 +181,7 @@ static void ExecBattle(void) {
                     if (!(var_r29->flag & 1)) {
                         continue;
                     }
-                } else if (BoardMGSetupPlayPush(4, temp_r28) != 0) {
+                } else if (BoardMGSetupPlaySearch(4, temp_r28) != 0) {
                     continue;
                 }
             }
@@ -191,7 +191,7 @@ static void ExecBattle(void) {
             break;
         }
         battleMGIdx[var_r30] = var_r31;
-        BoardMGSetupPlayPop(4, temp_r28);
+        BoardMGSetupPlayPush(4, temp_r28);
     }
     if (_CheckFlag(0x10004)) {
         BoardStatusItemSet(1);
