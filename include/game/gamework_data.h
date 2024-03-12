@@ -40,8 +40,8 @@ typedef struct system_state {
 /* 0x10 */ u8 ATTRIBUTE_ALIGN(4) board_data[32];
 /* 0x30 */ u8 mess_delay;
 /* 0x31 */ struct {
-        u8 field31_bit0 : 4;
-        u8 field31_bit4 : 4;
+        u8 bowser_loss : 4;
+        u8 bowser_event : 4;
     };
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
@@ -98,7 +98,7 @@ typedef struct player_state {
 /* 0x22 */ s16 coins_max;
 /* 0x24 */ s16 coins_battle;
 /* 0x26 */ s16 unk_26;
-/* 0x28 */ s16 coins_mg_gain;
+/* 0x28 */ s16 coin_gain;
 /* 0x2A */ s16 stars;
 /* 0x2C */ s16 stars_max;
 /* 0x2E */ char unk_2E[2];

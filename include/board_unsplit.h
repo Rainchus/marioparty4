@@ -15,7 +15,7 @@ void BoardBooHouseHostSet(s16);
 s32 BoardCameraRotGet(Vec*);
 s32 BoardIsKill(void);
 
-void BoardBowserExec(s32 player, s32 space);
+s32 BoardBowserExec(s32 player, s32 space);
 void BoardFortuneExec(s32 player, s32 space);
 
 #endif

@@ -33,7 +33,7 @@ static omObjData *last5GfxObj;
 static omObjData *confettiObj;
 static omObjData *filterObj;
 BoardTurnStartHook boardTurnStartFunc;
-void *boardBowserHook;
+BoardBowserHook boardBowserHook;
 void (*boardStarShowNextHook)(void);
 void (*boardStarGiveHook)(void);
 BoardFunc boardTurnFunc;
@@ -288,8 +288,8 @@ void BoardSaveInit(s32 board)
 	GWSystem.star_total = 1;
 	GWSystem.last5_effect = 0;
 	GWSystem.player_curr = -1;
-	GWSystem.field31_bit0 = 0;
-	GWSystem.field31_bit4 = 0;
+	GWSystem.bowser_loss = 0;
+	GWSystem.bowser_event = 0;
 	GWSystem.unk_32 = 1;
 	GWSystem.mg_next = 0;
 	GWSystem.mg_next_type = 0;
@@ -324,7 +324,7 @@ void BoardSaveInit(s32 board)
 		GWPlayer[i].stars_max = 0;
 		GWPlayer[i].coins_battle = 0;
 		GWPlayer[i].unk_26 = 0;
-		GWPlayer[i].coins_mg_gain = 0;
+		GWPlayer[i].coin_gain = 0;
 		GWPlayer[i].items[0] = -1;
 		GWPlayer[i].items[1] = -1;
 		GWPlayer[i].items[2] = -1;
