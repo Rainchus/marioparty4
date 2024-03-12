@@ -25,7 +25,7 @@ typedef struct {
 
 static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1);
 static void ParManFunc(void);
-static void ParManHook(ModelData *arg0, ParticleData *arg1);
+static void ParManHook(ModelData *arg0, ParticleData *arg1, Mtx matrix);
 
 u32 frand(void);
 
@@ -606,7 +606,7 @@ void Hu3DParticleBlendModeSet(s16 arg0, u8 arg1) {
     temp_r30->unk_2C = arg1;
 }
 
-void Hu3DParticleHookSet(s16 arg0, void *arg1) {
+void Hu3DParticleHookSet(s16 arg0, ParticleHook arg1) {
     ModelData *temp_r31 = &Hu3DData[arg0];
     ParticleData *temp_r30 = temp_r31->unk_120;
 
@@ -673,7 +673,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
     AnimLayerData *temp_r27;
     ParticleData *temp_r31;
     HsfanimStruct01 *var_r29;
-    void (*var_r17)(void*, void*, Mtx);
+    ParticleHook var_r17;
     Mtx sp128;
     Mtx spF8;
     Mtx spC8;
@@ -872,7 +872,7 @@ s16 Hu3DParManCreate(AnimData *arg0, s16 arg1, HsfanimStruct00 *arg2) {
         return -1;
     }
     temp_r3 = Hu3DParticleCreate(arg0, arg1);
-    Hu3DParticleHookSet(temp_r3, &ParManHook);
+    Hu3DParticleHookSet(temp_r3, ParManHook);
     temp_r25 = &Hu3DData[temp_r3];
     temp_r29 = temp_r25->unk_120;
     temp_r29->unk_00 = var_r30;
@@ -1214,7 +1214,7 @@ static float jitterTbl[] = {
     0.5f, 0.7f, 0.9f, 1.0f
 };
 
-static void ParManHook(ModelData *arg0, ParticleData *arg1) {
+static void ParManHook(ModelData *model, ParticleData *particle, Mtx matrix) {
     HsfanimStruct00 *temp_r26;
     ParManProcUserData *temp_r28;
     HsfanimStruct01 *var_r29;
@@ -1228,9 +1228,9 @@ static void ParManHook(ModelData *arg0, ParticleData *arg1) {
     s16 sp8;
     s16 i;
 
-    if (Hu3DPauseF == 0 || (arg0->attr & 0x200000)) {
-        var_r29 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r29++) {
+    if (Hu3DPauseF == 0 || (model->attr & 0x200000)) {
+        var_r29 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r29++) {
             if (var_r29->unk2C) {
                 temp_r28 = parManProc[var_r29->unk02]->user_data;
                 temp_r26 = temp_r28->unk3C;
@@ -1278,8 +1278,8 @@ static void ParManHook(ModelData *arg0, ParticleData *arg1) {
                 }
             }
         }
-        temp_r28 = parManProc[arg1->unk_00]->user_data;
+        temp_r28 = parManProc[particle->unk_00]->user_data;
         temp_r28->unk38++;
-        DCStoreRangeNoSync(arg1->unk_48, arg1->unk_30 * sizeof(HsfanimStruct01));
+        DCStoreRangeNoSync(particle->unk_48, particle->unk_30 * sizeof(HsfanimStruct01));
     }
 }

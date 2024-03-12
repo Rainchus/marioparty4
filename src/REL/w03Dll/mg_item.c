@@ -74,7 +74,7 @@ void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
 s16 Hu3DMotionShiftIDGet(s16 arg0);
 s32 frand(void);
 
-void fn_1_BE30(s32 arg0, ParticleData* arg1);
+void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix);
 void fn_1_BDAC(void);
 void fn_1_BC7C(s16 arg0);
 void fn_1_BBF8(void);
@@ -891,7 +891,7 @@ void fn_1_BDAC(void) {
     }
 }
 
-void fn_1_BE30(s32 arg0, ParticleData* arg1) {
+void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
     Point3d sp8;
     
     f32 temp_f30;
@@ -900,27 +900,27 @@ void fn_1_BE30(s32 arg0, ParticleData* arg1) {
     HsfanimStruct01* var_r31;
     s32 i, j;
 
-    if (arg1->unk_34 == 0U) {
-        var_r31 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    if (particle->unk_34 == 0U) {
+        var_r31 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk40.a = 0;
             var_r31->unk2C = 0.0f;
         }
-        arg1->unk_00 = 0;
+        particle->unk_00 = 0;
     }
 
-    BoardModelScaleGet(arg1->unk_02, &sp8);
+    BoardModelScaleGet(particle->unk_02, &sp8);
     temp_f31 = sp8.x;
-    BoardModelPosGet(arg1->unk_02, &sp8);
+    BoardModelPosGet(particle->unk_02, &sp8);
 
     for (i = 0; i < 0x16; i++) {
-        var_r31 = arg1->unk_48;
-        for (j = 0; j < arg1->unk_30; j++, var_r31++) {
+        var_r31 = particle->unk_48;
+        for (j = 0; j < particle->unk_30; j++, var_r31++) {
             if (0.0f == var_r31->unk2C) {
                 break;
             }
         }
-        if (j != arg1->unk_30) {
+        if (j != particle->unk_30) {
             temp_f30 = 360.0f * (0.003921569f * (frand() & 0xFF));
             temp_f29 = temp_f31 * (20.0f + (60.0f * (0.003921569f * (frand() & 0xFF))));
             var_r31->unk34.x = (sp8.x + (temp_f29 * sin((3.141592653589793 * temp_f30) / 180.0)));
@@ -932,9 +932,9 @@ void fn_1_BE30(s32 arg0, ParticleData* arg1) {
             var_r31->unk2C = (15.0f * temp_f31);            
         }
     }
-    var_r31 = arg1->unk_48;
+    var_r31 = particle->unk_48;
     
-    for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (0.0f != var_r31->unk2C) {
             var_r31->unk34.y = (var_r31->unk34.y - var_r31->unk08.x);
             var_r31->unk2C = (var_r31->unk2C - var_r31->unk08.y);

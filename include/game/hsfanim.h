@@ -6,6 +6,9 @@
 #include "game/sprite.h"
 
 typedef struct model_data ModelData;
+typedef struct particle_data ParticleData;
+
+typedef void (*ParticleHook)(ModelData *model, ParticleData *particle, Mtx matrix);
 
 typedef struct {
     /* 0x00 */ union {
@@ -49,7 +52,7 @@ typedef struct particle_data {
     /* 0x48 */ HsfanimStruct01 *unk_48;
     /* 0x4C */ Vec *unk_4C;
     /* 0x50 */ void *unk_50;
-    /* 0x54 */ void *unk_54;
+    /* 0x54 */ ParticleHook unk_54;
 } ParticleData; // Size 0x58
 
 typedef struct {
@@ -117,7 +120,7 @@ void Hu3DParticleZRotSet(s16 arg0, float arg1);
 void Hu3DParticleColSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3);
 void Hu3DParticleTPLvlSet(s16 arg0, float arg1);
 void Hu3DParticleBlendModeSet(s16 arg0, u8 arg1);
-void Hu3DParticleHookSet(s16 arg0, void *arg1);
+void Hu3DParticleHookSet(s16 arg0, ParticleHook arg1);
 void Hu3DParticleAttrSet(s16 arg0, u8 arg1);
 void Hu3DParticleAttrReset(s16 arg0, u8 arg1);
 void Hu3DParticleAnimModeSet(s16 arg0, s16 arg1);
