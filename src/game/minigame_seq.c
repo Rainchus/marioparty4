@@ -428,7 +428,7 @@ static int SeqInitTimer(SeqWork *work, va_list params)
 	if(seqPauseF) {
 		work->work_s16[1] = 1;
 		for(i=0; i<2; i++) {
-			HuSprAttrSet(spr_grp, i, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(spr_grp, i, HUSPR_ATTR_DISPOFF);
 			(void)i; //Hack for Matching
 		}		
 	}
@@ -497,7 +497,7 @@ static int SeqUpdateTimer(SeqWork *work)
 				
 			case 3:
 				for(i=0; i<2; i++) {
-					HuSprAttrReset(spr_grp, i, SPRITE_ATTR_HIDDEN);
+					HuSprAttrReset(spr_grp, i, HUSPR_ATTR_DISPOFF);
 				}
 				work->work_s16[1] = 3;
 				work->param[0] = 0;
@@ -684,7 +684,7 @@ static int SeqInitType2(SeqWork *work, va_list params)
 	if(seqPauseF) {
 		work->work_s16[1] = 1;
 		for(i=0; i<work->work_s16[3]; i++) {
-			HuSprAttrSet(spr_grp, i, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(spr_grp, i, HUSPR_ATTR_DISPOFF);
 		}
 	}
 	return 1;
@@ -718,7 +718,7 @@ static int SeqUpdateType2(SeqWork *work)
 			{
 				s32 i;
 				for(i=0; i<work->work_s16[3]; i++) {
-					HuSprAttrReset(spr_grp, i, SPRITE_ATTR_HIDDEN);
+					HuSprAttrReset(spr_grp, i, HUSPR_ATTR_DISPOFF);
 					(void)i;
 				}
 				work->work_s16[1] = 0;
@@ -988,7 +988,7 @@ static int SeqInitMGBasic(SeqWork *work, va_list params)
 	}
 	if(seqPauseF) {
 		work->type = 2;
-		HuSprAttrSet(word_grp, 0, SPRITE_ATTR_HIDDEN);
+		HuSprAttrSet(word_grp, 0, HUSPR_ATTR_DISPOFF);
 	} else {
 		work->param[0] = 3;
 	}
@@ -1091,14 +1091,14 @@ static int SeqUpdateMGBasic(SeqWork *work)
 						time = work->time;
 						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
 						for(i=0; i<work->work_s16[3]; i++) {
-							HuSprAttrReset(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+							HuSprAttrReset(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
 							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
 							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], i, work->scale_x+sin(((time*9.0f)*M_PI)/180.0), work->scale_y+sin(((time*9.0f)*M_PI)/180.0));
 						}
 						if(time == 20.0f) {
 							for(i=0; i<work->work_s16[3]; i++) {
-								HuSprAttrReset(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+								HuSprAttrReset(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
 							}
 						}
 					} else {
@@ -1110,7 +1110,7 @@ static int SeqUpdateMGBasic(SeqWork *work)
 								}
 								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56);
 								if(time == 20.0f) {
-									HuSprAttrSet(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+									HuSprAttrSet(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
 								} else {
 									HuSprPosSet(work->spr_grp[0], i, pos_x+((1.0-cos(((time*4.5f)*M_PI)/180.0f))*(work->work_s16[3]*56*2)), work->y);
 									HuSprZRotSet(work->spr_grp[0], i, (time/20.0f)*390.0f);
@@ -1215,7 +1215,7 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 			HuSprTPLvlSet(work->spr_grp[word_grp], j, tp_lvl);
 			HuSprPosSet(work->spr_grp[word_grp], j, -100.0f, 240.0f);
 			HuSprPriSet(work->spr_grp[word_grp], j, i+5);
-			HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+			HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 		}
 		if(i == 0) {
 			tp_lvl -= 0.5;
@@ -1225,7 +1225,7 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 	}
 	if(seqPauseF) {
 		work->type = 2;
-		HuSprAttrSet(word_grp, 0, SPRITE_ATTR_HIDDEN);
+		HuSprAttrSet(word_grp, 0, HUSPR_ATTR_DISPOFF);
 	} else {
 		work->param[0] = 3;
 	}
@@ -1302,7 +1302,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 									HuSprZRotSet(work->spr_grp[i], j, 0.0f);
 									HuSprScaleSet(work->spr_grp[i], j, work->scale_x, work->scale_y);
 									if(i != 0) {
-										HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+										HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 									}
 								} else {
 									s16 discard_cnt;
@@ -1383,20 +1383,20 @@ static int SeqUpdateMGBattle(SeqWork *work)
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
 							for(j=0; j<work->work_s16[3]; j++) {
-								HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
 						for(j=0; j<work->work_s16[3]; j++) {
-							HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
 							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
 						}
 						if(time == 20.0f) {
 							for(j=0; j<work->work_s16[3]; j++) {
-								HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+								HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 					} else {
@@ -1408,7 +1408,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 							}
 							if(time == 15.0f) {
 								for(j=0; j<work->work_s16[3]; j++) {
-									HuSprAttrReset(work->spr_grp[1], j, SPRITE_ATTR_HIDDEN);
+									HuSprAttrReset(work->spr_grp[1], j, HUSPR_ATTR_DISPOFF);
 									HuSprPosSet(work->spr_grp[1], j, 288.0f, work->y);
 									HuSprTPLvlSet(work->spr_grp[1], j, 1.0f);
 								}
@@ -1560,7 +1560,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 							if(work->time == 60) {
 								for(i=1; i<4; i++) {
 									for(j=0; j<work->work_s16[3]; j++) {
-										HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+										HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 									}
 								}
 							}
@@ -1600,13 +1600,13 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
 							for(j=0; j<work->work_s16[3]; j++) {
-								HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
 						for(j=0; j<work->work_s16[3]; j++) {
-							HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
 							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
@@ -1614,7 +1614,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 						if(time == 20.0f) {
 							for(i=1; i<4; i++) {
 								for(j=0; j<work->work_s16[3]; j++) {
-									HuSprAttrReset(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+									HuSprAttrReset(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 								}
 							}
 						}
@@ -1746,7 +1746,7 @@ static int SeqUpdateMGStory(SeqWork *work)
 						}
 						if(work->time == 30) {
 							for(j=0; j<work->work_s16[3]; j++) {
-								HuSprAttrSet(work->spr_grp[1], j, SPRITE_ATTR_HIDDEN);
+								HuSprAttrSet(work->spr_grp[1], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 					} else {
@@ -1792,13 +1792,13 @@ static int SeqUpdateMGStory(SeqWork *work)
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
 							for(j=0; j<work->work_s16[3]; j++) {
-								HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
 						for(j=0; j<work->work_s16[3]; j++) {
-							HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
 							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
@@ -1806,7 +1806,7 @@ static int SeqUpdateMGStory(SeqWork *work)
 						if(time == 20.0f){ 
 							for(i=1; i<4; i++) {
 								for(j=0; j<work->work_s16[3]; j++) {
-									HuSprAttrReset(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+									HuSprAttrReset(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 								}
 							}
 						}
@@ -1988,13 +1988,13 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
 							for(j=0; j<work->work_s16[3]; j++) {
-								HuSprAttrSet(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
 						for(j=0; j<work->work_s16[3]; j++) {
-							HuSprAttrReset(work->spr_grp[0], j, SPRITE_ATTR_HIDDEN);
+							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
 							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
@@ -2002,7 +2002,7 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 						if(time == 20.0f) {
 							for(i=1; i<4; i++) {
 								for(j=0; j<work->work_s16[3]; j++) {
-									HuSprAttrReset(work->spr_grp[i], j, SPRITE_ATTR_HIDDEN);
+									HuSprAttrReset(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 								}
 							}
 						}
@@ -2102,8 +2102,8 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 	for(i=0; i<work->work_s16[3]; i++) {
 		HuSprTPLvlSet(work->spr_grp[word_grp], i, 0.0f);
 		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56), work->y);
-		HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
-		HuSprAttrReset(work->spr_grp[word_grp], i, SPRITE_ATTR_HIDDEN);
+		HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
+		HuSprAttrReset(work->spr_grp[word_grp], i, HUSPR_ATTR_DISPOFF);
 	}
 	work->work_s16[2] = work->work_s16[3];
 	{
@@ -2133,12 +2133,12 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 	for(i=0; i<work->work_s16[3]; i++) {
 		HuSprTPLvlSet(work->spr_grp[word_grp], i, 0.0f);
 		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56), work->y);
-		HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
-		HuSprAttrReset(work->spr_grp[word_grp], i, SPRITE_ATTR_HIDDEN);
+		HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
+		HuSprAttrReset(work->spr_grp[word_grp], i, HUSPR_ATTR_DISPOFF);
 	}
 	if(seqPauseF) {
 		work->type = 2;
-		HuSprAttrSet(word_grp, 0, SPRITE_ATTR_HIDDEN);
+		HuSprAttrSet(word_grp, 0, HUSPR_ATTR_DISPOFF);
 	} else {
 		work->param[0] = 3;
 	}
@@ -2445,13 +2445,13 @@ static int SeqUpdateMGBowser(SeqWork *work)
 					if(work->time <= 20) {
 						for(j=1; j<4; j++) {
 							for(i=0; i<work->work_s16[3]; i++) {
-								HuSprAttrSet(work->spr_grp[j], i, SPRITE_ATTR_HIDDEN);
+								HuSprAttrSet(work->spr_grp[j], i, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
 						for(i=0; i<work->work_s16[3]; i++) {
-							HuSprAttrReset(work->spr_grp[0], i, SPRITE_ATTR_HIDDEN);
+							HuSprAttrReset(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
 							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
 							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], i, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
@@ -2459,7 +2459,7 @@ static int SeqUpdateMGBowser(SeqWork *work)
 						if(time == 20.0f) {
 							for(j=1; j<4; j++) {
 								for(i=0; i<work->work_s16[3]; i++) {
-									HuSprAttrReset(work->spr_grp[j], i, SPRITE_ATTR_HIDDEN);
+									HuSprAttrReset(work->spr_grp[j], i, HUSPR_ATTR_DISPOFF);
 								}
 							}
 						}
@@ -2754,7 +2754,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 	winnerNameW[0] = work->work_s16[3]*50;
 	for(i=0; i<work->work_s16[3]; i++) {
 		HuSprPosSet(work->spr_grp[word_grp], i, 25.0f+((i*50)-(0.5f*(work->work_s16[3]*50))), 0.0f);
-		HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+		HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 	}
 	num_winners = 0;
 	work->work_float[1] = 1.0f;
@@ -2778,7 +2778,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 			word_x = 0.0f;
 			for(i=word_x; i<work->work_s16[3]; i++, name++) {
 				HuSprPosSet(work->spr_grp[word_grp], i, 25.0+(word_x-(0.5*word_w)), 0.0f);
-				HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+				HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 				if(*name == ' ') {
 					word_x += 30.0f;
 				} else {
@@ -2795,7 +2795,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 			if(winner == 7 || winner == 13) {
 				for(i=0;i<work->work_s16[3]; i++) {
 					HuSprPosSet(work->spr_grp[word_grp], i, 26.0f+((i*52)-(0.5f*(work->work_s16[3]*52))), 0.0f);
-					HuSprAttrSet(work->spr_grp[word_grp], i, SPRITE_ATTR_BILINEAR);
+					HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 				}
 				work->work_float[1] = 0.8f;
 				winnerNameW[num_winners+1] = work->work_s16[3]*52;
@@ -2844,7 +2844,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 		work->type = 1;
 		num_winners++;
 		for(j=0; j<num_winners; j++) {
-			HuSprAttrSet(work->spr_grp[j], 0, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(work->spr_grp[j], 0, HUSPR_ATTR_DISPOFF);
 		}
 	} else {
 		work->param[0] = 3;
@@ -3028,7 +3028,7 @@ static int SeqInitRecord(SeqWork *work, va_list params)
 		HuSprBankSet(spr_grp, digit_idx+2, seqRecordVal);
 		digit_idx++;
 		for(i=digit_idx; i<8; i++) {
-			HuSprAttrSet(spr_grp, i+2, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(spr_grp, i+2, HUSPR_ATTR_DISPOFF);
 		}
 		HuSprPosSet(spr_grp, 1, (-((digit_idx*44)+48)/2)+24, 32.0f);
 		for(i=0; i<digit_idx; i++) {
@@ -3073,7 +3073,7 @@ static int SeqInitRecord(SeqWork *work, va_list params)
 		HuSprBankSet(spr_grp, digit_idx+2, seqRecordVal);
 		digit_idx++;
 		for(i=digit_idx; i<8; i++) {
-			HuSprAttrSet(spr_grp, i+2, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(spr_grp, i+2, HUSPR_ATTR_DISPOFF);
 		}
 		HuSprPosSet(spr_grp, 1, (-((digit_idx*44)+4)/2)+24, 32.0f);
 		x = (-((digit_idx*44)+4)/2)+70;
@@ -3444,11 +3444,11 @@ static void PracticeProc(void)
 	HuSprPosSet(group, 0, 288.0f, yPosTbl[practice[1]]);
 	do {
 		if(!wipeFadeInF || WipeStatGet()) {
-			HuSprAttrSet(group, 0, SPRITE_ATTR_HIDDEN);
+			HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
 			HuPrcVSleep();
 			continue;
 		}
-		HuSprAttrReset(group, 0, SPRITE_ATTR_HIDDEN);
+		HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
 		for(i=0; i<4; i++) {
 			if(!(HuPadBtnDown[GWPlayerCfg[i].pad_idx] & PAD_TRIGGER_Z)) {
 				continue;;

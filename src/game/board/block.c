@@ -97,7 +97,7 @@ static void BlockProc(void) {
 
     player_character = GWPlayer[player].character;
     jumpMot = BoardPlayerMotionCreate(player, sp14[player_character]);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
     BoardPlayerMotBlendSet(player, 0, 0xF);
     omVibrate(player, 12, 12, 0);
     CreateBlockObj(player);
@@ -122,7 +122,7 @@ static void BlockProc(void) {
     while (BoardPlayerMotionEndCheck(player) == 0) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
     
     if (work->contains_star != 0) {
         SetBlockStop();
@@ -162,7 +162,7 @@ static void BlockProc(void) {
     KillCoinMdl();
     work->kill = 1;
     
-    BoardRotateDiceNumbers((s32) player);
+    BoardPlayerIdleSet((s32) player);
     HuPrcVSleep();
     
     if ((_CheckFlag(0x1000B) != 0) && work->contains_star == 0) {

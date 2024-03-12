@@ -12,6 +12,7 @@
 #include "game/wipe.h"
 #include "game/board/audio.h"
 #include "game/board/boo.h"
+#include "game/board/char_wheel.h"
 #include "game/board/com.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
@@ -52,7 +53,6 @@ typedef struct {
 extern u32 frandmod(u32);
 extern void BoardBowserSuitInit(s32);
 extern s16 BoardBowserSuitPlayerModelGet(void);
-extern void BoardCharWheelWait(void);
 
 static void ItemProcess(void);
 static void RestoreProcess(void);
@@ -440,7 +440,7 @@ static inline void BoardUiInlineFunc03(s32 arg0) {
     while (!BoardPlayerMotBlendCheck(arg0)) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
 }
 
 static inline void BoardUiInlineFunc04(Process *arg0, s32 arg1) {
@@ -943,7 +943,7 @@ static void ExecItemPipe(void) {
         BoardPlayerMotionShiftSet(sp2C[1], 6, 0.0f, 8.0f, 0x40000001);
         BoardModelVoiceEnableSet(BoardPlayerModelGet(sp2C[1]), 6, 0);
         CharModelLayerSetAll(2);
-        BoardRotateDiceNumbers(sp2C[0]);
+        BoardPlayerIdleSet(sp2C[0]);
         for (var_r31 = 0; var_r31 < 0x2D; var_r31++) {
             sp9C.y -= 0.044444446f;
             for (var_r30 = 0; var_r30 < 2; var_r30++) {
@@ -960,7 +960,7 @@ static void ExecItemPipe(void) {
         BoardWinInsertMesSet(GWPlayerCfg[sp2C[1]].character, 1);
         BoardWinWait();
         BoardWinKill();
-        BoardRotateDiceNumbers(sp2C[1]);
+        BoardPlayerIdleSet(sp2C[1]);
         HuPrcSleep(8);
         BoardModelVoiceEnableSet(BoardPlayerModelGet(sp2C[1]), 6, 1);
     }
@@ -1240,7 +1240,7 @@ static void ExecItemSpark(void) {
     while (!BoardPlayerMotBlendCheck(currItemRestore)) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     BoardSpacePosGet(0, temp_r28, &sp5C);
     BoardModelPosSetV(temp_r30, &sp5C);
     sp5C.y += 106.0f;
@@ -1423,7 +1423,7 @@ static void ExecItemWhistle(void) {
         HuPrcVSleep();
     }
     BoardModelHookObjReset(sp8, temp_r22);
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     BoardModelKill(suitMdl);
     BoardCameraMoveSet(0);
     temp_r18 = BoardSpaceStarGetCurr();
@@ -2280,7 +2280,7 @@ static void GenieSceneExec(void) {
     }
     GenieCameraCalc(&cameraDataTbl[0], var_r26, 1.0f, &booCamPos, &booCamUp);
     HuPrcSleep(0x96);
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     sp2C = booCamPos;
     sp20 = booCamUp;
     booCamUp.x = sp38.x + (sp50.x - sp38.x) * 0.7f;
@@ -2431,7 +2431,7 @@ static void ExecItemGenie(void) {
     Hu3DModelKill(temp_r31);
     BoardModelKill(suitMdl);
     HuPrcKill(temp_r27);
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     GenieSceneExec();
     BoardCameraMoveSet(0);
     BoardCameraViewSet(2);
@@ -2482,7 +2482,7 @@ static void ExecItemGenie(void) {
         BoardPlayerPosSetV(currItemRestore, &spC);
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     CharModelEffectEnableSet(GWPlayer[currItemRestore].character, 1);
     HuSprAnimKill(genieParticleAnim);
     BoardPlayerMotionKill(currItemRestore, geniePlayerMot[0]);
