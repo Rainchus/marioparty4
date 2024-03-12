@@ -1200,7 +1200,7 @@ void omGameSysInit(Process *objman) {
     
     for (i = 0; i < 4; i++) {
         if (_CheckFlag(0x1000C) == 0) {
-            GWPlayer[i].coins_mg_gain = 0;
+            GWPlayer[i].coin_gain = 0;
         }
         
         GWPlayer[i].unk_26 = 0;

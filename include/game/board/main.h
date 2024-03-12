@@ -72,6 +72,8 @@ extern omObjData *boardMainObj;
 typedef void (*BoardFunc)(void);
 
 typedef void (*BoardLightHook)(void);
+typedef void (*BoardBowserHook)(s32 beforeF);
+
 typedef void (*BoardCameraPosCalcFunc)(BoardCameraData *camera);
 
 typedef void (*BoardTurnStartHook)(s32 player, s32 space);
@@ -79,6 +81,7 @@ typedef void (*BoardTurnStartHook)(s32 player, s32 space);
 extern BoardTurnStartHook boardTurnStartFunc;
 extern void (*boardStarShowNextHook)(void);
 extern void (*boardStarGiveHook)(void);
+extern BoardBowserHook boardBowserHook;
 extern BoardFunc boardTurnFunc;
 extern BoardLightHook boardLightResetHook;
 extern BoardLightHook boardLightSetHook;
