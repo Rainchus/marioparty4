@@ -3,12 +3,14 @@
 #include "game/objsub.h"
 #include "game/wipe.h"
 #include "game/flag.h"
+#include "game/window.h"
 #include "game/board/main.h"
 #include "game/board/audio.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
 #include "game/board/ui.h"
 #include "game/board/tutorial.h"
+#include "game/board/window.h"
 
 // structs
 typedef struct structActiveMG {
@@ -39,6 +41,7 @@ typedef struct bitcopy {
     s8 unk_03;
     s16 unk_04;
     u8 unk_06;
+    u8 unk_07;
     f32 unk_08;
     unkSubstructR31* unk_0C;
 } bitcopy;
@@ -46,6 +49,7 @@ typedef struct bitcopy {
 // bss
 static structActiveMG activeMG[4];
 static s16 mgListAll[0x20];
+static s16 mgPlay4P[8];
 
 // data
 static s32 mgSetupSprTbl[13] = {
@@ -83,13 +87,23 @@ static u8 mgType;
 static s32 luckyF;
 static f32 hilitePos;
 static s16 mgNext;
+static u8 mgPlayBattleLen;
+static u8 mgPlay2Vs2Len;
+static u8 mgPlay1Vs3Len;
+static u8 mgPlay4PLen;
+static s16 mgPlay1Vs3[3];
+static s16 mgPlay2Vs2[3];
+static s16 mgPlayBattle[2];
+static u8 hiliteTimer;
+static u8 hiliteBlinkLen;
+static u8 hiliteShowF;
 static omObjData* mgSetupObj;
 static Process* mgSetupProc;
 
+
 // sdata
 static u8 luckyValue = 0xFF;
-
-// sdata2
+static s8 cursorPos = 0xFF;
 
 // determined functions
 void BoardMGSetupExec(void);
@@ -107,9 +121,9 @@ static void PopupVS(bitcopy*, omObjData*);
 static void FallMGType(bitcopy*, omObjData*);
 static void LuckyMGFall(bitcopy*, omObjData*);
 static void HideLuckyValue(void);
-// ...
 static void UpdateLuckyValue(bitcopy*, omObjData*);
 static void UpdateMGList(bitcopy*, omObjData*);
+// ...
 s32 BoardMGSetupPlayPush(s32, s16);
 void BoardMGSetupPlayPop(s32, s16);
 
@@ -995,4 +1009,316 @@ void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
             HuSprScaleSet(temp_r27->unk_00[0], 9, temp_f29, temp_f29);
             break;
     }
+}
+
+static f32 cursorYTbl[4] = {
+    64.0f, 88.0f, 112.0f, 136.0f
+};
+static f32 hiliteYTbl[4] = {
+    60.0f, 84.0f, 108.0f, 132.0f
+};
+static GXColor hiliteColTbl[3] = {
+    { 0xF8, 0xF2, 0x13, 0x00 },
+    { 0xF8, 0xF2, 0x13, 0x00 },
+    { 0xF8, 0xF2, 0x13, 0x00 }
+};
+
+void UpdateMGList(bitcopy* arg0, omObjData* arg1) {
+    f32 sp1C;
+    f32 sp18;
+    s32 sp14;
+    f32 var_f26;
+    f32 var_f25;
+    f32 var_f24;
+    f32 temp_f27;
+    s32 temp_r22;
+    s16 temp_r3;
+    s8 var_r17;
+    GXColor* temp_r18;
+    s32 var_r23;
+    bitcopy* temp_r21;
+    unkSubstructR31* temp_r24;
+    
+    temp_r24 = arg0->unk_0C;
+    temp_r22 = mgType + 5;
+    switch (arg0->unk_02) {                        /* irregular */
+        case 0:
+            HuSprAttrSet(temp_r24->unk_00[0], temp_r22, 8);
+            HuSprAttrReset(temp_r24->unk_00[0], temp_r22, 4);
+            HuSprPosSet(temp_r24->unk_00[0], temp_r22, 0.0f, 32.0f);
+            HuSprScaleSet(temp_r24->unk_00[0], temp_r22, 0.001f, 0.001f);
+            arg0->unk_04 = 0;
+            arg0->unk_02 = 1;
+            arg0->unk_03 = 0;
+            hilitePos = 0.0f;
+            
+            for (var_r23 = 0; var_r23 < arg0->field01_bit0; var_r23++) {
+                HuWinMesSizeCancelCRSet(1);
+                HuWinMesMaxSizeGet(1, &sp18, activeMG[var_r23].unk_04);
+                var_f25 = 152.0f;
+                var_f24 = 280.0f + (var_r23 * 0x18);
+                temp_r3 = HuWinCreate(var_f25, var_f24, sp18, sp1C, 0);
+                HuWinBGTPLvlSet(temp_r3, 0.0f);
+                HuWinMesSpeedSet(temp_r3, 0);
+                HuWinDispOff(temp_r3);
+                HuWinAttrSet(temp_r3, 0x100U);
+                if (activeMG[var_r23].unk_03 != 0) {
+                    sp14 = activeMG[var_r23].unk_04;
+                } else {
+                    sp14 = 0x90001;
+                }
+                HuWinMesSet(temp_r3, sp14);
+                activeMG[var_r23].unk_00 = temp_r3;
+            }
+            return;
+        case 1:
+            if (arg0->unk_03 < 0x5A) {
+                OSu8tof32((u8*) &arg0->unk_03, &var_f26);
+                temp_f27 = sin((M_PI * var_f26) / 180.0);
+                arg0->unk_03 += 3;
+                HuSprScaleSet(temp_r24->unk_00[0], temp_r22, temp_f27, temp_f27);
+                return;
+            }
+            
+            for (var_r23 = 0; var_r23 < arg0->field01_bit0; var_r23++) {
+                HuWinDispOn(activeMG[var_r23].unk_00);
+            }
+            HuSprAttrReset(temp_r24->unk_00[0], 0xA, 4);
+            HuSprAttrSet(temp_r24->unk_00[0], 0xA, 8);
+            HuSprPosSet(temp_r24->unk_00[0], 0xA, -148.0f, cursorYTbl[0]);
+            temp_r18 = &hiliteColTbl[mgType];
+            HuSprAttrReset(temp_r24->unk_00[0], 0xC, 4);
+            HuSprPosSet(temp_r24->unk_00[0], 0xC, 0.0f, hiliteYTbl[0]);
+            HuSprTPLvlSet(temp_r24->unk_00[0], 0xC, 0.7f);
+            HuSprScaleSet(temp_r24->unk_00[0], 0xC, 32.0f, 3.5f);
+            HuSprColorSet(temp_r24->unk_00[0], 0xC, temp_r18->r, temp_r18->g, temp_r18->b);
+            arg0->unk_02 = 2;
+            arg0->unk_03 = 0;
+            arg0->unk_08 = 0.7f;
+            arg0->unk_07 = 0x23 - BoardRandMod(0x1EU);
+            return;
+        case 2:
+            hilitePos += arg0->unk_08;
+            if (hilitePos >= arg0->field01_bit0) {
+                hilitePos = 0.0f;
+            }
+            OSf32tos8(&hilitePos, &var_r17);
+            if (var_r17 != cursorPos) {
+                HuAudFXPlay(0x304);
+                cursorPos = var_r17;
+            }
+            HuSprPosSet(temp_r24->unk_00[0], 0xA, -148.0f, cursorYTbl[cursorPos]);
+            HuSprPosSet(temp_r24->unk_00[0], 0xC, 0.0f, hiliteYTbl[cursorPos]);
+            if (arg0->unk_07 != 0) {
+                arg0->unk_07--;
+                return;
+            }
+            arg0->unk_02 = 3;
+            return;
+        case 3:
+            arg0->unk_08 *= 0.97f;
+            hilitePos += arg0->unk_08;
+            if (hilitePos >= arg0->field01_bit0) {
+                hilitePos = 0.0f;
+            }
+            OSf32tos8(&hilitePos, &var_r17);
+            if (var_r17 != cursorPos) {
+                HuAudFXPlay(0x304);
+                cursorPos = var_r17;
+            }
+            HuSprPosSet(temp_r24->unk_00[0], 0xA, -148.0f, cursorYTbl[cursorPos]);
+            HuSprPosSet(temp_r24->unk_00[0], 0xC, 0.0f, hiliteYTbl[cursorPos]);
+            if (!(arg0->unk_08 < (0.02f + (0.02f * BoardRandFloat())))) return; // weird hacky garbage
+            HuAudFXPlay(0x305);
+            arg0->unk_02 = 4;
+            arg0->unk_03 = 0;
+            hiliteTimer = 0;
+            hiliteShowF = 1;
+            hiliteBlinkLen = 5;
+            mgNext = activeMG[cursorPos].unk_02;
+            HuWinMesSet(activeMG[cursorPos].unk_00, activeMG[cursorPos].unk_04);
+            return;
+        case 4:
+            if (arg0->unk_03++ > 0x78U) {
+                HuSprAttrSet(temp_r24->unk_00[0], 0xA, 4);
+                HuSprAttrSet(temp_r24->unk_00[0], 0xC, 4);
+                
+                for (var_r23 = 0; var_r23 < arg0->field01_bit0; var_r23++) {
+                    HuWinDispOff(activeMG[var_r23].unk_00);
+                }
+                arg0->unk_02 = 5;
+                arg0->unk_03 = 0;
+                return;
+            }
+            if (hiliteTimer < hiliteBlinkLen) {
+                hiliteTimer++;
+            } else {
+                hiliteShowF ^= 1;
+                hiliteTimer = 0;
+            }
+            if (hiliteShowF != 0) {
+                HuSprAttrReset(temp_r24->unk_00[0], 0xC, 4);
+                return;
+            }
+            HuSprAttrSet(temp_r24->unk_00[0], 0xC, 4);
+            return;
+        case 5:
+            if (arg0->unk_03 < 0x5A) {
+                OSu8tof32((u8*) &arg0->unk_03, &var_f26);
+                temp_f27 = (1.0 + (2.0 * sin((M_PI * var_f26) / 180.0)));
+                arg0->unk_03 += 4;
+                if (arg0->unk_03 > 0x5A) {
+                    arg0->unk_03 = 0x5A;
+                }
+                HuSprScaleSet(temp_r24->unk_00[0], temp_r22, temp_f27, temp_f27);
+                if (arg0->unk_03 > 0x3C) {
+                    HuSprTPLvlSet(temp_r24->unk_00[0], temp_r22, (90.0f - arg0->unk_03) / 30.0f);
+                    return;
+                }
+            } else {
+                HuSprAttrSet(temp_r24->unk_00[0], temp_r22, 4);
+                
+                for (var_r23 = 0; var_r23 < arg0->field01_bit0; var_r23++) {
+                    HuWinDispOff(activeMG[var_r23].unk_00);
+                }
+                arg0->unk_03 = 0;
+                arg0->unk_02 = 6;
+                temp_r21 = (bitcopy*) mgSetupObj->work;
+                temp_r21->field00_bit1 = 7;
+                temp_r21->unk_02 = 0;
+                temp_r21->unk_03 = 0;
+                temp_r21->unk_04 = 0;
+            }
+            break;
+    }
+}
+
+void BoardMGSetupPlayClear(void) {
+    mgPlay4PLen = mgPlay1Vs3Len = mgPlay2Vs2Len = mgPlayBattleLen = 0;
+    memset(mgPlay4P, 0, 0x10);
+    memset(mgPlay1Vs3, 0, 6);
+    memset(mgPlay2Vs2, 0, 6);
+    memset(mgPlayBattle, 0, 4);
+}
+
+s32 BoardMGSetupPlayPush(s32 arg0, s16 arg1) {
+    s16* var_r31;
+    s16 var_r30;
+    s16 var_r29;
+
+    switch (arg0) {
+        case 0:
+            var_r29 = 8;
+            var_r31 = mgPlay4P;
+            break;
+        case 1:
+            var_r29 = 3;
+            var_r31 = mgPlay1Vs3;
+            break;
+        case 2:
+            var_r29 = 3;
+            var_r31 = mgPlay2Vs2;
+            break;
+        case 4:
+            var_r29 = 2;
+            var_r31 = mgPlayBattle;
+            break;
+        default:
+            return 0;
+    }
+    
+    var_r30 = 0;
+    while (var_r30 < var_r29) {
+        if (arg1 == var_r31[var_r30]) {
+            return 1;
+        }
+        var_r30++;
+    }
+    return 0;
+}
+
+void BoardMGSetupPlayPop(s32 arg0, s16 arg1) {
+    s16 var_r29;
+    s16 temp_r28;
+    u8* var_r31;
+    s16* var_r30;
+
+    switch (arg0) {                                 /* irregular */
+    case 0:
+        var_r31 = &mgPlay4PLen;
+        var_r29 = 8;
+        var_r30 = mgPlay4P;
+        break;
+    case 1:
+        var_r31 = &mgPlay1Vs3Len;
+        var_r29 = 3;
+        var_r30 = mgPlay1Vs3;
+        break;
+    case 2:
+        var_r31 = &mgPlay2Vs2Len;
+        var_r29 = 3;
+        var_r30 = mgPlay2Vs2;
+        break;
+    case 4:
+        var_r31 = &mgPlayBattleLen;
+        var_r29 = 2;
+        var_r30 = mgPlayBattle;
+        break;
+    default:
+        return;
+    }
+    temp_r28 = *var_r31;
+    var_r30[temp_r28] = arg1;
+    *var_r31 = temp_r28 + 1;
+    if (*var_r31 >= var_r29) {
+        *var_r31 = 0;
+    }
+    return;
+}
+
+void BoardMGSetupTutorialExec(void) {
+    s32 spC;
+    s32 sp8;
+    s16 var_r30;
+    s16* temp_r31;
+    s32 temp_r0;
+    s32 var_r26;
+    bitcopy* temp_r24;
+    bitcopy* temp_r25;
+    bitcopy* temp_r27;
+    bitcopy* temp_r29;
+    bitcopy* temp_r28;
+
+    *boardTutorialData = 1;
+    BoardFilterFadeInit(0x1E, 0xA0U);
+    
+    for (var_r26 = 0; var_r26 < 4; var_r26++) {
+        activeMG[var_r26].unk_00 = -1;
+        activeMG[var_r26].unk_04 = 0;
+    }
+    
+    CreateMGSetup();
+    while (setupObjGet() != 7) {
+        HuPrcVSleep();
+    }
+    temp_r29 = (bitcopy*) mgSetupObj->work;
+    temp_r29->field00_bit1 = 1;
+    temp_r29->unk_02 = 0;
+    temp_r29->unk_03 = 0;
+    temp_r29->unk_04 = 0;
+    while (setupObjGet() != 7) {
+        HuPrcVSleep();
+    }
+    temp_r28 = (bitcopy*) mgSetupObj->work;
+    temp_r28->field00_bit1 = 6;
+    temp_r28->unk_02 = 0;
+    temp_r28->unk_03 = 0;
+    temp_r28->unk_04 = 0;
+    while (setupObjGet() != 7) {
+        HuPrcVSleep();
+    }
+    temp_r24 = (bitcopy*) mgSetupObj->work;
+    temp_r24->field00_bit0 = 1;
+    BoardFilterFadeOut(0x1E);
+    HuPrcSleep(0x1E);
 }
