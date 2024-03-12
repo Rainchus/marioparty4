@@ -9,6 +9,7 @@
 #include "game/object.h"
 #include "game/pad.h"
 #include "game/process.h"
+#include "game/sprite.h"
 #include "game/window.h"
 #include "game/board/com.h"
 #include "game/board/item.h"

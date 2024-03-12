@@ -6,6 +6,7 @@
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/process.h"
+#include "game/sprite.h"
 #include "game/board/audio.h"
 #include "game/board/com.h"
 #include "game/board/com_path.h"

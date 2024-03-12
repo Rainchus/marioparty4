@@ -16,6 +16,7 @@
 #include "game/board/player.h"
 #include "game/board/shop.h"
 #include "game/board/space.h"
+#include "game/board/start.h"
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
 #include "game/pad.h"
@@ -63,7 +64,6 @@ static CameraView camViewTbl[] = {
 
 
 extern void BoardMGSetupPlayClear(void);
-extern void BoardStartExec(void);
 
 static void InitBoardFunc(omObjData *object);
 static void ExecBoardFunc(omObjData *object);
