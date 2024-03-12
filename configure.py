@@ -386,7 +386,7 @@ config.libs = [
             Object(Matching, "game/board/ui.c"),
             Object(Matching, "game/board/block.c"),
             Object(Matching, "game/board/item.c"),
-            Object(NonMatching, "game/board/bowser.c"),
+            Object(Matching, "game/board/bowser.c"),
             Object(Matching, "game/board/battle.c"),
             Object(Matching, "game/board/fortune.c"),
             Object(Matching, "game/board/boo.c"),
