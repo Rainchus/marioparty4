@@ -14,7 +14,7 @@ void BoardStatusGraySet(s32 arg0, s32 arg1);
 void BoardStatusShowSet(s32 arg0, s32 arg1);
 void BoardStatusItemHideSet(s32 arg0, s32 arg1);
 void BoardStatusTargetPosSet(s32 arg0, Vec *arg1);
-void BoardStatusPosGet(s32 arg0, float *arg1);
+void BoardStatusPosGet(s32 arg0, Vec *arg1);
 void BoardStatusPosSet(s32 arg0, Vec *arg1);
 void BoardStatusHammerCreate(s32 arg0);
 void BoardStatusHammerShowSet(s32 arg0, s32 arg1);

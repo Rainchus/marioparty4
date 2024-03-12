@@ -402,11 +402,11 @@ void BoardStatusTargetPosSet(s32 arg0, Vec *arg1) {
     temp_r31->unk00_bit2 = 1;
 }
 
-void BoardStatusPosGet(s32 arg0, float *arg1) {
+void BoardStatusPosGet(s32 arg0, Vec *arg1) {
     UnkUiStatusStruct *temp_r31 = &uiStatus[arg0];
 
-    arg1[0] = temp_r31->unk04.x;
-    arg1[1] = temp_r31->unk04.y;
+    arg1->x = temp_r31->unk04.x;
+    arg1->y = temp_r31->unk04.y;
 }
 
 void BoardStatusPosSet(s32 arg0, Vec *arg1) {

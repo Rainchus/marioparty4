@@ -749,7 +749,7 @@ static void SeparateStatus(bitcopy* arg0, omObjData* arg1) {
     switch (arg0->unk_02) {
         case 0:
             for (var_r28 = 0; var_r28 < 4; var_r28++) {
-                BoardStatusPosGet(var_r28, &sp8.x);
+                BoardStatusPosGet(var_r28, &sp8);
                 if (sp8.x < 288.0f) {
                     sp8.x = -98.0f;
                 } else {

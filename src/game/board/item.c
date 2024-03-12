@@ -75,8 +75,8 @@ static void ExecItemLight(void);
 static void ExecItemWhistle(void);
 static void ExecItemBowser(void);
 static void ExecItemBooBall(void);
-static void LampParticleUpdate(s32 arg0, ParticleData *arg1);
-static void GenieParticleUpdate(s32 arg0, ParticleData *arg1);
+static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix);
+static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix);
 static void GenieCameraProc(void);
 static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Vec *arg3, Vec *arg4);
 static void GenieSceneExec(void);
@@ -1924,7 +1924,7 @@ static void ForceConsts(void)
     (void)125.0f;
 }
 
-static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
+static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix) {
     HsfanimStruct01 *var_r31;
     Vec spC;
     float sp8;
@@ -1933,26 +1933,26 @@ static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
     s32 i;
     s32 j;
 
-    if (arg1->unk_34 == 0) {
-        var_r31 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    if (particle->unk_34 == 0) {
+        var_r31 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk2C = 0.0f;
             var_r31->unk40.a = 0;
         }
-        arg1->unk_04 = 0.0f;
-        arg1->unk_00 = 0;
+        particle->unk_04 = 0.0f;
+        particle->unk_00 = 0;
     }
-    if (arg1->unk_00 == 0) {
-        arg1->unk_00 = 2;
+    if (particle->unk_00 == 0) {
+        particle->unk_00 = 2;
         BoardModelRotGet(suitMdl, &spC);
         for (i = 0; i < 2; i++) {
-            var_r31 = arg1->unk_48;
-            for (j = 0; j < arg1->unk_30; j++, var_r31++) {
+            var_r31 = particle->unk_48;
+            for (j = 0; j < particle->unk_30; j++, var_r31++) {
                 if (var_r31->unk2C == 0.0f) {
                     break;
                 }
             }
-            if (j != arg1->unk_30) {
+            if (j != particle->unk_30) {
                 var_r31->unk34.x = 60.0 * sin((spC.y - 90.0f) * M_PI / 180.0);
                 var_r31->unk34.y = 30.0f;
                 var_r31->unk34.z = 60.0 * cos((spC.y - 90.0f) * M_PI / 180.0);
@@ -1968,10 +1968,10 @@ static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
             }
         }
     } else {
-        arg1->unk_00--;
+        particle->unk_00--;
     }
-    var_r31 = arg1->unk_48;
-    for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    var_r31 = particle->unk_48;
+    for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (var_r31->unk2C != 0.0f) {
             if (var_r31->unk00_s16 == 0) {
                 PSVECAdd(&var_r31->unk34, &var_r31->unk08, &var_r31->unk34);
@@ -2001,16 +2001,16 @@ static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
     }
 }
 
-static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
+static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix) {
     HsfanimStruct01* var_r31;
     float temp_f31;
     float temp_f30;
     s32 var_r28;
     s32 i;
 
-    if (arg1->unk_34 == 0) {
-        var_r31 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    if (particle->unk_34 == 0) {
+        var_r31 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk34.x = -50.0f + (frand() & 0xFF) * 100.0f * 0.003921569f;
             var_r31->unk34.y = -50.0f + (frand() & 0xFF) * 100.0f * 0.003921569f;
             var_r31->unk34.z = -10.0f + (frand() & 0xFF) * 20.0f * 0.003921569f;
@@ -2025,9 +2025,9 @@ static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
             var_r31->unk2C = 80.0f + (frand() & 0xFF) * 60.0f * 0.003921569f;
         }
     }
-    var_r31 = arg1->unk_48;
+    var_r31 = particle->unk_48;
     var_r28 = 0;
-    for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (var_r31->unk2C != 0.0f) {
             var_r28++;
             PSVECAdd(&var_r31->unk34, &var_r31->unk08, &var_r31->unk34);
@@ -2042,7 +2042,7 @@ static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
         }
     }
     if (var_r28 == 0) {
-        arg1->unk_02 = 0;
+        particle->unk_02 = 0;
     }
 }
 
@@ -2235,7 +2235,7 @@ static void GenieSceneExec(void) {
     temp_r21 = HuPrcChildCreate(GenieCameraProc, 0x2005, 0x1000, 0, HuPrcCurrentGet());
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
     temp_r27 = Hu3DParticleCreate(genieParticleAnim, 0x32);
-    Hu3DParticleHookSet(temp_r27, &GenieParticleUpdate);
+    Hu3DParticleHookSet(temp_r27, GenieParticleUpdate);
     Hu3DParticleBlendModeSet(temp_r27, 1);
     Hu3DParticleColSet(temp_r27, 0xFF, 0xFF, 0xFF);
     Hu3DParticleAnimModeSet(temp_r27, 0);
@@ -2409,7 +2409,7 @@ static void ExecItemGenie(void) {
     HuAudPlayerVoicePlay(currItemRestore, 0x125);
     temp_r25 = HuAudFXPlay(0x34D);
     temp_r31 = Hu3DParticleCreate(genieParticleAnim, 0x96);
-    Hu3DParticleHookSet(temp_r31, &LampParticleUpdate);
+    Hu3DParticleHookSet(temp_r31, LampParticleUpdate);
     Hu3DParticleBlendModeSet(temp_r31, 0);
     Hu3DParticleColSet(temp_r31, 0xFF, 0xFF, 0xFF);
     Hu3DParticleAnimModeSet(temp_r31, 0);

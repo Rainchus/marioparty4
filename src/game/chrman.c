@@ -74,7 +74,7 @@ static s16 CreateEffectStar(s16 arg0, float arg1, float arg2, float arg3, float 
 static s16 CreateEffectWarn(s16 arg0, float arg1, float arg2, float arg3, float arg4, EffectParamData *arg5);
 static s16 CreateEffectBird(s16 arg0, float arg1, float arg2, float arg3, float arg4, EffectParamData *arg5);
 static s16 CreateEffect(s16 arg0, s16 arg1, float arg2, float arg3, float arg4, float arg5, EffectParamData *arg6);
-static void UpdateEffect(s32 arg0, ParticleData *arg1);
+static void UpdateEffect(ModelData *model, ParticleData *particle, Mtx matrix);
 static void RotateEffect(HsfanimStruct01 *arg0);
 static void PlayEffectSound(HsfanimStruct01 *arg0);
 static void UpdateItemHook(void);
@@ -887,21 +887,21 @@ static s16 CreateEffect(s16 arg0, s16 arg1, float arg2, float arg3, float arg4, 
     return i;
 }
 
-static void UpdateEffect(s32 arg0, ParticleData *arg1) {
+static void UpdateEffect(ModelData *model, ParticleData *particle, Mtx matrix) {
     EffectParamData *temp_r30;
     HsfanimStruct01 *var_r31;
     s16 var_r28;
     s16 i;
 
-    temp_r30 = arg1->unk_1C;
-    if (arg1->unk_34 == 0) {
-        var_r31 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    temp_r30 = particle->unk_1C;
+    if (particle->unk_34 == 0) {
+        var_r31 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk2C = 0.0f;
         }
     }
-    var_r31 = arg1->unk_48;
-    for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    var_r31 = particle->unk_48;
+    for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (var_r31->unk2C) {
             if (var_r31->unk02 == -1) {
                 var_r31->unk08.x *= temp_r30[i].unk18;
@@ -962,7 +962,7 @@ static void UpdateEffect(s32 arg0, ParticleData *arg1) {
             }
         }
     }
-    DCStoreRangeNoSync(arg1->unk_48, arg1->unk_30 * sizeof(HsfanimStruct01));
+    DCStoreRangeNoSync(particle->unk_48, particle->unk_30 * sizeof(HsfanimStruct01));
 }
 
 static void RotateEffect(HsfanimStruct01 *arg0) {

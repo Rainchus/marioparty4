@@ -689,7 +689,7 @@ void BoardPlayerPostTurnHookSet(s32 arg0, s32 (*arg1)()) {
 void BoardPlayerTurnExec(s32 arg0) {
     BoardPauseDisableSet(1);
     BoardComUseItemSet(arg0, -1);
-    GWSystem.field31_bit4 = 0xF;
+    GWSystem.bowser_event = 0xF;
     _ClearFlag(0x10016);
     _ClearFlag(0x1000E);
     BoardCameraMoveSet(1);
@@ -853,11 +853,11 @@ block_14:
     BoardSpaceBlockExec(arg0, sp8);
     BoardSpaceLandExec(arg0, sp8);
     _SetFlag(0x1000E);
-    if (GWSystem.field31_bit4 != 1) {
+    if (GWSystem.bowser_event != 1) {
         BoardCameraViewSet(2);
         BoardCameraMotionWait();
     } else {
-        GWSystem.field31_bit4 = 0xF;
+        GWSystem.bowser_event = 0xF;
     }
     BoardPlayerZoomRestore(arg0);
     return;
