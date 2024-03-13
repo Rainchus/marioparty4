@@ -391,7 +391,7 @@ config.libs = [
             Object(Matching, "game/board/fortune.c"),
             Object(Matching, "game/board/boo.c"),
             Object(Matching, "game/board/mg_setup.c"),
-            Object(NonMatching, "game/board/boo_house.c"),
+            Object(Matching, "game/board/boo_house.c"),
             Object(NonMatching, "game/board/start.c"),
             Object(Matching, "game/board/last5.c"),
             Object(Matching, "game/board/pause.c"),
