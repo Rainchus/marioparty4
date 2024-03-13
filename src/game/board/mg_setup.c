@@ -1,3 +1,4 @@
+#include "game/board/mg_setup.h"
 #include "unsplit.h"
 #include "game/audio.h"
 #include "game/objsub.h"
@@ -106,7 +107,6 @@ static u8 luckyValue = 0xFF;
 static s8 cursorPos = 0xFF;
 
 // determined functions
-void BoardMGSetupExec(void);
 static void DestroyMGSetup(void);
 static void ExecMGSetup(void);
 static void DetermineMGList(bitcopy*);
@@ -123,9 +123,6 @@ static void LuckyMGFall(bitcopy*, omObjData*);
 static void HideLuckyValue(void);
 static void UpdateLuckyValue(bitcopy*, omObjData*);
 static void UpdateMGList(bitcopy*, omObjData*);
-// ...
-s32 BoardMGSetupPlaySearch(s32, s16);
-void BoardMGSetupPlayPush(s32, s16);
 
 // FUNCTIONS //
 
