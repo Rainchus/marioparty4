@@ -56,7 +56,6 @@ void omOutViewMulti(omObjData *object)
 	}
 }
 
-void omSystemKeyCheck(omObjData *object);
 
 void omSystemKeyCheckSetup(Process *objman)
 {

@@ -39,7 +39,7 @@ void mtxRotCat(Mtx arg0, float arg1, float arg2, float arg3);
 void mtxRot(Mtx arg0, float arg1, float arg2, float arg3);
 void mtxScaleCat(Mtx arg0, float arg1, float arg2, float arg3);
 s16 HmfInverseMtxF3X3(Mtx arg0, Mtx arg1);
-void SetDefLight(Vec arg0, Vec arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA);
+void SetDefLight(Vec *arg0, Vec *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA);
 void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
 void Hu3DModelObjMtxGet(s16 arg0, char *arg1, Mtx arg2);
 void PGObjCall(ModelData *arg0, HsfObject *arg1);
