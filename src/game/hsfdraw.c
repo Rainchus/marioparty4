@@ -2980,13 +2980,13 @@ static inline void SetDefLightInlineFunc(GXLightObj *arg0, u8 arg1, u8 arg2, u8 
     GXSetChanMatColor(GX_COLOR0A0, spE);
 }
 
-void SetDefLight(Vec arg0, Vec arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA) {
+void SetDefLight(Vec *arg0, Vec *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA) {
     GXLightObj sp20;
 
     GXInitLightAttn(&sp20, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
     GXInitLightSpot(&sp20, 20.0f, GX_SP_COS);
-    GXInitLightPos(&sp20, arg0.x, arg0.y, arg0.z);
-    GXInitLightDir(&sp20, arg1.x, arg1.y, arg1.z);
+    GXInitLightPos(&sp20, arg0->x, arg0->y, arg0->z);
+    GXInitLightDir(&sp20, arg1->x, arg1->y, arg1->z);
     SetDefLightInlineFunc(&sp20, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
 }
 

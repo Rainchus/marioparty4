@@ -39,7 +39,6 @@ typedef struct {
     u32 unk0C;
 } ConfigWork;
 
-extern void omSysPauseCtrl(s32);
 
 static void PauseExit(void);
 static void PauseProcess(void);

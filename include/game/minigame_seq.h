@@ -18,4 +18,6 @@ void MGSeqPauseEnableCtrl(s32 flag);
 void MGSeqPracticeInit(void);
 void MGSeqPracticeExitCheck(omObjData *object);
 
+extern OverlayID mgSeqOvlPrev;
+
 #endif

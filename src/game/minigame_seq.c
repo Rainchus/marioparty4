@@ -84,7 +84,7 @@ static int SeqUpdateRecord(SeqWork *work);
 static int SeqInitFlip(SeqWork *work, va_list params);
 static int SeqUpdateFlip(SeqWork *work);
 
-s32 mgSeqInitF = -1;
+OverlayID mgSeqOvlPrev = OVL_INVALID;
 
 static SeqInfo seqInfoTbl[] = {
 	{ NULL, NULL, 292.0f, 240.0f, 1.0f, 1.0f, 60 },
@@ -173,7 +173,7 @@ void MGSeqInit(void)
 	HuAR_DVDtoARAM(DATADIR_MGCONST);
 	while(HuARDMACheck());
 	fn_80036BC8();
-	mgSeqInitF = -1;
+	mgSeqOvlPrev = -1;
 	seqLanguage = GWLanguageGet();
 }
 

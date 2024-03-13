@@ -101,9 +101,12 @@ s32 omDLLSearch(s16 overlay);
 void omDLLInfoDump(OSModuleInfo *module);
 void omDLLHeaderDump(OSModuleHeader *module);
 
+void omOutView(omObjData *object);
+void omOutViewMulti(omObjData *object);
+void omSystemKeyCheckSetup(Process *objman);
+void omSystemKeyCheck(omObjData *object);
 void omSysPauseEnable(u8 flag);
-
-void omSystemKeyCheckSetup(Process *objman_process);
+void omSysPauseCtrl(s16 flag);
 
 extern omObjData *omDBGSysKeyObj;
 extern Process *omwatchproc;
@@ -121,5 +124,12 @@ extern u8 omSysPauseEnableFlag;
 extern OverlayID omprevovl;
 
 extern omDllData *omDLLinfoTbl[OM_DLL_MAX];
+
+extern Vec CRot;
+extern Vec Center;
+extern float CZoom;
+extern Vec CRotM[16];
+extern Vec CenterM[16];
+extern float CZoomM[16];
 
 #endif
