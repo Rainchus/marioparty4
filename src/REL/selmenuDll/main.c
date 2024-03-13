@@ -9,6 +9,8 @@
 #include "game/printfunc.h"
 #include "game/minigame_seq.h"
 #include "game/data.h"
+#include "game/board/main.h"
+#include "game/armem.h"
 
 #include "rel_sqrt_consts.h"
 
@@ -676,7 +678,221 @@ static void SMCharUpdate(omObjData *object)
 	}
 }
 
+static void SMExit(omObjData *object)
+{
+	s32 mg;
+	if(WipeStatGet()) {
+		return;
+	}
+	while(HuARDMACheck());
+	mg = omMgIndexGet(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay);
+	GWSystem.mg_next = mg;
+	OSReport("mgNo=%d\n", mg);
+	if(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W10) {
+		_SetFlag(0x1000B);
+	} else if(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W20) {
+		BoardSaveInit(7);
+		BoardPartyConfigSet(0, 0, 0, 20, 0, 0, 0, 0);
+	} else if(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W21) {
+		BoardSaveInit(8);
+		BoardPartyConfigSet(0, 0, 0, 20, 0, 0, 0, 0);
+	} else {
+		_ClearFlag(0x1000B);
+	}
+	if(mg == -1 || !(HuPadBtn[0] & PAD_TRIGGER_Z) || mgInfoTbl[mg].type == 5 || mgInfoTbl[mg].type == 3 || mgInfoTbl[mg].type == 6) {
+		omOvlCallEx(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay, 1, 0, 0);
+	} else {
+		omOvlCallEx(OVL_INST, 1, 0, 0);
+	}
+	mgSeqOvlPrev = menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay;
+	smSelectPosExit = smSelectPos;
+}
+
+static char *padCfgStrTbl[] = {
+	"PLAYER:%d",
+	" PAD%d:%s",
+	"PADNO:%d",
+	"  GRP:%d",
+	"  DIF:%s"
+};
+
+static s16 playerCfgSelF;
+static s16 playerCfgPlayerPos;
+static s16 playerCfgOptionPos;
+
+#define APPLY_PLAYERCFG_HILITE(option) \
+do { \
+	s32 color; \
+	if(playerCfgOptionPos == option) { \
+		color = FONT_COLOR_CYAN; \
+		fontcolor = color; \
+	} else { \
+		color = FONT_COLOR_GREEN; \
+		fontcolor = color; \
+	} \
+} while(0)
+	
+static void SMPlayerCfgDraw(void)
+{
+	s32 i;
+	s16 x;
+	s16 y;
+	s16 w;
+	char *comStr[] = {
+		"HUMAN",
+		"COM"
+	};
+	char *diffStr[] = {
+		"EASY",
+		"NORMAL",
+		"HARD",
+		"VERYHARD"
+	};
+	
+	for(i=0; i<4; i++) {
+		w = 128;
+		x = ((320-w)/2)+((i%2)*320);
+		y = ((i/2)*240)+48;
+		if(playerCfgSelF == 0 && playerCfgPlayerPos == i) {
+			fontcolor = FONT_COLOR_CYAN;
+		} else {
+			fontcolor = FONT_COLOR_GREEN;
+		}
+		print8(x, y, 2.0f, padCfgStrTbl[0], i);
+		if(playerCfgSelF == 0) {
+			fontcolor = FONT_COLOR_DARK_GREEN;
+			print8(((i%2)*320)+64, ((i/2)*240)+80, 2.0f, padCfgStrTbl[1], smPlayerCfg[i].pad_idx, comStr[smPlayerCfg[i].iscom]);
+			print8(((i%2)*320)+64, ((i/2)*240)+96, 2.0f, padCfgStrTbl[2], smPlayerCfg[i].pad_idx);
+			print8(((i%2)*320)+64, ((i/2)*240)+112, 2.0f, padCfgStrTbl[3], smPlayerCfg[i].group);
+			print8(((i%2)*320)+64, ((i/2)*240)+128, 2.0f, padCfgStrTbl[4], diffStr[smPlayerCfg[i].diff]);
+		} else if(playerCfgSelF == 1 && playerCfgPlayerPos == i) {
+			APPLY_PLAYERCFG_HILITE(0);
+			print8(((i%2)*320)+64, ((i/2)*240)+80, 2.0f, padCfgStrTbl[1], smPlayerCfg[i].pad_idx, comStr[smPlayerCfg[i].iscom]);
+			APPLY_PLAYERCFG_HILITE(1);
+			print8(((i%2)*320)+64, ((i/2)*240)+96, 2.0f, padCfgStrTbl[2], smPlayerCfg[i].pad_idx);
+			APPLY_PLAYERCFG_HILITE(2);
+			print8(((i%2)*320)+64, ((i/2)*240)+112, 2.0f, padCfgStrTbl[3], smPlayerCfg[i].group);
+			APPLY_PLAYERCFG_HILITE(3);
+			print8(((i%2)*320)+64, ((i/2)*240)+128, 2.0f, padCfgStrTbl[4], diffStr[smPlayerCfg[i].diff]);
+		} else {
+			fontcolor = FONT_COLOR_DARK_GREEN;
+			print8(((i%2)*320)+64, ((i/2)*240)+80, 2.0f, padCfgStrTbl[1], smPlayerCfg[i].pad_idx, comStr[smPlayerCfg[i].iscom]);
+			print8(((i%2)*320)+64, ((i/2)*240)+96, 2.0f, padCfgStrTbl[2], smPlayerCfg[i].pad_idx);
+			print8(((i%2)*320)+64, ((i/2)*240)+112, 2.0f, padCfgStrTbl[3], smPlayerCfg[i].group);
+			print8(((i%2)*320)+64, ((i/2)*240)+128, 2.0f, padCfgStrTbl[4], diffStr[smPlayerCfg[i].diff]);
+		}
+	}
+}
+
+static void SMPlayerCfgUpdate(omObjData *object);
+
+static void SMPlayerCfgInit(omObjData *object)
+{
+	playerCfgSelF = 0;
+	playerCfgPlayerPos = 0;
+	playerCfgOptionPos = 0;
+	object->func = SMPlayerCfgUpdate;
+}
+
+static void SMPlayerCfgUpdate(omObjData *object)
+{
+	s32 offset;
+	SMPlayerCfgDraw();
+	CalcBtns();
+	if(!playerCfgSelF) {
+		if(btnReleaseCurr & SM_KEY_LEFT) {
+			offset = ((playerCfgPlayerPos & 0x1)-1) & 0x1;
+			playerCfgPlayerPos = (playerCfgPlayerPos & 0xFFFE)+offset;
+		} else {
+			if(btnReleaseCurr & SM_KEY_RIGHT) {
+				offset = ((playerCfgPlayerPos & 0x1)+1) & 0x1;
+				playerCfgPlayerPos = (playerCfgPlayerPos & 0xFFFE)+offset;
+			} else if(btnReleaseCurr & SM_KEY_DOWN) {
+				if((playerCfgPlayerPos += 2) >= 4) {
+					playerCfgPlayerPos -= 4;
+				}
+			} else if(btnReleaseCurr & SM_KEY_UP) {
+				if((playerCfgPlayerPos -= 2) < 0) {
+					playerCfgPlayerPos += 4;
+				}
+			}
+		}
+		if(btnDownCurr & PAD_BUTTON_A) {
+			playerCfgSelF = 1;
+			return;
+		}
+		if((btnDownCurr & PAD_BUTTON_B) || (btnDownCurr & PAD_BUTTON_Y)) {
+			object->func = SMUpdate;
+		}
+	} else if(btnReleaseCurr & SM_KEY_UP) {
+		if(--playerCfgOptionPos < 0) {
+			playerCfgOptionPos = 3;
+		}
+	} else if(btnReleaseCurr & SM_KEY_DOWN) {
+		if(++playerCfgOptionPos > 3) {
+			playerCfgOptionPos = 0;
+		}
+	} else if(btnReleaseCurr & SM_KEY_LEFT) {
+		switch(playerCfgOptionPos) {
+			case 0:
+				smPlayerCfg[playerCfgPlayerPos].iscom ^= 1;
+				break;
+				
+			case 1:
+				if(--smPlayerCfg[playerCfgPlayerPos].pad_idx < 0) {
+					smPlayerCfg[playerCfgPlayerPos].pad_idx = 3;
+				}
+				break;
+				
+			case 2:
+				if(--smPlayerCfg[playerCfgPlayerPos].group < 0) {
+					smPlayerCfg[playerCfgPlayerPos].group = 3;
+				}
+				break;
+				
+			case 3:
+				if(--smPlayerCfg[playerCfgPlayerPos].diff < 0) {
+					smPlayerCfg[playerCfgPlayerPos].diff = 3;
+				}
+				break;
+		};
+	} else if(btnReleaseCurr & SM_KEY_RIGHT) {
+		switch(playerCfgOptionPos) {
+			case 0:
+				smPlayerCfg[playerCfgPlayerPos].iscom ^= 1;
+				break;
+				
+			case 1:
+				if(++smPlayerCfg[playerCfgPlayerPos].pad_idx > 3) {
+					smPlayerCfg[playerCfgPlayerPos].pad_idx = 0;
+				}
+				break;
+				
+			case 2:
+				if(++smPlayerCfg[playerCfgPlayerPos].group > 3) {
+					smPlayerCfg[playerCfgPlayerPos].group = 0;
+				}
+				break;
+				
+			case 3:
+				if(++smPlayerCfg[playerCfgPlayerPos].diff > 3) {
+					smPlayerCfg[playerCfgPlayerPos].diff = 0;
+				}
+				break;
+		}
+	} else if((btnDownCurr & PAD_BUTTON_A) || (btnDownCurr & PAD_BUTTON_B)) {
+		playerCfgSelF = 0;
+	} else if(btnDownCurr & PAD_BUTTON_Y) {
+		object->func = SMUpdate;
+	}
+}
+
 static void SMRand8Tick(omObjData *object)
 {
 	rand8();
+}
+
+void fn_1_450C(void)
+{
+	
 }
