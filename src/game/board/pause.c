@@ -8,6 +8,7 @@
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/saveload.h"
+#include "game/sprite.h"
 #include "game/window.h"
 #include "game/wipe.h"
 #include "game/board/main.h"

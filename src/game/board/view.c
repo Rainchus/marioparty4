@@ -5,6 +5,7 @@
 #include "game/hsfex.h"
 #include "game/object.h"
 #include "game/pad.h"
+#include "game/sprite.h"
 #include "game/wipe.h"
 #include "game/board/main.h"
 #include "game/board/model.h"

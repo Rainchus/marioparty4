@@ -1,5 +1,5 @@
-#ifndef _BOARD_START_H
-#define _BOARD_START_H
+#ifndef _BOARD_STAR_H
+#define _BOARD_STAR_H
 
 #include "game/board/space.h"
 
