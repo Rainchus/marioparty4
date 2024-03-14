@@ -56,6 +56,12 @@ s32 HuAudCharVoicePlay(s16 arg0, s16 arg1);
 s32 HuAudCharVoicePlayPos(s16 arg0, s16 arg1, Vec *arg2);
 void HuAudCharVoicePlayEntry(s16 arg0, s16 arg1);
 
+extern float Snd3DBackSurDisOffset;
+extern float Snd3DFrontSurDisOffset;
+extern float Snd3DStartDisOffset;
+extern float Snd3DSpeedOffset;
+extern float Snd3DDistOffset;
+extern s32 musicOffF;
 extern u8 fadeStat;
 
 #endif
