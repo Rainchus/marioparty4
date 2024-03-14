@@ -11,8 +11,13 @@
 #include "game/data.h"
 #include "game/board/main.h"
 #include "game/armem.h"
+#include "game/audio.h"
 
 #include "rel_sqrt_consts.h"
+
+//MSM Definitions
+static s8 *msmSeGetIndexPtr(s16 datano);
+static void msmMusSetMasterVolume(s32 value);
 
 #define SM_PAGE_MAX 7
 #define SM_PAGE_SIZE 10
@@ -720,10 +725,10 @@ static s16 playerCfgSelF;
 static s16 playerCfgPlayerPos;
 static s16 playerCfgOptionPos;
 
-#define APPLY_PLAYERCFG_HILITE(option) \
+#define DO_HILITE(pos) \
 do { \
 	s32 color; \
-	if(playerCfgOptionPos == option) { \
+	if(playerCfgOptionPos == pos) { \
 		color = FONT_COLOR_CYAN; \
 		fontcolor = color; \
 	} else { \
@@ -766,13 +771,13 @@ static void SMPlayerCfgDraw(void)
 			print8(((i%2)*320)+64, ((i/2)*240)+112, 2.0f, padCfgStrTbl[3], smPlayerCfg[i].group);
 			print8(((i%2)*320)+64, ((i/2)*240)+128, 2.0f, padCfgStrTbl[4], diffStr[smPlayerCfg[i].diff]);
 		} else if(playerCfgSelF == 1 && playerCfgPlayerPos == i) {
-			APPLY_PLAYERCFG_HILITE(0);
+			DO_HILITE(0);
 			print8(((i%2)*320)+64, ((i/2)*240)+80, 2.0f, padCfgStrTbl[1], smPlayerCfg[i].pad_idx, comStr[smPlayerCfg[i].iscom]);
-			APPLY_PLAYERCFG_HILITE(1);
+			DO_HILITE(1);
 			print8(((i%2)*320)+64, ((i/2)*240)+96, 2.0f, padCfgStrTbl[2], smPlayerCfg[i].pad_idx);
-			APPLY_PLAYERCFG_HILITE(2);
+			DO_HILITE(2);
 			print8(((i%2)*320)+64, ((i/2)*240)+112, 2.0f, padCfgStrTbl[3], smPlayerCfg[i].group);
-			APPLY_PLAYERCFG_HILITE(3);
+			DO_HILITE(3);
 			print8(((i%2)*320)+64, ((i/2)*240)+128, 2.0f, padCfgStrTbl[4], diffStr[smPlayerCfg[i].diff]);
 		} else {
 			fontcolor = FONT_COLOR_DARK_GREEN;
@@ -784,6 +789,7 @@ static void SMPlayerCfgDraw(void)
 	}
 }
 
+#undef DO_HILITE
 static void SMPlayerCfgUpdate(omObjData *object);
 
 static void SMPlayerCfgInit(omObjData *object)
@@ -896,3 +902,176 @@ void fn_1_450C(void)
 {
 	
 }
+
+static s16 emiCompDataNo;
+static s16 emiCompVal;
+static s16 sound3DCursorPos;
+s16 lbl_1_bss_0;
+
+static void SMSound3DUpdate(omObjData *object);
+static void SMSound3DDraw(void);
+
+static void SMSound3DInit(omObjData *object)
+{
+	s8 *data = msmSeGetIndexPtr(emiCompDataNo);
+	emiCompVal = data[12];
+	object->func = SMSound3DUpdate;
+}
+
+static void SMSound3DUpdate(omObjData *object)
+{
+	float increment;
+	s8 *data;
+	
+	CalcBtns();
+	if(btnReleaseCurr & SM_KEY_UP) {
+		sound3DCursorPos--;
+		if(sound3DCursorPos < 0) {
+			sound3DCursorPos = 7;
+		}
+	}
+	if(btnReleaseCurr & SM_KEY_DOWN) {
+		sound3DCursorPos++;
+		if(sound3DCursorPos >= 8) {
+			sound3DCursorPos = 0;
+		}
+	}
+	if(btnReleaseCurr & (SM_KEY_LEFT | SM_KEY_RIGHT)) {
+		if(btnReleaseCurr & SM_KEY_RIGHT) {
+			increment = 10;
+		} else {
+			increment = -10;
+		}
+		if(HuPadBtn[0] & PAD_TRIGGER_Z) {
+			increment *= 10.0f;
+		}
+		switch(sound3DCursorPos) {
+			case 0:
+				Snd3DDistOffset += increment;
+				break;
+				
+			case 1:
+				Snd3DSpeedOffset += increment;
+				break;
+			
+			case 2:
+				Snd3DStartDisOffset += increment;
+				break;
+				
+			case 3:
+				Snd3DFrontSurDisOffset += increment;
+				break;
+				
+			case 4:
+				Snd3DBackSurDisOffset += increment;
+				break;
+				
+			case 5:
+				emiCompDataNo += increment/10.0f;
+				if(emiCompDataNo < 0) {
+					emiCompDataNo = 0;
+				}
+				data = msmSeGetIndexPtr(emiCompDataNo);
+				emiCompVal = data[12];
+				break;
+				
+			case 6:
+				emiCompVal += increment/10.0f;
+				if(emiCompVal > 127) {
+					emiCompVal = 127;
+				}
+				if(emiCompVal < -127) {
+					emiCompVal = -127;
+				}
+				data = msmSeGetIndexPtr(emiCompDataNo);
+				data[12] = emiCompVal;
+				break;
+				
+			case 7:
+				musicOffF = (musicOffF) ? 0 : 1;
+				if(musicOffF) {
+					msmMusSetMasterVolume(0);
+				} else {
+					msmMusSetMasterVolume(127);
+				}
+				break;
+		}
+	}
+	if(btnDownCurr & PAD_BUTTON_START) {
+		switch(sound3DCursorPos) {
+			case 0:
+				Snd3DDistOffset = 0;
+				break;
+				
+			case 1:
+				Snd3DSpeedOffset = 0;
+				break;
+				
+			case 2:
+				Snd3DStartDisOffset = 0;
+				break;
+				
+			case 3:
+				Snd3DFrontSurDisOffset = 0;
+				break;
+				
+			case 4:
+				Snd3DBackSurDisOffset = 0;
+				break;
+				
+			case 5:
+				emiCompDataNo = 0;
+				break;
+				
+			case 6:
+				emiCompVal = 0;
+				break;
+				
+			case 7:
+				musicOffF = 0;
+				break;
+		}
+	}
+	
+	if(btnDownCurr & PAD_BUTTON_B) {
+		object->func = SMUpdate;
+	}
+	SMSound3DDraw();
+}
+
+#define DO_HILITE(pos) \
+do { \
+	if(sound3DCursorPos == pos) { \
+		fontcolor = FONT_COLOR_GREEN; \
+	} else { \
+		fontcolor = FONT_COLOR_DARK_GREEN; \
+	} \
+} while(0)
+
+static void SMSound3DDraw(void)
+{
+	char *onOffStr[] = {
+		" ON",
+		"OFF"
+	};
+	fontcolor = FONT_COLOR_YELLOW;
+	print8(200, 64, 2.0f, "3DSound Config.");
+	DO_HILITE(0);
+	print8(140, 96, 2.0f, "Max Distance   %5.1f", Snd3DDistOffset);
+	DO_HILITE(1);
+	print8(140, 112, 2.0f, "Sound Speed    %5.1f", Snd3DSpeedOffset);
+	DO_HILITE(2);
+	print8(140, 128, 2.0f, "Start Distance %5.1f", Snd3DStartDisOffset);
+	DO_HILITE(3);
+	print8(140, 144, 2.0f, "Front Distance %5.1f", Snd3DFrontSurDisOffset);
+	DO_HILITE(4);
+	print8(140, 160, 2.0f, "Back Distance  %5.1f", Snd3DBackSurDisOffset);
+	DO_HILITE(5);
+	print8(140, 176, 2.0f, "emiComp DataNo  %04d", emiCompDataNo);
+	DO_HILITE(6);
+	print8(140, 192, 2.0f, "emiComp VAL      %3d", emiCompVal);
+	DO_HILITE(7);
+	print8(140, 208, 2.0f, "Music            %s", onOffStr[(musicOffF) ? 1 : 0]);
+}
+
+#undef DO_HILITE
