@@ -244,3 +244,50 @@ void fn_1_13A4(void) {
         HuPrcVSleep();
     }
 }
+
+void fn_1_176C(void) {
+    fn_1_C10(1);
+    fn_1_BA0(0x2E0024);
+}
+
+void fn_1_179C(void) {
+    fn_1_BA0(0x2E0025);
+    GWPlayer[1].color = 2;
+    GWPlayer[3].color = 2;
+}
+
+void fn_1_17F4(void) {
+    fn_1_BA0(0x2E0026);
+    GWPlayer[0].color = 2;
+}
+
+void fn_1_1834(void) {
+    fn_1_BA0(0x2E0027);
+    GWPlayer[0].color = 1;
+    GWPlayer[1].color = 1;
+    GWPlayer[2].color = 1;
+    GWPlayer[3].color = 2;
+}
+
+void fn_1_18BC(void) {
+    fn_1_BA0(0x2E0028);
+    fn_1_BA0(0x2E0029);
+    boardTutorialData[0] = 0;
+    BoardStatusItemSet(0);
+}
+
+void fn_1_1908(void) {
+    fn_1_BA0(0x2E002D);
+}
+
+void fn_1_1930(void) {
+    fn_1_BA0(0x2E002F);
+}
+
+void fn_1_1958(void) {
+    fn_1_BA0(0x2E0031);
+}
+
+void fn_1_1980(void) {
+
+}

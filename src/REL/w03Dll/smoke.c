@@ -18,15 +18,9 @@ extern s16 lbl_1_data_1E0;
 
 void fn_1_79E0(omObjData* arg0);
 
-char kemuri1[] = "kemuri1";
-char kemuri2[] = "kemuri2";
-char kemuri3[] = "kemuri3";
-char kemuri4[] = "kemuri4";
-char kemuri5[] = "kemuri5";
-
 char* kemuri_strings[] = {
-	kemuri1, kemuri2, kemuri3,
-	kemuri4, kemuri5
+	"kemuri1", "kemuri2", "kemuri3",
+	"kemuri4", "kemuri5"
 };
 
 void fn_1_785C(void) {

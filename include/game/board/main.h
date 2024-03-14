@@ -53,16 +53,6 @@ typedef struct board_camera_data {
 	BoardFocusData focus;
 } BoardCameraData;
 
-static inline s32 BoardCurrGet()
-{
-	return GWSystem.board;
-}
-
-static inline s32 BoardPartyFlagGet()
-{
-	return GWSystem.party;
-}
-
 extern BoardCameraData boardCamera;
 extern Process *boardObjMan;
 extern Process *boardMainProc;

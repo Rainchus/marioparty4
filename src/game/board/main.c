@@ -328,7 +328,7 @@ void BoardSaveInit(s32 board)
 		GWPlayer[i].items[0] = -1;
 		GWPlayer[i].items[1] = -1;
 		GWPlayer[i].items[2] = -1;
-		if(BoardPartyFlagGet() == 0 || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
+		if(GWPartyGet() == 0 || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
 			GWStarsSet(i, 0);
 		} else {
 			GWStarsSet(i, BoardPlayerHandicapGet(i));
@@ -433,14 +433,14 @@ static void MainFunc(void)
 	_ClearFlag(FLAG_ID_MAKE(1, 28));
 	do {
 		BoardStatusShowSetAll(1);
-		if(BoardCurrGet() == 5 && GWSystem.player_curr == 0 && !turn_cont && boardTurnFunc) {
+		if(GWBoardGet() == 5 && GWSystem.player_curr == 0 && !turn_cont && boardTurnFunc) {
 			GWSystem.player_curr = -1;
 			boardTurnFunc();
 			GWSystem.player_curr = 0;
 		}
 		BoardMusStartBoard();
 		for(i=GWSystem.player_curr; i<4; i++) {
-			if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+			if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 				if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && i == 0 && !turn_cont) {
 					BoardLast5GfxInit();
 					_SetFlag(FLAG_ID_MAKE(0, 8));
@@ -494,7 +494,7 @@ static void MainFunc(void)
 				BoardPlayerMoveAwayStartCurr(GWPlayer[i].space_curr, 1);
 				fade_type = 0;
 			} else {
-				if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+				if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 					if(GWSystem.turn != GWSystem.max_turn) {
 						WipeColorSet(255, 255, 255);
 						WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSS, 1);
@@ -514,7 +514,7 @@ static void MainFunc(void)
 			}
 			BoardPlayerPostTurnHookExec(i);
 		}
-		if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+		if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 			GWSystem.player_curr = 0;
 			if(BoardTurnNext()) {
 				BoardAudSeqFadeOut(0, 500);
@@ -733,7 +733,7 @@ static void DestroyBoard(void)
 	}
 	BoardModelKillAll();
 	BoardWinKillAll();
-	HuDataDirClose(dir_table[BoardCurrGet()]);
+	HuDataDirClose(dir_table[GWBoardGet()]);
 	HuDataDirClose(DATADIR_EFFECT);
 	HuDataDirClose(DATADIR_BGUEST);
 	HuDataDirClose(DATADIR_BKOOPASUIT);

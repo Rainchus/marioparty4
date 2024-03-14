@@ -347,7 +347,7 @@ s32 BoardSpaceStarGetNext(void)
 	s16 star_pos;
 	star_total = GWSystem.star_total;
 	star_pos = GWSystem.star_pos;
-	if(BoardCurrGet() == 5) {
+	if(GWBoardGet() == 5) {
 		s16 i;
 		s32 count;
 		s32 last_free;
@@ -504,7 +504,7 @@ s32 BoardSpaceStarCheck(s32 index)
 	s32 ret;
 	BoardSpace *space = BoardSpaceGet(0, index);
 	BoardSpace *star_space;
-	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 		ret = 0;
 		goto end;
 	}
@@ -623,7 +623,7 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 		return 0;
 	}
 	space_ptr = BoardSpaceGet(0, space);
-	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 		is_star = 0;
 	} else {
 		star_space = BoardSpaceGet(0, boardSpaceStarTbl[GWSystem.star_pos]);
@@ -677,10 +677,10 @@ s32 BoardSpaceBlockExec(s32 player, s32 space)
 	if(space == GWSystem.block_pos) {
 		event_exec = 1;
 	}
-	if((int)GWSystem.bonus_star == 0 && BoardPartyFlagGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+	if((int)GWSystem.bonus_star == 0 && GWPartyGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		event_exec = 0;
 	}
-	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 		event_exec = 0;
 	}
 	if(event_exec) {
@@ -987,7 +987,7 @@ void BoardSpaceInit(s32 data_num)
 	memset(spaceAttr, 0, sizeof(spaceAttr));
 	lbl_801D3FC4[0] = lbl_801D3FC4[1] = lbl_801D3FC4[2] = lbl_801D3FC4[3] = -1;
 	spaceDrawF = 0;
-	board = BoardCurrGet();
+	board = GWBoardGet();
 	{
 		AnimBmpData *bmp;
 		AnimData *data;
@@ -1059,7 +1059,7 @@ void BoardSpaceInit(s32 data_num)
 		GWSystem.star_total = 0;
 		GWSystem.star_flag = 0;
 	}
-	if(BoardCurrGet() != 7 && BoardCurrGet() != 8) {
+	if(GWBoardGet() != 7 && GWBoardGet() != 8) {
 		starPlatMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 6), NULL, 0);
 		BoardModelMotionStart(starPlatMdl, 0, 0x40000001);
 		BoardModelVisibilitySet(starPlatMdl, 0);

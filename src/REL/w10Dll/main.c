@@ -68,11 +68,6 @@ s32 lbl_1_data_6C[2] = {
     DATA_NUM_LISTEND
 };
 
-// function is probably global. only inlined in rels?
-inline s32 get_current_board(void) {
-    return GWSystem.board;
-}
-
 void BoardCreate(void) {
     f32 sp10;
     f32 spC[2];
@@ -83,7 +78,7 @@ void BoardCreate(void) {
     s32 temp;
     s32 board;
 
-    board = BoardCurrGet();
+    board = GWBoardGet();
     lbl_1_bss_0 = (W10State *)&GWSystem.board_data;
     lbl_1_bss_0->unk0 = 0;
     lbl_1_bss_0->unk4 = 0;

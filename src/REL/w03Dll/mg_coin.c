@@ -77,40 +77,7 @@ s16 lbl_1_data_454 = -1;
 s16 lbl_1_data_456 = -1;
 s16 lbl_1_data_458 = -1;
 s32 lbl_1_data_45C[] = {0x00770021, 0x00770022, -1};
-char phei_str[] = "phei";
-s32 lbl_1_data_470[] = {
-    0x005F0066,
-	0x001A0066,
-	0x006D0066,
-	0x008A0066,
-	0x00850066,
-	0x00110066,
-	0x000D0066,
-	0x00810066
-};
 
-s32 lbl_1_data_490[] = {
-	0x005F0067,
-	0x001A0067,
-	0x006D0067,
-	0x008A0067,
-	0x00850067,
-	0x00110067,
-	0x000D0067,
-	0x00810067    
-};
-
-s8 lbl_1_data_4B0 = -1;
-
-s32 lbl_1_data_4B4[] = {
-    0x00000440,
-    0x00000441,
-    0x00000442,
-    0x00000443,
-    0x00000444
-};
-
-s8 lbl_1_data_4C8[] = {1, 5, 10, 15, 20, 20};
 
 //BSS
 char lbl_1_bss_150[0x30];
@@ -123,7 +90,7 @@ Process* lbl_1_bss_140;
 
 void fn_1_7ABC(void) {
     lbl_1_data_456 = BoardModelCreate(0x770020, lbl_1_data_45C, 0);
-    BoardModelHookSet(lbl_1_bss_C[7], phei_str, lbl_1_data_456);
+    BoardModelHookSet(lbl_1_bss_C[7], "phei", lbl_1_data_456);
     BoardModelMotionStart(lbl_1_data_456, 2, 0x40000002);
     BoardModelRotYSet(lbl_1_data_456, -45.0f);
 }
@@ -208,7 +175,7 @@ s32 fn_1_7D18(s32 arg0) {
     BoardPlayerRotYSet(arg0, 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI));
     HuPrcSleep(0x1E);
     model = BoardModelIDGet(lbl_1_bss_C[7]);
-    Hu3DModelObjPosGet(model, phei_str, &sp38);
+    Hu3DModelObjPosGet(model, "phei", &sp38);
     if (GWPlayer[arg0].character == 5) {
         var_f31 = 54.000004f;
     } else {
@@ -249,6 +216,28 @@ void fn_1_8140(s32 arg0) {
     }
     fn_1_91B8();
 }
+
+s32 lbl_1_data_470[] = {
+    0x005F0066,
+	0x001A0066,
+	0x006D0066,
+	0x008A0066,
+	0x00850066,
+	0x00110066,
+	0x000D0066,
+	0x00810066
+};
+
+s32 lbl_1_data_490[] = {
+	0x005F0067,
+	0x001A0067,
+	0x006D0067,
+	0x008A0067,
+	0x00850067,
+	0x00110067,
+	0x000D0067,
+	0x00810067    
+};
 
 void fn_1_81E0(s32 arg0) {
     Point3d sp8;
@@ -467,6 +456,17 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
     BoardModelMotionSpeedSet(lbl_1_data_456, arg0->trans.x);
 }
 
+s8 lbl_1_data_4B0 = -1;
+
+s32 lbl_1_data_4B4[] = {
+    0x00000440,
+    0x00000441,
+    0x00000442,
+    0x00000443,
+    0x00000444
+};
+
+
 void fn_1_8C08(omObjData* arg0, someBits3* arg1) {
     Point3d spC;
     f32 temp_f31;
@@ -551,6 +551,8 @@ void fn_1_9044(omObjData* arg0, someBits3* arg1) {
     sp8.z = arg0->trans.x * sin((M_PI * arg0->trans.y) / 180.0);
     BoardModelRotSetV(lbl_1_data_456, &sp8);
 }
+
+s8 lbl_1_data_4C8[] = {1, 5, 10, 15, 20, 20};
 
 void fn_1_91B8(void) {
     s8 temp_r3;
