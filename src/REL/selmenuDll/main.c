@@ -27,7 +27,7 @@ static void msmMusSetMasterVolume(s32 value);
 #define SM_KEY_UP 0x0001
 #define SM_KEY_DOWN 0x0002
 
-static char *charTbl[] = {
+static char *smCharTbl[] = {
 	"Mario",
 	"Luigi",
 	"Peach",
@@ -44,7 +44,7 @@ typedef struct sm_entry {
 	OverlayID overlay;
 } SMEntry;
 
-static SMEntry menuTbl[SM_PAGE_MAX*SM_PAGE_SIZE] = {
+static SMEntry smMenuTbl[SM_PAGE_MAX*SM_PAGE_SIZE] = {
 	{ 1, "401:WAKUGURI DIVING", OVL_M401 },
 	{ 1, "402:PURURUN! BIGSLIME", OVL_M402 },
 	{ 1, "403:TAORERUKABE!", OVL_M403 },
@@ -146,13 +146,13 @@ static omObjData *outViewObj;
 static PlayerConfig smPlayerCfg[4];
 static s16 smSelectPos;
 static s16 smSelectPosExit = -1;
-static u16 btnDownCurr;
-static u16 btnCurr;
-static u16 btnReleaseCurr;
+static u16 btnDown;
+static u16 keyDStk;
+static u16 keyDStkDown;
 static u16 btnDownAll[4];
-static u16 btnAll[4];
-static u16 btnReleaseAll[4];
-static u16 btnPrevAll[4] = {};
+static u16 keyDStkAll[4];
+static u16 keyDStkAllDown[4];
+static u16 keyDStkAllPrev[4] = {};
 
 static void SMInit(omObjData *object);
 static void SMRand8Tick(omObjData *object);
@@ -219,27 +219,27 @@ static void CopyPlayerCfg(PlayerConfig *dst, PlayerConfig *src)
 static void CalcBtns(void)
 {
 	s32 i;
-	btnCurr = btnReleaseCurr = btnDownCurr = 0;
+	keyDStk = keyDStkDown = btnDown = 0;
 	for(i=0; i<4; i++) {
-		btnAll[i] = btnReleaseAll[i] = btnDownAll[i] = 0;
+		keyDStkAll[i] = keyDStkAllDown[i] = btnDownAll[i] = 0;
 		if((HuPadDStkRep[i]|HuPadBtn[i]) & PAD_BUTTON_LEFT) {
-			btnAll[i] |= SM_KEY_LEFT;
+			keyDStkAll[i] |= SM_KEY_LEFT;
 		}
 		if((HuPadDStkRep[i]|HuPadBtn[i]) & PAD_BUTTON_RIGHT) {
-			btnAll[i] |= SM_KEY_RIGHT;
+			keyDStkAll[i] |= SM_KEY_RIGHT;
 		}
 		if((HuPadDStkRep[i]|HuPadBtn[i]) & PAD_BUTTON_UP) {
-			btnAll[i] |= SM_KEY_UP;
+			keyDStkAll[i] |= SM_KEY_UP;
 		}
 		if((HuPadDStkRep[i]|HuPadBtn[i]) & PAD_BUTTON_DOWN) {
-			btnAll[i] |= SM_KEY_DOWN;
+			keyDStkAll[i] |= SM_KEY_DOWN;
 		}
 		btnDownAll[i] |= HuPadBtnDown[i];
-		btnReleaseAll[i] = (btnAll[i] ^ btnPrevAll[i]) & btnAll[i];
-		btnPrevAll[i] = btnAll[i];
-		btnCurr |= btnAll[i];
-		btnReleaseCurr |= btnReleaseAll[i];
-		btnDownCurr |= btnDownAll[i];
+		keyDStkAllDown[i] = (keyDStkAll[i] ^ keyDStkAllPrev[i]) & keyDStkAll[i];
+		keyDStkAllPrev[i] = keyDStkAll[i];
+		keyDStk |= keyDStkAll[i];
+		keyDStkDown |= keyDStkAllDown[i];
+		btnDown |= btnDownAll[i];
 	}
 }
 
@@ -250,7 +250,7 @@ static void DrawPage(void)
 	fontcolor = FONT_COLOR_YELLOW;
 	print8(200, 160, 2.5f, "PAGE:%d/%d", smPage+1, SM_PAGE_MAX);
 	for(i=0; i<SM_PAGE_SIZE; i++) {
-		entry = &menuTbl[(smPage*SM_PAGE_SIZE)+i];
+		entry = &smMenuTbl[(smPage*SM_PAGE_SIZE)+i];
 		if(entry->enabled == 1) {
 			if(i == smSelectPos) {
 				fontcolor = FONT_COLOR_CYAN;
@@ -283,7 +283,7 @@ static void MoveSMPage(s16 amount)
 			page = SM_PAGE_MAX-1;
 		}
 		for(i=0; i<SM_PAGE_SIZE; i++) {
-			if(menuTbl[(page*SM_PAGE_SIZE)+i].enabled == 1) {
+			if(smMenuTbl[(page*SM_PAGE_SIZE)+i].enabled == 1) {
 				enabled = 1;
 				break;
 			}
@@ -311,12 +311,12 @@ static void MoveSMCursor(s16 amount)
 		} else if(pos < 0) {
 			pos = SM_PAGE_SIZE-1;
 		}
-	} while(!menuTbl[(smPage*SM_PAGE_SIZE)+pos].enabled);
+	} while(!smMenuTbl[(smPage*SM_PAGE_SIZE)+pos].enabled);
 	smSelectPos = pos;
 	(void)pos;
 }
 
-static s16 SMComCharGet(s16 player, s16 offset);
+static s16 SMChangeChar(s16 player, s16 offset);
 static void SMUpdate(omObjData *object);
 
 static void SMInit(omObjData *object)
@@ -329,14 +329,14 @@ static void SMInit(omObjData *object)
 	for(i=0; i<4; i++) {
 		for(j=i+1; j<4; j++) {
 			if(smPlayerCfg[i].character == smPlayerCfg[j].character) {
-				smPlayerCfg[j].character = SMComCharGet(j, -1);
+				smPlayerCfg[j].character = SMChangeChar(j, -1);
 			}
 		}
 	}
 	smPage = -1;
 	for(i=0; i<SM_PAGE_MAX; i++) {
 		for(j=0; j<SM_PAGE_SIZE; j++) {
-			if(menuTbl[(i*SM_PAGE_SIZE)+j].enabled == 1) {
+			if(smMenuTbl[(i*SM_PAGE_SIZE)+j].enabled == 1) {
 				break;
 			}
 		}
@@ -349,7 +349,7 @@ static void SMInit(omObjData *object)
 	MoveSMPage(1);
 	if(mgSeqOvlPrev != OVL_INVALID) {
 		for(i=0; i<SM_PAGE_MAX*SM_PAGE_SIZE; i++) {
-			if(mgSeqOvlPrev == menuTbl[i].overlay && menuTbl[i].enabled == 1) {
+			if(mgSeqOvlPrev == smMenuTbl[i].overlay && smMenuTbl[i].enabled == 1) {
 				smPage = i/SM_PAGE_SIZE;
 				smSelectPos = i%SM_PAGE_SIZE;
 				smSelectPosBackup[smPage] = smSelectPos;
@@ -369,39 +369,39 @@ static void SMUpdate(omObjData *object)
 {
 	CalcBtns();
 	DrawPage();
-	if(btnReleaseCurr & SM_KEY_UP) {
+	if(keyDStkDown & SM_KEY_UP) {
 		MoveSMCursor(-1);
 		SMGroupGen((smPage*SM_PAGE_SIZE)+smSelectPos);
 		return;
 	}
-	if(btnReleaseCurr & SM_KEY_DOWN) {
+	if(keyDStkDown & SM_KEY_DOWN) {
 		MoveSMCursor(1);
 		SMGroupGen((smPage*SM_PAGE_SIZE)+smSelectPos);
 		return;
 	}
-	if(btnReleaseCurr & SM_KEY_LEFT) {
+	if(keyDStkDown & SM_KEY_LEFT) {
 		MoveSMPage(-1);
 		SMGroupGen((smPage*SM_PAGE_SIZE)+smSelectPos);
 		return;
 	}
-	if(btnReleaseCurr & SM_KEY_RIGHT) {
+	if(keyDStkDown & SM_KEY_RIGHT) {
 		MoveSMPage(1);
 		SMGroupGen((smPage*SM_PAGE_SIZE)+smSelectPos);
 		return;
 	}
-	if((btnDownCurr & PAD_BUTTON_A) || (btnDownCurr & PAD_BUTTON_START)) {
+	if((btnDown & PAD_BUTTON_A) || (btnDown & PAD_BUTTON_START)) {
 		object->func = SMCharInit;
 		return;
 	}
-	if(btnDownCurr & PAD_BUTTON_Y) {
+	if(btnDown & PAD_BUTTON_Y) {
 		object->func = SMPlayerCfgInit;
 		return;
 	}
-	if(btnDownCurr & PAD_TRIGGER_Z) {
+	if(btnDown & PAD_TRIGGER_Z) {
 		object->func = SMSound3DInit;
 		return;
 	}
-	if(btnDownCurr & PAD_BUTTON_X) {
+	if(btnDown & PAD_BUTTON_X) {
 		omOvlReturnEx(0, 1);
 	}
 }
@@ -410,7 +410,7 @@ static void SMGroupGen(s32 index)
 {
 	OverlayID overlay;
 	s32 i;
-	overlay = menuTbl[index].overlay;
+	overlay = smMenuTbl[index].overlay;
 	for(i=0; i<50; i++) {
 		if(overlay == mgInfoTbl[i].ovl)  {
 			break;
@@ -499,7 +499,7 @@ static s32 charMdlMotTbl[] = {
 	DATA_MAKE_NUM(DATADIR_SELMENU, 15),
 };
 
-static s16 SMComCharGet(s16 player, s16 offset)
+static s16 SMChangeChar(s16 player, s16 offset)
 {
 	s32 i;
 	s16 character;
@@ -573,7 +573,7 @@ static void SMCharInit(omObjData *object)
 	for(i=0; i<4; i++) {
 		playerDoneF[i] = 0;
 	}
-	SMComCharGet(0, 0);
+	SMChangeChar(0, 0);
 	object->func = SMCharUpdate;
 }
 
@@ -607,7 +607,7 @@ static void SMCharUpdate(omObjData *object)
 		}
 	}
 	if(done_players == num_players) {
-		SMComCharGet(0, 0);
+		SMChangeChar(0, 0);
 		CharRandomize();
 		CopyPlayerCfg(GWPlayerCfg, smPlayerCfg);
 		CharKill(-1);
@@ -634,11 +634,11 @@ static void SMCharUpdate(omObjData *object)
 	for(i=0; i<4; i++) {
 		port = smPlayerCfg[i].pad_idx;
 		if(!playerDoneF[i]) {
-			if(btnReleaseAll[port] & SM_KEY_LEFT) {
-				smPlayerCfg[port].character = SMComCharGet(i, -1);
+			if(keyDStkAllDown[port] & SM_KEY_LEFT) {
+				smPlayerCfg[port].character = SMChangeChar(i, -1);
 			}
-			if(btnReleaseAll[port] & SM_KEY_RIGHT) {
-				smPlayerCfg[port].character = SMComCharGet(i, 1);
+			if(keyDStkAllDown[port] & SM_KEY_RIGHT) {
+				smPlayerCfg[port].character = SMChangeChar(i, 1);
 			}
 			if(btnDownAll[port] & PAD_BUTTON_A) {
 				playerDoneF[i] = 1;
@@ -662,16 +662,16 @@ static void SMCharUpdate(omObjData *object)
 			return;
 		}
 		if(!smPlayerCfg[i].iscom) {
-			w = strlen(charTbl[smPlayerCfg[i].character]);
+			w = strlen(smCharTbl[smPlayerCfg[i].character]);
 			w *= 16;
 			x = ((320-w)/2)+((i%2)*320);
 			y = 176+((i/2)*240);
 			if(playerDoneF[i] == 1) {
 				fontcolor = FONT_COLOR_WHITE;
-				print8(x, y, 2.0f, "\xFD\x08""%s", charTbl[smPlayerCfg[i].character]);
+				print8(x, y, 2.0f, "\xFD\x08""%s", smCharTbl[smPlayerCfg[i].character]);
 			} else {
 				fontcolor = FONT_COLOR_GREEN;
-				print8(x, y, 2.0f, "\xFD\x05""%s", charTbl[smPlayerCfg[i].character]);
+				print8(x, y, 2.0f, "\xFD\x05""%s", smCharTbl[smPlayerCfg[i].character]);
 			}
 		} else {
 			w = 72;
@@ -690,26 +690,26 @@ static void SMExit(omObjData *object)
 		return;
 	}
 	while(HuARDMACheck());
-	mg = omMgIndexGet(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay);
+	mg = omMgIndexGet(smMenuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay);
 	GWSystem.mg_next = mg;
 	OSReport("mgNo=%d\n", mg);
-	if(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W10) {
+	if(smMenuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W10) {
 		_SetFlag(0x1000B);
-	} else if(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W20) {
+	} else if(smMenuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W20) {
 		BoardSaveInit(7);
 		BoardPartyConfigSet(0, 0, 0, 20, 0, 0, 0, 0);
-	} else if(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W21) {
+	} else if(smMenuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay == OVL_W21) {
 		BoardSaveInit(8);
 		BoardPartyConfigSet(0, 0, 0, 20, 0, 0, 0, 0);
 	} else {
 		_ClearFlag(0x1000B);
 	}
 	if(mg == -1 || !(HuPadBtn[0] & PAD_TRIGGER_Z) || mgInfoTbl[mg].type == 5 || mgInfoTbl[mg].type == 3 || mgInfoTbl[mg].type == 6) {
-		omOvlCallEx(menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay, 1, 0, 0);
+		omOvlCallEx(smMenuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay, 1, 0, 0);
 	} else {
 		omOvlCallEx(OVL_INST, 1, 0, 0);
 	}
-	mgSeqOvlPrev = menuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay;
+	mgSeqOvlPrev = smMenuTbl[(smPage*SM_PAGE_SIZE)+smSelectPos].overlay;
 	smSelectPosExit = smSelectPos;
 }
 
@@ -806,39 +806,39 @@ static void SMPlayerCfgUpdate(omObjData *object)
 	SMPlayerCfgDraw();
 	CalcBtns();
 	if(!playerCfgSelF) {
-		if(btnReleaseCurr & SM_KEY_LEFT) {
+		if(keyDStkDown & SM_KEY_LEFT) {
 			offset = ((playerCfgPlayerPos & 0x1)-1) & 0x1;
 			playerCfgPlayerPos = (playerCfgPlayerPos & 0xFFFE)+offset;
 		} else {
-			if(btnReleaseCurr & SM_KEY_RIGHT) {
+			if(keyDStkDown & SM_KEY_RIGHT) {
 				offset = ((playerCfgPlayerPos & 0x1)+1) & 0x1;
 				playerCfgPlayerPos = (playerCfgPlayerPos & 0xFFFE)+offset;
-			} else if(btnReleaseCurr & SM_KEY_DOWN) {
+			} else if(keyDStkDown & SM_KEY_DOWN) {
 				if((playerCfgPlayerPos += 2) >= 4) {
 					playerCfgPlayerPos -= 4;
 				}
-			} else if(btnReleaseCurr & SM_KEY_UP) {
+			} else if(keyDStkDown & SM_KEY_UP) {
 				if((playerCfgPlayerPos -= 2) < 0) {
 					playerCfgPlayerPos += 4;
 				}
 			}
 		}
-		if(btnDownCurr & PAD_BUTTON_A) {
+		if(btnDown & PAD_BUTTON_A) {
 			playerCfgSelF = 1;
 			return;
 		}
-		if((btnDownCurr & PAD_BUTTON_B) || (btnDownCurr & PAD_BUTTON_Y)) {
+		if((btnDown & PAD_BUTTON_B) || (btnDown & PAD_BUTTON_Y)) {
 			object->func = SMUpdate;
 		}
-	} else if(btnReleaseCurr & SM_KEY_UP) {
+	} else if(keyDStkDown & SM_KEY_UP) {
 		if(--playerCfgOptionPos < 0) {
 			playerCfgOptionPos = 3;
 		}
-	} else if(btnReleaseCurr & SM_KEY_DOWN) {
+	} else if(keyDStkDown & SM_KEY_DOWN) {
 		if(++playerCfgOptionPos > 3) {
 			playerCfgOptionPos = 0;
 		}
-	} else if(btnReleaseCurr & SM_KEY_LEFT) {
+	} else if(keyDStkDown & SM_KEY_LEFT) {
 		switch(playerCfgOptionPos) {
 			case 0:
 				smPlayerCfg[playerCfgPlayerPos].iscom ^= 1;
@@ -862,7 +862,7 @@ static void SMPlayerCfgUpdate(omObjData *object)
 				}
 				break;
 		};
-	} else if(btnReleaseCurr & SM_KEY_RIGHT) {
+	} else if(keyDStkDown & SM_KEY_RIGHT) {
 		switch(playerCfgOptionPos) {
 			case 0:
 				smPlayerCfg[playerCfgPlayerPos].iscom ^= 1;
@@ -886,9 +886,9 @@ static void SMPlayerCfgUpdate(omObjData *object)
 				}
 				break;
 		}
-	} else if((btnDownCurr & PAD_BUTTON_A) || (btnDownCurr & PAD_BUTTON_B)) {
+	} else if((btnDown & PAD_BUTTON_A) || (btnDown & PAD_BUTTON_B)) {
 		playerCfgSelF = 0;
-	} else if(btnDownCurr & PAD_BUTTON_Y) {
+	} else if(btnDown & PAD_BUTTON_Y) {
 		object->func = SMUpdate;
 	}
 }
@@ -905,7 +905,7 @@ void fn_1_450C(void)
 
 static s16 emiCompDataNo;
 static s16 emiCompVal;
-static s16 sound3DCursorPos;
+static s16 smSound3DPos;
 s16 lbl_1_bss_0;
 
 static void SMSound3DUpdate(omObjData *object);
@@ -924,20 +924,20 @@ static void SMSound3DUpdate(omObjData *object)
 	s8 *data;
 	
 	CalcBtns();
-	if(btnReleaseCurr & SM_KEY_UP) {
-		sound3DCursorPos--;
-		if(sound3DCursorPos < 0) {
-			sound3DCursorPos = 7;
+	if(keyDStkDown & SM_KEY_UP) {
+		smSound3DPos--;
+		if(smSound3DPos < 0) {
+			smSound3DPos = 7;
 		}
 	}
-	if(btnReleaseCurr & SM_KEY_DOWN) {
-		sound3DCursorPos++;
-		if(sound3DCursorPos >= 8) {
-			sound3DCursorPos = 0;
+	if(keyDStkDown & SM_KEY_DOWN) {
+		smSound3DPos++;
+		if(smSound3DPos >= 8) {
+			smSound3DPos = 0;
 		}
 	}
-	if(btnReleaseCurr & (SM_KEY_LEFT | SM_KEY_RIGHT)) {
-		if(btnReleaseCurr & SM_KEY_RIGHT) {
+	if(keyDStkDown & (SM_KEY_LEFT | SM_KEY_RIGHT)) {
+		if(keyDStkDown & SM_KEY_RIGHT) {
 			increment = 10;
 		} else {
 			increment = -10;
@@ -945,7 +945,7 @@ static void SMSound3DUpdate(omObjData *object)
 		if(HuPadBtn[0] & PAD_TRIGGER_Z) {
 			increment *= 10.0f;
 		}
-		switch(sound3DCursorPos) {
+		switch(smSound3DPos) {
 			case 0:
 				Snd3DDistOffset += increment;
 				break;
@@ -997,8 +997,8 @@ static void SMSound3DUpdate(omObjData *object)
 				break;
 		}
 	}
-	if(btnDownCurr & PAD_BUTTON_START) {
-		switch(sound3DCursorPos) {
+	if(btnDown & PAD_BUTTON_START) {
+		switch(smSound3DPos) {
 			case 0:
 				Snd3DDistOffset = 0;
 				break;
@@ -1033,7 +1033,7 @@ static void SMSound3DUpdate(omObjData *object)
 		}
 	}
 	
-	if(btnDownCurr & PAD_BUTTON_B) {
+	if(btnDown & PAD_BUTTON_B) {
 		object->func = SMUpdate;
 	}
 	SMSound3DDraw();
@@ -1041,7 +1041,7 @@ static void SMSound3DUpdate(omObjData *object)
 
 #define DO_HILITE(pos) \
 do { \
-	if(sound3DCursorPos == pos) { \
+	if(smSound3DPos == pos) { \
 		fontcolor = FONT_COLOR_GREEN; \
 	} else { \
 		fontcolor = FONT_COLOR_DARK_GREEN; \
