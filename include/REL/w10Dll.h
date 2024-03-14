@@ -40,7 +40,7 @@ void fn_1_E0(void);
 void TutorialSprCreate(void);
 void TutorialSprKill(void);
 void HostCreate(void);
-int TutorialExec(s16, s32);
+int TutorialHookExec(s16, s32);
 
 void TutorialStartExec(void);
 void TutorialPreRollExec(void);

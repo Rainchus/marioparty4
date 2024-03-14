@@ -84,7 +84,7 @@ void BoardCreate(void)
     boardWork->scene = 0;
     boardWork->dice = 0;
     boardWork->msg = 0;
-    BoardTutorialHookSet(&TutorialExec);
+    BoardTutorialHookSet(TutorialHookExec);
     HostCreate();
     TutorialSprCreate();
     tutorialDoneF = 0;

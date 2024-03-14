@@ -99,7 +99,7 @@ static TutorialScene sceneTbl[42] = {
 	{-1, NULL },
 };
 
-int TutorialExec(s16 arg0, s32 arg1) {
+int TutorialHookExec(s16 arg0, s32 arg1) {
     if (arg0 == 30) {
         CloseTutorial();
         return;
