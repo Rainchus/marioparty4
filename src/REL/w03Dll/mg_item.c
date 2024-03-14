@@ -19,8 +19,6 @@ double sin(double x);
 double cos(double x);
 double atan2(double y, double x);
 
-#define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
-
 typedef struct someBits {
     /* 0x00 */ struct {
         u8 unk00_bit0 : 1;
@@ -113,12 +111,8 @@ s32 lbl_1_data_4E0 = -1;
 s16 lbl_1_data_4E4 = -1;
 s8 lbl_1_data_4E6[] = {1, 1, 3, 3, 2, 2, 2, 1, 2, 3, 0, 4, 5, 0};
 
-char itemString[] = "item";
-char item1String[] = "item1";
-char item2String[] = "item2";
-
 char* lbl_1_data_508[] = {
-    itemString, item1String, item2String
+    "item", "item1", "item2"
 };
 
 s32 lbl_1_data_514[] = {

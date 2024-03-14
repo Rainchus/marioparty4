@@ -18,7 +18,6 @@
 #include "board_unsplit.h"
 #include "game/hsfman.h"
 
-void fn_8005B150(void*, void*);
 void fn_1_740(void);
 void fn_1_E0(void);
 s32 fn_1_2930(s32 arg0);
@@ -444,5 +443,3 @@ void fn_1_10E4(omObjData* arg0) {
     }
     HuAudFXListnerUpdate(&sp14, &sp8);
 }
-
-f32 const padMain = 0.0f;

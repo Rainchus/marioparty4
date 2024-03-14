@@ -30,12 +30,6 @@ typedef struct w10DllUnk01 {
     f32 unk10;
 } w10DllUnk01; //sizeof ?
 
-typedef struct w10DllUnk03 {
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-} w10DllUnk03;
-
 typedef struct w10DllUnk04 {
     s16 unk0;
     s16 unk2;
@@ -106,7 +100,6 @@ void fn_1_1354(void);
 void fn_1_137C(void);
 
 extern w10DllUnk04 lbl_1_data_108[42];
-extern w10DllUnk03 lbl_1_data_C6[];
 extern Vec lbl_1_data_80[];
 extern Process* lbl_1_bss_18;
 extern s16 lbl_1_bss_1C;

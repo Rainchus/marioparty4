@@ -58,25 +58,6 @@ s32 lbl_1_data_390[] = {
     -1
 };
 
-char itemhook_RString[] = "itemhook_R";
-char hei01String[] = "hei01";
-char ikadaString[] = "ikada";
-
-typedef struct unkPos {
-    s32 x;
-    s32 y;
-    s32 z;
-} unkPos;
-
-unkPos lbl_1_data_3B8[6] = {
-    {5, 20, 5},
-    {21, 35, 7},
-    {31, 50, 10},
-    {51, 80, 15},
-    {81, 100, 17},
-    {101, 999, 20},
-};
-
 void fn_1_63F4(s32 arg0) {
     Vec spC;
     unkWorkStruct* work = OM_GET_WORK_PTR(lbl_1_bss_12C, unkWorkStruct);
@@ -100,10 +81,10 @@ void fn_1_6494(void) {
     lbl_1_data_38C = BoardModelCreate(0x77000F, NULL, 0);
     lbl_1_data_38A = BoardModelCreate(0x2000D, &lbl_1_data_390[0], 0);
     BoardModelMotionStart(lbl_1_data_38A, 1, 0x40000001);
-    BoardModelHookSet(lbl_1_data_38A, itemhook_RString, lbl_1_data_38C);
-    BoardModelHookSet(lbl_1_data_388, hei01String, lbl_1_data_38A);
+    BoardModelHookSet(lbl_1_data_38A, "itemhook_R", lbl_1_data_38C);
+    BoardModelHookSet(lbl_1_data_388, "hei01", lbl_1_data_38A);
     
-    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[0]), ikadaString, &sp14);
+    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[0]), "ikada", &sp14);
     BoardSpaceFlagPosGet(0, 0x200, &sp8);
     sp14.x = sp8.x + (400.0 * sin(-1.5707963267948966));
     sp14.z = sp8.z + (400.0 * cos(-1.5707963267948966));
@@ -119,7 +100,7 @@ s32 fn_1_6698(void) {
     Vec sp14;
     Vec sp8;
 
-    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[0]), ikadaString, &sp14);
+    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[0]), "ikada", &sp14);
     BoardSpaceFlagPosGet(0, 0x200, &sp8);
     sp14.x = sp8.x + (400.0 * sin(-1.5707963267948966));
     sp14.z = sp8.z + (400.0 * cos(-1.5707963267948966));
@@ -158,6 +139,21 @@ void fn_1_6884(void) {
     lbl_1_bss_120 = 0;
 }
 
+typedef struct unkPos {
+    s32 x;
+    s32 y;
+    s32 z;
+} unkPos;
+
+unkPos lbl_1_data_3B8[6] = {
+    {5, 20, 5},
+    {21, 35, 7},
+    {31, 50, 10},
+    {51, 80, 15},
+    {81, 100, 17},
+    {101, 999, 20},
+};
+
 s32 fn_1_6898(s32 arg0) {
     Vec sp20;
     Vec sp14;
@@ -172,7 +168,7 @@ s32 fn_1_6898(s32 arg0) {
     BoardCameraViewSet(2);
     BoardCameraMotionWait();
     
-    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_388), hei01String, &sp20);
+    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_388), "hei01", &sp20);
     BoardPlayerPosGet(arg0, &sp14);
     PSVECSubtract(&sp20, &sp14, &sp8);
     temp_f31 = 180.0 * (atan2(sp8.x, sp8.z) / 3.141592653589793);

@@ -36,42 +36,6 @@ s16 lbl_1_data_284 = -1;
 s16 lbl_1_data_286 = -1;
 s32 lbl_1_data_288 = -1;
 
-char lbl_1_data_28C[] = "%d";
-
-s32 lbl_1_data_290[] = { //TODO: make sure this actually uses DATA_MAKE_NUM macro
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x62),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x62),
-};
-
-s32 lbl_1_data_2B0[] = { //TODO: make sure this actually uses DATA_MAKE_NUM macro
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x33),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x33),
-};
-
-s32 lbl_1_data_2D0[] = {
-    0x00000125, 0x00000165, 0x000001A5,
-    0x000001E5, 0x00000225, 0x00000265,
-    0x000002A5, 0x000002E5
-};
-
-s32 lbl_1_data_2F0[] = {
-    0x0000012E, 0x0000016E, 0x000001AE,
-    0x000001EE, 0x0000022E, 0x0000026E,
-    0x000002AE, 0x000002EE
-};
-
 //BSS Extern
 extern w03State* lbl_1_bss_0;
 extern Process *boardMainProc;
@@ -123,7 +87,7 @@ void fn_1_1358(void) {
             fn_1_20E0(cur_player_index);
         }
         if (lbl_1_bss_2C) {
-            sprintf(lbl_1_bss_44, lbl_1_data_28C, lbl_1_bss_2C);
+            sprintf(lbl_1_bss_44, "%d", lbl_1_bss_2C);
             BoardWinCreate(0, 0x160006, -1);
             BoardWinInsertMesSet((s32)lbl_1_bss_44, 0);
             BoardWinWait();
@@ -241,6 +205,40 @@ s32 fn_1_1650(s32 arg0) {
     }
     return 1;
 }
+
+s32 lbl_1_data_290[] = { //TODO: make sure this actually uses DATA_MAKE_NUM macro
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x62),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x62),
+};
+
+s32 lbl_1_data_2B0[] = { //TODO: make sure this actually uses DATA_MAKE_NUM macro
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x33),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x33),
+};
+
+s32 lbl_1_data_2D0[] = {
+    0x00000125, 0x00000165, 0x000001A5,
+    0x000001E5, 0x00000225, 0x00000265,
+    0x000002A5, 0x000002E5
+};
+
+s32 lbl_1_data_2F0[] = {
+    0x0000012E, 0x0000016E, 0x000001AE,
+    0x000001EE, 0x0000022E, 0x0000026E,
+    0x000002AE, 0x000002EE
+};
 
 void fn_1_19DC(s32 arg0, s32 arg1) {
     s32 temp_r30;
@@ -561,7 +559,7 @@ s32 fn_1_2930(s32 arg0) {
         fn_1_CF4();
         return 1;
     }
-    sprintf(lbl_1_bss_38, lbl_1_data_28C, lbl_1_bss_0->unk0);
+    sprintf(lbl_1_bss_38, "%d", lbl_1_bss_0->unk0);
     BoardWinCreate(0, 0x160007, -1);
     BoardWinInsertMesSet((s32)lbl_1_bss_38, 1);
     BoardWinWait();
