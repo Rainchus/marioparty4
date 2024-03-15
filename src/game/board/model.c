@@ -5,7 +5,6 @@
 #include "game/hsfmotion.h"
 #include "game/memory.h"
 #include "game/object.h"
-#include "unsplit.h"
 
 #define BOARD_MODEL_MAX 256
 #define BOARD_MOT_MAX 32

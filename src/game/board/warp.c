@@ -10,7 +10,6 @@
 #include "game/hsfdraw.h"
 #include "game/hsfex.h"
 #include "game/objsub.h"
-#include "board_unsplit.h"
 #include "math.h"
 
 static void WarpInit(s32);

@@ -11,7 +11,6 @@
 #include "game/objsub.h"
 #include "game/board/player.h"
 #include "math.h"
-#include "board_unsplit.h"
 #include "game/hsfman.h"
 #include "dolphin/os/OSFastCast.h"
 

@@ -8,6 +8,7 @@
 #include "game/board/star.h"
 #include "game/board/tutorial.h"
 #include "game/board/main.h"
+#include "game/board/boo_house.h"
 
 #include "math.h"
 

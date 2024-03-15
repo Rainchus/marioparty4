@@ -3,8 +3,6 @@
 #include "REL/executor.h"
 #include "game/process.h"
 #include "game/window.h"
-#include "board_unsplit.h"
-#include "unsplit.h"
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 

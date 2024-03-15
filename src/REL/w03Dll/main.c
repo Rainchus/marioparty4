@@ -7,6 +7,8 @@
 #include "game/wipe.h"
 #include "REL/w03Dll.h"
 #include "game/board/lottery.h"
+#include "game/board/boo_house.h"
+
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/shop.h"
@@ -15,7 +17,6 @@
 #include "game/object.h"
 #include "game/board/player.h"
 #include "math.h"
-#include "board_unsplit.h"
 #include "game/hsfman.h"
 
 void fn_1_740(void);

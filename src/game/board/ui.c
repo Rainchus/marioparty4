@@ -17,7 +17,6 @@
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
-#include "board_unsplit.h"
 
 #include "math.h"
 

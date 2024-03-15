@@ -2,7 +2,6 @@
 #include "game/chrman.h"
 #include "game/object.h"
 #include "REL/w03Dll.h"
-#include "board_unsplit.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
