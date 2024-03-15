@@ -8,12 +8,12 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
-typedef struct w10_state {
-/* 0x00 */ s32 unk0;
-/* 0x04 */ u16 unk4;
-/* 0x06 */ u16 unk6;
-/* 0x08 */ s16 unk8;
-} W10State;
+typedef struct w10_board_work {
+/* 0x00 */ s32 scene;
+/* 0x04 */ u16 dice;
+/* 0x06 */ u16 msg;
+/* 0x08 */ s16 focus_mdl;
+} W10BoardWork;
 
 typedef struct unkw10Dll {
     Vec unk0;
@@ -22,104 +22,76 @@ typedef struct unkw10Dll {
     s32 unk24;
 } unkw10Dll; //sizeof 0x28
 
-typedef struct w10DllUnk01 {
-    u8 unk0;
-    f32 unk4;
-    f32 unk8;
-    f32 unkC;
-    f32 unk10;
-} w10DllUnk01; //sizeof ?
+typedef void (*TutorialSceneFunc)(void);
 
-typedef struct w10DllUnk04 {
-    s16 unk0;
-    s16 unk2;
-    void (*unk4)();
-} w10DllUnk04;
+typedef struct tutorial_scene {
+    s16 cue;
+    TutorialSceneFunc func;
+} TutorialScene;
 
-extern s16 lbl_1_bss_20;
-extern s16 lbl_1_bss_22[];
-extern s16 lbl_1_bss_20;
 extern s32 boardTutorialData[4];
 
-void fn_1_C10(s16);
+void HostPosSet(s16);
 void fn_1_1FB0(void);
 void fn_1_1E3C(s16, s16, s16);
-void fn_1_BA0(s32);
-void fn_1_C20(void);
+void HostWinExec(s32);
 void fn_1_6D8(void);
 void fn_1_E0(void);
-void fn_1_1D68(void);
-void fn_1_1DEC(void);
-void fn_1_AEC(void);
-int fn_1_1AAC(s16, s32);
-void fn_1_8C0(void);
-void fn_1_904(void);
-void fn_1_908(void);
-s32 fn_1_90C(void);
-void fn_1_91C(void);
-void fn_1_13A4(void);
-void fn_1_176C(void);
-void fn_1_179C(void);
-void fn_1_17F4(void);
-void fn_1_1834(void);
-void fn_1_18BC(void);
-void fn_1_1908(void);
-void fn_1_1930(void);
-void fn_1_1958(void);
-void fn_1_D2C(void);
-void fn_1_D54(void);
-void fn_1_D7C(void);
-void fn_1_DA4(void);
-void fn_1_DCC(void);
-void fn_1_DF4(void);
-void fn_1_E1C(void);
-void fn_1_E44(void);
-void fn_1_E94(void);
-void fn_1_EBC(void);
-void fn_1_EE4(void);
-void fn_1_EE8(void);
-void fn_1_F30(void);
-void fn_1_F6C(void);
-void fn_1_FB8(void);
-void fn_1_1010(void);
-void fn_1_105C(void);
-void fn_1_1098(void);
-void fn_1_10C0(void);
-void fn_1_10F8(void);
-void fn_1_1134(void);
-void fn_1_1178(void);
-void fn_1_11A0(void);
-void fn_1_11EC(void);
-void fn_1_1240(void);
-void fn_1_1278(void);
-void fn_1_12A0(void);
-void fn_1_12DC(void);
-void fn_1_1304(void);
-void fn_1_132C(void);
-void fn_1_1354(void);
-void fn_1_137C(void);
+void TutorialSprCreate(void);
+void TutorialSprKill(void);
+void HostCreate(void);
+int TutorialHookExec(s16, s32);
 
-extern w10DllUnk04 lbl_1_data_108[42];
-extern Vec lbl_1_data_80[];
-extern Process* lbl_1_bss_18;
-extern s16 lbl_1_bss_1C;
-extern s16 lbl_1_bss_1E;
-extern s32 lbl_1_data_78[2];
-extern W10State* lbl_1_bss_0;
-extern s16 lbl_1_bss_10[4]; //could be incorrect size
+void TutorialStartExec(void);
+void TutorialPreRollExec(void);
+void TutorialOrderExec(void);
+void TutorialP1StartExec(void);
+void TutorialP2StartExec(void);
+void TutorialP3StartExec(void);
+void TutorialP4StartExec(void);
+void TutorialGameStartExec(void);
+void TutorialRollExec(void);
+void TutorialMoveExec(void);
+void TutorialLandExec(void);
+void TutorialLandBlueExec(void);
+void TutorialLandRedExec(void);
+void TutorialLandHappenExec(void);
+void TutorialLandFortuneExec(void);
+void TutorialLandBowserExec(void);
+void TutorialLandMushroomExec(void);
+void TutorialMushroomMegaExec(void);
+void TutorialMushroomMiniExec(void);
+void TutorialLandBattleExec(void);
+void TutorialLandWarpExec(void);
+void TutorialWarpDecideExec(void);
+void TutorialBlockStarExec(void);
+void TutorialBlockCoinExec(void);
+void TutorialMiniMegaExec(void);
+void TutorialMiniUseExec(void);
+void TutorialMiniStopExec(void);
+void TutorialMegaUseExec(void);
+void TutorialMegaDiceExec(void);
+void TutorialMegaStompExec(void);
+void TutorialMegaEventExec(void);
+void TutorialMegaStopExec(void);
+void TutorialEndExec(void);
+void TutorialMGStatusExec(void);
+void TutorialMG4PExec(void);
+void TutorialMG2Vs2Exec(void);
+void TutorialMG1Vs3Exec(void);
+void TutorialMG1Vs3AltExec(void);
+void TutorialShopExec(void);
+void TutorialLotteryExec(void);
+void TutorialBooHouseExec(void);
+
+extern W10BoardWork *boardWork;
+extern s16 lbl_1_bss_10[1];
 extern void* lbl_1_bss_8; //unknown type
-extern s16 lbl_1_bss_C;
-extern s16 lbl_1_bss_E;
+extern s16 tutorialDoneF;
+extern s16 w10ExitWin;
 extern unkw10Dll lbl_1_data_0[1];
-extern s16 lbl_1_bss_22[11];
-extern s32 lbl_1_data_2A8[11];
-extern s16 lbl_1_data_28;
-extern s16 lbl_1_data_2A;
-extern s16 lbl_1_data_2C;
-extern s16 lbl_1_data_2E;
-extern s16 lbl_1_data_30;
-extern s16 lbl_1_data_32;
-extern s32 lbl_1_data_54[2];
-extern s32 lbl_1_data_5C[2];
-extern s32 lbl_1_data_64[2];
-extern s32 lbl_1_data_6C[2];
+
+extern s16 boardStarHostMdl;
+extern s16 boardShopHostMdl;
+extern s16 boardLotteryHostMdl;
+extern s16 boardBooHouseHostMdl;
