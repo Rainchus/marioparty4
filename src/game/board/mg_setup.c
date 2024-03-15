@@ -1,5 +1,4 @@
 #include "game/board/mg_setup.h"
-#include "unsplit.h"
 #include "game/audio.h"
 #include "game/objsub.h"
 #include "game/wipe.h"

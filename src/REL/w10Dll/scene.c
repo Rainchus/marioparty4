@@ -8,6 +8,8 @@
 #include "game/board/star.h"
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
+#include "game/board/boo_house.h"
+#include "game/board/mg_setup.h"
 
 void TutorialStartExec(void) {
     HostWinExec(0x2E0001);

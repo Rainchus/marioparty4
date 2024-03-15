@@ -8,7 +8,6 @@
 #include "game/object.h"
 #include "game/objsub.h"
 #include "game/gamework_data.h"
-#include "board_unsplit.h"
 #include "math.h"
 
 typedef struct bit_copy {

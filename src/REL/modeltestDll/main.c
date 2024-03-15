@@ -1,5 +1,4 @@
 #include "math.h"
-#include "unsplit.h"
 #include "game/chrman.h"
 #include "game/object.h"
 #include "game/wipe.h"
