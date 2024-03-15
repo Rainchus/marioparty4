@@ -3,7 +3,7 @@
 
 #include "game/hsfformat.h"
 #include "game/hsfman.h"
-#include "game/sprite.h"
+#include "game/animdata.h"
 
 typedef struct model_data ModelData;
 typedef struct particle_data ParticleData;

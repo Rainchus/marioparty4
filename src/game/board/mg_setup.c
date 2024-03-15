@@ -282,7 +282,7 @@ static void ExecMGSetup(void) {
     BoardDataAsyncWait(var_r22);
     var_r24 = mgNext + 0x191;
     BoardMGSetupPlayPush(mgType, var_r24);
-    GWSystem.mg_next_type = -1;
+    GWMGTypeSet(-1);
     GWMGAvailSet(var_r24);
     GWSystem.mg_next = var_r24 - 0x191;
     _SetFlag(0x10002U);

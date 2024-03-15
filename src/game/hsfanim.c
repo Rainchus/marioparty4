@@ -3,6 +3,7 @@
 #include "game/init.h"
 #include "game/memory.h"
 #include "game/process.h"
+#include "game/sprite.h"
 
 #include "math.h"
 #include "string.h"

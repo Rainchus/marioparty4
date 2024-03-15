@@ -21,34 +21,6 @@
 
 extern s16 HuSysVWaitGet(s16 param);
 
-typedef struct seq_work SeqWork;
-
-typedef int (*SeqUpdateFunc)(SeqWork *work);
-typedef int (*SeqInitFunc)(SeqWork *work, va_list params);
-
-typedef struct seq_work {
-	SeqUpdateFunc update;
-	char *data;
-	float x;
-	float y;
-	float scale_x;
-	float scale_y;
-	float unk_18;
-	float work_float[2];
-	float unk_24;
-	s16 time;
-	s16 time_max;
-	s16 work_s16[4];
-	s16 param[2];
-	s16 type;
-	s16 spr_grp[16];
-	s16 sprite[16];
-	u8 seq_no;
-	u8 stat;
-	u8 unk_7C;
-	u8 unk_7D;
-} SeqWork;
-
 typedef struct seq_info {
 	SeqInitFunc init;
 	SeqUpdateFunc update;
@@ -258,8 +230,8 @@ static s16 CreateSeq(s16 seq_no, va_list params)
 	work->unk_18 = 0.0f;
 	work->unk_7D = 255;
 	work->time_max = info->time_max;
-	work->work_s16[0] = work->work_s16[1] = work->work_s16[2] = work->work_s16[3] = 0;
-	work->work_float[0] = work->work_float[1] = 0.0f;
+	work->timer_val = work->state = work->alt_word_len = work->word_len = 0;
+	work->angle = work->win_scale = 0.0f;
 	work->param[0] = work->param[1] = 0;
 	for(temp=0; temp<16; temp++) {
 		work->sprite[temp] = work->spr_grp[temp] = -1;
@@ -392,16 +364,16 @@ static int SeqInitTimer(SeqWork *work, va_list params)
 	if(duration <= 0 && duration > 99) {
 		duration = 99;
 	}
-	work->work_s16[0] = duration;
+	work->timer_val = duration;
 	if(x >= 0) {
 		work->x = x;
 	}
 	if(y >= 0) {
 		work->y = y;
 	}
-	work->work_s16[2] = 0;
-	work->work_s16[1] = 2;
-	work->work_float[0] = 0;
+	work->alt_word_len = 0;
+	work->state = 2;
+	work->angle = 0;
 	work->spr_grp[0] = spr_grp = HuSprGrpCreate(4);
 	HuSprGrpScaleSet(spr_grp, work->scale_x, work->scale_y);
 	spr_anim = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 2)));
@@ -426,7 +398,7 @@ static int SeqInitTimer(SeqWork *work, va_list params)
 	HuSprGrpMemberSet(spr_grp, 3, sprite);
 	HuSprPosSet(spr_grp, 3, 0, 0);
 	if(seqPauseF) {
-		work->work_s16[1] = 1;
+		work->state = 1;
 		for(i=0; i<2; i++) {
 			HuSprAttrSet(spr_grp, i, HUSPR_ATTR_DISPOFF);
 			(void)i; //Hack for Matching
@@ -442,24 +414,24 @@ static int SeqUpdateTimer(SeqWork *work)
 	u8 digits[2];
 	s16 i;
 	s16 spr_grp = work->spr_grp[0];
-	if(work->param[0] != 0 && work->work_s16[1] != -1) {
+	if(work->param[0] != 0 && work->state != -1) {
 		switch(work->param[0]) {
 			case 2:
 				switch(work->param[1]) {
 					case -1:
 						work->stat |= 0x4;
-						work->work_s16[1] = -1;
-						work->work_float[0] = 0.0f;
+						work->state = -1;
+						work->angle = 0.0f;
 						break;
 						
 					case 0:
-						work->work_s16[1] = 2;
-						work->work_float[0] = 0.0f;
+						work->state = 2;
+						work->angle = 0.0f;
 						break;
 						
 					case 1:
-						work->work_s16[1] = 3;
-						work->work_float[0] = 0.0f;
+						work->state = 3;
+						work->angle = 0.0f;
 						break;
 						
 					default:
@@ -471,18 +443,18 @@ static int SeqUpdateTimer(SeqWork *work)
 			case 1:
 				if(work->param[1] < 0 && !(work->stat & 0x4)) {
 					work->stat |= 0x4;
-					work->work_s16[1] = -1;
-					work->work_float[0] = 0.0f;
+					work->state = -1;
+					work->angle = 0.0f;
 				} else {
 					if(work->param[1] > 99) {
-						work->work_s16[0] = 99;
+						work->timer_val = 99;
 					} else {
-						if(work->work_s16[0] != work->param[1]) {
-							work->work_s16[0] = work->param[1];
+						if(work->timer_val != work->param[1]) {
+							work->timer_val = work->param[1];
 							if(work->param[1] <= 5) {
 								HuAudFXPlay(6);
-								work->work_s16[1] = 3;
-								work->work_float[0] = 0.0f;
+								work->state = 3;
+								work->angle = 0.0f;
 								HuSprColorSet(spr_grp, 0, 255, 112, 160);
 								HuSprColorSet(spr_grp, 1, 255, 112, 160);
 							} else {
@@ -499,7 +471,7 @@ static int SeqUpdateTimer(SeqWork *work)
 				for(i=0; i<2; i++) {
 					HuSprAttrReset(spr_grp, i, HUSPR_ATTR_DISPOFF);
 				}
-				work->work_s16[1] = 3;
+				work->state = 3;
 				work->param[0] = 0;
 				break;
 				
@@ -508,33 +480,33 @@ static int SeqUpdateTimer(SeqWork *work)
 				break;
 		}
 	}
-	if(work->work_s16[1] == 1) {
+	if(work->state == 1) {
 		return 1;
 	}
-	if(work->work_s16[0] > 99) {
+	if(work->timer_val > 99) {
 		digits[0] = digits[1] = 9;
 	} else {
 		s32 value;
-		value = work->work_s16[0]/10;
+		value = work->timer_val/10;
 		digits[1] = value;
-		digits[0] = work->work_s16[0]-(value*10);
+		digits[0] = work->timer_val-(value*10);
 	}
 	HuSprGrpPosSet(spr_grp, work->x, work->y);
 	HuSprGrpScaleSet(spr_grp, work->scale_x, work->scale_y);
 	for(i=0; i<2; i++) {
 		HuSprBankSet(spr_grp, i, digits[i]);
 	}
-	if(work->work_s16[1] != 0) {
-		switch(work->work_s16[1]) {
+	if(work->state != 0) {
+		switch(work->state) {
 			case 2:
 			{
 				float scale_x, scale_y;
-				scale = fabs(((sin((work->work_float[0]*M_PI)/180)*5.0f)+1.0f)-(sin((130*M_PI)/180)*5.0f));
+				scale = fabs(((sin((work->angle*M_PI)/180)*5.0f)+1.0f)-(sin((130*M_PI)/180)*5.0f));
 				scale_x = work->scale_x*scale;
 				scale_y = work->scale_y*scale;
-				work->work_float[0] += seqSpeed*5.0f;
-				if(work->work_float[0] > 130.0f) {
-					work->work_s16[1] = 0;
+				work->angle += seqSpeed*5.0f;
+				if(work->angle > 130.0f) {
+					work->state = 0;
 					break;
 				}
 				HuSprGrpScaleSet(spr_grp, scale_x, scale_y);
@@ -543,11 +515,11 @@ static int SeqUpdateTimer(SeqWork *work)
 				
 			case 3:
 			{
-				scale = sin((work->work_float[0]*M_PI)/180)+1.0;
-				tp_lvl = 1.0-(sin((work->work_float[0]*M_PI)/180)*0.5);
-				work->work_float[0] += seqSpeed*18.0f;
-				if(work->work_float[0] > 180.0f) {
-					work->work_s16[1] = 0;
+				scale = sin((work->angle*M_PI)/180)+1.0;
+				tp_lvl = 1.0-(sin((work->angle*M_PI)/180)*0.5);
+				work->angle += seqSpeed*18.0f;
+				if(work->angle > 180.0f) {
+					work->state = 0;
 					scale = 1.0f;
 					tp_lvl = 1.0f;
 				}
@@ -563,14 +535,14 @@ static int SeqUpdateTimer(SeqWork *work)
 				for(i=0; i<2; i++) {
 					HuSprScaleSet(spr_grp, i, 1.0f, 1.0f);
 				}
-				work->work_float[0] += 1.0f;
-				if(work->work_float[0] < 60.0f) {
+				work->angle += 1.0f;
+				if(work->angle < 60.0f) {
 					break;
 				}
-				tp_lvl = 1.0-((work->work_float[0]-60.0f)/20.0f);
+				tp_lvl = 1.0-((work->angle-60.0f)/20.0f);
 				if(tp_lvl <= 0.0f) {
 					tp_lvl = 0.0f;
-					work->work_s16[1] = 0;
+					work->state = 0;
 					work->stat |= 0x8;
 				}
 				
@@ -616,8 +588,8 @@ static int SeqInitType2(SeqWork *work, va_list params)
 	if(y >= 0) {
 		work->y = y;
 	}
-	work->work_s16[1] = 0;
-	work->work_float[0] = 0.0f;
+	work->state = 0;
+	work->angle = 0.0f;
 	x = 0;
 	len = 0;
 	str=work->data;
@@ -636,7 +608,7 @@ static int SeqInitType2(SeqWork *work, va_list params)
 			len++;
 		}
 	}
-	work->work_s16[3] = len;
+	work->word_len = len;
 	for(i=0; i<6; i++) {
 		if(x & (1 << i)) {
 			anim_tbl[i] = HuSprAnimRead(SeqReadFile(seqType2SprTbl[i]));
@@ -669,7 +641,7 @@ static int SeqInitType2(SeqWork *work, va_list params)
 		} else if(c == ' ') {
 			i = -1;
 		}
-		work->work_s16[2] = x;
+		work->alt_word_len = x;
 		if(i == -1) {
 			x += 32;
 		} else if(i >= 0) {
@@ -682,8 +654,8 @@ static int SeqInitType2(SeqWork *work, va_list params)
 		}
 	}
 	if(seqPauseF) {
-		work->work_s16[1] = 1;
-		for(i=0; i<work->work_s16[3]; i++) {
+		work->state = 1;
+		for(i=0; i<work->word_len; i++) {
 			HuSprAttrSet(spr_grp, i, HUSPR_ATTR_DISPOFF);
 		}
 	}
@@ -695,16 +667,16 @@ static int SeqUpdateType2(SeqWork *work)
 	float tp_lvl;
 	s16 spr_grp;
 	spr_grp = work->spr_grp[0];
-	HuSprGrpPosSet(spr_grp, work->x-((0.5f*work->scale_x)*work->work_s16[2]), work->y);
+	HuSprGrpPosSet(spr_grp, work->x-((0.5f*work->scale_x)*work->alt_word_len), work->y);
 	HuSprGrpScaleSet(spr_grp, work->scale_x, work->scale_y);
-	if(work->param[0] != 0 && work->work_s16[1] != -1) {
+	if(work->param[0] != 0 && work->state != -1) {
 		switch(work->param[0]) {
 			case 2:
 				if(work->param[1] != -1) {
 					(void)work; //HACK: to introduce extra branch
 				} else {
-					work->work_s16[1] = -1;
-					work->work_float[0] = 0.0f;
+					work->state = -1;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -717,11 +689,11 @@ static int SeqUpdateType2(SeqWork *work)
 			case 3:
 			{
 				s32 i;
-				for(i=0; i<work->work_s16[3]; i++) {
+				for(i=0; i<work->word_len; i++) {
 					HuSprAttrReset(spr_grp, i, HUSPR_ATTR_DISPOFF);
 					(void)i;
 				}
-				work->work_s16[1] = 0;
+				work->state = 0;
 				work->param[0] = 0;
 			}
 				break;
@@ -731,28 +703,28 @@ static int SeqUpdateType2(SeqWork *work)
 				break;
 		}
 	}
-	if(work->work_s16[1] == 1) {
+	if(work->state == 1) {
 		return 1;
 	}
 	work->time += seqSpeed;
-	if(work->time >= work->time_max && work->work_s16[1] != -1) {
+	if(work->time >= work->time_max && work->state != -1) {
 		work->stat |= 0x4;
-		work->work_s16[1] = -1;
-		work->work_float[0] = 0.0f;
+		work->state = -1;
+		work->angle = 0.0f;
 	}
-	if(work->work_s16[1] != 0) {
-		if(work->work_s16[1] != -1) {
+	if(work->state != 0) {
+		if(work->state != -1) {
 			(void)work; //HACK: to introduce extra branch
 		} else {
 			s16 i;
-			work->work_float[0] += seqSpeed*0.1f;
-			tp_lvl = 1.0f-work->work_float[0];
+			work->angle += seqSpeed*0.1f;
+			tp_lvl = 1.0f-work->angle;
 			if(tp_lvl <= 0.0f) {
 				tp_lvl = 0.0f;
-				work->work_s16[1] = 0;
+				work->state = 0;
 				work->stat |= 0x8;
 			}
-			for(i=0; i<work->work_s16[3]; i++) {
+			for(i=0; i<work->word_len; i++) {
 				HuSprTPLvlSet(spr_grp, i, tp_lvl);
 				(void)i;
 			}
@@ -878,7 +850,7 @@ static s32 SeqMakeWord(SeqWork *work, char *str, s16 flags)
 		HuSprGrpMemberSet(spr_grp, i, sprite);
 		HuSprPosSet(spr_grp, i, char_pos[i]-x, 0.0f);
 	}
-	work->work_s16[3] = len;
+	work->word_len = len;
 	HuMemDirectFree(char_anim);
 	HuMemDirectFree(char_pos);
 	return grp_idx;
@@ -953,19 +925,19 @@ static int SeqInitMGBasic(SeqWork *work, va_list params)
 	s16 i;
 	s16 word_grp;
 	
-	work->work_s16[1] = va_arg(params, int);
-	if(work->work_s16[1] == 2) {
+	work->state = va_arg(params, int);
+	if(work->state == 2) {
 		return SeqInitDraw(work, params);
 	}
 	work->type = 0;
-	work->work_float[0] = 0;
+	work->angle = 0;
 	
 	{
 		s32 word_katakana;
 		s32 word_flag;
 		s32 word_ofs;
 		word_katakana = 0;
-		if(work->work_s16[1] == 2 && seqLanguage == 0) {
+		if(work->state == 2 && seqLanguage == 0) {
 			word_katakana = 1;
 		}
 		if(word_katakana) {
@@ -978,11 +950,11 @@ static int SeqInitMGBasic(SeqWork *work, va_list params)
 		} else {
 			word_ofs = 3;
 		}
-		word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+		word_grp = SeqMakeWord(work, wordMgTbl[work->state+word_ofs], word_flag);
 	}
 	HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
 	
-	for(i=0; i<work->work_s16[3]; i++) {
+	for(i=0; i<work->word_len; i++) {
 		HuSprTPLvlSet(work->spr_grp[word_grp], i, 1.0f);
 		HuSprPosSet(work->spr_grp[word_grp], i, -100.0f, 240.0f);
 	}
@@ -1006,7 +978,7 @@ static int SeqUpdateMGBasic(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -1032,7 +1004,7 @@ static int SeqUpdateMGBasic(SeqWork *work)
 	work->time += seqSpeed;
 	if(work->time >= work->time_max && work->type != -1) {
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -1041,27 +1013,27 @@ static int SeqUpdateMGBasic(SeqWork *work)
 				float pos_x;
 				float time;
 				s16 i;
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time <= 40) {
-						for(i=0; i<work->work_s16[3]; i++) {
-							time = work->time-((20/work->work_s16[3])*(work->work_s16[3]-i-1));
+						for(i=0; i<work->word_len; i++) {
+							time = work->time-((20/work->word_len)*(work->word_len-i-1));
 							if(time < 0 || time > 20.0f) {
 								continue;
 							}
-							pos_x = (work->x-(0.5f*(work->work_s16[3]*56)))+28.0f+(i*56);
+							pos_x = (work->x-(0.5f*(work->word_len*56)))+28.0f+(i*56);
 							if(time == 20.0f) {
 								HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 								HuSprZRotSet(work->spr_grp[0], i, 0.0f);
 							} else {
-								HuSprPosSet(work->spr_grp[0], i, pos_x-(((1.0-sin(((time*4.5f)*M_PI)/180.0))*(work->work_s16[3]*56*2))), work->y);
+								HuSprPosSet(work->spr_grp[0], i, pos_x-(((1.0-sin(((time*4.5f)*M_PI)/180.0))*(work->word_len*56*2))), work->y);
 								HuSprZRotSet(work->spr_grp[0], i, (time/20.0f)*390.0f);
 							}
 						}
 					} else {
 						time = work->time-40;
 						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
-						for(i=0; i<work->work_s16[3]; i++) {
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
+						for(i=0; i<work->word_len; i++) {
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(i*56));
 							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], i, scale, work->scale_y+sin(((time*9.0f)*M_PI)/180.0));
 						}
@@ -1079,7 +1051,7 @@ static int SeqUpdateMGBasic(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -1090,29 +1062,29 @@ static int SeqUpdateMGBasic(SeqWork *work)
 					if(work->time <= 20) {
 						time = work->time;
 						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
-						for(i=0; i<work->work_s16[3]; i++) {
+						for(i=0; i<work->word_len; i++) {
 							HuSprAttrReset(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(i*56));
 							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], i, work->scale_x+sin(((time*9.0f)*M_PI)/180.0), work->scale_y+sin(((time*9.0f)*M_PI)/180.0));
 						}
 						if(time == 20.0f) {
-							for(i=0; i<work->work_s16[3]; i++) {
+							for(i=0; i<work->word_len; i++) {
 								HuSprAttrReset(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
 							}
 						}
 					} else {
 						if(work->time > 80) {
-							for(i=0; i<work->work_s16[3]; i++) {
-								time = (work->time-80)-((20/work->work_s16[3])*(work->work_s16[3]-i-1));
+							for(i=0; i<work->word_len; i++) {
+								time = (work->time-80)-((20/work->word_len)*(work->word_len-i-1));
 								if(time < 0.0f || time > 20.0f) {
 									continue;
 								}
-								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56);
+								pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(i*56);
 								if(time == 20.0f) {
 									HuSprAttrSet(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
 								} else {
-									HuSprPosSet(work->spr_grp[0], i, pos_x+((1.0-cos(((time*4.5f)*M_PI)/180.0f))*(work->work_s16[3]*56*2)), work->y);
+									HuSprPosSet(work->spr_grp[0], i, pos_x+((1.0-cos(((time*4.5f)*M_PI)/180.0f))*(work->word_len*56*2)), work->y);
 									HuSprZRotSet(work->spr_grp[0], i, (time/20.0f)*390.0f);
 								}
 							}
@@ -1131,17 +1103,17 @@ static int SeqUpdateMGBasic(SeqWork *work)
 				
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
 				}
 			}
@@ -1165,12 +1137,12 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 	s16 j;
 	s16 word_grp;
 	
-	work->work_s16[1] = va_arg(params, int);
-	if(work->work_s16[1] == 2) {
+	work->state = va_arg(params, int);
+	if(work->state == 2) {
 		return SeqInitDraw(work, params);
 	}
 	work->type = 0;
-	work->work_float[0] = 0;
+	work->angle = 0;
 	tp_lvl = 1.0f;
 	for(i=0; i<4; i++) {
 		if(i == 0)
@@ -1179,7 +1151,7 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 			s32 word_flag;
 			s32 word_ofs;
 			word_katakana = 0;
-			if(work->work_s16[1] == 2 && seqLanguage == 0) {
+			if(work->state == 2 && seqLanguage == 0) {
 				word_katakana = 1;
 			}
 			if(word_katakana) {
@@ -1192,7 +1164,7 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 			} else {
 				word_ofs = 3;
 			}
-			word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+			word_grp = SeqMakeWord(work, wordMgTbl[work->state+word_ofs], word_flag);
 		} else {
 			s16 grp_idx;
 			s32 new_grp;
@@ -1211,7 +1183,7 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 			word_grp = new_grp;
 		}
 		HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
-		for(j=0; j<work->work_s16[3]; j++) {
+		for(j=0; j<work->word_len; j++) {
 			HuSprTPLvlSet(work->spr_grp[word_grp], j, tp_lvl);
 			HuSprPosSet(work->spr_grp[word_grp], j, -100.0f, 240.0f);
 			HuSprPriSet(work->spr_grp[word_grp], j, i+5);
@@ -1243,7 +1215,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -1270,7 +1242,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -1279,12 +1251,12 @@ static int SeqUpdateMGBattle(SeqWork *work)
 				s16 i, j;
 				float time;
 				float pos_x;
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time < 45) {
 						if(work->time > 10 && work->time <= 40) {
 							time = work->time-10;
 							scale = 10.0f*(1.0f-(time/30.0f));
-							pos_x = (work->x-(0.5f*(work->work_s16[3]*56)))+28.0f;
+							pos_x = (work->x-(0.5f*(work->word_len*56)))+28.0f;
 							HuSprPosSet(work->spr_grp[0], 0, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], 0, work->scale_x+scale, work->scale_y+scale);
 							scale = time/30.0f;
@@ -1295,8 +1267,8 @@ static int SeqUpdateMGBattle(SeqWork *work)
 							if(time < 0 || time > 40) {
 								continue;
 							}
-							for(j=1; j<work->work_s16[3]; j++) {
-								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(j*56);
+							for(j=1; j<work->word_len; j++) {
+								pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(j*56);
 								if(time == 40.0f) {
 									HuSprPosSet(work->spr_grp[i], j, pos_x, work->y);
 									HuSprZRotSet(work->spr_grp[i], j, 0.0f);
@@ -1352,8 +1324,8 @@ static int SeqUpdateMGBattle(SeqWork *work)
 						if(work->time > 60) {
 							time = work->time-60;
 							scale = 0.5*sin((M_PI*(time*9.0f))/180.0);
-							for(j=0; j<work->work_s16[3]; j++) {
-								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
+							for(j=0; j<work->word_len; j++) {
+								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
 								HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 								HuSprScaleSet(work->spr_grp[0], j, work->scale_x+scale, work->scale_y+scale);
 							}
@@ -1372,7 +1344,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -1382,32 +1354,32 @@ static int SeqUpdateMGBattle(SeqWork *work)
 					}
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
-						for(j=0; j<work->work_s16[3]; j++) {
+						for(j=0; j<work->word_len; j++) {
 							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
 						}
 						if(time == 20.0f) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 					} else {
 						if(work->time > 80 && work->time <= 95) {
 							time = work->time-80;
-							for(j=0; j<work->work_s16[3]; j++) {
-								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(j*56);
+							for(j=0; j<work->word_len; j++) {
+								pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(j*56);
 								HuSprPosSet(work->spr_grp[0], j, pos_x+((288.0f-pos_x)*(1.0-cos((M_PI*(time*6.0))/180.0))), work->y);
 							}
 							if(time == 15.0f) {
-								for(j=0; j<work->work_s16[3]; j++) {
+								for(j=0; j<work->word_len; j++) {
 									HuSprAttrReset(work->spr_grp[1], j, HUSPR_ATTR_DISPOFF);
 									HuSprPosSet(work->spr_grp[1], j, 288.0f, work->y);
 									HuSprTPLvlSet(work->spr_grp[1], j, 1.0f);
@@ -1415,7 +1387,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 							}
 						} else {
 							if(work->time > 105) {
-								for(j=0; j<work->work_s16[3]; j++) {
+								for(j=0; j<work->word_len; j++) {
 									time = work->time-105;
 									time -= j*3;
 									if(time < 0) {
@@ -1447,17 +1419,17 @@ static int SeqUpdateMGBattle(SeqWork *work)
 				
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
 				}
 			}
@@ -1485,7 +1457,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -1512,7 +1484,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -1523,14 +1495,14 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 				float pos_x, pos_y;
 				s16 i;
 				s16 j;
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time <= 10) {
 						scale = work->time/10.0f;
 						time = work->time;
-						for(idx=0; idx<work->work_s16[3]; idx++) {
+						for(idx=0; idx<work->word_len; idx++) {
 							scale_x = 0.3*work->scale_x;
 							scale_y = 0.3*work->scale_y;
-							pos_x = ((28.0f*scale_x)+(work->x-(0.5f*(scale_x*(work->work_s16[3]*56)))))+(scale_x*(idx*56));
+							pos_x = ((28.0f*scale_x)+(work->x-(0.5f*(scale_x*(work->word_len*56)))))+(scale_x*(idx*56));
 							pos_y = work->y-(150.0*sin((M_PI*(((16.0f/3.0f)*time)+20.0f))/180.0));
 							HuSprPosSet(work->spr_grp[0], idx, pos_x, pos_y);
 							HuSprScaleSet(work->spr_grp[0], idx, scale_x, scale_y*cos(M_PI*(12.0f*time)/180.0));
@@ -1539,7 +1511,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 					} else {
 						if(work->time <= 60) {
 							for(i=0; i<4; i++) {
-								for(idx=0; idx<work->work_s16[3]; idx++) {
+								for(idx=0; idx<work->word_len; idx++) {
 									time = (work->time-10)-(idx*3)-i;
 									if(time < 0.0f) {
 										time = 0.0f;
@@ -1551,7 +1523,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 									scale = 0.3+(0.7*(1.0-cos((M_PI*(time*3.0f))/180.0)));
 									scale_x = work->scale_x*scale;
 									scale_y = work->scale_y*scale;
-									pos_x = ((28.0f*scale_x)+(work->x-(0.5f*(scale_x*(work->work_s16[3]*56)))))+(scale_x*(idx*56));
+									pos_x = ((28.0f*scale_x)+(work->x-(0.5f*(scale_x*(work->word_len*56)))))+(scale_x*(idx*56));
 									pos_y = work->y-(150.0*sin((M_PI*(((16.0f/3.0f)*time)+20.0f))/180.0));
 									HuSprPosSet(work->spr_grp[i], idx, pos_x, pos_y);
 									HuSprScaleSet(work->spr_grp[i], idx, scale_x, scale_y*cos(M_PI*(12.0f*time)/180.0));
@@ -1559,7 +1531,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 							}
 							if(work->time == 60) {
 								for(i=1; i<4; i++) {
-									for(j=0; j<work->work_s16[3]; j++) {
+									for(j=0; j<work->word_len; j++) {
 										HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 									}
 								}
@@ -1568,8 +1540,8 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 							if(work->time > 70) {
 								time = work->time-70;
 								scale = 0.5*sin((M_PI*(time*9.0f))/180.0);
-								for(j=0; j<work->work_s16[3]; j++) {
-									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
+								for(j=0; j<work->word_len; j++) {
+									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
 									HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 									HuSprScaleSet(work->spr_grp[0], j, work->scale_x+scale, work->scale_y+scale);
 								}
@@ -1589,7 +1561,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -1599,21 +1571,21 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 					}
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
-						for(j=0; j<work->work_s16[3]; j++) {
+						for(j=0; j<work->word_len; j++) {
 							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
 						}
 						if(time == 20.0f) {
 							for(i=1; i<4; i++) {
-								for(j=0; j<work->work_s16[3]; j++) {
+								for(j=0; j<work->word_len; j++) {
 									HuSprAttrReset(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 								}
 							}
@@ -1621,18 +1593,18 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 					} else {
 						if(work->time > 80 || work->time < 140) {
 							for(i=0; i<4; i++) {
-								for(j=0; j<work->work_s16[3]; j++) {
+								for(j=0; j<work->word_len; j++) {
 									time = (work->time-80)-i-j;
 									if(time < 0 || time > 40) {
 										continue;
 									}
 									if(time <= 20) {
-										float pos_base = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(j*56);
-										pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+((work->work_s16[3]-j-1)*56);
+										float pos_base = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(j*56);
+										pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+((work->word_len-j-1)*56);
 										HuSprPosSet(work->spr_grp[i], j, pos_base+((time/20.0f)*(pos_x-pos_base)), work->y+((440.0f-work->y)*(time/20.0f)));
 									} else {
 										time -= 20.0f;
-										pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+((work->work_s16[3]-j-1)*56);
+										pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+((work->word_len-j-1)*56);
 										pos_y = 440.0f;
 										HuSprPosSet(work->spr_grp[i], j, pos_x, pos_y+((-40.0f-pos_y)*(time/20.0f)));
 									}
@@ -1653,17 +1625,17 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 			
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
 				}
 			}
@@ -1691,7 +1663,7 @@ static int SeqUpdateMGStory(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -1718,7 +1690,7 @@ static int SeqUpdateMGStory(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -1728,9 +1700,9 @@ static int SeqUpdateMGStory(SeqWork *work)
 				float time;
 				s16 i;
 				s16 j;
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time <= 30) {
-						for(idx=0; idx<work->work_s16[3]; idx++) {
+						for(idx=0; idx<work->word_len; idx++) {
 							time = (work->time-(idx*2));
 							if(time < 0.0f || time > 15.0f) {
 								continue;
@@ -1745,23 +1717,23 @@ static int SeqUpdateMGStory(SeqWork *work)
 							HuSprZRotSet(work->spr_grp[1], idx, (1.0-(time/15.0f))*-180.0);
 						}
 						if(work->time == 30) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								HuSprAttrSet(work->spr_grp[1], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 					} else {
 						if(work->time > 35 && work->time <= 45) {
 							time = work->time-35;
-							for(idx=0; idx<work->work_s16[3]; idx++) {
-								pos_x = (work->x-(0.5f*(work->work_s16[3]*56)))+28.0f+(idx*56);
+							for(idx=0; idx<work->word_len; idx++) {
+								pos_x = (work->x-(0.5f*(work->word_len*56)))+28.0f+(idx*56);
 								HuSprPosSet(work->spr_grp[0], idx, 288.0f+((pos_x-288.0f)*(time/10.0f)), work->y);
 							}
 						} else {
 							if(work->time > 55) {
 								time = work->time-55;
 								scale = 0.5*sin(M_PI*(9.0f*time)/180.0);
-								for(j=0; j<work->work_s16[3]; j++) {
-									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
+								for(j=0; j<work->word_len; j++) {
+									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
 									HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 									HuSprScaleSet(work->spr_grp[0], j, work->scale_x+scale, work->scale_y+scale);
 								}
@@ -1781,7 +1753,7 @@ static int SeqUpdateMGStory(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -1791,42 +1763,42 @@ static int SeqUpdateMGStory(SeqWork *work)
 					}
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
-						for(j=0; j<work->work_s16[3]; j++) {
+						for(j=0; j<work->word_len; j++) {
 							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
 						}
 						if(time == 20.0f){ 
 							for(i=1; i<4; i++) {
-								for(j=0; j<work->work_s16[3]; j++) {
+								for(j=0; j<work->word_len; j++) {
 									HuSprAttrReset(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 								}
 							}
 						}
 					} else if(work->time > 80 && work->time < 160) {
 						for(i=0; i<4; i++) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								s16 initF;
 								float dx, dy;
 								time = (work->time-80)-i;
 								if(time < 0 || time > 60) {
 									continue;
 								}
-								pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(j*56);
-								dx = 28.0f+(work->x-(0.5f*(work->work_s16[3]*56)));
+								pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(j*56);
+								dx = 28.0f+(work->x-(0.5f*(work->word_len*56)));
 								pos_y = work->y;
 								for(idx=initF=0; idx<time; idx++) {
 									if(!initF) {
 										pos_x -= 20.0f;
 										if(pos_x <= dx) {
-											pos_x = 28.0f+(work->x-(0.5f*(work->work_s16[3]*56)));
+											pos_x = 28.0f+(work->x-(0.5f*(work->word_len*56)));
 											initF = 1;
 											dy = 25.0f;
 											dx = 10.0f;
@@ -1860,17 +1832,17 @@ static int SeqUpdateMGStory(SeqWork *work)
 			
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
 				}
 			}
@@ -1898,7 +1870,7 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -1925,7 +1897,7 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -1945,11 +1917,11 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 				float time;
 				s16 i;
 				s16 j;
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time <= 30) {
 						time = work->time;
-						for(idx=0; idx<work->work_s16[3]; idx++) {
-							pos_x = (28.0f+(work->x-(0.5f*(work->scale_x*(work->work_s16[3]*56)))))+(idx*56);
+						for(idx=0; idx<work->word_len; idx++) {
+							pos_x = (28.0f+(work->x-(0.5f*(work->scale_x*(work->word_len*56)))))+(idx*56);
 							HuSprPosSet(work->spr_grp[0], idx, pos_x+((1.0f-(time/30.0f))*letterOfs[(idx*2)]), work->y+((1.0f-(time/30.0f))*letterOfs[(idx*2)+1])); 
 							HuSprTPLvlSet(work->spr_grp[0], idx, time/30.0f);
 						}
@@ -1957,8 +1929,8 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 						if(work->time > 40 && work->time <= 60) {
 							time = work->time-40;
 							scale = 0.5*sin(((time*9.0f)*M_PI)/180.0);
-							for(j=0; j<work->work_s16[3]; j++) {
-								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
+							for(j=0; j<work->word_len; j++) {
+								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((j*56)*(scale+work->scale_x));
 								HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 								HuSprScaleSet(work->spr_grp[0], j, work->scale_x+scale, work->scale_y+scale);
 							}
@@ -1977,7 +1949,7 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -1987,21 +1959,21 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 					}
 					if(work->time <= 20) {
 						for(i=1; i<4; i++) {
-							for(j=0; j<work->work_s16[3]; j++) {
+							for(j=0; j<work->word_len; j++) {
 								HuSprAttrSet(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin((M_PI*(time*9.0f))/180.0));
-						for(j=0; j<work->work_s16[3]; j++) {
+						for(j=0; j<work->word_len; j++) {
 							HuSprAttrReset(work->spr_grp[0], j, HUSPR_ATTR_DISPOFF);
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(j*56));
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(j*56));
 							HuSprPosSet(work->spr_grp[0], j, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], j, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
 						}
 						if(time == 20.0f) {
 							for(i=1; i<4; i++) {
-								for(j=0; j<work->work_s16[3]; j++) {
+								for(j=0; j<work->word_len; j++) {
 									HuSprAttrReset(work->spr_grp[i], j, HUSPR_ATTR_DISPOFF);
 								}
 							}
@@ -2009,8 +1981,8 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 					} else {
 						if(work->time > 80 && work->time < 140) {
 							time = work->time-80;
-							for(idx=0; idx<work->work_s16[3]; idx++) {
-								float radius = (idx*56)-(((work->work_s16[3]-1)*56)/2);
+							for(idx=0; idx<work->word_len; idx++) {
+								float radius = (idx*56)-(((work->word_len-1)*56)/2);
 								float angle = (1.0f+(1.0f-(ABS(radius)/320.0f)))*720.0f;
 								float new_scale;
 								radius *= 1.0-(time/60.0f);
@@ -2035,17 +2007,17 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 			
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
 				}
 			}
@@ -2069,12 +2041,12 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 	s16 i;
 	s16 word_grp;
 	s16 word_ofs;
-	work->work_s16[1] = va_arg(params, int);
-	if(work->work_s16[1] == 2) {
+	work->state = va_arg(params, int);
+	if(work->state == 2) {
 		return SeqInitDraw(work, params);
 	}
 	work->type = 0;
-	work->work_float[0] = 0;
+	work->angle = 0;
 	{
 		s32 word_ofs_temp;
 		s32 word_katakana;
@@ -2087,7 +2059,7 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 		}
 		word_ofs = word_ofs_temp;
 		word_katakana = 0;
-		if(work->work_s16[1] == 2 && word_ofs == 0) {
+		if(work->state == 2 && word_ofs == 0) {
 			word_katakana = 1;
 		}
 		if(word_katakana) {
@@ -2096,16 +2068,16 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 			word_flag = 0;
 		}
 		
-		word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+		word_grp = SeqMakeWord(work, wordMgTbl[work->state+word_ofs], word_flag);
 	}
 	HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
-	for(i=0; i<work->work_s16[3]; i++) {
+	for(i=0; i<work->word_len; i++) {
 		HuSprTPLvlSet(work->spr_grp[word_grp], i, 0.0f);
-		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56), work->y);
+		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->word_len*56))))+(i*56), work->y);
 		HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 		HuSprAttrReset(work->spr_grp[word_grp], i, HUSPR_ATTR_DISPOFF);
 	}
-	work->work_s16[2] = work->work_s16[3];
+	work->alt_word_len = work->word_len;
 	{
 		s32 word_ofs_temp;
 		s32 word_katakana;
@@ -2118,7 +2090,7 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 		}
 		word_ofs = word_ofs_temp;
 		word_katakana = 0;
-		if(work->work_s16[1] == 2 && word_ofs == 0) {
+		if(work->state == 2 && word_ofs == 0) {
 			word_katakana = 1;
 		}
 		if(word_katakana) {
@@ -2127,12 +2099,12 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 			word_flag = 0;
 		}
 		
-		word_grp = SeqMakeWord(work, wordMgTbl[work->work_s16[1]+word_ofs], word_flag);
+		word_grp = SeqMakeWord(work, wordMgTbl[work->state+word_ofs], word_flag);
 	}
 	HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
-	for(i=0; i<work->work_s16[3]; i++) {
+	for(i=0; i<work->word_len; i++) {
 		HuSprTPLvlSet(work->spr_grp[word_grp], i, 0.0f);
-		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(i*56), work->y);
+		HuSprPosSet(work->spr_grp[word_grp], i, (28.0f+(work->x-(0.5f*(work->word_len*56))))+(i*56), work->y);
 		HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 		HuSprAttrReset(work->spr_grp[word_grp], i, HUSPR_ATTR_DISPOFF);
 	}
@@ -2156,7 +2128,7 @@ static int SeqUpdateFlip(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -2183,7 +2155,7 @@ static int SeqUpdateFlip(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -2192,21 +2164,21 @@ static int SeqUpdateFlip(SeqWork *work)
 				float time;
 				float pos_x;
 				s16 i;
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time <= 10) {
-						for(idx=0; idx<work->work_s16[2]; idx++) {
+						for(idx=0; idx<work->alt_word_len; idx++) {
 							HuSprTPLvlSet(work->spr_grp[0], idx, work->time/10.0f);
 						}
 					} else {
 						if(work->time <= 30) {
 							time = work->time-10;
 							if(time <= 10) {
-								for(idx=0; idx<work->work_s16[2]; idx++) {
+								for(idx=0; idx<work->alt_word_len; idx++) {
 									HuSprScaleSet(work->spr_grp[0], idx, cos(M_PI*((time/10.0f)*90.0f)/180.0), 1.0f);
 								}
 							} else {
 								time -= 10.0f;
-								for(idx=0; idx<work->work_s16[3]; idx++) {
+								for(idx=0; idx<work->word_len; idx++) {
 									HuSprTPLvlSet(work->spr_grp[1], idx, 1.0f);
 									HuSprScaleSet(work->spr_grp[1], idx, sin(M_PI*((time/10.0f)*90.0f)/180.0), 1.0f);
 								}
@@ -2215,8 +2187,8 @@ static int SeqUpdateFlip(SeqWork *work)
 							if(work->time > 35 && work->time <= 55) {
 								time = work->time-35;
 								scale = 0.5*sin(((time*9.0f)*M_PI)/180.0);
-								for(i=0; i<work->work_s16[3]; i++) {
-									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
+								for(i=0; i<work->word_len; i++) {
+									pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
 									HuSprPosSet(work->spr_grp[1], i, pos_x, work->y);
 									HuSprScaleSet(work->spr_grp[1], i, work->scale_x+scale, work->scale_y+scale);
 								}
@@ -2236,7 +2208,7 @@ static int SeqUpdateFlip(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -2247,23 +2219,23 @@ static int SeqUpdateFlip(SeqWork *work)
 					if(work->time <= 20) {
 						time = work->time;
 						scale = 0.5*sin(M_PI*(9.0f*time)/180.0);
-						for(i=0; i<work->work_s16[3]; i++) {
+						for(i=0; i<work->word_len; i++) {
 							HuSprTPLvlSet(work->spr_grp[1], i, 1.0f);
-							pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
+							pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
 							HuSprPosSet(work->spr_grp[1], i, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[1], i, work->scale_x+scale, work->scale_y+scale);
 						}
 					} else {
 						if(work->time > 80 && work->time <= 160) {
 							time = work->time-80;
-							for(idx=0; idx<work->work_s16[3]; idx++) {
+							for(idx=0; idx<work->word_len; idx++) {
 								scale = time-(idx*2);
 								if(scale < 0 || scale > 15.0f) {
 									continue;
 								}
 								HuSprScaleSet(work->spr_grp[1], idx, cos(M_PI*((scale/15.0f)*90.0f)/180.0), 1.0f);
 							}
-							for(idx=0; idx<work->work_s16[2]; idx++) {
+							for(idx=0; idx<work->alt_word_len; idx++) {
 								scale = (time-15.0f)-(idx*2);
 								if(scale < 0 || scale > 30.0f) {
 									continue;
@@ -2286,17 +2258,17 @@ static int SeqUpdateFlip(SeqWork *work)
 			
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[1], idx, scale);
 				}
 			}
@@ -2324,7 +2296,7 @@ static int SeqUpdateMGBowser(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -2351,7 +2323,7 @@ static int SeqUpdateMGBowser(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -2370,10 +2342,10 @@ static int SeqUpdateMGBowser(SeqWork *work)
 				float scale_arr[16];
 				
 				
-				if(work->work_s16[1] == 0) {
+				if(work->state == 0) {
 					if(work->time <= 60) {
-						center_x = (0.5*(work->work_s16[3]*56))+20.0;
-						for(idx=0; idx<work->work_s16[3]; idx++) {
+						center_x = (0.5*(work->word_len*56))+20.0;
+						for(idx=0; idx<work->word_len; idx++) {
 							time = work->time-idx;
 							if(time < 0) {
 								scale_arr[idx] = 0.0f;
@@ -2383,7 +2355,7 @@ static int SeqUpdateMGBowser(SeqWork *work)
 									time = 50.0f;
 								}
 								time_angle = 540.0*(1.0f-(time/50.0f));
-								pos_x = (28.0f+(0.5f*-(work->work_s16[3]*56)))+(idx*56);
+								pos_x = (28.0f+(0.5f*-(work->word_len*56)))+(idx*56);
 								angle = 180.0*(atan2(pos_x, center_x)/M_PI);
 								pos_x = work->x+(center_x*sin(M_PI*(angle+time_angle)/180.0));
 								pos_y = work->y-(240.0*(1.0-(time/50.0f)));
@@ -2394,8 +2366,8 @@ static int SeqUpdateMGBowser(SeqWork *work)
 								spr_idx[idx] = idx;
 							}
 						}
-						for(i=1; i<work->work_s16[3]; i++) {
-							for(idx=0; idx<work->work_s16[3]-i; idx++) {
+						for(i=1; i<work->word_len; i++) {
+							for(idx=0; idx<work->word_len-i; idx++) {
 								if(scale_arr[idx] > scale_arr[idx+1]) {
 									 j= spr_idx[idx];
 									spr_idx[idx] = spr_idx[idx+1];
@@ -2406,15 +2378,15 @@ static int SeqUpdateMGBowser(SeqWork *work)
 								}
 							}
 						}
-						for(idx=0; idx<work->work_s16[3]; idx++) {
+						for(idx=0; idx<work->word_len; idx++) {
 							HuSprPriSet(work->spr_grp[0], spr_idx[idx], idx+5);
 						}
 					} else {
 						if(work->time > 60 && work->time <= 80) {
 							time = work->time-60;
 							scale = 0.5*sin(((time*9.0f)*M_PI)/180.0);
-							for(i=0; i<work->work_s16[3]; i++) {
-								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->work_s16[3]*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
+							for(i=0; i<work->word_len; i++) {
+								pos_x = (28.0f*(scale+work->scale_x))+(work->x-(0.5f*((work->word_len*56)*(scale+work->scale_x))))+((i*56)*(scale+work->scale_x));
 								HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 								HuSprScaleSet(work->spr_grp[0], i, work->scale_x+scale, work->scale_y+scale);
 							}
@@ -2434,7 +2406,7 @@ static int SeqUpdateMGBowser(SeqWork *work)
 					}
 				} else {
 					if(work->time == 1) {
-						if(work->work_s16[1] == 1) {
+						if(work->state == 1) {
 							HuAudFXPlay(37);
 						} else {
 							HuAudFXPlay(40);
@@ -2444,21 +2416,21 @@ static int SeqUpdateMGBowser(SeqWork *work)
 					}
 					if(work->time <= 20) {
 						for(j=1; j<4; j++) {
-							for(i=0; i<work->work_s16[3]; i++) {
+							for(i=0; i<work->word_len; i++) {
 								HuSprAttrSet(work->spr_grp[j], i, HUSPR_ATTR_DISPOFF);
 							}
 						}
 						time = work->time;
 						scale = work->scale_x+(0.5*sin(((time*9.0f)*M_PI)/180.0));
-						for(i=0; i<work->work_s16[3]; i++) {
+						for(i=0; i<work->word_len; i++) {
 							HuSprAttrReset(work->spr_grp[0], i, HUSPR_ATTR_DISPOFF);
-							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->work_s16[3]*56)))))+(scale*(i*56));
+							pos_x = ((28.0f*scale)+(work->x-(0.5f*(scale*(work->word_len*56)))))+(scale*(i*56));
 							HuSprPosSet(work->spr_grp[0], i, pos_x, work->y);
 							HuSprScaleSet(work->spr_grp[0], i, work->scale_x+(sin((M_PI*(time*9.0f))/180.0)), work->scale_y+(sin((M_PI*(time*9.0f))/180.0)));
 						}
 						if(time == 20.0f) {
 							for(j=1; j<4; j++) {
-								for(i=0; i<work->work_s16[3]; i++) {
+								for(i=0; i<work->word_len; i++) {
 									HuSprAttrReset(work->spr_grp[j], i, HUSPR_ATTR_DISPOFF);
 								}
 							}
@@ -2479,8 +2451,8 @@ static int SeqUpdateMGBowser(SeqWork *work)
 								if(time < 0.0f || time > 15.0f) {
 									continue;
 								}
-								for(idx=0; idx<work->work_s16[3]; idx++) {
-									pos_x = (28.0f+(work->x-(0.5f*(work->work_s16[3]*56))))+(idx*56);
+								for(idx=0; idx<work->word_len; idx++) {
+									pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(idx*56);
 									pos_x += (time/15.0f)*(letterOfs[(idx*2)]-pos_x);
 									pos_y = work->y+((time/15.0f)*(letterOfs[(idx*2)+1]-work->y));
 									HuSprPosSet(work->spr_grp[i], idx, pos_x, pos_y);
@@ -2501,17 +2473,17 @@ static int SeqUpdateMGBowser(SeqWork *work)
 			
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				scale = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				scale = 1.0f-work->angle;
 				if(scale <= 0.0f) {
 					scale = 0.0f;
 					work->type = 0;
 					work->stat |= 0x8;
-					if(work->work_s16[1] == 0) {
+					if(work->state == 0) {
 						MGSeqPauseEnableCtrl(1);
 					}
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprTPLvlSet(work->spr_grp[0], idx, scale);
 				}
 			}
@@ -2531,10 +2503,10 @@ static int SeqUpdateMGBowser(SeqWork *work)
 static int SeqInitDraw(SeqWork *work, va_list params)
 {
 	s16 word_grp;
-	work->work_s16[1] = 2;
+	work->state = 2;
 	work->seq_no = 13;
 	work->type = 0;
-	work->work_float[0] = 0.0f;
+	work->angle = 0.0f;
 	{
 		s32 word_flag;
 		s32 word_ofs;
@@ -2569,7 +2541,7 @@ static int SeqUpdateDraw(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -2593,7 +2565,7 @@ static int SeqUpdateDraw(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -2627,11 +2599,11 @@ static int SeqUpdateDraw(SeqWork *work)
 			case -1:
 			{
 				float tp_lvl;
-				work->work_float[0] += seqSpeed*0.1f;
-				tp_lvl = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				tp_lvl = 1.0f-work->angle;
 				if(tp_lvl <= 0.0f) {
 					tp_lvl = 0.0f;
-					work->work_s16[1] = 0;
+					work->state = 0;
 					work->stat |= 0x8;
 				}
 				HuSprGrpTPLvlSet(group, tp_lvl);
@@ -2751,13 +2723,13 @@ static int SeqInitWin(SeqWork *work, va_list params)
 		}
 	}
 	word_grp = SeqMakeWord(work, winWordTbl[word_idx], GET_WIN_KANAF());
-	winnerNameW[0] = work->work_s16[3]*50;
-	for(i=0; i<work->work_s16[3]; i++) {
-		HuSprPosSet(work->spr_grp[word_grp], i, 25.0f+((i*50)-(0.5f*(work->work_s16[3]*50))), 0.0f);
+	winnerNameW[0] = work->word_len*50;
+	for(i=0; i<work->word_len; i++) {
+		HuSprPosSet(work->spr_grp[word_grp], i, 25.0f+((i*50)-(0.5f*(work->word_len*50))), 0.0f);
 		HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 	}
 	num_winners = 0;
-	work->work_float[1] = 1.0f;
+	work->win_scale = 1.0f;
 	for(j=0; j<4; j++) {
 		s32 winner = va_arg(params, int);
 		if(winner < 0) {
@@ -2767,7 +2739,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 		if(seqLanguage != 0) {
 			char *name = winCharNameTbl[(winner*2)+GET_LANG_IDX()];
 			word_w = 0.0f;
-			for(i=word_w; i<work->work_s16[3]; i++, name++) {
+			for(i=word_w; i<work->word_len; i++, name++) {
 				if(*name == ' ') {
 					word_w += 30.0f;
 				} else {
@@ -2776,7 +2748,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 			}
 			name = winCharNameTbl[(winner*2)+GET_LANG_IDX()];
 			word_x = 0.0f;
-			for(i=word_x; i<work->work_s16[3]; i++, name++) {
+			for(i=word_x; i<work->word_len; i++, name++) {
 				HuSprPosSet(work->spr_grp[word_grp], i, 25.0+(word_x-(0.5*word_w)), 0.0f);
 				HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 				if(*name == ' ') {
@@ -2785,23 +2757,23 @@ static int SeqInitWin(SeqWork *work, va_list params)
 					word_x += 50.0f;
 				}
 			}
-			if(work->work_float[1] == 0.6f || winner == 7 || winner == 13 || winner == 10) {
-				work->work_float[1] = 0.6f;
+			if(work->win_scale == 0.6f || winner == 7 || winner == 13 || winner == 10) {
+				work->win_scale = 0.6f;
 			} else {
-				work->work_float[1] = 0.75f;
+				work->win_scale = 0.75f;
 			}
 			winnerNameW[num_winners+1] = word_w;
 		} else {
 			if(winner == 7 || winner == 13) {
-				for(i=0;i<work->work_s16[3]; i++) {
-					HuSprPosSet(work->spr_grp[word_grp], i, 26.0f+((i*52)-(0.5f*(work->work_s16[3]*52))), 0.0f);
+				for(i=0;i<work->word_len; i++) {
+					HuSprPosSet(work->spr_grp[word_grp], i, 26.0f+((i*52)-(0.5f*(work->word_len*52))), 0.0f);
 					HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 				}
-				work->work_float[1] = 0.8f;
-				winnerNameW[num_winners+1] = work->work_s16[3]*52;
+				work->win_scale = 0.8f;
+				winnerNameW[num_winners+1] = work->word_len*52;
 			} else {
-				work->work_float[1] = 1.0f;
-				winnerNameW[num_winners+1] = work->work_s16[3]*56;
+				work->win_scale = 1.0f;
+				winnerNameW[num_winners+1] = work->word_len*56;
 			}
 			
 		}
@@ -2810,13 +2782,13 @@ static int SeqInitWin(SeqWork *work, va_list params)
 	if(num_winners == 0) {
 		return 0;
 	}
-	work->work_s16[1] = 0;
-	work->work_s16[3] = num_winners+1;
-	work->work_float[0] = 0.0f;
+	work->state = 0;
+	work->word_len = num_winners+1;
+	work->angle = 0.0f;
 	work->type = 0;
 	for(j=0; j<num_winners+1; j++) {
 		if(num_winners == 1) {
-			word_x = 32.0f+((float)winnerNameW[0]+(winnerNameW[1]*work->work_float[1]));
+			word_x = 32.0f+((float)winnerNameW[0]+(winnerNameW[1]*work->win_scale));
 			if(j == 0) {
 				word_x = (((576.0f-word_x)/2.0f)+(word_x-(winnerNameW[0]/2)))-288.0f;
 			} else {
@@ -2827,7 +2799,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 				if(winnerNameW[j]+32 < 288.0f) {
 					word_x = 176.0f;
 				} else {
-					word_x = 32.0f+((winnerNameW[j]*work->work_float[1])/2.0f);
+					word_x = 32.0f+((winnerNameW[j]*work->win_scale)/2.0f);
 				}
 				if(winPosOfs[num_winners-1][j][0] < 0) {
 					word_x = -(288.0f-word_x);
@@ -2865,7 +2837,7 @@ static int SeqUpdateWin(SeqWork *work)
 					(void)work; //HACK: to introduce extra branch
 				} else {
 					work->type = -1;
-					work->work_float[0] = 0.0f;
+					work->angle = 0.0f;
 				}
 				work->param[0] = 0;
 				break;
@@ -2889,7 +2861,7 @@ static int SeqUpdateWin(SeqWork *work)
 	if(work->time >= work->time_max && work->type != -1) {
 		work->stat |= 0x4;
 		work->type = -1;
-		work->work_float[0] = 0.0f;
+		work->angle = 0.0f;
 	}
 	if(work->type) {
 		switch(work->type) {
@@ -2906,14 +2878,14 @@ static int SeqUpdateWin(SeqWork *work)
 					HuSprGrpZRotSet(work->spr_grp[0], zrot);
 					scale = 1.0+(5.0*cos(M_PI*(90.0f*(time/20.0f))/180.0));
 					tp_lvl = time/20.0f;
-					for(idx=1; idx<work->work_s16[3]; idx++) {
+					for(idx=1; idx<work->word_len; idx++) {
 						HuSprGrpTPLvlSet(work->spr_grp[idx], tp_lvl);
-						HuSprGrpScaleSet(work->spr_grp[idx], scale*work->work_float[1], scale);
+						HuSprGrpScaleSet(work->spr_grp[idx], scale*work->win_scale, scale);
 					}
 				}
 				if(work->time > 20 && work->time <= 22) {
 					HuSprGrpZRotSet(work->spr_grp[0], 0.0f);
-					for(idx=1; idx<work->work_s16[3]; idx++) {
+					for(idx=1; idx<work->word_len; idx++) {
 						float pos_x;
 						float ofs[2];
 						if(work->time == 21) {
@@ -2922,26 +2894,26 @@ static int SeqUpdateWin(SeqWork *work)
 						} else {
 							ofs[0] = ofs[1] = 0.0f;
 						}
-						if(work->work_s16[3] == 2) {
+						if(work->word_len == 2) {
 							pos_x = winnerNameW[1]+winnerNameW[0]+32;
 							pos_x = (((576.0f-pos_x)/2.0f)+(winnerNameW[1]/2))-288.0f;
 						} else {
-							if(abs(winPosOfs[work->work_s16[3]-2][idx][0]) == 144.0f) {
+							if(abs(winPosOfs[work->word_len-2][idx][0]) == 144.0f) {
 								if(winnerNameW[idx]+32 < 288.0f) {
 									pos_x = 176.0f;
 								} else {
-									pos_x = 32.0f+((winnerNameW[idx]*work->work_float[1])/2.0f);
+									pos_x = 32.0f+((winnerNameW[idx]*work->win_scale)/2.0f);
 								}
-								if(winPosOfs[work->work_s16[3]-2][idx][0] < 0) {
+								if(winPosOfs[work->word_len-2][idx][0] < 0) {
 									pos_x = -(288.0f-pos_x);
 								} else {
 									pos_x = (576.0f-pos_x)-288.0f;
 								}
 							} else {
-								pos_x = winPosOfs[work->work_s16[3]-2][idx][0];
+								pos_x = winPosOfs[work->word_len-2][idx][0];
 							}
 						}
-						HuSprGrpPosSet(work->spr_grp[idx], (288.0f+pos_x)+ofs[0], ofs[1]+(240.0f+winPosOfs[work->work_s16[3]-2][idx][1]));
+						HuSprGrpPosSet(work->spr_grp[idx], (288.0f+pos_x)+ofs[0], ofs[1]+(240.0f+winPosOfs[work->word_len-2][idx][1]));
 					}
 				}
 				if(work->time == 125) {
@@ -2952,14 +2924,14 @@ static int SeqUpdateWin(SeqWork *work)
 			
 			case -1:
 			{
-				work->work_float[0] += seqSpeed*0.1f;
-				tp_lvl = 1.0f-work->work_float[0];
+				work->angle += seqSpeed*0.1f;
+				tp_lvl = 1.0f-work->angle;
 				if(tp_lvl <= 0.0f) {
 					tp_lvl = 0.0f;
-					work->work_s16[1] = 0;
+					work->state = 0;
 					work->stat |= 0x8;
 				}
-				for(idx=0; idx<work->work_s16[3]; idx++) {
+				for(idx=0; idx<work->word_len; idx++) {
 					HuSprGrpTPLvlSet(work->spr_grp[idx], tp_lvl);
 				}
 			}
@@ -2987,7 +2959,7 @@ static int SeqInitRecord(SeqWork *work, va_list params)
 	s32 digit;
 	seqRecordVal = va_arg(params, int);
 	work->type = 0;
-	work->work_float[0] = 0.0f;
+	work->angle = 0.0f;
 	work->spr_grp[0] = spr_grp = HuSprGrpCreate(10);
 	spr_data = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 9)));
 	sprite = HuSprCreate(spr_data, 0, 0);
@@ -3095,7 +3067,7 @@ static int SeqUpdateRecord(SeqWork *work)
 {
 	s16 group;
 	if(_CheckFlag(0x1000C)) {
-		work->work_s16[1] = 0;
+		work->state = 0;
 		work->stat |= 0xC;
 	} else {
 		group = work->spr_grp[0];
@@ -3106,7 +3078,7 @@ static int SeqUpdateRecord(SeqWork *work)
 						(void)work; //HACK: to introduce extra branch
 					} else {
 						work->type = -1;
-						work->work_float[0] = 0.0f;
+						work->angle = 0.0f;
 					}
 					work->param[0] = 0;
 					break;
@@ -3130,7 +3102,7 @@ static int SeqUpdateRecord(SeqWork *work)
 		if(work->time >= work->time_max && work->type != -1) {
 			work->stat |= 0x4;
 			work->type = -1;
-			work->work_float[0] = 0.0f;
+			work->angle = 0.0f;
 		}
 		if(work->type) {
 			switch(work->type) {
@@ -3151,11 +3123,11 @@ static int SeqUpdateRecord(SeqWork *work)
 				case -1:
 				{
 					float tp_lvl;
-					work->work_float[0] += seqSpeed*0.1f;
-					tp_lvl = 1.0f-work->work_float[0];
+					work->angle += seqSpeed*0.1f;
+					tp_lvl = 1.0f-work->angle;
 					if(tp_lvl <= 0.0f) {
 						tp_lvl = 0.0f;
-						work->work_s16[1] = 0;
+						work->state = 0;
 						work->stat |= 0x8;
 					}
 					HuSprGrpTPLvlSet(group, tp_lvl);
@@ -3209,7 +3181,7 @@ static void PauseProc(void)
 		work.sprite[i] = work.spr_grp[i] = -1;
 	}
 	SeqMakeWord(&work, pauseStr[GET_LANG_IDX()], 0);
-	for(i=0; i<work.work_s16[3]; i++) {
+	for(i=0; i<work.word_len; i++) {
 		HuSprPriSet(work.spr_grp[0], i, 0);
 	}
 	for(i=0; i<4; i++) {

@@ -45,7 +45,7 @@ typedef struct system_state {
     };
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
-/* 0x36 */ s16 mg_next_type;
+/* 0x36 */ s16 mg_type;
 /* 0x38 */ u16 unk_38;
 /* 0x3A */ u8 flag[3][16];
 /* 0x6A */ u8 unk_6A[0x72];
@@ -151,6 +151,16 @@ extern GameStat GWGameStat;
 static inline s32 GWTeamGet(void)
 {
     return GWSystem.team;
+}
+
+static inline s32 GWMGTypeGet(void)
+{
+	return GWSystem.mg_type;
+}
+
+static inline void GWMGTypeSet(s32 type)
+{
+	GWSystem.mg_type = type;
 }
 
 static inline s32 GWPartyGet(void)

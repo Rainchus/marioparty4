@@ -9,6 +9,7 @@
 #include "game/hsfmotion.h"
 #include "game/object.h"
 #include "game/process.h"
+#include "game/sprite.h"
 
 #include "math.h"
 

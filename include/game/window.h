@@ -1,7 +1,7 @@
 #ifndef _GAME_WINDOW_H
 #define _GAME_WINDOW_H
 
-#include "game/sprite.h"
+#include "game/animdata.h"
 #include "dolphin.h"
 
 #define MAKE_MESSID(bank, mess) (((bank) << 16)+(mess))

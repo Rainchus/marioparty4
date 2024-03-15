@@ -9,6 +9,7 @@
 #include "game/printfunc.h"
 #include "game/window.h"
 #include "game/gamework_data.h"
+#include "game/sprite.h"
 
 #include "REL/modeltestDll.h"
 
