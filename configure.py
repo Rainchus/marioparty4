@@ -876,9 +876,69 @@ config.libs = [
             Object(NonMatching, "REL/m411Dll/main.c"),
         }
     ),
-     Rel('m450Dll',
+    Rel('m433Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m433Dll/main.c"),
+            Object(NonMatching, "REL/m433Dll/map.c"),
+            Object(NonMatching, "REL/m433Dll/player.c"),
+        }
+    ),
+    Rel('m442Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m442Dll/main.c"),
+            Object(NonMatching, "REL/m442Dll/score.c"),
+        }
+    ),
+    Rel('m450Dll',
         objects = {
             Object(NonMatching, "REL/m450Dll/main.c"),
+        }
+    ),
+    Rel('m451Dll',
+        objects = {
+            Object(NonMatching, "REL/m451Dll/m451.c"),
+        }
+    ),
+    Rel('m453Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m453Dll/main.c"),
+            Object(NonMatching, "REL/m453Dll/map.c"),
+            Object(NonMatching, "REL/m453Dll/score.c"),
+        }
+    ),
+    Rel('m459dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m459dll/main.c"),
+        }
+    ),
+    Rel('m460Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m460Dll/main.c"),
+            Object(NonMatching, "REL/m460Dll/player.c"),
+            Object(NonMatching, "REL/m460Dll/map.c"),
+            Object(NonMatching, "REL/m460Dll/score.c"),
+        }
+    ),
+    Rel('m461Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m461Dll/main.c"),
+        }
+    ),
+    Rel('m461Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m462Dll/main.c"),
+        }
+    ),
+    Rel('m463Dll',
+        objects = {
+            Object(NonMatching, "REL/m463Dll/main.c"),
         }
     ),
     Rel('mentDll',
