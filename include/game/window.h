@@ -136,5 +136,8 @@ void HuWinExAnimIn(s16 window);
 void HuWinExAnimOut(s16 window);
 void HuWinExCleanup(s16 window);
 void HuWinExAnimPopIn(s16 window, s16 portrait);
+void *MessData_MesPtrGet(void *data, u32 index);
+
+extern void *messDataPtr;
 
 #endif

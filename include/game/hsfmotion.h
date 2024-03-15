@@ -4,6 +4,9 @@
 #include "dolphin.h"
 #include "game/hsfformat.h"
 
+#define Hu3DJointMotionFile(model, data_id) (Hu3DJointMotion((model), HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
+
+
 typedef struct motion_data {
     s16 unk_00;
     s16 unk_02;
