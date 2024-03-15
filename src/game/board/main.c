@@ -291,7 +291,7 @@ void BoardSaveInit(s32 board)
 	GWSystem.bowser_event = 0;
 	GWSystem.unk_32 = 1;
 	GWSystem.mg_next = 0;
-	GWSystem.mg_next_type = 0;
+	GWMGTypeSet(0);
 	GWSystem.unk_38 = 0;
 	GWSystem.block_pos = 0;
 	memset(GWSystem.board_data, 0, 32);

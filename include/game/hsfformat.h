@@ -2,7 +2,7 @@
 #define _GAME_HSFFORMAT_H
 
 #include "dolphin.h"
-#include "game/sprite.h"
+#include "game/animdata.h"
 
 #define HSF_OBJ_NULL1 0
 #define HSF_OBJ_REPLICA 1

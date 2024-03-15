@@ -1,6 +1,7 @@
 #include "game/ClusterExec.h"
 #include "game/EnvelopeExec.h"
 #include "game/hsfmotion.h"
+#include "game/sprite.h"
 
 float GetClusterCurve(HsfTrack *arg0, float arg1) {
     float *var_r30;

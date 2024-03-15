@@ -23,6 +23,8 @@
 
 #include "math.h"
 
+void HuSprGrpDrawNoSet(s16 group, s32 draw_no);
+
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef struct {

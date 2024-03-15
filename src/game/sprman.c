@@ -554,7 +554,7 @@ void HuSprGrpTPLvlSet(s16 group, float tp_lvl)
     }
 }
 
-s32 HuSprGrpDrawNoSet(s16 group, s32 draw_no)
+void HuSprGrpDrawNoSet(s16 group, s32 draw_no)
 {
     HuSprGrp *group_ptr = &HuSprGrpData[group];
     s16 i;
