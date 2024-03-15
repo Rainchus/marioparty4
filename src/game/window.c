@@ -44,7 +44,6 @@ static void GetMesMaxSizeSub(u32 mess);
 static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data);
 
 void mtxTransCat(Mtx, float, float, float);
-void *MessData_MesPtrGet(void*, u32);
 WindowData ATTRIBUTE_ALIGN(32) winData[32];
 u32 winKey[4];
 keyBufData winComKeyBuf[256];

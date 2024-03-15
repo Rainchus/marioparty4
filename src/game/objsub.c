@@ -17,10 +17,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 0), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210000, // rules_mess
-        0x210001, // control_mess[0]
-        0, // control_mess[1]
-        0x210003, // advice_mess
+        0x210000, // inst_mess[0]
+        0x210001, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210003, // inst_mess[3]
     },
     {
         OVL_M402, // ovl
@@ -35,10 +35,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 1), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210004, // rules_mess
-        0x210005, // control_mess[0]
-        0, // control_mess[1]
-        0x210007, // advice_mess
+        0x210004, // inst_mess[0]
+        0x210005, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210007, // inst_mess[3]
     },
     {
         OVL_M403, // ovl
@@ -53,10 +53,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 2), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210008, // rules_mess
-        0x210009, // control_mess[0]
-        0, // control_mess[1]
-        0x21000B, // advice_mess
+        0x210008, // inst_mess[0]
+        0x210009, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21000B, // inst_mess[3]
     },
     {
         OVL_M404, // ovl
@@ -71,10 +71,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 3), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21000C, // rules_mess
-        0x21000D, // control_mess[0]
-        0, // control_mess[1]
-        0x21000F, // advice_mess
+        0x21000C, // inst_mess[0]
+        0x21000D, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21000F, // inst_mess[3]
     },
     {
         OVL_M405, // ovl
@@ -89,10 +89,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 4), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210010, // rules_mess
-        0x210011, // control_mess[0]
-        0, // control_mess[1]
-        0x210013, // advice_mess
+        0x210010, // inst_mess[0]
+        0x210011, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210013, // inst_mess[3]
     },
     {
         OVL_M406, // ovl
@@ -107,10 +107,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 5), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210014, // rules_mess
-        0x210015, // control_mess[0]
-        0, // control_mess[1]
-        0x210017, // advice_mess
+        0x210014, // inst_mess[0]
+        0x210015, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210017, // inst_mess[3]
     },
     {
         OVL_M407, // ovl
@@ -125,10 +125,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 6), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210018, // rules_mess
-        0x210019, // control_mess[0]
-        0, // control_mess[1]
-        0x21001B, // advice_mess
+        0x210018, // inst_mess[0]
+        0x210019, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21001B, // inst_mess[3]
     },
     {
         OVL_M408, // ovl
@@ -143,10 +143,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 7), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21001C, // rules_mess
-        0x21001D, // control_mess[0]
-        0, // control_mess[1]
-        0x21001F, // advice_mess
+        0x21001C, // inst_mess[0]
+        0x21001D, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21001F, // inst_mess[3]
     },
     {
         OVL_M409, // ovl
@@ -161,10 +161,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 8), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210020, // rules_mess
-        0x210021, // control_mess[0]
-        0, // control_mess[1]
-        0x210023, // advice_mess
+        0x210020, // inst_mess[0]
+        0x210021, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210023, // inst_mess[3]
     },
     {
         OVL_M410, // ovl
@@ -179,10 +179,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 9), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210024, // rules_mess
-        0x210025, // control_mess[0]
-        0, // control_mess[1]
-        0x210027, // advice_mess
+        0x210024, // inst_mess[0]
+        0x210025, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210027, // inst_mess[3]
     },
     {
         OVL_M411, // ovl
@@ -197,10 +197,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 62), // mg_pic[0]
         DATA_MAKE_NUM(DATADIR_INSTPIC, 11), // mg_pic[1]
         DATA_MAKE_NUM(DATADIR_INSTPIC, 12), // mg_pic[2]
-        0x210028, // rules_mess
-        0x210029, // control_mess[0]
-        0, // control_mess[1]
-        0x21002B, // advice_mess
+        0x210028, // inst_mess[0]
+        0x210029, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21002B, // inst_mess[3]
     },
     {
         OVL_M412, // ovl
@@ -215,10 +215,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 13), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21002C, // rules_mess
-        0x21002D, // control_mess[0]
-        0, // control_mess[1]
-        0x21002F, // advice_mess
+        0x21002C, // inst_mess[0]
+        0x21002D, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21002F, // inst_mess[3]
     },
     {
         OVL_M413, // ovl
@@ -233,10 +233,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 63), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210030, // rules_mess
-        0x210031, // control_mess[0]
-        0, // control_mess[1]
-        0x210033, // advice_mess
+        0x210030, // inst_mess[0]
+        0x210031, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210033, // inst_mess[3]
     },
     {
         OVL_M414, // ovl
@@ -251,10 +251,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 15), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210034, // rules_mess
-        0x210035, // control_mess[0]
-        0, // control_mess[1]
-        0x210037, // advice_mess
+        0x210034, // inst_mess[0]
+        0x210035, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210037, // inst_mess[3]
     },
     {
         OVL_M415, // ovl
@@ -269,10 +269,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 16), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210038, // rules_mess
-        0x210039, // control_mess[0]
-        0, // control_mess[1]
-        0x21003B, // advice_mess
+        0x210038, // inst_mess[0]
+        0x210039, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21003B, // inst_mess[3]
     },
     {
         OVL_M416, // ovl
@@ -287,10 +287,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 17), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21003C, // rules_mess
-        0x21003D, // control_mess[0]
-        0x21003E, // control_mess[1]
-        0x21003F, // advice_mess
+        0x21003C, // inst_mess[0]
+        0x21003D, // inst_mess[1]
+        0x21003E, // inst_mess[2]
+        0x21003F, // inst_mess[3]
     },
     {
         OVL_M417, // ovl
@@ -305,10 +305,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 18), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210040, // rules_mess
-        0x210041, // control_mess[0]
-        0x210042, // control_mess[1]
-        0x210043, // advice_mess
+        0x210040, // inst_mess[0]
+        0x210041, // inst_mess[1]
+        0x210042, // inst_mess[2]
+        0x210043, // inst_mess[3]
     },
     {
         OVL_M418, // ovl
@@ -323,10 +323,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 19), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210044, // rules_mess
-        0x210045, // control_mess[0]
-        0x210046, // control_mess[1]
-        0x210047, // advice_mess
+        0x210044, // inst_mess[0]
+        0x210045, // inst_mess[1]
+        0x210046, // inst_mess[2]
+        0x210047, // inst_mess[3]
     },
     {
         OVL_M419, // ovl
@@ -341,10 +341,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 20), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210048, // rules_mess
-        0x210049, // control_mess[0]
-        0x21004A, // control_mess[1]
-        0x21004B, // advice_mess
+        0x210048, // inst_mess[0]
+        0x210049, // inst_mess[1]
+        0x21004A, // inst_mess[2]
+        0x21004B, // inst_mess[3]
     },
     {
         OVL_M420, // ovl
@@ -359,10 +359,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 21), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21004C, // rules_mess
-        0x21004D, // control_mess[0]
-        0x21004E, // control_mess[1]
-        0x21004F, // advice_mess
+        0x21004C, // inst_mess[0]
+        0x21004D, // inst_mess[1]
+        0x21004E, // inst_mess[2]
+        0x21004F, // inst_mess[3]
     },
     {
         OVL_M421, // ovl
@@ -377,10 +377,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 22), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210050, // rules_mess
-        0x210051, // control_mess[0]
-        0x210052, // control_mess[1]
-        0x210053, // advice_mess
+        0x210050, // inst_mess[0]
+        0x210051, // inst_mess[1]
+        0x210052, // inst_mess[2]
+        0x210053, // inst_mess[3]
     },
     {
         OVL_M422, // ovl
@@ -395,10 +395,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 23), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210054, // rules_mess
-        0x210055, // control_mess[0]
-        0x210056, // control_mess[1]
-        0x210057, // advice_mess
+        0x210054, // inst_mess[0]
+        0x210055, // inst_mess[1]
+        0x210056, // inst_mess[2]
+        0x210057, // inst_mess[3]
     },
     {
         OVL_M423, // ovl
@@ -413,10 +413,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 24), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210058, // rules_mess
-        0x210059, // control_mess[0]
-        0x21005A, // control_mess[1]
-        0x21005B, // advice_mess
+        0x210058, // inst_mess[0]
+        0x210059, // inst_mess[1]
+        0x21005A, // inst_mess[2]
+        0x21005B, // inst_mess[3]
     },
     {
         OVL_M424, // ovl
@@ -431,10 +431,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 25), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21005C, // rules_mess
-        0x21005D, // control_mess[0]
-        0x21005E, // control_mess[1]
-        0x21005F, // advice_mess
+        0x21005C, // inst_mess[0]
+        0x21005D, // inst_mess[1]
+        0x21005E, // inst_mess[2]
+        0x21005F, // inst_mess[3]
     },
     {
         OVL_M425, // ovl
@@ -449,10 +449,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 26), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210060, // rules_mess
-        0x210061, // control_mess[0]
-        0, // control_mess[1]
-        0x210063, // advice_mess
+        0x210060, // inst_mess[0]
+        0x210061, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210063, // inst_mess[3]
     },
     {
         OVL_M426, // ovl
@@ -467,10 +467,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 27), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210064, // rules_mess
-        0x210065, // control_mess[0]
-        0, // control_mess[1]
-        0x210067, // advice_mess
+        0x210064, // inst_mess[0]
+        0x210065, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210067, // inst_mess[3]
     },
     {
         OVL_M427, // ovl
@@ -485,10 +485,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 28), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210068, // rules_mess
-        0x210069, // control_mess[0]
-        0, // control_mess[1]
-        0x21006B, // advice_mess
+        0x210068, // inst_mess[0]
+        0x210069, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21006B, // inst_mess[3]
     },
     {
         OVL_M428, // ovl
@@ -503,10 +503,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 29), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21006C, // rules_mess
-        0x21006D, // control_mess[0]
-        0, // control_mess[1]
-        0x21006F, // advice_mess
+        0x21006C, // inst_mess[0]
+        0x21006D, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21006F, // inst_mess[3]
     },
     {
         OVL_M429, // ovl
@@ -521,10 +521,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 64), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210070, // rules_mess
-        0x210071, // control_mess[0]
-        0, // control_mess[1]
-        0x210073, // advice_mess
+        0x210070, // inst_mess[0]
+        0x210071, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210073, // inst_mess[3]
     },
     {
         OVL_M430, // ovl
@@ -539,10 +539,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 31), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210074, // rules_mess
-        0x210075, // control_mess[0]
-        0x210076, // control_mess[1]
-        0x210077, // advice_mess
+        0x210074, // inst_mess[0]
+        0x210075, // inst_mess[1]
+        0x210076, // inst_mess[2]
+        0x210077, // inst_mess[3]
     },
     {
         OVL_M431, // ovl
@@ -557,10 +557,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 32), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210078, // rules_mess
-        0x210079, // control_mess[0]
-        0, // control_mess[1]
-        0x21007B, // advice_mess
+        0x210078, // inst_mess[0]
+        0x210079, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21007B, // inst_mess[3]
     },
     {
         OVL_M432, // ovl
@@ -575,10 +575,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 33), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21007C, // rules_mess
-        0x21007D, // control_mess[0]
-        0x21007E, // control_mess[1]
-        0x21007F, // advice_mess
+        0x21007C, // inst_mess[0]
+        0x21007D, // inst_mess[1]
+        0x21007E, // inst_mess[2]
+        0x21007F, // inst_mess[3]
     },
     {
         OVL_M433, // ovl
@@ -593,10 +593,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 34), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210080, // rules_mess
-        0x37001F, // control_mess[0]
-        0, // control_mess[1]
-        0x210083, // advice_mess
+        0x210080, // inst_mess[0]
+        0x37001F, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210083, // inst_mess[3]
     },
     {
         OVL_M434, // ovl
@@ -611,10 +611,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 35), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210084, // rules_mess
-        0x210085, // control_mess[0]
-        0, // control_mess[1]
-        0x210087, // advice_mess
+        0x210084, // inst_mess[0]
+        0x210085, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210087, // inst_mess[3]
     },
     {
         OVL_M435, // ovl
@@ -629,10 +629,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 36), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x210089, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x210089, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M436, // ovl
@@ -647,10 +647,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 37), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x21008D, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x21008D, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M437, // ovl
@@ -665,10 +665,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 38), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x210091, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x210091, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M438, // ovl
@@ -683,10 +683,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 39), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210094, // rules_mess
-        0x210095, // control_mess[0]
-        0, // control_mess[1]
-        0x210097, // advice_mess
+        0x210094, // inst_mess[0]
+        0x210095, // inst_mess[1]
+        0, // inst_mess[2]
+        0x210097, // inst_mess[3]
     },
     {
         OVL_M439, // ovl
@@ -701,10 +701,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 40), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x210098, // rules_mess
-        0x210099, // control_mess[0]
-        0, // control_mess[1]
-        0x21009B, // advice_mess
+        0x210098, // inst_mess[0]
+        0x210099, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21009B, // inst_mess[3]
     },
     {
         OVL_M440, // ovl
@@ -719,10 +719,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 41), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x21009C, // rules_mess
-        0x21009D, // control_mess[0]
-        0, // control_mess[1]
-        0x21009F, // advice_mess
+        0x21009C, // inst_mess[0]
+        0x21009D, // inst_mess[1]
+        0, // inst_mess[2]
+        0x21009F, // inst_mess[3]
     },
     {
         OVL_M441, // ovl
@@ -737,10 +737,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 42), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100A0, // rules_mess
-        0x2100A1, // control_mess[0]
-        0, // control_mess[1]
-        0x2100A3, // advice_mess
+        0x2100A0, // inst_mess[0]
+        0x2100A1, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100A3, // inst_mess[3]
     },
     {
         OVL_M442, // ovl
@@ -755,10 +755,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 65), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100A4, // rules_mess
-        0x370010, // control_mess[0]
-        0, // control_mess[1]
-        0x2100A7, // advice_mess
+        0x2100A4, // inst_mess[0]
+        0x370010, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100A7, // inst_mess[3]
     },
     {
         OVL_M443, // ovl
@@ -773,10 +773,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 44), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100A8, // rules_mess
-        0x2100A9, // control_mess[0]
-        0, // control_mess[1]
-        0x2100AB, // advice_mess
+        0x2100A8, // inst_mess[0]
+        0x2100A9, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100AB, // inst_mess[3]
     },
     {
         OVL_M444, // ovl
@@ -791,10 +791,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 45), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M445, // ovl
@@ -809,10 +809,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 46), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100AC, // rules_mess
-        0x2100AD, // control_mess[0]
-        0, // control_mess[1]
-        0x2100AF, // advice_mess
+        0x2100AC, // inst_mess[0]
+        0x2100AD, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100AF, // inst_mess[3]
     },
     {
         OVL_M446, // ovl
@@ -827,10 +827,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 47), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100B0, // rules_mess
-        0x2100B1, // control_mess[0]
-        0, // control_mess[1]
-        0x2100B3, // advice_mess
+        0x2100B0, // inst_mess[0]
+        0x2100B1, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100B3, // inst_mess[3]
     },
     {
         OVL_M447, // ovl
@@ -845,10 +845,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 48), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100B4, // rules_mess
-        0x2100B5, // control_mess[0]
-        0, // control_mess[1]
-        0x2100B7, // advice_mess
+        0x2100B4, // inst_mess[0]
+        0x2100B5, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100B7, // inst_mess[3]
     },
     {
         OVL_M448, // ovl
@@ -863,10 +863,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 49), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100B8, // rules_mess
-        0x2100B9, // control_mess[0]
-        0, // control_mess[1]
-        0x2100BB, // advice_mess
+        0x2100B8, // inst_mess[0]
+        0x2100B9, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100BB, // inst_mess[3]
     },
     {
         OVL_M449, // ovl
@@ -881,10 +881,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100BC, // rules_mess
-        0x2100BD, // control_mess[0]
-        0, // control_mess[1]
-        0x2100BF, // advice_mess
+        0x2100BC, // inst_mess[0]
+        0x2100BD, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100BF, // inst_mess[3]
     },
     {
         OVL_M450, // ovl
@@ -899,10 +899,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 51), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100C0, // rules_mess
-        0x2100C1, // control_mess[0]
-        0, // control_mess[1]
-        0x2100C3, // advice_mess
+        0x2100C0, // inst_mess[0]
+        0x2100C1, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100C3, // inst_mess[3]
     },
     {
         OVL_M451, // ovl
@@ -917,10 +917,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 52), // mg_pic[0]
         DATA_MAKE_NUM(DATADIR_INSTPIC, 53), // mg_pic[1]
         DATA_MAKE_NUM(DATADIR_INSTPIC, 54), // mg_pic[2]
-        0x2100C4, // rules_mess
-        0x37000D, // control_mess[0]
-        0, // control_mess[1]
-        0x2100C7, // advice_mess
+        0x2100C4, // inst_mess[0]
+        0x37000D, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100C7, // inst_mess[3]
     },
     {
         OVL_M450, // ovl
@@ -935,10 +935,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M453, // ovl
@@ -953,10 +953,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100C8, // rules_mess
-        0x37000A, // control_mess[0]
-        0, // control_mess[1]
-        0x2100CB, // advice_mess
+        0x2100C8, // inst_mess[0]
+        0x37000A, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100CB, // inst_mess[3]
     },
     {
         OVL_M450, // ovl
@@ -971,10 +971,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 55), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M455, // ovl
@@ -989,10 +989,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 56), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100CC, // rules_mess
-        0x2100CD, // control_mess[0]
-        0, // control_mess[1]
-        0x2100CF, // advice_mess
+        0x2100CC, // inst_mess[0]
+        0x2100CD, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100CF, // inst_mess[3]
     },
     {
         OVL_M456, // ovl
@@ -1007,10 +1007,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 57), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0x2100D0, // rules_mess
-        0x2100D1, // control_mess[0]
-        0, // control_mess[1]
-        0x2100D3, // advice_mess
+        0x2100D0, // inst_mess[0]
+        0x2100D1, // inst_mess[1]
+        0, // inst_mess[2]
+        0x2100D3, // inst_mess[3]
     },
     {
         OVL_M457, // ovl
@@ -1025,10 +1025,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 58), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M458, // ovl
@@ -1043,10 +1043,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 59), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M459, // ovl
@@ -1061,10 +1061,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x370013, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x370013, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M460, // ovl
@@ -1079,10 +1079,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x370016, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x370016, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M461, // ovl
@@ -1097,10 +1097,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x370019, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x370019, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M462, // ovl
@@ -1115,10 +1115,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x37001C, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x37001C, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         OVL_M463, // ovl
@@ -1133,10 +1133,10 @@ MgInfo mgInfoTbl[] = {
         DATA_MAKE_NUM(DATADIR_INSTPIC, 50), // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0x370007, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0x370007, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
     {
         ((u16)OVL_INVALID), // ovl
@@ -1151,10 +1151,10 @@ MgInfo mgInfoTbl[] = {
         0, // mg_pic[0]
         0, // mg_pic[1]
         0, // mg_pic[2]
-        0, // rules_mess
-        0, // control_mess[0]
-        0, // control_mess[1]
-        0, // advice_mess
+        0, // inst_mess[0]
+        0, // inst_mess[1]
+        0, // inst_mess[2]
+        0, // inst_mess[3]
     },
 };
 

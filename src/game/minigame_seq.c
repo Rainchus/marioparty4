@@ -3192,7 +3192,7 @@ static void PauseProc(void)
 		char_mess_map[GWPlayerCfg[i].group]++;
 	}
 	mg = omMgIndexGet(omcurovl);
-	if(mgInfoTbl[mg].control_mess[0] == 0 && mgInfoTbl[mg].control_mess[1] == 0) {
+	if(mgInfoTbl[mg].inst_mess[1] == 0 && mgInfoTbl[mg].inst_mess[2] == 0) {
 		for(i=1; i<=20; i++) {
 			ratio = sin(M_PI*(i*4.5f)/180.0);
 			HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*290)-50.0f);
@@ -3207,18 +3207,18 @@ static void PauseProc(void)
 			HuWinAttrSet(window[2], 0x800);
 			HuWinMesSet(window[2], 0x3300A1);
 		}
-		if(mgInfoTbl[mg].control_mess[1]) {
+		if(mgInfoTbl[mg].inst_mess[2]) {
 			s16 insert_idx;
 			window[0] = HuWinExCreateStyled(-10000.0f, 140.0f, 412, 120, -1, 0);
 			HuWinPriSet(window[0], 0);
 			HuWinDispOn(window[0]);
 			HuWinMesSpeedSet(window[0], 0);
-			HuWinMesSet(window[0], mgInfoTbl[mg].control_mess[0]);
+			HuWinMesSet(window[0], mgInfoTbl[mg].inst_mess[1]);
 			window[1] = HuWinExCreateStyled(-10000.0f, 276.0f, 412, 120, -1, 0);
 			HuWinPriSet(window[1], 0);
 			HuWinDispOn(window[1]);
 			HuWinMesSpeedSet(window[1], 0);
-			HuWinMesSet(window[1], mgInfoTbl[mg].control_mess[1]);
+			HuWinMesSet(window[1], mgInfoTbl[mg].inst_mess[2]);
 			for(i=insert_idx=0; i<4; i++) {
 				for(j=0; j<char_mess_map[i]; j++) {
 					HuWinInsertMesSet(window[0], char_mess[i][j], (s16)insert_idx);
@@ -3241,7 +3241,7 @@ static void PauseProc(void)
 			HuWinPriSet(window[0], 0);
 			HuWinDispOn(window[0]);
 			HuWinMesSpeedSet(window[0], 0);
-			HuWinMesSet(window[0], mgInfoTbl[mg].control_mess[0]);
+			HuWinMesSet(window[0], mgInfoTbl[mg].inst_mess[1]);
 			for(i=1; i<=20; i++) {
 				ratio = sin(M_PI*(i*4.5f)/180.0);
 				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
