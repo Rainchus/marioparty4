@@ -789,7 +789,7 @@ config.libs = [
     Rel('instDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/instDll/main.c"),
+            Object(Matching, "REL/instDll/main.c"),
             Object(NonMatching, "REL/instDll/font.c"),
         }
     ),
