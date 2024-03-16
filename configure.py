@@ -950,7 +950,7 @@ config.libs = [
     Rel('messDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/messDll/main.c"),
+            Object(Matching, "REL/messDll/main.c"),
         }
     ),
     Rel('mgmodedll',

@@ -67,7 +67,7 @@ omObjData *fn_1_21F8(void) {
     temp_r30->unk2C = 0.0f;
     temp_r30->unk34 = 0.0f;
     temp_r30->unk30 = 0.0f;
-    var_r31->model[0] = Hu3DModelCreateFile(0x69000C);
+    var_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 12));
     Hu3DModelLayerSet(var_r31->model[0], 1);
     for (i = 0; i < 3; i++) {
         var_r31->motion[i] = Hu3DJointMotion(var_r31->model[0], HuDataSelHeapReadNum(lbl_1_rodata_E0[i], MEMORY_DEFAULT_NUM, HEAP_DATA));

@@ -76,6 +76,7 @@ typedef struct {
 } WindowData; // Size 0x180
 
 extern WindowData winData[32];
+extern void *messDataPtr;
 
 void HuWindowInit(void);
 void HuWinInit(s32 mess_data_no);
@@ -123,7 +124,7 @@ void _HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16
 void HuWinComKeyGet(s16 window, u32 *data);
 void HuWinComKeyReset(void);
 void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...);
-void HuWinInsertMesSizeGet(s32 mess, s16 index);
+void HuWinInsertMesSizeGet(u32 mess, s16 index);
 void HuWinMesSizeCancelCRSet(s32 cancel_cr);
 void HuWinMesMaxSizeBetGet(float *size, u32 start, u32 end);
 s16 HuWinKeyWaitNumGet(u32 mess);

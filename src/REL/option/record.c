@@ -279,7 +279,7 @@ static omObjData *fn_1_8A88(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x690001);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 1));
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
     Hu3DModelLayerSet(temp_r31->model[0], 0);
     Hu3DMotionStartEndSet(temp_r31->model[0], 0.0f, 6.0f);
@@ -315,7 +315,7 @@ static omObjData *fn_1_8C84(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x69000E);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
     Hu3DModelLayerSet(temp_r31->model[0], 2);
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
     omSetRot(temp_r31, 30.0f, 190.0f, 0.0f);
