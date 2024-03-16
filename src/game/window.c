@@ -1361,12 +1361,12 @@ void HuWinMesWait(s16 window) {
     }
 }
 
-void HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y) {
+s16 HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y) {
     WindowData *window_ptr = &winData[window];
     s16 sprite;
 
     sprite = HuSprCreate(anim, window_ptr->prio-1, bank);
-    HuWinSprSet(window, sprite, x, y);
+    return HuWinSprSet(window, sprite, x, y);
 }
 
 s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
