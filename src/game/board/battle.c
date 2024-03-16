@@ -150,15 +150,15 @@ static void ExecBattle(void) {
     MgInfo *var_r29;
     s32 var_r27 = 0;
     s32 sp8[] = {
-        0x00750000,
-        0x00760000,
-        0x00770000,
-        0x00780000,
-        0x00790000,
-        0x007A0000,
-        0x007B0000,
-        0x007C0000,
-        0x007D0000
+        DATADIR_W01,
+        DATADIR_W02,
+        DATADIR_W03,
+        DATADIR_W04,
+        DATADIR_W05,
+        DATADIR_W06,
+        DATADIR_W10,
+        DATADIR_W20,
+        DATADIR_W21
     };
 
     var_r29 = mgInfoTbl;
@@ -498,17 +498,17 @@ static void CreateBattleMain(void) {
     s32 i;
     BattleWork *temp_r31;
     s32 spC[] = {
-        0x00010000,
-        0x00010001,
-        0x00010002,
-        0x00010003,
-        0x00010003,
-        0x00010004,
-        0x00010005,
-        0x00010006,
-        0x00010007,
-        0x00010008,
-        0x00010009
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 0),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 1),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 2),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 3),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 3),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 4),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 5),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 6),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 7),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 8),
+        DATA_MAKE_NUM(DATADIR_BBATTLE, 9)
     };
 
     battleObj = omAddObjEx(boardObjMan, 0x101, 0, 0, -1, UpdateBattleMain);
@@ -774,24 +774,24 @@ static void SetBattleBombState(s32 arg0) {
 
 static s8 battleChanceTbl[][3][5] = {
     {
-        { 0x0A, 0x55, 0x05, 0x00, 0x00 },
-        { 0x0A, 0x4B, 0x0F, 0x00, 0x00 },
-        { 0x0A, 0x41, 0x19, 0x00, 0x00 },
+        { 10, 85,  5, 0, 0 },
+        { 10, 75, 15, 0, 0 },
+        { 10, 65, 25, 0, 0 },
     },
     {
-        { 0x05, 0x46, 0x14, 0x05, 0x00 },
-        { 0x05, 0x3C, 0x19, 0x0A, 0x00 },
-        { 0x05, 0x32, 0x1E, 0x0A, 0x00 },
+        { 5, 70, 20,  5, 0 },
+        { 5, 60, 25, 10, 0 },
+        { 5, 50, 30, 10, 0 },
     },
     {
-        { 0x05, 0x3C, 0x14, 0x0A, 0x05 },
-        { 0x05, 0x2D, 0x1E, 0x0F, 0x05 },
-        { 0x05, 0x23, 0x1E, 0x14, 0x0A },
+        { 5, 60, 20, 10,  5 },
+        { 5, 45, 30, 15,  5 },
+        { 5, 35, 30, 20, 10 },
     },
     {
-        { 0x05, 0x2D, 0x1E, 0x0F, 0x05 },
-        { 0x05, 0x1E, 0x23, 0x14, 0x0A },
-        { 0x05, 0x14, 0x23, 0x19, 0x0F }
+        { 5, 45, 30, 15,  5 },
+        { 5, 30, 35, 20, 10 },
+        { 5, 20, 35, 25, 15 }
     }
 };
 
