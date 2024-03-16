@@ -1156,7 +1156,7 @@ static omObjData *fn_1_61A0(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x69000D);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 13));
     Hu3DModelLayerSet(temp_r31->model[0], 2);
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
     omSetRot(temp_r31, -80.0f, 45.0f, 0.0f);
@@ -1177,7 +1177,7 @@ static omObjData *fn_1_62F0(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x69000E);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
     Hu3DModelLayerSet(temp_r31->model[0], 2);
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
     omSetRot(temp_r31, 0.0f, -90.0f, 0.0f);
@@ -1198,7 +1198,7 @@ static omObjData *fn_1_6440(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x690003);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 3));
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
     Hu3DModelLayerSet(temp_r31->model[0], 0);
     return temp_r31;
@@ -1223,9 +1223,9 @@ static omObjData *fn_1_6528(s32 arg0, s32 arg1) {
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
     if (arg1 != 0) {
-        temp_r31->model[0] = Hu3DModelCreateFile(0x690005);
+        temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 5));
     } else {
-        temp_r31->model[0] = Hu3DModelCreateFile(0x690004);
+        temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 4));
     }
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
     Hu3DModelLayerSet(temp_r31->model[0], 0);

@@ -222,7 +222,7 @@ static omObjData *fn_1_2088(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x690000);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 0));
     Hu3DModelLayerSet(temp_r31->model[0], 0);
     Hu3DModelShadowMapSet(temp_r31->model[0]);
     return temp_r31;
@@ -237,7 +237,7 @@ static omObjData *fn_1_2144(void) {
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
     Hu3DModelLayerSet(temp_r31->model[0], 0);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x690006);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 6));
     return temp_r31;
 }
 

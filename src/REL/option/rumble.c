@@ -180,7 +180,7 @@ static omObjData *fn_1_37AC(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x69000F);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 15));
     Hu3DModelLayerSet(temp_r31->model[0], 3);
     omSetRot(temp_r31, 0.0f, 180.0f, 0.0f);
     Hu3DModelAttrSet(temp_r31->model[0], 1);
@@ -199,7 +199,7 @@ static omObjData *fn_1_38BC(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x690002);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 2));
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
     if (GWGameStat.rumble != 0) {
         Hu3DMotionTimeSet(temp_r31->model[0], 60.0f);
@@ -243,7 +243,7 @@ static omObjData *fn_1_3B08(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x690009);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 9));
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
     return temp_r31;
 }
@@ -270,7 +270,7 @@ static omObjData *fn_1_3C6C(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x69000A);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 10));
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
     Hu3DModelLayerSet(temp_r31->model[0], 2);
     return temp_r31;
@@ -318,7 +318,7 @@ static omObjData *fn_1_3F28(void) {
     omObjData *temp_r31;
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(0x69000B);
+    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 11));
     if (GWGameStat.rumble != 0) {
         Hu3DModelAttrReset(temp_r31->model[0], 1);
     } else {

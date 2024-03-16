@@ -1537,7 +1537,7 @@ void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...) {
     va_end(list);
 }
 
-void HuWinInsertMesSizeGet(s32 mess, s16 index) {
+void HuWinInsertMesSizeGet(u32 mess, s16 index) {
     winInsertF = 1;
     winMaxWidth = winMaxHeight = 0;
     GetMesMaxSizeSub(mess);

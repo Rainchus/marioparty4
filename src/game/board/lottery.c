@@ -98,7 +98,6 @@ static s8 comLotteryType;
 static s8 comLotteryWinType;
 static u8 comInputPos;
 static s32 handUpdateF;
-// ...
 static omObjData *lotteryTicketPickObj;
 static s8 (*comInputDrawP)[2];
 static Process *lotteryProc;
@@ -242,35 +241,88 @@ void BoardLotteryInit(void) {
     if (GWBoardGet() != 8) {
         BoardModelVisibilitySet(BoardLotteryHostGet(), 0);
         BoardSpaceLinkTransformGet(0x10000000, &sp14, &sp8, NULL);
-        lotteryMdl[0] = BoardModelCreate(0x50000, NULL, 0);
+        lotteryMdl[0] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 0), NULL, 0);
         BoardModelMotionStart(lotteryMdl[0], 0, 0);
         BoardModelMotionSpeedSet(lotteryMdl[0], 0.0f);
         BoardModelPosSetV(lotteryMdl[0], &sp14);
         BoardModelRotSetV(lotteryMdl[0], &sp8);
-        HuDataDirClose(0x50000);
+        HuDataDirClose(DATA_MAKE_NUM(DATADIR_BKUJIYA, 0));
     }
 }
 
 static void CreateModel(void) {
     s32 i;
-    s32 sp10[4] = { 0x00050005, 0x00050006, 0x00050007, 0x00050008 };
-    s32 sp8[2] = { 0x00050003, 0x00050004 };
+    s32 sp10[4] = {
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 5),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 6),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 7),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 8)
+    };
+    s32 sp8[2] = {
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 3),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 4)
+    };
     s32 sp20[9][4] = {
-        { 0x00020001, 0x00020002, 0x00020003, 0x00020004 },
-        { 0x00020009, 0x0002000A, 0x0002000B, 0x0002000C },
-        { 0x0002000E, 0x0002000F, 0x00020010, 0x00020011 },
-        { 0x00020018, 0x00020019, 0x0002001A, 0x0002001B },
-        { 0x0002001D, 0x0002001E, 0x0002001F, 0x00020020 },
-        { 0x00020022, 0x00020023, 0x00020024, 0x00020025 },
-        { 0x0002000E, 0x0002000F, 0x00020010, 0x00020011 },
-        { 0x0002002A, 0x0002002B, 0x0002002C, 0x0002002D },
-        { 0x0002002A, 0x0002002B, 0x0002002C, 0x0002002D }
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 1),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 2),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 3),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 4)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST,  9),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 10),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 11),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 12)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 14),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 15),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 16),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 17)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 24),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 25),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 26),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 27)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 29),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 30),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 31),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 32)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 34),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 35),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 36),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 37)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 14),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 15),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 16),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 17)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 42),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 43),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 44),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 45)
+        },
+        {
+            DATA_MAKE_NUM(DATADIR_BGUEST, 42),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 43),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 44),
+            DATA_MAKE_NUM(DATADIR_BGUEST, 45)
+        }
     };
 
-    lotteryMdl[1] = BoardModelCreate(0x50001, NULL, 0);
+    lotteryMdl[1] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 1), NULL, 0);
     fn_8006DDE8(lotteryMdl[1], -1.0f);
     BoardModelMotionSpeedSet(lotteryMdl[1], 0.0f);
-    lotteryMdl[2] = BoardModelCreate(0x50002, NULL, 0);
+    lotteryMdl[2] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 2), NULL, 0);
     BoardModelVisibilitySet(lotteryMdl[2], 0);
     fn_8006DDE8(lotteryMdl[2], -1.0f);
     BoardModelMotionStart(lotteryMdl[2], 0, 0);
@@ -286,7 +338,7 @@ static void CreateModel(void) {
         fn_8006DDE8(gripMdl[i], -1.0f);
         BoardModelMotionSpeedSet(gripMdl[i], 0.0f);
     }
-    lotteryMdl[3] = BoardModelCreate(0x50011, NULL, 0);
+    lotteryMdl[3] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 17), NULL, 0);
     BoardModelVisibilitySet(lotteryMdl[3], 0);
     fn_8006DDE8(lotteryMdl[3], -1.0f);
     BoardModelPosSet(BoardLotteryHostGet(), 0.0f, 0.0f, 0.0f);
@@ -368,7 +420,7 @@ static void DestroyLottery(void) {
     BoardWinKill();
     KillScratch();
     KillCoin();
-    HuDataDirClose(0x50000);
+    HuDataDirClose(DATA_MAKE_NUM(DATADIR_BKUJIYA, 0));
     lotteryProc = NULL;
 }
 
@@ -388,38 +440,38 @@ static void ExecLottery(void) {
 
     switch (GWBoardGet()) {
         case 0:
-            lotteryMessBase = 0x60002;
+            lotteryMessBase = MAKE_MESSID(6, 2);
             break;
         case 1:
-            lotteryMessBase = 0x6000F;
+            lotteryMessBase = MAKE_MESSID(6, 15);
             break;
         case 2:
-            lotteryMessBase = 0x6001C;
+            lotteryMessBase = MAKE_MESSID(6, 28);
             break;
         case 3:
-            lotteryMessBase = 0x60029;
+            lotteryMessBase = MAKE_MESSID(6, 41);
             break;
         case 4:
-            lotteryMessBase = 0x60036;
+            lotteryMessBase = MAKE_MESSID(6, 54);
             break;
         case 5:
-            lotteryMessBase = 0x60043;
+            lotteryMessBase = MAKE_MESSID(6, 67);
             break;
         case 6:
-            lotteryMessBase = 0x60002;
+            lotteryMessBase = MAKE_MESSID(6, 2);
             break;
         case 7:
-            lotteryMessBase = 0x60052;
+            lotteryMessBase = MAKE_MESSID(6, 82);
             break;
         case 8:
-            lotteryMessBase = 0x60052;
+            lotteryMessBase = MAKE_MESSID(6, 82);
             break;
     }
-    temp_r29 = BoardDataDirReadAsync(0x50000);
+    temp_r29 = BoardDataDirReadAsync(DATADIR_BKUJIYA);
     temp_r31 = GWSystem.player_curr;
     temp_r28 = GWPlayer[temp_r31].space_curr;
     BoardPlayerIdleSet(temp_r31);
-    BoardWinCreateChoice(0, 0x60000, -1, 0);
+    BoardWinCreateChoice(0, MAKE_MESSID(6, 0), -1, 0);
     if (GWPlayer[temp_r31].com) {
         if (BoardPlayerCoinsGet(temp_r31) >= 5) {
             BoardComKeySetLeft();
@@ -435,7 +487,7 @@ static void ExecLottery(void) {
         HuPrcEnd();
     }
     if (BoardPlayerCoinsGet(temp_r31) < 5) {
-        BoardWinCreate(0, 0x60001, -1);
+        BoardWinCreate(0, MAKE_MESSID(6, 1), -1);
         BoardWinWait();
         BoardWinKill();
         if (temp_r29 != -1) {
@@ -477,7 +529,7 @@ static void ExecLottery(void) {
     if (BoardPlayerSizeGet(temp_r31) == 1) {
         BoardModelVisibilitySet(lotteryMdl[3], 1);
     }
-    omVibrate(temp_r31, 0xC, 6, 6);
+    omVibrate(temp_r31, 12, 6, 6);
     HuAudFXPlay(0x331);
     HuAudFXPlay(0x344);
     BoardModelMotionStart(lotteryMdl[0], 0, 0);
@@ -641,7 +693,7 @@ static void PayEnterFee(s32 arg0) {
     BoardStatusShowSetForce(temp_r31);
     BoardStatusShowSet(temp_r31, 1);
     if (arg0 != 0) {
-        var_r29 = lotteryMessBase + 0xC;
+        var_r29 = lotteryMessBase + 12;
     } else {
         var_r29 = lotteryMessBase;
     }
@@ -672,14 +724,14 @@ static void ShowTicket(void) {
     s32 i;
     u8 *var_r28;
     s32 sp14[] = {
-        0x00050015,
-        0x00050016,
-        0x00050017,
-        0x00050018,
-        0x00050019,
-        0x0005001A,
-        0x0005001B,
-        0x0005001C
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 21),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 22),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 23),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 24),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 25),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 26),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 27),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 28)
     };
 
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
@@ -688,25 +740,25 @@ static void ShowTicket(void) {
     sp8 = GWPlayer[GWSystem.player_curr].field00_bitA;
     var_r28 = (u8*) &sp8;
     temp_r31 = HuSprGrpCreate(4);
-    BoardSpriteCreate(0x50014, 0x7531, 0, &spA);
+    BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 20), 30001, 0, &spA);
     HuSprGrpMemberSet(temp_r31, 0, spA);
     HuSprAttrSet(temp_r31, 0, 9);
     HuSprPosSet(temp_r31, 0, 288.0f, 240.0f);
     HuSprTPLvlSet(temp_r31, 0, 0.0f);
     var_r29 = GWPlayer[(*var_r28 >> 4) & 3].character;
-    BoardSpriteCreate(sp14[var_r29], 0x7530, 0, &spC);
+    BoardSpriteCreate(sp14[var_r29], 30000, 0, &spC);
     HuSprGrpMemberSet(temp_r31, 1, spC);
     HuSprAttrSet(temp_r31, 1, 9);
     HuSprPosSet(temp_r31, 1, 200.0f, 237.0f);
     HuSprTPLvlSet(temp_r31, 1, 0.0f);
     var_r29 = GWPlayer[(*var_r28 >> 2) & 3].character;
-    BoardSpriteCreate(sp14[var_r29], 0x7530, 0, &spE);
+    BoardSpriteCreate(sp14[var_r29], 30000, 0, &spE);
     HuSprGrpMemberSet(temp_r31, 2, spE);
     HuSprAttrSet(temp_r31, 2, 9);
     HuSprPosSet(temp_r31, 2, 294.0f, 237.0f);
     HuSprTPLvlSet(temp_r31, 2, 0.0f);
     var_r29 = GWPlayer[*var_r28 & 3].character;
-    BoardSpriteCreate(sp14[var_r29], 0x7530, 0, &sp10);
+    BoardSpriteCreate(sp14[var_r29], 30000, 0, &sp10);
     HuSprGrpMemberSet(temp_r31, 3, sp10);
     HuSprAttrSet(temp_r31, 3, 9);
     HuSprPosSet(temp_r31, 3, 388.0f, 237.0f);
@@ -752,7 +804,7 @@ static void SetupTicket(s32 arg0) {
         }
     }
     for (var_r28 = 0; var_r28 < 1000; var_r28++) {
-        var_r29 = BoardRandMod(0x40) & 0x3F;
+        var_r29 = BoardRandMod(64) & 0x3F;
         for (var_r31 = 0; var_r30 != 0 && var_r31 < var_r30; var_r31++) {
             if (sp8[var_r31] == var_r29) {
                 var_r29 = 0x80;
@@ -768,9 +820,12 @@ static void SetupTicket(s32 arg0) {
 }
 
 static void LotteryInlineFunc00(s32 arg0, s32 arg1) {
-    s32 sp20[2] = { 0x00050012, 0x00050013 };
-    s16 sp10[2] = { 0x0098, 0x0078 };
-    s16 sp14[2] = { 0x0078, 0x0078 };
+    s32 sp20[2] = {
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 18),
+        DATA_MAKE_NUM(DATADIR_BKUJIYA, 19)
+    };
+    s16 sp10[2] = { 152, 120 };
+    s16 sp14[2] = { 120, 120 };
     Vec sp34;
     float temp_f30;
     s16 var_r30;
@@ -780,7 +835,7 @@ static void LotteryInlineFunc00(s32 arg0, s32 arg1) {
         sp34.y = -sp10[arg0] / 2;
         temp_f30 = 4.0f;
         if (lotterySpr == -1) {
-            lotterySpr = espEntry(sp20[arg0], 0x7531, 0);
+            lotterySpr = espEntry(sp20[arg0], 30001, 0);
             espAttrSet(lotterySpr, 1);
         }
     } else {
@@ -820,14 +875,14 @@ static void ExecBallGame(void) {
     s8 sp9;
     s8 *temp_r23;
     s32 sp58[] = {
-        0x005F001D,
-        0x001A001D,
-        0x006D001D,
-        0x008A001D,
-        0x0085001D,
-        0x0011001D,
-        0x000D001D,
-        0x0081001D
+        DATA_MAKE_NUM(DATADIR_MARIOMOT, 29),
+        DATA_MAKE_NUM(DATADIR_LUIGIMOT, 29),
+        DATA_MAKE_NUM(DATADIR_PEACHMOT, 29),
+        DATA_MAKE_NUM(DATADIR_YOSHIMOT, 29),
+        DATA_MAKE_NUM(DATADIR_WARIOMOT, 29),
+        DATA_MAKE_NUM(DATADIR_DONKEYMOT, 29),
+        DATA_MAKE_NUM(DATADIR_DAISYMOT, 29),
+        DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 29),
     };
 
     temp_r27 = GWSystem.player_curr;
@@ -858,7 +913,7 @@ static void ExecBallGame(void) {
     var_r20 = 0;
     spB = spA = sp9 = var_r17 = 0;
     var_r26 = var_f28 = var_f27 = var_f25 = var_f23 = var_r21 = 0;
-    HuPrcSleep(0x18);
+    HuPrcSleep(24);
     var_r24 = var_r22 = 0;
     while (1) {
         HuPrcVSleep();
@@ -1033,32 +1088,32 @@ static void ExecBallPrize(void) {
 }
 
 static const s32 pickSpr[] = {
-    0x0007001E,
-    0x0007001F,
-    0x00070020,
-    0x00070021,
-    0x00070022,
-    0x00070023,
-    0x00070024,
-    0x00070025
+    DATA_MAKE_NUM(DATADIR_BOARD, 30),
+    DATA_MAKE_NUM(DATADIR_BOARD, 31),
+    DATA_MAKE_NUM(DATADIR_BOARD, 32),
+    DATA_MAKE_NUM(DATADIR_BOARD, 33),
+    DATA_MAKE_NUM(DATADIR_BOARD, 34),
+    DATA_MAKE_NUM(DATADIR_BOARD, 35),
+    DATA_MAKE_NUM(DATADIR_BOARD, 36),
+    DATA_MAKE_NUM(DATADIR_BOARD, 37)
 };
 
 static const s32 handMdl[] = {
-    0x00050009,
-    0x0005000A,
-    0x0005000B,
-    0x0005000C,
-    0x0005000D,
-    0x0005000E,
-    0x0005000F,
-    0x00050010
+    DATA_MAKE_NUM(DATADIR_BKUJIYA,  9),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 10),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 11),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 12),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 13),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 14),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 15),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 16)
 };
 
 static const s32 ticketSpr[] = {
-    0x0005001D,
-    0x0005001E,
-    0x0005001F,
-    0x00050020
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 29),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 30),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 31),
+    DATA_MAKE_NUM(DATADIR_BKUJIYA, 32)
 };
 
 static omObjData *ticketObj[12] = { NULL };
@@ -1077,14 +1132,14 @@ static s32 loseSoundTbl[] = {
 };
 
 static s32 loseMotTbl[] = {
-    0x005F0033,
-    0x001A0033,
-    0x006D0033,
-    0x008A0033,
-    0x00850033,
-    0x00110033,
-    0x000D0033,
-    0x00810033
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 51),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 51),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 51),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 51),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 51),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 51),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 51),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 51)
 };
 
 static void ExecScratchTicket(s32 arg0) {
@@ -1172,7 +1227,7 @@ static void ExecScratch(void) {
     s32 temp_r31;
 
     currPrize = -1;
-    BoardFilterFadeInit(0x1E, 0xA0);
+    BoardFilterFadeInit(30, 0xA0);
     InitTicketPrizes();
     InitScratchSpr();
     temp_curr = GWSystem.player_curr;
@@ -1281,7 +1336,7 @@ static void InitScratchSpr(void) {
     BoardPlayerRotGet(temp_curr, &sp18);
     memset(ticketObj, 0, sizeof(ticketObj));
     BoardCameraRotGet(&spC);
-    temp_r28 = HuSprGrpCreate(0x18);
+    temp_r28 = HuSprGrpCreate(24);
     ticketSprGrp = temp_r28;
     for (i = 0; i < 12; i++) {
         temp_r31 = omAddObjEx(boardObjMan, 0x101, 0, 0, -1, ExecScratchSpr);
@@ -1295,12 +1350,12 @@ static void InitScratchSpr(void) {
         temp_r31->trans.y = 98.0f + 110.0f * (i / 4);
         temp_r31->rot.x = -56.0f;
         temp_r31->rot.y = temp_r31->trans.y;
-        BoardSpriteCreate(ticketSpr[ticketPrize[i]], 0x157C, NULL, &sp8);
+        BoardSpriteCreate(ticketSpr[ticketPrize[i]], 5500, NULL, &sp8);
         HuSprGrpMemberSet(temp_r28, i, sp8);
         HuSprPosSet(temp_r28, i, temp_r31->rot.x, temp_r31->rot.y);
         HuSprAttrSet(temp_r28, i, 8);
         temp_r29->unk02 = sp8;
-        BoardSpriteCreate(0x50021, 0x1388, &temp_r29->unk08, &sp8);
+        BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 33), 5000, &temp_r29->unk08, &sp8);
         HuSprGrpMemberSet(temp_r28, i + 12, sp8);
         HuSprPosSet(temp_r28, i + 12, temp_r31->rot.x, temp_r31->rot.y);
         HuSprAttrSet(temp_r28, i + 12, 8);
@@ -1417,7 +1472,7 @@ static void InitScratchPick(void) {
     var_r31->unk00_field0 = 0;
     var_r31->unk01 = GWPlayer[GWSystem.player_curr].character;
     var_r31->unk08 = HuSprGrpCreate(1);
-    BoardSpriteCreate(pickSpr[var_r31->unk01], 0x1388, 0, &var_r31->unk06);
+    BoardSpriteCreate(pickSpr[var_r31->unk01], 5000, 0, &var_r31->unk06);
     HuSprGrpMemberSet(var_r31->unk08, 0, var_r31->unk06);
     HuSprAttrSet(var_r31->unk08, 0, 8);
     HuSprPosSet(var_r31->unk08, 0, temp_f31, temp_f30);
@@ -1457,7 +1512,7 @@ static void ExecTicketFocus(s32 arg0) {
     }
     temp_r29 = OM_GET_WORK_PTR(ticketObj[arg0], TicketWork);
     for (var_f31 = 0.0f; var_f31 < 90.0f; var_f31 += 2.0f) {
-        temp_f30 = 1.0 + 1.2999999523162842 * sin(var_f31 * M_PI / 180.0);
+        temp_f30 = 1.0 + 1.3f * sin(var_f31 * M_PI / 180.0);
         HuSprScaleSet(ticketSprGrp, temp_r29->unk00_field2, temp_f30, temp_f30);
         HuSprScaleSet(ticketSprGrp, temp_r29->unk00_field2 + 12, temp_f30, temp_f30);
         HuPrcVSleep();
@@ -1630,10 +1685,10 @@ static void ExecCoinPrize(void) {
     BoardPlayerPosGet(temp_r27, &sp8);
     var_f31 = 150.0f + sp8.y;
     if (BoardPlayerSizeGet(temp_r27) == 1) {
-        var_f31 = 110.0f + (52.5308f + (0.3f * var_f31));
+        var_f31 = 52.5308f + 0.3f * var_f31 + 110.0f;
     }
     for (i = 0; i < 10; i++) {
-        coinMdl[i] = BoardModelCreate(0x7000A, NULL, 0);
+        coinMdl[i] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 10), NULL, 0);
         BoardModelVisibilitySet(coinMdl[i], 0);
     }
     while (1) {
@@ -1672,7 +1727,7 @@ static void ExecCoinPrize(void) {
                     coinF[i] = 0;
                     BoardPlayerCoinsAdd(temp_r27, 1);
                     HuAudFXPlay(7);
-                    omVibrate(temp_r27, 0xC, 6, 6);
+                    omVibrate(temp_r27, 12, 6, 6);
                 } else {
                     BoardModelPosSetV(coinMdl[i], &sp64[i]);
                     BoardModelRotSet(coinMdl[i], 0.0f, sp3C[i], 0.0f);
@@ -1697,12 +1752,10 @@ static void ExecItemPrize(void) {
     s16 *var_r31;
     s16 i;
     s32 spC[2] = {
-        0x0007006F,
-        0x00070070
+        DATA_MAKE_NUM(DATADIR_BOARD, 111),
+        DATA_MAKE_NUM(DATADIR_BOARD, 112)
     };
-    s8 sp8[2] = {
-        0x02, 0x03
-    };
+    s8 sp8[2] = { 2, 3 };
 
     temp_r29 = GWSystem.player_curr;
     var_r28 = (BoardRandFloat() < 0.5f) ? 1 : 0;
@@ -1752,7 +1805,7 @@ static void ExecItemPrize(void) {
     BoardModelKill(*var_r31);
     *var_r31 = -1;
     BoardPlayerItemAdd(GWSystem.player_curr, sp8[var_r28]);
-    omVibrate(GWSystem.player_curr, 0xC, 6, 6);
+    omVibrate(GWSystem.player_curr, 12, 6, 6);
 }
 
 static void KillCoin(void) {
@@ -1783,7 +1836,7 @@ static void ExecPrize(void) {
     sp14.x = 0.0f;
     sp14.y = 200.0f;
     sp14.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], 0, &sp14, 1300.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lotteryMdl[0], 0, &sp14, 1300.0f, -1.0f, 21);
     temp_r30 = GWSystem.player_curr;
     BoardStatusShowSetForce(temp_r30);
     BoardStatusShowSet(temp_r30, 1);
@@ -1803,18 +1856,18 @@ static void ExecPrize(void) {
         case 0:
             var_r28 = lotteryMessBase + 2;
             var_r29 = 7;
-            var_r26 = 0x64;
+            var_r26 = 100;
             break;
         case 1:
             var_r28 = lotteryMessBase + 4;
             var_r29 = 7;
-            var_r26 = 0x50;
+            var_r26 = 80;
             break;
         case 2:
             var_r28 = lotteryMessBase + 5;
             if (var_r24 < 3) {
                 var_r29 = 7;
-                var_r26 = 0x50;
+                var_r26 = 80;
             } else {
                 var_r29 = 8;
             }
@@ -1933,14 +1986,14 @@ static void CreateLotteryWin(s32 arg0) {
 
     temp_f30 = -10000.0f;
     if (arg0 == 0) {
-        var_r31 = 0x60050;
+        var_r31 = MAKE_MESSID(6, 80);
         var_f31 = 352.0f;
     } else if (arg0 == 1) {
         var_f31 = 352.0f;
-        var_r31 = 0x60051;
+        var_r31 = MAKE_MESSID(6, 81);
     } else {
         var_f31 = 364.0f;
-        var_r31 = 0x200016;
+        var_r31 = MAKE_MESSID(32, 22);
     }
     HuWinMesMaxSizeGet(1, sp8, var_r31);
     lotteryInstWin = HuWinCreate(temp_f30, var_f31, sp8[0], sp8[1], 0);
@@ -1967,7 +2020,7 @@ void BoardLotteryTutorialExec(void) {
     s16 temp_r31;
     s32 temp_r30;
 
-    temp_r30 = BoardDataDirReadAsync(0x50000);
+    temp_r30 = BoardDataDirReadAsync(DATADIR_BKUJIYA);
     temp_r31 = BoardSpaceFlagSearch(0, 0x10000000);
     if (temp_r30 != -1) {
         BoardDataAsyncWait(temp_r30);
