@@ -1066,7 +1066,7 @@ config.libs = [
     Rel('selmenuDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/selmenuDll/main.c"),
+            Object(Matching, "REL/selmenuDll/main.c"),
         }
     ),
     Rel('staffDll',
