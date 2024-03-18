@@ -725,16 +725,15 @@ static s16 playerCfgSelF;
 static s16 playerCfgPlayerPos;
 static s16 playerCfgOptionPos;
 
-#define DO_HILITE(pos) \
+#define DO_HILITE(option) \
 do { \
 	s32 color; \
-	if(playerCfgOptionPos == pos) { \
-		color = FONT_COLOR_CYAN; \
-		fontcolor = color; \
+	if(playerCfgOptionPos == option) { \
+		color = fontcolor = FONT_COLOR_CYAN; \
 	} else { \
-		color = FONT_COLOR_GREEN; \
-		fontcolor = color; \
+		color = fontcolor = FONT_COLOR_GREEN; \
 	} \
+    (void)color; \
 } while(0)
 	
 static void SMPlayerCfgDraw(void)
