@@ -146,7 +146,6 @@ void BoardBowserSuitMotionSetWait(void);
 void BoardBowserSuitPlayerModelKill(void);
 void BoardDiceDigit2DShowSet(s32);
 s32 BoardPlayerMotBlendCheck(s32);
-void BoardPlayerMoveAwayStartCurr(s32, s32);
 void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);
 
