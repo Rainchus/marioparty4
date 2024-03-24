@@ -106,7 +106,6 @@ void BoardCameraOffsetSet(float x, float y, float z);
 void BoardCameraTargetPlayerSet(s32 player);
 void BoardCameraTargetModelSet(s16 model);
 void BoardCameraTargetSpaceSet(s32 space);
-void BoardCameraPosCalcFuncSet(BoardCameraPosCalcFunc func);
 void BoardCameraQuakeSet(s32 duration, float strength);
 void BoardCameraQuakeReset();
 void BoardCameraTargetSet(float x, float y, float z);

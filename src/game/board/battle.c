@@ -2,6 +2,7 @@
 #include "game/audio.h"
 #include "game/chrman.h"
 #include "game/data.h"
+#include "game/flag.h"
 #include "game/gamework.h"
 #include "game/object.h"
 #include "game/objsub.h"
@@ -84,7 +85,7 @@ static omObjData *battleObj;
 static Process *battleProc;
 
 static const s8 battleCoinTbl[] = {
-    0x05, 0x0A, 0x14, 0x1E, 0x32
+    5, 10, 20, 30, 50
 };
 
 static float battleCursorPosTbl[] = {
@@ -133,7 +134,7 @@ void BoardBattleExec(s32 player, s32 space) {
 }
 
 static void DestroyBattle(void) {
-    HuDataDirClose(0x10000);
+    HuDataDirClose(DATADIR_BBATTLE);
     battleProc = NULL;
 }
 
@@ -201,13 +202,13 @@ static void ExecBattle(void) {
             HuPrcVSleep();
         }
         _ClearFlag(0x1001C);
-        HuPrcSleep(0x3C);
+        HuPrcSleep(60);
         HuPrcEnd();
     }
     HuAudFXPlay(0x34A);
-    omVibrate(GWSystem.player_curr, 0xC, 6, 6);
-    BoardAudSeqPause(0, 1, 0x1F4);
-    temp_r22 = BoardDataDirReadAsync(0x10000);
+    omVibrate(GWSystem.player_curr, 12, 6, 6);
+    BoardAudSeqPause(0, 1, 500);
+    temp_r22 = BoardDataDirReadAsync(DATADIR_BBATTLE);
     BoardCameraViewSet(3);
     BoardCameraMotionWait();
     BoardPlayerMotBlendSet(currPlayer, 0, 0xF);
@@ -217,7 +218,7 @@ static void ExecBattle(void) {
     BoardDataAsyncWait(temp_r22);
     SetBattleCoinValue();
     BoardMusStart(1, 4, 0x7F, 0);
-    omVibrate(GWSystem.player_curr, 0xC, 6, 6);
+    omVibrate(GWSystem.player_curr, 12, 6, 6);
     InitExplode();
     while (CheckExplode() == 0) {
         HuPrcVSleep();
@@ -235,13 +236,13 @@ static void ExecBattle(void) {
         }
     }
     if (var_r26 == 0) {
-        BoardWinCreate(2, 0x20001, 1);
+        BoardWinCreate(2, MAKE_MESSID(2, 1), 1);
         BoardWinWait();
         BoardWinKill();
         var_r27 = 1;
     } else {
         HuAudFXPlay(0x4F);
-        BoardWinCreate(2, 0x20000, 1);
+        BoardWinCreate(2, MAKE_MESSID(2, 0), 1);
         BoardWinWait();
         BoardWinKill();
         SetBattleBombState(3);
@@ -260,7 +261,7 @@ static void ExecBattle(void) {
                 var_r23 = 1;
             }
             var_r25 = var_r23;
-            HuPrcSleep(0x3C);
+            HuPrcSleep(60);
         } else {
             var_r25 = -1;
         }
@@ -279,15 +280,15 @@ static void ExecBattle(void) {
         BoardMusVolPanSet(0, 0, 1);
         BoardAudSeqPause(0, 0, 1);
         if (var_r27 == 0) {
-            HuDataDirClose(0x70000);
-            HuDataDirClose(0x20000);
+            HuDataDirClose(DATADIR_BOARD);
+            HuDataDirClose(DATADIR_BGUEST);
             HuDataDirClose(sp8[GWBoardGet()]);
             HuPrcSleep(2);
             temp_r28 = battleMGList[battleMGIdx[mgChoice]];
             GWMGAvailSet(temp_r28);
             GWSystem.mg_next = temp_r28 - 401;
             if (_CheckFlag(0xB)) {
-                var_r24 = 0x140000;
+                var_r24 = DATADIR_INST;
             } else {
                 var_r24 = mgInfoTbl[temp_r28 - 401].data_dir;
             }
@@ -375,12 +376,12 @@ static void TakeCoins(void) {
     HuAudFXPlay(0xF);
     sprintf(totalCoinStr, "%d", var_r30);
     if (var_r30 != coinTakeMax * 4) {
-        var_r24 = 0x20003;
+        var_r24 = MAKE_MESSID(2, 3);
     } else {
-        var_r24 = 0x20002;
+        var_r24 = MAKE_MESSID(2, 2);
     }
     BoardWinCreate(2, var_r24, 1);
-    BoardWinInsertMesSet((u32) totalCoinStr, 0);
+    BoardWinInsertMesSet(MAKE_MESSID_PTR(totalCoinStr), 0);
     BoardWinWait();
     BoardWinKill();
 }
@@ -403,7 +404,7 @@ static void InitExplode(void) {
     temp_r31->unk00_field0 = 0;
     temp_r31->unk00_field1 = 0;
     temp_r31->unk01 = 0x10;
-    temp_r31->unk02 = BoardModelCreate(0x20026, NULL, 0);
+    temp_r31->unk02 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 38), NULL, 0);
     BoardModelLayerSet(temp_r31->unk02, 2);
     explodeObj->trans.x = sp14.x;
     explodeObj->trans.y = sp14.y - 100.0f;
@@ -411,7 +412,7 @@ static void InitExplode(void) {
     BoardModelPosSet(temp_r31->unk02, explodeObj->trans.x, explodeObj->trans.y, explodeObj->trans.z);
     BoardModelMotionStart(temp_r31->unk02, 0, 0x40000001);
     for (i = 0; i < 4; i++) {
-        temp_r31->unk04[i] = BoardModelCreate(0x70066, NULL, 0);
+        temp_r31->unk04[i] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 102), NULL, 0);
         sp8.x = sp14.x + sp20[i][0];
         sp8.y = sp14.y;
         sp8.z = sp14.z + sp20[i][1];
@@ -534,7 +535,7 @@ static void CreateBattleMain(void) {
     }
     HuSprGrpPosSet(temp_r31->unk08, 288.0f, 240.0f);
     battleObj->trans.x = -308.0f;
-    BoardFilterFadeInit(0x1E, 0xA0);
+    BoardFilterFadeInit(30, 0xA0);
 }
 
 static void UpdateBattleMain(omObjData *arg0) {
@@ -614,7 +615,7 @@ static void ShowBattleGame(BattleWork *arg0, omObjData *arg1) {
     float var_r29;
 
     if (arg0->unk01 == 0) {
-        if (BoardFilterFadePauseCheck() != 0) {
+        if (BoardFilterFadePauseCheck()) {
             arg0->unk01 = 1;
             arg1->trans.z = 0.01f;
             arg1->trans.y = 0.0f;
@@ -711,7 +712,7 @@ static void ShowBattleCoin(BattleWork *arg0, omObjData *arg1) {
     while (var_f30 > 180.0f) {
         var_f30 -= 180.0f;
     }
-    temp_f29 = 0.8999999761581421 + sin(var_f30 * M_PI / 180.0);
+    temp_f29 = 0.9f + sin(var_f30 * M_PI / 180.0);
     HuSprScaleSet(arg0->unk08, 1, temp_f29, temp_f29);
 }
 
@@ -750,7 +751,7 @@ static void VibratePad(BattleWork *arg0, omObjData *arg1) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omVibrate(i, 0xC, 0xC, 0);
+        omVibrate(i, 12, 0xC, 0);
     }
     arg0->unk00_field1 = 8;
 }
