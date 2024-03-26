@@ -1,6 +1,6 @@
 #include "REL/w03Dll.h"
 #include "game/data.h"
-
+#include "game/hsfman.h"
 
 //file is full of old names and old signatures...needs updating
 //is also missing half the functions in this TU
@@ -11,6 +11,7 @@ void fn_1_3304(void);
 extern Process* lbl_1_bss_70;
 extern s8 lbl_1_bss_7C;
 extern s16 lbl_1_data_310;
+extern char* lbl_1_data_34C[];
 
 // #define MAKE_DATA_NUM(dir, file) (((dir) << 16)+(file))
 // #define MAKE_DIR_NUM(dir) ((dir) << 16)
@@ -318,7 +319,7 @@ void fn_1_3968(s32 arg0) {
     
     while (1) {
         temp_f31 = __OSs16tof32(&sp8);
-        sp24.y = temp_f28 + (lbl_1_rodata_154 * (lbl_1_rodata_158 * (temp_f31 * temp_f31)));
+        sp24.y = temp_f28 + (-0.08166667f * (0.75f * (temp_f31 * temp_f31)));
         PSVECAdd(&sp30, &sp24, &sp30);
         temp_f30 = fn_8005FBE8(&sp3C, &sp30);
         if (temp_f30 < lbl_1_rodata_11C) {
@@ -332,7 +333,7 @@ void fn_1_3968(s32 arg0) {
                 var_r29 = 1;
             }
         } else {
-            fn_8005FF28(&spC, temp_f27, lbl_1_rodata_15C);
+            fn_8005FF28(&spC, temp_f27, 5.142857f);
             fn_80063374(arg0, spC);
         }
         
@@ -358,7 +359,7 @@ void fn_1_3968(s32 arg0) {
     sp18.y = 180.0f;
     sp18.z = 0.0f;
     
-    fn_8005DB6C(lbl_1_data_310, &sp18, 0, lbl_1_rodata_160, lbl_1_rodata_118, 0x150);
+    fn_8005DB6C(lbl_1_data_310, &sp18, 0, 4000.0f, lbl_1_rodata_118, 0x150);
     
     for (var_r28 = 0, sp8 = 0; ; sp8++) {
         if (var_r28 == 0) {
@@ -504,4 +505,626 @@ void fn_1_4354(s32 arg0) {
         return;
     }
     fn_80071328();
+}
+
+f32 lbl_1_bss_80[20][2];
+
+typedef struct w03StructUnk3 {
+/* 0x00 */ s16 unk_00;
+/* 0x02 */ s16 model;
+/* 0x04 */ f32 unk_04;
+/* 0x08 */ Vec unk_08;
+/* 0x14 */ Vec unk_14;
+} w03StructUnk3;
+
+typedef struct w03StructUnk2 {
+/* 0x00 */ struct {
+        u8 unkbit_00 : 1;
+        u8 unkbit_01 : 2;
+        u8 unkbit_03 : 1;
+        u8 unkbit_04 : 1;
+    };
+    s8 unk_01;
+    s8 unk_02;
+    u8 unk_03;
+    s16 model;
+    char unk_06[2];
+    w03StructUnk3* unk_08;
+} w03StructUnk2;
+
+void fn_1_4424(w03StructUnk2* arg0) {
+    Mtx sp108;
+    Mtx spD8;
+    Mtx spA8;
+    Mtx sp78;
+    Point3d sp6C;
+    Point3d sp60;
+    Vec sp54;
+    Vec sp48;
+    Point3d sp3C;
+    Vec sp30;
+    Vec sp24;
+    Vec sp18;
+    s32 sp14;
+    f32 temp;
+    s16 spC;
+    s16 sp8;
+    f32 temp_f30;
+    s16 temp_r23;
+    s16 var_r25;
+    f32 sp10;
+    f32 sp10_2;
+    s16 i;
+    char* temp_r22;
+    w03StructUnk3* temp_r27;
+    ModelData* temp_r28;
+
+    memset(&lbl_1_bss_80, 0, 0xA0);
+    sp48.x = sp54.x = 0.0f;
+    sp48.y = sp54.y = 0.0f;
+    sp48.z = sp54.z = 0.0f;
+    sp14 = 0;
+    BoardSpaceFlagPosGet(0, 0x8000U, &sp6C);
+    BoardSpaceFlagPosGet(0, 0x8000U, &sp60);
+    if (lbl_1_bss_0->unk1 != 0) {
+        PSVECSubtract(&sp6C, &sp60, &sp3C);
+    } else {
+        PSVECSubtract(&sp60, &sp6C, &sp3C);
+    }
+    sp10_2 = 180.0f * (atan2(-sp3C.x, -sp3C.z) / 3.141592653589793);
+    BoardModelMotionStart(lbl_1_data_314, 0, 0U);
+    BoardModelMotionSpeedSet(lbl_1_data_314, 8.0f);
+    HuPrcSleep(1);
+    temp_r23 = BoardModelIDGet(lbl_1_data_314);
+    temp_r28 = &Hu3DData[temp_r23];
+    temp_r22 = lbl_1_data_34C[lbl_1_bss_0->unk1];
+    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_314), temp_r22, &sp48);
+    sp24.x = 0.0f;
+    sp24.y = 1.0f;
+    sp24.z = 0.0f;
+    for (i = var_r25 = 0; i < 20;) {
+        Hu3DMotionExec(temp_r23, temp_r28->unk_08, temp_r28->unk_64, 0);
+        Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_314), temp_r22, &sp54);
+        temp_r28->unk_64 = (f32) (temp_r28->unk_64 + temp_r28->unk_68);
+        if (temp_r28->unk_64 > 400.0f) {
+            break;
+        }
+        
+        if (var_r25 % 4 == 0 && ((s16) var_r25 != 0)) {
+            temp_r27 = &arg0->unk_08[i];
+            temp_r27->unk_00 = 1;
+            temp_f30 = (0.5f - BoardRandFloat()) * 10;
+            OSf32tos16(&temp_f30, &sp8);
+            sp8 = (sp8 / 10) * 10;
+            OSs16tof32(&sp8, &temp_f30);
+            lbl_1_bss_80[i+1][0] = temp_f30;
+            lbl_1_bss_80[i+1][1] = temp_r28->unk_64;
+            sp30 = sp48;
+            sp18 = sp54;
+            BoardMTXCalcLookAt(spA8, &sp18, &sp24, &sp30);
+            PSMTXTranspose(spA8, spA8);
+            PSMTXRotRad(spD8, 0x7A, 0.017453292f * temp_f30);
+            PSMTXTrans(sp108, 0.0f, -350.0f, 0.0f);
+            PSMTXConcat(spD8, sp108, sp108);
+            PSMTXConcat(spA8, sp108, sp108);
+            PSMTXTrans(sp78, sp54.x, sp54.y, sp54.z);
+            PSMTXConcat(sp78, sp108, sp78);
+            Hu3DMtxTransGet(sp78, &temp_r27->unk_08);
+            BoardModelPosSetV(temp_r27->model, &temp_r27->unk_08);
+            BoardModelVisibilitySet(temp_r27->model, 1);
+            i++;
+        }
+        sp48 = sp54;
+        var_r25++;
+    }
+    arg0->unk_03 = i;
+}
+
+void fn_1_48EC(s32 arg0) {
+    Point3d spC;
+    omObjData* obj;
+    s32 i;
+    w03StructUnk2* temp_r31;
+    w03StructUnk3* temp_r30;
+
+    obj = omAddObjEx(boardObjMan, 0x101, 0U, 0U, -1, fn_1_50D4);
+    lbl_1_bss_74 = obj;
+    temp_r31 = OM_GET_WORK_PTR(obj, w03StructUnk2);
+    temp_r31->unkbit_00 = 0;
+    temp_r31->unk_01 = 0;
+    temp_r31->unkbit_03 = 0;
+    temp_r31->unkbit_04 = 0;
+    temp_r31->unk_02 = -1;
+    temp_r31->unkbit_01 = arg0;
+    temp_r31->unk_08 = HuMemDirectMallocNum(HEAP_SYSTEM, 0xA00, 0x10000000U);
+    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[2]), "coin", &spC);
+    temp_r31->model = BoardModelCreate(0x770007, NULL, 0);
+    BoardModelVisibilitySet(temp_r31->model, 0);
+    BoardModelPosSetV(temp_r31->model, &spC);
+    BoardModelLayerSet(temp_r31->model, 2U);
+    memset(temp_r31->unk_08, 0, 0xA00U);
+
+    for (i = 0; i < 0x50; i++) {
+        temp_r30 = &temp_r31->unk_08[i];
+        temp_r30->model = BoardModelCreate(0x70009, 0, 1);
+        BoardModelVisibilitySet(temp_r30->model, 0);
+        BoardModelMotionStart(temp_r30->model, 0, 0x40000001U);        
+    }
+    
+    fn_1_4424(temp_r31);
+}
+
+extern omObjData* lbl_1_bss_74;
+
+typedef struct w03UnkStruct4 {
+     /* 0x00 */ struct {
+        u8 unk00_bit0 : 1;
+    };   
+} w03UnkStruct4;
+
+void fn_1_4A9C(void) {
+    ((w03UnkStruct4*)&lbl_1_bss_74->work[0])->unk00_bit0 = 1;
+}
+
+void fn_1_4ABC(w03StructUnk2* arg0) {
+    Point3d sp8;
+    f32 temp_f31;
+    w03StructUnk3* temp_r31;
+    s32 i;
+    
+    //reg alloc hack
+    (void)i;
+    (void)i;
+    
+    BoardModelPosGet(lbl_1_data_310, &sp8);
+    sp8.y += lbl_1_rodata_180;
+
+    for (i = 0; i < arg0->unk_03; i++) {
+        temp_r31 = &arg0->unk_08[i];
+        if (temp_r31->unk_00 == 1) {
+            if (BoardVecMinDistCheck(&sp8, &temp_r31->unk_08, lbl_1_rodata_184) != 0) {
+                temp_r31->unk_00 = -1;
+                BoardModelVisibilitySet(temp_r31->model, 0);
+                CharModelLayerSetAll(2);
+                CharModelCoinEffectCreate(1, &temp_r31->unk_08);
+                BoardPlayerCoinsAdd((arg0->unk_00 >> 5) & 3, 1);
+                HuAudFXPlay(7);
+            }
+            BoardModelPosSetV(temp_r31->model, &temp_r31->unk_08);
+        }        
+    }
+
+    BoardModelPosGet(lbl_1_data_310, &sp8);
+
+    for (i = arg0->unk_03; i < 0x50; i++) {
+        temp_r31 = &arg0->unk_08[i];
+        if (temp_r31->unk_00 == 1) {
+            temp_r31->unk_04 += lbl_1_rodata_168;
+            temp_f31 = lbl_1_rodata_188 * (temp_r31->unk_04 * temp_r31->unk_04);
+            PSVECAdd(&temp_r31->unk_14, &temp_r31->unk_08, &temp_r31->unk_08);
+            temp_r31->unk_08.y += lbl_1_rodata_18C * temp_f31;
+            if (temp_r31->unk_08.y < lbl_1_rodata_190) {
+                temp_r31->unk_00 = -1;
+                BoardModelVisibilitySet(temp_r31->model, 0);
+            } else if (BoardVecMinDistCheck(&sp8, &temp_r31->unk_08, lbl_1_rodata_184) != 0) {
+                temp_r31->unk_00 = -1;
+                BoardModelVisibilitySet(temp_r31->model, 0);
+                BoardPlayerCoinsAdd((arg0->unk_00 >> 5) & 3, 1);
+                CharModelLayerSetAll(2);
+                CharModelCoinEffectCreate(1, &temp_r31->unk_08);
+                HuAudFXPlay(7);
+            } else {
+                BoardModelPosSetV(temp_r31->model, &temp_r31->unk_08);
+            }
+        }        
+    }
+}
+
+
+extern omObjData* lbl_1_bss_74;
+
+s32 fn_1_4D0C(w03StructUnk3** arg0, s16* arg1) {
+    w03StructUnk2* temp_r31;
+
+    if (!(lbl_1_bss_74)) {
+        return 0;
+    }
+    temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_74, w03StructUnk2);
+    *arg0 = temp_r31->unk_08;
+    *arg1 = temp_r31->unk_03;
+    return 1;
+}
+
+void fn_1_4D60(w03StructUnk2* arg0) {
+    Point3d sp8;
+    f32 temp_f31;
+    f32 temp_f30;
+    s32 i;
+    s32 j;
+    w03StructUnk3* temp_r31;
+
+    if (arg0->unk_02 == 1) {
+        Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[2]), "coin", &sp8);
+        for (i = 0; i < 5; i++) {
+            for (j = arg0->unk_03; j < 0x50; j++) {
+                temp_r31 = &arg0->unk_08[j];
+                if (temp_r31->unk_00 == 0) {
+                    temp_r31->unk_00 = 1;
+                    temp_f31 = 360.0f * BoardRandFloat();
+                    temp_f30 = 5.0f * BoardRandFloat();
+                    temp_r31->unk_14.x = temp_f30 * sin((3.141592653589793 * temp_f31) / 180.0);
+                    temp_r31->unk_14.y = 50.0f + (20.0f * BoardRandFloat());
+                    temp_r31->unk_14.z = temp_f30 * cos((3.141592653589793 * temp_f31) / 180.0);
+                    temp_r31->unk_08.x = sp8.x;
+                    temp_r31->unk_08.y = sp8.y;
+                    temp_r31->unk_08.z = sp8.z;
+                    BoardModelVisibilitySet(temp_r31->model, 1);
+                    BoardModelMotionStart(temp_r31->model, 0, 0x40000001);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void fn_1_4F24(w03StructUnk2* arg0) {
+    s32 var_r30 = 0;
+    s32 sp8[4] = {5, 10, 30, 40};
+    s32 temp_r29;
+    s32 temp_r28;
+    
+    if (arg0->unk_02 == -1) {
+        if (GWTeamGet()) {
+            if (GWPlayer[arg0->unkbit_01].rank == 0) {
+                var_r30 = 5;
+            } else if (GWPlayer[arg0->unkbit_01].rank == 1) {
+                var_r30 = 20;
+            }
+        } else {
+            var_r30 = sp8[GWPlayer[arg0->unkbit_01].rank];
+        }
+        temp_r29 = BoardRandMod(100);
+        temp_r28 = BoardRandMod(100);
+        if (temp_r29 < var_r30) {
+            if (temp_r28 < 30) {
+                arg0->unk_02 = 2;
+            } else {
+                arg0->unk_02 = 1;
+            }
+        } else {
+            arg0->unk_02 = 0;
+        }
+        if (arg0->unk_02 != 0) {
+            BoardModelMotionShiftSet(lbl_1_bss_C[2], 0, 0, 101.0f, 0);
+        }
+    }
+}
+
+void fn_1_50D4(omObjData* arg0) {
+    Point3d sp50;
+    Point3d sp44;
+    Point3d sp38;
+    PlayerState* sp18;
+    PlayerState* sp14;
+    s16 sp10[2];
+    s16 spC[2];
+    f32 temp_f31;
+    f32 temp_f30;
+    f32 temp_f29;
+    s32 i, j, k;
+    s32 temp_r22;
+    s32 temp_r23;
+    w03StructUnk3* temp_r30;
+    w03StructUnk2* temp_r31;
+    w03StructUnk3* temp;
+
+    temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_74, w03StructUnk2);
+    if ((temp_r31->unkbit_00 != 0) || (BoardIsKill() != 0)) {
+        for (i = 0; i < 0x50; i++) {
+            temp = &temp_r31->unk_08[i];
+            BoardModelKill(temp->model);
+        }
+
+        for (i = 0; i < 4; i++) {
+            BoardModelVisibilitySet(BoardPlayerModelGet(i), 1);
+        }
+        
+        BoardModelKill(temp_r31->model);
+        HuMemDirectFree(temp_r31->unk_08);
+        lbl_1_bss_74 = 0;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        return;
+    }
+    
+    if (lbl_1_data_314 != -1) {
+        temp_f31 = BoardModelMotionTimeGet(lbl_1_data_314);
+        if (temp_r31->unk_01 == 0) {
+            if ((lbl_1_bss_0->unk1 != 0) &&
+                ((temp_f31 >= 212.0f)) ||
+                (lbl_1_bss_0->unk1 == 0) &&
+                ((temp_f31 >= 86.0f))) {
+                
+                temp_r31->unk_01 = 1;
+            }
+        } else {
+            fn_1_4F24(temp_r31); //inline
+        }
+        
+        if (temp_r31->unk_01 != 0) {
+            if (BoardModelMotionEndCheck(lbl_1_bss_C[2]) != 0) {
+                BoardModelMotionStart(lbl_1_bss_C[2], 0, 0x40000001);
+                BoardModelMotionStartEndSet(lbl_1_bss_C[2], 1, 100);
+            }
+            if (BoardModelMotionEndCheck(temp_r31->model) != 0) {
+                BoardModelVisibilitySet(temp_r31->model, 0);
+            }
+        }
+        
+        if (BoardModelMotionTimeGet(lbl_1_bss_C[2]) >= lbl_1_rodata_1BC) {
+            if (temp_r31->unkbit_04 == 0) {
+                if (temp_r31->unkbit_03 == 0) {
+                    HuAudFXPlay(0x43C);
+                } else {
+                    HuAudFXPlay(0x43D);
+                }
+                temp_r31->unkbit_04 = 1;
+            }
+            if (temp_r31->unk_02 == 1) {
+                omVibrate(GWSystem.player_curr, 0xC, 4, 2);
+                fn_1_4D60(temp_r31); //inline
+            } else if ((temp_r31->unk_02 == 2) && (temp_r31->unkbit_03 == 0)) {
+                omVibrate(GWSystem.player_curr, 0xC, 0xC, 0);
+                BoardModelVisibilitySet(temp_r31->model, 1);
+                BoardModelMotionStart(temp_r31->model, 0, 0);
+                temp_r31->unkbit_03 = 1;
+            }
+        }
+        
+        fn_1_4ABC(temp_r31);
+        
+        for (i = 0; i < 4; i++) {
+            if (i != GWSystem.player_curr) {
+                BoardPlayerPosGet(i, &sp50);
+                BoardModelPosGet(lbl_1_data_310, &sp44);
+                PSVECSubtract(&sp50, &sp44, &sp38);
+                if (PSVECMag(&sp38) >= lbl_1_rodata_1C0) {
+                    BoardModelVisibilitySet(BoardPlayerModelGet(i), 0);
+                } else {
+                    BoardModelVisibilitySet(BoardPlayerModelGet(i), 1);
+                }
+            }
+        }
+    }
+}
+
+typedef struct w03UnkStruct5 {
+     /* 0x00 */ struct {
+        u8 unk00_bit0 : 1;
+        u8 unk00_bit1 : 2;
+        u8 unk00_bit3 : 1;
+        u8 unk00_bit4 : 4;
+    };
+    /* 0x01 */ char unk_01[3];
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
+} w03UnkStruct5;
+
+extern omObjData* lbl_1_bss_78;
+
+void fn_1_5838(s32 arg0) {
+    Point3d sp18;
+    Point3d spC;
+    omObjData* obj;
+    w03UnkStruct5* temp_r31;
+
+    obj = omAddObjEx(boardObjMan, 0x7E01, 0, 0, -1, &fn_1_5AC8);
+    lbl_1_bss_78 = obj;
+    temp_r31 = OM_GET_WORK_PTR(obj, w03UnkStruct5);
+    temp_r31->unk00_bit0 = 0;
+    temp_r31->unk00_bit1 = arg0;
+    temp_r31->unk00_bit4 = 1;
+    temp_r31->unk00_bit3 = 0;
+    switch (GWPlayer[temp_r31->unk00_bit1].diff) {
+    case 0:
+        temp_r31->unk_08 = (lbl_1_rodata_110 + (lbl_1_rodata_1C4 * BoardRandFloat()));
+        break;
+    case 1:
+        temp_r31->unk_08 = (lbl_1_rodata_1C8 + (lbl_1_rodata_1CC * BoardRandFloat()));
+        break;
+    case 2:
+        temp_r31->unk_08 = (lbl_1_rodata_1D0 + (lbl_1_rodata_1C8 * BoardRandFloat()));
+        break;
+    case 3:
+        temp_r31->unk_08 = lbl_1_rodata_E8;
+        break;
+    }
+    BoardCameraMoveSet(0);
+    sp18.x = lbl_1_rodata_E8;
+    sp18.y = lbl_1_rodata_17C;
+    sp18.z = lbl_1_rodata_E8;
+    spC.x = lbl_1_rodata_1D4;
+    spC.y = lbl_1_rodata_E8;
+    spC.z = lbl_1_rodata_E8;
+    BoardCameraMotionStartEx(lbl_1_data_310, &spC, &sp18, 1, 3000.0f, 1);
+    BoardModelMotionStart(lbl_1_data_310, 3, 0x40000001U);
+    BoardModelMotionStart(lbl_1_data_314, 0, 0U);
+    BoardModelMotionSpeedSet(lbl_1_data_314, lbl_1_rodata_1DC);
+    fn_1_5C5C(obj, temp_r31);
+    BoardCameraMotionWait();
+    BoardCameraTargetModelSet(-1);
+}
+
+void fn_1_5AC8(omObjData* arg0) {
+    s32 temp_r0;
+    w03UnkStruct5* temp_r31;
+
+    temp_r31 = OM_GET_WORK_PTR(arg0, w03UnkStruct5);
+    if ((temp_r31->unk00_bit0 != 0) || (BoardIsKill() != 0)) {
+        lbl_1_bss_78 = NULL;
+        omDelObjEx(HuPrcCurrentGet(), arg0);
+        if (lbl_1_data_316 != -1) {
+            HuWinKill(lbl_1_data_316);
+            lbl_1_data_316 = -1;
+        }
+        return;
+    }
+    if ((lbl_1_rodata_120 == BoardModelMotionTimeGet(lbl_1_data_310)) || (lbl_1_rodata_198 == BoardModelMotionTimeGet(lbl_1_data_310))) {
+        HuAudFXPlay(0x43B);
+    }
+    switch (temp_r31->unk00_bit4) {
+    case 1:
+        if (lbl_1_bss_7D != 0) {
+            fn_1_629C(2);
+            fn_1_62FC();
+            BoardCameraTargetModelSet(lbl_1_data_310);
+            BoardCameraMoveSet(1);
+
+        }
+        break;
+    case 2:
+        fn_1_5C5C(arg0, (w03UnkStruct5* ) temp_r31);
+        break;
+    case 3:
+        BoardCameraTargetModelSet(-1);
+        BoardCameraMoveSet(0);
+        temp_r31->unk00_bit0 = 1;
+        break;
+    }
+}
+
+void fn_1_5C5C(omObjData* arg0, w03UnkStruct5* arg1) {
+    Mtx sp110;
+    Mtx spE0;
+    Mtx spB0;
+    Mtx sp80;
+    Mtx sp50;
+    Point3d sp44;
+    Point3d sp38;
+    Point3d sp2C;
+    Point3d sp20;
+    Point3d sp14;
+    Point3d sp8;
+    s16 temp_r3;
+    char* temp_r27;
+    ModelDataTemp* temp_r30;
+
+    if (((WipeStatGet() == 0) && (arg1->unk00_bit3) || (BoardModelMotionEndCheck(lbl_1_data_314) != 0))) {
+        fn_1_629C(3);
+        return;
+    }
+    if ((BoardModelMotionTimeGet(lbl_1_data_314) >= lbl_1_rodata_1E0) && (arg1->unk00_bit3) == 0) {
+        WipeColorSet(0, 0, 0);
+        WipeCreate(2, 0, -1);
+        arg1->unk00_bit3 = 1;
+        BoardAudSeqFadeOut(1, 0x3E8);
+    }
+    sp38.x = arg0->rot.x;
+    sp38.y = arg0->rot.y;
+    sp38.z = arg0->rot.z;
+    temp_r3 = BoardModelIDGet(lbl_1_data_314);
+    temp_r30 = &Hu3DData[temp_r3];
+    temp_r27 = lbl_1_data_35C[lbl_1_bss_0->unk1];
+    Hu3DMotionExec(temp_r3, temp_r30->unk_08, temp_r30->unk_64, 0);
+    Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_314), temp_r27, &sp44);
+    if (lbl_1_rodata_E8 != temp_r30->unk_64) {
+        PSVECSubtract(&sp38, &sp44, &sp2C);
+    } else {
+        sp2C.x = sp2C.y = sp2C.z = lbl_1_rodata_E8;
+    }
+    arg0->rot.x = sp44.x;
+    arg0->rot.y = sp44.y;
+    arg0->rot.z = sp44.z;
+    fn_1_602C(arg0, arg1);
+    sp8 = sp38;
+    sp14 = sp44;
+    sp20.x = sp20.z = lbl_1_rodata_E8;
+    sp20.y = lbl_1_rodata_168;
+    BoardMTXCalcLookAt(sp110, &sp14, &sp20, &sp8);
+    PSMTXTranspose(sp110, sp110);
+    PSMTXRotRad(spE0, 0x7A, lbl_1_rodata_178 * -arg1->unk_04);
+    PSMTXTrans(sp50, lbl_1_rodata_E8, lbl_1_rodata_1E4, lbl_1_rodata_E8);
+    PSMTXConcat(spE0, sp50, sp50);
+    PSMTXConcat(sp110, sp50, sp50);
+    PSMTXTrans(sp80, sp44.x, sp44.y, sp44.z);
+    PSMTXConcat(sp80, sp50, sp80);
+    Hu3DMtxTransGet(sp80, &sp44);
+    PSMTXRotRad(spB0, 0x79, (lbl_1_rodata_1E8 * (lbl_1_rodata_100 * (atan2(-sp2C.x, -sp2C.z) / lbl_1_rodata_F8))));
+    PSMTXConcat(spB0, spE0, sp110);
+    BoardModelMtxSet(lbl_1_data_310, &sp110);
+    BoardModelPosSetV(lbl_1_data_310, &sp44);
+    BoardCameraRotSet(lbl_1_rodata_1D4, (lbl_1_rodata_100 * (atan2(sp2C.x, sp2C.z) / lbl_1_rodata_F8)));
+}
+
+void fn_1_602C(s32 arg0, w03UnkStruct5* arg1) {
+    f32 temp_f31 = 0.0f;
+    f32 var_f30;
+    f32 var_f29;
+
+    if (GWPlayer[arg1->unk00_bit1].com == 0) {
+        var_f30 = HuPadStkX[GWPlayer[arg1->unk00_bit1].port];
+    } else {
+        var_f30 = fn_1_61A4(arg0, arg1);
+    }
+    temp_f31 = lbl_1_rodata_1F0 * var_f30;
+    if (temp_f31 < lbl_1_rodata_E8) {
+        var_f29 = -temp_f31;
+    } else {
+        var_f29 = temp_f31;
+    }
+    if (var_f29 < lbl_1_rodata_1F4) {
+        arg1->unk_04 *= lbl_1_rodata_1F8;
+        return;
+    }
+    BoardDAngleCalcRange(&arg1->unk_04, temp_f31, lbl_1_rodata_168);
+}
+
+f32 fn_1_61A4(s32 arg0, w03UnkStruct5* arg1) {
+    w03StructUnk3* sp8;
+    f32 temp_f31;
+    s16 i;
+    w03StructUnk2* temp_r29;
+    s16 var_r28;
+    f32* temp_r31;
+
+    if (lbl_1_bss_74) {
+        temp_r29 = OM_GET_WORK_PTR(lbl_1_bss_74, w03StructUnk2);
+        sp8 = temp_r29->unk_08;
+        var_r28 = temp_r29->unk_03;
+    }
+
+    temp_f31 = BoardModelMotionTimeGet(lbl_1_data_314);
+    temp_f31 = temp_f31 + arg1->unk_08;
+
+    for (i = 0; i < var_r28; i++) {
+        temp_r31 = lbl_1_bss_80[i];
+        if ((temp_r31[1] < temp_f31) && (temp_r31[3] > temp_f31)) {
+            return lbl_1_rodata_208 * temp_r31[2];
+        }    
+    }
+    return 0.0f;
+}
+
+void fn_1_629C(s8 arg0) {
+    w03UnkStruct5* temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_78, w03UnkStruct5);
+    temp_r31->unk00_bit4 = arg0;
+}
+
+s32 fn_1_62D0(void) {
+    w03UnkStruct5* temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_78, w03UnkStruct5);
+    return temp_r31->unk00_bit4;
+}
+
+void fn_1_62FC(void) {
+    f32 sp8[2];
+    s32 messageID = 0x000D0005;
+    f32 temp0;
+    f32 temp1;
+    
+    HuWinMesMaxSizeGet(1, sp8, messageID);
+    temp0 = lbl_1_rodata_20C;
+    temp1 = lbl_1_rodata_210;
+    lbl_1_data_316 = HuWinCreate(temp0, temp1, sp8[0], sp8[1], 0);
+    HuWinBGTPLvlSet(lbl_1_data_316, lbl_1_rodata_E8);
+    HuWinMesSpeedSet(lbl_1_data_316, 0);
+    HuWinMesSet(lbl_1_data_316, messageID);
 }
