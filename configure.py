@@ -1106,7 +1106,7 @@ config.libs = [
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w03Dll/main.c"),
             Object(Matching, "REL/w03Dll/statue.c"),
-            Object(NonMatching, "REL/w03Dll/condor.c"),
+            Object(Matching, "REL/w03Dll/condor.c"),
             Object(Matching, "REL/w03Dll/river.c"),
             Object(Matching, "REL/w03Dll/smoke.c"),
             Object(Matching, "REL/w03Dll/mg_coin.c"),

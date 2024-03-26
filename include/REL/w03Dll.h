@@ -27,3 +27,6 @@ typedef struct w03State {
            u16 unk6;
            s16 unk8;
 } w03State;
+
+extern w03State* lbl_1_bss_0;
+extern s16 lbl_1_bss_C[14];
