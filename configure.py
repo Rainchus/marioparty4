@@ -1085,7 +1085,7 @@ config.libs = [
         objects = {
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w01Dll/main.c"),
-            Object(NonMatching, "REL/w01Dll/mg_coin.c"),
+            Object(Matching, "REL/w01Dll/mg_coin.c"),
             Object(NonMatching, "REL/w01Dll/mg_item.c"),
         }
     ),

@@ -882,7 +882,7 @@ static void ExecBallGame(void) {
         DATA_MAKE_NUM(DATADIR_WARIOMOT, 29),
         DATA_MAKE_NUM(DATADIR_DONKEYMOT, 29),
         DATA_MAKE_NUM(DATADIR_DAISYMOT, 29),
-        DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 29),
+        DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 29)
     };
 
     temp_r27 = GWSystem.player_curr;

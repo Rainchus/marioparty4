@@ -9,6 +9,7 @@
 #include "game/board/space.h"
 #include "game/object.h"
 #include "game/objsub.h"
+#include "game/sprite.h"
 #include "game/board/player.h"
 #include "math.h"
 #include "game/hsfman.h"
@@ -908,7 +909,7 @@ void fn_1_BBF8(void) {
 void fn_1_BC7C(s16 arg0) {
     ParticleData* particle;
     
-    lbl_1_bss_190 = HuSprAnimRead(HuDataSelHeapReadNum(0x120000, 0x10000000, 2));
+    lbl_1_bss_190 = HuSprAnimReadFile(0x120000);
     HuSprAnimLock(lbl_1_bss_190);
     lbl_1_data_4E4 = Hu3DParticleCreate(lbl_1_bss_190, 100);
     Hu3DParticleHookSet(lbl_1_data_4E4, fn_1_BE30);
