@@ -20,7 +20,7 @@ void* lbl_1_bss_8;
 s32 lbl_1_bss_4;
 W10BoardWork *boardWork;
 
-//DATA
+//data
 unkw10Dll lbl_1_data_0[1] = {
     3300.0f, 100.0f, -900.0f,
     0.0f, 0.0f, 0.0f,

@@ -12,13 +12,72 @@
 #include "game/pad.h"
 #include "game/wipe.h"
 
-//file is full of old names and old signatures...needs updating
-//is also missing half the functions in this TU
+//structs
 
+typedef struct w03UnkStruct5 {
+     /* 0x00 */ struct {
+        u8 unk00_bit0 : 1;
+        u8 unk00_bit1 : 2;
+        u8 unk00_bit3 : 1;
+        u8 unk00_bit4 : 4;
+    };
+    /* 0x01 */ char unk_01[3];
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
+} w03UnkStruct5;
+
+typedef struct w03UnkStruct4 {
+     /* 0x00 */ struct {
+        u8 unk00_bit0 : 1;
+    };   
+} w03UnkStruct4;
+
+typedef struct w03StructUnk3 {
+/* 0x00 */ s16 unk_00;
+/* 0x02 */ s16 model;
+/* 0x04 */ f32 unk_04;
+/* 0x08 */ Vec unk_08;
+/* 0x14 */ Vec unk_14;
+} w03StructUnk3;
+
+typedef struct w03StructUnk2 {
+/* 0x00 */ struct {
+        u8 unkbit_00 : 1;
+        u8 unkbit_01 : 2;
+        u8 unkbit_03 : 1;
+        u8 unkbit_04 : 1;
+    };
+    s8 unk_01;
+    s8 unk_02;
+    u8 unk_03;
+    s16 model;
+    char unk_06[2];
+    w03StructUnk3* unk_08;
+} w03StructUnk2;
+
+//function signatures
 void fn_1_313C(void);
 void fn_1_3218(void);
 void fn_1_3304(void);
+s32 fn_1_3478(s32);
+void fn_1_3814(s32);
+void fn_1_3968(s32);
+void fn_1_3E88(s32);
+void fn_1_3F5C(s32);
+void fn_1_4354(s32);
+void fn_1_48EC(s32);
+void fn_1_4A9C(void);
+void fn_1_50D4(omObjData* arg0);
+void fn_1_5838(s32);
+void fn_1_5AC8(omObjData* arg0);
+void fn_1_5C5C(omObjData* arg0, w03UnkStruct5* arg1);
+void fn_1_602C(omObjData* arg0, w03UnkStruct5* arg1);
+f32 fn_1_61A4(omObjData* arg0, w03UnkStruct5* arg1);
+void fn_1_629C(s8 arg0);
+s32 fn_1_62D0(void);
+void fn_1_62FC(void);
 
+//bss
 float lbl_1_bss_80[20][2];
 s8 lbl_1_bss_7D;
 s8 lbl_1_bss_7C;
@@ -26,12 +85,7 @@ omObjData *lbl_1_bss_78;
 omObjData *lbl_1_bss_74;
 Process* lbl_1_bss_70;
 
-
-// #define MAKE_DATA_NUM(dir, file) (((dir) << 16)+(file))
-// #define MAKE_DIR_NUM(dir) ((dir) << 16)
-
-// #define DATA_NUM_LISTEND -1
-
+//data
 s16 lbl_1_data_310 = -1;
 s16 lbl_1_data_312 = -1;
 s16 lbl_1_data_314 = -1;
@@ -63,19 +117,13 @@ s32 fn_1_309C(void) {
     return lbl_1_bss_7C;
 }
 
-s32 fn_1_3478(s32);
-void fn_1_3814(s32);
-void fn_1_3968(s32);
-void fn_1_3E88(s32);
-void fn_1_3F5C(s32);
-extern s8 lbl_1_bss_7C;
-
 void fn_1_313C(void) {
     s32 temp_r31;
 
     temp_r31 = GWSystem.player_curr;
     lbl_1_bss_7C = 0;
     lbl_1_bss_0->unk3 = 1;
+
     if (fn_1_3478(temp_r31) != 0) {
         BoardCameraNearFarSet(500.0f, 20000.0f);
         BoardStatusShowSetAll(0);
@@ -84,6 +132,7 @@ void fn_1_313C(void) {
         fn_1_3F5C(temp_r31);
         lbl_1_bss_7C = 1;
     }
+
     BoardCameraNearFarSet(100.0f, 13000.0f);
     fn_1_3814(temp_r31);
     HuPrcEnd();
@@ -95,14 +144,17 @@ void fn_1_3218(void) {
         HuWinKill(lbl_1_data_316);
         lbl_1_data_316 = -1;
     }
+
     if (lbl_1_data_314 != -1) {
         BoardModelKill(lbl_1_data_314);
         lbl_1_data_314 = -1;
     }
+
     if (lbl_1_data_312 != -1) {
         BoardPlayerMotionKill(GWSystem.player_curr, lbl_1_data_312);
         lbl_1_data_312 = -1;
     }
+    
     lbl_1_bss_0->unk3 = 0;
     lbl_1_bss_70 = 0;
 }
@@ -112,13 +164,13 @@ void fn_1_3304(void) {
     Vec sp8;
     f32 temp_f31;
     s32 var_r31;
-    
 
     if (lbl_1_bss_0->unk1 != 0) {
         var_r31 = BoardSpaceFlagSearch(0, 0x4000);
     } else {
         var_r31 = BoardSpaceFlagSearch(0, 0x8000);
     }
+
     var_r31 = BoardSpaceLinkFlagSearch(0, var_r31, 0x02000000);
     BoardSpacePosGet(0, var_r31, &sp8);
     temp_f31 = 0.0f;
@@ -129,9 +181,6 @@ void fn_1_3304(void) {
     BoardModelMotionStart(lbl_1_data_310, 2, 0x40000001);
 }
 
-void fn_1_4354(s32);
-
-
 s32 fn_1_3478(s32 arg0) {
     Vec sp38;
     Vec sp2C;
@@ -140,7 +189,6 @@ s32 fn_1_3478(s32 arg0) {
     f32 sp18;
     Vec sp14;
     Vec sp8;
-
     s32 temp_r28;
     s32 temp_r3;
     s32 var_r29;
@@ -185,15 +233,16 @@ s32 fn_1_3478(s32 arg0) {
     BoardWinCreate(2, 0x160010, 8);
     BoardWinInsertMesSet(temp_r26, 3);
     BoardWinWait();
+
     if (BoardPlayerCoinsGet(arg0) < 5) {
         BoardWinCreate(2, 0x160013, 8);
         BoardWinWait();
         BoardWinKill();
         return 0;
     }
+
     var_r29 = 0;
-    goto test;
-    while (1) {
+    while (var_r29 == 0) {
         BoardWinCreateChoice(2, 0x160011, 8, 0);
         BoardWinAttrSet(0x10);
         
@@ -217,22 +266,20 @@ s32 fn_1_3478(s32 arg0) {
             BoardWinKill();
             return 0;
         }
-        test:
-        if (var_r29 != 0) {
-            BoardAudSeqPause(0, 1, 1000);
-            for (j = 0; j < 5; j++) {
-                BoardPlayerCoinsAdd(arg0, -1);
-                HuAudFXPlay(14);
-                HuPrcSleep(6);            
-            }
-            HuAudFXPlay(15);
-            BoardWinKill();
-            return 1;
-        }
     }
-}
 
-extern s8 lbl_1_bss_7C;
+    BoardAudSeqPause(0, 1, 1000);
+
+    for (j = 0; j < 5; j++) {
+        BoardPlayerCoinsAdd(arg0, -1);
+        HuAudFXPlay(14);
+        HuPrcSleep(6);            
+    }
+
+    HuAudFXPlay(15);
+    BoardWinKill();
+    return 1;
+}
 
 void fn_1_3814(s32 arg0) {
     Vec sp14;
@@ -249,6 +296,7 @@ void fn_1_3814(s32 arg0) {
     
     BoardCameraViewSet(1);
     BoardCameraTargetPlayerSet(arg0);
+
     if (lbl_1_bss_7C != 0) {
         BoardSpacePosGet(0, GWPlayer[arg0].space_curr, &sp14);
         BoardPlayerPosGet(arg0, &sp8);
@@ -257,6 +305,7 @@ void fn_1_3814(s32 arg0) {
             HuPrcVSleep();
         }
     }
+
     BoardPlayerIdleSet(arg0);
     BoardCameraMotionWait();
 }
@@ -304,6 +353,7 @@ void fn_1_3968(s32 arg0) {
         sp24.y = temp_f28 + (-0.08166667f * (0.75f * (temp_f31 * temp_f31)));
         PSVECAdd(&sp30, &sp24, &sp30);
         temp_f30 = BoardVecDistXZCalc(&sp3C, &sp30);
+
         if (temp_f30 < 5.0f) {
             sp24.x = sp24.z = 0.0f;
             sp30.x = sp3C.x;
@@ -323,6 +373,7 @@ void fn_1_3968(s32 arg0) {
             sp30.y = sp3C.y;
             break;
         }
+
         BoardPlayerPosSetV(arg0, &sp30);
         HuPrcVSleep();
         sp8 += 1;        
@@ -357,11 +408,6 @@ void fn_1_3968(s32 arg0) {
     }
 }
 
-void fn_1_48EC(s32);                                   /* extern */
-void fn_1_4A9C(void);                                      /* extern */
-void fn_1_5838(s32);                                   /* extern */
-s32 fn_1_62D0(void);                                    /* extern */
-
 void fn_1_3E88(s32 arg0) {
     lbl_1_bss_7D = 0;
     fn_1_48EC(arg0);
@@ -370,15 +416,19 @@ void fn_1_3E88(s32 arg0) {
     BoardStatusShowSetForce(arg0);
     BoardStatusShowSet(arg0, 1);
     WipeCreate(1, 0, 0x15);
+
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
+
     while (fn_1_62D0() != 3) {
         HuPrcVSleep();
     }
+
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
+
     fn_1_4A9C();
     BoardAudSeqPause(0, 0, 0x3E8);
 }
@@ -401,14 +451,17 @@ void fn_1_3F5C(s32 arg0) {
         lbl_1_bss_0->unk1 = 1;
         var_r30 = BoardSpaceFlagSearch(0, 0x4000);
     }
+
     temp_r28 = BoardSpaceLinkFlagSearch(0, var_r30, 0x02000000);
     BoardCameraMoveSet(0);
     BoardModelHookReset(lbl_1_data_310);
+
     if (lbl_1_bss_0->unk1 != 0) {
         var_r31 = BoardSpaceFlagSearch(0, 0x4000);
     } else {
         var_r31 = BoardSpaceFlagSearch(0, 0x8000);
     }
+
     var_r31 = BoardSpaceLinkFlagSearch(0, var_r31, 0x02000000);
     BoardSpacePosGet(0, var_r31, &sp8);
     temp_f31 = 0.0f;
@@ -421,12 +474,14 @@ void fn_1_3F5C(s32 arg0) {
     BoardModelRotYSet(lbl_1_data_310, 0.0f);
     PSMTXIdentity(sp38);
     BoardModelMtxSet(lbl_1_data_310, &sp38);
+
     sp20.x = 0.0f;
     sp20.y = 150.0f;
     sp20.z = 0.0f;
     sp14.x = -15.0f;
     sp14.y = 0.0f;
     sp14.z = 0.0f;
+
     BoardCameraMotionStartEx(lbl_1_data_310, &sp14, &sp20, 1900.0f, -1.0f, 1);
     BoardSpacePosGet(0, temp_r28, &sp2C);
     BoardPlayerPosSetV(arg0, &sp2C);
@@ -441,9 +496,11 @@ void fn_1_3F5C(s32 arg0) {
     HuPrcSleep(2);
     BoardStatusItemSet(1);
     WipeCreate(1, 0, 0x15);
+
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
+
     BoardWinCreate(2, 0x16000F, 8);
     BoardWinWait();
     BoardWinKill();
@@ -464,38 +521,18 @@ void fn_1_4354(s32 arg0) {
     } else if ((starPos == 0) || (starPos == 5) || (starPos == 6) || (starPos == 7)) {
         var_r30 = 1;
     }
+
     if (BoardPlayerCoinsGet(arg0) < 0x14) {
         var_r30 = 1;
     }
+
     if (var_r30 != 0) {
         BoardComKeySetLeft();
         return;
     }
+
     BoardComKeySetRight();
 }
-
-typedef struct w03StructUnk3 {
-/* 0x00 */ s16 unk_00;
-/* 0x02 */ s16 model;
-/* 0x04 */ f32 unk_04;
-/* 0x08 */ Vec unk_08;
-/* 0x14 */ Vec unk_14;
-} w03StructUnk3;
-
-typedef struct w03StructUnk2 {
-/* 0x00 */ struct {
-        u8 unkbit_00 : 1;
-        u8 unkbit_01 : 2;
-        u8 unkbit_03 : 1;
-        u8 unkbit_04 : 1;
-    };
-    s8 unk_01;
-    s8 unk_02;
-    u8 unk_03;
-    s16 model;
-    char unk_06[2];
-    w03StructUnk3* unk_08;
-} w03StructUnk2;
 
 char *lbl_1_data_34C[] = {
 	"jyanA",
@@ -536,12 +573,14 @@ void fn_1_4424(w03StructUnk2* arg0) {
     sp14 = 0;
     BoardSpaceFlagPosGet(0, 0x8000U, &sp6C);
     BoardSpaceFlagPosGet(0, 0x8000U, &sp60);
+
     if (lbl_1_bss_0->unk1 != 0) {
         PSVECSubtract(&sp6C, &sp60, &sp3C);
     } else {
         PSVECSubtract(&sp60, &sp6C, &sp3C);
     }
-    sp10_2 = 180.0f * (atan2(-sp3C.x, -sp3C.z) / 3.141592653589793);
+
+    sp10_2 = 180.0f * (atan2(-sp3C.x, -sp3C.z) / M_PI);
     BoardModelMotionStart(lbl_1_data_314, 0, 0U);
     BoardModelMotionSpeedSet(lbl_1_data_314, 8.0f);
     HuPrcSleep(1);
@@ -552,10 +591,12 @@ void fn_1_4424(w03StructUnk2* arg0) {
     sp24.x = 0.0f;
     sp24.y = 1.0f;
     sp24.z = 0.0f;
+
     for (i = var_r25 = 0; i < 20;) {
         Hu3DMotionExec(temp_r23, temp_r28->unk_08, temp_r28->unk_64, 0);
         Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_314), temp_r22, &sp54);
         temp_r28->unk_64 = (f32) (temp_r28->unk_64 + temp_r28->unk_68);
+
         if (temp_r28->unk_64 > 400.0f) {
             break;
         }
@@ -587,10 +628,9 @@ void fn_1_4424(w03StructUnk2* arg0) {
         sp48 = sp54;
         var_r25++;
     }
+
     arg0->unk_03 = i;
 }
-
-void fn_1_50D4(omObjData* arg0);
 
 void fn_1_48EC(s32 arg0) {
     Vec spC;
@@ -616,7 +656,7 @@ void fn_1_48EC(s32 arg0) {
     BoardModelLayerSet(temp_r31->model, 2U);
     memset(temp_r31->unk_08, 0, 0xA00U);
 
-    for (i = 0; i < 0x50; i++) {
+    for (i = 0; i < 80; i++) {
         temp_r30 = &temp_r31->unk_08[i];
         temp_r30->model = BoardModelCreate(0x70009, 0, 1);
         BoardModelVisibilitySet(temp_r30->model, 0);
@@ -626,14 +666,8 @@ void fn_1_48EC(s32 arg0) {
     fn_1_4424(temp_r31);
 }
 
-typedef struct w03UnkStruct4 {
-     /* 0x00 */ struct {
-        u8 unk00_bit0 : 1;
-    };   
-} w03UnkStruct4;
-
 void fn_1_4A9C(void) {
-    ((w03UnkStruct4*)&lbl_1_bss_74->work[0])->unk00_bit0 = 1;
+    OM_GET_WORK_PTR(lbl_1_bss_74, w03UnkStruct4)->unk00_bit0 = 1;
 }
 
 void fn_1_4ABC(w03StructUnk2* arg0) {
@@ -666,7 +700,7 @@ void fn_1_4ABC(w03StructUnk2* arg0) {
 
     BoardModelPosGet(lbl_1_data_310, &sp8);
 
-    for (i = arg0->unk_03; i < 0x50; i++) {
+    for (i = arg0->unk_03; i < 80; i++) {
         temp_r31 = &arg0->unk_08[i];
         if (temp_r31->unk_00 == 1) {
             temp_r31->unk_04 += 1.0f;
@@ -690,15 +724,13 @@ void fn_1_4ABC(w03StructUnk2* arg0) {
     }
 }
 
-
-extern omObjData* lbl_1_bss_74;
-
 s32 fn_1_4D0C(w03StructUnk3** arg0, s16* arg1) {
     w03StructUnk2* temp_r31;
 
     if (!(lbl_1_bss_74)) {
         return 0;
     }
+
     temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_74, w03StructUnk2);
     *arg0 = temp_r31->unk_08;
     *arg1 = temp_r31->unk_03;
@@ -716,15 +748,15 @@ void fn_1_4D60(w03StructUnk2* arg0) {
     if (arg0->unk_02 == 1) {
         Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_bss_C[2]), "coin", &sp8);
         for (i = 0; i < 5; i++) {
-            for (j = arg0->unk_03; j < 0x50; j++) {
+            for (j = arg0->unk_03; j < 80; j++) {
                 temp_r31 = &arg0->unk_08[j];
                 if (temp_r31->unk_00 == 0) {
                     temp_r31->unk_00 = 1;
                     temp_f31 = 360.0f * BoardRandFloat();
                     temp_f30 = 5.0f * BoardRandFloat();
-                    temp_r31->unk_14.x = temp_f30 * sin((3.141592653589793 * temp_f31) / 180.0);
+                    temp_r31->unk_14.x = temp_f30 * sin((M_PI * temp_f31) / 180.0);
                     temp_r31->unk_14.y = 50.0f + (20.0f * BoardRandFloat());
-                    temp_r31->unk_14.z = temp_f30 * cos((3.141592653589793 * temp_f31) / 180.0);
+                    temp_r31->unk_14.z = temp_f30 * cos((M_PI * temp_f31) / 180.0);
                     temp_r31->unk_08.x = sp8.x;
                     temp_r31->unk_08.y = sp8.y;
                     temp_r31->unk_08.z = sp8.z;
@@ -753,8 +785,10 @@ void fn_1_4F24(w03StructUnk2* arg0) {
         } else {
             var_r30 = sp8[GWPlayer[arg0->unkbit_01].rank];
         }
+
         temp_r29 = BoardRandMod(100);
         temp_r28 = BoardRandMod(100);
+
         if (temp_r29 < var_r30) {
             if (temp_r28 < 30) {
                 arg0->unk_02 = 2;
@@ -764,6 +798,7 @@ void fn_1_4F24(w03StructUnk2* arg0) {
         } else {
             arg0->unk_02 = 0;
         }
+
         if (arg0->unk_02 != 0) {
             BoardModelMotionShiftSet(lbl_1_bss_C[2], 0, 101.0f, 10.0f, 0);
         }
@@ -789,8 +824,9 @@ void fn_1_50D4(omObjData* arg0) {
     w03StructUnk3* temp;
 
     temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_74, w03StructUnk2);
+    
     if ((temp_r31->unkbit_00 != 0) || (BoardIsKill() != 0)) {
-        for (i = 0; i < 0x50; i++) {
+        for (i = 0; i < 80; i++) {
             temp = &temp_r31->unk_08[i];
             BoardModelKill(temp->model);
         }
@@ -817,7 +853,7 @@ void fn_1_50D4(omObjData* arg0) {
                 temp_r31->unk_01 = 1;
             }
         } else {
-            fn_1_4F24(temp_r31); //inline
+            fn_1_4F24(temp_r31);
         }
         
         if (temp_r31->unk_01 != 0) {
@@ -841,7 +877,7 @@ void fn_1_50D4(omObjData* arg0) {
             }
             if (temp_r31->unk_02 == 1) {
                 omVibrate(GWSystem.player_curr, 0xC, 4, 2);
-                fn_1_4D60(temp_r31); //inline
+                fn_1_4D60(temp_r31);
             } else if ((temp_r31->unk_02 == 2) && (temp_r31->unkbit_03 == 0)) {
                 omVibrate(GWSystem.player_curr, 0xC, 0xC, 0);
                 BoardModelVisibilitySet(temp_r31->model, 1);
@@ -867,25 +903,6 @@ void fn_1_50D4(omObjData* arg0) {
     }
 }
 
-typedef struct w03UnkStruct5 {
-     /* 0x00 */ struct {
-        u8 unk00_bit0 : 1;
-        u8 unk00_bit1 : 2;
-        u8 unk00_bit3 : 1;
-        u8 unk00_bit4 : 4;
-    };
-    /* 0x01 */ char unk_01[3];
-    /* 0x04 */ f32 unk_04;
-    /* 0x08 */ f32 unk_08;
-} w03UnkStruct5;
-
-void fn_1_5AC8(omObjData* arg0);
-void fn_1_5C5C(omObjData* arg0, w03UnkStruct5* arg1);
-void fn_1_602C(omObjData* arg0, w03UnkStruct5* arg1);
-f32 fn_1_61A4(omObjData* arg0, w03UnkStruct5* arg1);
-void fn_1_629C(s8 arg0);
-void fn_1_62FC(void);
-
 void fn_1_5838(s32 arg0) {
     Vec sp18;
     Vec spC;
@@ -899,6 +916,7 @@ void fn_1_5838(s32 arg0) {
     temp_r31->unk00_bit1 = arg0;
     temp_r31->unk00_bit4 = 1;
     temp_r31->unk00_bit3 = 0;
+
     switch (GWPlayer[temp_r31->unk00_bit1].diff) {
     case 0:
         temp_r31->unk_08 = (-15.0f + (-30.0f * BoardRandFloat()));
@@ -913,13 +931,16 @@ void fn_1_5838(s32 arg0) {
         temp_r31->unk_08 = 0.0f;
         break;
     }
+
     BoardCameraMoveSet(0);
+
     sp18.x = 0.0f;
     sp18.y = -350.0f;
     sp18.z = 0.0f;
     spC.x = -20.0f;
     spC.y = 0.0f;
     spC.z = 0.0f;
+
     BoardCameraMotionStartEx(lbl_1_data_310, &spC, &sp18, 3000.0f, -1.0f, 1);
     BoardModelMotionStart(lbl_1_data_310, 3, 0x40000001U);
     BoardModelMotionStart(lbl_1_data_314, 0, 0U);
@@ -934,6 +955,7 @@ void fn_1_5AC8(omObjData* arg0) {
     w03UnkStruct5* temp_r31;
 
     temp_r31 = OM_GET_WORK_PTR(arg0, w03UnkStruct5);
+
     if ((temp_r31->unk00_bit0 != 0) || (BoardIsKill() != 0)) {
         lbl_1_bss_78 = NULL;
         omDelObjEx(HuPrcCurrentGet(), arg0);
@@ -943,9 +965,11 @@ void fn_1_5AC8(omObjData* arg0) {
         }
         return;
     }
+
     if ((10.0f == BoardModelMotionTimeGet(lbl_1_data_310)) || (50.0f == BoardModelMotionTimeGet(lbl_1_data_310))) {
         HuAudFXPlay(0x43B);
     }
+
     switch (temp_r31->unk00_bit4) {
     case 1:
         if (lbl_1_bss_7D != 0) {
@@ -992,33 +1016,42 @@ void fn_1_5C5C(omObjData* arg0, w03UnkStruct5* arg1) {
         fn_1_629C(3);
         return;
     }
+
     if ((BoardModelMotionTimeGet(lbl_1_data_314) >= 410.0f) && (arg1->unk00_bit3) == 0) {
         WipeColorSet(0, 0, 0);
         WipeCreate(2, 0, -1);
         arg1->unk00_bit3 = 1;
         BoardAudSeqFadeOut(1, 0x3E8);
     }
+
     sp38.x = arg0->rot.x;
     sp38.y = arg0->rot.y;
     sp38.z = arg0->rot.z;
+
     temp_r3 = BoardModelIDGet(lbl_1_data_314);
     temp_r30 = &Hu3DData[temp_r3];
     temp_r27 = lbl_1_data_35C[lbl_1_bss_0->unk1];
+
     Hu3DMotionExec(temp_r3, temp_r30->unk_08, temp_r30->unk_64, 0);
     Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_314), temp_r27, &sp44);
+
     if (0.0f != temp_r30->unk_64) {
         PSVECSubtract(&sp38, &sp44, &sp2C);
     } else {
         sp2C.x = sp2C.y = sp2C.z = 0.0f;
     }
+
     arg0->rot.x = sp44.x;
     arg0->rot.y = sp44.y;
     arg0->rot.z = sp44.z;
+
     fn_1_602C(arg0, arg1);
+
     sp8 = sp38;
     sp14 = sp44;
     sp20.x = sp20.z = 0.0f;
     sp20.y = 1.0f;
+
     BoardMTXCalcLookAt(sp110, &sp14, &sp20, &sp8);
     PSMTXTranspose(sp110, sp110);
     MTXRotDeg(spE0, 'z', -arg1->unk_04);
@@ -1045,16 +1078,20 @@ void fn_1_602C(omObjData* arg0, w03UnkStruct5* arg1) {
     } else {
         var_f30 = fn_1_61A4(arg0, arg1);
     }
+
     temp_f31 = 0.625f * var_f30;
+
     if (temp_f31 < 0.0f) {
         var_f29 = -temp_f31;
     } else {
         var_f29 = temp_f31;
     }
+
     if (var_f29 < 2.0f) {
         arg1->unk_04 *= 0.97f;
         return;
     }
+
     BoardDAngleCalcRange(&arg1->unk_04, temp_f31, 1.0f);
 }
 
@@ -1081,6 +1118,7 @@ f32 fn_1_61A4(omObjData* arg0, w03UnkStruct5* arg1) {
             return -1.5f * temp_r31[2];
         }    
     }
+    
     return 0.0f;
 }
 
@@ -1095,15 +1133,15 @@ s32 fn_1_62D0(void) {
 }
 
 void fn_1_62FC(void) {
-    f32 sp8[2];
+    f32 widthHeight[2];
     s32 messageID = 0x000D0005;
-    f32 temp0;
-    f32 temp1;
+    f32 x;
+    f32 y;
     
-    HuWinMesMaxSizeGet(1, sp8, messageID);
-    temp0 = -10000.0f;
-    temp1 = 392.0f;
-    lbl_1_data_316 = HuWinCreate(temp0, temp1, sp8[0], sp8[1], 0);
+    HuWinMesMaxSizeGet(1, widthHeight, messageID);
+    x = -10000.0f;
+    y = 392.0f;
+    lbl_1_data_316 = HuWinCreate(x, y, widthHeight[0], widthHeight[1], 0);
     HuWinBGTPLvlSet(lbl_1_data_316, 0.0f);
     HuWinMesSpeedSet(lbl_1_data_316, 0);
     HuWinMesSet(lbl_1_data_316, messageID);

@@ -28,7 +28,7 @@ void fn_1_2A40(void);
 void fn_1_2B44(void);
 double atan2(double y, double x);
 
-//DATA
+//data
 s16 lbl_1_data_280 = -1;
 s16 lbl_1_data_282 = -1;
 s16 lbl_1_data_284 = -1;
@@ -62,6 +62,7 @@ void fn_1_12C8(void) {
     while (lbl_1_bss_28) {
         HuPrcVSleep();
     }
+
     BoardDiceDigit2DShowSet(1);
 }
 
@@ -72,6 +73,7 @@ void fn_1_1358(void) {
     cur_player_index = GWSystem.player_curr;
     unkC = GWPlayer[cur_player_index].space_curr;
     lbl_1_bss_2C = 0;
+
     if ((BoardSpaceFlagGet(0, GWPlayer[cur_player_index].space_curr) & 0x2000)) {
         lbl_1_bss_6E = 0;
         lbl_1_bss_6C = lbl_1_bss_C[3];
@@ -79,6 +81,7 @@ void fn_1_1358(void) {
         lbl_1_bss_6E = 1;
         lbl_1_bss_6C = lbl_1_bss_C[4];
     }
+
     if (fn_1_1650(cur_player_index) != 0) {
         if (fn_1_1D1C() != 0) {
             fn_1_1ED4(cur_player_index);
@@ -98,6 +101,7 @@ void fn_1_1358(void) {
         fn_1_26E0(cur_player_index);
         BoardStatusShowSetAll(1);
     }
+
     BoardPlayerPostTurnHookSet(cur_player_index, &fn_1_15E8);
     BoardWinKill();
     HuPrcEnd();
@@ -105,24 +109,29 @@ void fn_1_1358(void) {
 
 void fn_1_152C(void) {
     BoardConfettiKill();
+
     if (lbl_1_data_282 != -1) {
         BoardPlayerMotionKill(GWSystem.player_curr, lbl_1_data_282);
         lbl_1_data_282 = -1;
     }
+
     if (lbl_1_data_280 != -1) {
         BoardPlayerMotionKill(GWSystem.player_curr, lbl_1_data_280);
         lbl_1_data_280 = -1;
     }
+
     fn_1_2AC0();
     lbl_1_bss_28 = NULL;
 }
 
 s32 fn_1_15E8(void) {
     BoardModelVisibilitySet(lbl_1_bss_6C, 1);
+
     if (lbl_1_data_284 != -1) {
         BoardModelKill(lbl_1_data_284);
         lbl_1_data_284 = -1;
     }
+
     return 1;
 }
 
@@ -148,7 +157,7 @@ s32 fn_1_1650(s32 arg0) {
     BoardSpacePosGet(0, temp2, &sp38);
     BoardPlayerPosGet(arg0, &sp2C);
     PSVECSubtract(&sp38, &sp2C, &sp20);
-    temp = (atan2(-sp20.x, -sp20.z) / 3.141592653589793) * 180.0f;
+    temp = (atan2(-sp20.x, -sp20.z) / M_PI) * 180.0f;
     BoardPlayerRotYSet(arg0, temp);
     sp14.x = 0.0f;
     sp14.y = 100.0f;
@@ -175,6 +184,7 @@ s32 fn_1_1650(s32 arg0) {
     BoardWinWait();
     BoardWinCreateChoice(0, 0x160002, -1, 0);
     BoardWinAttrSet(0x10);
+
     if (GWPlayer[arg0].com) {
         if (BoardRandMod(0x64) > 0x32U) {
             BoardComKeySetLeft();
@@ -182,6 +192,7 @@ s32 fn_1_1650(s32 arg0) {
             BoardComKeySetRight();
         }
     }
+
     BoardWinWait();
     lbl_1_bss_6F = BoardWinChoiceGet();
     BoardWinKill();
@@ -247,6 +258,7 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
     f32 temp;
 
     temp_r30 = GWPlayer[arg0].character;
+
     if (arg1 != 0) {
         lbl_1_data_282 = BoardPlayerMotionCreate(arg0, lbl_1_data_2B0[temp_r30]);
         lbl_1_bss_6A = 8;
@@ -257,12 +269,15 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
         lbl_1_bss_68 = 1;
         var_r29 = lbl_1_data_2D0[GWPlayer[arg0].character];
     }
+
     lbl_1_data_280 = BoardPlayerMotionCreate(arg0, lbl_1_data_290[temp_r30]);
     temp = (180.0f + BoardPlayerRotYGet(arg0));
-    BoardPlayerMotBlendSet(arg0, temp, 0xF);
+    BoardPlayerMotBlendSet(arg0, temp, 15);
+
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
+
     HuAudFXPlay(var_r29);
     BoardPlayerVoiceEnableSet(arg0, lbl_1_bss_6A, 0);
     BoardPlayerMotionShiftSet(arg0, lbl_1_bss_6A, 0.0f, 8.0f, 0);
@@ -272,7 +287,8 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
         HuPrcVSleep();
 
     }
-    HuPrcSleep(0x3C);
+
+    HuPrcSleep(60);
     
     if (arg1 != 0) {
         BoardPlayerMotionShiftSet(arg0, lbl_1_bss_68, 0.0f, 8.0f, 0);
@@ -281,16 +297,20 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
             HuPrcVSleep();
         }
     }
+
     BoardPlayerIdleSet(arg0);
     HuPrcSleep(0x14);
     temp = (180.0f + BoardPlayerRotYGet(arg0));
-    BoardPlayerMotBlendSet(arg0, temp, 0xF);
+    BoardPlayerMotBlendSet(arg0, temp, 15);
+
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
-    BoardAudSeqPause(0, 1, 0x3E8);
+
+    BoardAudSeqPause(0, 1, 1000);
     BoardPlayerMotionShiftSet(arg0, lbl_1_data_280, 0.0f, 10.0f, 0);
-    HuPrcSleep(0xB);
+    HuPrcSleep(11);
+
     while (BoardPlayerMotionEndCheck(arg0) == 0) {
         HuPrcVSleep();
     }
@@ -323,16 +343,20 @@ s32 fn_1_1D1C(void) {
     BoardWinCreate(2, 0x160003, 2);
     BoardWinWait();
     BoardWinKill();
+
     prevTurn = GWSystem.turn - 1;
     maxTurn = GWSystem.max_turn;
     var_r31 = prevTurn / (maxTurn / 3);
+
     if (var_r31 >= 3) {
         var_r31 = 2;
     }
+
     modRand = BoardRandMod(100);
     if (modRand < sp8[var_r31] ) {
         return 1;
     }
+
     modRand2 = BoardRandMod(100 - sp8[var_r31]);
     if (modRand2 < sp14[var_r31][0]) {
         lbl_1_bss_2C = 3;
@@ -341,6 +365,7 @@ s32 fn_1_1D1C(void) {
     } else {
         lbl_1_bss_2C = 1;
     }
+
     return 0;
 }
 
@@ -373,11 +398,13 @@ void fn_1_1ED4(s32 arg0) {
     while (BoardFilterFadePauseCheck() == 0) {
         HuPrcVSleep();
     }
+
     BoardPlayerIdleSet(arg0);
     
     while (BoardMusStatusGet(1) != 0) {
         HuPrcVSleep();
     }
+
     BoardAudSeqPause(0, 0, 1000);
     BoardWinCreate(2, 0x160004, 2);
     BoardWinWait();
@@ -401,10 +428,12 @@ void fn_1_20E0(s32 arg0) {
     BoardModelPosSetV(lbl_1_data_284, &spC);
     BoardFilterFadeOut(0x1E);
     sp8 = BoardModelRotYGet(lbl_1_bss_6C);
+
     while (BoardDAngleCalcRange(&sp8, 0.0f, 30.0f) == 0) {
         BoardModelRotYSet(lbl_1_data_284, sp8);
         HuPrcVSleep();
     }
+
     omVibrate(arg0, 0xC, 4, 2);
     BoardModelRotYSet(lbl_1_data_284, 0.0f);
     BoardModelRotYSet(lbl_1_bss_6C, 0.0f);
@@ -426,26 +455,30 @@ void fn_1_20E0(s32 arg0) {
     if (lbl_1_bss_30 > 128.0f) {
         lbl_1_bss_30 = 128.0f;
     }
-    HuPrcSleep(0x28);
+
+    HuPrcSleep(40);
     lbl_1_bss_30 = 128.0f;
     
     while (lbl_1_bss_30 > 0.0f) {
         HuPrcVSleep();
         lbl_1_bss_30 -= 12.0f;
     }
+
     if (lbl_1_bss_30 < 0.0f) {
         lbl_1_bss_30 = 0.0f;
     }
+
     fn_1_2AC0();
 
     for (i = 0; i < 3; i++) {
-        BoardCameraMotionStartEx(-1, NULL, 0, 680.0f, -1.0f, 0xD);
+        BoardCameraMotionStartEx(-1, NULL, 0, 680.0f, -1.0f, 13);
         BoardCameraMotionWait();
-        BoardCameraMotionStartEx(-1, NULL, 0, 1360.0f, -1.0f, 0xD);
+        BoardCameraMotionStartEx(-1, NULL, 0, 1360.0f, -1.0f, 13);
         BoardCameraMotionWait();
     }
     
     BoardPlayerIdleSet(arg0);
+
     while (BoardMusStatusGet(1) != 0) {
         HuPrcVSleep();
     }
@@ -476,6 +509,7 @@ void fn_1_20E0(s32 arg0) {
     }
     
     BoardCameraQuakeReset();
+
     if (lbl_1_data_288 != 0) {
         HuAudFXStop(lbl_1_data_288);
         lbl_1_data_288 = -1;
@@ -507,14 +541,16 @@ void fn_1_26E0(s32 arg0) {
     BoardPlayerPosGet(arg0, &sp14);
     PSVECSubtract(&sp20, &sp14, &sp8);
     PSVECNormalize(&sp8, &sp8);
-    temp = (180.0f * (atan2(-sp8.x, -sp8.z) / 3.141592653589793));
+    temp = (180.0f * (atan2(-sp8.x, -sp8.z) / M_PI));
     BoardPlayerRotYSet(arg0, temp);
     BoardCameraViewSet(1);
     BoardCameraTargetPlayerSet(arg0);
     BoardPlayerPosLerpStart(arg0, &sp14, &sp20, 0x28);
+
     while (GWPlayer[arg0].moving != 0) {
         HuPrcVSleep();
     }
+
     BoardCameraMotionWait();
     BoardModelMotionStart(lbl_1_bss_C[1], 0, 0);
     BoardPlayerIdleSet(arg0);
@@ -526,8 +562,9 @@ void fn_1_2818(void) {
     s16 j;
     s16 sp8[3] = {0x0002, 0x003E, 0x007A};
 
-    temp_r29 = (4 - lbl_1_bss_2C) * 0x3C;
+    temp_r29 = (4 - lbl_1_bss_2C) * 60;
     BoardModelMotionStart(lbl_1_bss_C[1], 0, 0);
+
     while (1) {
         temp_r30 = BoardModelMotionTimeGet(lbl_1_bss_C[1]);
         if (temp_r29 > temp_r30) {
@@ -548,6 +585,7 @@ void fn_1_2818(void) {
 
 s32 fn_1_2930(s32 arg0) {
     lbl_1_bss_0->unk0--;
+
     if (lbl_1_bss_0->unk0 <= 0) {
         lbl_1_bss_0->unk2 = 0;
         lbl_1_bss_0->unk0 = 0;
@@ -558,6 +596,7 @@ s32 fn_1_2930(s32 arg0) {
         fn_1_CF4();
         return 1;
     }
+
     sprintf(lbl_1_bss_38, "%d", lbl_1_bss_0->unk0);
     BoardWinCreate(0, 0x160007, -1);
     BoardWinInsertMesSet((s32)lbl_1_bss_38, 1);
@@ -579,6 +618,7 @@ void fn_1_2AC0(void) {
         HuMemDirectFree(lbl_1_bss_34);
         lbl_1_bss_34 = NULL;
     }
+
     if (lbl_1_data_286 != -1) {
         Hu3DModelKill(lbl_1_data_286);
         lbl_1_data_286 = -1;
@@ -640,5 +680,3 @@ void fn_1_2B44(void) {
     GXPosition2f32(0.0f, 1.0f);
     GXSetChanMatColor(GX_COLOR0A0, sp1C);
 }
-
-f32 const padStatue = 0.0f;

@@ -13,10 +13,9 @@
 #include "math.h"
 #include "game/hsfman.h"
 #include "dolphin/os/OSFastCast.h"
-
-double sin(double x);
-double cos(double x);
-double atan2(double y, double x);
+#include "game/minigame_seq.h"
+#include "game/hsfdraw.h"
+#include "game/hsfmotion.h"
 
 typedef struct someBits {
     /* 0x00 */ struct {
@@ -63,12 +62,6 @@ extern u16 HuPadBtnDown[4];
 
 //function signatures
 s32 BoardVecDAngleCalcRange(float *value, float min, float range);
-void BoardCameraQuakeSet(s32 duration, float strength);
-s16 MGSeqCreate(s32, ...);
-u8 MGSeqStatGet(s16);
-s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist);
-void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
-s16 Hu3DMotionShiftIDGet(s16 arg0);
 s32 frand(void);
 
 void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix);
@@ -102,7 +95,7 @@ s32 fn_1_9CF4(s32 arg0);
 void fn_1_9F78(void);
 void fn_1_9FE4(void);
 
-//DATA
+//data
 s16 lbl_1_data_4D8 = -1;
 s16 lbl_1_data_4DA = -1;
 s16 lbl_1_data_4DC = -1;
@@ -151,37 +144,46 @@ void fn_1_9AA0(void) {
     BoardDiceDigit2DShowSet(0);
     lbl_1_bss_180 = HuPrcChildCreate(fn_1_9C8C, 0x2003, 0x2000, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_180, fn_1_9B30);
+
     while (lbl_1_bss_180 != 0) {
         HuPrcVSleep();
     }
+
     BoardDiceDigit2DShowSet(1);
 }
 
 void fn_1_9B30(void) {
     fn_1_BDAC();
+
     if (lbl_1_bss_188) {
         lbl_1_bss_188;
     }
+
     if (lbl_1_bss_184) {
         OM_GET_WORK_PTR(lbl_1_bss_184, someBits2)->unk00_bit0 = 1;
     }
+
     if (lbl_1_data_4E0 != -1) {
         HuAudFXStop(lbl_1_data_4E0);
         lbl_1_data_4E0 = -1;
     }
+
     if (lbl_1_data_4DC != -1) {
         BoardModelMotionKill(lbl_1_bss_C[11], lbl_1_data_4DC);
         lbl_1_data_4DC = -1;
     }
+    
     if (lbl_1_data_4DA != -1) {
         BoardModelMotionKill(lbl_1_bss_C[11], lbl_1_data_4DA);
         lbl_1_data_4DA = -1;
     }
+
     if (lbl_1_data_4D8 != -1) {
         HuWinKill(lbl_1_data_4D8);
         lbl_1_data_4D8 = -1;
     }
-    lbl_1_bss_180 = 0U;
+
+    lbl_1_bss_180 = 0;
 }
 
 void fn_1_9C8C(void) {
@@ -189,10 +191,12 @@ void fn_1_9C8C(void) {
 
     temp_r31 = GWSystem.player_curr;
     lbl_1_data_4E0 = -1;
+
     if (fn_1_9CF4(temp_r31) != 0) {
         fn_1_A44C(temp_r31);
         fn_1_A5E0(temp_r31);
     }
+
     HuPrcEnd();
 }
 
@@ -211,24 +215,31 @@ s32 fn_1_9CF4(s32 arg0) {
         BoardWinKill();
         return 0;
     }
+
     BoardWinCreateChoice(2, 0x16001A, 2, 0);
+
     if (GWPlayer[arg0].com != 0) {
         BoardComKeySetLeft();
     }
+
     BoardWinWait();
+
     if (BoardWinChoiceGet() != 0) {
         BoardWinCreate(2, 0x16001B, 2);
         BoardWinWait();
         BoardWinKill();
         return 0;
     }
+
     BoardWinKill();
+
     sp14.x = 0.0f;
     sp14.y = 200.0f;
     sp14.z = 0.0f;
     sp8.x = -10.0f;
     sp8.y = 0.0f;
     sp8.z = 0.0f;
+
     BoardCameraMotionStartEx(lbl_1_bss_C[8], &sp8, &sp14, 1500.0f, -1.0f, 0x15);
     spaceCur = GWPlayer[arg0].space_curr;
     temp_r29 = BoardSpaceLinkFlagSearch(0, spaceCur, 0x02000000);
@@ -236,11 +247,13 @@ s32 fn_1_9CF4(s32 arg0) {
     BoardSpacePosGet(0, temp_r29, &sp38);
     PSVECSubtract(&sp38, &sp2C, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    BoardPlayerRotYSet(arg0, (f32) (180.0 * (atan2(-sp20.x, -sp20.z) / 3.141592653589793)));
+    BoardPlayerRotYSet(arg0, (f32) (180.0 * (atan2(-sp20.x, -sp20.z) / M_PI)));
     BoardPlayerPosLerpStart(arg0, &sp2C, &sp38, 0x14);
+
     while (GWPlayer[arg0].moving != 0) {
         HuPrcVSleep();
     }
+
     BoardPlayerIdleSet(arg0);
     HuPrcSleep(0x3C);
     fn_1_B0A4(arg0);
@@ -269,26 +282,31 @@ void fn_1_9FE4(void) {
     sp18.z = (-907.7000122070313 + 200.0 * cos(0.0));
     sp18.y = sp24.y;
     PSVECSubtract(&sp18, &sp24, &spC);
-    temp_f30 = (atan2(spC.z, spC.x) / 3.141592653589793 * 180.0);
+    temp_f30 = (atan2(spC.z, spC.x) / M_PI * 180.0);
     sp8 = BoardModelRotYGet(lbl_1_bss_C[11]);
     BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DA, 0.0f, 10.0, 0x40000001);
+
     while (BoardDAngleCalcRange(&sp8, temp_f30, 10.0) == 0) {
         BoardModelRotYSet(lbl_1_bss_C[11], sp8);
         HuPrcVSleep();
     }
+
     BoardModelRotYSet(lbl_1_bss_C[11], temp_f30);
     BoardModelMotionSpeedSet(lbl_1_bss_C[11], 2.0f);
+
     spC.x /= 20.0f;
     spC.z /= 20.0f;
     spC.y = 0.0f;
     sp30 = sp24;
     var_f31 = 0.0f;
+
     while (var_f31 < 20.0f) {
         PSVECAdd(&sp30, &spC, &sp30);
         BoardModelPosSetV(lbl_1_bss_C[11], &sp30);
         HuPrcVSleep();
         var_f31 += 1.0f;
     }
+
     BoardAudSeqPause(0, 1, 0x3E8);
     HuAudFXPlay(0x450);
     HuAudFXPlay(0x362);
@@ -296,23 +314,28 @@ void fn_1_9FE4(void) {
     fn_1_B8E8(1);
     BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DC, 0.0f, 10.0, 0x40000005);
     PSVECSubtract(&sp24, &sp30, &spC);
+
     spC.x /= 60.0f;
     spC.z /= 60.0f;
     spC.y = 0.0f;
     var_f31 = 0.0f;
+
     while (var_f31 < 60.0f) {
         PSVECAdd(&sp30, &spC, &sp30);
         BoardModelPosSetV(lbl_1_bss_C[11], &sp30);
         HuPrcVSleep();
         var_f31 += 1.0f;
     }
+
     temp_f30 = 0.0f;
     sp8 = BoardModelRotYGet(lbl_1_bss_C[11]);
     BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DA, 0.0f, 10.0, 0x40000001);
+
     while (BoardDAngleCalcRange(&sp8, temp_f30, 10.0) == 0) {
         BoardModelRotYSet(lbl_1_bss_C[11], sp8);
         HuPrcVSleep();
     }
+
     BoardModelMotionShiftSet(lbl_1_bss_C[11], 1, 0.0f, 10.0, 0x40000001);
 }
 
@@ -323,34 +346,44 @@ void fn_1_A44C(s32 arg0) {
 
     BoardMusStart(1, 0x17, 0x7F, 0);
     temp_r30 = MGSeqCreate(3, 0);
+
     while (MGSeqStatGet(temp_r30) != 0) {
         HuPrcVSleep();
     }
+
     fn_1_A7A0(arg0);
     fn_1_A6B0();
     fn_1_ACD8(1);
+
     while (fn_1_AE20() != 0) {
         HuPrcVSleep();
     }
+
     temp_r29 = fn_1_BBC4() + 0x80000;
     BoardWinCreate(2, 0x16001C, 2);
     BoardWinInsertMesSet(temp_r29, 0);
     BoardWinWait();
     fn_1_B8E8(4);
+
     while (fn_1_BB48() != 0) {
         HuPrcVSleep();
     }
+
     omVibrate(arg0, 0xC, 6, 6);
     BoardPlayerItemAdd(arg0, fn_1_BBC4());
     fn_1_ACD8(3);
     temp_r28 = HuAudSStreamPlay(2);
+
     while (HuAudSStreamStatGet(temp_r28) != 0) {
         HuPrcVSleep();
     }
-    BoardAudSeqPause(0, 0, 0x3E8);
+
+    BoardAudSeqPause(0, 0, 1000);
+
     while (lbl_1_bss_188) {
         HuPrcVSleep();
     }
+
     HuPrcSleep(0x1E);
     BoardWinCreate(2, 0x16001D, 2);
     BoardWinWait();
@@ -367,7 +400,7 @@ void fn_1_A5E0(s32 arg0) {
     BoardSpacePosGet(0, spaceCur, &sp8);
     BoardCameraTargetPlayerSet(arg0);
     BoardCameraViewSet(1);
-    BoardPlayerPosLerpStart(arg0, &sp14, &sp8, 0x14);
+    BoardPlayerPosLerpStart(arg0, &sp14, &sp8, 20);
     while (GWPlayer[arg0].moving != 0) {
         HuPrcVSleep();
     }
@@ -385,7 +418,7 @@ void fn_1_A6B0(void) {
     lbl_1_data_4D8 = HuWinCreate(val1, val2, sp8[0], sp8[1], 0);
     HuWinBGTPLvlSet(lbl_1_data_4D8, 0.0f);
     HuWinMesSpeedSet(lbl_1_data_4D8, 0);
-    HuWinMesSet(lbl_1_data_4D8, 0x16001FU);
+    HuWinMesSet(lbl_1_data_4D8, 0x16001F);
 }
 
 void fn_1_A7A0(s32 arg0) {
@@ -414,12 +447,15 @@ void fn_1_A8AC(s32 arg0) {
     BoardModelPosGet(lbl_1_bss_C[9], &sp8);
     BoardPlayerPosGet(arg0, &sp14);
     sp8.y = sp14.y;
-    BoardPlayerPosLerpStart(arg0, &sp14, &sp8, 0x14);
+    BoardPlayerPosLerpStart(arg0, &sp14, &sp8, 20);
+
     while (GWPlayer[arg0].moving != 0) {
         HuPrcVSleep();
     }
+
     playerYRot = BoardPlayerRotYGet(arg0) + 180.0f;
-    BoardPlayerMotBlendSet(arg0, playerYRot, 0xF);
+    BoardPlayerMotBlendSet(arg0, playerYRot, 15);
+
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
@@ -440,6 +476,7 @@ void fn_1_A994(omObjData* arg0) {
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
+
     if (temp_r31->unk00_bit6 == 0) {
         if (temp_r31->unk2 != 0) {
             temp_r31->unk2--;
@@ -453,6 +490,7 @@ void fn_1_A994(omObjData* arg0) {
             temp_r31->unk2 = 0x3CU;
         }
     }
+
     switch (temp_r31->unk00_bit1) {
     case 1:
         fn_1_AB18(arg0, temp_r31);
@@ -517,6 +555,7 @@ void fn_1_ACD8(s32 arg0) {
 
     temp_r31 = (someBits*)&lbl_1_bss_188->work[0];
     temp_r31->unk00_bit1 = arg0;
+
     switch (arg0) {
     case 0:
         BoardPlayerIdleSet(temp_r31->unk00_bit4);
@@ -553,6 +592,7 @@ s32 fn_1_AE4C(s32 arg0, s8* arg1) {
     temp_r29 = lbl_1_data_4E6[arg1[0]];
     temp_r28 = lbl_1_data_4E6[arg1[1]];
     temp_r30 = lbl_1_data_4E6[arg1[2]];
+
     if (temp_r29 > temp_r28) {
         if (temp_r29 > temp_r30) {
             var_r31 = 0;
@@ -568,6 +608,7 @@ s32 fn_1_AE4C(s32 arg0, s8* arg1) {
     } else {
         var_r31 = 0;
     }
+
     return var_r31;
 }
 
@@ -579,6 +620,7 @@ u32 fn_1_AF24(s32 arg0) {
     s8 temp_r0_2;
 
     spC = 0;
+
     switch (GWPlayer[arg0].diff) {
     case 3:
         var_r30 = 0;
@@ -637,7 +679,7 @@ void fn_1_B0A4(s32 arg0) {
     temp_r30->unk00_bit1 = 0;
     temp_r30->unk00_bit4 = arg0;
 
-    for (i = 0; i < 3;) {
+    for (i = 0; i < ARRAY_COUNT(spC);) {
         spC[i] = BoardRandMod(14);
         if ((spC[i] != 10) && (spC[i] != 13)) {
             for (j = 0; j < i; j++) {
@@ -656,19 +698,22 @@ void fn_1_B0A4(s32 arg0) {
     
     fn_1_BBF8();
     
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < ARRAY_COUNT(spC); i++) {
         temp_r29 = spC[i];
         temp_r30->unk3[i] = temp_r29;
         temp_r30->unk_06[i] = BoardModelCreate(lbl_1_data_514[temp_r29], NULL, 0);
         BoardModelHookSet(lbl_1_bss_C[9], lbl_1_data_508[i], temp_r30->unk_06[i]);
         BoardModelMotionSpeedSet(temp_r30->unk_06[i], 0.0f);
-        if (temp_r29 == 0xB) {
+
+        if (temp_r29 == 11) {
             BoardModelMotionStart(temp_r30->unk_06[i], 0, 0x40000001);
         }
+
         if (temp_r29 == 5) {
             PSMTXTrans(sp18, 0.0f, -50.0f, 0.0f);
             BoardModelMtxSet(temp_r30->unk_06[i], &sp18);
         }
+
         if ((temp_r29 == 6) || (temp_r29 == 7)) {
             PSMTXTrans(sp18, 0.0f, 0.0f, 8.0f);
             BoardModelMtxSet(temp_r30->unk_06[i], &sp18);
@@ -681,6 +726,7 @@ void fn_1_B350(omObjData* arg0) {
     someBits2* temp_r31;
 
     temp_r31 = (someBits2*)&arg0->work[0];
+
     if ((temp_r31->unk00_bit0 != 0) || (BoardIsKill() != 0)) {
         BoardModelHookReset(lbl_1_bss_C[9]);
         for (i = 0; i < 3; i++) {
@@ -779,7 +825,7 @@ void fn_1_B748(omObjData* arg0, someBits2* arg1) {
         BoardModelPosSetV(temp_r29, &sp8);
         BoardModelRotYSet(temp_r29, 8.0f + BoardModelRotYGet(temp_r29));
         BoardModelScaleGet(temp_r29, &sp14);
-        sp14.x = sp14.y = sp14.z = cos(3.141592653589793 * temp_f0 / 180.0);
+        sp14.x = sp14.y = sp14.z = cos(M_PI * temp_f0 / 180.0);
         BoardModelScaleSetV(temp_r29, &sp14);
         arg1->unk1 += 4;
         return;
@@ -802,6 +848,7 @@ void fn_1_B8E8(s32 arg0) {
 
     temp_r31 = (someBits2*)&lbl_1_bss_184->work[0];
     temp_r31->unk00_bit1 = arg0;
+
     switch (arg0) {
     case 1:
         temp_f31 = 0.31666666f;
@@ -840,7 +887,7 @@ void fn_1_BB74(s8* arg0) {
     someBits2* bits = OM_GET_WORK_PTR(lbl_1_bss_184, someBits2);
     s32 i;
     
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < ARRAY_COUNT(bits->unk3); i++) {
         arg0[i] = bits->unk3[i];
     }
 }
@@ -886,7 +933,6 @@ void fn_1_BDAC(void) {
 
 void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
     Point3d sp8;
-    
     f32 temp_f30;
     f32 temp_f29;
     f32 temp_f31;
@@ -916,8 +962,8 @@ void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
         if (j != particle->unk_30) {
             temp_f30 = 360.0f * (0.003921569f * (frand() & 0xFF));
             temp_f29 = temp_f31 * (20.0f + (60.0f * (0.003921569f * (frand() & 0xFF))));
-            var_r31->unk34.x = (sp8.x + (temp_f29 * sin((3.141592653589793 * temp_f30) / 180.0)));
-            var_r31->unk34.z = (sp8.z + (temp_f29 * cos((3.141592653589793 * temp_f30) / 180.0)));
+            var_r31->unk34.x = (sp8.x + (temp_f29 * sin((M_PI * temp_f30) / 180.0)));
+            var_r31->unk34.z = (sp8.z + (temp_f29 * cos((M_PI * temp_f30) / 180.0)));
             var_r31->unk34.y = (sp8.y + (temp_f31 * (-30.0f + (40.0f * (0.003921569f * (frand() & 0xFF))))));
             var_r31->unk08.x = (0.5f + (3.0f * (0.003921569f * (frand() & 0xFF))));
             var_r31->unk08.y = (0.3f + (2.0f * (0.003921569f * (frand() & 0xFF))));
@@ -925,6 +971,7 @@ void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
             var_r31->unk2C = (15.0f * temp_f31);            
         }
     }
+
     var_r31 = particle->unk_48;
     
     for (i = 0; i < particle->unk_30; i++, var_r31++) {
