@@ -12,6 +12,7 @@ typedef struct {
 
 extern void fn_1_9D00(s32 arg0);
 extern void fn_1_9DD8(void);
+
 extern void fn_1_D740(s16 *arg0);
 extern void fn_1_DD84(void);
 extern void fn_1_DE94(void);

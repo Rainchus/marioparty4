@@ -8,6 +8,7 @@
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 #include "game/object.h"
+#include "game/objsub.h"
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/window.h"
@@ -647,15 +648,12 @@ static void fn_1_130C(void) {
     BoardPlayerMotionStart(temp_r31, 1, 0x40000001);
 }
 
-// TODO: consider moving to gamework_data.h or board/player.h.
-static inline s16 GWPlayerCurrSpaceCurrGet(void) {
-    return GWPlayer[GWSystem.player_curr].space_curr;
-}
-
 static s32 fn_1_157C(void) {
     s32 temp_r31;
+    s16 temp_curr;
 
-    temp_r31 = BoardSpaceFlagGet(0, GWPlayerCurrSpaceCurrGet()) & 0x600000;
+    temp_curr = GWPlayer[GWSystem.player_curr].space_curr;
+    temp_r31 = BoardSpaceFlagGet(0, temp_curr) & 0x600000;
     BoardDiceDigit2DShowSet(0);
     if (temp_r31 == 0x200000) {
         fn_1_130C();
