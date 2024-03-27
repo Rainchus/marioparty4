@@ -642,10 +642,6 @@ void fn_1_4ABC(w03StructUnk2* arg0) {
     w03StructUnk3* temp_r31;
     s32 i;
     
-    //reg alloc hack
-    (void)i;
-    (void)i;
-    
     BoardModelPosGet(lbl_1_data_310, &sp8);
     sp8.y += 250.0f;
 
@@ -663,6 +659,10 @@ void fn_1_4ABC(w03StructUnk2* arg0) {
             BoardModelPosSetV(temp_r31->model, &temp_r31->unk_08);
         }        
     }
+
+    //reg alloc hack
+    (void)i;
+    (void)i;
 
     BoardModelPosGet(lbl_1_data_310, &sp8);
 
