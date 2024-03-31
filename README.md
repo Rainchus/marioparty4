@@ -1,4 +1,4 @@
-Some Game  
+Mario Party 4  
 [![Build Status]][actions] ![Progress] ![DOL Progress] ![RELs Progress] [![Discord Badge]][discord]
 =============
 
