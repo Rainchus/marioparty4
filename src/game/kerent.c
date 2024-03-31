@@ -1,3 +1,4 @@
+//fake function signatures
 void OSDumpStopwatch(void);
 void PSVECDotProduct(void);
 void PSVECDistance(void);
@@ -2033,7 +2034,7 @@ extern void _kerjmp_BoardShopTutorialExec(void);
 extern void _kerjmp_BoardLotteryTutorialExec(void);
 extern void _kerjmp_BoardBooHouseTutorialExec(void);
 
-asm void kerent(void) {
+asm void _kerent(void) {
     #ifdef __MWERKS__ // clang-format off
     nofralloc
     entry _kerjmp_OSDumpStopwatch
