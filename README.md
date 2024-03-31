@@ -29,9 +29,9 @@ URL encoded then appended to: https://img.shields.io/endpoint?label=RELs&url=
 Replace with your Discord server's ID and invite URL.
 -->
 [Discord Badge]: https://img.shields.io/discord/727908905392275526?color=%237289DA&logo=discord&logoColor=%23FFFFFF
-[discord]: https://discord.gg/hKx3FJJgrV
+[discord]: https://discord.gg/T4faGveujK
 
-A work-in-progress decompilation of Some Game.
+A work-in-progress decompilation of Mario Party 4.
 
 This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
 
@@ -80,9 +80,9 @@ Building
 
 - Clone the repository:
   ```
-  git clone https://github.com/my/repo.git
+  git clone https://github.com/Rainchus/mp4-dtk.git
   ```
-- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GAMEID`.
+- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GMPE01`.
 ![](assets/dolphin-extract.png)
   - To save space, the only necessary files are the following. Any others can be deleted.
     - `sys/main.dol`
@@ -91,7 +91,7 @@ Building
   ```
   python configure.py
   ```
-  To use a version other than `GAMEID` (USA), specify it with `--version`.
+  To use a version other than `GMPE01` (USA), specify it with `--version`.
 - Build:
   ```
   ninja
