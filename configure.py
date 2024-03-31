@@ -397,7 +397,7 @@ config.libs = [
             Object(Matching, "game/board/pause.c"),
             Object(Matching, "game/board/com_path.c"),
             Object(Matching, "game/board/tutorial.c"),
-            Object(NonMatching, "game/kerent.c"),
+            Object(Matching, "game/kerent.c"),
         ],
     },
     DolphinLib(
