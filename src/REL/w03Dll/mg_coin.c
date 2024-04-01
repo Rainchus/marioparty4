@@ -162,7 +162,7 @@ s32 fn_1_7D18(s32 arg0) {
     sp8.y = 0.0f;
     sp8.z = 0.0f;
 
-    BoardCameraMotionStartEx(lbl_1_bss_C[7], &sp8, &sp14, 1500.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lbl_1_bss_C[7], &sp8, &sp14, 1500.0f, -1.0f, 21);
     space = GWPlayer[arg0].space_curr;
     temp_r28 = BoardSpaceLinkFlagSearch(0, space, 0x02000000);
     BoardPlayerPosGet(arg0, &sp2C);
@@ -400,7 +400,7 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
             arg0->rot.y = 16.666666f * arg0->rot.x;
             arg0->scale.x = BoardModelMotionMaxTimeGet(lbl_1_bss_C[7]);
             HuWinDispOff(lbl_1_data_454);
-            BoardCameraMotionStartEx(-1, 0, 0, 1900.0f, -1.0f, 0x15);
+            BoardCameraMotionStartEx(-1, NULL, NULL, 1900.0f, -1.0f, 21);
             return;
         }
 

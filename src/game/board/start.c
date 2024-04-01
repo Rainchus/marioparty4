@@ -293,7 +293,7 @@ static void FocusStart(void) {
     sp8.x = -22.0f;
     sp8.y = 0.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(camFocus, &sp8, 0, 1500.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(camFocus, &sp8, NULL, 1500.0f, -1.0f, 21);
 }
 
 static void CreatePlayerStart(void) {

@@ -364,7 +364,7 @@ static void SetTargetView(void) {
         sp8.x = -45.0f;
         sp8.y = 0.0f;
         sp8.z = 0.0f;
-        BoardCameraMotionStartEx(focusMdl, &sp8, NULL, 3000.0f, -1.0f, 0x15);
+        BoardCameraMotionStartEx(focusMdl, &sp8, NULL, 3000.0f, -1.0f, 21);
         BoardCameraMotionWait();
     } else {
         BoardModelPosSet(focusMdl, 0.0f, 0.0f, 0.0f);

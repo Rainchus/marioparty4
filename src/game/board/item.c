@@ -1303,7 +1303,7 @@ static void ExecItemLight(void) {
 
     HuAudFXPlay(0x350);
     ItemShowProc(NULL, NULL);
-    BoardWinCreateChoice(2, DATA_MAKE_NUM(DATADIR_EFFECT, 15), -1, 0);
+    BoardWinCreateChoice(2, MAKE_MESSID(18, 15), -1, 0);
     BoardWinInsertMesSet(MAKE_MESSID(8, 8), 3);
     if (GWPlayer[currItemRestore].com) {
         BoardComKeySetRight();
@@ -1800,7 +1800,7 @@ static void ExecItemBooBall(void) {
                     sp68.x = 0.0f;
                     sp68.y = 0.0f;
                     sp68.z = 0.0f;
-                    BoardCameraMotionStartEx(suitMdl, 0, &sp68, 325.0f, -1.0f, 0x15);
+                    BoardCameraMotionStartEx(suitMdl, NULL, &sp68, 325.0f, -1.0f, 21);
                     BoardBooStealMain();
                     BoardCameraViewSet(2);
                     BoardCameraMotionWait();
@@ -1852,7 +1852,7 @@ static void ExecItemBooBall(void) {
                     sp68.x = 0.0f;
                     sp68.y = 0.0f;
                     sp68.z = 0.0f;
-                    BoardCameraMotionStartEx(suitMdl, 0, &sp68, 325.0f, -1.0f, 0x15);
+                    BoardCameraMotionStartEx(suitMdl, NULL, &sp68, 325.0f, -1.0f, 21);
                     BoardBooStealMain();
                     var_r29 = BoardBooStealLightCheck();
                     BoardCameraViewSet(2);

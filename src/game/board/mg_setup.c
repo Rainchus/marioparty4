@@ -175,7 +175,7 @@ static void ExecMGSetup(void) {
     sp54.x = 0.0f;
     sp54.y = 150.0f;
     sp54.z = 0.0f;
-    BoardCameraMotionStartEx(-1, NULL, &sp54, 1300.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(-1, NULL, &sp54, 1300.0f, -1.0f, 21);
     BoardCameraMotionWait();
     WipeCreate(1, 0, 0x15);
     

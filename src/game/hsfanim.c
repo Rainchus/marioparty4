@@ -74,7 +74,7 @@ s16 Hu3DAnimCreate(void *arg0, s16 arg1, char *arg2) {
     var_r29 = temp_r27->attribute;
     for (i = var_r25 = 0; i < temp_r27->attributeCnt; i++, var_r29++) {
         if (strcmp(arg2, var_r29->bitmap->name) == 0) {
-            if (var_r29->unk04 == 0) {
+            if (!var_r29->unk04) {
                 var_r30 = HuMemDirectMallocNum(HEAP_DATA, sizeof(HsfanimStruct01), (u32) Hu3DData[arg1].unk_48);
                 var_r29->unk04 = var_r30;
                 var_r30->unk00 = 0;
@@ -92,7 +92,7 @@ s16 Hu3DAnimCreate(void *arg0, s16 arg1, char *arg2) {
         OSReport("Error: Not Found TexAnim Name\n");
         return -1;
     }
-    if (arg0 == 0) {
+    if (!arg0) {
         var_r31->unk10 = NULL;
     } else {
         var_r31->unk10 = HuSprAnimRead(arg0);
@@ -131,7 +131,7 @@ s16 Hu3DAnimLink(s16 arg0, s16 arg1, char *arg2) {
     var_r29 = temp_r27->attribute;
     for (i = var_r25 = 0; i < temp_r27->attributeCnt; i++, var_r29++) {
         if (strcmp(arg2, var_r29->bitmap->name) == 0) {
-            if (var_r29->unk04 == 0) {
+            if (!var_r29->unk04) {
                 var_r30 = HuMemDirectMallocNum(HEAP_DATA, sizeof(HsfanimStruct01), (u32) Hu3DData[arg1].unk_48);
                 var_r29->unk04 = var_r30;
             } else {
@@ -234,7 +234,7 @@ void Hu3DAnimBankSet(s16 arg0, s32 arg1) {
     temp_r31->unk04 = temp_r31->unk08 = 0.0f;
 }
 
-void Hu3DAnmNoSet(s16 arg0, s32 arg1) {
+void Hu3DAnmNoSet(s16 arg0, u16 arg1) {
     Hu3DTexAnimDataStruct *temp_r31 = &Hu3DTexAnimData[arg0];
 
     temp_r31->unk04 = arg1;
@@ -378,7 +378,7 @@ s16 Hu3DTexScrollCreate(s16 arg0, char *arg1) {
     var_r29 = temp_r27->attribute;
     for (i = var_r25 = 0; i < temp_r27->attributeCnt; i++, var_r29++) {
         if (strcmp(arg1, var_r29->bitmap->name) == 0) {
-            if (var_r29->unk04 == 0) {
+            if (!var_r29->unk04) {
                 var_r30 = HuMemDirectMallocNum(HEAP_DATA, sizeof(HsfanimStruct01), (u32) Hu3DData[arg0].unk_48);
                 var_r29->unk04 = var_r30;
                 var_r30->unk00 = 0;
@@ -865,7 +865,7 @@ s16 Hu3DParManCreate(AnimData *arg0, s16 arg1, HsfanimStruct00 *arg2) {
     s16 var_r30;
 
     for (var_r30 = 0; var_r30 < 64; var_r30++) {
-        if (parManProc[var_r30] == 0) {
+        if (!parManProc[var_r30]) {
             break;
         }
     }
@@ -907,7 +907,7 @@ s16 Hu3DParManLink(s16 arg0, HsfanimStruct00 *arg1) {
     s16 var_r30;
 
     for (var_r30 = 0; var_r30 < 64; var_r30++) {
-        if (parManProc[var_r30] == 0) {
+        if (!parManProc[var_r30]) {
             break;
         }
     }

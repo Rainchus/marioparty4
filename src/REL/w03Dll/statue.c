@@ -165,7 +165,7 @@ s32 fn_1_1650(s32 arg0) {
     sp8.x = -20.0f;
     sp8.y = 0.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(lbl_1_bss_6C, &sp8, &sp14, 1360.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lbl_1_bss_6C, &sp8, &sp14, 1360.0f, -1.0f, 21);
     BoardPlayerPosLerpStart(arg0, &sp2C, &sp38, 0x28);
 
     while (GWPlayer[arg0].moving) {
@@ -471,9 +471,9 @@ void fn_1_20E0(s32 arg0) {
     fn_1_2AC0();
 
     for (i = 0; i < 3; i++) {
-        BoardCameraMotionStartEx(-1, NULL, 0, 680.0f, -1.0f, 13);
+        BoardCameraMotionStartEx(-1, NULL, NULL, 680.0f, -1.0f, 13);
         BoardCameraMotionWait();
-        BoardCameraMotionStartEx(-1, NULL, 0, 1360.0f, -1.0f, 13);
+        BoardCameraMotionStartEx(-1, NULL, NULL, 1360.0f, -1.0f, 13);
         BoardCameraMotionWait();
     }
     
@@ -498,7 +498,7 @@ void fn_1_20E0(s32 arg0) {
     sp18.x = -20.0f;
     sp18.y = 0.0f;
     sp18.z = 0.0f;
-    BoardCameraMotionStartEx(lbl_1_bss_C[1], &sp18, &sp24, 3000.0f, -1.0f, 0x3C);
+    BoardCameraMotionStartEx(lbl_1_bss_C[1], &sp18, &sp24, 3000.0f, -1.0f, 60);
     BoardCameraMotionWait();
     omVibrate(arg0, 0x1E, 6, 6);
     HuPrcSleep(0x1E);
@@ -526,7 +526,7 @@ void fn_1_20E0(s32 arg0) {
     sp18.x = -20.0f;
     sp18.y = 0.0f;
     sp18.z = 0.0f;
-    BoardCameraMotionStartEx(lbl_1_bss_6C, &sp18, &sp24, 1360.0f, -1.0f, 0x3C);
+    BoardCameraMotionStartEx(lbl_1_bss_6C, &sp18, &sp24, 1360.0f, -1.0f, 60);
     BoardCameraMotionWait();
     HuPrcSleep(0x3C);
 }

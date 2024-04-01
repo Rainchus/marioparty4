@@ -241,7 +241,7 @@ s32 fn_1_9CF4(s32 arg0) {
     sp8.y = 0.0f;
     sp8.z = 0.0f;
 
-    BoardCameraMotionStartEx(lbl_1_bss_C[8], &sp8, &sp14, 1500.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lbl_1_bss_C[8], &sp8, &sp14, 1500.0f, -1.0f, 21);
     spaceCur = GWPlayer[arg0].space_curr;
     temp_r29 = BoardSpaceLinkFlagSearch(0, spaceCur, 0x02000000);
     BoardPlayerPosGet(arg0, &sp2C);
