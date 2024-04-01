@@ -18,13 +18,6 @@
 #define BOARD_ITEM_MAX            0xE
 #define BOARD_ITEM_NONE            -1
 
-typedef struct ModelTransform {
-/* 0x00 */ Vec pos;
-/* 0x0C */ Vec rot;
-/* 0x18 */ Vec scale;
-/* 0x24 */ s32 id;
-} ModelTransform;
-
 /* BSS */
 s16 lbl_1_bss_30[0x10]; // Model List
 s16 lbl_1_bss_2E;
@@ -37,23 +30,23 @@ Process* lbl_1_bss_4;
 u8* lbl_1_bss_0;
 
 /* DATA */
-ModelTransform lbl_1_data_0[0x10] = {
-{{2550.0f, 0.0f, -450.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000C)},
-{{-3150.0f, 0.0f, -1350.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000D)},
-{{-3150.0f, 0.0f, 1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000E)},
-{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0008)},
-{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0009)},
-{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000A)},
-{{-150.0f, 0.0f, 900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x000B)},
-{{1350.0f, 0.0f, -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0011)},
-{{1350.0f, 0.0f, -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0012)},
-{{1350.0f, 0.0f, -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0015)},
-{{-300.0f, 0.0f, -900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0076, 0x0016)},
-{{1175.0f, 0.0f, -125.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
-{{-525.0f, 0.0f, -825.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
-{{-2225.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
-{{1925.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
-{{150.0f, 0.0f, 1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x0005)},
+static BoardMapObject lbl_1_data_0[0x10] = {
+   {{2550.0f,  0.0f,  -450.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000C)},
+   {{-3150.0f, 0.0f, -1350.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000D)},
+   {{-3150.0f, 0.0f,  1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000E)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0008)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0009)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000A)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000B)},
+   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0011)},
+   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0012)},
+   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0015)},
+   {{-300.0f,  0.0f,  -900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0016)},
+   {{1175.0f,  0.0f,  -125.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
+   {{-525.0f,  0.0f,  -825.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
+   {{-2225.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
+   {{1925.0f,  0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
+   {{150.0f,   0.0f,  1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)}
 };
 
 // Special Models
@@ -63,14 +56,14 @@ s16 lbl_1_data_284 = -1;
 s16 lbl_1_data_286 = -1;
 
 s32 lbl_1_data_288[] = {
-    MAKE_DATA_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(0x0076, 0x0004),
     DATA_NUM_LISTEND
 };
 s32 lbl_1_data_290[] = {
-    MAKE_DATA_NUM(0x0076, 0x0004),
-    MAKE_DATA_NUM(0x0076, 0x0004),
-    MAKE_DATA_NUM(0x0076, 0x0004),
-    MAKE_DATA_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(0x0076, 0x0004),
     DATA_NUM_LISTEND,
     0x00000000 // Padding
 };
@@ -93,7 +86,7 @@ inline s32 get_current_board(void) {
 
 void BoardCreate(void) {
     s32 i, boardData;
-    ModelTransform* modelTransform;
+    BoardMapObject* modelTransform;
 
     boardData = get_current_board();
     lbl_1_bss_0 = GWSystem.board_data;
@@ -116,13 +109,13 @@ void BoardCreate(void) {
 
     for(i = 0; i < 0x10; i++) {
         modelTransform = &lbl_1_data_0[i];
-        if (modelTransform->id != -1) {
+        if (modelTransform->data_num != -1) {
             if ((i == 0xB) || (i == 0xC) || (i == 0xD) || (i == 0xE) || (i == 0xF)) {
                 lbl_1_bss_10 = lbl_1_data_290;
             } else {
                 lbl_1_bss_10 = NULL;
             }
-            lbl_1_bss_30[i] = BoardModelCreate(modelTransform->id, lbl_1_bss_10, 0);
+            lbl_1_bss_30[i] = BoardModelCreate(modelTransform->data_num, lbl_1_bss_10, 0);
             BoardModelPosSetV(lbl_1_bss_30[i], &modelTransform->pos);
             BoardModelRotSetV(lbl_1_bss_30[i], &modelTransform->rot);
             BoardModelScaleSetV(lbl_1_bss_30[i], &modelTransform->scale);
