@@ -163,7 +163,7 @@ static void fn_1_9A24(Bss20Work *arg0);
 static void fn_1_9BBC(Bss20Work *arg0);
 
 
-static BoardMapObject lbl_1_data_0[33] = {
+static BoardMapObject lbl_1_data_0[MAPOBJ_MAX] = {
     { {      0.0f,   0.0f,      0.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 8)    },
     { {      0.0f, 700.0f,    300.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 9)    },
     { {  -2025.0f, 100.0f,   1950.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
@@ -199,7 +199,7 @@ static BoardMapObject lbl_1_data_0[33] = {
     { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 5)    }
 };
 
-s16 lbl_1_bss_6C4[33];
+s16 lbl_1_bss_6C4[MAPOBJ_MAX];
 
 static s32 *lbl_1_bss_6C0;
 static s16 lbl_1_bss_6B6[5];
@@ -284,7 +284,7 @@ void BoardCreate(void) {
     lbl_1_data_530 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W01, 11), NULL, 0);
     BoardModelMotionStart(lbl_1_data_530, 0, 0x40000001);
     BoardLightHookSet(fn_1_730, fn_1_774);
-    for (i = 0; i < 33; i++) {
+    for (i = 0; i < MAPOBJ_MAX; i++) {
         temp_r30 = &lbl_1_data_0[i];
         if (temp_r30->data_num != -1) {
             if (i == 2 || i == 3 || i == 4 || i == 5) {
