@@ -4,7 +4,7 @@
 #include "dolphin/types.h"
 
 enum {
-	MAPOBJ_MAX = 33
+    MAPOBJ_MAX = 33
 };
 
 typedef struct {

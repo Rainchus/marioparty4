@@ -1135,10 +1135,10 @@ config.libs = [
             Object(NonMatching, "REL/w05Dll/mg_coin.c"),
         }
     ),
-    Rel('w05Dll',
+    Rel('w06Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w06Dll/main.c"),
+            Object(Matching, "REL/w06Dll/main.c"),
             Object(NonMatching, "REL/w06Dll/mg_item.c"),
             Object(NonMatching, "REL/w06Dll/mg_coin.c"),
             Object(NonMatching, "REL/w06Dll/fire.c"),
