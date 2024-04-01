@@ -1097,7 +1097,7 @@ static void fn_1_3624(void) {
     sp30.x = -40.0f;
     sp30.z = 0.0f;
     sp30.y = -lbl_1_bss_63C;
-    BoardCameraMotionStartEx(lbl_1_bss_6C4[0], &sp30, 0, 150.0f, -1.0f, 2);
+    BoardCameraMotionStartEx(lbl_1_bss_6C4[0], &sp30, NULL, 150.0f, -1.0f, 2);
     BoardCameraMotionWait();
     BoardModelPosGet(lbl_1_bss_6C4[0], &lbl_1_bss_618);
     lbl_1_bss_630.x = lbl_1_bss_618.x + 1000.0 * (sin(sp30.y * M_PI / 180.0) * cos(sp30.x * M_PI / 180.0));
@@ -1980,7 +1980,7 @@ static void fn_1_7A64(void) {
         var_r20 = BoardSpaceFlagSearch(1, 0x2000);
     }
     lbl_1_bss_654 = sp34;
-    BoardCameraMotionStartEx(lbl_1_bss_6C4[0], 0, 0, 2400.0f, -1.0f, 2);
+    BoardCameraMotionStartEx(lbl_1_bss_6C4[0], NULL, NULL, 2400.0f, -1.0f, 2);
     PSMTXRotRad(lbl_1_bss_678, 'y', MTXDegToRad(lbl_1_bss_63C));
     BoardModelMtxSet(lbl_1_bss_6C4[0], &lbl_1_bss_678);
     BoardModelRotSet(lbl_1_bss_6C4[0], 0.0f, 0.0f, 0.0f);

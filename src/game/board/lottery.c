@@ -525,7 +525,7 @@ static void ExecLottery(void) {
     sp8.x = 0.0f;
     sp8.y = 200.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 0x1B);
+    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 27);
     if (BoardPlayerSizeGet(temp_r31) == 1) {
         BoardModelVisibilitySet(lotteryMdl[3], 1);
     }
@@ -890,7 +890,7 @@ static void ExecBallGame(void) {
     sp4C.x = 0.0f;
     sp4C.y = 210.0f;
     sp4C.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], NULL, &sp4C, 980.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lotteryMdl[0], NULL, &sp4C, 980.0f, -1.0f, 21);
     LotteryInlineFunc00(0, 0);
     BoardCameraMotionWait();
     BoardWinCreate(2, lotteryMessBase + 1, BoardWinPortraitGet());
@@ -1836,7 +1836,7 @@ static void ExecPrize(void) {
     sp14.x = 0.0f;
     sp14.y = 200.0f;
     sp14.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], 0, &sp14, 1300.0f, -1.0f, 21);
+    BoardCameraMotionStartEx(lotteryMdl[0], NULL, &sp14, 1300.0f, -1.0f, 21);
     temp_r30 = GWSystem.player_curr;
     BoardStatusShowSetForce(temp_r30);
     BoardStatusShowSet(temp_r30, 1);
@@ -2039,7 +2039,7 @@ void BoardLotteryTutorialExec(void) {
     sp8.x = 0.0f;
     sp8.y = 200.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 21);
     HuAudFXPlay(0x331);
     HuAudFXPlay(0x344);
     BoardModelMotionStart(lotteryMdl[0], 0, 0);

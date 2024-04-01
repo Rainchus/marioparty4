@@ -1059,7 +1059,7 @@ void BoardCameraNearFarGet(float *near, float *far)
 
 void BoardCameraMotionStart(s16 model_target, Vec *rot_target, float zoom_target, float fov_target)
 {
-	BoardCameraMotionStartEx(model_target, rot_target, 0, zoom_target, fov_target, 21);
+	BoardCameraMotionStartEx(model_target, rot_target, NULL, zoom_target, fov_target, 21);
 }
 
 void BoardCameraMotionStartEx(s16 model_target, Vec *rot_target, Vec *offset_end, float zoom_target, float fov_target, s16 max_time)

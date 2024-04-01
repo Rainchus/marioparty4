@@ -206,7 +206,7 @@ s32 fn_1_3478(s32 arg0) {
     sp8.y = 0.0f;
     sp8.z = 0.0f;
 
-    BoardCameraMotionStartEx(lbl_1_data_310, &sp8, &sp14, 1900.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lbl_1_data_310, &sp8, &sp14, 1900.0f, -1.0f, 21);
     temp_r28 = GWPlayer[arg0].space_curr;
     BoardPlayerPosGet(arg0, &sp2C);
     temp = BoardSpaceLinkFlagSearch(0, temp_r28, 0x02000000);
@@ -392,7 +392,7 @@ void fn_1_3968(s32 arg0) {
     sp18.y = 180.0f;
     sp18.z = 0.0f;
     
-    BoardCameraMotionStartEx(lbl_1_data_310, &sp18, 0, 4000.0f, -1.0f, 0x150);
+    BoardCameraMotionStartEx(lbl_1_data_310, &sp18, NULL, 4000.0f, -1.0f, 336);
     
     for (var_r28 = 0, sp8 = 0; ; sp8++) {
         if (var_r28 == 0) {
