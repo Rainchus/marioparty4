@@ -36,9 +36,7 @@ s16 lbl_1_data_286 = -1;
 s32 lbl_1_data_288 = -1;
 
 //BSS Extern
-extern w03State* lbl_1_bss_0;
-extern Process *boardMainProc;
-extern s16 lbl_1_bss_C[14];
+
 
 //BSS
 s8 lbl_1_bss_6F;

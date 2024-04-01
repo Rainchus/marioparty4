@@ -17,6 +17,7 @@
 #include "game/minigame_seq.h"
 #include "game/hsfdraw.h"
 #include "game/hsfmotion.h"
+#include "game/pad.h"
 
 typedef struct someBits {
     /* 0x00 */ struct {
@@ -56,9 +57,7 @@ typedef struct w03UnkMG {
 } w03UnkMG;
 
 //external symbols
-extern Process *boardMainProc;
-extern s16 lbl_1_bss_C[14];
-extern Process *boardObjMan;
+
 extern u16 HuPadBtnDown[4];
 
 //function signatures

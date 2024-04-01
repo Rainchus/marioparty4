@@ -16,6 +16,8 @@
 #include "game/board/star.h"
 #include "game/object.h"
 #include "game/board/player.h"
+#include "game/board/map_object.h"
+
 #include "math.h"
 #include "game/hsfman.h"
 
@@ -37,20 +39,22 @@ typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
 
-//data
-w03StructUnk0 lbl_1_data_0[] = {
-{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0004)},
-{{145.0988f, 65.6173f, -2004.14f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0005)},
-{{-1548.14f, -1148.76f, -1095.54f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0006)},
-{{1050.0f, 50.0f, -1810.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000B)},
-{{-1950.0f, 50.0f, 1790.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000B)},
-{{1050.0f, 0.0f, -1750.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000A)},
-{{-1950.0f, 0.0f, 1850.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x000A)},
-{{1950.0f, 0.0f, -1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0010)},
-{{-3150.0f, 0.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0011)},
-{{-3150.0f, 270.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 0x0012)},
-{{2080.0f, 0.0f, -1635.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x000D)},
-{{-3000.0f, 0.0f, -500.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x000D)},
+//Map Objects
+s16 lbl_1_bss_C[MAPOBJ_MAX];
+
+BoardMapObject lbl_1_data_0[MAPOBJ_MAX] = {
+	{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 4)},
+	{{145.0988f, 65.6173f, -2004.14f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 5)},
+	{{-1548.14f, -1148.76f, -1095.54f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 6)},
+	{{1050.0f, 50.0f, -1810.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 11)},
+	{{-1950.0f, 50.0f, 1790.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 11)},
+	{{1050.0f, 0.0f, -1750.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 10)},
+	{{-1950.0f, 0.0f, 1850.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 10)},
+	{{1950.0f, 0.0f, -1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 16)},
+	{{-3150.0f, 0.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 17)},
+	{{-3150.0f, 270.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 18)},
+	{{2080.0f, 0.0f, -1635.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 13)},
+	{{-3000.0f, 0.0f, -500.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 13)},
 };
 
 s16 lbl_1_data_1E0 = -1;
@@ -103,10 +107,7 @@ s32 lbl_1_data_26C[] = {
     0x0000044C, 0x0000043A, 0x0000043A, 0x0000044E
 };
 
-s32 pad_27C[] = {0};
-
 //BSS
-s16 lbl_1_bss_C[14];
 s32 lbl_1_bss_8;
 omObjData* lbl_1_bss_4;
 w03State* lbl_1_bss_0;
@@ -119,7 +120,7 @@ void BoardCreate(void) {
     f32 var_f31;
     s32 var_r31;
     s32 var_r31_2;
-    w03StructUnk0* temp_r30;
+    BoardMapObject* temp_r30;
     s32 i;
 
     lbl_1_bss_0 = (w03State*)&GWSystem.board_data;
@@ -149,18 +150,18 @@ void BoardCreate(void) {
     BoardModelPosSet(lbl_1_data_1E6, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E6, 1, 0x40000001);
 
-    for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
+    for (i = 0; i < MAPOBJ_MAX; i++) {
         temp_r30 = &lbl_1_data_0[i];
-        if (temp_r30->datanum != -1) {
+        if (temp_r30->data_num != -1) {
             if ((i == 10) || (i == 11)) {
                 var_r29 = lbl_1_data_214;
             } else {
                 var_r29 = NULL;
             }
-            lbl_1_bss_C[i]= BoardModelCreate(temp_r30->datanum, var_r29, 0);
-            BoardModelPosSetV(lbl_1_bss_C[i], &temp_r30->unk_00);
-            BoardModelRotSetV(lbl_1_bss_C[i], &temp_r30->unk_0C);
-            BoardModelScaleSetV(lbl_1_bss_C[i], &temp_r30->unk_18);
+            lbl_1_bss_C[i]= BoardModelCreate(temp_r30->data_num, var_r29, 0);
+            BoardModelPosSetV(lbl_1_bss_C[i], &temp_r30->pos);
+            BoardModelRotSetV(lbl_1_bss_C[i], &temp_r30->rot);
+            BoardModelScaleSetV(lbl_1_bss_C[i], &temp_r30->scale);
             BoardModelVisibilitySet(lbl_1_bss_C[i], 1);
         }
     }
