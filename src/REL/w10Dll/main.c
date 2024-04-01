@@ -1,204 +1,220 @@
 #include "include/REL/w10Dll.h"
 #include "game/data.h"
 #include "game/hsfman.h"
+#include "game/board/lottery.h"
+#include "game/board/model.h"
+#include "game/board/shop.h"
+#include "game/board/space.h"
+#include "game/board/star.h"
+#include "game/board/tutorial.h"
+#include "game/board/main.h"
+#include "game/board/boo_house.h"
+#include "game/board/map_object.h"
 
 #include "math.h"
 
-//BSS
-s16 lbl_1_bss_22[11];
-s16 lbl_1_bss_20;
-s16 lbl_1_bss_1E;
-s16 lbl_1_bss_1C;
-Process* lbl_1_bss_18;
-s16 lbl_1_bss_10[4];
-s16 lbl_1_bss_E;
-s16 lbl_1_bss_C;
-void* lbl_1_bss_8;
-s32 lbl_1_bss_4_pad;
-W10State* lbl_1_bss_0;
-
-//DATA
-unkw10Dll lbl_1_data_0[1] = {
+//Map Objects
+static BoardMapObject mapObjTbl[MAPOBJ_MAX] = {
     3300.0f, 100.0f, -900.0f,
     0.0f, 0.0f, 0.0f,
     1.0f, 1.0f, 1.0f,
-    MAKE_DATA_NUM(DATADIR_W10, 3)
+    DATA_MAKE_NUM(DATADIR_W10, 3)
 };
 
+s16 boardMapObjMdl[MAPOBJ_MAX];
 
-s16 lbl_1_data_28 = -1;
-s16 lbl_1_data_2A = -1;
-s16 lbl_1_data_2C = -1;
-s16 lbl_1_data_2E = -1;
-s16 lbl_1_data_30 = -1;
-s16 lbl_1_data_32 = -1;
+s16 tutorialExitWin;
+s16 tutorialDoneF;
+static s32 *motTbl;
+s32 lbl_1_bss_4;
+W10BoardWork *boardWork;
 
-//unused?
-s32 lbl_1_data_34[] = {
-0x005F0000, 0x001A0000,
-0x006D0000, 0x008A0000,
-0x00850000, 0x00110000,
-0x000D0000, 0x00810000,
+static s16 bgMdl = -1;
+static s16 fgMdl = -1;
+s16 boardStarHostMdl = -1;
+s16 boardShopHostMdl = -1;
+s16 boardLotteryHostMdl = -1;
+s16 boardBooHouseHostMdl = -1;
+
+static s32 charMotDirTbl[] = {
+	DATADIR_MARIOMOT, DATADIR_LUIGIMOT,
+	DATADIR_PEACHMOT, DATADIR_YOSHIMOT,
+	DATADIR_WARIOMOT, DATADIR_DONKEYMOT,
+	DATADIR_DAISYMOT, DATADIR_WALUIGIMOT,
 };
 
-s32 lbl_1_data_54[2] = {
-    MAKE_DATA_NUM(DATADIR_W10, 18),
+static s32 starHostMot[2] = {
+    DATA_MAKE_NUM(DATADIR_W10, 18),
     DATA_NUM_LISTEND
 };
 
-s32 lbl_1_data_5C[2] = {
-    MAKE_DATA_NUM(DATADIR_BGUEST, 9),
+static s32 shopHostMot[2] = {
+    DATA_MAKE_NUM(DATADIR_BGUEST, 9),
     DATA_NUM_LISTEND
 };
 
-s32 lbl_1_data_64[2] = {
-    MAKE_DATA_NUM(DATADIR_BGUEST, 24),
+static s32 lotteryHostMot[2] = {
+    DATA_MAKE_NUM(DATADIR_BGUEST, 24),
     DATA_NUM_LISTEND
 };
 
-s32 lbl_1_data_6C[2] = {
-    MAKE_DATA_NUM(DATADIR_BGUEST, 14),
+static s32 booHouseHostMot[2] = {
+    DATA_MAKE_NUM(DATADIR_BGUEST, 14),
     DATA_NUM_LISTEND
 };
 
-// function is probably global. only inlined in rels?
-inline s32 get_current_board(void) {
-    return GWSystem.board;
-}
+static void LightSetHook(void);
+static void LightResetHook(void);
+static s32 WalkEvent(void);
+static s32 WalkMiniEvent(void);
+static s32 LandEvent(void);
 
-void BoardCreate(void) {
-    f32 sp10;
-    f32 spC[2];
-    s32 sp8;
+
+void BoardCreate(void)
+{
+    float size[2];
     
     s32 i;
-    unkw10Dll* temp_r30;
-    s32 temp;
-    s32 temp2;
+    BoardMapObject *temp_r30;
+    s32 space;
+    s32 board;
 
-    temp2 = get_current_board();
-    lbl_1_bss_0 = (W10State *)&GWSystem.board_data;
-    lbl_1_bss_0->unk0 = 0;
-    lbl_1_bss_0->unk4 = 0;
-    lbl_1_bss_0->unk6 = 0;
-    BoardTutorialHookSet(&fn_1_1AAC);
-    fn_1_AEC();
-    fn_1_1D68();
-    lbl_1_bss_C = 0;
-    BoardSpaceInit(MAKE_DATA_NUM(DATADIR_W10, 0));
-    temp = BoardSpaceFlagSearch(0, 1);
-    BoardTutorialBlockSetPos(temp, 1);
-    lbl_1_data_28 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 1), NULL, 0);
-    fn_8006DDE8(lbl_1_data_28, -1.0f);
-    BoardModelPosSet(lbl_1_data_28, 0.0f, 0.0f, 0.0f);
-    BoardModelMotionStart(lbl_1_data_28, 0, 0x40000001);
-    BoardModelMotionSpeedSet(lbl_1_data_28, 1.0f);
-    lbl_1_data_2A = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 2), NULL, 0);
-    fn_8006DDE8(lbl_1_data_2A, -1.0f);
-    BoardModelPosSet(lbl_1_data_2A, 0.0f, 0.0f, 0.0f);
-    BoardModelMotionStart(lbl_1_data_2A, 0, 0x40000001);
-    lbl_1_data_2C = BoardModelCreate(MAKE_DATA_NUM(DATADIR_W10, 17), lbl_1_data_54, 0);
-    BoardModelPosSet(lbl_1_data_2C, 0.0f, 0.0f, 0.0f);
-    BoardModelMotionStart(lbl_1_data_2C, 1, 0x40000001);
-    lbl_1_data_2E = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 5), lbl_1_data_5C, 0);
-    BoardModelMotionStart(lbl_1_data_2E, 1, 0x40000001);
-    lbl_1_data_32 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 18), lbl_1_data_64, 0);
-    BoardModelMotionStart(lbl_1_data_32, 1, 0x40000001);
-    lbl_1_data_30 = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BGUEST, 13), lbl_1_data_6C, 0);
-    BoardModelMotionStart(lbl_1_data_30, 1, 0x40000001);
-    BoardLightHookSet(&fn_1_8C0, &fn_1_904);
-    for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
-        temp_r30 = &lbl_1_data_0[i];
-        if (temp_r30->unk24 != -1) {
-            lbl_1_bss_8 = NULL;
-            lbl_1_bss_10[i] = BoardModelCreate(temp_r30->unk24, lbl_1_bss_8, 0);
-            BoardModelPosSetV(lbl_1_bss_10[i], &temp_r30->unk0);
-            BoardModelRotSetV(lbl_1_bss_10[i], &temp_r30->unk0C);
-            BoardModelScaleSetV(lbl_1_bss_10[i], &temp_r30->unk18);
-            BoardModelVisibilitySet(lbl_1_bss_10[i], 1);
-            if (lbl_1_bss_8 != NULL) {
-                BoardModelMotionStart(lbl_1_bss_10[i], 0, 0x40000001);
+    board = GWBoardGet();
+    boardWork = (W10BoardWork *)&GWSystem.board_data[0];
+    boardWork->scene = 0;
+    boardWork->dice = 0;
+    boardWork->msg = 0;
+    BoardTutorialHookSet(TutorialHookExec);
+    HostCreate();
+    TutorialSprCreate();
+    tutorialDoneF = 0;
+    BoardSpaceInit(DATA_MAKE_NUM(DATADIR_W10, 0));
+    space = BoardSpaceFlagSearch(0, 1);
+    BoardTutorialBlockSetPos(space, 1);
+    bgMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 1), NULL, 0);
+    fn_8006DDE8(bgMdl, -1.0f);
+    BoardModelPosSet(bgMdl, 0.0f, 0.0f, 0.0f);
+    BoardModelMotionStart(bgMdl, 0, 0x40000001);
+    BoardModelMotionSpeedSet(bgMdl, 1.0f);
+    fgMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 2), NULL, 0);
+    fn_8006DDE8(fgMdl, -1.0f);
+    BoardModelPosSet(fgMdl, 0.0f, 0.0f, 0.0f);
+    BoardModelMotionStart(fgMdl, 0, 0x40000001);
+    boardStarHostMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W10, 17), starHostMot, 0);
+    BoardModelPosSet(boardStarHostMdl, 0.0f, 0.0f, 0.0f);
+    BoardModelMotionStart(boardStarHostMdl, 1, 0x40000001);
+    boardShopHostMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 5), shopHostMot, 0);
+    BoardModelMotionStart(boardShopHostMdl, 1, 0x40000001);
+    boardBooHouseHostMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 18), lotteryHostMot, 0);
+    BoardModelMotionStart(boardBooHouseHostMdl, 1, 0x40000001);
+    boardLotteryHostMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 13), booHouseHostMot, 0);
+    BoardModelMotionStart(boardLotteryHostMdl, 1, 0x40000001);
+    BoardLightHookSet(LightSetHook, LightResetHook);
+    for (i = 0; i < MAPOBJ_MAX; i++) {
+        temp_r30 = &mapObjTbl[i];
+        if (temp_r30->data_num != -1) {
+            motTbl = NULL;
+            boardMapObjMdl[i] = BoardModelCreate(temp_r30->data_num, motTbl, 0);
+            BoardModelPosSetV(boardMapObjMdl[i], &temp_r30->pos);
+            BoardModelRotSetV(boardMapObjMdl[i], &temp_r30->rot);
+            BoardModelScaleSetV(boardMapObjMdl[i], &temp_r30->scale);
+            BoardModelVisibilitySet(boardMapObjMdl[i], 1);
+            if (motTbl != NULL) {
+                BoardModelMotionStart(boardMapObjMdl[i], 0, 0x40000001);
             }
         }
     }
-    BoardModelVisibilitySet(lbl_1_bss_10[0], 0);
-    lbl_1_bss_0->unk8 = BoardModelCreate(0x7000A, NULL, 0);
-    BoardModelVisibilitySet(lbl_1_bss_0->unk8, 0);
-    BoardSpaceWalkEventFuncSet((void*)&fn_1_90C);
-    BoardSpaceWalkMiniEventFuncSet((void*)&fn_1_91C);
-    BoardSpaceLandEventFuncSet((void*)&fn_1_908);
-    BoardStarHostSet(lbl_1_data_2C);
-    BoardBooHouseHostSet(lbl_1_data_32);
-    BoardShopHostSet(lbl_1_data_2E);
-    BoardLotteryHostSet(lbl_1_data_30);
-    HuWinMesMaxSizeGet(1, spC, 0x2E003A);
-    lbl_1_bss_E = HuWinCreate(-10000.0f, 390.0f, spC[0], spC[1], 1);
-    HuWinMesSet(lbl_1_bss_E, 0x2E003A);
-    HuWinMesSpeedSet(lbl_1_bss_E, 0);
-    HuWinPriSet(lbl_1_bss_E, 1);
-    HuWinMesPalSet(lbl_1_bss_E, 7, 0, 0, 0);
+    BoardModelVisibilitySet(boardMapObjMdl[MAPOBJ_MELON], 0);
+    boardWork->focus_mdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 10), NULL, 0);
+    BoardModelVisibilitySet(boardWork->focus_mdl, 0);
+    BoardSpaceWalkEventFuncSet(WalkEvent);
+    BoardSpaceWalkMiniEventFuncSet(WalkMiniEvent);
+    BoardSpaceLandEventFuncSet(LandEvent);
+    BoardStarHostSet(boardStarHostMdl);
+    BoardBooHouseHostSet(boardBooHouseHostMdl);
+    BoardShopHostSet(boardShopHostMdl);
+    BoardLotteryHostSet(boardLotteryHostMdl);
+    HuWinMesMaxSizeGet(1, size, 0x2E003A);
+    tutorialExitWin = HuWinCreate(-10000.0f, 390.0f, size[0], size[1], 1);
+    HuWinMesSet(tutorialExitWin, 0x2E003A);
+    HuWinMesSpeedSet(tutorialExitWin, 0);
+    HuWinPriSet(tutorialExitWin, 1);
+    HuWinMesPalSet(tutorialExitWin, 7, 0, 0, 0);
 }
 
-void BoardDestroy(void) {
+void BoardDestroy(void)
+{
     s32 i;
     for (i = 0; i < 1; i++) {
-        if (lbl_1_bss_10[i] != 0) {
-            BoardModelKill(lbl_1_bss_10[i]);
-            lbl_1_bss_10[i] = 0;
+        if (boardMapObjMdl[i] != 0) {
+            BoardModelKill(boardMapObjMdl[i]);
+            boardMapObjMdl[i] = 0;
         }   
     }
-    if (lbl_1_data_32 != -1) {
-        BoardModelKill(lbl_1_data_32);
-        lbl_1_data_32 = -1;
+    if (boardBooHouseHostMdl != -1) {
+        BoardModelKill(boardBooHouseHostMdl);
+        boardBooHouseHostMdl = -1;
     }
-    if (lbl_1_data_2E != -1) {
-        BoardModelKill(lbl_1_data_2E);
-        lbl_1_data_2E = -1;
+    if (boardShopHostMdl != -1) {
+        BoardModelKill(boardShopHostMdl);
+        boardShopHostMdl = -1;
     }
-    if (lbl_1_data_30 != -1) {
-        BoardModelKill(lbl_1_data_30);
-        lbl_1_data_30 = -1;
+    if (boardLotteryHostMdl != -1) {
+        BoardModelKill(boardLotteryHostMdl);
+        boardLotteryHostMdl = -1;
     }
-    if (lbl_1_data_2C != -1) {
-        BoardModelKill(lbl_1_data_2C);
-        lbl_1_data_2C = -1;
+    if (boardStarHostMdl != -1) {
+        BoardModelKill(boardStarHostMdl);
+        boardStarHostMdl = -1;
     }
-    if (lbl_1_data_28 != -1) {
-        BoardModelKill(lbl_1_data_28);
-        lbl_1_data_28 = -1;
+    if (bgMdl != -1) {
+        BoardModelKill(bgMdl);
+        bgMdl = -1;
     }
-    if (lbl_1_data_2A != -1) {
-        BoardModelKill(lbl_1_data_2A);
-        lbl_1_data_2A = -1;
+    if (fgMdl != -1) {
+        BoardModelKill(fgMdl);
+        fgMdl = -1;
     }
-    BoardModelKill(lbl_1_bss_0->unk8);
-    fn_1_1DEC();
-    HuWinKill(lbl_1_bss_E);
+    BoardModelKill(boardWork->focus_mdl);
+    TutorialSprKill();
+    HuWinKill(tutorialExitWin);
     BoardSpaceDestroy();
 }
 
-void fn_1_8C0(void) {
-    s16 temp = BoardModelIDGet(lbl_1_data_28);
-    Hu3DModelLightInfoSet(temp, 1);
+static void LightSetHook(void)
+{
+    s16 id = BoardModelIDGet(bgMdl);
+    Hu3DModelLightInfoSet(id, 1);
 }
 
-void fn_1_904(void) {
+static void LightResetHook(void)
+{
+	
 }
 
-void fn_1_908(void) {
+static s32 LandEvent(void)
+{
+	
 }
 
-s32 fn_1_90C(void) {
+static s32 WalkEvent(void)
+{
     return 0;
 }
 
-void fn_1_914(void) {
+void fn_1_914(void)
+{
+	
 }
 
-void fn_1_918(void) {
+void fn_1_918(void)
+{
+	
 }
 
-void fn_1_91C(void) {
+static s32 WalkMiniEvent(void)
+{
+	
 }
 
 s32 fn_1_920(s16 arg0, f32 arg8, f32 arg9) {

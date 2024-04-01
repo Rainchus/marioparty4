@@ -3,6 +3,15 @@
 
 #include "dolphin.h"
 
+typedef struct hu_snd_grp_data {
+    /* 0x00 */ s16 ovl;
+    /* 0x02 */ s16 grpset;
+    /* 0x04 */ s32 auxANo;
+    /* 0x08 */ s32 auxBNo;
+    /* 0x0C */ s8 auxAVol;
+    /* 0x0D */ s8 auxBVol;
+} HuSndGrpData;
+
 void HuAudInit(void);
 s32 HuAudStreamPlay(void);
 void HuAudStreamVolSet(s16 vol);
@@ -20,7 +29,7 @@ void HuAudFXFadeOut(s32 arg0, s32 arg1);
 void HuAudFXPanning(s32 arg0, s16 arg1);
 void HuAudFXListnerSet(Vec* arg0, Vec* arg1, float arg2, float arg3);
 void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6);
-void HuAudFXListnerUpdate(s32 arg0, s32 arg1);
+void HuAudFXListnerUpdate(Vec *arg0, Vec *arg1);
 s32 HuAudFXEmiterPlay(s32 arg0, Vec *arg1);
 void HuAudFXEmiterUpDate(s32 arg0, Vec *arg1);
 void HuAudFXListnerKill(void);
@@ -56,6 +65,14 @@ s32 HuAudCharVoicePlay(s16 arg0, s16 arg1);
 s32 HuAudCharVoicePlayPos(s16 arg0, s16 arg1, Vec *arg2);
 void HuAudCharVoicePlayEntry(s16 arg0, s16 arg1);
 
+extern float Snd3DBackSurDisOffset;
+extern float Snd3DFrontSurDisOffset;
+extern float Snd3DStartDisOffset;
+extern float Snd3DSpeedOffset;
+extern float Snd3DDistOffset;
+extern s32 musicOffF;
 extern u8 fadeStat;
+
+extern HuSndGrpData HuSndGrpTbl[];
 
 #endif

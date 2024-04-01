@@ -1,7 +1,7 @@
 #ifndef _GAME_WINDOW_H
 #define _GAME_WINDOW_H
 
-#include "game/sprite.h"
+#include "game/animdata.h"
 #include "dolphin.h"
 
 #define MAKE_MESSID(bank, mess) (((bank) << 16)+(mess))
@@ -76,6 +76,7 @@ typedef struct {
 } WindowData; // Size 0x180
 
 extern WindowData winData[32];
+extern void *messDataPtr;
 
 void HuWindowInit(void);
 void HuWinInit(s32 mess_data_no);
@@ -95,7 +96,7 @@ void HuWinScissorSet(s16 window, s16 x, s16 y, s16 w, s16 h);
 void HuWinPriSet(s16 window, s16 prio);
 void HuWinAttrSet(s16 window, u32 attr);
 void HuWinAttrReset(s16 window, u32 attr);
-u8 HuWinStatGet(s16 window);
+s16 HuWinStatGet(s16 window);
 void HuWinMesColSet(s16 window, u8 color);
 void HuWinMesPalSet(s16 window, u8 index, u8 r, u8 g, u8 b);
 void HuWinBGTPLvlSet(s16 window, float tp_level);
@@ -109,7 +110,7 @@ s16 HuWinChoiceNumGet(s16 window);
 void HuWinChoiceDisable(s16 window, s16 choice);
 s16 HuWinChoiceNowGet(s16 window);
 void HuWinMesWait(s16 window);
-void HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y);
+s16 HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y);
 s16 HuWinSprSet(s16 window, s16 sprite, float x, float y);
 void HuWinSprPosSet(s16 window, s16 index, float x, float y);
 void HuWinSprPriSet(s16 window, s16 index, s16 prio);
@@ -123,7 +124,7 @@ void _HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16
 void HuWinComKeyGet(s16 window, u32 *data);
 void HuWinComKeyReset(void);
 void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...);
-void HuWinInsertMesSizeGet(s32 mess, s16 index);
+void HuWinInsertMesSizeGet(u32 mess, s16 index);
 void HuWinMesSizeCancelCRSet(s32 cancel_cr);
 void HuWinMesMaxSizeBetGet(float *size, u32 start, u32 end);
 s16 HuWinKeyWaitNumGet(u32 mess);
@@ -136,5 +137,8 @@ void HuWinExAnimIn(s16 window);
 void HuWinExAnimOut(s16 window);
 void HuWinExCleanup(s16 window);
 void HuWinExAnimPopIn(s16 window, s16 portrait);
+void *MessData_MesPtrGet(void *data, u32 index);
+
+extern void *messDataPtr;
 
 #endif

@@ -1,12 +1,13 @@
 #include "game/board/basic_space.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/tutorial.h"
 #include "game/data.h"
 #include "game/flag.h"
 #include "game/object.h"
 #include "game/objsub.h"
 #include "game/gamework_data.h"
-#include "board_unsplit.h"
 #include "math.h"
 
 typedef struct bit_copy {
@@ -34,13 +35,11 @@ static void CoinChgSeparate(omObjData*, coinChg*);
 static void CoinChgShow(omObjData*, coinChg*);
 static void CoinChgDisappear(omObjData*, coinChg*);
 
-extern void BoardTutorialHookExec(s16, s32);
 extern void BoardCameraViewSet(s32);
 extern void BoardPlayerPosGet(s32, Vec*);
-extern void BoardModelPosGet(s16, Vec*);
 extern void BoardPlayerMotionEndWait(s32);
 extern void BoardPlayerCoinsAdd(s32, s32);
-extern void BoardRotateDiceNumbers(s32);
+extern void BoardPlayerIdleSet(s32);
 extern void BoardCameraMotBlendSet(s32, s16, s16);
 extern s32 BoardPlayerMotBlendCheck(s32);
 
@@ -52,16 +51,16 @@ static omObjData *coinChgObj[4] = {
 };
 
 static s32 coinDigitMdl[10] = {
-	MAKE_DATA_NUM(DATADIR_BOARD, 12),
-	MAKE_DATA_NUM(DATADIR_BOARD, 13),
-	MAKE_DATA_NUM(DATADIR_BOARD, 14),
-	MAKE_DATA_NUM(DATADIR_BOARD, 15),
-	MAKE_DATA_NUM(DATADIR_BOARD, 16),
-	MAKE_DATA_NUM(DATADIR_BOARD, 17),
-	MAKE_DATA_NUM(DATADIR_BOARD, 18),
-	MAKE_DATA_NUM(DATADIR_BOARD, 19),
-	MAKE_DATA_NUM(DATADIR_BOARD, 20),
-	MAKE_DATA_NUM(DATADIR_BOARD, 21),
+	DATA_MAKE_NUM(DATADIR_BOARD, 12),
+	DATA_MAKE_NUM(DATADIR_BOARD, 13),
+	DATA_MAKE_NUM(DATADIR_BOARD, 14),
+	DATA_MAKE_NUM(DATADIR_BOARD, 15),
+	DATA_MAKE_NUM(DATADIR_BOARD, 16),
+	DATA_MAKE_NUM(DATADIR_BOARD, 17),
+	DATA_MAKE_NUM(DATADIR_BOARD, 18),
+	DATA_MAKE_NUM(DATADIR_BOARD, 19),
+	DATA_MAKE_NUM(DATADIR_BOARD, 20),
+	DATA_MAKE_NUM(DATADIR_BOARD, 21),
 };
 
 void BoardLandBlueExec(s32 player, s32 space) {
@@ -102,7 +101,7 @@ void BoardLandBlueExec(s32 player, s32 space) {
     }
     GWPlayer[player].color = 1;
     BoardPlayerMotionEndWait(player);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
 }
 
 void BoardLandRedExec(s32 player, s32 space) {
@@ -143,7 +142,7 @@ void BoardLandRedExec(s32 player, s32 space) {
     }
     GWPlayer[player].color = 2;
     BoardPlayerMotionEndWait(player);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
 }
 
 s8 BoardCoinChgCreate(Vec *pos, s8 value) {
@@ -206,8 +205,8 @@ void BoardCoinChgHide(s32 index) {
 }
 
 static const s32 coinSignMdl[2] = {
-	MAKE_DATA_NUM(DATADIR_BOARD, 22),
-	MAKE_DATA_NUM(DATADIR_BOARD, 23)
+	DATA_MAKE_NUM(DATADIR_BOARD, 22),
+	DATA_MAKE_NUM(DATADIR_BOARD, 23)
 };
 
 static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
@@ -221,7 +220,7 @@ static void CreateCoinChg(coinChg *coin_chg, Vec *pos) {
     coin_chg->sign_model = BoardModelCreate(coinSignMdl[coin_chg->minus], NULL, 0);
     coin_chg->tens_model = BoardModelCreate(coinDigitMdl[coin_chg->tens], NULL, 0);
     coin_chg->ones_model = BoardModelCreate(coinDigitMdl[coin_chg->ones], NULL, 0);
-    coin_chg->coin_model = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 10), NULL, 0);
+    coin_chg->coin_model = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 10), NULL, 0);
     BoardModelPosSetV(coin_chg->sign_model, pos);
     BoardModelPosSetV(coin_chg->tens_model, pos);
     BoardModelPosSetV(coin_chg->ones_model, pos);

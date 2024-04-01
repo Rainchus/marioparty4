@@ -1,6 +1,7 @@
 #include "game/ClusterExec.h"
 #include "game/EnvelopeExec.h"
 #include "game/hsfmotion.h"
+#include "game/sprite.h"
 
 float GetClusterCurve(HsfTrack *arg0, float arg1) {
     float *var_r30;
@@ -119,7 +120,7 @@ void ClusterProc(ModelData *arg0) {
                     temp_r31 = temp_r23->object;
                     temp_r31 += var_r29->target;
                     Vertextop = temp_r31->data.vertex->data;
-                    if (temp_r31->data.hook) {
+                    if (temp_r31->data.cenvCnt) {
                         for (k = 0; k < temp_r31->data.vertex->count; k++) {
                             Vertextop[k].x = ((Vec*) temp_r31->data.file[0])[k].x;
                             Vertextop[k].y = ((Vec*) temp_r31->data.file[0])[k].y;

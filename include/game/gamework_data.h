@@ -40,12 +40,12 @@ typedef struct system_state {
 /* 0x10 */ u8 ATTRIBUTE_ALIGN(4) board_data[32];
 /* 0x30 */ u8 mess_delay;
 /* 0x31 */ struct {
-        u8 field31_bit0 : 4;
-        u8 field31_bit4 : 4;
+        u8 bowser_loss : 4;
+        u8 bowser_event : 4;
     };
 /* 0x32 */ s8 unk_32;
 /* 0x34 */ u16 mg_next;
-/* 0x36 */ s16 mg_next_type;
+/* 0x36 */ s16 mg_type;
 /* 0x38 */ u16 unk_38;
 /* 0x3A */ u8 flag[3][16];
 /* 0x6A */ u8 unk_6A[0x72];
@@ -58,6 +58,7 @@ typedef struct player_state {
         u16 character : 4;
         u16 auto_size : 2;
         u16 field00_bit9 : 1;
+        u16 field00_bitA : 6;
     };
 /* 0x02 */ struct {
         u8 team : 1;
@@ -97,7 +98,7 @@ typedef struct player_state {
 /* 0x22 */ s16 coins_max;
 /* 0x24 */ s16 coins_battle;
 /* 0x26 */ s16 unk_26;
-/* 0x28 */ s16 coins_mg_gain;
+/* 0x28 */ s16 coin_gain;
 /* 0x2A */ s16 stars;
 /* 0x2C */ s16 stars_max;
 /* 0x2E */ char unk_2E[2];
@@ -152,19 +153,68 @@ static inline s32 GWTeamGet(void)
     return GWSystem.team;
 }
 
+static inline s32 GWMGTypeGet(void)
+{
+	return GWSystem.mg_type;
+}
+
+static inline void GWMGTypeSet(s32 type)
+{
+	GWSystem.mg_type = type;
+}
+
+static inline s32 GWPartyGet(void)
+{
+    return GWSystem.party;
+}
+
 static inline s32 GWLanguageGet(void)
 {
     return GWGameStat.language;
 }
 
+static inline s32 GWRumbleGet(void)
+{
+    return GWGameStat.rumble;
+}
+
+static inline s32 GWMGExplainGet(void)
+{
+    return GWSystem.explain_mg;
+}
+
+static inline s32 GWMGShowComGet(void)
+{
+    return GWSystem.show_com_mg;
+}
+
 static inline s32 GWMGListGet(void)
 {
+    if (GWSystem.mg_list == 3) {
+        GWSystem.mg_list = 0;
+    }
     return GWSystem.mg_list;
 }
 
 static inline s32 GWMessSpeedGet(void)
 {
+    if (GWSystem.mess_speed == 3) {
+        GWSystem.mess_speed = 1;
+    }
     return GWSystem.mess_speed;
+}
+
+static inline s32 GWSaveModeGet(void)
+{
+    if (GWSystem.save_mode == 3) {
+        GWSystem.save_mode = 1;
+    }
+    return GWSystem.save_mode;
+}
+
+static inline s32 GWTurnGet(void)
+{
+    return GWSystem.turn;
 }
 
 static inline s32 GWBoardGet(void)

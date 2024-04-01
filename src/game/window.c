@@ -14,6 +14,8 @@
 #include "stdarg.h"
 #include "string.h"
 
+#include "data_num/win.h"
+
 typedef struct {
     /* 0x00 */ AnimData **anim;
     /* 0x04 */ s16 bank;
@@ -28,7 +30,7 @@ typedef struct {
     /* 0x04 */ u32 player[4];
 } keyBufData; // Size 0x14
 
-static void MesDispFunc(SpriteData *sprite);
+static void MesDispFunc(HuSprite *sprite);
 static u8 winBGMake(AnimData *bg, AnimData *frame);
 static void HuWinProc(void);
 static void HuWinDrawMes(s16 window);
@@ -42,7 +44,6 @@ static void GetMesMaxSizeSub(u32 mess);
 static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data);
 
 void mtxTransCat(Mtx, float, float, float);
-void *MessData_MesPtrGet(void*, u32);
 WindowData ATTRIBUTE_ALIGN(32) winData[32];
 u32 winKey[4];
 keyBufData winComKeyBuf[256];
@@ -163,10 +164,10 @@ static u8 ATTRIBUTE_ALIGN(32) charColPal[2*3*10] = {
 };
 
 static s32 frameFileTbl[] = {
-    MAKE_DATA_NUM(DATADIR_WIN, 6),
-    MAKE_DATA_NUM(DATADIR_WIN, 7),
-    MAKE_DATA_NUM(DATADIR_WIN, 8),
-    MAKE_DATA_NUM(DATADIR_WIN, 6)
+    WIN_FRAME1_ANM,
+    WIN_FRAME2_ANM,
+    WIN_FRAME3_ANM,
+    WIN_FRAME1_ANM
 };
 
 static char *mesDataTbl[] = {
@@ -190,7 +191,7 @@ static s16 winPrio = 1000;
 void HuWindowInit(void) {
     s16 i;
 
-    winAMemP = HuAR_DVDtoARAM(MAKE_DIR_NUM(DATADIR_WIN));
+    winAMemP = HuAR_DVDtoARAM(DATADIR_WIN);
     for (i = 0; i < 32; i++) {
         winData[i].group = -1;
     }
@@ -215,33 +216,33 @@ void HuWinInit(s32 mess_data_no) {
         }
         if (!fontAnim) {
             if (LanguageNo == 0) {
-                anim_data = HuDataReadNum(MAKE_DATA_NUM(DATADIR_WIN, 0), MEMORY_DEFAULT_NUM);
+                anim_data = HuDataReadNum(WIN_FONTJ_ANM, MEMORY_DEFAULT_NUM);
             } else {
-                anim_data = HuDataReadNum(MAKE_DATA_NUM(DATADIR_WIN, 1), MEMORY_DEFAULT_NUM);
+                anim_data = HuDataReadNum(WIN_FONTE_ANM, MEMORY_DEFAULT_NUM);
             }
             fontAnim = HuSprAnimRead(anim_data);
         }
         if (!iconAnim) {
-            anim_data = HuDataReadNum(MAKE_DATA_NUM(DATADIR_WIN, 3), MEMORY_DEFAULT_NUM);
+            anim_data = HuDataReadNum(WIN_ICON_ANM, MEMORY_DEFAULT_NUM);
             iconAnim = HuSprAnimRead(anim_data);
             HuSprAnimLock(iconAnim);
         }
         if (!cursorAnim) {
-            anim_data = HuDataReadNum(MAKE_DATA_NUM(DATADIR_WIN, 2), MEMORY_DEFAULT_NUM);
+            anim_data = HuDataReadNum(WIN_CURSOR_ANM, MEMORY_DEFAULT_NUM);
             cursorAnim = HuSprAnimRead(anim_data);
             HuSprAnimLock(cursorAnim);
         }
         if (!cardAnimA) {
-            anim_data = HuDataReadNum(MAKE_DATA_NUM(DATADIR_WIN, 4), MEMORY_DEFAULT_NUM);
+            anim_data = HuDataReadNum(WIN_CARDA_ANM, MEMORY_DEFAULT_NUM);
             cardAnimA = HuSprAnimRead(anim_data);
             HuSprAnimLock(cardAnimA);
         }
         if (!cardAnimB) {
-            anim_data = HuDataReadNum(MAKE_DATA_NUM(DATADIR_WIN, 5), MEMORY_DEFAULT_NUM);
+            anim_data = HuDataReadNum(WIN_CARDB_ANM, MEMORY_DEFAULT_NUM);
             cardAnimB = HuSprAnimRead(anim_data);
             HuSprAnimLock(cardAnimB);
         }
-        HuDataDirClose(MAKE_DIR_NUM(DATADIR_WIN));
+        HuDataDirClose(DATADIR_WIN);
         HuWinComKeyReset();
         winPrio = 1000;
     }
@@ -250,7 +251,7 @@ void HuWinInit(s32 mess_data_no) {
 s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     AnimData *bg_anim;
     WindowData *window;
-    SpriteData *sprite_ptr;
+    HuSprite *sprite_ptr;
     s16 group;
     s16 sprite;
     s16 window_id;
@@ -402,12 +403,12 @@ void HuWinAllKill(void) {
         HuMemDirectFree(messDataPtr);
         messDataPtr = 0;
     }
-    HuDataDirClose(MAKE_DIR_NUM(DATADIR_WIN));
+    HuDataDirClose(DATADIR_WIN);
 }
 
-static void MesDispFunc(SpriteData *sprite) {
+static void MesDispFunc(HuSprite *sprite) {
     WindowData *window = &winData[sprite->work[0]];
-    SpriteGroupData *group;
+    HuSprGrp *group;
     float uv_maxx;
     float uv_maxy;
     float uv_minx;
@@ -606,7 +607,7 @@ static inline void charEntry(s16 window, s16 x, s16 y, s16 char_idx, s16 color) 
 
 static void HuWinDrawMes(s16 window) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
     s16 c;
     s16 i;
     s16 char_w;
@@ -886,7 +887,7 @@ static void HuWinKeyWait(s16 window) {
 }
 
 static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y) {
-    SpriteGroupData *group = &HuSprGrpData[window->group];
+    HuSprGrp *group = &HuSprGrpData[window->group];
     s16 sprite;
     s16 i;
     AnimData *anim;
@@ -904,7 +905,7 @@ static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y) {
 }
 
 static void HuWinSpcFontPosSet(WindowData *window, s16 index, s16 x, s16 y) {
-    SpriteGroupData *group = &HuSprGrpData[window->group];
+    HuSprGrp *group = &HuSprGrpData[window->group];
 
     HuSprPosSet(window->group, index, x - window->w / 2, y - window->h / 2);
 }
@@ -1200,7 +1201,7 @@ void HuWinAttrReset(s16 window, u32 attr) {
     window_ptr->attr &= ~attr;
 }
 
-u8 HuWinStatGet(s16 window) {
+s16 HuWinStatGet(s16 window) {
     WindowData *window_ptr = &winData[window];
 
     return window_ptr->stat;
@@ -1360,17 +1361,17 @@ void HuWinMesWait(s16 window) {
     }
 }
 
-void HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y) {
+s16 HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y) {
     WindowData *window_ptr = &winData[window];
     s16 sprite;
 
     sprite = HuSprCreate(anim, window_ptr->prio-1, bank);
-    HuWinSprSet(window, sprite, x, y);
+    return HuWinSprSet(window, sprite, x, y);
 }
 
 s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
     s16 i;
 
     for (i=2; i<=9; i++) {
@@ -1386,14 +1387,14 @@ s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
 
 void HuWinSprPosSet(s16 window, s16 index, float x, float y) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
 
     HuSprPosSet(window_ptr->group, index, x - group->center_x, y - group->center_y);
 }
 
 void HuWinSprPriSet(s16 window, s16 index, s16 prio) {
     WindowData *window_ptr = &winData[window];
-    SpriteGroupData *group = &HuSprGrpData[window_ptr->group];
+    HuSprGrp *group = &HuSprGrpData[window_ptr->group];
 
     HuSprPriSet(window_ptr->group, index, prio);
 }
@@ -1417,7 +1418,7 @@ void HuWinDispOff(s16 window) {
 
     for(i=0; i<30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
-            HuSprAttrSet(window_ptr->group, i, SPRITE_ATTR_HIDDEN);
+            HuSprAttrSet(window_ptr->group, i, HUSPR_ATTR_DISPOFF);
         }
     }
     window_ptr->attr |= 8;
@@ -1429,7 +1430,7 @@ void HuWinDispOn(s16 window) {
 
     for (i=0; i<30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
-            HuSprAttrReset(window_ptr->group, i, SPRITE_ATTR_HIDDEN);
+            HuSprAttrReset(window_ptr->group, i, HUSPR_ATTR_DISPOFF);
         }
     }
     window_ptr->attr = window_ptr->attr & ~8;
@@ -1536,7 +1537,7 @@ void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...) {
     va_end(list);
 }
 
-void HuWinInsertMesSizeGet(s32 mess, s16 index) {
+void HuWinInsertMesSizeGet(u32 mess, s16 index) {
     winInsertF = 1;
     winMaxWidth = winMaxHeight = 0;
     GetMesMaxSizeSub(mess);
@@ -1775,25 +1776,25 @@ void HuWinDisablePlayerReset(s16 window, u8 player) {
 }
 
 static s32 winPortraitTbl[] = {
-    MAKE_DATA_NUM(DATADIR_WIN, 15),
-    MAKE_DATA_NUM(DATADIR_WIN, 16),
-    MAKE_DATA_NUM(DATADIR_WIN, 17),
-    MAKE_DATA_NUM(DATADIR_WIN, 18),
-    MAKE_DATA_NUM(DATADIR_WIN, 19),
-    MAKE_DATA_NUM(DATADIR_WIN, 20),
-    MAKE_DATA_NUM(DATADIR_WIN, 21),
-    MAKE_DATA_NUM(DATADIR_WIN, 22),
-    MAKE_DATA_NUM(DATADIR_WIN, 23),
-    MAKE_DATA_NUM(DATADIR_WIN, 24),
-    MAKE_DATA_NUM(DATADIR_WIN, 25),
-    MAKE_DATA_NUM(DATADIR_WIN, 26),
-    MAKE_DATA_NUM(DATADIR_WIN, 27),
-    MAKE_DATA_NUM(DATADIR_WIN, 9),
-    MAKE_DATA_NUM(DATADIR_WIN, 10),
-    MAKE_DATA_NUM(DATADIR_WIN, 11),
-    MAKE_DATA_NUM(DATADIR_WIN, 12),
-    MAKE_DATA_NUM(DATADIR_WIN, 13),
-    MAKE_DATA_NUM(DATADIR_WIN, 14)
+    WIN_TOAD_TALK_ANM,
+    WIN_BOBOMB_TALK_ANM,
+    WIN_SHYGUY_TALK_ANM,
+    WIN_BOO_TALK_ANM,
+    WIN_GOOMBA_TALK_ANM,
+    WIN_BOWSER_TALK_ANM,
+    WIN_KKID_TALK_ANM,
+    WIN_KOOPA_TALK_ANM,
+	WIN_CONDOR_TALK_ANM,
+    WIN_BOO_BLUE_TALK_ANM,
+    WIN_DOLPHIN_TALK_ANM,
+    WIN_BOO_RED_TALK_ANM,
+    WIN_THWOMP_TALK_ANM,
+    WIN_W01_HOST_TALK_ANM,
+    WIN_W02_HOST_TALK_ANM,
+    WIN_W03_HOST_TALK_ANM,
+    WIN_W04_HOST_TALK_ANM,
+    WIN_W05_HOST_TALK_ANM,
+    WIN_W06_HOST_TALK_ANM
 };
 
 s16 HuWinExCreate(float x, float y, s16 w, s16 h, s16 portrait) {

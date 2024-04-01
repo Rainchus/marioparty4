@@ -3,6 +3,8 @@
 
 #include "game/dvd.h"
 
+#include "datadir_enum.h"
+
 #define DATA_DECODE_NONE 0
 #define DATA_DECODE_LZ 1
 #define DATA_DECODE_SLIDE 2
@@ -10,21 +12,10 @@
 #define DATA_DECODE_FSLIDE 4
 #define DATA_DECODE_RLE 5
 
-#define MAKE_DATA_NUM(dir, file) (((dir) << 16)+(file))
-#define MAKE_DIR_NUM(dir) ((dir) << 16)
-
 #define DATA_NUM_LISTEND -1
 
 #include "dolphin/types.h"
 
-#define DATADIR_DEFINE(name, path) name,
-
-typedef enum {
-    #include "datadir_table.h"
-    DATADIR_COUNT
-} DataDirID;
-
-#undef DATADIR_DEFINE
 
 typedef struct data_read_stat {
     s32 dir_id;

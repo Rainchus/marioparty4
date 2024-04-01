@@ -1,5 +1,6 @@
 #include "game/board/ui.h"
 #include "game/audio.h"
+#include "game/chrman.h"
 #include "game/data.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
@@ -8,12 +9,14 @@
 #include "game/object.h"
 #include "game/pad.h"
 #include "game/process.h"
+#include "game/sprite.h"
 #include "game/window.h"
+#include "game/board/com.h"
 #include "game/board/item.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
-#include "board_unsplit.h"
+#include "game/board/tutorial.h"
 
 #include "math.h"
 
@@ -93,12 +96,8 @@ typedef struct {
 } UnkUiWork04;
 
 void BoardPlayerSparkSet(s32);
-void BoardTutorialHookExec(s16, s32);
 void BoardBowserSuitMotionCreate(void);
 s16 BoardBowserSuitPlayerModelGet(void);
-void CharModelLayerSetAll(s32);
-s32 BoardComTutorialItemGet(s32);
-void BoardTutorialHostHide(s32);
 
 static void KillAllBoardStatus(void);
 static void CreateBoardStatusSprite(s32 arg0, UnkUiStatusStruct *arg1);
@@ -403,11 +402,11 @@ void BoardStatusTargetPosSet(s32 arg0, Vec *arg1) {
     temp_r31->unk00_bit2 = 1;
 }
 
-void BoardStatusPosGet(s32 arg0, float *arg1) {
+void BoardStatusPosGet(s32 arg0, Vec *arg1) {
     UnkUiStatusStruct *temp_r31 = &uiStatus[arg0];
 
-    arg1[0] = temp_r31->unk04.x;
-    arg1[1] = temp_r31->unk04.y;
+    arg1->x = temp_r31->unk04.x;
+    arg1->y = temp_r31->unk04.y;
 }
 
 void BoardStatusPosSet(s32 arg0, Vec *arg1) {
@@ -1153,7 +1152,7 @@ static void FinishItemUse(s16 arg0, s32 arg1) {
         case 10:
             HuPrcSleep(2);
             BoardBowserSuitMotionCreate();
-            BoardRotateDiceNumbers(itemPlayer);
+            BoardPlayerIdleSet(itemPlayer);
             BoardModelLayerSet(BoardBowserSuitModelGet(), 0);
             BoardModelLayerSet(BoardBowserSuitPlayerModelGet(), 0);
             break;
@@ -1340,7 +1339,7 @@ static void ExecItemPick(void) {
         itemPosTemp[j].x -= 8.0f;
         itemPosTemp[j].y += 16.0f;
     }
-    sp18 = BoardComTutorialItemGet(itemPlayer);
+    sp18 = BoardComUseItemSlotGet(itemPlayer);
     ExecItemPickInlineFunc02(itemPlayer, var_r23, sp18);
 }
 

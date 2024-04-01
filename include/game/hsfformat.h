@@ -2,7 +2,7 @@
 #define _GAME_HSFFORMAT_H
 
 #include "dolphin.h"
-#include "game/sprite.h"
+#include "game/animdata.h"
 
 #define HSF_OBJ_NULL1 0
 #define HSF_OBJ_REPLICA 1
@@ -145,20 +145,16 @@ typedef struct hsf_vertex_buf {
     void *data;
 } HsfBuffer;
 
-typedef struct hsf_tristrip {
-    u16 data[4];
-} HsfTristrip;
-
 typedef struct hsf_face {
-    u16 type;
-    u16 mat;
-    u16 indices[12];
+    s16 type;
+    s16 mat;
     union {
         struct {
+			s16 indices[3][4];
             u32 count;
-            HsfTristrip *data;
+            s16 *data;
         } strip;
-        u16 ext_indices[4];
+        s16 indices[4][4];
     };
     float nbt[3];
 } HsfFace;
@@ -290,7 +286,7 @@ typedef struct hsf_object_data {
     HsfBuffer **vertexShape;
     u32 clusterCnt;
     HsfCluster **cluster;
-    u32 hook;
+    u32 cenvCnt;
     HsfCenv *cenv;
     void *file[2];
 } HsfObjectData;
@@ -378,7 +374,7 @@ typedef struct hsf_map_attr {
     float minZ;
     float maxX;
     float maxZ;
-    s16 *data;
+    u16 *data;
     u32 dataLen;
 } HsfMapAttr;
 

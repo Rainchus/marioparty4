@@ -1,8 +1,14 @@
 #include "game/gamework_data.h"
 #include "game/flag.h"
+#include "game/board/battle.h"
+#include "game/board/lottery.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/shop.h"
 #include "game/board/space.h"
+#include "game/board/star.h"
+#include "game/board/tutorial.h"
 #include "game/hsfman.h"
 #include "game/data.h"
 #include "game/sprite.h"
@@ -11,11 +17,6 @@
 #include "math.h"
 #include "string.h"
 
-
-extern s16 BoardStarHostMdlGet(void);
-extern void BoardModelPosSetV(s16 model, Vec *pos);
-extern s16 BoardModelCreate(s32 file, s32 *data, s32 arg3);
-extern s16 BoardModelIDGet(s16 model);
 
 static BoardSpace spaceData[2][256];
 s16 boardSpaceStarTbl[8];
@@ -51,9 +52,6 @@ static s16 spaceDrawMdl = -1;
 static s16 starPlatMdl = -1;
 
 static s32 ExecPipeSpace(s32 player, s32 space);
-
-extern s8 boardTutorialBlockF;
-extern s32 boardTutorialBlockPos;
 
 
 void BoardSpaceWalkEventFuncSet(BoardSpaceEventFunc func)
@@ -349,7 +347,7 @@ s32 BoardSpaceStarGetNext(void)
 	s16 star_pos;
 	star_total = GWSystem.star_total;
 	star_pos = GWSystem.star_pos;
-	if(BoardCurrGet() == 5) {
+	if(GWBoardGet() == 5) {
 		s16 i;
 		s32 count;
 		s32 last_free;
@@ -506,7 +504,7 @@ s32 BoardSpaceStarCheck(s32 index)
 	s32 ret;
 	BoardSpace *space = BoardSpaceGet(0, index);
 	BoardSpace *star_space;
-	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 		ret = 0;
 		goto end;
 	}
@@ -625,7 +623,7 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 		return 0;
 	}
 	space_ptr = BoardSpaceGet(0, space);
-	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 		is_star = 0;
 	} else {
 		star_space = BoardSpaceGet(0, boardSpaceStarTbl[GWSystem.star_pos]);
@@ -640,9 +638,9 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 		return 1;
 	}
 	if(space_ptr->flag & 0x600000) {
-		u16 mg_param = GWSystem.unk_38;
+		s32 mg_param = GWSystem.unk_38;
 		if(BoardPlayerSizeGet(player) == 1) {
-			BoardRotateDiceNumbers(player);
+			BoardPlayerIdleSet(player);
 			BoardMGCreate(mg_param);
 		}
 		return 1;
@@ -679,10 +677,10 @@ s32 BoardSpaceBlockExec(s32 player, s32 space)
 	if(space == GWSystem.block_pos) {
 		event_exec = 1;
 	}
-	if((int)GWSystem.bonus_star == 0 && BoardPartyFlagGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+	if((int)GWSystem.bonus_star == 0 && GWPartyGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		event_exec = 0;
 	}
-	if(BoardCurrGet() == 7 || BoardCurrGet() == 8) {
+	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
 		event_exec = 0;
 	}
 	if(event_exec) {
@@ -759,6 +757,32 @@ void BoardSpaceHide(s32 value)
 	}
 }
 
+static inline void InitGXSpace()
+{
+    GXColor color = {0xFF, 0xFF, 0xFF, 0xFF};
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXInvalidateTexAll();
+    GXLoadTexObj(&spaceTex, GX_TEXMAP0);
+    GXSetNumTexGens(1);
+    GXSetNumTevStages(1);
+    GXSetTevColor(GX_TEVREG0, color);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+    GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
+    GXSetNumChans(1);
+    GXSetChanAmbColor(GX_COLOR0A0, color);
+    GXSetChanMatColor(GX_COLOR0A0, color);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 1, GX_DF_CLAMP, GX_AF_SPOT);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+    GXSetCullMode(GX_CULL_BACK);
+}
+
 //Some stack allocation issues. code around BoardPlayerGetCurr is incorrect too
 static void DrawSpaces(ModelData *model, Mtx matrix)
 {
@@ -784,41 +808,19 @@ static void DrawSpaces(ModelData *model, Mtx matrix)
 	GXSetViewport(camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h, camera->viewport_near, camera->viewport_far);
 	GXSetScissor(camera->viewport_x, camera->viewport_y, camera->viewport_w, camera->viewport_h);
 	{
-		GXColor color = { 0xFF, 0xFF, 0xFF, 0xFF };
 		BoardSpace *space_curr;
 		BoardSpace *space_hilite;
 		PlayerState *player;
-		PlayerState *player_temp;
 		s16 player_mdl;
 		float y_dist;
 		s32 space_img;
 		u16 space_type;
 		float uv_x, uv_y, uv_size;
+		InitGXSpace();
 		
-		GXClearVtxDesc();
-		GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
-		GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
-		GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
-		GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-		GXInvalidateTexAll();
-		GXLoadTexObj(&spaceTex, GX_TEXMAP0);
-		GXSetNumTexGens(1);
-		GXSetNumTevStages(1);
-		GXSetTevColor(GX_TEVREG0, color);
-		GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
-		GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
-		GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
-		GXSetNumChans(1);
-		GXSetChanAmbColor(GX_COLOR0A0, color);
-		GXSetChanMatColor(GX_COLOR0A0, color);
-		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
-		GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, 1, GX_DF_CLAMP, GX_AF_SPOT);
-		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
-		GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
-		GXSetCullMode(GX_CULL_BACK);
-		player = player_temp = BoardPlayerGetCurr();
+		player = BoardPlayerGet(GWSystem.player_curr);
 		BoardPlayerPosGet(GWSystem.player_curr, &player_pos);
-		player_mdl = BoardModelIDGet(BoardPlayerModelGetCurr());
+		player_mdl = BoardModelIDGet(BoardPlayerModelGet(GWSystem.player_curr));
 		space_curr = &spaceData[0][0];
 		space_hilite = NULL;
 		GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
@@ -837,7 +839,7 @@ static void DrawSpaces(ModelData *model, Mtx matrix)
 					if(player_pos.y-space_curr->pos.y < 0.0f) {
 						y_dist = -(player_pos.y-space_curr->pos.y);
 					} else {
-						y_dist  = player_pos.y-space_curr->pos.y;
+						y_dist = player_pos.y-space_curr->pos.y;
 					}
 					if(y_dist < 10.0f) {
 						space_hilite = space_curr;
@@ -985,13 +987,13 @@ void BoardSpaceInit(s32 data_num)
 	memset(spaceAttr, 0, sizeof(spaceAttr));
 	lbl_801D3FC4[0] = lbl_801D3FC4[1] = lbl_801D3FC4[2] = lbl_801D3FC4[3] = -1;
 	spaceDrawF = 0;
-	board = BoardCurrGet();
+	board = GWBoardGet();
 	{
 		AnimBmpData *bmp;
 		AnimData *data;
 		void *data_base;
 		s32 size;
-		data = data_base = HuDataSelHeapReadNum(MAKE_DATA_NUM(DATADIR_BOARD, 29), MEMORY_DEFAULT_NUM, HEAP_DATA);
+		data = data_base = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_BOARD, 29), MEMORY_DEFAULT_NUM, HEAP_DATA);
 		data->bmp = (void *)((u32)data_base+(u32)data->bmp);
 		data->pat = (void *)((u32)data_base+(u32)data->pat);
 		data->bank = (void *)((u32)data_base+(u32)data->bank);
@@ -999,15 +1001,15 @@ void BoardSpaceInit(s32 data_num)
 		size = bmp->sizeX;
 		spaceHiliteTexFmt = -1;
 		switch(bmp->dataFmt) {
-			case SPRITE_BMP_RGBA8:
+			case ANIM_BMP_RGBA8:
 				spaceHiliteTexFmt = GX_TF_RGBA8;
 				break;
 				
-			case SPRITE_BMP_RGB5A3_DUPE:
+			case ANIM_BMP_RGB5A3_DUPE:
 				spaceHiliteTexFmt = GX_TF_RGB5A3;
 				break;
 				
-			case SPRITE_BMP_CMPR:
+			case ANIM_BMP_CMPR:
 				spaceHiliteTexFmt = GX_TF_CMPR;
 				break;
 		}
@@ -1023,7 +1025,7 @@ void BoardSpaceInit(s32 data_num)
 		AnimData *data;
 		void *data_base;
 		s32 size;
-		data = data_base = HuDataSelHeapReadNum(MAKE_DATA_NUM(DATADIR_BOARD, 28), MEMORY_DEFAULT_NUM, HEAP_DATA);
+		data = data_base = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_BOARD, 28), MEMORY_DEFAULT_NUM, HEAP_DATA);
 		data->bmp = (void *)((u32)data_base+(u32)data->bmp);
 		data->pat = (void *)((u32)data_base+(u32)data->pat);
 		data->bank = (void *)((u32)data_base+(u32)data->bank);
@@ -1031,15 +1033,15 @@ void BoardSpaceInit(s32 data_num)
 		size = bmp->sizeX;
 		spaceTexFmt = -1;
 		switch(bmp->dataFmt) {
-			case SPRITE_BMP_RGBA8:
+			case ANIM_BMP_RGBA8:
 				spaceTexFmt = GX_TF_RGBA8;
 				break;
 				
-			case SPRITE_BMP_RGB5A3_DUPE:
+			case ANIM_BMP_RGB5A3_DUPE:
 				spaceTexFmt = GX_TF_RGB5A3;
 				break;
 				
-			case SPRITE_BMP_CMPR:
+			case ANIM_BMP_CMPR:
 				spaceTexFmt = GX_TF_CMPR;
 				break;
 		}
@@ -1057,8 +1059,8 @@ void BoardSpaceInit(s32 data_num)
 		GWSystem.star_total = 0;
 		GWSystem.star_flag = 0;
 	}
-	if(BoardCurrGet() != 7 && BoardCurrGet() != 8) {
-		starPlatMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 6), NULL, 0);
+	if(GWBoardGet() != 7 && GWBoardGet() != 8) {
+		starPlatMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 6), NULL, 0);
 		BoardModelMotionStart(starPlatMdl, 0, 0x40000001);
 		BoardModelVisibilitySet(starPlatMdl, 0);
 		if(_CheckFlag(FLAG_ID_MAKE(1, 1))) {

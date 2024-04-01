@@ -2,6 +2,8 @@
 #define _GAME_THPMAIN_H
 
 #include "dolphin/types.h"
+#include "game/process.h"
+
 
 s16 HuTHPSprCreateVol(char *path, s16 loop, s16 prio, float volume);
 s16 HuTHPSprCreate(char *path, s16 loop, s16 prio);
@@ -14,5 +16,8 @@ BOOL HuTHPEndCheck(void);
 s32 HuTHPFrameGet(void);
 s32 HuTHPTotalFrameGet(void);
 void HuTHPSetVolume(s32 left, s32 right);
+
+extern Process *THPProc;
+
 
 #endif

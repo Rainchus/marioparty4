@@ -1,61 +1,60 @@
 #include "dolphin.h"
 #include "REL/executor.h"
-#include "game/process.h"
+#include "game/audio.h"
 #include "game/data.h"
 #include "game/gamework_data.h"
+#include "game/process.h"
+#include "game/wipe.h"
 #include "REL/w03Dll.h"
+#include "game/board/lottery.h"
+#include "game/board/boo_house.h"
+
+#include "game/board/main.h"
+#include "game/board/model.h"
+#include "game/board/shop.h"
 #include "game/board/space.h"
+#include "game/board/star.h"
 #include "game/object.h"
 #include "game/board/player.h"
+#include "game/board/map_object.h"
+
 #include "math.h"
-#include "board_unsplit.h"
 #include "game/hsfman.h"
 
-s32 BoardModelPosSet(s16, f32, f32, f32);
-s32 BoardModelMotionStart(s16, s32, u32);
-
-void fn_8005B150(void*, void*);
-void fn_1_740(void);
+//function signatures
 void fn_1_E0(void);
-s32 fn_1_2930(s32 arg0);
 void fn_1_884(void);
+void fn_1_740(void);
 void fn_1_8F0(void);
 s32 fn_1_910(void);
 s32 fn_1_A74(void);
 void fn_1_AF8(void);
 void fn_1_DEC(void);
 void fn_1_10B0(void);
-s32 fn_1_12C8(void);
-s32 fn_8006DDE8(s16, f32);
 void fn_1_10E4(omObjData* arg0);
-extern Process *boardObjMan;
+s32 fn_1_12C8(void);
+s32 fn_1_2930(s32 arg0);
+
 typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
 
+//Map Objects
+s16 lbl_1_bss_C[MAPOBJ_MAX];
 
-f32 BoardModelMotionTimeGet(s16);
-s16 BoardModelCreate(s32, s32*, s32);
-void BoardModelKill(s16);
-void BoardModelMotionStartEndSet(s16, s32, s32);
-void Hu3DFogSet(f32, f32, u8, u8, u8);
-void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6);
-u8 WipeStatGet(void);
-
-//DATA
-w03StructUnk0 lbl_1_data_0[] = {
-{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0004)},
-{{145.0988f, 65.6173f, -2004.14f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0005)},
-{{-1548.14f, -1148.76f, -1095.54f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0006)},
-{{1050.0f, 50.0f, -1810.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000B)},
-{{-1950.0f, 50.0f, 1790.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000B)},
-{{1050.0f, 0.0f, -1750.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000A)},
-{{-1950.0f, 0.0f, 1850.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x000A)},
-{{1950.0f, 0.0f, -1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0010)},
-{{-3150.0f, 0.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0011)},
-{{-3150.0f, 270.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0077, 0x0012)},
-{{2080.0f, 0.0f, -1635.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x000D)},
-{{-3000.0f, 0.0f, -500.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, MAKE_DATA_NUM(0x0002, 0x000D)},
+BoardMapObject lbl_1_data_0[MAPOBJ_MAX] = {
+	{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 4)},
+	{{145.0988f, 65.6173f, -2004.14f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 5)},
+	{{-1548.14f, -1148.76f, -1095.54f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 6)},
+	{{1050.0f, 50.0f, -1810.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 11)},
+	{{-1950.0f, 50.0f, 1790.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 11)},
+	{{1050.0f, 0.0f, -1750.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 10)},
+	{{-1950.0f, 0.0f, 1850.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.914f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 10)},
+	{{1950.0f, 0.0f, -1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 16)},
+	{{-3150.0f, 0.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 17)},
+	{{-3150.0f, 270.0f, -600.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W03, 18)},
+	{{2080.0f, 0.0f, -1635.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 13)},
+	{{-3000.0f, 0.0f, -500.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 13)},
 };
 
 s16 lbl_1_data_1E0 = -1;
@@ -80,12 +79,12 @@ w03StructUnk1 lbl_1_data_1EC = {
 };
 
 s32 lbl_1_data_20C[] = {
-    MAKE_DATA_NUM(0x0077, 0x001C),
+    DATA_MAKE_NUM(DATADIR_W03, 0x001C),
 	DATA_NUM_LISTEND
 };
 
 s32 lbl_1_data_214[] = {
-    MAKE_DATA_NUM(0x0002, 0x000E),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 0x000E),
 	DATA_NUM_LISTEND
 };
 
@@ -108,10 +107,7 @@ s32 lbl_1_data_26C[] = {
     0x0000044C, 0x0000043A, 0x0000043A, 0x0000044E
 };
 
-s32 pad_27C[] = {0};
-
 //BSS
-s16 lbl_1_bss_C[14];
 s32 lbl_1_bss_8;
 omObjData* lbl_1_bss_4;
 w03State* lbl_1_bss_0;
@@ -124,55 +120,63 @@ void BoardCreate(void) {
     f32 var_f31;
     s32 var_r31;
     s32 var_r31_2;
-    w03StructUnk0* temp_r30;
+    BoardMapObject* temp_r30;
     s32 i;
 
     lbl_1_bss_0 = (w03State*)&GWSystem.board_data;
     lbl_1_bss_0->unk3 = 0;
     BoardSpaceInit(0x770000);
+
     lbl_1_data_1E0 = BoardModelCreate(0x770001, NULL, 0);
     fn_8006DDE8(lbl_1_data_1E0, -1.0f);
     BoardModelPosSet(lbl_1_data_1E0, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E0, 0, 0x40000001);
+
     lbl_1_data_1E8 = BoardModelCreate(0x770003, NULL, 0);
     fn_8006DDE8(lbl_1_data_1E8, -1.0f);
     BoardModelPosSet(lbl_1_data_1E8, 0.0f, 0.0f, 0.0f);
     BoardModelLayerSet(lbl_1_data_1E8, 2);
+
     lbl_1_data_1E2 = BoardModelCreate(0x770002, NULL, 0);
     fn_8006DDE8(lbl_1_data_1E2, -1.0f);
     BoardModelPosSet(lbl_1_data_1E2, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E2, 0, 0x40000001);
+
     lbl_1_data_1E4 = BoardModelCreate(0x77001B, lbl_1_data_20C, 0);
     BoardModelPosSet(lbl_1_data_1E4, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E4, 1, 0x40000001);
+
     lbl_1_data_1E6 = BoardModelCreate(0x2000D, lbl_1_data_214, 0);
     BoardModelPosSet(lbl_1_data_1E6, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_1E6, 1, 0x40000001);
 
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < MAPOBJ_MAX; i++) {
         temp_r30 = &lbl_1_data_0[i];
-        if (temp_r30->datanum != -1) {
+        if (temp_r30->data_num != -1) {
             if ((i == 10) || (i == 11)) {
                 var_r29 = lbl_1_data_214;
             } else {
                 var_r29 = NULL;
             }
-            lbl_1_bss_C[i]= BoardModelCreate(temp_r30->datanum, var_r29, 0);
-            BoardModelPosSetV(lbl_1_bss_C[i], &temp_r30->unk_00);
-            BoardModelRotSetV(lbl_1_bss_C[i], &temp_r30->unk_0C);
-            BoardModelScaleSetV(lbl_1_bss_C[i], &temp_r30->unk_18);
+            lbl_1_bss_C[i]= BoardModelCreate(temp_r30->data_num, var_r29, 0);
+            BoardModelPosSetV(lbl_1_bss_C[i], &temp_r30->pos);
+            BoardModelRotSetV(lbl_1_bss_C[i], &temp_r30->rot);
+            BoardModelScaleSetV(lbl_1_bss_C[i], &temp_r30->scale);
             BoardModelVisibilitySet(lbl_1_bss_C[i], 1);
         }
     }
+
     BoardModelMotionStart(lbl_1_bss_C[10], 1, 0x40000001);
     BoardModelMotionStart(lbl_1_bss_C[11], 1, 0x40000001);
     BoardModelMotionStart(lbl_1_bss_C[7], 0, 0x40000002);
     BoardModelMotionStart(lbl_1_bss_C[9], 0, 0x40000002);
     BoardModelMotionStart(lbl_1_bss_C[1], 0, 0x40000002);
+
     fn_1_3058();
     fn_1_6494();
     fn_1_7ABC();
     fn_1_9A7C();
+
     BoardLightHookSet(&fn_1_884, &fn_1_8F0);
     BoardSpaceWalkEventFuncSet(&fn_1_910);
     BoardSpaceWalkMiniEventFuncSet((void*)&fn_1_A74);
@@ -185,6 +189,7 @@ void BoardCreate(void) {
     BoardJunctionMaskSet(0x3000);
     fn_1_CF4();
     BoardModelMotionStart(lbl_1_bss_C[0], 0, 0x40000001);
+
     if (lbl_1_bss_0->unk0 != 0) {
         var_f30 = lbl_1_data_1EC.unk_10;
         var_f31 = lbl_1_data_1EC.unk_14;
@@ -194,10 +199,12 @@ void BoardCreate(void) {
         var_f31 = lbl_1_data_1EC.unk_04;
         fn_1_63F4(1);
     }
+
     BoardModelMotionStartEndSet(lbl_1_bss_C[0], var_f30, var_f31);
     BoardModelMotionStart(lbl_1_bss_C[2], 0, 0x40000001);
-    BoardModelMotionStartEndSet(lbl_1_bss_C[2], 1, 0x64);
+    BoardModelMotionStartEndSet(lbl_1_bss_C[2], 1, 100);
     fn_1_785C();
+
     if (lbl_1_bss_0->unk2 != 0) {
         for (i = 0; i < 4; i++) {
             if ((lbl_1_bss_0->unk2 & (1 << i)) != 0) {
@@ -206,6 +213,7 @@ void BoardCreate(void) {
             }
         }
     }
+
     fn_1_DEC();
 }
 
@@ -215,22 +223,27 @@ void BoardDestroy(void) {
     fn_1_10B0();
     fn_1_9A9C();
     fn_1_7B58();
+
     for (i = 0; i < 0x0C; i++) {
         BoardModelKill(lbl_1_bss_C[i]);
         lbl_1_bss_C[i] = -1;        
     }
+
     if (lbl_1_data_1E6 != -1) {
         BoardModelKill(lbl_1_data_1E6);
         lbl_1_data_1E6 = -1;
     }
+
     if (lbl_1_data_1E4 != -1) {
         BoardModelKill(lbl_1_data_1E4);
         lbl_1_data_1E4 = -1;
     }
+    
     if (lbl_1_data_1E0 != -1) {
         BoardModelKill(lbl_1_data_1E0);
         lbl_1_data_1E0 = -1;
     }
+
     if (lbl_1_data_1E2 != -1) {
         BoardModelKill(lbl_1_data_1E2);
         lbl_1_data_1E2 = -1;
@@ -255,6 +268,7 @@ s32 fn_1_910(void) {
     cur_player_index = GWSystem.player_curr;
     space = GWPlayer[cur_player_index].space_curr;
     temp_r3 = BoardSpaceFlagGet(0, space);
+
     if (temp_r3 & 0xC000) {
         if ((BoardPlayerSizeGet(cur_player_index) == 2) || ((u8) (( GWPlayer[cur_player_index].bowser_suit)))) {
             return 0;
@@ -270,18 +284,21 @@ s32 fn_1_910(void) {
         
         return fn_1_309C();
     }
+
     if (temp_r3 & 0x200) {
         if ((BoardPlayerSizeGet(cur_player_index) == 2) || ((u8) ((GWPlayer[cur_player_index].bowser_suit)) != 0)) {
             return 0;
         }
         return fn_1_675C();
     }
+
     return 0;
 }
 
 s32 fn_1_A74(void) {
     s16 space = GWPlayer[GWSystem.player_curr].space_curr;
     u32 var = BoardSpaceFlagGet(0, space) & 0x600000;
+
     if (var + -0x200000 == 0) {
         fn_1_7BA8();
         return;
@@ -316,8 +333,10 @@ void fn_1_B5C(s32 arg0) {
         var_f28 = lbl_1_data_1EC.unk_04;
         fn_1_63F4(1);
     }
+
     BoardModelMotionStart(lbl_1_bss_C[0], 0, 0);
     BoardModelMotionTimeSet(lbl_1_bss_C[0], var_f30);
+
     while (1) {
         temp = BoardModelMotionTimeGet(lbl_1_bss_C[0]);
         if (temp >= var_f29) {
@@ -325,9 +344,10 @@ void fn_1_B5C(s32 arg0) {
         }
         HuPrcVSleep();
     }
+
     BoardModelAttrSet(lbl_1_bss_C[0], 0x40000001);
     BoardModelMotionTimeSet(lbl_1_bss_C[0], var_f31);
-    BoardModelMotionStartEndSet(lbl_1_bss_C[0], (s32) var_f31, (s32) var_f28);
+    BoardModelMotionStartEndSet(lbl_1_bss_C[0], var_f31, var_f28);
 }
 
 void fn_1_CF4(void) {
@@ -372,7 +392,8 @@ void fn_1_DEC(void) {
     BoardCameraPosGet(&sp20);
     BoardCameraDirGet(&sp14);
     HuAudFXListnerSetEX(&sp20, &sp14, 4800.0f, 36000.0f, 0.0f, 1200.0f, 1200.0f);
-    for (i = 0; i < 4; i++) {
+
+    for (i = 0; i < ARRAY_COUNT(lbl_1_data_22C); i++) {
         sp8.x = lbl_1_data_22C[i].x - 3600.0f;
         sp8.y = lbl_1_data_22C[i].y;
         sp8.z = lbl_1_data_22C[i].z - 3600.0f;
@@ -415,6 +436,7 @@ void fn_1_10E4(omObjData* arg0) {
     w03UnkStruct2* temp_r29;
 
     temp_r29 = OM_GET_WORK_PTR(arg0, w03UnkStruct2);
+
     if (temp_r29->unk0 != 0 || (BoardIsKill() != 0)) {
         for (i = 0; i < ARRAY_COUNT(lbl_1_data_21C); i++) {
             if (lbl_1_data_21C[i] != -1) {
@@ -426,6 +448,7 @@ void fn_1_10E4(omObjData* arg0) {
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
+
     BoardCameraDirGet(&sp8);
     BoardCameraTargetGet(&sp14);
 
@@ -438,6 +461,7 @@ void fn_1_10E4(omObjData* arg0) {
     }
 
     sp14.y += 2000.0f;
+
     if (_CheckFlag(0x10010) == 0) {
         if (lbl_1_bss_8 == 0) {
             HuAudFXPauseAll(1);
@@ -447,7 +471,6 @@ void fn_1_10E4(omObjData* arg0) {
         HuAudFXPauseAll(0);
         lbl_1_bss_8 = 0;
     }
+    
     HuAudFXListnerUpdate(&sp14, &sp8);
 }
-
-f32 const padMain = 0.0f;

@@ -5,10 +5,7 @@
 
 #define BOARD_SPACE_LINKMAX 4
 
-#ifndef _BOARD_SPACE_EVENT_FUNC
-#define _BOARD_SPACE_EVENT_FUNC
 typedef s32 (*BoardSpaceEventFunc)(void);
-#endif
 
 typedef struct board_space {
 	Vec pos;
@@ -52,5 +49,8 @@ s32 BoardSpaceStarGetCurr(void);
 s32 BoardSpaceStarCheck(s32 index);
 void BoardSpaceLandExec(s32 player, s32 space);
 void BoardSpaceBlockPosSet(void);
+void BoardSpaceInit(s32 data_num);
+
+extern s16 boardSpaceStarTbl[8];
 
 #endif

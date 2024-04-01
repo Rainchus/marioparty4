@@ -1,5 +1,6 @@
 #include "game/board/boo.h"
 #include "game/audio.h"
+#include "game/chrman.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
 #include "game/hsfman.h"
@@ -92,7 +93,6 @@ typedef struct {
 } BallTakeCoinWork;
 
 void BoardSpaceCameraSet(u16);
-char *CharModelHookNameGet(s16, s32, s32);
 
 static void ComSetupStealPlayer(s32 arg0);
 static void ComSetStealPlayerInput(s32 arg0, s32 arg1);

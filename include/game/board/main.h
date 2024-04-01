@@ -53,16 +53,6 @@ typedef struct board_camera_data {
 	BoardFocusData focus;
 } BoardCameraData;
 
-static inline s32 BoardCurrGet()
-{
-	return GWSystem.board;
-}
-
-static inline s32 BoardPartyFlagGet()
-{
-	return GWSystem.party;
-}
-
 extern BoardCameraData boardCamera;
 extern Process *boardObjMan;
 extern Process *boardMainProc;
@@ -72,11 +62,16 @@ extern omObjData *boardMainObj;
 typedef void (*BoardFunc)(void);
 
 typedef void (*BoardLightHook)(void);
+typedef void (*BoardBowserHook)(s32 beforeF);
+
 typedef void (*BoardCameraPosCalcFunc)(BoardCameraData *camera);
 
 typedef void (*BoardTurnStartHook)(s32 player, s32 space);
 
 extern BoardTurnStartHook boardTurnStartFunc;
+extern void (*boardStarShowNextHook)(void);
+extern void (*boardStarGiveHook)(void);
+extern BoardBowserHook boardBowserHook;
 extern BoardFunc boardTurnFunc;
 extern BoardLightHook boardLightResetHook;
 extern BoardLightHook boardLightSetHook;
@@ -111,7 +106,6 @@ void BoardCameraOffsetSet(float x, float y, float z);
 void BoardCameraTargetPlayerSet(s32 player);
 void BoardCameraTargetModelSet(s16 model);
 void BoardCameraTargetSpaceSet(s32 space);
-void BoardCameraPosCalcFuncSet(BoardCameraPosCalcFunc func);
 void BoardCameraQuakeSet(s32 duration, float strength);
 void BoardCameraQuakeReset();
 void BoardCameraTargetSet(float x, float y, float z);

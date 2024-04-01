@@ -1,5 +1,7 @@
 #include "game/board/item.h"
 #include "game/audio.h"
+#include "game/chrman.h"
+#include "game/data.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
 #include "game/hsfanim.h"
@@ -7,14 +9,21 @@
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/process.h"
+#include "game/sprite.h"
 #include "game/window.h"
 #include "game/wipe.h"
+#include "game/board/audio.h"
+#include "game/board/boo.h"
+#include "game/board/char_wheel.h"
+#include "game/board/com.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/space.h"
+#include "game/board/star.h"
 #include "game/board/ui.h"
 #include "game/board/window.h"
+#include "game/board/view.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;
@@ -43,14 +52,7 @@ typedef struct {
     /* 0x04 */ Vec unk10;
 } UnkGenieCameraStruct; // Size 0x1C
 
-u32 frandmod(u32);
-void CharModelCreateParticle(s32, Vec*);
-void CharModelLayerSetAll(s32);
-void BoardComKeySetRight(void);
-void BoardBowserSuitInit(s32);
-s16 BoardBowserSuitPlayerModelGet(void);
-void fn_8004F578(s16, s32);
-void BoardAudSeqPause(s32, s32, s32);
+extern u32 frandmod(u32);
 
 static void ItemProcess(void);
 static void RestoreProcess(void);
@@ -73,8 +75,8 @@ static void ExecItemLight(void);
 static void ExecItemWhistle(void);
 static void ExecItemBowser(void);
 static void ExecItemBooBall(void);
-static void LampParticleUpdate(s32 arg0, ParticleData *arg1);
-static void GenieParticleUpdate(s32 arg0, ParticleData *arg1);
+static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix);
+static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix);
 static void GenieCameraProc(void);
 static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Vec *arg3, Vec *arg4);
 static void GenieSceneExec(void);
@@ -89,30 +91,31 @@ static void RestoreItemMiniSuper(void);
 static void RestoreItemMegaSuper(void);
 static void RestoreItemBowser(void);
 
-// BSS
 static Vec booBallScale;
 static Vec booBallPos;
 static Vec booCamUp;
 static Vec booCamTarget;
 static Vec booCamPos;
 
-// SBSS
 static s16 itemBagItems[3];
 static s8 currItemRestore;
 static s8 currItem;
 static s16 suitMdl;
 static s32 suitMot[2];
 static s32 suitCommonMot[2];
-// ...
+static s16 booBallMdl;
+static float booBallAlpha;
+static char booCoinStr[8];
 static float genieFov;
 static AnimData *genieParticleAnim;
 static s16 geniePlayerMot[3];
 static Process *itemProc;
 
-// SDATA
-s32 lbl_801D37A0[2] = { 0x00070075, -1 };
+s32 lbl_801D37A0[2] = {
+    DATA_MAKE_NUM(DATADIR_BOARD, 117),
+    -1
+};
 
-// DATA
 static void (*itemFuncTbl[])(void) = {
     ExecItemMini,
     ExecItemMega,
@@ -130,7 +133,6 @@ static void (*itemFuncTbl[])(void) = {
     ExecItemBag
 };
 
-// DATA + 0x38
 static void (*itemRestoreFuncTbl[])(void) = {
     RestoreItemMini,
     RestoreItemMega,
@@ -148,45 +150,38 @@ static void (*itemRestoreFuncTbl[])(void) = {
     RestoreItemNull
 };
 
-// DATA + 0x70
 static s32 itemMdlTbl[] = {
-    0x0007006D,
-    0x0007006E,
-    0x0007006F,
-    0x00070070,
-    0x00070071,
-    0x00070072,
-    0x00070073,
-    0x00070074,
-    0x00070076,
-    0x00070077,
-    0x00070078,
-    0x00070079,
-    0x0007007A,
-    0x0007007B
+    DATA_MAKE_NUM(DATADIR_BOARD, 109),
+    DATA_MAKE_NUM(DATADIR_BOARD, 110),
+    DATA_MAKE_NUM(DATADIR_BOARD, 111),
+    DATA_MAKE_NUM(DATADIR_BOARD, 112),
+    DATA_MAKE_NUM(DATADIR_BOARD, 113),
+    DATA_MAKE_NUM(DATADIR_BOARD, 114),
+    DATA_MAKE_NUM(DATADIR_BOARD, 115),
+    DATA_MAKE_NUM(DATADIR_BOARD, 116),
+    DATA_MAKE_NUM(DATADIR_BOARD, 118),
+    DATA_MAKE_NUM(DATADIR_BOARD, 119),
+    DATA_MAKE_NUM(DATADIR_BOARD, 120),
+    DATA_MAKE_NUM(DATADIR_BOARD, 121),
+    DATA_MAKE_NUM(DATADIR_BOARD, 122),
+    DATA_MAKE_NUM(DATADIR_BOARD, 123)
 };
 
-// DATA + 0xA8
 static s32 forceMoveSfxTbl[] = {
     0x38, 0x45, 0x42, 0x4D, 0x48, 0x3F
 };
 
-// DATA + 0xC0
 static s32 callMotTbl[] = {
-    0x005F0052,
-    0x001A0052,
-    0x006D0052,
-    0x008A0052,
-    0x00850052,
-    0x00110052,
-    0x000D0052,
-    0x00810052
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 82),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 82),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 82),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 82),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 82),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 82),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 82),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 82)
 };
 
-// DATA + 0xE0
-// callHookTbl items
-
-// DATA + 0x178
 static char *callHookTbl[] = {
     "c000m01-itemhook-r",
     "c001m01-itemhook-r",
@@ -198,36 +193,33 @@ static char *callHookTbl[] = {
     "c007m01-itemhook-r"
 };
 
-// DATA + 0x198
 static s32 callAttackMotTbl[] = {
-    0x0075001F,
-    0x00760005,
-    0x0077001D,
-    0x00780009,
-    0x00790007,
-    0x007A0013
+    DATA_MAKE_NUM(DATADIR_W01, 31),
+    DATA_MAKE_NUM(DATADIR_W02, 5),
+    DATA_MAKE_NUM(DATADIR_W03, 29),
+    DATA_MAKE_NUM(DATADIR_W04, 9),
+    DATA_MAKE_NUM(DATADIR_W05, 7),
+    DATA_MAKE_NUM(DATADIR_W06, 19)
 };
 
-// DATA + 0x1B0
 static s32 callAttackMotTbl2[] = {
-    0x00750020,
-    0x00760006,
-    0x0077001E,
-    0x0078000A,
-    0x00790008,
-    0x007A0014
+    DATA_MAKE_NUM(DATADIR_W01, 32),
+    DATA_MAKE_NUM(DATADIR_W02, 6),
+    DATA_MAKE_NUM(DATADIR_W03, 30),
+    DATA_MAKE_NUM(DATADIR_W04, 10),
+    DATA_MAKE_NUM(DATADIR_W05, 8),
+    DATA_MAKE_NUM(DATADIR_W06, 20)
 };
 
-// DATA + 0x1C8
 static s32 suitMotTbl[][2] = {
-    { 0x00040001, 0x00040002 },
-    { 0x00040004, 0x00040005 },
-    { 0x00040007, 0x00040008 },
-    { 0x0004000A, 0x0004000B },
-    { 0x0004000D, 0x0004000E },
-    { 0x00040010, 0x00040011 },
-    { 0x00040013, 0x00040014 },
-    { 0x00040016, 0x00040017 }
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 1), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 2) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 4), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 5) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 7), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 8) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 10), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 11) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 13), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 14) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 16), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 17) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 19), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 20) },
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 22), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 23) }
 };
 
 void BoardItemStart(s32 arg0, s32 arg1) {
@@ -294,7 +286,7 @@ static void ItemSizeShowAnim(void) {
     BoardModelRotSetV(suitMdl, &spC);
     BoardModelPosSetV(suitMdl, &sp24);
     for (i = 0; i < 120; i++) {
-        sp24.y += 3.0 * sin(M_PI * var_f31 / 180.0);
+        sp24.y += 3.0 * sin(var_f31 * M_PI / 180.0);
         BoardModelPosSetV(suitMdl, &sp24);
         var_f31 += 9.0f;
         if (var_f31 >= 360.0f) {
@@ -327,7 +319,7 @@ static void ItemRotProc(void) {
     while (1) {
         if (temp_r31->unk00 == 0) {
             sp14 = sp20;
-            sp14.y += temp_r31->unk04 * sin(M_PI * temp_r31->unk0C / 180.0);
+            sp14.y += temp_r31->unk04 * sin(temp_r31->unk0C * M_PI / 180.0);
             BoardModelPosSetV(temp_r31->unk02, &sp14);
             temp_r31->unk0C += temp_r31->unk08;
             if (temp_r31->unk0C >= 360.0f) {
@@ -439,8 +431,9 @@ static void BoardUiInlineFunc02(void) {
 static inline void BoardUiInlineFunc03(s32 arg0) {
     Vec sp8;
     Vec sp14;
+    s32 space = GWPlayer[arg0].space_curr;
 
-    BoardSpacePosGet(0, GWPlayerSpaceCurrGet(arg0), &sp14);
+    BoardSpacePosGet(0, space, &sp14);
     BoardPlayerPosGet(arg0, &sp8);
     BoardPlayerPosLerpStart(arg0, &sp8, &sp14, 0x14);
     while (GWPlayer[arg0].moving) {
@@ -450,7 +443,7 @@ static inline void BoardUiInlineFunc03(s32 arg0) {
     while (!BoardPlayerMotBlendCheck(arg0)) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(arg0);
+    BoardPlayerIdleSet(arg0);
 }
 
 static inline void BoardUiInlineFunc04(Process *arg0, s32 arg1) {
@@ -499,8 +492,8 @@ static Process *ItemShowProc(UnkItemShowProcStruct *arg0, Vec *arg1) {
         sp20.y += 35.0f;
         sp20.z += 50.0 * cos(sp14.y * M_PI / 180.0);
         sp20.x += 50.0 * sin(sp14.y * M_PI / 180.0);
-        CharModelCreateParticle(1, &sp20);
-        HuPrcSleep(0xA);
+        CharModelEffectCreate(1, &sp20);
+        HuPrcSleep(10);
     }
     if (suitMdl >= 0) {
         BoardModelVisibilitySet(suitMdl, 1);
@@ -537,7 +530,7 @@ static s16 ItemGetTarget(void) {
             var_r28++;
         }
     }
-    HuWinMesMaxSizeGet(1, sp8, 0x12000E);
+    HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(18, 14));
     temp_r29 = HuWinCreate(-10000.0f, -10000.0f, sp8[0], sp8[1], 0);
     if (!GWPlayer[currItemRestore].com) {
         winData[temp_r29].active_pad = (1 << GWPlayer[currItemRestore].port);
@@ -545,7 +538,7 @@ static s16 ItemGetTarget(void) {
     for (var_r31 = 0; var_r31 < var_r27; var_r31++) {
         HuWinInsertMesSet(temp_r29, GWPlayerCfg[sp20[var_r31]].character, var_r31);
     }
-    HuWinMesSet(temp_r29, 0x12000E);
+    HuWinMesSet(temp_r29, MAKE_MESSID(18, 14));
     if (GWPlayer[currItemRestore].com) {
         var_r26 = 0xF;
     } else {
@@ -633,7 +626,7 @@ static void ExecItemMini(void) {
     omVibrate(currItemRestore, 90, 6, 6);
     HuAudFXPlay(0x313);
     ItemSizeSet(1);
-    HuPrcSleep(0x3C);
+    HuPrcSleep(60);
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
@@ -650,7 +643,7 @@ static void ExecItemMega(void) {
     omVibrate(currItemRestore, 90, 4, 2);
     HuAudFXPlay(0x311);
     ItemSizeSet(2);
-    HuPrcSleep(0x3C);
+    HuPrcSleep(60);
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
@@ -667,7 +660,7 @@ static void ExecItemMiniSuper(void) {
     omVibrate(currItemRestore, 90, 4, 2);
     HuAudFXPlay(0x313);
     ItemSizeSet(1);
-    HuPrcSleep(0x3C);
+    HuPrcSleep(60);
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
@@ -684,7 +677,7 @@ static void ExecItemMegaSuper(void) {
     omVibrate(currItemRestore, 90, 0xC, 0);
     HuAudFXPlay(0x311);
     ItemSizeSet(2);
-    HuPrcSleep(0x3C);
+    HuPrcSleep(60);
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
@@ -717,13 +710,13 @@ static void ExecItemHammer(void) {
     BoardModelScaleSetV(suitMdl, &sp60);
     sp6C.x = sp6C.y = sp6C.z = 0.0f;
     BoardUiInlineFunc01(&sp6C);
-    HuWinMesMaxSizeGet(1, sp10, 0x120011);
+    HuWinMesMaxSizeGet(1, sp10, MAKE_MESSID(18, 17));
     temp_r28 = HuWinCreate(-10000.0f, 320.0f, sp10[0], sp10[1], 0);
-    HuWinMesSet(temp_r28, 0x120011);
+    HuWinMesSet(temp_r28, MAKE_MESSID(18, 17));
     HuWinBGTPLvlSet(temp_r28, 0.0f);
     HuWinMesSpeedSet(temp_r28, 0);
     if (GWPlayer[currItemRestore].com) {
-        var_r26 = frandmod(0x78) + 0x1E;
+        var_r26 = frandmod(120) + 30;
     }
     for (i = 1; i <= 0x12C; i++) {
         if (i % 10 == 0) {
@@ -750,7 +743,7 @@ static void ExecItemHammer(void) {
     BoardModelAttrSet(suitMdl, 0x40000002);
     HuAudFXPlay(0x316);
     HuWinKill(temp_r28);
-    omVibrate(temp_r27, 0xC, 6, 6);
+    omVibrate(temp_r27, 12, 6, 6);
     if (var_r30 != 0) {
         BoardPlayerAutoSizeSet(temp_r27, 2);
     } else {
@@ -765,35 +758,448 @@ static void ExecItemHammer(void) {
     }
 }
 
-// https://decomp.me/scratch/QqVh2
 static void ExecItemPipe(void) {
+    Vec spE4[2];
+    Vec spCC[2];
+    Vec spB4[2];
+    Vec spA8;
+    Vec sp9C;
+    Vec sp90;
+    Vec sp84;
+    Vec sp78;
+    Vec sp6C;
+    Vec sp60;
+    s32 sp58[2];
+    float sp50[2];
+    float sp48[2];
+    s16 sp30[2];
+    s16 sp2C[2];
+    float temp_f28;
+    float var_f30;
+    float var_f29;
+    float var_f31;
+    s16 temp_r26;
+    s16 temp_r28;
+    s32 temp_r25;
+    s32 temp_r29;
+    s32 temp_r19;
+    s32 temp_r18;
+    s16 var_r27;
+    s32 var_r30;
+    s32 var_r31;
+
+    HuAudFXPlay(0x350);
+    ItemShowProc(NULL, NULL);
+    for (var_r31 = 0; var_r31 < 2; var_r31++) {
+        sp30[var_r31] = BoardModelCreate(itemMdlTbl[currItem], NULL, 1);
+        BoardModelLayerSet(sp30[var_r31], 2);
+        sp9C.x = sp9C.z = 2.0f;
+        sp9C.y = 0.0f;
+        BoardModelScaleSetV(sp30[var_r31], &sp9C);
+        BoardModelVisibilitySet(sp30[var_r31], 0);
+    }
+    BoardCharWheelInit(currItemRestore, 3);
+    BoardCharWheelWait();
+    temp_r26 = BoardCharWheelResultGet();
+    sp2C[0] = currItemRestore;
+    sp2C[1] = temp_r26;
+    for (var_r31 = 0; var_r31 < 2; var_r31++) {
+        sp58[var_r31] = GWPlayer[sp2C[var_r31]].space_curr;
+        BoardSpacePosGet(0, sp58[var_r31], &spE4[var_r31]);
+        BoardModelPosSetV(sp30[var_r31], &spE4[var_r31]);
+    }
+    if (sp58[0] == sp58[1]) {
+        HuWinMesMaxSizeGet(1, sp48, MAKE_MESSID(18, 18));
+        temp_r28 = HuWinCreate(-10000.0f, -10000.0f, sp48[0], sp48[1], 0);
+        HuWinMesSet(temp_r28, MAKE_MESSID(18, 18));
+        HuWinMesWait(temp_r28);
+        HuPrcSleep(180);
+        HuWinKill(temp_r28);
+    } else {
+        BoardUiInlineFunc03(sp2C[1]);
+        HuAudFXPlay(0x318);
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            BoardModelVisibilitySet(sp30[var_r31], 1);
+            BoardPlayerPosGet(sp2C[var_r31], &spCC[var_r31]);
+        }
+        for (var_r31 = 0; var_r31 < 60; var_r31++) {
+            sp9C.y += 0.033333335f;
+            for (var_r30 = 0; var_r30 < 2; var_r30++) {
+                BoardModelScaleSetV(sp30[var_r30], &sp9C);
+                spCC[var_r30].y += 3.3333333f;
+                BoardPlayerPosSetV(sp2C[var_r30], &spCC[var_r30]);
+            }
+            HuPrcVSleep();
+        }
+        sp9C.y = 2.0f;
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            BoardModelScaleSetV(sp30[var_r31], &sp9C);
+        }
+        HuPrcSleep(10);
+        HuAudFXPlay(0x35A);
+        omVibrate(sp2C[0], 0xC, 4, 2);
+        var_f30 = 5.0f;
+        sp50[0] = spCC[0].y;
+        sp50[1] = spCC[1].y;
+        var_f31 = 1.0f;
+        while (1) {
+            for (var_r31 = 0; var_r31 < 2; var_r31++) {
+                spCC[var_r31].y -= var_f30;
+                BoardPlayerPosSetV(sp2C[var_r31], &spCC[var_r31]);
+                if (GWPlayer[sp2C[var_r31]].character == 5) {
+                    var_f31 -= 0.05f;
+                    if (var_f31 < 0.65f) {
+                        var_f31 = 0.65f;
+                    }
+                    sp90.x = sp90.y = sp90.z = var_f31;
+                    BoardPlayerScaleSetV(sp2C[var_r31], &sp90);
+                }
+            }
+            var_f30 *= 1.08f;
+            if (sp50[0] - spCC[0].y >= 300.0f && sp50[1] - spCC[1].y >= 300.0f) {
+                break;
+            }
+            HuPrcVSleep();
+        }
+        WipeColorSet(0, 0, 0);
+        WipeCreate(2, 0, 30);
+        while (WipeStatGet() != 0) {
+            HuPrcVSleep();
+        }
+        BoardCameraMoveSet(0);
+        spA8 = spCC[0];
+        spCC[0] = spCC[1];
+        spCC[1] = spA8;
+        var_r31 = sp58[0];
+        sp58[0] = sp58[1];
+        sp58[1] = var_r31;
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            GWPlayer[sp2C[var_r31]].space_curr = sp58[var_r31];
+        }
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            BoardPlayerMoveAwayStartCurr(sp58[var_r31], 1);
+            BoardPlayerPosGet(sp2C[var_r31], &spE4[var_r31]);
+            BoardPlayerPosSetV(sp2C[var_r31], &spCC[var_r31]);
+        }
+        HuPrcVSleep();
+        BoardCameraMoveSet(1);
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            BoardPlayerMotionStart(sp2C[var_r31], 4, 0);
+            BoardPlayerVoiceEnableSet(sp2C[var_r31], 4, 0);
+            BoardModelVisibilitySet(BoardPlayerModelGet(sp2C[var_r31]), 0);
+        }
+        WipeCreate(1, 0, 30);
+        while (WipeStatGet() != 0) {
+            HuPrcVSleep();
+        }
+        temp_f28 = 19.0f;
+        var_f29 = 0.0f;
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            PSVECSubtract(&spE4[var_r31], &spCC[var_r31], &spB4[var_r31]);
+            PSVECScale(&spB4[var_r31], &spB4[var_r31], 0.03f);
+            BoardModelVisibilitySet(BoardPlayerModelGet(sp2C[var_r31]), 1);
+        }
+        HuAudPlayerVoicePlay(currItemRestore, 0x122);
+        var_f31 = 0.65f;
+        var_r27 = 5;
+        while (1) {
+            var_f30 = temp_f28 - 0.06666667f * (var_f29 * var_f29 * 0.25f);
+            var_r30 = 0;
+            for (var_r31 = 0; var_r31 < 2; var_r31++) {
+                if (GWPlayer[sp2C[var_r31]].character == 5) {
+                    if (var_r27 != 0) {
+                        var_r27--;
+                    } else {
+                        var_f31 += 0.05f;
+                        if (var_f31 > 1.0f) {
+                            var_f31 = 1.0f;
+                        }
+                        sp90.x = sp90.y = sp90.z = var_f31;
+                        BoardPlayerScaleSetV(sp2C[var_r31], &sp90);
+                    }
+                }
+                spCC[var_r31].y += var_f30;
+                if (fabs(spCC[var_r31].x - spE4[var_r31].x) <= fabs(spB4[var_r31].x)) {
+                    spCC[var_r31].x = spE4[var_r31].x;
+                    var_r30++;
+                } else {
+                    spCC[var_r31].x += spB4[var_r31].x;
+                }
+                if (fabs(spCC[var_r31].z - spE4[var_r31].z) <= fabs(spB4[var_r31].z)) {
+                    spCC[var_r31].z = spE4[var_r31].z;
+                    var_r30++;
+                } else {
+                    spCC[var_r31].z += spB4[var_r31].z;
+                }
+                if (spCC[var_r31].y < spE4[var_r31].y) {
+                    spCC[var_r31].y = spE4[var_r31].y;
+                    var_r30++;
+                }
+                BoardPlayerPosSetV(sp2C[var_r31], &spCC[var_r31]);
+            }
+            var_f29 += 1.0f;
+            if (var_r30 == 6) {
+                break;
+            }
+            HuPrcVSleep();
+        }
+        BoardPlayerMotionShiftSet(sp2C[1], 6, 0.0f, 8.0f, 0x40000001);
+        BoardModelVoiceEnableSet(BoardPlayerModelGet(sp2C[1]), 6, 0);
+        CharModelLayerSetAll(2);
+        BoardPlayerIdleSet(sp2C[0]);
+        for (var_r31 = 0; var_r31 < 45; var_r31++) {
+            sp9C.y -= 0.044444446f;
+            for (var_r30 = 0; var_r30 < 2; var_r30++) {
+                BoardModelScaleSetV(sp30[var_r30], &sp9C);
+            }
+            HuPrcVSleep();
+        }
+        for (var_r31 = 0; var_r31 < 2; var_r31++) {
+            BoardModelVisibilitySet(sp30[var_r31], 0);
+        }
+        BoardUiInlineFunc03(sp2C[0]);
+        BoardWinCreate(2, MAKE_MESSID(18, 29), -1);
+        BoardWinInsertMesSet(GWPlayerCfg[sp2C[0]].character, 0);
+        BoardWinInsertMesSet(GWPlayerCfg[sp2C[1]].character, 1);
+        BoardWinWait();
+        BoardWinKill();
+        BoardPlayerIdleSet(sp2C[1]);
+        HuPrcSleep(8);
+        BoardModelVoiceEnableSet(BoardPlayerModelGet(sp2C[1]), 6, 1);
+    }
+    BoardPlayerVoiceEnableSet(sp2C[0], 4, 1);
+    BoardPlayerVoiceEnableSet(sp2C[1], 4, 1);
+    for (var_r31 = 0; var_r31 < 2; var_r31++) {
+        BoardModelKill(sp30[var_r31]);
+    }
+    HuPrcKill(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
 }
 
-// https://decomp.me/scratch/r8MWA
 static void ExecItemSwap(void) {
-    (void) 0.033333335f;
-    (void) 3.3333333f;
-    (void) 5.0f;
-    (void) 0.05f;
-    (void) 0.65f;
-    (void) 1.08f;
-    (void) 19.0f;
-    (void) 0.06666667f;
-    (void) 0.25f;
-    (void) 8.0f;
-    (void) 0.044444446f;
-    (void) 45.0f;
-    (void) 0.94f;
-    (void) 6.0f;
-    (void) 0.6f;
-    (void) 255.0f;
-    (void) 1.02f;
-    (void) 5.6666665f;
-    (void) 4503601774854144.0;
-    (void) 106.0;
+    Vec sp1A4[3];
+    Vec sp180[3];
+    Vec sp15C[3];
+    Vec sp138[3];
+    s32 spC0[6];
+    Vec spB4;
+    Vec spA8;
+    Vec sp9C;
+    Vec sp90;
+    Vec sp84;
+    Vec sp78;
+    Vec sp6C;
+    Vec sp60;
+    s16 sp54[6];
+    Vec sp48;
+    Vec sp3C;
+    float temp_f29;
+    float var_f30;
+    s16 temp_r29;
+    s32 var_r23;
+    s32 var_r22;
+    s32 var_r28;
+    s32 var_r27;
+    s32 var_r26;
+    s32 var_r30;
+    s32 var_r31;
+    s32 temp_r24;
+    s8 var_r21;
+    Mtx sp108;
+    Mtx spD8;
+
+    HuAudFXPlay(0x350);
+    ItemShowProc(NULL, NULL);
+    BoardCharWheelInit(currItemRestore, 3);
+    BoardCharWheelWait();
+    temp_r24 = BoardCharWheelResultGet();
+    suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
+    BoardModelLayerSet(suitMdl, 7);
+    BoardModelAttrSet(suitMdl, 0x400000);
+    sp9C.x = sp9C.y = sp9C.z = 0.0f;
+    sp9C.y = 45.0f;
+    HuAudFXPlay(0x364);
+    BoardUiInlineFunc01(&sp9C);
+    BoardModelPosGet(suitMdl, &spB4);
+    BoardPlayerRotGet(currItemRestore, &sp90);
+    for (var_r27 = 0; var_r27 < 3; var_r27++) {
+        if (((float*) &sp90)[var_r27] < 0.0f) {
+            ((float*) &sp90)[var_r27] += 360.0f;
+        }
+        if (((float*) &sp90)[var_r27] >= 360.0f) {
+            ((float*) &sp90)[var_r27] -= 360.0f;
+        }
+    }
+    BoardModelRotGet(suitMdl, &spA8);
+    while (1) {
+        PSVECAdd(&spA8, &sp9C, &spA8);
+        for (var_r26 = 0; var_r26 < 3; var_r26++) {
+            if (((float*) &spA8)[var_r26] < 0.0f) {
+                ((float*) &spA8)[var_r26] += 360.0f;
+            }
+            if (((float*) &spA8)[var_r26] >= 360.0f) {
+                ((float*) &spA8)[var_r26] -= 360.0f;
+            }
+        }
+        sp9C.y *= 0.94f;
+        if (sp9C.y <= 6.0f) {
+            sp9C.y = 6.0f;
+            if (fabs(sp90.y - spA8.y) <= sp9C.y) {
+                spA8.y = sp90.y;
+                break;
+            }
+        }
+        BoardModelRotSetV(suitMdl, &spA8);
+        HuPrcVSleep();
+    }
+    BoardModelRotSetV(suitMdl, &spA8);
+    var_r23 = var_r22 = 0;
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        if (GWPlayer[currItemRestore].items[var_r31] != -1) {
+            var_r23++;
+        }
+        if (GWPlayer[temp_r24].items[var_r31] != -1) {
+            var_r22++;
+        }
+    }
+    if (var_r23 >= var_r22) {
+        var_r28 = var_r23 * 2;
+    } else {
+        var_r28 = var_r22 * 2;
+    }
+    BoardModelRotGet(suitMdl, &sp3C);
+    Hu3DCameraSet(0, sp108);
+    PSMTXInverse(sp108, spD8);
+    Hu3DMtxRotGet(spD8, &sp48);
+    sp3C.x = sp48.x;
+    for (var_r31 = 0; var_r31 < var_r28 / 2; var_r31++) {
+        temp_r29 = sp54[var_r31] = BoardModelCreate(itemMdlTbl[currItem], NULL, 1);
+        BoardModelLayerSet(temp_r29, 6);
+        BoardModelPassSet(temp_r29, 0);
+        BoardModelRotSetV(temp_r29, &sp3C);
+        BoardModelVisibilitySet(temp_r29, 0);
+        BoardModelAttrSet(temp_r29, 0x400000);
+        temp_r29 = sp54[var_r31 + 3] = BoardModelCreate(itemMdlTbl[currItem], NULL, 1);
+        BoardModelLayerSet(temp_r29, 6);
+        BoardModelPassSet(temp_r29, 0);
+        BoardModelRotSetV(temp_r29, &sp3C);
+        BoardModelVisibilitySet(temp_r29, 0);
+        BoardModelAttrSet(temp_r29, 0x400000);
+    }
+    BoardItemGetDestPos(currItemRestore, &sp15C[0]);
+    BoardItemGetDestPos(temp_r24, &sp138[0]);
+    BoardModelPosGet(suitMdl, &sp90);
+    PSVECSubtract(&sp90, &Hu3DCamera->pos, &sp90);
+    temp_f29 = PSVECMag(&sp90);
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        sp15C[var_r31].z = temp_f29;
+        sp138[var_r31].z = temp_f29;
+    }
+    for (var_r31 = 0; var_r31 < var_r28 / 2; var_r31++) {
+        HuAudFXPlay(0x319);
+        BoardModelVisibilitySet(sp54[var_r31], 1);
+        BoardModelVisibilitySet(sp54[var_r31 + 3], 1);
+        sp1A4[var_r31] = sp180[var_r31] = spB4;
+        Hu3D2Dto3D(&sp15C[var_r31], 1, &sp84);
+        Hu3D2Dto3D(&sp138[var_r31], 1, &sp78);
+        PSVECSubtract(&sp84, &sp1A4[var_r31], &sp6C);
+        PSVECScale(&sp6C, &sp6C, 0.033333335f);
+        PSVECSubtract(&sp78, &sp180[var_r31], &sp60);
+        PSVECScale(&sp60, &sp60, 0.033333335f);
+        for (var_r30 = 0; var_r30 < 30; var_r30++) {
+            BoardModelPosSetV(sp54[var_r31], &sp1A4[var_r31]);
+            BoardModelPosSetV(sp54[var_r31 + 3], &sp180[var_r31]);
+            PSVECAdd(&sp1A4[var_r31], &sp6C, &sp1A4[var_r31]);
+            PSVECAdd(&sp180[var_r31], &sp60, &sp180[var_r31]);
+            HuPrcVSleep();
+        }
+        sp1A4[var_r31] = sp84;
+        sp180[var_r31] = sp78;
+        BoardModelPosSetV(sp54[var_r31], &sp1A4[var_r31]);
+        BoardModelPosSetV(sp54[var_r31 + 3], &sp180[var_r31]);
+    }
+    omVibrate(currItemRestore, 180, 6, 6);
+    omVibrate(temp_r24, 180, 6, 6);
+    for (var_r31 = 0; var_r31 < 60; var_r31++) {
+        for (var_r30 = 0; var_r30 < var_r28 / 2; var_r30++) {
+            sp6C = sp1A4[var_r30];
+            sp6C.x += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            sp6C.y += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            BoardModelPosSetV(sp54[var_r30], &sp6C);
+            sp6C = sp180[var_r30];
+            sp6C.x += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            sp6C.y += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            BoardModelPosSetV(sp54[var_r30 + 3], &sp6C);
+        }
+        HuPrcSleep(2);
+    }
+    for (var_r31 = 0; var_r31 < var_r28 / 2; var_r31++) {
+        BoardModelPosSetV(sp54[var_r31], &sp1A4[var_r31]);
+        BoardModelPosSetV(sp54[var_r31 + 3], &sp180[var_r31]);
+    }
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        spC0[var_r31] = BoardPlayerItemRemove(currItemRestore, 0);
+        spC0[var_r31 + 3] = BoardPlayerItemRemove(temp_r24, 0);
+    }
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        if (spC0[var_r31 + 3] != -1) {
+            BoardPlayerItemAdd(currItemRestore, spC0[var_r31 + 3]);
+        }
+        if (spC0[var_r31] != -1) {
+            BoardPlayerItemAdd(temp_r24, spC0[var_r31]);
+        }
+    }
+    for (var_r31 = (var_r28 / 2) - 1; var_r31 >= 0; var_r31--) {
+        HuAudFXPlay(0x32C);
+        PSVECSubtract(&spB4, &sp1A4[var_r31], &sp6C);
+        PSVECScale(&sp6C, &sp6C, 0.033333335f);
+        PSVECSubtract(&spB4, &sp180[var_r31], &sp60);
+        PSVECScale(&sp60, &sp60, 0.033333335f);
+        for (var_r30 = 0; var_r30 < 30; var_r30++) {
+            BoardModelPosSetV(sp54[var_r31], &sp1A4[var_r31]);
+            BoardModelPosSetV(sp54[var_r31 + 3], &sp180[var_r31]);
+            PSVECAdd(&sp1A4[var_r31], &sp6C, &sp1A4[var_r31]);
+            PSVECAdd(&sp180[var_r31], &sp60, &sp180[var_r31]);
+            HuPrcVSleep();
+        }
+        BoardModelVisibilitySet(sp54[var_r31], 0);
+        BoardModelVisibilitySet(sp54[var_r31 + 3], 0);
+    }
+    sp9C.y = 0.6f;
+    var_f30 = 255.0f;
+    var_r21 = 0;
+    while (1) {
+        BoardModelRotSetV(suitMdl, &spA8);
+        BoardModelAlphaSet(suitMdl, var_f30);
+        PSVECAdd(&spA8, &sp9C, &spA8);
+        sp9C.y *= 1.02f;
+        if (sp9C.y >= 35.0f) {
+            if (var_r21 == 0) {
+                HuAudFXPlay(0x365);
+                var_r21 = 1;
+            }
+            sp9C.y = 45.0f;
+            var_f30 -= 5.6666665f;
+            if (var_f30 <= 0.0f) {
+                break;
+            }
+        }
+        HuPrcVSleep();
+    }
+    BoardModelKill(suitMdl);
+    for (var_r31 = 0; var_r31 < var_r28 / 2; var_r31++) {
+        BoardModelKill(sp54[var_r31]);
+        BoardModelKill(sp54[var_r31 + 3]);
+    }
+    HuPrcKill(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
 }
 
-void ExecItemSpark(void) {
+static void ExecItemSpark(void) {
     Vec sp68;
     Vec sp5C;
     Vec sp50;
@@ -807,7 +1213,8 @@ void ExecItemSpark(void) {
     s16 temp_r30;
     s32 i;
 
-    temp_r30 = BoardModelCreate(0x70067, NULL, 0);
+    (void)106.0;
+    temp_r30 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 103), NULL, 0);
     BoardModelLayerSet(temp_r30, 3);
     BoardModelVisibilitySet(temp_r30, 0);
     HuAudFXPlay(0x350);
@@ -836,7 +1243,7 @@ void ExecItemSpark(void) {
     while (!BoardPlayerMotBlendCheck(currItemRestore)) {
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     BoardSpacePosGet(0, temp_r28, &sp5C);
     BoardModelPosSetV(temp_r30, &sp5C);
     sp5C.y += 106.0f;
@@ -857,8 +1264,8 @@ void ExecItemSpark(void) {
     BoardSpaceRotGet(0, GWPlayer[currItemRestore].space_curr, &sp20);
     BoardModelRotSetV(suitMdl, &sp20);
     BoardModelPosGet(suitMdl, &sp2C);
-    sp2C.z += 106.0 * sin(M_PI * sp20.x / 180.0);
-    sp2C.x -= 106.0 * sin(M_PI * sp20.z / 180.0);
+    sp2C.z += 106.0 * sin(sp20.x * M_PI / 180.0);
+    sp2C.x -= 106.0 * sin(sp20.z * M_PI / 180.0);
     BoardModelPosSetV(suitMdl, &sp2C);
     HuAudFXPlay(0x31B);
     BoardModelMotionStart(suitMdl, 1, 0);
@@ -867,7 +1274,7 @@ void ExecItemSpark(void) {
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
-        omVibrate(i, 0xC, 4, 2);
+        omVibrate(i, 12, 4, 2);
     }
     HuAudFXPlay(0x31C);
     BoardModelVisibilitySet(temp_r30, 1);
@@ -876,7 +1283,7 @@ void ExecItemSpark(void) {
         HuPrcVSleep();
     }
     var_f31 = 255.0f;
-    for (i = 0; i < 0x2D; i++) {
+    for (i = 0; i < 45; i++) {
         var_f31 -= 5.6666665f;
         BoardModelAlphaSet(suitMdl, var_f31);
         HuPrcVSleep();
@@ -896,8 +1303,8 @@ static void ExecItemLight(void) {
 
     HuAudFXPlay(0x350);
     ItemShowProc(NULL, NULL);
-    BoardWinCreateChoice(2, 0x12000F, -1, 0);
-    BoardWinInsertMesSet(0x80008, 3);
+    BoardWinCreateChoice(2, MAKE_MESSID(18, 15), -1, 0);
+    BoardWinInsertMesSet(MAKE_MESSID(8, 8), 3);
     if (GWPlayer[currItemRestore].com) {
         BoardComKeySetRight();
     }
@@ -913,30 +1320,246 @@ static void ExecItemLight(void) {
     }
 }
 
-// https://decomp.me/scratch/gbgTk
 static void ExecItemWhistle(void) {
-    (void) 0.003921569f;
-    (void) 0.5f;
-    (void) 120.0f;
-    (void) 120.0;
-    (void) 100.0f;
-    (void) 90.0f;
-    (void) 200.0f;
-    (void) 0.03448276f;
-    (void) 30.0f;
-    (void) 95.0f;
-    (void) 185.0f;
-    (void) 275.0f;
-    (void) -1.0f;
-    (void) -35.0f;
-    (void) 0.16f;
-    (void) 1.0;
-    (void) 4.0f;
-    (void) 4.5f;
-    (void) 1.7f;
-    (void) 0.083333336f;
-    (void) 0.945f;
-    (void) 500.0f;
+    Vec spF0[4];
+    Vec spC0[4];
+    Vec spB4;
+    Vec spA8;
+    Vec sp9C;
+    Vec sp90;
+    Vec sp84;
+    Vec sp78;
+    float sp68[4];
+    float sp58[4];
+    float sp48[4];
+    float sp38[4];
+    float sp28[4];
+    s16 sp20[4];
+    s16 sp8;
+    float var_f30;
+    float var_f31;
+    s32 temp_r23;
+    char *temp_r22;
+    s32 temp_r18;
+    s16 temp_r17;
+    s16 temp_r21;
+    s16 temp_r20;
+    s32 temp_r31;
+    s16 temp_r28;
+    s16 temp_r19;
+    s32 var_r26;
+    s16 var_r25;
+    s16 var_r27;
+    s32 var_r29;
+    s32 var_r31;
+
+    var_r31 = GWPlayerCfg[currItemRestore].character;
+    temp_r23 = BoardPlayerMotionCreate(currItemRestore, callMotTbl[var_r31]);
+    temp_r22 = callHookTbl[var_r31];
+    temp_r28 = BoardStarHostMdlGet();
+    BoardModelPosGet(temp_r28, &spB4);
+    sp9C = spB4;
+    temp_r19 = GWBoardGet();
+    temp_r21 = BoardModelMotionCreate(temp_r28, callAttackMotTbl[temp_r19]);
+    temp_r20 = BoardModelMotionCreate(temp_r28, callAttackMotTbl2[temp_r19]);
+    var_f31 = 0.003921569f * (frand() & 0xFF) * 360.0f;
+    spA8.x = spA8.y = spA8.z = 0.5f;
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        sp20[var_r31] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 39), NULL, 1);
+        BoardModelLayerSet(sp20[var_r31], 2);
+        temp_r17 = BoardModelMotionCreate(sp20[var_r31], DATA_MAKE_NUM(DATADIR_BGUEST, 40));
+        BoardModelMotionStart(sp20[var_r31], temp_r17, 0x40000001);
+        sp28[var_r31] = 120.0f;
+        spF0[var_r31].x = spB4.x + 120.0 * sin(var_f31 * M_PI / 180.0);
+        spF0[var_r31].y = 1000.0f + spB4.y + 100.0f * var_r31;
+        spF0[var_r31].z = spB4.z + 120.0 * cos(var_f31 * M_PI / 180.0);
+        spC0[var_r31].x = spC0[var_r31].z = 0.0f;
+        spC0[var_r31].y = var_f31 + 90.0f;
+        if (spC0[var_r31].y >= 360.0f) {
+            spC0[var_r31].y -= 360.0f;
+        }
+        BoardModelRotSetV(sp20[var_r31], &spC0[var_r31]);
+        BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
+        BoardModelScaleSetV(sp20[var_r31], &spA8);
+        var_f31 += 90.0f;
+        if (var_f31 >= 360.0f) {
+            var_f31 -= 360.0f;
+        }
+        sp38[var_r31] = var_f31;
+        BoardModelVisibilitySet(sp20[var_r31], 0);
+    }
+    HuAudFXPlay(0x350);
+    suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
+    BoardModelLayerSet(suitMdl, 2);
+    ItemShowProc(NULL, NULL);
+    BoardModelPosGet(suitMdl, &sp90);
+    BoardPlayerPosGet(currItemRestore, &sp84);
+    sp84.y += 200.0f;
+    sp84.z += 100.0f;
+    PSVECSubtract(&sp84, &sp90, &sp78);
+    PSVECScale(&sp78, &sp78, 0.03448276f);
+    BoardPlayerMotionStart(currItemRestore, temp_r23, 0);
+    BoardPlayerMotionTimeSet(currItemRestore, 1.0f);
+    for (var_r31 = 0; var_r31 < 29; var_r31++) {
+        sp90.y += sp78.y;
+        sp90.z += sp78.z;
+        BoardModelPosSetV(suitMdl, &sp90);
+        HuPrcVSleep();
+    }
+    while (BoardPlayerMotionTimeGet(currItemRestore) < 30.0f) {
+        HuPrcVSleep();
+    }
+    sp8 = BoardPlayerModelGet(currItemRestore);
+    BoardModelPosSetV(suitMdl, &sp84);
+    BoardModelHookSet(sp8, temp_r22, suitMdl);
+    while (BoardPlayerMotionTimeGet(currItemRestore) < BoardPlayerMotionMaxTimeGet(currItemRestore)) {
+        if (BoardPlayerMotionTimeGet(currItemRestore) == 95.0f
+            || BoardPlayerMotionTimeGet(currItemRestore) == 185.0f
+            || BoardPlayerMotionTimeGet(currItemRestore) == 275.0f) {
+            HuAudFXPlay(0x31F);
+        }
+        HuPrcVSleep();
+    }
+    WipeColorSet(0, 0, 0);
+    WipeCreate(2, 0, 60);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    BoardModelHookObjReset(sp8, temp_r22);
+    BoardPlayerIdleSet(currItemRestore);
+    BoardModelKill(suitMdl);
+    BoardCameraMoveSet(0);
+    temp_r18 = BoardSpaceStarGetCurr();
+    BoardCameraTargetSpaceSet(temp_r18);
+    HuPrcVSleep();
+    BoardCameraMoveSet(1);
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        BoardModelVisibilitySet(sp20[var_r31], 1);
+    }
+    WipeCreate(1, 0, 60);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x320);
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        sp58[var_r31] = 0.0f;
+        sp48[var_r31] = 1.0f;
+    }
+    var_r27 = 0;
+    for (var_r25 = 0; var_r25 < 4;) {
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            if (sp48[var_r31] != -1.0f) {
+                sp68[var_r31] = sp58[var_r31] - 0.06666667f * (sp48[var_r31] * sp48[var_r31] * 0.25f);
+                if (sp68[var_r31] < -35.0f) {
+                    sp68[var_r31] = -35.0f;
+                }
+                if (sp68[var_r31] > 35.0f) {
+                    sp68[var_r31] = 35.0f;
+                }
+                sp48[var_r31] += 1.0f;
+                spF0[var_r31].y += sp68[var_r31];
+                if (spF0[var_r31].y <= spB4.y) {
+                    if (var_r27 == 0) {
+                        var_r27 = 1;
+                        for (var_r29 = 0; var_r29 < 4; var_r29++) {
+                            omVibrate(var_r29, 12, 6, 6);
+                        }
+                        HuAudFXPlay(0x321);
+                    }
+                    spF0[var_r31].y = spB4.y;
+                    sp58[var_r31] = 0.16f * -sp68[var_r31];
+                    if (fabs(sp58[var_r31]) <= 1.0) {
+                        sp48[var_r31] = -1.0f;
+                        var_r25++;
+                    }
+                    sp48[var_r31] = 1.0f;
+                }
+                BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
+            }
+        }
+        HuPrcVSleep();
+    }
+    BoardModelMotionShiftSet(temp_r28, temp_r20, 0.0f, 5.0f, 0x40000001);
+    HuAudFXPlay(0x322);
+    for (var_r29 = 0; var_r29 < 180; var_r29++) {
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            sp38[var_r31] += 4.0f;
+            if (sp38[var_r31] >= 360.0f) {
+                sp38[var_r31] -= 360.0f;
+            }
+            spC0[var_r31].y = 90.0f + sp38[var_r31];
+            if (spC0[var_r31].y >= 360.0f) {
+                spC0[var_r31].y -= 360.0f;
+            }
+            spF0[var_r31].x = spB4.x + 120.0 * sin(sp38[var_r31] * M_PI / 180.0);
+            spF0[var_r31].z = spB4.z + 120.0 * cos(sp38[var_r31] * M_PI / 180.0);
+            BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
+            BoardModelRotSetV(sp20[var_r31], &spC0[var_r31]);
+        }
+        HuPrcVSleep();
+    }
+    for (var_r29 = 0; var_r29 < 20; var_r29++) {
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            spC0[var_r31].y += 4.5f;
+            BoardModelRotSetV(sp20[var_r31], &spC0[var_r31]);
+        }
+        HuPrcVSleep();
+    }
+    HuPrcSleep(30);
+    var_f30 = 35.0f;
+    var_r26 = 0;
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        sp58[var_r31] = 8.0f;
+        sp48[var_r31] = 1.0f;
+    }
+    var_r27 = 0;
+    while (1) {
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            if (sp48[var_r31] != -1.0f) {
+                sp28[var_r31] -= 1.7f;
+                sp68[var_r31] = sp58[var_r31] - 0.083333336f * (sp48[var_r31] * sp48[var_r31] * 0.25f);
+                sp48[var_r31] += 1.0f;
+                spF0[var_r31].y += sp68[var_r31];
+                if (spF0[var_r31].y <= spB4.y) {
+                    spF0[var_r31].y = spB4.y;
+                    sp48[var_r31] = -1.0f;
+                }
+                spF0[var_r31].x = spB4.x + sp28[var_r31] * sin(sp38[var_r31] * M_PI / 180.0);
+                spF0[var_r31].z = spB4.z + sp28[var_r31] * cos(sp38[var_r31] * M_PI / 180.0);
+                BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
+            }
+        }
+        if (sp28[0] < 100.0f) {
+            if (var_r27 == 0) {
+                var_r27 = 1;
+                BoardModelMotionShiftSet(temp_r28, temp_r21, 0.0f, 3.0f, 0x40000001);
+                HuAudFXPlay(forceMoveSfxTbl[GWBoardGet()]);
+            }
+            sp9C.y += var_f30;
+            BoardModelPosSetV(temp_r28, &sp9C);
+            var_f30 *= 0.945f;
+            if (sp9C.y >= 500.0f && var_r26 == 0) {
+                WipeCreate(2, 0, 45);
+                BoardAudSeqFadeOut(0, 1000);
+                var_r26 = 1;
+            }
+        }
+        if (var_r26 != 0 && WipeStatGet() == 0) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    BoardPlayerMotionKill(currItemRestore, temp_r23);
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        BoardModelKill(sp20[var_r31]);
+    }
+    BoardModelMotionKill(temp_r28, temp_r21);
+    BoardModelMotionKill(temp_r28, temp_r20);
+    BoardStarShowNext(currItemRestore);
+    HuPrcKill(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
 }
 
 static void ExecItemBowser(void) {
@@ -952,15 +1575,15 @@ static void ExecItemBowser(void) {
     BoardBowserSuitInit(currItemRestore);
     suitMdl = BoardBowserSuitModelGet();
     temp_r31 = BoardBowserSuitPlayerModelGet();
-    suitMot[0] = BoardModelMotionCreate(suitMdl, 0x4001C);
-    suitMot[1] = BoardModelMotionCreate(suitMdl, 0x4001D);
+    suitMot[0] = BoardModelMotionCreate(suitMdl, DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 28));
+    suitMot[1] = BoardModelMotionCreate(suitMdl, DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 29));
     suitCommonMot[0] = BoardModelMotionCreate(temp_r31, suitMotTbl[GWPlayer[currItemRestore].character][0]);
     suitCommonMot[1] = BoardModelMotionCreate(temp_r31, suitMotTbl[GWPlayer[currItemRestore].character][1]);
     BoardModelVisibilitySet(temp_r31, 0);
     HuAudFXPlay(0x350);
     sp20.x = sp20.y = sp20.z = 0.3f;
     ItemShowProc(NULL, &sp20);
-    for (i = 0; i < 0x1E; i++) {
+    for (i = 0; i < 30; i++) {
         sp20.x += 0.023333333f;
         sp20.y += 0.023333333f;
         sp20.z += 0.023333333f;
@@ -1004,8 +1627,8 @@ static void ExecItemBowser(void) {
     BoardModelMotionShiftSet(temp_r31, suitCommonMot[0], 0.0f, 5.0f, 0);
     HuPrcSleep(0x28);
     HuAudPlayerVoicePlay(currItemRestore, 0x129);
-    omVibrate(currItemRestore, 0xC, 4, 2);
-    HuPrcSleep(0x3C);
+    omVibrate(currItemRestore, 12, 4, 2);
+    HuPrcSleep(60);
     BoardModelMotionShiftSet(suitMdl, 0, 0.0f, 5.0f, 0x40000001);
     HuPrcKill(NULL);
     while (1) {
@@ -1013,26 +1636,298 @@ static void ExecItemBowser(void) {
     }
 }
 
-// DATA + 0x218
-// ...
-static u8 data_offset_temp[0xC] = { 0 };
+static s32 booMotTbl[3] = {
+    DATA_MAKE_NUM(DATADIR_BGUEST, 24),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 22),
+    -1
+};
 
-// https://decomp.me/scratch/0M6lm
-static void ExecItemBooBall(void) {
-    (void) 4.25f;
-    (void) 0.016666668f;
-    (void) 0.33333334f;
-    (void) 8.5f;
-    (void) 0.6666667f;
-    (void) 325.0f;
-    (void) -0.5f;
-    (void) 40.0f;
-    (void) 125.0f;
-    (void) booBallPos;
-    (void) booBallScale;
+static inline void ExecItemBooBallInlineFunc01(s32 speed) {
+    Vec sp20;
+    s32 var_r20;
+
+    sp20 = booBallPos;
+    booBallScale.x = booBallScale.y = booBallScale.z = 1.0f;
+    booBallAlpha = 255.0f;
+    BoardModelPosSetV(booBallMdl, &booBallPos);
+    BoardModelScaleSetV(booBallMdl, &booBallScale);
+    BoardModelAlphaSet(booBallMdl, booBallAlpha);
+    BoardModelVisibilitySet(booBallMdl, 1);
+    for (var_r20 = 0; var_r20 < speed; var_r20++) {
+        booBallAlpha -= (255.0f/speed);
+        if (booBallAlpha < 0.0f) {
+            booBallAlpha = 0.0f;
+        }
+        booBallScale.x -= (1.0f/speed);
+        booBallScale.y -= (1.0f/speed);
+        booBallScale.z -= (1.0f/speed);
+        booBallPos.y -= (20.0f/speed);
+        BoardModelAlphaSet(booBallMdl, booBallAlpha);
+        BoardModelScaleSetV(booBallMdl, &booBallScale);
+        BoardModelPosSetV(booBallMdl, &booBallPos);
+        HuPrcVSleep();
+    }
+    booBallScale.x = booBallScale.y = booBallScale.z = 0.0f;
+    booBallAlpha = 0.0f;
+    BoardModelScaleSetV(booBallMdl, &booBallScale);
+    BoardModelAlphaSet(booBallMdl, booBallAlpha);
 }
 
-static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
+static inline void ExecItemBooBallInlineFunc02(s32 speed) {
+    Vec sp20;
+    s32 var_r20;
+
+    sp20 = booBallPos;
+    booBallScale.x = booBallScale.y = booBallScale.z = 0.0f;
+    booBallAlpha = 0.0f;
+    BoardModelPosSetV(booBallMdl, &booBallPos);
+    BoardModelScaleSetV(booBallMdl, &booBallScale);
+    BoardModelAlphaSet(booBallMdl, booBallAlpha);
+    BoardModelVisibilitySet(booBallMdl, 1);
+    for (var_r20 = 0; var_r20 < speed; var_r20++) {
+        booBallAlpha += (255.0f/speed);
+        if (booBallAlpha > 255.0f) {
+            booBallAlpha = 255.0f;
+        }
+        booBallScale.x += (1.0f/speed);
+        booBallScale.y += (1.0f/speed);
+        booBallScale.z += (1.0f/speed);
+        booBallPos.y += (20.0f/speed);
+        BoardModelAlphaSet(booBallMdl, booBallAlpha);
+        BoardModelScaleSetV(booBallMdl, &booBallScale);
+        BoardModelPosSetV(booBallMdl, &booBallPos);
+        HuPrcVSleep();
+    }
+    booBallPos.y = sp20.y + 20.0f;
+    booBallScale.x = booBallScale.y = booBallScale.z = 1.0f;
+    booBallAlpha = 255.0f;
+    BoardModelPosSetV(booBallMdl, &booBallPos);
+    BoardModelScaleSetV(booBallMdl, &booBallScale);
+    BoardModelAlphaSet(booBallMdl, booBallAlpha);
+}
+
+static void ExecItemBooBall(void) {
+    UnkItemShowProcStruct spA0;
+    UnkItemShowProcStruct sp80;
+    Vec sp74;
+    Vec sp68;
+    Process *temp_r17;
+    Process *sp1C;
+    s16 spC;
+    s16 spA;
+    s32 sp18;
+    s32 var_r26;
+    s32 var_r28;
+    s32 var_r29;
+    s32 var_r30;
+    s32 var_r31;
+
+    BoardAudSeqPause(0, 1, 1000);
+    suitMdl = BoardBooCreate(currItemRestore, &sp74);
+    booBallMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 18), booMotTbl, 0);
+    BoardModelMotionStart(booBallMdl, 1, 0x40000001);
+    BoardModelLayerSet(booBallMdl, 2);
+    BoardModelAttrSet(booBallMdl, 2);
+    BoardModelVisibilitySet(booBallMdl, 0);
+    spA0.unk02 = suitMdl;
+    spA0.unk04 = 4.0f;
+    spA0.unk08 = 3.0f;
+    spA0.unk10 = spA0.unk14 = spA0.unk18 = 0.0f;
+    spA0.unk1C = 1;
+    HuAudFXPlay(0x350);
+    temp_r17 = ItemShowProc(&spA0, NULL);
+    BoardModelPosGet(suitMdl, &booBallPos);
+    ExecItemBooBallInlineFunc02(60);
+    sp80.unk02 = booBallMdl;
+    sp80.unk04 = 4.0f;
+    sp80.unk08 = 4.0f;
+    sp80.unk10 = sp80.unk14 = sp80.unk18 = 0.0f;
+    sp80.unk1C = 1;
+    sp1C = BoardUiInlineFunc05(&sp80);
+    BoardMusStart(1, 1, 0x7F, 0);
+    HuAudFXPlay(0x4C);
+    BoardWinCreate(2, MAKE_MESSID(18, 21), 3);
+    BoardWinWait();
+    BoardWinKill();
+    if (BoardPlayerCoinsGet(currItemRestore) < 5) {
+        BoardWinCreate(2, MAKE_MESSID(18, 22), 3);
+        BoardWinWait();
+        BoardWinKill();
+    } else {
+        var_r28 = 0;
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            if (var_r31 != currItemRestore) {
+                var_r28 += GWStarsGet(var_r31);
+            }
+        }
+        var_r26 = 0;
+        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+            if (var_r31 != currItemRestore) {
+                var_r26 += BoardPlayerCoinsGet(var_r31);
+            }
+        }
+        do {
+            BoardWinCreateChoice(4, MAKE_MESSID(18, 24), 3, 0);
+            BoardWinAttrSet(0x10);
+            if (BoardPlayerCoinsGet(currItemRestore) < 50 || var_r28 == 0) {
+                BoardWinChoiceDisable(1);
+            }
+            if (var_r26 == 0) {
+                BoardWinChoiceDisable(0);
+            }
+            if (GWPlayer[currItemRestore].com) {
+                if (var_r28 != 0 && BoardPlayerCoinsGet(currItemRestore) >= 50) {
+                    BoardComKeySetDown();
+                } else {
+                    BoardComKeySetUp();
+                }
+            }
+            BoardWinWait();
+            BoardWinKill();
+            var_r29 = BoardWinChoiceGet();
+            switch (var_r29) {
+                case 0:
+                    for (var_r31 = 0; var_r31 < 5; var_r31++) {
+                        BoardPlayerCoinsAdd(currItemRestore, -1);
+                        HuAudFXPlay(0xE);
+                        HuPrcSleep(6);
+                    }
+                    HuAudFXPlay(0xF);
+                    BoardBooStealTypeSet(0);
+                    BoardStatusShowSetAll(0);
+                    HuAudFXPlay(0x34F);
+                    ExecItemBooBallInlineFunc01(30);
+                    sp68.x = 0.0f;
+                    sp68.y = 0.0f;
+                    sp68.z = 0.0f;
+                    BoardCameraMotionStartEx(suitMdl, NULL, &sp68, 325.0f, -1.0f, 21);
+                    BoardBooStealMain();
+                    BoardCameraViewSet(2);
+                    BoardCameraMotionWait();
+                    ExecItemBooBallInlineFunc02(30);
+                    var_r29 = BoardBooStealValueGet(&spC, &spA);
+                    if (var_r29 == 0) {
+                        var_r30 = MAKE_MESSID(7, 11);
+                    } else if (spA == 0) {
+                        var_r30 = MAKE_MESSID(7, 9);
+                    } else if (spA >= 1 && spA <= 3) {
+                        var_r30 = MAKE_MESSID(7, 8);
+                    } else if (spA >= 4 && spA <= 6) {
+                        var_r30 = MAKE_MESSID(7, 7);
+                    } else if (spA >= 7 && spA <= 8) {
+                        var_r30 = MAKE_MESSID(7, 6);
+                    } else {
+                        var_r30 = MAKE_MESSID(7, 5);
+                    }
+                    sprintf(booCoinStr, "%d", spC);
+                    HuAudFXPlay(0x4C);
+                    BoardWinCreate(2, var_r30, 3);
+                    BoardWinInsertMesSet(MAKE_MESSID_PTR(booCoinStr), 0);
+                    BoardWinWait();
+                    BoardWinKill();
+                    BoardStatusShowSetAll(1);
+                    if (var_r29 != 0) {
+                        BoardPlayerMotionShiftSet(currItemRestore, 7, 0.0f, 8.0f, 0);
+                        HuPrcSleep(30);
+                        for (var_r31 = 0; var_r31 < spC; var_r31++) {
+                            BoardPlayerCoinsAdd(currItemRestore, 1);
+                            HuAudFXPlay(7);
+                            HuPrcVSleep();
+                        }
+                        BoardPlayerMotionEndWait(currItemRestore);
+                        HuPrcSleep(10);
+                        BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 8.0f, 0x40000001);
+                    }
+                    break;
+                case 1:
+                    for (var_r31 = 0; var_r31 < 50; var_r31++) {
+                        BoardPlayerCoinsAdd(currItemRestore, -1);
+                        HuAudFXPlay(0xE);
+                        HuPrcSleep(1);
+                    }
+                    HuAudFXPlay(0xF);
+                    BoardBooStealTypeSet(1);
+                    BoardStatusShowSetAll(0);
+                    ExecItemBooBallInlineFunc01(30);
+                    sp68.x = 0.0f;
+                    sp68.y = 0.0f;
+                    sp68.z = 0.0f;
+                    BoardCameraMotionStartEx(suitMdl, NULL, &sp68, 325.0f, -1.0f, 21);
+                    BoardBooStealMain();
+                    var_r29 = BoardBooStealLightCheck();
+                    BoardCameraViewSet(2);
+                    BoardCameraMotionWait();
+                    ExecItemBooBallInlineFunc02(30);
+                    if (var_r29 != 0) {
+                        var_r30 = MAKE_MESSID(7, 10);
+                    } else {
+                        var_r30 = MAKE_MESSID(7, 11);
+                    }
+                    HuAudFXPlay(0x4C);
+                    BoardWinCreate(2, var_r30, 3);
+                    BoardWinWait();
+                    BoardWinKill();
+                    BoardStatusShowSetAll(1);
+                    BoardAudSeqFadeOut(1, 1000);
+                    HuPrcSleep(23);
+                    if (var_r29 != 0) {
+                        BoardPlayerVoiceEnableSet(currItemRestore, 7, 0);
+                        sp18 = HuAudSStreamPlay(6);
+                        BoardPlayerMotionShiftSet(currItemRestore, 7, 0.0f, 8.0f, 0);
+                        HuAudFXPlay(boardStarSndTbl[GWPlayer[currItemRestore].character]);
+                        BoardPlayerStarsAdd(currItemRestore, 1);
+                        HuAudFXPlay(8);
+                        HuPrcVSleep();
+                        BoardPlayerMotionEndWait(currItemRestore);
+                        BoardPlayerVoiceEnableSet(currItemRestore, 7, 1);
+                        while (msmStreamGetStatus(sp18) != 0) {
+                            HuPrcVSleep();
+                        }
+                    }
+                    BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 8.0f, 0x40000001);
+                    break;
+                case 3:
+                    BoardViewMapExec(currItemRestore);
+                    break;
+                case 2:
+                case -1:
+                    HuAudFXPlay(0x4C);
+                    BoardWinCreate(2, MAKE_MESSID(18, 23), 3);
+                    BoardWinWait();
+                    BoardWinKill();
+                    break;
+            }
+        } while (var_r29 == 3);
+    }
+    BoardAudSeqFadeOut(1, 1000);
+    HuPrcKill(sp1C);
+    BoardModelPosGet(booBallMdl, &booBallPos);
+    HuAudFXPlay(0x34F);
+    ExecItemBooBallInlineFunc01(60);
+    HuPrcKill(temp_r17);
+    BoardAudSeqPause(0, 0, 1000);
+    CharModelLayerSetAll(3);
+    BoardModelPosGet(suitMdl, &sp74);
+    CharModelEffectCreate(1, &sp74);
+    HuAudFXPlay(0x351);
+    HuPrcSleep(10);
+    BoardModelKill(suitMdl);
+    BoardModelKill(booBallMdl);
+    HuPrcSleep(15);
+    HuPrcKill(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
+
+static void ForceConsts(void)
+{
+    (void)-0.5f;
+    (void)40.0f;
+    (void)125.0f;
+}
+
+static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix) {
     HsfanimStruct01 *var_r31;
     Vec spC;
     float sp8;
@@ -1041,26 +1936,26 @@ static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
     s32 i;
     s32 j;
 
-    if (arg1->unk_34 == 0) {
-        var_r31 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    if (particle->unk_34 == 0) {
+        var_r31 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk2C = 0.0f;
             var_r31->unk40.a = 0;
         }
-        arg1->unk_04 = 0.0f;
-        arg1->unk_00 = 0;
+        particle->unk_04 = 0.0f;
+        particle->unk_00 = 0;
     }
-    if (arg1->unk_00 == 0) {
-        arg1->unk_00 = 2;
+    if (particle->unk_00 == 0) {
+        particle->unk_00 = 2;
         BoardModelRotGet(suitMdl, &spC);
         for (i = 0; i < 2; i++) {
-            var_r31 = arg1->unk_48;
-            for (j = 0; j < arg1->unk_30; j++, var_r31++) {
+            var_r31 = particle->unk_48;
+            for (j = 0; j < particle->unk_30; j++, var_r31++) {
                 if (var_r31->unk2C == 0.0f) {
                     break;
                 }
             }
-            if (j != arg1->unk_30) {
+            if (j != particle->unk_30) {
                 var_r31->unk34.x = 60.0 * sin((spC.y - 90.0f) * M_PI / 180.0);
                 var_r31->unk34.y = 30.0f;
                 var_r31->unk34.z = 60.0 * cos((spC.y - 90.0f) * M_PI / 180.0);
@@ -1076,10 +1971,10 @@ static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
             }
         }
     } else {
-        arg1->unk_00--;
+        particle->unk_00--;
     }
-    var_r31 = arg1->unk_48;
-    for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    var_r31 = particle->unk_48;
+    for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (var_r31->unk2C != 0.0f) {
             if (var_r31->unk00_s16 == 0) {
                 PSVECAdd(&var_r31->unk34, &var_r31->unk08, &var_r31->unk34);
@@ -1109,16 +2004,16 @@ static void LampParticleUpdate(s32 arg0, ParticleData *arg1) {
     }
 }
 
-static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
+static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix) {
     HsfanimStruct01* var_r31;
     float temp_f31;
     float temp_f30;
     s32 var_r28;
     s32 i;
 
-    if (arg1->unk_34 == 0) {
-        var_r31 = arg1->unk_48;
-        for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    if (particle->unk_34 == 0) {
+        var_r31 = particle->unk_48;
+        for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk34.x = -50.0f + (frand() & 0xFF) * 100.0f * 0.003921569f;
             var_r31->unk34.y = -50.0f + (frand() & 0xFF) * 100.0f * 0.003921569f;
             var_r31->unk34.z = -10.0f + (frand() & 0xFF) * 20.0f * 0.003921569f;
@@ -1133,9 +2028,9 @@ static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
             var_r31->unk2C = 80.0f + (frand() & 0xFF) * 60.0f * 0.003921569f;
         }
     }
-    var_r31 = arg1->unk_48;
+    var_r31 = particle->unk_48;
     var_r28 = 0;
-    for (i = 0; i < arg1->unk_30; i++, var_r31++) {
+    for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (var_r31->unk2C != 0.0f) {
             var_r28++;
             PSVECAdd(&var_r31->unk34, &var_r31->unk08, &var_r31->unk34);
@@ -1150,11 +2045,10 @@ static void GenieParticleUpdate(s32 arg0, ParticleData *arg1) {
         }
     }
     if (var_r28 == 0) {
-        arg1->unk_02 = 0;
+        particle->unk_02 = 0;
     }
 }
 
-// DATA + 0x224
 static Vec shadowPos = { 0.0f, 4500.0f, 500.0f };
 static Vec shadowTarget = { 0.0f, 0.9f, -0.1f };
 static Vec shadowUp = { 0.0f, 0.0f, 500.0f };
@@ -1219,43 +2113,39 @@ static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Ve
     }
 }
 
-// DATA + 0x248
 static s32 armUpMotTbl[] = {
-    0x005F005C,
-    0x001A005C,
-    0x006D005C,
-    0x008A005C,
-    0x0085005C,
-    0x0011005C,
-    0x000D005C,
-    0x0081005C
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 92),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 92),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 92),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 92),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 92),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 92),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 92),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 92)
 };
 
-// DATA + 0x268
 static s32 scareMotTbl[] = {
-    0x005F001C,
-    0x001A001C,
-    0x006D001C,
-    0x008A001C,
-    0x0085001C,
-    0x0011001C,
-    0x000D001C,
-    0x0081001C
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 28),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 28),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 28),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 28),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 28),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 28),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 28),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 28)
 };
 
-// DATA + 0x288
 static s32 impactMotTbl[] = {
-    0x005F005E,
-    0x001A005E,
-    0x006D005E,
-    0x008A005E,
-    0x0085005E,
-    0x0011005E,
-    0x000D005E,
-    0x0081005E
+    DATA_MAKE_NUM(DATADIR_MARIOMOT, 94),
+    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 94),
+    DATA_MAKE_NUM(DATADIR_PEACHMOT, 94),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 94),
+    DATA_MAKE_NUM(DATADIR_WARIOMOT, 94),
+    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 94),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 94),
+    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 94)
 };
 
-// DATA + 0x2A8
 static UnkGenieCameraStruct cameraDataTbl[] = {
     60.0f, {    0.0f, 100.0f,  950.0f }, { 0.0f, 100.0f, 600.0f },
     60.0f, { -353.0f, 100.0f,  662.5f }, { 0.0f, 100.0f, 600.0f },
@@ -1270,11 +2160,10 @@ static UnkGenieCameraStruct cameraDataTbl[] = {
      5.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f }
 };
 
-// DATA + 0x3DC
 static s32 genieMotTbl[] = {
-    0x0007007D,
-    0x0007007E,
-    0x0007007F,
+    DATA_MAKE_NUM(DATADIR_BOARD, 125),
+    DATA_MAKE_NUM(DATADIR_BOARD, 126),
+    DATA_MAKE_NUM(DATADIR_BOARD, 127),
     -1
 };
 
@@ -1304,16 +2193,16 @@ static void GenieSceneExec(void) {
         BoardStatusShowSet(i, 0);
     }
     BoardLightResetExec();
-    temp_r25 = BoardModelCreate(0x70080, NULL, 0);
+    temp_r25 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 128), NULL, 0);
     sp50.x = sp50.y = sp50.z = 0.0f;
     BoardModelPosSetV(temp_r25, &sp50);
     BoardModelCameraSet(temp_r25, 2);
     Hu3DModelAmbSet(BoardModelIDGet(temp_r25), 1.0f, 1.0f, 1.0f);
-    temp_r24 = BoardModelCreate(0x70081, NULL, 0);
+    temp_r24 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 129), NULL, 0);
     BoardModelPosSetV(temp_r24, &sp50);
     BoardModelCameraSet(temp_r24, 2);
     Hu3DModelAmbSet(BoardModelIDGet(temp_r24), 1.0f, 1.0f, 1.0f);
-    temp_r28 = BoardModelCreate(0x7007C, genieMotTbl, 0);
+    temp_r28 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 124), genieMotTbl, 0);
     sp50.x = sp50.y = 0.0f;
     sp50.z = 600.0f;
     sp44.x = sp44.z = 0.0f;
@@ -1349,7 +2238,7 @@ static void GenieSceneExec(void) {
     temp_r21 = HuPrcChildCreate(GenieCameraProc, 0x2005, 0x1000, 0, HuPrcCurrentGet());
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
     temp_r27 = Hu3DParticleCreate(genieParticleAnim, 0x32);
-    Hu3DParticleHookSet(temp_r27, &GenieParticleUpdate);
+    Hu3DParticleHookSet(temp_r27, GenieParticleUpdate);
     Hu3DParticleBlendModeSet(temp_r27, 1);
     Hu3DParticleColSet(temp_r27, 0xFF, 0xFF, 0xFF);
     Hu3DParticleAnimModeSet(temp_r27, 0);
@@ -1358,7 +2247,7 @@ static void GenieSceneExec(void) {
     Hu3DModelPosSet(temp_r27, booCamPos.x, booCamPos.y, booCamPos.z - 175.0f);
     temp_r23 = Hu3DData[temp_r27].unk_120;
     temp_r23->unk_02 = 1;
-    WipeCreate(1, 0, 0x2D);
+    WipeCreate(1, 0, 45);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1366,18 +2255,18 @@ static void GenieSceneExec(void) {
     while (temp_r23->unk_02 != 0) {
         HuPrcVSleep();
     }
-    HuPrcSleep(0x2D);
+    HuPrcSleep(45);
     HuAudPlayerVoicePlay(currItemRestore, 0x128);
     BoardPlayerMotionStart(currItemRestore, geniePlayerMot[1], 0);
     BoardPlayerMotionEndWait(currItemRestore);
-    HuPrcSleep(0x19);
+    HuPrcSleep(25);
     Hu3DModelKill(temp_r27);
-    for (i = 0; i < 0xA; i++) {
+    for (i = 0; i < 10; i++) {
         genieFov += 4.5f;
         HuPrcVSleep();
     }
     genieFov = 60.0f;
-    HuPrcSleep(0x5A);
+    HuPrcSleep(90);
     var_f31 = 0.0f;
     var_r26 = 0;
     while (1) {
@@ -1393,8 +2282,8 @@ static void GenieSceneExec(void) {
         HuPrcVSleep();
     }
     GenieCameraCalc(&cameraDataTbl[0], var_r26, 1.0f, &booCamPos, &booCamUp);
-    HuPrcSleep(0x96);
-    BoardRotateDiceNumbers(currItemRestore);
+    HuPrcSleep(150);
+    BoardPlayerIdleSet(currItemRestore);
     sp2C = booCamPos;
     sp20 = booCamUp;
     booCamUp.x = sp38.x + (sp50.x - sp38.x) * 0.7f;
@@ -1404,7 +2293,7 @@ static void GenieSceneExec(void) {
     booCamPos.y = booCamUp.y + 950.0f;
     booCamPos.z = booCamUp.z + cos(-5 * M_PI / 9) * 1100.0;
     HuAudFXPlay(0x356);
-    BoardWinCreate(2, 0x12001B, -1);
+    BoardWinCreate(2, MAKE_MESSID(18, 27), -1);
     BoardWinWait();
     BoardWinKill();
     booCamUp = sp20;
@@ -1437,7 +2326,7 @@ static void GenieSceneExec(void) {
     BoardModelPosSetV(temp_r28, &sp50);
     booCamUp.y = sp38.y + 100.0f;
     BoardModelMotionStart(temp_r28, 2, 0);
-    omVibrate(currItemRestore, 0xC, 0xC, 0);
+    omVibrate(currItemRestore, 12, 0xC, 0);
     booCamUp.y = 500.0f;
     HuAudFXPlay(0x35B);
     HuAudFXPlay((GWPlayer[currItemRestore].character << 6) + 0x123);
@@ -1455,8 +2344,8 @@ static void GenieSceneExec(void) {
         }
         HuPrcVSleep();
     }
-    WipeCreate(2, 0, 0x2D);
-    BoardAudSeqFadeOut(1, 0x3E8);
+    WipeCreate(2, 0, 45);
+    BoardAudSeqFadeOut(1, 1000);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1493,7 +2382,7 @@ static void ExecItemGenie(void) {
 
     suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 1);
     BoardModelLayerSet(suitMdl, 2);
-    genieParticleAnim = HuSprAnimRead(HuDataSelHeapReadNum(0x70069, MEMORY_DEFAULT_NUM, HEAP_DATA));
+    genieParticleAnim = HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_BOARD, 105));
     HuSprAnimLock(genieParticleAnim);
     geniePlayerMot[0] = BoardPlayerMotionCreate(currItemRestore, armUpMotTbl[GWPlayer[currItemRestore].character]);
     geniePlayerMot[1] = BoardPlayerMotionCreate(currItemRestore, scareMotTbl[GWPlayer[currItemRestore].character]);
@@ -1510,11 +2399,11 @@ static void ExecItemGenie(void) {
     HuAudFXPlay(0x323);
     var_r30 = 0;
     while (1) {
-        if (var_r30 == 0x69) {
+        if (var_r30 == 105) {
             BoardPlayerMotionStart(currItemRestore, geniePlayerMot[0], 0);
         }
         BoardModelRotGet(suitMdl, &spC);
-        if (90.0f - spC.y <= sp24.unk14 && 90.0f - spC.y >= 0.0f && var_r30 >= 0x78) {
+        if (90.0f - spC.y <= sp24.unk14 && 90.0f - spC.y >= 0.0f && var_r30 >= 120) {
             break;
         }
         HuPrcVSleep();
@@ -1523,7 +2412,7 @@ static void ExecItemGenie(void) {
     HuAudPlayerVoicePlay(currItemRestore, 0x125);
     temp_r25 = HuAudFXPlay(0x34D);
     temp_r31 = Hu3DParticleCreate(genieParticleAnim, 0x96);
-    Hu3DParticleHookSet(temp_r31, &LampParticleUpdate);
+    Hu3DParticleHookSet(temp_r31, LampParticleUpdate);
     Hu3DParticleBlendModeSet(temp_r31, 0);
     Hu3DParticleColSet(temp_r31, 0xFF, 0xFF, 0xFF);
     Hu3DParticleAnimModeSet(temp_r31, 0);
@@ -1532,20 +2421,20 @@ static void ExecItemGenie(void) {
     BoardModelPosGet(suitMdl, &spC);
     Hu3DModelPosSet(temp_r31, spC.x, spC.y, spC.z);
     sp8 = Hu3DData[temp_r31].unk_120;
-    omVibrate(currItemRestore, 0xB5, 6, 6);
-    HuPrcSleep(0x87);
-    BoardAudSeqPause(0, 1, 0x3E8);
+    omVibrate(currItemRestore, 181, 6, 6);
+    HuPrcSleep(135);
+    BoardAudSeqPause(0, 1, 1000);
     HuAudFXStop(temp_r25);
     HuAudFXPauseAll(1);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, 0x2D);
+    WipeCreate(2, 0, 45);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
     Hu3DModelKill(temp_r31);
     BoardModelKill(suitMdl);
     HuPrcKill(temp_r27);
-    BoardRotateDiceNumbers(currItemRestore);
+    BoardPlayerIdleSet(currItemRestore);
     GenieSceneExec();
     BoardCameraMoveSet(0);
     BoardCameraViewSet(2);
@@ -1558,14 +2447,14 @@ static void ExecItemGenie(void) {
     BoardPlayerPosSetV(currItemRestore, &spC);
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
-    WipeCreate(1, 0, 0x2D);
-    HuPrcSleep(0xF);
+    WipeCreate(1, 0, 45);
+    HuPrcSleep(15);
     BoardAudSeqPause(0, 0, 1000);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
     HuAudFXPlay(0x35E);
-    fn_8004F578(GWPlayer[currItemRestore].character, 0);
+    CharModelEffectEnableSet(GWPlayer[currItemRestore].character, 0);
     BoardPlayerMotionStart(currItemRestore, 6, 0x40000001);
     var_f29 = 0.0f;
     var_f31 = 1.0f;
@@ -1581,7 +2470,7 @@ static void ExecItemGenie(void) {
         var_f31 += 1.0f;
         spC.y += var_f30;
         if (spC.y <= sp18.y) {
-            omVibrate(currItemRestore, 0xC, 6, 6);
+            omVibrate(currItemRestore, 12, 6, 6);
             spC.y = sp18.y;
             var_f29 = -var_f30 * 0.2f;
             if (fabs(var_f29) <= 5.0) {
@@ -1596,8 +2485,8 @@ static void ExecItemGenie(void) {
         BoardPlayerPosSetV(currItemRestore, &spC);
         HuPrcVSleep();
     }
-    BoardRotateDiceNumbers(currItemRestore);
-    fn_8004F578(GWPlayer[currItemRestore].character, 1);
+    BoardPlayerIdleSet(currItemRestore);
+    CharModelEffectEnableSet(GWPlayer[currItemRestore].character, 1);
     HuSprAnimKill(genieParticleAnim);
     BoardPlayerMotionKill(currItemRestore, geniePlayerMot[0]);
     BoardPlayerMotionKill(currItemRestore, geniePlayerMot[1]);
@@ -1650,7 +2539,7 @@ static void ExecItemBagJump(void) {
         HuPrcVSleep();
     }
     CharModelLayerSetAll(3);
-    CharModelCreateParticle(1, &sp14);
+    CharModelEffectCreate(1, &sp14);
     BoardModelVisibilitySet(temp_r31, 0);
     HuAudFXPlay(0x30D);
     HuPrcKill(NULL);
@@ -1677,7 +2566,7 @@ static void ExecItemBagShow(void) {
             break;
         }
         sp8 = sp14;
-        sp8.y += 15.0 * sin(M_PI * var_f31 / 180.0);
+        sp8.y += 15.0 * sin(var_f31 * M_PI / 180.0);
         BoardModelPosSetV(suitMdl, &sp8);
         var_f31 += 36.0f;
         HuPrcVSleep();
@@ -1740,19 +2629,19 @@ static void ExecItemBag(void) {
     sp3C.unk1C = 0;
     HuAudFXPlay(0x350);
     temp_r24 = ItemShowProc(&sp3C, NULL);
-    HuWinMesMaxSizeGet(1, sp10, 0x120014);
+    HuWinMesMaxSizeGet(1, sp10, MAKE_MESSID(18, 20));
     temp_r28 = HuWinCreate(-10000.0f, 320.0f, sp10[0], sp10[1], 0);
-    HuWinMesSet(temp_r28, 0x120014);
+    HuWinMesSet(temp_r28, MAKE_MESSID(18, 20));
     HuWinBGTPLvlSet(temp_r28, 0.0f);
     HuWinMesSpeedSet(temp_r28, 0);
-    var_r26 = frandmod(0x28) + 0x1E;
+    var_r26 = frandmod(40) + 30;
     var_r30 = 0;
     sp24.x = sp24.y = sp24.z = 0.0f;
     while (var_r30 < temp_r27) {
         if (GWPlayerCfg[currItemRestore].iscom == 1) {
             if (--var_r26 == 0) {
                 var_r25 = 0x100;
-                var_r26 = frandmod(0x28) + 0x1E;
+                var_r26 = frandmod(40) + 30;
             }
         } else {
             var_r25 = HuPadBtnDown[temp_r23];
@@ -1779,22 +2668,22 @@ static void ExecItemBag(void) {
             HuPrcChildWatch();
             BoardPlayerItemAdd(currItemRestore, itemBagItems[var_r30]);
             BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 10.0f, 0x40000001);
-            HuPrcSleep(0xA);
+            HuPrcSleep(10);
             var_r30++;
         }
     }
     HuWinKill(temp_r28);
     BoardModelPosGet(suitMdl, &sp30);
     CharModelLayerSetAll(3);
-    CharModelCreateParticle(1, &sp30);
+    CharModelEffectCreate(1, &sp30);
     HuAudFXPlay(0x351);
-    HuPrcSleep(0xA);
+    HuPrcSleep(10);
     HuPrcKill(temp_r24);
     BoardModelKill(suitMdl);
     for (i = 0; i < temp_r27; i++) {
         BoardModelKill(sp8[i]);
     }
-    HuPrcSleep(0x1E);
+    HuPrcSleep(30);
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
@@ -1852,7 +2741,7 @@ static void RestoreItemBowser(void) {
     s16 temp_r29;
     s16 i;
 
-    temp_r31 = BoardModelCreate(0x70063, NULL, 0);
+    temp_r31 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 99), NULL, 0);
     BoardModelVisibilitySet(temp_r31, 0);
     BoardModelLayerSet(temp_r31, 3);
     BoardPlayerPosGet(currItemRestore, &sp14);
@@ -1866,12 +2755,12 @@ static void RestoreItemBowser(void) {
     temp_r29 = BoardBowserSuitPlayerModelGet();
     BoardModelMotionShiftSet(suitMdl, suitMot[0], 0.0f, 5.0f, 0);
     BoardModelMotionShiftSet(temp_r29, suitCommonMot[0], 0.0f, 5.0f, 0);
-    HuPrcSleep(0x28);
+    HuPrcSleep(40);
     HuAudPlayerVoicePlay(currItemRestore, 0x129);
-    HuPrcSleep(0x14);
+    HuPrcSleep(20);
     HuAudFXPlay(0x32B);
     BoardModelVisibilitySet(temp_r31, 1);
-    for (i = 0; i < 0x3C; i++) {
+    for (i = 0; i < 60; i++) {
         sp20.x += 0.15f;
         sp20.y += 0.15f;
         sp20.z += 0.15f;
@@ -1880,14 +2769,14 @@ static void RestoreItemBowser(void) {
     }
     sp20.x = sp20.y = sp20.z = 9.0f;
     BoardModelScaleSetV(temp_r31, &sp20);
-    HuPrcSleep(0x3C);
+    HuPrcSleep(60);
     HuAudFXPlay(0x313);
     BoardModelHookReset(suitMdl);
     BoardBowserSuitKill(currItemRestore);
     sp8.x = sp8.y = sp8.z = 1.0f;
     BoardPlayerScaleSetV(currItemRestore, &sp8);
     BoardModelVisibilitySet(BoardPlayerModelGet(currItemRestore), 1);
-    for (i = 0; i < 0x3C; i++) {
+    for (i = 0; i < 60; i++) {
         sp20.x -= 0.15f;
         sp20.y -= 0.15f;
         sp20.z -= 0.15f;

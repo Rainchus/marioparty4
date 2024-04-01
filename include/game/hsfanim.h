@@ -3,9 +3,12 @@
 
 #include "game/hsfformat.h"
 #include "game/hsfman.h"
-#include "game/sprite.h"
+#include "game/animdata.h"
 
 typedef struct model_data ModelData;
+typedef struct particle_data ParticleData;
+
+typedef void (*ParticleHook)(ModelData *model, ParticleData *particle, Mtx matrix);
 
 typedef struct {
     /* 0x00 */ union {
@@ -30,7 +33,8 @@ typedef struct particle_data {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ float unk_04;
-    /* 0x08 */ char unk_08[0x18];
+    /* 0x08 */ char unk_08[0x14];
+    /* 0x1C */ void *unk_1C;
     /* 0x20 */ s16 unk_20;
     /* 0x22 */ s16 unk_22;
     /* 0x24 */ float unk_24;
@@ -48,7 +52,7 @@ typedef struct particle_data {
     /* 0x48 */ HsfanimStruct01 *unk_48;
     /* 0x4C */ Vec *unk_4C;
     /* 0x50 */ void *unk_50;
-    /* 0x54 */ void *unk_54;
+    /* 0x54 */ ParticleHook unk_54;
 } ParticleData; // Size 0x58
 
 typedef struct {
@@ -99,7 +103,7 @@ void Hu3DAnimAttrSet(s16 arg0, u16 arg1);
 void Hu3DAnimAttrReset(s16 arg0, s32 arg1);
 void Hu3DAnimSpeedSet(s16 arg0, float arg1);
 void Hu3DAnimBankSet(s16 arg0, s32 arg1);
-void Hu3DAnmNoSet(s16 arg0, s32 arg1);
+void Hu3DAnmNoSet(s16 arg0, u16 arg1);
 s32 Hu3DAnimSet(ModelData *arg0, HsfAttribute *arg1, s16 arg2);
 void Hu3DAnimExec(void);
 s16 Hu3DTexScrollCreate(s16 arg0, char *arg1);
@@ -116,7 +120,7 @@ void Hu3DParticleZRotSet(s16 arg0, float arg1);
 void Hu3DParticleColSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3);
 void Hu3DParticleTPLvlSet(s16 arg0, float arg1);
 void Hu3DParticleBlendModeSet(s16 arg0, u8 arg1);
-void Hu3DParticleHookSet(s16 arg0, void *arg1);
+void Hu3DParticleHookSet(s16 arg0, ParticleHook arg1);
 void Hu3DParticleAttrSet(s16 arg0, u8 arg1);
 void Hu3DParticleAttrReset(s16 arg0, u8 arg1);
 void Hu3DParticleAnimModeSet(s16 arg0, s16 arg1);

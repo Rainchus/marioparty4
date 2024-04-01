@@ -8,34 +8,33 @@
 #define SPRITE_DIRTY_XFORM 0x2
 #define SPRITE_DIRTY_COLOR 0x4
 
-typedef struct sprite_order_data {
-    unsigned short group;
-    unsigned short sprite;
-    unsigned short prio;
-    unsigned short next;
-} SpriteOrderData;
+typedef struct sprite_order {
+    u16 group;
+    u16 sprite;
+    u16 prio;
+    u16 next;
+} SpriteOrder;
 
-SpriteData HuSprData[SPRITE_MAX];
-SpriteGroupData HuSprGrpData[SPRITE_GROUP_MAX];
-static SpriteOrderData HuSprOrder[SPRITE_MAX*2];
+HuSprite HuSprData[HUSPR_MAX];
+HuSprGrp HuSprGrpData[HUSPR_GRP_MAX];
+static SpriteOrder HuSprOrder[HUSPR_MAX*2];
 
-static short HuSprOrderNum;
-static short HuSprOrderNo;
+static s16 HuSprOrderNum;
+static s16 HuSprOrderNo;
 static BOOL HuSprPauseF;
 
-static void HuSprOrderEntry(short group, short sprite);
+static void HuSprOrderEntry(s16 group, s16 sprite);
 
-void mtxTransCat(Mtx matrix, float x, float y, int z); //Last argument should be a float
 
 void HuSprInit(void)
 {
-    short i;
-    SpriteData *sprite;
-    SpriteGroupData *group;
-    for(sprite = &HuSprData[1], i=1; i<SPRITE_MAX; i++, sprite++) {
+    s16 i;
+    HuSprite *sprite;
+    HuSprGrp *group;
+    for(sprite = &HuSprData[1], i=1; i<HUSPR_MAX; i++, sprite++) {
         sprite->data = NULL;
     }
-    for(group = HuSprGrpData, i=0; i<SPRITE_GROUP_MAX; i++, group++) {
+    for(group = HuSprGrpData, i=0; i<HUSPR_GRP_MAX; i++, group++) {
         group->capacity = 0;
     }
     sprite = &HuSprData[0];
@@ -46,16 +45,16 @@ void HuSprInit(void)
 
 void HuSprClose(void)
 {
-    short i;
-    SpriteGroupData *group;
-    SpriteData *sprite;
+    s16 i;
+    HuSprGrp *group;
+    HuSprite *sprite;
     
-    for(group = HuSprGrpData, i=0; i<SPRITE_GROUP_MAX; i++, group++) {
+    for(group = HuSprGrpData, i=0; i<HUSPR_GRP_MAX; i++, group++) {
         if(group->capacity != 0) {
             HuSprGrpKill(i);
         }
     }
-    for(sprite = &HuSprData[1], i=1; i<SPRITE_MAX; i++, sprite++) {
+    for(sprite = &HuSprData[1], i=1; i<HUSPR_MAX; i++, sprite++) {
         if(sprite->data) {
             HuSprKill(i);
         }
@@ -63,11 +62,11 @@ void HuSprClose(void)
     HuSprPauseF = FALSE;
 }
 
-void HuSprExec(short draw_no)
+void HuSprExec(s16 draw_no)
 {
-    SpriteData *sprite;
+    HuSprite *sprite;
     while(sprite = HuSprCall()) {
-        if(!(sprite->attr & SPRITE_ATTR_HIDDEN) && sprite->draw_no == draw_no) {
+        if(!(sprite->attr & HUSPR_ATTR_DISPOFF) && sprite->draw_no == draw_no) {
             HuSprDisp(sprite);
         }
     }
@@ -76,14 +75,14 @@ void HuSprExec(short draw_no)
 void HuSprBegin(void)
 {
     Mtx temp, rot;
-    short i, j;
+    s16 i, j;
     Vec axis = {0, 0, 1};
-    SpriteGroupData *group;
+    HuSprGrp *group;
     group = HuSprGrpData;
     HuSprOrderNum = 1;
     HuSprOrder[0].next = 0;
     HuSprOrder[0].prio = -1;
-    for(i=0; i<SPRITE_GROUP_MAX; i++, group++) {
+    for(i=0; i<HUSPR_GRP_MAX; i++, group++) {
         if(group->capacity != 0) {
             MTXTrans(temp, group->center_x*group->scale_x, group->center_y*group->scale_y, 0.0f);
             MTXRotAxisDeg(rot, &axis, group->z_rot);
@@ -101,12 +100,12 @@ void HuSprBegin(void)
     HuSprOrderNo = 0;
 }
 
-static void HuSprOrderEntry(short group, short sprite)
+static void HuSprOrderEntry(s16 group, s16 sprite)
 {
-    SpriteOrderData *order = &HuSprOrder[HuSprOrderNum];
-    short prio = HuSprData[sprite].prio;
-    short prev, next;
-    if(HuSprOrderNum >= SPRITE_MAX*2) {
+    SpriteOrder *order = &HuSprOrder[HuSprOrderNum];
+    s16 prio = HuSprData[sprite].prio;
+    s16 prev, next;
+    if(HuSprOrderNum >= HUSPR_MAX*2) {
         OSReport("Order Max Over!\n");
         return;
     }
@@ -124,14 +123,14 @@ static void HuSprOrderEntry(short group, short sprite)
     HuSprOrderNum++;
 }
 
-SpriteData *HuSprCall(void)
+HuSprite *HuSprCall(void)
 {
     HuSprOrderNo = HuSprOrder[HuSprOrderNo].next;
     if(HuSprOrderNo != 0) {
-        SpriteOrderData *order = &HuSprOrder[HuSprOrderNo];
-        SpriteData *sprite = &HuSprData[order->sprite];
+        SpriteOrder *order = &HuSprOrder[HuSprOrderNo];
+        HuSprite *sprite = &HuSprData[order->sprite];
         sprite->group_mtx = &HuSprGrpData[order->group].mtx;
-        if(sprite->attr & SPRITE_ATTR_FUNC) {
+        if(sprite->attr & HUSPR_ATTR_FUNC) {
             return sprite;
         }
         sprite->frame_data = &sprite->data->bank[sprite->bank].frame[sprite->frame];
@@ -142,7 +141,7 @@ SpriteData *HuSprCall(void)
     }
 }
 
-static inline void SpriteCalcFrame(SpriteData *sprite, AnimBankData *bank, AnimFrameData **frame, short loop)
+static inline void SpriteCalcFrame(HuSprite *sprite, AnimBankData *bank, AnimFrameData **frame, s16 loop)
 {
     if(sprite->time >= (*frame)->time) {
         sprite->frame++;
@@ -174,22 +173,22 @@ void HuSprFinish(void)
     AnimData *anim;
     AnimBankData *bank;
     AnimFrameData *frame;
-    SpriteData *sprite;
-    short i;
-    short j;
-    short loop;
-    short dir;
+    HuSprite *sprite;
+    s16 i;
+    s16 j;
+    s16 loop;
+    s16 dir;
     
-    for(sprite = &HuSprData[1], i=1; i<SPRITE_MAX; i++, sprite++) {
-        if(sprite->data && !(sprite->attr & SPRITE_ATTR_FUNC)) {
-            if(!HuSprPauseF || (sprite->attr & SPRITE_ATTR_NOPAUSE)) {
+    for(sprite = &HuSprData[1], i=1; i<HUSPR_MAX; i++, sprite++) {
+        if(sprite->data && !(sprite->attr & HUSPR_ATTR_FUNC)) {
+            if(!HuSprPauseF || (sprite->attr & HUSPR_ATTR_NOPAUSE)) {
                 anim = sprite->data;
                 bank = &anim->bank[sprite->bank];
                 frame = &bank->frame[sprite->frame];
-                loop = (sprite->attr & SPRITE_ATTR_LOOP) ? 0 : 1;
-                if(!(sprite->attr & SPRITE_ATTR_PAUSED)) {
-                    dir = (sprite->attr & SPRITE_ATTR_REVERSE) ? -1 : 1;
-                    for(j=0; j<(int)sprite->speed*minimumVcount; j++) {
+                loop = (sprite->attr & HUSPR_ATTR_LOOP) ? 0 : 1;
+                if(!(sprite->attr & HUSPR_ATTR_NOANIM)) {
+                    dir = (sprite->attr & HUSPR_ATTR_REVERSE) ? -1 : 1;
+                    for(j=0; j<(s32)sprite->speed*minimumVcount; j++) {
                         sprite->time += dir;
                         SpriteCalcFrame(sprite, bank, &frame, loop);
                     }
@@ -209,7 +208,7 @@ void HuSprPauseSet(BOOL value)
 
 AnimData *HuSprAnimRead(void *data)
 {
-    short i;
+    s16 i;
     AnimBmpData *bmp;
     AnimBankData *bank;
     AnimPatData *pat;
@@ -244,17 +243,17 @@ void HuSprAnimLock(AnimData *anim)
     anim->useNum++;
 }
 
-short HuSprCreate(AnimData *anim, short prio, short bank)
+s16 HuSprCreate(AnimData *anim, s16 prio, s16 bank)
 {
-    SpriteData *sprite;
-    short i;
-    for(sprite = &HuSprData[1], i=1; i<SPRITE_MAX; i++, sprite++) {
+    HuSprite *sprite;
+    s16 i;
+    for(sprite = &HuSprData[1], i=1; i<HUSPR_MAX; i++, sprite++) {
         if(!sprite->data) {
             break;
         }
     }
-    if(i == SPRITE_MAX) {
-        return SPRITE_INVALID;
+    if(i == HUSPR_MAX) {
+        return HUSPR_NONE;
     }
     sprite->data = anim;
     sprite->speed = 1.0f;
@@ -279,34 +278,34 @@ short HuSprCreate(AnimData *anim, short prio, short bank)
     return i;
 }
 
-short HuSprFuncCreate(void (*func)(SpriteData *sprite), short prio)
+s16 HuSprFuncCreate(HuSprFunc func, s16 prio)
 {
-    SpriteData *sprite;
-    short index = HuSprCreate(NULL, prio, 0);
-    if(index == SPRITE_INVALID) {
-        return SPRITE_INVALID;
+    HuSprite *sprite;
+    s16 index = HuSprCreate(NULL, prio, 0);
+    if(index == HUSPR_NONE) {
+        return HUSPR_NONE;
     }
     sprite = &HuSprData[index];
     sprite->func = func;
-    sprite->attr |= SPRITE_ATTR_FUNC;
+    sprite->attr |= HUSPR_ATTR_FUNC;
     return index;
 }
 
-short HuSprGrpCreate(short capacity)
+s16 HuSprGrpCreate(s16 capacity)
 {
-    SpriteGroupData *group;
-    short i, j;
-    for(group = HuSprGrpData, i=0; i<SPRITE_GROUP_MAX; i++, group++) {
+    HuSprGrp *group;
+    s16 i, j;
+    for(group = HuSprGrpData, i=0; i<HUSPR_GRP_MAX; i++, group++) {
         if(group->capacity == 0) {
             break;
         }
     }
-    if(i == SPRITE_GROUP_MAX) {
-        return SPRITE_GROUP_INVALID;
+    if(i == HUSPR_GRP_MAX) {
+        return HUSPR_GRP_NONE;
     }
-    group->members = HuMemDirectMalloc(HEAP_SYSTEM, sizeof(short)*capacity);
+    group->members = HuMemDirectMalloc(HEAP_SYSTEM, sizeof(s16)*capacity);
     for(j=0; j<capacity; j++) {
-        group->members[j] = SPRITE_INVALID;
+        group->members[j] = HUSPR_NONE;
     }
     group->capacity = capacity;
     group->x = group->y = group->z_rot = group->center_x = group->center_y = 0.0f;
@@ -314,14 +313,14 @@ short HuSprGrpCreate(short capacity)
     return i;
 }
 
-short HuSprGrpCopy(short group)
+s16 HuSprGrpCopy(s16 group)
 {
-    SpriteGroupData *new_group_ptr;
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short new_group = HuSprGrpCreate(group_ptr->capacity);
-    short i;
-    if(new_group == SPRITE_GROUP_INVALID) {
-        return SPRITE_GROUP_INVALID;
+    HuSprGrp *new_group_ptr;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 new_group = HuSprGrpCreate(group_ptr->capacity);
+    s16 i;
+    if(new_group == HUSPR_GRP_NONE) {
+        return HUSPR_GRP_NONE;
     }
     new_group_ptr = &HuSprGrpData[new_group];
     new_group_ptr->x = group_ptr->x;
@@ -332,9 +331,9 @@ short HuSprGrpCopy(short group)
     new_group_ptr->center_x = group_ptr->center_x;
     new_group_ptr->center_y = group_ptr->center_y;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
-            SpriteData *old_sprite = &HuSprData[group_ptr->members[i]];
-            short new_sprite = HuSprCreate(old_sprite->data, old_sprite->prio, old_sprite->bank);
+        if(group_ptr->members[i] != HUSPR_NONE) {
+            HuSprite *old_sprite = &HuSprData[group_ptr->members[i]];
+            s16 new_sprite = HuSprCreate(old_sprite->data, old_sprite->prio, old_sprite->bank);
             HuSprData[new_sprite] = *old_sprite;
             HuSprGrpMemberSet(new_group, i, new_sprite);
         }
@@ -342,32 +341,32 @@ short HuSprGrpCopy(short group)
     return new_group;
 }
 
-void HuSprGrpMemberSet(short group, short member, short sprite)
+void HuSprGrpMemberSet(s16 group, s16 member, s16 sprite)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    SpriteData *sprite_ptr = &HuSprData[sprite];
-    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] != SPRITE_INVALID) {
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    HuSprite *sprite_ptr = &HuSprData[sprite];
+    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] != HUSPR_NONE) {
         return;
     }
     group_ptr->members[member] = sprite;
 }
 
-void HuSprGrpMemberKill(short group, short member)
+void HuSprGrpMemberKill(s16 group, s16 member)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] == SPRITE_INVALID) {
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] == HUSPR_NONE) {
         return;
     }
     HuSprKill(group_ptr->members[member]);
-    group_ptr->members[member] = SPRITE_INVALID;
+    group_ptr->members[member] = HUSPR_NONE;
 }
 
-void HuSprGrpKill(short group)
+void HuSprGrpKill(s16 group)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprKill(group_ptr->members[i]);
         }
     }
@@ -375,13 +374,13 @@ void HuSprGrpKill(short group)
     HuMemDirectFree(group_ptr->members);
 }
 
-void HuSprKill(short sprite)
+void HuSprKill(s16 sprite)
 {
-    SpriteData *sprite_ptr = &HuSprData[sprite];
+    HuSprite *sprite_ptr = &HuSprData[sprite];
     if(!sprite_ptr->data) {
         return;
     }
-    if(!(sprite_ptr->attr & SPRITE_ATTR_FUNC)) {
+    if(!(sprite_ptr->attr & HUSPR_ATTR_FUNC)) {
         HuSprAnimKill(sprite_ptr->data);
         if(sprite_ptr->bg) {
             HuSprAnimKill(sprite_ptr->bg);
@@ -394,7 +393,7 @@ void HuSprKill(short sprite)
 void HuSprAnimKill(AnimData *anim)
 {
     if(--anim->useNum <= 0) {
-        if(anim->bmpNum & SPRITE_BMP_ALLOC) {
+        if(anim->bmpNum & ANIM_BMP_ALLOC) {
             if(anim->bmp->data) {
                 HuMemDirectFree(anim->bmp->data);
             }
@@ -406,11 +405,11 @@ void HuSprAnimKill(AnimData *anim)
     }
 }
 
-void HuSprAttrSet(short group, short member, int attr)
+void HuSprAttrSet(s16 group, s16 member, s32 attr)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    SpriteData *sprite_ptr;
-    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] == SPRITE_INVALID) {
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    HuSprite *sprite_ptr;
+    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] == HUSPR_NONE) {
         return;
     }
     sprite_ptr = &HuSprData[group_ptr->members[member]];
@@ -418,11 +417,11 @@ void HuSprAttrSet(short group, short member, int attr)
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_ATTR;
 }
 
-void HuSprAttrReset(short group, short member, int attr)
+void HuSprAttrReset(s16 group, s16 member, s32 attr)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    SpriteData *sprite_ptr;
-    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] == SPRITE_INVALID) {
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    HuSprite *sprite_ptr;
+    if(group_ptr->capacity == 0 || group_ptr->capacity <= member || group_ptr->members[member] == HUSPR_NONE) {
         return;
     }
     sprite_ptr = &HuSprData[group_ptr->members[member]];
@@ -430,59 +429,59 @@ void HuSprAttrReset(short group, short member, int attr)
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_ATTR;
 }
 
-void HuSprPosSet(short group, short member, float x, float y)
+void HuSprPosSet(s16 group, s16 member, float x, float y)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->x = x;
     sprite_ptr->y = y;
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_XFORM;
 }
 
-void HuSprZRotSet(short group, short member, float z_rot)
+void HuSprZRotSet(s16 group, s16 member, float z_rot)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->z_rot = z_rot;
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_XFORM;
 }
 
-void HuSprScaleSet(short group, short member, float x, float y)
+void HuSprScaleSet(s16 group, s16 member, float x, float y)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->scale_x = x;
     sprite_ptr->scale_y = y;
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_XFORM;
 }
 
-void HuSprTPLvlSet(short group, short member, float tp_lvl)
+void HuSprTPLvlSet(s16 group, s16 member, float tp_lvl)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->a = tp_lvl*255;
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_COLOR;
 }
 
-void HuSprColorSet(short group, short member, u8 r, u8 g, u8 b)
+void HuSprColorSet(s16 group, s16 member, u8 r, u8 g, u8 b)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->r = r;
     sprite_ptr->g = g;
     sprite_ptr->b = b;
     sprite_ptr->dirty_flag |= SPRITE_DIRTY_COLOR;
 }
 
-void HuSprSpeedSet(short group, short member, float speed)
+void HuSprSpeedSet(s16 group, s16 member, float speed)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
     HuSprData[group_ptr->members[member]].speed = speed;
 }
 
-void HuSprBankSet(short group, short member, short bank)
+void HuSprBankSet(s16 group, s16 member, s16 bank)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     AnimData *anim = sprite_ptr->data;
     AnimBankData *bank_ptr = &anim->bank[sprite_ptr->bank];
     AnimFrameData *frame_ptr = &bank_ptr->frame[sprite_ptr->frame];
     sprite_ptr->bank = bank;
-    if(sprite_ptr->attr & SPRITE_ATTR_REVERSE) {
+    if(sprite_ptr->attr & HUSPR_ATTR_REVERSE) {
         sprite_ptr->frame = bank_ptr->timeNum-1;
         frame_ptr = &bank_ptr->frame[sprite_ptr->frame];
         sprite_ptr->time = frame_ptr->time;
@@ -492,10 +491,10 @@ void HuSprBankSet(short group, short member, short bank)
     }
 }
 
-void HuSprGrpPosSet(short group, float x, float y)
+void HuSprGrpPosSet(s16 group, float x, float y)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     group_ptr->x = x;
     group_ptr->y = y;
     for(i=0; i<group_ptr->capacity; i++) {
@@ -505,102 +504,102 @@ void HuSprGrpPosSet(short group, float x, float y)
     }
 }
 
-void HuSprGrpCenterSet(short group, float x, float y)
+void HuSprGrpCenterSet(s16 group, float x, float y)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     group_ptr->center_x = x;
     group_ptr->center_y = y;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprData[group_ptr->members[i]].dirty_flag |= SPRITE_DIRTY_XFORM;
         }
     }
 }
 
-void HuSprGrpZRotSet(short group, float z_rot)
+void HuSprGrpZRotSet(s16 group, float z_rot)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     group_ptr->z_rot = z_rot;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprData[group_ptr->members[i]].dirty_flag |= SPRITE_DIRTY_XFORM;
         }
     }
 }
 
-void HuSprGrpScaleSet(short group, float x, float y)
+void HuSprGrpScaleSet(s16 group, float x, float y)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     group_ptr->scale_x = x;
     group_ptr->scale_y = y;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprData[group_ptr->members[i]].dirty_flag |= SPRITE_DIRTY_XFORM;
         }
     }
 }
 
-void HuSprGrpTPLvlSet(short group, float tp_lvl)
+void HuSprGrpTPLvlSet(s16 group, float tp_lvl)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprData[group_ptr->members[i]].a = tp_lvl*255;
             HuSprData[group_ptr->members[i]].dirty_flag |= SPRITE_DIRTY_COLOR;
         }
     }
 }
 
-s32 HuSprGrpDrawNoSet(short group, int draw_no)
+void HuSprGrpDrawNoSet(s16 group, s32 draw_no)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprData[group_ptr->members[i]].draw_no = draw_no;
         }
     }
 }
 
-void HuSprDrawNoSet(short group, short member, int draw_no)
+void HuSprDrawNoSet(s16 group, s16 member, s32 draw_no)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->draw_no = draw_no;
 }
 
-void HuSprPriSet(short group, short member, short prio)
+void HuSprPriSet(s16 group, s16 member, s16 prio)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->prio = prio;
 }
 
-void HuSprGrpScissorSet(short group, short x, short y, short w, short h)
+void HuSprGrpScissorSet(s16 group, s16 x, s16 y, s16 w, s16 h)
 {
-    SpriteGroupData *group_ptr = &HuSprGrpData[group];
-    short i;
+    HuSprGrp *group_ptr = &HuSprGrpData[group];
+    s16 i;
     for(i=0; i<group_ptr->capacity; i++) {
-        if(group_ptr->members[i] != SPRITE_INVALID) {
+        if(group_ptr->members[i] != HUSPR_NONE) {
             HuSprScissorSet(group, i, x, y, w, h);
         }
     }
 }
 
-void HuSprScissorSet(short group, short member, short x, short y, short w, short h)
+void HuSprScissorSet(s16 group, s16 member, s16 x, s16 y, s16 w, s16 h)
 {
-    SpriteData *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
+    HuSprite *sprite_ptr = &HuSprData[HuSprGrpData[group].members[member]];
     sprite_ptr->scissor_x = x;
     sprite_ptr->scissor_y = y;
     sprite_ptr->scissor_w = w;
     sprite_ptr->scissor_h = h;
 }
 
-static short bitSizeTbl[11] = { 32, 24, 16, 8, 4, 16, 8, 8, 4, 8, 4 };
+static s16 bitSizeTbl[11] = { 32, 24, 16, 8, 4, 16, 8, 8, 4, 8, 4 };
 
-AnimData *HuSprAnimMake(short sizeX, short sizeY, short dataFmt)
+AnimData *HuSprAnimMake(s16 sizeX, s16 sizeY, s16 dataFmt)
 {
     AnimLayerData *layer;
     AnimBmpData *bmp;
@@ -627,7 +626,7 @@ AnimData *HuSprAnimMake(short sizeX, short sizeY, short dataFmt)
     anim->useNum = 0;
     anim->bankNum = 1;
     anim->patNum = 1;
-    anim->bmpNum = (1|SPRITE_BMP_ALLOC);
+    anim->bmpNum = (1|ANIM_BMP_ALLOC);
     bank->timeNum = 1;
     bank->unk = 10;
     frame->pat = 0;
@@ -663,19 +662,19 @@ AnimData *HuSprAnimMake(short sizeX, short sizeY, short dataFmt)
     return anim;
 }
 
-void HuSprBGSet(short group, short member,  AnimData *bg, short bg_bank)
+void HuSprBGSet(s16 group, s16 member,  AnimData *bg, s16 bg_bank)
 {
-    short sprite = HuSprGrpData[group].members[member];
+    s16 sprite = HuSprGrpData[group].members[member];
     HuSprSprBGSet(sprite, bg, bg_bank);
 }
 
-void HuSprSprBGSet(short sprite, AnimData *bg, short bg_bank)
+void HuSprSprBGSet(s16 sprite, AnimData *bg, s16 bg_bank)
 {
-    SpriteData *sprite_ptr = &HuSprData[sprite];
+    HuSprite *sprite_ptr = &HuSprData[sprite];
     sprite_ptr->bg = bg;
     sprite_ptr->bg_bank = bg_bank;
     sprite_ptr->wrap_t = sprite_ptr->wrap_s = GX_REPEAT;
-    sprite_ptr->attr &= ~SPRITE_ATTR_BILINEAR;
+    sprite_ptr->attr &= ~HUSPR_ATTR_LINEAR;
 }
 
 void AnimDebug(AnimData *anim)
@@ -688,7 +687,7 @@ void AnimDebug(AnimData *anim)
     AnimBankData *bank;
     AnimBmpData *bmp;
     
-    OSReport("patNum %d,bankNum %d,bmpNum %d\n", anim->patNum, anim->bankNum, anim->bmpNum & SPRITE_BMP_NUM_MASK);
+    OSReport("patNum %d,bankNum %d,bmpNum %d\n", anim->patNum, anim->bankNum, anim->bmpNum & ANIM_BMP_NUM_MASK);
     pat = anim->pat;
     for(i=0; i<anim->patNum; i++) {
         OSReport("PATTERN%d:\n", i);
@@ -716,7 +715,7 @@ void AnimDebug(AnimData *anim)
         bank++;
     }
     bmp = anim->bmp;
-    for(i=0; i<anim->bmpNum & SPRITE_BMP_NUM_MASK; i++) {
+    for(i=0; i<anim->bmpNum & ANIM_BMP_NUM_MASK; i++) {
         OSReport("BMP%d:\n", i);
         OSReport("\tpixSize %d,palNum %d,size (%d,%d)\n", bmp->pixSize, bmp->palNum, bmp->sizeX, bmp->sizeY);
         bmp++;

@@ -7,12 +7,9 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
-typedef struct w03StructUnk0 {
-/* 0x00 */ Vec unk_00;
-/* 0x0C */ Vec unk_0C;
-/* 0x18 */ Vec unk_18;
-/* 0x24 */ s32 datanum;
-} w03StructUnk0;
+enum {
+	MAPOBJ_MAX = 12
+};
 
 typedef struct w03UnkStruct2{
     u8 unk0 : 1;
@@ -27,3 +24,6 @@ typedef struct w03State {
            u16 unk6;
            s16 unk8;
 } w03State;
+
+extern w03State* lbl_1_bss_0;
+extern s16 lbl_1_bss_C[MAPOBJ_MAX];

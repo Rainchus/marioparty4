@@ -36,6 +36,7 @@ double asin(double x);
 double atan2(double y, double x);
 double fmod(double x, double y);
 double log(double x);
+double pow(double x, double y);
 float tanf(float x);
 float sinf(float x);
 float cosf(float x);

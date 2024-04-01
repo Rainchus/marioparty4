@@ -1,10 +1,10 @@
 #include "game/board/main.h"
 #include "game/board/model.h"
+#include "game/chrman.h"
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 #include "game/memory.h"
 #include "game/object.h"
-#include "unsplit.h"
 
 #define BOARD_MODEL_MAX 256
 #define BOARD_MOT_MAX 32
@@ -248,16 +248,16 @@ s16 BoardModelCreateCharacter(s32 character, s32 data_num, s32 *mot_list, s32 li
 s16 BoardModelCreateParam(BoardModelParam *param, Vec *pos, Vec *rot)
 {
 	float unk_param;
-	s16 model = BoardModelCreate(param->data_num, NULL, param->link);
+	s16 model = BoardModelCreate(param->data_num, NULL, param->unk4.link);
 	if(model == -1) {
 		return -1;
 	}
-	BoardModelMotionStart(model, 0, (param->pause) ? 0x40000001 : 0);
-	if(!param->start_mot) {
+	BoardModelMotionStart(model, 0, (param->unk4.pause) ? 0x40000001 : 0);
+	if(!param->unk4.start_mot) {
 		BoardModelMotionSpeedSet(model, 0.0f);
 	}
-	BoardModelExistDupe(model, param->field04_bit0);
-	BoardModelVisibilitySet(model, param->visible);
+	BoardModelExistDupe(model, param->unk4.field04_bit0);
+	BoardModelVisibilitySet(model, param->unk4.visible);
 	if(pos) {
 		BoardModelPosSetV(model, pos);
 	}
@@ -381,8 +381,8 @@ s32 BoardModelMotionCreate(s16 model, s32 data_num)
 			}
 			model = Hu3DJointMotion(model_ptr->id, model_ptr->mot_data[i]);
 		} else {
-			model = CharMotionCreate(model_ptr->character, data_num);
-			CharMotionDataClose(model_ptr->character);
+			model = CharModelMotionCreate(model_ptr->character, data_num);
+			CharModelMotionDataClose(model_ptr->character);
 		}
 		model_ptr->mot_id[i] = model;
 		model_ptr->mot_count++;
@@ -406,7 +406,7 @@ s32 BoardModelMotionKill(s16 model, s32 motion)
 			if(model_ptr->character == -1) {
 				Hu3DMotionKill(model_ptr->mot_id[motion]);
 			} else {
-				CharMotionKill(model_ptr->character, model_ptr->mot_id[motion]);
+				CharModelMotionKill(model_ptr->character, model_ptr->mot_id[motion]);
 			}
 			model_ptr->mot_id[motion] = -1;
 		}
@@ -1170,7 +1170,7 @@ static s32 CreateBoardModelMotion(BoardModel *model, s32 count, s32 *data_num)
 			}
 			index = Hu3DJointMotion(model->id, data);
 		} else {
-			index = CharMotionCreate(model->character, data_num[i]);
+			index = CharModelMotionCreate(model->character, data_num[i]);
 		}
 		if(index < 0) {
 			return -1;

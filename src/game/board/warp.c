@@ -1,11 +1,15 @@
 #include "game/board/warp.h"
+#include "game/board/char_wheel.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
+#include "game/board/tutorial.h"
 #include "game/wipe.h"
 #include "game/gamework_data.h"
+#include "game/hsfdraw.h"
 #include "game/hsfex.h"
 #include "game/objsub.h"
-#include "board_unsplit.h"
 #include "math.h"
 
 static void WarpInit(s32);
@@ -13,21 +17,6 @@ static void WarpLaunch(s32);
 static void WarpStartImpact(s32);
 static void WarpFall(s32);
 static void WarpImpact(s32);
-
-
-extern void BoardCharWheelInit(s32, s32);
-extern void BoardCharWheelSpeedSet(f32);
-extern void BoardCharWheelWait(void);
-extern s32 BoardCharWheelResultGet(void);
-extern f32 BoardModelMotionTimeGet(s16);
-extern void BoardModelHookReset(s16);
-extern s32 BoardModelHookSet(s16, char*, s16);
-extern void BoardPlayerPosSet(s32, f32, f32, f32);
-extern void BoardPlayerRotYSet(s32, f32);
-extern void Hu3DModelObjPosGet(s16, char*, Vec*);
-extern s32 BoardModelMotionEndCheck(s16);
-
-extern s32 boardTutorialData[4];
 
 static Vec warpPos;
 
@@ -72,7 +61,7 @@ void WarpProcess(void) {
         HuPrcVSleep();
     }
     
-    BoardRotateDiceNumbers(curr_player);
+    BoardPlayerIdleSet(curr_player);
     if (_CheckFlag(0x1000B) != 0) {
         BoardTutorialHookExec(18, 0);
         boardTutorialData[0] = 0;
@@ -139,7 +128,7 @@ static void WarpInit(s32 player) {
     Vec pos;
     s16 player_mdl = BoardPlayerModelGet(player);
 
-    warpSpringMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 1), NULL, 0);
+    warpSpringMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 1), NULL, 0);
     BoardSpacePosGet(0, GWPlayer[player].space_curr, &pos);
     warpYFloor = 1500.0f + pos.y;
     BoardModelLayerSet(warpSpringMdl, 2);
@@ -150,7 +139,7 @@ static void WarpInit(s32 player) {
     HuAudFXPlay(835);
     BoardPlayerRotYSet(player, 0.0f);
     BoardPlayerPosSet(player, 0.0f, 0.0f, 0.0f);
-    BoardRotateDiceNumbers(player);
+    BoardPlayerIdleSet(player);
 }
 
 static void WarpLaunch(s32 player) {
@@ -187,7 +176,7 @@ static void WarpStartImpact(s32 player) {
             warpImpactCnt++;
         }
     }
-    warpImpactMdl = BoardModelCreate(MAKE_DATA_NUM(DATADIR_BOARD, 2), NULL, 0);
+    warpImpactMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 2), NULL, 0);
     BoardModelVisibilitySet(warpImpactMdl, 0);
     BoardModelMotionSpeedSet(warpImpactMdl, 0.0f);
     BoardCameraMoveSet(0);
@@ -251,7 +240,7 @@ static void WarpImpact(s32 player) {
     HuPrcSleep(60);
     
     for (i = 0; i < warpImpactCnt; i++) {
-        BoardRotateDiceNumbers(warpImpactPlayer[i]);
+        BoardPlayerIdleSet(warpImpactPlayer[i]);
     }
     warpState = 6;
 }

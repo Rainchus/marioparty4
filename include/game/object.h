@@ -5,6 +5,8 @@
 #include "game/process.h"
 #include "game/dvd.h"
 
+#define OM_DLL_MAX 20
+
 #define OVL_DEFINE(name, path) name,
 
 typedef enum {
@@ -51,9 +53,16 @@ typedef struct om_obj_data {
 /* 0x40 */ s16 *model;
 /* 0x44 */ u16 mtncnt;
 /* 0x48 */ s16 *motion;
-/* 0x4C */ int work[4];
+/* 0x4C */ u32 work[4];
 /* 0x5C */ void *data;
 } omObjData;
+
+typedef struct om_dll_data {
+	char *name;
+	OSModuleHeader *module;
+	void *bss;
+	s32 ret;
+} omDllData;
 
 void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl);
 void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat);
@@ -83,12 +92,21 @@ OverlayID omCurrentOvlGet(void);
 
 void omDLLDBGOut(void);
 void omDLLInit(FileListEntry *ovl_list);
-int omDLLStart(s16 ovl, s16 dll);
-void omDLLNumEnd(s16 ovl, s16 arg2);
+int omDLLStart(s16 overlay, s16 flag);
+void omDLLNumEnd(s16 overlay, s16 flag);
+void omDLLEnd(s16 dllno, s16 flag);
+omDllData *omDLLLink(omDllData **dll_ptr, s16 overlay, s16 flag);
+void omDLLUnlink(omDllData *dll_ptr, s16 flag);
+s32 omDLLSearch(s16 overlay);
+void omDLLInfoDump(OSModuleInfo *module);
+void omDLLHeaderDump(OSModuleHeader *module);
 
-void omSysPauseEnable(BOOL flag);
-
-void omSystemKeyCheckSetup(Process *objman_process);
+void omOutView(omObjData *object);
+void omOutViewMulti(omObjData *object);
+void omSystemKeyCheckSetup(Process *objman);
+void omSystemKeyCheck(omObjData *object);
+void omSysPauseEnable(u8 flag);
+void omSysPauseCtrl(s16 flag);
 
 extern omObjData *omDBGSysKeyObj;
 extern Process *omwatchproc;
@@ -102,7 +120,16 @@ extern int omovlstat;
 extern char omUPauseFlag;
 extern s16 omSysExitReq;
 extern s16 omdispinfo;
-extern char omSysPauseEnableFlag;
+extern u8 omSysPauseEnableFlag;
 extern OverlayID omprevovl;
+
+extern omDllData *omDLLinfoTbl[OM_DLL_MAX];
+
+extern Vec CRot;
+extern Vec Center;
+extern float CZoom;
+extern Vec CRotM[16];
+extern Vec CenterM[16];
+extern float CZoomM[16];
 
 #endif

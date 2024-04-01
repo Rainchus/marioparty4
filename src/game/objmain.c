@@ -1,4 +1,5 @@
 #include "game/audio.h"
+#include "game/chrman.h"
 #include "game/esprite.h"
 #include "game/hsfdraw.h"
 #include "game/hsfman.h"
@@ -45,7 +46,7 @@ s16 omdispinfo;
 
 static omOvlHisData omovlhis[OM_OVL_HIS_MAX];
 
-char omSysPauseEnableFlag = TRUE;
+u8 omSysPauseEnableFlag = TRUE;
 OverlayID omprevovl = OVL_INVALID;
 
 static void omWatchOverlayProc(void);

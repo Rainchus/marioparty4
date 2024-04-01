@@ -5,15 +5,6 @@
 #include "game/wipe.h"
 #include "game/gamework_data.h"
 
-typedef struct {
-    /* 0x00 */ s16 unk00;
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s32 unk04;
-    /* 0x08 */ s32 unk08;
-    /* 0x0C */ s8 unk0C;
-    /* 0x0D */ s8 unk0D;
-} sndGrpTableData;
-
 static s32 HuSePlay(s32 arg0, UnkMsmStruct_01 *arg1);
 
 extern s16 omSysExitReq;
@@ -190,7 +181,7 @@ void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, fl
     }
 }
 
-void HuAudFXListnerUpdate(s32 arg0, s32 arg1) {
+void HuAudFXListnerUpdate(Vec *arg0, Vec *arg1) {
     if (omSysExitReq == 0) {
         msmSeUpdataListener(arg0, arg1);
     }
@@ -261,7 +252,7 @@ s32 HuAudSeqPlay(s16 arg0) {
     if (musicOffF != 0 || omSysExitReq != 0) {
         return 0;
     }
-    temp_r31 = msmMusPlay(arg0, 0);
+    temp_r31 = msmMusPlay(arg0, NULL);
     return temp_r31;
 }
 
@@ -346,111 +337,111 @@ s32 HuAudSStreamStatGet(s32 arg0) {
     return msmStreamGetStatus(arg0);
 }
 
-sndGrpTableData sndGrpTable[] = {
-    { OVL_BOOT     , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_INST     , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_M401     , 0x0012, 0,  2, 0x40, 0x40 },
-    { OVL_M402     , 0x0013, 0,  3, 0x30, 0x20 },
-    { OVL_M403     , 0x0014, 0,  1, 0xFF, 0xFF },
-    { OVL_M404     , 0x0015, 0,  1, 0xFF, 0xFF },
-    { OVL_M405     , 0x0016, 0,  1, 0x40, 0x20 },
-    { OVL_M406     , 0x0017, 0,  1, 0xFF, 0xFF },
-    { OVL_M407     , 0x0018, 0,  1, 0xFF, 0xFF },
-    { OVL_M408     , 0x0019, 0,  1, 0xFF, 0xFF },
-    { OVL_M409     , 0x001A, 0,  4, 0xFF, 0xFF },
-    { OVL_M410     , 0x001B, 0,  1, 0xFF, 0xFF },
-    { OVL_M411     , 0x001C, 0,  1, 0xFF, 0xFF },
-    { OVL_M412     , 0x001D, 0,  1, 0xFF, 0xFF },
-    { OVL_M413     , 0x001E, 0,  1, 0xFF, 0xFF },
-    { OVL_M414     , 0x001F, 0,  1, 0xFF, 0xFF },
-    { OVL_M415     , 0x0020, 0,  1, 0xFF, 0xFF },
-    { OVL_M416     , 0x0021, 0,  1, 0xFF, 0xFF },
-    { OVL_M417     , 0x0022, 0,  1, 0xFF, 0xFF },
-    { OVL_M418     , 0x0023, 0,  1, 0x40, 0x40 },
-    { OVL_M419     , 0x0024, 0,  6, 0xFF, 0xFF },
-    { OVL_M420     , 0x0025, 0,  1, 0xFF, 0xFF },
-    { OVL_M421     , 0x0026, 0,  1, 0xFF, 0xFF },
-    { OVL_M422     , 0x0027, 0,  1, 0xFF, 0xFF },
-    { OVL_M423     , 0x0028, 0,  1, 0xFF, 0xFF },
-    { OVL_M424     , 0x0029, 0,  1, 0xFF, 0xFF },
-    { OVL_M425     , 0x002A, 0,  1, 0xFF, 0xFF },
-    { OVL_M426     , 0x002B, 0,  1, 0xFF, 0xFF },
-    { OVL_M427     , 0x002C, 0,  1, 0x40, 0x48 },
-    { OVL_M428     , 0x002D, 0,  1, 0xFF, 0xFF },
-    { OVL_M429     , 0x002E, 0,  1, 0xFF, 0xFF },
-    { OVL_M430     , 0x002F, 0,  1, 0xFF, 0xFF },
-    { OVL_M431     , 0x0030, 0,  1, 0xFF, 0xFF },
-    { OVL_M432     , 0x0031, 0,  1, 0x30, 0x20 },
-    { OVL_M433     , 0x0032, 0,  1, 0xFF, 0xFF },
-    { OVL_M434     , 0x0033, 0,  1, 0xFF, 0xFF },
-    { OVL_M435     , 0x0034, 0,  9, 0x20, 0x40 },
-    { OVL_M436     , 0x0035, 0, 10, 0x20, 0x40 },
-    { OVL_M437     , 0x0036, 0,  1, 0x20, 0x40 },
-    { OVL_M438     , 0x0037, 0, 11, 0xFF, 0xFF },
-    { OVL_M439     , 0x0038, 0, 12, 0x30, 0x20 },
-    { OVL_M440     , 0x0039, 0,  1, 0xFF, 0xFF },
-    { OVL_M441     , 0x003A, 0,  1, 0xFF, 0xFF },
-    { OVL_M442     , 0x003B, 0,  1, 0xFF, 0xFF },
-    { OVL_M443     , 0x003C, 0,  1, 0xFF, 0xFF },
-    { OVL_M444     , 0x003D, 0,  1, 0xFF, 0xFF },
-    { OVL_M445     , 0x003E, 0,  1, 0xFF, 0xFF },
-    { OVL_M446     , 0x003F, 0,  1, 0xFF, 0xFF },
-    { OVL_M447     , 0x0040, 0,  1, 0xFF, 0xFF },
-    { OVL_M448     , 0x0041, 0,  1, 0xFF, 0xFF },
-    { OVL_M449     , 0x0042, 0,  1, 0xFF, 0xFF },
-    { OVL_M450     , 0x0043, 0, 13, 0x40, 0x40 },
-    { OVL_M451     , 0x0044, 0,  1, 0xFF, 0xFF },
-    { OVL_M453     , 0x0045, 0,  1, 0xFF, 0xFF },
-    { OVL_M455     , 0x0046, 0,  1, 0xFF, 0xFF },
-    { OVL_M456     , 0x0047, 0,  1, 0xFF, 0xFF },
-    { OVL_M457     , 0x0048, 0, 14, 0x40, 0x20 },
-    { OVL_M458     , 0x0049, 0, 15, 0x40, 0x20 },
-    { OVL_M459     , 0x004A, 0,  1, 0xFF, 0xFF },
-    { OVL_M460     , 0x004B, 0,  1, 0xFF, 0xFF },
-    { OVL_M461     , 0x004C, 0,  1, 0xFF, 0xFF },
-    { OVL_M462     , 0x004D, 0,  1, 0xFF, 0xFF },
-    { OVL_M463     , 0x004E, 0,  1, 0xFF, 0xFF },
-    { OVL_MENT     , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_MGMODE   , 0x0001, 0,  1, 0xFF, 0xFF },
-    { OVL_MODESEL  , 0x0000, 0,  1, 0xFF, 0xFF },
-    { OVL_MODELTEST, 0x0012, 0,  1, 0xFF, 0xFF },
-    { OVL_MSETUP   , 0x0000, 0,  1, 0xFF, 0xFF },
-    { OVL_MSTORY   , 0x0005, 0,  1, 0xFF, 0xFF },
-    { OVL_MSTORY2  , 0x0005, 0,  1, 0xFF, 0xFF },
-    { OVL_MSTORY3  , 0x0008, 0,  1, 0xFF, 0xFF },
-    { OVL_NIS      , 0x0009, 0,  1, 0xFF, 0xFF },
-    { OVL_OPTION   , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_PRESENT  , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_RESULT   , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_SAF      , 0x0000, 0,  2, 0x7F, 0x7F },
-    { OVL_SELMENU  , 0x0000, 0,  1, 0xFF, 0xFF },
-    { OVL_W01      , 0x0009, 0,  1, 0xFF, 0xFF },
-    { OVL_W02      , 0x000A, 0,  1, 0xFF, 0xFF },
-    { OVL_W03      , 0x000B, 0,  1, 0xFF, 0xFF },
-    { OVL_W04      , 0x000C, 0,  1, 0xFF, 0xFF },
-    { OVL_W05      , 0x000D, 0,  1, 0xFF, 0xFF },
-    { OVL_W06      , 0x000E, 0,  1, 0xFF, 0xFF },
-    { OVL_W10      , 0x000F, 0,  1, 0xFF, 0xFF },
-    { OVL_W20      , 0x0010, 0,  1, 0xFF, 0xFF },
-    { OVL_W21      , 0x0011, 0,  1, 0xFF, 0xFF },
-    { OVL_MPEX     , 0x0004, 0,  1, 0xFF, 0xFF },
-    { OVL_ZTAR     , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_E3SETUP  , 0x0000, 0,  1, 0xFF, 0xFF },
-    { OVL_STAFF    , 0xFFFF, 0,  1, 0xFF, 0xFF },
-    { OVL_INVALID  , 0xFFFF, 0,  1, 0x00, 0x00 }
+HuSndGrpData HuSndGrpTbl[] = {
+    { OVL_BOOT, -1, 0,  1, -1, -1 },
+    { OVL_INST, -1, 0,  1, -1, -1 },
+    { OVL_M401, 18, 0,  2, 64, 64 },
+    { OVL_M402, 19, 0,  3, 48, 32 },
+    { OVL_M403, 20, 0,  1, -1, -1 },
+    { OVL_M404, 21, 0,  1, -1, -1 },
+    { OVL_M405, 22, 0,  1, 64, 32 },
+    { OVL_M406, 23, 0,  1, -1, -1 },
+    { OVL_M407, 24, 0,  1, -1, -1 },
+    { OVL_M408, 25, 0,  1, -1, -1 },
+    { OVL_M409, 26, 0,  4, -1, -1 },
+    { OVL_M410, 27, 0,  1, -1, -1 },
+    { OVL_M411, 28, 0,  1, -1, -1 },
+    { OVL_M412, 29, 0,  1, -1, -1 },
+    { OVL_M413, 30, 0,  1, -1, -1 },
+    { OVL_M414, 31, 0,  1, -1, -1 },
+    { OVL_M415, 32, 0,  1, -1, -1 },
+    { OVL_M416, 33, 0,  1, -1, -1 },
+    { OVL_M417, 34, 0,  1, -1, -1 },
+    { OVL_M418, 35, 0,  1, 64, 64 },
+    { OVL_M419, 36, 0,  6, -1, -1 },
+    { OVL_M420, 37, 0,  1, -1, -1 },
+    { OVL_M421, 38, 0,  1, -1, -1 },
+    { OVL_M422, 39, 0,  1, -1, -1 },
+    { OVL_M423, 40, 0,  1, -1, -1 },
+    { OVL_M424, 41, 0,  1, -1, -1 },
+    { OVL_M425, 42, 0,  1, -1, -1 },
+    { OVL_M426, 43, 0,  1, -1, -1 },
+    { OVL_M427, 44, 0,  1, 64, 72 },
+    { OVL_M428, 45, 0,  1, -1, -1 },
+    { OVL_M429, 46, 0,  1, -1, -1 },
+    { OVL_M430, 47, 0,  1, -1, -1 },
+    { OVL_M431, 48, 0,  1, -1, -1 },
+    { OVL_M432, 49, 0,  1, 48, 32 },
+    { OVL_M433, 50, 0,  1, -1, -1 },
+    { OVL_M434, 51, 0,  1, -1, -1 },
+    { OVL_M435, 52, 0,  9, 32, 64 },
+    { OVL_M436, 53, 0, 10, 32, 64 },
+    { OVL_M437, 54, 0,  1, 32, 64 },
+    { OVL_M438, 55, 0, 11, -1, -1 },
+    { OVL_M439, 56, 0, 12, 48, 32 },
+    { OVL_M440, 57, 0,  1, -1, -1 },
+    { OVL_M441, 58, 0,  1, -1, -1 },
+    { OVL_M442, 59, 0,  1, -1, -1 },
+    { OVL_M443, 60, 0,  1, -1, -1 },
+    { OVL_M444, 61, 0,  1, -1, -1 },
+    { OVL_M445, 62, 0,  1, -1, -1 },
+    { OVL_M446, 63, 0,  1, -1, -1 },
+    { OVL_M447, 64, 0,  1, -1, -1 },
+    { OVL_M448, 65, 0,  1, -1, -1 },
+    { OVL_M449, 66, 0,  1, -1, -1 },
+    { OVL_M450, 67, 0, 13, 64, 64 },
+    { OVL_M451, 68, 0,  1, -1, -1 },
+    { OVL_M453, 69, 0,  1, -1, -1 },
+    { OVL_M455, 70, 0,  1, -1, -1 },
+    { OVL_M456, 71, 0,  1, -1, -1 },
+    { OVL_M457, 72, 0, 14, 64, 32 },
+    { OVL_M458, 73, 0, 15, 64, 32 },
+    { OVL_M459, 74, 0,  1, -1, -1 },
+    { OVL_M460, 75, 0,  1, -1, -1 },
+    { OVL_M461, 76, 0,  1, -1, -1 },
+    { OVL_M462, 77, 0,  1, -1, -1 },
+    { OVL_M463, 78, 0,  1, -1, -1 },
+    { OVL_MENT, -1, 0,  1, -1, -1 },
+    { OVL_MGMODE, 1, 0,  1, -1, -1 },
+    { OVL_MODESEL, 0, 0,  1, -1, -1 },
+    { OVL_MODELTEST, 18, 0,  1, -1, -1 },
+    { OVL_MSETUP, 0, 0,  1, -1, -1 },
+    { OVL_MSTORY, 5, 0,  1, -1, -1 },
+    { OVL_MSTORY2, 5, 0,  1, -1, -1 },
+    { OVL_MSTORY3, 8, 0,  1, -1, -1 },
+    { OVL_NIS, 9, 0,  1, -1, -1 },
+    { OVL_OPTION, -1, 0,  1, -1, -1 },
+    { OVL_PRESENT, -1, 0,  1, -1, -1 },
+    { OVL_RESULT, -1, 0,  1, -1, -1 },
+    { OVL_SAF, 0, 0,  2, 127, 127 },
+    { OVL_SELMENU, 0, 0,  1, -1, -1 },
+    { OVL_W01, 9, 0,  1, -1, -1 },
+    { OVL_W02, 10, 0,  1, -1, -1 },
+    { OVL_W03, 11, 0,  1, -1, -1 },
+    { OVL_W04, 12, 0,  1, -1, -1 },
+    { OVL_W05, 13, 0,  1, -1, -1 },
+    { OVL_W06, 14, 0,  1, -1, -1 },
+    { OVL_W10, 15, 0,  1, -1, -1 },
+    { OVL_W20, 16, 0,  1, -1, -1 },
+    { OVL_W21, 17, 0,  1, -1, -1 },
+    { OVL_MPEX, 4, 0,  1, -1, -1 },
+    { OVL_ZTAR, -1, 0,  1, -1, -1 },
+    { OVL_E3SETUP, 0, 0,  1, -1, -1 },
+    { OVL_STAFF, -1, 0,  1, -1, -1 },
+    { OVL_INVALID, -1, 0,  1, 0, 0 }
 };
 
 void HuAudDllSndGrpSet(u16 ovl) {
-    sndGrpTableData *var_r31;
+    HuSndGrpData *var_r31;
     s16 var_r29;
 
-    var_r31 = sndGrpTable;
+    var_r31 = HuSndGrpTbl;
     while (1) {
-        if (var_r31->unk00 == ovl) {
-            var_r29 = var_r31->unk02;
+        if (var_r31->ovl == ovl) {
+            var_r29 = var_r31->grpset;
             break;
         }
-        if (var_r31->unk00 == OVL_INVALID) {
+        if (var_r31->ovl == OVL_INVALID) {
             var_r29 = 0x12;
             break;
         }
@@ -459,14 +450,14 @@ void HuAudDllSndGrpSet(u16 ovl) {
     if (var_r29 != -1) {
         OSReport("SOUND ##########################\n");
         HuAudSndGrpSetSet(var_r29);
-        if (var_r31->unk04 != auxANoBak || var_r31->unk08 != auxBNoBak) {
-            msmSysSetAux(var_r31->unk04, var_r31->unk08);
-            OSReport("Change AUX %d,%d\n", var_r31->unk04, var_r31->unk08);
-            auxANoBak = var_r31->unk04;
-            auxBNoBak = var_r31->unk08;
+        if (var_r31->auxANo != auxANoBak || var_r31->auxBNo != auxBNoBak) {
+            msmSysSetAux(var_r31->auxANo, var_r31->auxBNo);
+            OSReport("Change AUX %d,%d\n", var_r31->auxANo, var_r31->auxBNo);
+            auxANoBak = var_r31->auxANo;
+            auxBNoBak = var_r31->auxBNo;
             HuPrcVSleep();
         }
-        HuAudAUXVolSet(var_r31->unk0C, var_r31->unk0D);
+        HuAudAUXVolSet(var_r31->auxAVol, var_r31->auxBVol);
         OSReport("##########################\n");
     }
 }
@@ -549,7 +540,7 @@ void HuAudAUXVolSet(s8 arg0, s8 arg1) {
 }
 
 void HuAudVoiceInit(s16 ovl) {
-    sndGrpTableData *var_r29;
+    HuSndGrpData *var_r29;
     OSTick temp_r23;
     s16 temp_r26;
     s16 temp_r25;
@@ -559,12 +550,12 @@ void HuAudVoiceInit(s16 ovl) {
     s16 i;
 
     if (ovl != OVL_INVALID) {
-        var_r29 = sndGrpTable;
+        var_r29 = HuSndGrpTbl;
         while (1) {
-            if (var_r29->unk00 == ovl && var_r29->unk02 == -1) {
+            if (var_r29->ovl == ovl && var_r29->grpset == -1) {
                 return;
             }
-            if (var_r29->unk00 == OVL_INVALID) {
+            if (var_r29->ovl == OVL_INVALID) {
                 break;
             }
             var_r29++;

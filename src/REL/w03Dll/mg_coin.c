@@ -1,13 +1,16 @@
 #include "dolphin.h"
+#include "game/chrman.h"
 #include "game/object.h"
 #include "REL/w03Dll.h"
-#include "board_unsplit.h"
 #include "game/board/main.h"
+#include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
+#include "game/minigame_seq.h"
+#include "game/hsfdraw.h"
+#include "game/pad.h"
 
-extern u16 HuPadBtnDown[4];
-extern s16 lbl_1_bss_C[14];
-
+//structs
 typedef struct someBits3 { //make sure this is defined correctly
     /* 0x00 */ struct {
         u8 unk00_bit0 : 1;
@@ -61,56 +64,12 @@ void fn_1_9474(s32 arg0);
 void fn_1_97F8(s32 arg0);
 void fn_1_9A1C(unkTemp2* arg0);
 
-double sin(double x);
-double cos(double x);
-double atan2(double y, double x);
-extern s16 MGSeqCreate(s32, ...);
-u8 MGSeqStatGet(s16);
-float BoardModelMotionTimeGet(s16 model);
-float BoardModelMotionMaxTimeGet(s16 model);
-s32 BoardModelMotionShiftSet(s16 model, s32 motion, float time, float shift_time, u32 attr);
-void Hu3DModelObjPosGet(s16 arg0, char *arg1, Vec *arg2);
-
-//DATA
+//data
 s32 lbl_1_data_450 = -1;
 s16 lbl_1_data_454 = -1;
 s16 lbl_1_data_456 = -1;
 s16 lbl_1_data_458 = -1;
 s32 lbl_1_data_45C[] = {0x00770021, 0x00770022, -1};
-char phei_str[] = "phei";
-s32 lbl_1_data_470[] = {
-    0x005F0066,
-	0x001A0066,
-	0x006D0066,
-	0x008A0066,
-	0x00850066,
-	0x00110066,
-	0x000D0066,
-	0x00810066
-};
-
-s32 lbl_1_data_490[] = {
-	0x005F0067,
-	0x001A0067,
-	0x006D0067,
-	0x008A0067,
-	0x00850067,
-	0x00110067,
-	0x000D0067,
-	0x00810067    
-};
-
-s8 lbl_1_data_4B0 = -1;
-
-s32 lbl_1_data_4B4[] = {
-    0x00000440,
-    0x00000441,
-    0x00000442,
-    0x00000443,
-    0x00000444
-};
-
-s8 lbl_1_data_4C8[] = {1, 5, 10, 15, 20, 20};
 
 //BSS
 char lbl_1_bss_150[0x30];
@@ -120,10 +79,9 @@ omObjData* lbl_1_bss_148;
 omObjData* lbl_1_bss_144;
 Process* lbl_1_bss_140;
 
-
 void fn_1_7ABC(void) {
     lbl_1_data_456 = BoardModelCreate(0x770020, lbl_1_data_45C, 0);
-    BoardModelHookSet(lbl_1_bss_C[7], phei_str, lbl_1_data_456);
+    BoardModelHookSet(lbl_1_bss_C[7], "phei", lbl_1_data_456);
     BoardModelMotionStart(lbl_1_data_456, 2, 0x40000002);
     BoardModelRotYSet(lbl_1_data_456, -45.0f);
 }
@@ -180,56 +138,69 @@ s32 fn_1_7D18(s32 arg0) {
     f32 arctan;
     
     BoardWinCreateChoice(2, 0x160015, 2, 0);
+
     if (GWPlayer[arg0].com != 0) {
         BoardComKeySetLeft();
     }
+
     BoardWinWait();
     BoardWinKill();
+
     if (BoardWinChoiceGet() != 0) {
         BoardWinCreate(2, 0x160018, 2);
         BoardWinWait();
         BoardWinKill();
         return 0;
     }
+
     BoardAudSeqPause(0, 1, 1000);
+
     sp14.x = 0.0f;
     sp14.y = 200.0f;
     sp14.z = 0.0f;
     sp8.x = -10.0f;
     sp8.y = 0.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(lbl_1_bss_C[7], &sp8, &sp14, 1500.0f, -1.0f, 0x15);
+
+    BoardCameraMotionStartEx(lbl_1_bss_C[7], &sp8, &sp14, 1500.0f, -1.0f, 21);
     space = GWPlayer[arg0].space_curr;
     temp_r28 = BoardSpaceLinkFlagSearch(0, space, 0x02000000);
     BoardPlayerPosGet(arg0, &sp2C);
     BoardSpacePosGet(0, temp_r28, &sp38);
     PSVECSubtract(&sp38, &sp2C, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    BoardPlayerRotYSet(arg0, 180.0 * (atan2(-sp20.x, -sp20.z) / 3.141592653589793));
+    BoardPlayerRotYSet(arg0, 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI));
     HuPrcSleep(0x1E);
     model = BoardModelIDGet(lbl_1_bss_C[7]);
-    Hu3DModelObjPosGet(model, phei_str, &sp38);
+    Hu3DModelObjPosGet(model, "phei", &sp38);
+
     if (GWPlayer[arg0].character == 5) {
         var_f31 = 54.000004f;
     } else {
         var_f31 = 39.0f;
     }
-    sp38.x = sp38.x + (var_f31 * sin((3.141592653589793 * (180.0f + BoardModelRotYGet(lbl_1_data_456))) / 180.0));
-    sp38.z = sp38.z + (var_f31 * cos((3.141592653589793 * (180.0f + BoardModelRotYGet(lbl_1_data_456))) / 180.0));
+
+    sp38.x = sp38.x + (var_f31 * sin((M_PI * (180.0f + BoardModelRotYGet(lbl_1_data_456))) / 180.0));
+    sp38.z = sp38.z + (var_f31 * cos((M_PI * (180.0f + BoardModelRotYGet(lbl_1_data_456))) / 180.0));
+
     BoardPlayerPosGet(arg0, &sp2C);
     BoardPlayerPosLerpStart(arg0, &sp2C, &sp38, 0x14);
+
     while (GWPlayer[arg0].moving != 0) {
         BoardModelPosGet(lbl_1_bss_C[10], &sp2C);
         BoardPlayerPosGet(arg0, &sp38);
         PSVECSubtract(&sp38, &sp2C, &sp20);
-        arctan = atan2(sp20.x, sp20.z) / 3.141592653589793 * 180.0;
+        arctan = atan2(sp20.x, sp20.z) / M_PI * 180.0;
         BoardModelRotYSet(lbl_1_bss_C[10], arctan);
         HuPrcVSleep();
     }
+
     BoardPlayerMotBlendSet(arg0, -0x2D, 7);
+
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
+
     return 1;
 }
 
@@ -239,16 +210,42 @@ void fn_1_8140(s32 arg0) {
     fn_1_81E0(arg0);
     BoardMusStart(1, 0x16, 0x7F, 0);
     temp_r31 = MGSeqCreate(3, 0);
+
     while (MGSeqStatGet(temp_r31)) {
         HuPrcVSleep();
     }
+
     fn_1_9384();
     fn_1_84A8(0);
+
     while (lbl_1_bss_144) {
         HuPrcVSleep();
     }
+
     fn_1_91B8();
 }
+
+s32 lbl_1_data_470[] = {
+    0x005F0066,
+	0x001A0066,
+	0x006D0066,
+	0x008A0066,
+	0x00850066,
+	0x00110066,
+	0x000D0066,
+	0x00810066
+};
+
+s32 lbl_1_data_490[] = {
+	0x005F0067,
+	0x001A0067,
+	0x006D0067,
+	0x008A0067,
+	0x00850067,
+	0x00110067,
+	0x000D0067,
+	0x00810067    
+};
 
 void fn_1_81E0(s32 arg0) {
     Point3d sp8;
@@ -337,10 +334,12 @@ void fn_1_8530(omObjData* arg0) {
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
+
     if (temp_r31->unk1 != 0) {
         temp_r31->unk1--;
         return;
     }
+
     switch (temp_r31->unk00_bit1) {
     case 0:
         fn_1_8698(arg0, temp_r31);
@@ -376,13 +375,15 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
             arg1->unk_04 = -1;
             arg1->unk00_bit1 = 1;
             temp = BoardModelMotionTimeGet(lbl_1_bss_C[7]);
+
             if (temp == 0.0f) {
                 temp = 1.0f;
             }
+
             if (lbl_1_bss_14E > 30) {
                 lbl_1_bss_14E = 30;
             }
-            //temp2 =
+
             OSu16tof32((u16*)&lbl_1_bss_14E, &arg0->rot.x); //??
             BoardModelAttrReset(lbl_1_data_456, 0x40000002);
             BoardModelAttrReset(lbl_1_bss_C[7], 0x40000002);
@@ -399,9 +400,10 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
             arg0->rot.y = 16.666666f * arg0->rot.x;
             arg0->scale.x = BoardModelMotionMaxTimeGet(lbl_1_bss_C[7]);
             HuWinDispOff(lbl_1_data_454);
-            BoardCameraMotionStartEx(-1, 0, 0, 1900.0f, -1.0f, 0x15);
+            BoardCameraMotionStartEx(-1, NULL, NULL, 1900.0f, -1.0f, 21);
             return;
         }
+
         MGSeqParamSet(arg1->unk_04, 1, arg1->unk2);
         arg1->unk3 = 60;
     }
@@ -409,8 +411,10 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
     
     var_r26 = GWPlayer[arg1->unk00_bit5].port;
     var_r28 = 0;
+    
     if ((GWPlayer[arg1->unk00_bit5].com) != 0) {
         temp_r27 = BoardRandMod(100);
+
         switch (GWPlayer[arg1->unk00_bit5].diff) {
         case 0:
             if (temp_r27 < 12) {
@@ -434,6 +438,7 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
     } else {
         var_r28 = HuPadBtnDown[var_r26] & 0x100;
     }
+
     if ((var_r28 & 0x100)) {
         arg0->trans.y += 0.5f;
         if (arg0->trans.y > 2.0f) {
@@ -456,16 +461,29 @@ void fn_1_8698(omObjData* arg0, someBits3* arg1) {
             }
         }
     }
+
     if ((lbl_1_data_450 != -1) && (HuAudFXStatusGet(lbl_1_data_450) == 0)) {
         lbl_1_data_450 = -1;
     }
+
     arg0->trans.x += arg0->trans.y;
+
     if (arg0->trans.x > 3.0f) {
         arg0->trans.x = 3.0f;
     }
+
     BoardPlayerMotionSpeedSet(arg1->unk00_bit5, arg0->trans.x);
     BoardModelMotionSpeedSet(lbl_1_data_456, arg0->trans.x);
 }
+
+s8 lbl_1_data_4B0 = -1;
+s32 lbl_1_data_4B4[] = {
+    0x00000440,
+    0x00000441,
+    0x00000442,
+    0x00000443,
+    0x00000444
+};
 
 void fn_1_8C08(omObjData* arg0, someBits3* arg1) {
     Point3d spC;
@@ -475,24 +493,28 @@ void fn_1_8C08(omObjData* arg0, someBits3* arg1) {
 
     BoardModelPosGet(lbl_1_data_456, &spC);
     spC.y += 1.6666666f;
+
     if (spC.y >= (arg0->trans.z + arg0->rot.y)) {
         spC.y = arg0->trans.z + arg0->rot.y;
         BoardModelMotionSpeedSet(lbl_1_bss_C[10], 0.0f);
         BoardPlayerMotionSpeedSet(arg1->unk00_bit5, 0.0f);
         BoardModelAttrSet(lbl_1_bss_C[7], 0x40000002);
         BoardModelAttrSet(lbl_1_data_456, 0x40000002);
-        arg1->unk00_bit1  = 2;
+        arg1->unk00_bit1 = 2;
         arg1->unk1 = 0x3C;
         arg1->unk2 = 0;
     }
+
     BoardModelPosSetV(lbl_1_data_456, &spC);
     temp_f30 = arg0->scale.x * ((spC.y - arg0->trans.z) / 500.0f);
     OSf32tos8(&temp_f30, &temp_r27);
     temp_r27 = temp_r27 / 30;
+
     if (lbl_1_data_4B0 != temp_r27) {
         lbl_1_data_4B0 = temp_r27;
         HuAudFXPlay(lbl_1_data_4B4[temp_r27]);
     }
+
     BoardModelMotionTimeSet(lbl_1_bss_C[7], temp_f30);
     BoardModelMotionTimeSet(lbl_1_bss_C[10], 0.2f * temp_f30);
     BoardPlayerMotionTimeSet(arg1->unk00_bit5, 2.0f * temp_f30);
@@ -512,9 +534,12 @@ void fn_1_8E44(omObjData* arg0, someBits3* arg1) {
         }
         BoardAudSeqFadeOut(1, 0x3E8);
     }
+
     OSu8tof32(&arg1->unk2, &temp_f31);
     BoardModelPosGet(lbl_1_data_456, &sp8);
+
     sp8.y = (sp8.y + (-0.08166666666666668 * temp_f31 * temp_f31));
+
     if (sp8.y < arg0->trans.z) {
         sp8.y = arg0->trans.z;
         arg1->unk00_bit1 = 3;
@@ -528,6 +553,7 @@ void fn_1_8E44(omObjData* arg0, someBits3* arg1) {
         HuAudFXPlay(0x449);
         BoardAudSeqPause(0, 0, 0x3E8);
     }
+
     arg1->unk2 += 1;
     BoardModelPosSetV(lbl_1_data_456, &sp8);
 }
@@ -537,20 +563,24 @@ void fn_1_9044(omObjData* arg0, someBits3* arg1) {
 
     BoardModelRotGet(lbl_1_data_456, &sp8);
     arg0->trans.y = BoardDAngleCalc(arg0->trans.y + arg0->trans.z);
+
     if (arg0->trans.y <= 2.0f) {
         if (arg0->trans.y >= -2.0) {
             arg0->trans.x *= 0.5f;
             if (arg0->trans.x <= 1.0f) {
                 arg0->trans.y = 0.0f;
-                BoardRotateDiceNumbers(arg1->unk00_bit5);
+                BoardPlayerIdleSet(arg1->unk00_bit5);
                 BoardModelMotionShiftSet(lbl_1_bss_C[10], 1, 0.0f, 10.0f, 0x40000001U);
                 arg1->unk00_bit0 = 1;
             }
         }
     }
-    sp8.z = arg0->trans.x * sin((3.141592653589793 *  arg0->trans.y) / 180.0);
+
+    sp8.z = arg0->trans.x * sin((M_PI * arg0->trans.y) / 180.0);
     BoardModelRotSetV(lbl_1_data_456, &sp8);
 }
+
+s8 lbl_1_data_4C8[] = {1, 5, 10, 15, 20, 20};
 
 void fn_1_91B8(void) {
     s8 temp_r3;
@@ -558,6 +588,7 @@ void fn_1_91B8(void) {
     if (lbl_1_bss_14E == 0) {
         lbl_1_bss_14E = 1;
     }
+
     temp_r3 = lbl_1_bss_14E / 6;
     lbl_1_bss_14C = lbl_1_data_4C8[temp_r3];
 }
@@ -575,14 +606,16 @@ void fn_1_9230(s32 arg0) {
     BoardCameraTargetPlayerSet(arg0);
     BoardCameraViewSet(1);
     BoardPlayerPosLerpStart(arg0, &sp20, &sp14, 0x14);
+
     while (GWPlayer[arg0].moving != 0) {
         BoardModelPosGet(lbl_1_bss_C[10], &sp20);
         BoardPlayerPosGet(arg0, &sp14);
         PSVECSubtract(&sp14, &sp20, &sp8);
-        rotY = atan2(sp8.x, sp8.z) / 3.141592653589793 * 180.0;
+        rotY = atan2(sp8.x, sp8.z) / M_PI * 180.0;
         BoardModelRotYSet(lbl_1_bss_C[10], rotY);
         HuPrcVSleep();
     }
+
     BoardModelRotYSet(lbl_1_bss_C[10], 0.0f);
     BoardCameraMotionWait();
 }
@@ -607,18 +640,24 @@ void fn_1_9474(s32 arg0) {
     BoardWinWait();
     BoardWinKill();
     BoardPlayerMotBlendSet(arg0, 0, 0xF);
+
     while (BoardPlayerMotBlendCheck(arg0) == 0) {
         HuPrcVSleep();
     }
+
     fn_1_97F8(arg0);
+
     while (lbl_1_bss_148) {
         HuPrcVSleep();
     }
+
     BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, 0U);
     HuPrcSleep(8);
+
     while (BoardPlayerMotionEndCheck(arg0) == 0) {
         HuPrcVSleep();
     }
+
     BoardWinCreate(2, 0x160018U, 2);
     BoardWinWait();
     BoardWinKill();
@@ -637,6 +676,7 @@ void fn_1_95B8(omObjData* arg0) {
     s32 temp;
 
     temp_r29 = OM_GET_WORK_PTR(arg0, unkTemp2);
+
     if ((temp_r29->unk00_bit0 != 0) || (BoardIsKill() != 0)) {
         fn_1_9A1C(temp_r29);
         HuMemDirectFree((void*)temp_r29->unk_0C);
@@ -644,6 +684,7 @@ void fn_1_95B8(omObjData* arg0) {
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
+
     var_r30 = temp_r29->unk_0C;
     
     for (var_r27 = i = 0; i < 20; i++, var_r30++) {
@@ -656,6 +697,7 @@ void fn_1_95B8(omObjData* arg0) {
         temp_r29->unk00_bit0 = 1;
         return;
     }
+    
     var_r25 = 0;
     for (i = 0; i < 20; i++) {
         var_r30 = &temp_r29->unk_0C[i];
@@ -670,7 +712,7 @@ void fn_1_95B8(omObjData* arg0) {
             var_r30->unk8.y += -0.08166667f * temp_f31 * temp_f31 * 0.75f;
             if (var_r30->unk8.y < temp_r29->unk8) {
                 var_r30->unk8.y = temp_r29->unk8;
-                CharModelCreateCoinParticle(1, &var_r30->unk8);
+                CharModelCoinEffectCreate(1, &var_r30->unk8);
                 BoardModelVisibilitySet(var_r30->unk_02, 0);
                 HuAudFXPlay(7);
                 BoardPlayerCoinsAdd(temp_r29->unk4, 1);
@@ -703,6 +745,7 @@ void fn_1_97F8(s32 arg0) {
     BoardPlayerPosGet(arg0, &sp8);
     temp_r30->unk8 = (80.0f + sp8.y);
     memset(temp_r30->unk_0C, 0, 0x190);
+
     for (i = 0; i < lbl_1_bss_14C; i++) {
         if (i == 0) {
             var_f31 = 0.0f;
@@ -711,8 +754,8 @@ void fn_1_97F8(s32 arg0) {
         }
         temp_r31 = &temp_r30->unk_0C[i];
         temp_r31->unk0 = 1;
-        temp_r31->unk8.x = sp8.x + (50.0f * sin((3.141592653589793 * var_f31) / 180.0));
-        temp_r31->unk8.z = sp8.z + (50.0f * cos((3.141592653589793 * var_f31) / 180.0));
+        temp_r31->unk8.x = sp8.x + (50.0f * sin((M_PI * var_f31) / 180.0));
+        temp_r31->unk8.z = sp8.z + (50.0f * cos((M_PI * var_f31) / 180.0));
         temp_r31->unk8.y = 600.0f + sp8.y + (500.0f * BoardRandFloat());
         temp_r31->unk1 = 0;
         temp_r31->unk4 = BoardRandFloat() * 360.0f;
@@ -729,5 +772,3 @@ void fn_1_9A1C(unkTemp2* arg0) {
         BoardModelKill(temp->unk_02);
     }
 }
-
-char mg_pad[] = "\0\0\0\0\0\0";
