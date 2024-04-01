@@ -1092,7 +1092,7 @@ config.libs = [
     Rel('w02Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w02Dll/main.c"),
+            Object(Matching, "REL/w02Dll/main.c"),
             Object(NonMatching, "REL/w02Dll/dice.c"),
             Object(NonMatching, "REL/w02Dll/gamble.c"),
             Object(NonMatching, "REL/w02Dll/mg_coin.c"),

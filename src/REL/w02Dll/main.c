@@ -31,22 +31,22 @@ u8* lbl_1_bss_0;
 
 /* DATA */
 static BoardMapObject lbl_1_data_0[0x10] = {
-   {{2550.0f,  0.0f,  -450.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000C)},
-   {{-3150.0f, 0.0f, -1350.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000D)},
-   {{-3150.0f, 0.0f,  1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000E)},
-   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0008)},
-   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0009)},
-   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000A)},
-   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x000B)},
-   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0011)},
-   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0012)},
-   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0015)},
-   {{-300.0f,  0.0f,  -900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0076, 0x0016)},
-   {{1175.0f,  0.0f,  -125.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
-   {{-525.0f,  0.0f,  -825.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
-   {{-2225.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
-   {{1925.0f,  0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)},
-   {{150.0f,   0.0f,  1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(0x0002, 0x0005)}
+   {{2550.0f,  0.0f,  -450.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x000C)},
+   {{-3150.0f, 0.0f, -1350.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x000D)},
+   {{-3150.0f, 0.0f,  1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x000E)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x0008)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x0009)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x000A)},
+   {{-150.0f,  0.0f,   900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x000B)},
+   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x0011)},
+   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x0012)},
+   {{1350.0f,  0.0f,  -300.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x0015)},
+   {{-300.0f,  0.0f,  -900.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_W02, 0x0016)},
+   {{1175.0f,  0.0f,  -125.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x0005)},
+   {{-525.0f,  0.0f,  -825.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x0005)},
+   {{-2225.0f, 0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x0005)},
+   {{1925.0f,  0.0f, -2100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x0005)},
+   {{150.0f,   0.0f,  1650.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, DATA_MAKE_NUM(DATADIR_BGUEST, 0x0005)}
 };
 
 // Special Models
@@ -56,14 +56,14 @@ s16 lbl_1_data_284 = -1;
 s16 lbl_1_data_286 = -1;
 
 s32 lbl_1_data_288[] = {
-    DATA_MAKE_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(DATADIR_W02, 0x0004),
     DATA_NUM_LISTEND
 };
 s32 lbl_1_data_290[] = {
-    DATA_MAKE_NUM(0x0076, 0x0004),
-    DATA_MAKE_NUM(0x0076, 0x0004),
-    DATA_MAKE_NUM(0x0076, 0x0004),
-    DATA_MAKE_NUM(0x0076, 0x0004),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 0x0009),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 0x0006),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 0x0007),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 0x0008),
     DATA_NUM_LISTEND,
     0x00000000 // Padding
 };
