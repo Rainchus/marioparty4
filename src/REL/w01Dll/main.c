@@ -26,16 +26,10 @@
 #include "game/board/ui.h"
 #include "game/board/view.h"
 #include "game/board/window.h"
+#include "game/board/map_object.h"
 
 #include "dolphin.h"
 #include "math.h"
-
-typedef struct {
-    /* 0x00 */ Vec unk00;
-    /* 0x0C */ Vec unk0C;
-    /* 0x18 */ Vec unk18;
-    /* 0x24 */ s32 unk24;
-} UnkW01Struct; // Size 0x28
 
 typedef struct {
     struct {
@@ -168,7 +162,45 @@ static void fn_1_9920(omObjData *arg0);
 static void fn_1_9A24(Bss20Work *arg0);
 static void fn_1_9BBC(Bss20Work *arg0);
 
+
+static BoardMapObject lbl_1_data_0[33] = {
+    { {      0.0f,   0.0f,      0.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 8)    },
+    { {      0.0f, 700.0f,    300.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 9)    },
+    { {  -2025.0f, 100.0f,   1950.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
+    { {   1725.0f, 200.0f,  -1650.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
+    { { 2757.974f, 200.0f, -536.781f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
+    { {  -2750.0f, 300.0f,  -2150.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 12)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 13)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 14)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 15)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 16)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 16)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 16)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 17)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 18)   },
+    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 18)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 21)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 22)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 23)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 24)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 25)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 26)   },
+    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 27)   },
+    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 3)    },
+    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
+    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
+    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
+    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 5)    },
+    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 3)    },
+    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
+    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
+    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
+    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 5)    }
+};
+
 s16 lbl_1_bss_6C4[33];
+
 static s32 *lbl_1_bss_6C0;
 static s16 lbl_1_bss_6B6[5];
 static s8 lbl_1_bss_6B4;
@@ -211,42 +243,6 @@ static Process *lbl_1_bss_8;
 static Process *lbl_1_bss_4;
 UnkBoardDataStruct *lbl_1_bss_0;
 
-static UnkW01Struct lbl_1_data_0[33] = {
-    { {      0.0f,   0.0f,      0.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 8)    },
-    { {      0.0f, 700.0f,    300.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 9)    },
-    { {  -2025.0f, 100.0f,   1950.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
-    { {   1725.0f, 200.0f,  -1650.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
-    { { 2757.974f, 200.0f, -536.781f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
-    { {  -2750.0f, 300.0f,  -2150.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_BGUEST, 0) },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 12)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 13)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 14)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 15)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 16)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 16)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 16)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 17)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 18)   },
-    { {  -2550.0f, 300.0f,  -2250.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 18)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 21)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 22)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 23)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 24)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 25)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 26)   },
-    { {   3000.0f, 200.0f,   -450.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 27)   },
-    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 3)    },
-    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
-    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
-    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
-    { {   1200.0f,   0.0f,   1200.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 5)    },
-    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 3)    },
-    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
-    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
-    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 4)    },
-    { {  -1800.0f, 200.0f,   -900.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, DATA_MAKE_NUM(DATADIR_W01, 5)    }
-};
-
 static s16 lbl_1_data_528 = -1;
 static s16 lbl_1_data_52A = -1;
 static s16 lbl_1_data_52C = -1;
@@ -264,7 +260,7 @@ static s32 lbl_1_data_53C[] = {
 };
 
 void BoardCreate(void) {
-    UnkW01Struct *temp_r30;
+    BoardMapObject *temp_r30;
     s32 sp8;
     s32 i;
 
@@ -290,16 +286,16 @@ void BoardCreate(void) {
     BoardLightHookSet(fn_1_730, fn_1_774);
     for (i = 0; i < 33; i++) {
         temp_r30 = &lbl_1_data_0[i];
-        if (temp_r30->unk24 != -1) {
+        if (temp_r30->data_num != -1) {
             if (i == 2 || i == 3 || i == 4 || i == 5) {
                 lbl_1_bss_6C0 = lbl_1_data_53C;
             } else {
                 lbl_1_bss_6C0 = NULL;
             }
-            lbl_1_bss_6C4[i] = BoardModelCreate(temp_r30->unk24, lbl_1_bss_6C0, 0);
-            BoardModelPosSetV(lbl_1_bss_6C4[i], &temp_r30->unk00);
-            BoardModelRotSetV(lbl_1_bss_6C4[i], &temp_r30->unk0C);
-            BoardModelScaleSetV(lbl_1_bss_6C4[i], &temp_r30->unk18);
+            lbl_1_bss_6C4[i] = BoardModelCreate(temp_r30->data_num, lbl_1_bss_6C0, 0);
+            BoardModelPosSetV(lbl_1_bss_6C4[i], &temp_r30->pos);
+            BoardModelRotSetV(lbl_1_bss_6C4[i], &temp_r30->rot);
+            BoardModelScaleSetV(lbl_1_bss_6C4[i], &temp_r30->scale);
             BoardModelVisibilitySet(lbl_1_bss_6C4[i], 1);
         }
     }

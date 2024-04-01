@@ -8,16 +8,16 @@
 static s16 sprList[11];
 static s16 sprCurr;
 
-void CloseTutorial(void) {
+static void CloseTutorial(void) {
     s32 port;
     s32 i;
 
     if (tutorialDoneF == 0) {
         if (WipeStatGet() != 0) {
-            HuWinDispOff(w10ExitWin);
+            HuWinDispOff(tutorialExitWin);
             return;
         }
-        HuWinDispOn(w10ExitWin);
+        HuWinDispOn(tutorialExitWin);
         if (BoardIsKill() != 0) {
             return;
         }
