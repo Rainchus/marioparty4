@@ -289,7 +289,7 @@ void BoardSaveInit(s32 board)
 	GWSystem.player_curr = -1;
 	GWSystem.bowser_loss = 0;
 	GWSystem.bowser_event = 0;
-	GWSystem.unk_32 = 1;
+	GWSystem.lucky_value = 1;
 	GWSystem.mg_next = 0;
 	GWMGTypeSet(0);
 	GWSystem.unk_38 = 0;
@@ -298,12 +298,12 @@ void BoardSaveInit(s32 board)
 	for(i=0; i<4; i++) {
 		s32 party_flag;
 		BoardPlayerAutoSizeSet(i, 0);
-		GWPlayer[i].field00_bit9 = 0;
+		GWPlayer[i].draw_ticket = 0;
 		GWPlayer[i].color = 0;
 		GWPlayer[i].bowser_suit = 0;
-		GWPlayer[i].field08_bit3 = 0;
+		GWPlayer[i].jump = 0;
 		GWPlayer[i].space_shock = 0;
-		GWPlayer[i].field02_bit1 = 0;
+		GWPlayer[i].spark = 0;
 		GWPlayer[i].show_next = 1;
 		BoardPlayerCoinsSet(i, 0);
 		if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
@@ -661,7 +661,7 @@ static void CreateBoard(void)
 		reset_unk32 = 0;
 	}
 	if(!reset_unk32) {
-		GWSystem.unk_32 = 1;
+		GWSystem.lucky_value = 1;
 	}
 	guest_status = BoardDataDirReadAsync(DATADIR_BGUEST);
 	if(guest_status != -1) {

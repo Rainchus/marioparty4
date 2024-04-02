@@ -2662,7 +2662,7 @@ static void ExecItemBag(void) {
             temp_r29->user_data = (void*) sp8[var_r30];
             temp_r29 = HuPrcChildCreate(ExecItemBagShow, 0x2004, 0x1000, 0, HuPrcCurrentGet());
             temp_r29->user_data = temp_r24;
-            while (GWPlayer[currItemRestore].field08_bit3) {
+            while (GWPlayer[currItemRestore].jump) {
                 HuPrcVSleep();
             }
             HuPrcChildWatch();

@@ -43,7 +43,7 @@ typedef struct system_state {
         u8 bowser_loss : 4;
         u8 bowser_event : 4;
     };
-/* 0x32 */ s8 unk_32;
+/* 0x32 */ s8 lucky_value;
 /* 0x34 */ u16 mg_next;
 /* 0x36 */ s16 mg_type;
 /* 0x38 */ u16 unk_38;
@@ -57,12 +57,12 @@ typedef struct player_state {
         u16 com : 1;
         u16 character : 4;
         u16 auto_size : 2;
-        u16 field00_bit9 : 1;
-        u16 field00_bitA : 6;
+        u16 draw_ticket : 1;
+        u16 ticket_player : 6;
     };
 /* 0x02 */ struct {
         u8 team : 1;
-        u8 field02_bit1 : 1;
+        u8 spark : 1;
         u8 player_idx : 2;
     };
 /* 0x03 */ s8 handicap;
@@ -71,13 +71,13 @@ typedef struct player_state {
 /* 0x08 */ struct {
         u16 color : 2;
         u16 moving : 1;
-        u16 field08_bit3 : 1;
+        u16 jump : 1;
         u16 show_next : 1;
         u16 size : 2;
-        u16 field08_bit7 : 2;
+        u16 num_dice : 2;
         u16 rank : 2;
         u16 bowser_suit : 1;
-        u16 field08_bit11 : 1;
+        u16 team_backup : 1;
     };
 /* 0x0A */ s8 roll;
 /* 0x0C */ s16 space_curr;
@@ -104,6 +104,14 @@ typedef struct player_state {
 /* 0x2E */ char unk_2E[2];
 } PlayerState; //size of 0x30
 
+typedef struct pause_backup_config {
+	u8 explain_mg : 1;
+	u8 show_com_mg : 1;
+	u8 mg_list : 2;
+	u8 mess_speed : 2;
+	u8 save_mode : 2;
+} PauseBackupConfig;
+
 typedef struct game_stat {
 /* 0x0 */ s16 unk_00;
 /* 0x2 */ u8 language;
@@ -127,20 +135,8 @@ typedef struct game_stat {
         u8 field10E_bit5 : 1;
         u8 field10E_bit6 : 1;
     };
-/* 0x10F */ struct {
-        u8 field10F_bit0 : 1;
-        u8 field10F_bit1 : 1;
-        u8 field10F_bit2 : 2;
-        u8 field10F_bit4 : 2;
-        u8 field10F_bit6 : 2;
-    };
-/* 0x110 */ struct {
-        u8 field110_bit0 : 1;
-        u8 field110_bit1 : 1;
-        u8 field110_bit2 : 2;
-        u8 field110_bit4 : 2;
-        u8 field110_bit6 : 2;
-    };
+/* 0x10F */ PauseBackupConfig story_pause; 
+/* 0x110 */ PauseBackupConfig party_pause; 
 } GameStat;
 
 extern PlayerConfig GWPlayerCfg[4];
@@ -227,9 +223,14 @@ static inline s32 GWPlayerTeamGet(s32 player)
     return GWPlayer[player].team;
 }
 
-static inline s32 GWPlayerSpaceCurrGet(s32 player)
+static inline s32 GWLuckyValueGet(void)
 {
-    return GWPlayer[player].space_curr;
+    return GWSystem.lucky_value;
+}
+
+static inline void GWLuckyValueSet(s32 value)
+{
+    GWSystem.lucky_value = value;
 }
 
 #endif

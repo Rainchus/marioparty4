@@ -177,17 +177,17 @@ static void PauseExit(void) {
         _ClearFlag(0xB);
     }
     if (GWPartyGet() == 0) {
-        GWGameStat.field10F_bit0 = GWMGExplainGet();
-        GWGameStat.field10F_bit1 = GWMGShowComGet();
-        GWGameStat.field10F_bit2 = GWMGListGet();
-        GWGameStat.field10F_bit4 = GWMessSpeedGet();
-        GWGameStat.field10F_bit6 = GWSaveModeGet();
+        GWGameStat.story_pause.explain_mg = GWMGExplainGet();
+        GWGameStat.story_pause.show_com_mg = GWMGShowComGet();
+        GWGameStat.story_pause.mg_list = GWMGListGet();
+        GWGameStat.story_pause.mess_speed = GWMessSpeedGet();
+        GWGameStat.story_pause.save_mode = GWSaveModeGet();
     } else {
-        GWGameStat.field110_bit0 = GWMGExplainGet();
-        GWGameStat.field110_bit1 = GWMGShowComGet();
-        GWGameStat.field110_bit2 = GWMGListGet();
-        GWGameStat.field110_bit4 = GWMessSpeedGet();
-        GWGameStat.field110_bit6 = GWSaveModeGet();
+        GWGameStat.party_pause.explain_mg = GWMGExplainGet();
+        GWGameStat.party_pause.show_com_mg = GWMGShowComGet();
+        GWGameStat.party_pause.mg_list = GWMGListGet();
+        GWGameStat.party_pause.mess_speed = GWMessSpeedGet();
+        GWGameStat.party_pause.save_mode = GWSaveModeGet();
     }
     mainProcess = NULL;
 }

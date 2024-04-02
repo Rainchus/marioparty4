@@ -560,7 +560,7 @@ static void ExecLottery(void) {
         HuPrcVSleep();
     }
     BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[0], 0.0f, 10.0f, 0x40000001);
-    if (GWPlayer[temp_r31].field00_bit9 == 0 && GWSystem.max_turn - GWSystem.turn >= 5) {
+    if (GWPlayer[temp_r31].draw_ticket == 0 && GWSystem.max_turn - GWSystem.turn >= 5) {
         SetupTicket(temp_r31);
         ShowTicket();
         var_r27 = 1;
@@ -737,7 +737,7 @@ static void ShowTicket(void) {
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
         return;
     }
-    sp8 = GWPlayer[GWSystem.player_curr].field00_bitA;
+    sp8 = GWPlayer[GWSystem.player_curr].ticket_player;
     var_r28 = (u8*) &sp8;
     temp_r31 = HuSprGrpCreate(4);
     BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 20), 30001, 0, &spA);
@@ -798,8 +798,8 @@ static void SetupTicket(s32 arg0) {
     s32 var_r31;
 
     for (var_r30 = var_r31 = 0; var_r31 < 4; var_r31++) {
-        if (arg0 != var_r31 && GWPlayer[var_r31].field00_bit9 != 0) {
-            sp8[var_r30] = GWPlayer[var_r31].field00_bitA;
+        if (arg0 != var_r31 && GWPlayer[var_r31].draw_ticket != 0) {
+            sp8[var_r30] = GWPlayer[var_r31].ticket_player;
             var_r30++;
         }
     }
@@ -815,8 +815,8 @@ static void SetupTicket(s32 arg0) {
             break;
         }
     }
-    GWPlayer[arg0].field00_bitA = var_r29;
-    GWPlayer[arg0].field00_bit9 = 1;
+    GWPlayer[arg0].ticket_player = var_r29;
+    GWPlayer[arg0].draw_ticket = 1;
 }
 
 static void LotteryInlineFunc00(s32 arg0, s32 arg1) {
