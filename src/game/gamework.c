@@ -105,11 +105,15 @@ static inline void ResetFlag(GameStat *game_stat)
     game_stat->field10E_bit4 = 0;
     game_stat->field10E_bit5 = 0;
     game_stat->field10E_bit6 = 0;
-    game_stat->field10F_bit0 = game_stat->field110_bit0 = 1;
-    game_stat->field10F_bit1 = game_stat->field110_bit1 = 1;
-    game_stat->field10F_bit2 = game_stat->field110_bit2 = 0;
-    game_stat->field10F_bit4 = game_stat->field110_bit4 = 1;
-    game_stat->field10F_bit6 = game_stat->field110_bit6 = 0;
+}
+
+static inline void ResetPauseConfig(GameStat *game_stat)
+{
+    game_stat->story_pause.explain_mg = game_stat->party_pause.explain_mg = 1;
+    game_stat->story_pause.show_com_mg = game_stat->party_pause.show_com_mg = 1;
+    game_stat->story_pause.mg_list = game_stat->party_pause.mg_list = 0;
+    game_stat->story_pause.mess_speed = game_stat->party_pause.mess_speed = 1;
+    game_stat->story_pause.save_mode = game_stat->party_pause.save_mode = 0;
 }
 
 void GWGameStatReset(void)
@@ -130,6 +134,7 @@ void GWGameStatReset(void)
     ResetBoardRecord(game_stat);
     ResetPresent(game_stat);
     ResetFlag(game_stat);
+	ResetPauseConfig(game_stat);
     memcpy(&GWGameStat, &GWGameStatDefault, sizeof(GameStat));
     ResetBoardSettings();
 }

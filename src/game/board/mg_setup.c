@@ -164,7 +164,7 @@ static void ExecMGSetup(void) {
     luckyF = 0;
     mgNext = 0;
     GWSystem.player_curr = -1;
-    GWSystem.unk_32 = 1;
+	GWLuckyValueSet(1);
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         activeMG[var_r31].unk_00 = -1;
         activeMG[var_r31].unk_04 = 0;
@@ -219,7 +219,7 @@ static void ExecMGSetup(void) {
         while (setupObjGet() != 7) {
             HuPrcVSleep();
         }
-        switch (GWSystem.unk_32) {
+        switch (GWLuckyValueGet()) {
             case 1:
                 var_r30 = luckyMessTbl[GWBoardGet()] + 1;
                 break;
@@ -390,11 +390,11 @@ static void SetupStatusLayout(void) {
             for (var_r28 = var_r31 = 0; var_r31 < 4; var_r31++) {
                 if (GWPlayer[var_r31].color == 2) {
                     var_r27 = var_r31;
-                    GWPlayer[var_r31].field08_bit11 = GWPlayerTeamGet(var_r31);
+                    GWPlayer[var_r31].team_backup = GWPlayerTeamGet(var_r31);
                     GWPlayerCfg[var_r31].group = 0;
                     var_r28++;
                 } else {
-                    GWPlayer[var_r31].field08_bit11 = GWPlayerTeamGet(var_r31);
+                    GWPlayer[var_r31].team_backup = GWPlayerTeamGet(var_r31);
                     GWPlayerCfg[var_r31].group = 1;
                     var_r26 = var_r31;
                 }
@@ -415,11 +415,11 @@ static void SetupStatusLayout(void) {
             
             for (var_r31 = 0; var_r31 < 4; var_r31++) {
                 if (var_r31 == var_r26) {
-                    GWPlayer[var_r31].field08_bit11 = GWPlayerTeamGet(var_r31);
+                    GWPlayer[var_r31].team_backup = GWPlayerTeamGet(var_r31);
                     GWPlayerCfg[var_r31].group = 0;
                 } else {
                     BoardStatusTargetPosSet(var_r31, &statusLayout1Vs3[var_r29++]);
-                    GWPlayer[var_r31].field08_bit11 = GWPlayerTeamGet(var_r31);
+                    GWPlayer[var_r31].team_backup = GWPlayerTeamGet(var_r31);
                     GWPlayerCfg[var_r31].group = 1;
                 }
             }
@@ -429,11 +429,11 @@ static void SetupStatusLayout(void) {
         for (var_r29 = var_r31 = 0; var_r31 < 4; var_r31++) {
             if (GWPlayer[var_r31].color == 2) {
                 BoardStatusTargetPosSet(var_r31, &statusLayout2Vs2[var_r29++]);
-                GWPlayer[var_r31].field08_bit11 = GWPlayerTeamGet(var_r31);
+                GWPlayer[var_r31].team_backup = GWPlayerTeamGet(var_r31);
                 GWPlayerCfg[var_r31].group = 0;
             } else {
                 BoardStatusTargetPosSet(var_r31, &statusLayout2Vs2[var_r30++]);
-                GWPlayer[var_r31].field08_bit11 = GWPlayerTeamGet(var_r31);
+                GWPlayer[var_r31].team_backup = GWPlayerTeamGet(var_r31);
                 GWPlayerCfg[var_r31].group = 1;
             }
         }
@@ -923,10 +923,6 @@ static void HideLuckyValue(void) {
     HuSprAttrSet(temp_r31->unk_00[0], 9, 4);
 }
 
-static inline s32 GWMGUnk32Get(void) {
-    return GWSystem.unk_32;
-}
-
 static void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
     s32 var_r23;
     f32 temp_f29;
@@ -953,11 +949,11 @@ static void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
             arg0->unk_03 = 0;
             temp_r3 = BoardRandMod(0x64U);
             if (temp_r3 < 0x55) {
-                GWSystem.unk_32 = 2;
+				GWLuckyValueSet(2);
                 return;
             }
             if (temp_r3 >= 0x5F) return;
-            GWSystem.unk_32 = 3;
+			GWLuckyValueSet(3);
             return;
         case 1:
             if (arg0->unk_03 < 0x5A) {
@@ -986,7 +982,7 @@ static void UpdateLuckyValue(bitcopy* arg0, omObjData* arg1) {
             }
             HuSprBankSet(temp_r27->unk_00[0], 9, luckyValue);
             if (arg0->unk_08 < 0.05f) {
-                if (luckyValue != GWMGUnk32Get() - 1) {
+                if (luckyValue != GWLuckyValueGet() - 1) {
                     arg0->unk_08 *= 1.0309278f;
                     return;
                 }

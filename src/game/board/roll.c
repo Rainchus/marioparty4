@@ -154,7 +154,7 @@ s32 BoardRollExec(s32 arg0) {
     if (GWPlayer[rollPlayer].bowser_suit != 0) {
         diceSize = 3;
     }
-    GWPlayer[arg0].field08_bit7 = numDice;
+    GWPlayer[arg0].num_dice = numDice;
     rollProc = HuPrcChildCreate(RollMain, 0x2005, 0x6000, 0, boardMainProc);
     HuPrcDestructorSet2(rollProc, RollDestroy);
     while (rollProc != NULL) {
@@ -262,7 +262,7 @@ static void RollMain(void) {
             HuPrcVSleep();
         }
         DiceSetHit(i);
-        while (GWPlayer[rollPlayer].field08_bit3 != 0) {
+        while (GWPlayer[rollPlayer].jump != 0) {
             HuPrcVSleep();
         }
     }

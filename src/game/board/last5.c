@@ -690,7 +690,7 @@ static void Last5Main(void)
 	}
 	SetLotteryDrawState(1);
 	SetLast5RouletteState(3);
-	while(GWPlayer[temp_r30].field08_bit3) {
+	while(GWPlayer[temp_r30].jump) {
 		HuPrcVSleep();
 	}
 	while(GetLast5RouletteState() != 0) {
@@ -1062,7 +1062,7 @@ static void ExecLotteryDraw(void)
 	Vec player_end;
 	Vec player_start;
 
-	if(GWPlayer[0].field00_bit9 || GWPlayer[1].field00_bit9 || GWPlayer[2].field00_bit9 || GWPlayer[3].field00_bit9) {
+	if(GWPlayer[0].draw_ticket || GWPlayer[1].draw_ticket || GWPlayer[2].draw_ticket || GWPlayer[3].draw_ticket) {
 		BoardWinCreate(2, messBase+1, BoardWinPortraitGetStar());
 		BoardWinWait();
 		BoardModelPosGet(hostMdl, &host_end);
@@ -1257,13 +1257,13 @@ static void InitLotteryTicket(void)
 	s32 character;
 	s16 sprite;
 	s32 member;
-	u8 ticket_mask;
+	u8 ticket_player;
 	omObjData *object;
 	TicketWork *work;
 	currTicket = 0;
 	lotteryTicketObj[0] = lotteryTicketObj[1] = lotteryTicketObj[2] = lotteryTicketObj[3] = NULL;
 	for(numTickets=i=0; i<4; i++) {
-		if(!GWPlayer[i].field00_bit9) {
+		if(!GWPlayer[i].draw_ticket) {
 			continue;
 		}
 		object = omAddObjEx(boardObjMan, 257, 0, 0, -1, UpdateLotteryTicket);
@@ -1299,20 +1299,20 @@ static void InitLotteryTicket(void)
 		HuSprAttrSet(work->group, 4, HUSPR_ATTR_DISPOFF);
 		HuSprAttrSet(work->group, 4, HUSPR_ATTR_ADDCOL);
 		HuSprScaleSet(work->group, 4, 1.3f, 1.3f);
-		ticket_mask = GWPlayer[i].field00_bitA;
+		ticket_player = GWPlayer[i].ticket_player;
 		j=3;
 		while(j>=0) {
 			s32 player_spr;
 			
 			j--;
-			work->character[j] = GWPlayer[ticket_mask & 0x3].character;
+			work->character[j] = GWPlayer[ticket_player & 0x3].character;
 			player_spr = playerSprTbl[work->character[j]];
 			member = j+1;
 			BoardSpriteCreate(player_spr, 1500, NULL, &sprite);
 			HuSprGrpMemberSet(work->group, member, sprite);
 			HuSprAttrSet(work->group, member, HUSPR_ATTR_LINEAR);
 			HuSprPosSet(work->group, member, playerOfsTbl[j][0], playerOfsTbl[j][1]);
-			ticket_mask >>= 2;
+			ticket_player >>= 2;
 		}
 		numTickets++;
 	}
