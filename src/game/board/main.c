@@ -322,8 +322,8 @@ void BoardSaveInit(s32 board)
 		GWPlayer[i].coins_max = 0;
 		GWPlayer[i].stars_max = 0;
 		GWPlayer[i].coins_battle = 0;
-		GWPlayer[i].unk_26 = 0;
-		GWPlayer[i].coin_gain = 0;
+		GWPlayer[i].coin_collect = 0;
+		GWPlayer[i].coin_win = 0;
 		GWPlayer[i].items[0] = -1;
 		GWPlayer[i].items[1] = -1;
 		GWPlayer[i].items[2] = -1;

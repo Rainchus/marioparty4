@@ -15,7 +15,7 @@ static u8 *GetFlagPtr(u32 flag)
 	return ret;
 }
 
-u32 _CheckFlag(u32 flag)
+s32 _CheckFlag(u32 flag)
 {
 	u8 *flag_ptr = GetFlagPtr(flag);
 	u16 index = flag;
