@@ -1,3 +1,4 @@
+#define HUSPR_USE_OLD_DEFS
 #include "math.h"
 #include "game/chrman.h"
 #include "game/object.h"

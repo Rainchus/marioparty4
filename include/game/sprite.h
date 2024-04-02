@@ -113,6 +113,9 @@ void HuSprGrpCenterSet(s16 group, float x, float y);
 void HuSprGrpZRotSet(s16 group, float z_rot);
 void HuSprGrpScaleSet(s16 group, float x, float y);
 void HuSprGrpTPLvlSet(s16 group, float tp_lvl);
+#ifndef HUSPR_USE_OLD_DEFS
+void HuSprGrpDrawNoSet(s16 group, s32 draw_no);
+#endif
 void HuSprDrawNoSet(s16 group, s16 member, s32 draw_no);
 void HuSprPriSet(s16 group, s16 member, s16 prio);
 void HuSprGrpScissorSet(s16 group, s16 x, s16 y, s16 w, s16 h);
