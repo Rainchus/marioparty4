@@ -21,8 +21,6 @@
 
 #include "rel_sqrt_consts.h"
 
-void HuSprGrpDrawNoSet(s16 group, s32 draw_no);
-
 static s16 lbl_1_data_0 = 1;
 
 static omObjData *lbl_1_bss_60;

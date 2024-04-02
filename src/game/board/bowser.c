@@ -467,8 +467,7 @@ static void DoMGReturnEffect(void)
 	s32 mess;
 	s32 mess_char;
 	for(player=0; player<4; player++) {
-		s16 gain = GWPlayer[player].coin_gain;
-		if(gain == 1) { 
+		if(GWPlayerCoinWinGet(player) == 1) { 
 			break;
 		}
 	}

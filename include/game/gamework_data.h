@@ -2,6 +2,7 @@
 #define _GAMEWORK_DATA_H
 
 #include "dolphin.h"
+#include "game/flag.h"
 
 typedef struct player_config {
     s16 character;
@@ -97,8 +98,8 @@ typedef struct player_state {
 /* 0x20 */ s16 coins_total;
 /* 0x22 */ s16 coins_max;
 /* 0x24 */ s16 coins_battle;
-/* 0x26 */ s16 unk_26;
-/* 0x28 */ s16 coin_gain;
+/* 0x26 */ s16 coin_collect;
+/* 0x28 */ s16 coin_win;
 /* 0x2A */ s16 stars;
 /* 0x2C */ s16 stars_max;
 /* 0x2E */ char unk_2E[2];
@@ -231,6 +232,29 @@ static inline s32 GWLuckyValueGet(void)
 static inline void GWLuckyValueSet(s32 value)
 {
     GWSystem.lucky_value = value;
+}
+
+static inline s16 GWPlayerCoinCollectGet(s32 player)
+{
+	return GWPlayer[player].coin_collect;
+}
+
+static inline void GWPlayerCoinCollectSet(s32 player, s16 value)
+{
+	GWPlayer[player].coin_collect = value;
+}
+
+static inline s16 GWPlayerCoinWinGet(s32 player)
+{
+	return GWPlayer[player].coin_win;
+}
+
+static inline void GWPlayerCoinWinSet(s32 player, s16 value)
+{
+	if (_CheckFlag(0x1000C) == 0) {
+		GWPlayer[player].coin_win = value;
+	}
+	
 }
 
 #endif
