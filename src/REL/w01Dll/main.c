@@ -2297,7 +2297,7 @@ static void fn_1_918C(BssCData *arg0, omObjData *arg1) {
     BoardPlayerMtxSet(arg0->unk01, &arg0->unk20);
     PSVECSubtract(&sp20, &sp14, &sp8);
     BoardPlayerRotYSet(arg0->unk01, 180.0 * (atan2(-sp8.z, -sp8.x) / M_PI));
-    BoardPlayerPosLerpStart(arg0->unk01, &sp14, &sp20, 0x14);
+    BoardPlayerPosLerpStart(arg0->unk01, &sp14, &sp20, 20);
     arg0->unk00 = 5;
 }
 

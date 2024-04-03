@@ -258,7 +258,7 @@ static void fn_1_9C0(void) {
     for (i = 0; i < 10; i++) {
         temp_r30->unk01[i] = 0;
     }
-    if (!_CheckFlag(0x10010)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 16))) {
         if (lbl_1_bss_4 == 0) {
             HuAudFXPauseAll(1);
             lbl_1_bss_4 = 1;
@@ -294,7 +294,7 @@ static void fn_1_B5C(omObjData *arg0) {
     BoardCameraDirGet(&sp8);
     BoardCameraTargetGet(&sp14);
     sp14.y += 2000.0f;
-    if (!_CheckFlag(0x10010)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 16))) {
         if (lbl_1_bss_4 == 0) {
             HuAudFXPauseAll(1);
             lbl_1_bss_4 = 1;
@@ -303,7 +303,7 @@ static void fn_1_B5C(omObjData *arg0) {
         HuAudFXPauseAll(0);
         lbl_1_bss_4 = 0;
     }
-    if (!_CheckFlag(0x1001C)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 28))) {
         for (var_r29 = i = 0; i < 10; i++) {
             if (temp_r30->unk01[i] != 0) {
                 var_r29++;
