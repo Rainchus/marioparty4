@@ -254,7 +254,6 @@ static inline void GWPlayerCoinWinSet(s32 player, s16 value)
 	if (_CheckFlag(0x1000C) == 0) {
 		GWPlayer[player].coin_win = value;
 	}
-	
 }
 
 #endif
