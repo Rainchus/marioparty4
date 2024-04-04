@@ -30,16 +30,20 @@ void fn_1_785C(void) {
 
     lbl_1_bss_138[0] = omAddObjEx(boardObjMan, 0x101, 0U, 0U, -1, fn_1_79E0);
     temp_r31 = (w03UnkWorkStruct*)&lbl_1_bss_138[0]->work[0];
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < ARRAY_COUNT(temp_r31->unk_00); i++) {
         temp_r31->unk_00[i] = BoardModelCreate(0x770008, NULL, 0);
         temp_r29 = kemuri_strings[i];
+
         if (0.0f == temp_r31->unk_0C) {
             temp_r31->unk_0C = BoardModelMotionMaxTimeGet(temp_r31->unk_00[i]);
         }
+
         var_f31 = temp_r31->unk_0C * BoardRandFloat();
+
         if (var_f31 < 1.0f) {
             var_f31 = 1.0f;
         }
+
         BoardModelHookSet(lbl_1_data_1E0, temp_r29, temp_r31->unk_00[i]);
         BoardModelMotionStart(temp_r31->unk_00[i], 0, 0x40000001);
         BoardModelMotionTimeSet(temp_r31->unk_00[i], var_f31);
@@ -63,14 +67,14 @@ void fn_1_79E0(omObjData* arg0) {
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
+
     if (lbl_1_bss_0->unk3 != 0) {
         var_r29 = 0;
     } else {
         var_r29 = 1;
     }
-    for (i = 0; i < 5; i++) {
+
+    for (i = 0; i < ARRAY_COUNT(temp_r30->unk_00); i++) {
         BoardModelVisibilitySet(temp_r30->unk_00[i], var_r29);
     }
 }
-
-char pad[4] = "\0\0\0\0";

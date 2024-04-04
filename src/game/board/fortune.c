@@ -121,10 +121,10 @@ static void FortuneMain(void)
 		HuPrcVSleep();
 	}
 	for(i=0; i<4; i++) {
-		if((int)(GWPlayer[i].team) != 0) {
-			GWPlayer[i].field08_bit11 = 1;
+		if(GWPlayerTeamGet(i)) {
+			GWPlayer[i].team_backup = 1;
 		} else {
-			GWPlayer[i].field08_bit11 = 0;
+			GWPlayer[i].team_backup = 0;
 		}
 		if(i == currPlayer) {
 			GWPlayerCfg[i].group = 0;
@@ -158,7 +158,7 @@ static void FortuneMain(void)
 		if((int)GWSystem.show_com_mg == 0) {
 			HuPrcSleep(60);
 			for(i=0; i<4; i++) {
-				s32 bit11 = GWPlayer[i].field08_bit11;
+				s32 bit11 = GWPlayer[i].team_backup;
 				GWPlayer[i].team = bit11;
 				GWPlayerCfg[i].group = bit11;
 			}

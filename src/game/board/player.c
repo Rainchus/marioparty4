@@ -188,8 +188,8 @@ void BoardPlayerInit(void) {
             BoardPlayerSizeSet(var_r31, 0);
             GWPlayer[var_r31].color = 0;
             GWPlayer[var_r31].bowser_suit = 0;
-            GWPlayer[var_r31].field00_bit9 = 0;
-            GWPlayer[var_r31].field08_bit3 = 0;
+            GWPlayer[var_r31].draw_ticket = 0;
+            GWPlayer[var_r31].jump = 0;
         }
         return;
     }
@@ -212,7 +212,6 @@ void BoardPlayerModelInit(void) {
     s32 temp_r24;
     s16 temp_r3;
     s32 temp_r4;
-    PlayerState* temp_r22;
     PlayerState* temp_r27;
 
     s32 ro0[8] =  { 0x5E0000, 0x190000, 0x6C0000, 0x890000, 0x840000, 0x100000, 0xC0000, 0x800000 };
@@ -222,9 +221,9 @@ void BoardPlayerModelInit(void) {
     memset(&boardPlayerMdl, 0, 8);
     suitMdl = -1;
     suitPlayerMdl = -1;
-    if ((_CheckFlag(0x10005U) != 0) || ((_CheckFlag(0x10006U) != 0) && (temp_r4 = GWSystem.board, temp_r4 == 5))) {
+    if ((_CheckFlag(0x10005U) != 0) || (_CheckFlag(0x10006U) && (GWBoardGet() == 5))) {
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
-            temp_r25 = GWPlayer[var_r31].field08_bit11;
+            temp_r25 = GWPlayer[var_r31].team_backup;
             GWPlayer[var_r31].team = temp_r25;
             GWPlayerCfg[var_r31].group = temp_r25;
         }
@@ -234,8 +233,7 @@ void BoardPlayerModelInit(void) {
         postTurnHook[var_r31] = 0;
         motDoneF[var_r31] = 0;
         diceJumpObj[var_r31] = 0;
-        temp_r22 = &GWPlayer[var_r31];
-        temp_r27 = temp_r22;
+        temp_r27 = BoardPlayerGet(var_r31);
         temp_r29 = GWPlayerCfg[var_r31].character;
         temp_r27->player_idx = var_r31;
         GWPlayer[var_r31].character = temp_r29;
@@ -725,7 +723,7 @@ void BoardPlayerTurnRollExec(s32 arg0) {
     s32 temp_r30;
 
     GWPlayer[arg0].roll = 0;
-    GWPlayer[arg0].field08_bit7 = 1;
+    GWPlayer[arg0].num_dice = 1;
     BoardPauseDisableSet(0);
     do {
         temp_r30 = BoardRollExec(arg0);
@@ -1686,7 +1684,7 @@ void BoardPlayerDiceJumpStart(s32 arg0) {
     temp_r31->field00_bit3 = 0;
     temp_r31->unk_08 = 0.0f;
     temp_r31->unk_0C = sp8.y;
-    GWPlayer[arg0].field08_bit3 = 1;
+    GWPlayer[arg0].jump = 1;
 }
 
 s32 BoardPlayerDiceJumpCheck(s32 arg0) {
@@ -1710,7 +1708,7 @@ static void DiceJumpFunc(omObjData* arg0) {
 
     temp_r31 = OM_GET_WORK_PTR(arg0, bitcopy2);
     if ((temp_r31->field00_bit0 != 0) || (BoardIsKill() != 0)) {
-        GWPlayer[temp_r31->field00_bit1].field08_bit3 = 0;
+        GWPlayer[temp_r31->field00_bit1].jump = 0;
         BoardPlayerIdleSet(temp_r31->field00_bit1);
         diceJumpObj[temp_r31->field00_bit1] = 0;
         omDelObjEx(HuPrcCurrentGet(), arg0);
@@ -1784,7 +1782,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         temp_r26 = OM_GET_WORK_PTR(temp_r3, bitcopy2);
         temp_r26->field00_bit0 = 1;
         
-        for (var_r19 = 0; var_r19 < 0xB4U; var_r19++) {
+        for (var_r19 = 0; var_r19 < 180; var_r19++) {
             if (BoardPlayerMotBlendCheck(arg0) != 0)
                 break;
             HuPrcVSleep();
@@ -1813,9 +1811,9 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
             temp_r26->field00_bit0 = 1;
             return;
         }
-        if (abs(sp1C) <= 0x5A) {
+        if (abs(sp1C) <= 90) {
             var_r20 = boardMotTbl[var_r18];
-        } else if (abs(sp1C) <= 0xB4) {
+        } else if (abs(sp1C) <= 180) {
             var_r20 = boardMotRevTbl[var_r18];
         } else {
             temp_r26->field00_bit0 = 1;
@@ -1824,7 +1822,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         temp_r26->unk_04h = BoardPlayerMotionCreate(arg0, var_r20);
         OSs16tof32(&arg2, &var_f27);
         temp_f26 = var_f27 / 59.0f;
-        if (0.0f != temp_f26) {
+        if (temp_f26 != 0.0f) {
             var_f27 = 1.0f / temp_f26;
         } else {
             var_f27 = 1.0f;
@@ -1832,7 +1830,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         if (GWPlayer[arg0].bowser_suit != 0) {
             BoardBowserSuitMotionSetWalk();
             BoardModelMotionSpeedSet(BoardBowserSuitModelGet(), var_f27 / 2);
-        } else if (var_f21 = 8.0f * temp_f26, abs(sp1C) > 0x2D) {
+        } else if (var_f21 = 8.0f * temp_f26, abs(sp1C) > 45) {
             var_r22 = temp_r26->unk_04h;
             BoardPlayerMotionShiftSet(arg0, var_r22, var_f24, var_f21, 0);
             BoardPlayerMotionSpeedSet(arg0, var_f27);
@@ -2256,7 +2254,7 @@ void UpdateBowserSuit(omObjData* arg0) {
 void BoardPlayerSparkSet(s32 arg0) {
     s16 currSpace = GWPlayer[arg0].space_curr;
 
-    GWPlayer[arg0].field02_bit1 = 1;
+    GWPlayer[arg0].spark = 1;
     GWPlayer[arg0].space_shock = currSpace;
 }
 
@@ -2423,11 +2421,11 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 
 static void RemoveSparkSpace(s32 player)
 {
-	if(GWPlayer[player].field02_bit1) {
+	if(GWPlayer[player].spark) {
 		BoardWinCreate(0, 0x12001C, -1);
 		BoardWinWait();
 		BoardWinKill();
-		GWPlayer[player].field02_bit1 = 0;
+		GWPlayer[player].spark = 0;
 		GWPlayer[player].space_shock = 0;
 	}
 }

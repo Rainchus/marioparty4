@@ -269,7 +269,7 @@ static void ExecShop(void) {
     sp8.x = 0.0f;
     sp8.y = 170.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(shopMdlPtr[0], &sp14, &sp8, 1360.0f, -1.0f, 0x1B);
+    BoardCameraMotionStartEx(shopMdlPtr[0], &sp14, &sp8, 1360.0f, -1.0f, 27);
     HuAudFXPlay(0x330);
     HuAudFXPlay(0x32D);
     PopupShop();
@@ -1144,7 +1144,7 @@ void BoardShopTutorialExec(s32 arg0) {
     sp18.x = 0.0f;
     sp18.y = 170.0f;
     sp18.z = 0.0f;
-    BoardCameraMotionStartEx(shopMdlPtr[0], &sp24, &sp18, 1360.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(shopMdlPtr[0], &sp24, &sp18, 1360.0f, -1.0f, 21);
     HuAudFXPlay(0x330);
     HuAudFXPlay(0x32D);
     PopupShop();

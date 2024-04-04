@@ -9,25 +9,25 @@
 #include "game/board/tutorial.h"
 #include "game/board/main.h"
 #include "game/board/boo_house.h"
+#include "game/board/map_object.h"
 
 #include "math.h"
 
-//BSS
-s16 lbl_1_bss_10[1];
-s16 w10ExitWin;
-s16 tutorialDoneF;
-void* lbl_1_bss_8;
-s32 lbl_1_bss_4;
-W10BoardWork *boardWork;
-
-//DATA
-unkw10Dll lbl_1_data_0[1] = {
+//Map Objects
+static BoardMapObject mapObjTbl[MAPOBJ_MAX] = {
     3300.0f, 100.0f, -900.0f,
     0.0f, 0.0f, 0.0f,
     1.0f, 1.0f, 1.0f,
     DATA_MAKE_NUM(DATADIR_W10, 3)
 };
 
+s16 boardMapObjMdl[MAPOBJ_MAX];
+
+s16 tutorialExitWin;
+s16 tutorialDoneF;
+static s32 *motTbl;
+s32 lbl_1_bss_4;
+W10BoardWork *boardWork;
 
 static s16 bgMdl = -1;
 static s16 fgMdl = -1;
@@ -36,8 +36,7 @@ s16 boardShopHostMdl = -1;
 s16 boardLotteryHostMdl = -1;
 s16 boardBooHouseHostMdl = -1;
 
-//unused?
-s32 lbl_1_data_34[] = {
+static s32 charMotDirTbl[] = {
 	DATADIR_MARIOMOT, DATADIR_LUIGIMOT,
 	DATADIR_PEACHMOT, DATADIR_YOSHIMOT,
 	DATADIR_WARIOMOT, DATADIR_DONKEYMOT,
@@ -76,7 +75,7 @@ void BoardCreate(void)
     float size[2];
     
     s32 i;
-    unkw10Dll* temp_r30;
+    BoardMapObject *temp_r30;
     s32 space;
     s32 board;
 
@@ -111,21 +110,21 @@ void BoardCreate(void)
     boardLotteryHostMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 13), booHouseHostMot, 0);
     BoardModelMotionStart(boardLotteryHostMdl, 1, 0x40000001);
     BoardLightHookSet(LightSetHook, LightResetHook);
-    for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
-        temp_r30 = &lbl_1_data_0[i];
-        if (temp_r30->unk24 != -1) {
-            lbl_1_bss_8 = NULL;
-            lbl_1_bss_10[i] = BoardModelCreate(temp_r30->unk24, lbl_1_bss_8, 0);
-            BoardModelPosSetV(lbl_1_bss_10[i], &temp_r30->unk0);
-            BoardModelRotSetV(lbl_1_bss_10[i], &temp_r30->unk0C);
-            BoardModelScaleSetV(lbl_1_bss_10[i], &temp_r30->unk18);
-            BoardModelVisibilitySet(lbl_1_bss_10[i], 1);
-            if (lbl_1_bss_8 != NULL) {
-                BoardModelMotionStart(lbl_1_bss_10[i], 0, 0x40000001);
+    for (i = 0; i < MAPOBJ_MAX; i++) {
+        temp_r30 = &mapObjTbl[i];
+        if (temp_r30->data_num != -1) {
+            motTbl = NULL;
+            boardMapObjMdl[i] = BoardModelCreate(temp_r30->data_num, motTbl, 0);
+            BoardModelPosSetV(boardMapObjMdl[i], &temp_r30->pos);
+            BoardModelRotSetV(boardMapObjMdl[i], &temp_r30->rot);
+            BoardModelScaleSetV(boardMapObjMdl[i], &temp_r30->scale);
+            BoardModelVisibilitySet(boardMapObjMdl[i], 1);
+            if (motTbl != NULL) {
+                BoardModelMotionStart(boardMapObjMdl[i], 0, 0x40000001);
             }
         }
     }
-    BoardModelVisibilitySet(lbl_1_bss_10[0], 0);
+    BoardModelVisibilitySet(boardMapObjMdl[MAPOBJ_MELON], 0);
     boardWork->focus_mdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 10), NULL, 0);
     BoardModelVisibilitySet(boardWork->focus_mdl, 0);
     BoardSpaceWalkEventFuncSet(WalkEvent);
@@ -136,20 +135,20 @@ void BoardCreate(void)
     BoardShopHostSet(boardShopHostMdl);
     BoardLotteryHostSet(boardLotteryHostMdl);
     HuWinMesMaxSizeGet(1, size, 0x2E003A);
-    w10ExitWin = HuWinCreate(-10000.0f, 390.0f, size[0], size[1], 1);
-    HuWinMesSet(w10ExitWin, 0x2E003A);
-    HuWinMesSpeedSet(w10ExitWin, 0);
-    HuWinPriSet(w10ExitWin, 1);
-    HuWinMesPalSet(w10ExitWin, 7, 0, 0, 0);
+    tutorialExitWin = HuWinCreate(-10000.0f, 390.0f, size[0], size[1], 1);
+    HuWinMesSet(tutorialExitWin, 0x2E003A);
+    HuWinMesSpeedSet(tutorialExitWin, 0);
+    HuWinPriSet(tutorialExitWin, 1);
+    HuWinMesPalSet(tutorialExitWin, 7, 0, 0, 0);
 }
 
 void BoardDestroy(void)
 {
     s32 i;
     for (i = 0; i < 1; i++) {
-        if (lbl_1_bss_10[i] != 0) {
-            BoardModelKill(lbl_1_bss_10[i]);
-            lbl_1_bss_10[i] = 0;
+        if (boardMapObjMdl[i] != 0) {
+            BoardModelKill(boardMapObjMdl[i]);
+            boardMapObjMdl[i] = 0;
         }   
     }
     if (boardBooHouseHostMdl != -1) {
@@ -178,7 +177,7 @@ void BoardDestroy(void)
     }
     BoardModelKill(boardWork->focus_mdl);
     TutorialSprKill();
-    HuWinKill(w10ExitWin);
+    HuWinKill(tutorialExitWin);
     BoardSpaceDestroy();
 }
 

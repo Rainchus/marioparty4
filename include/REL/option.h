@@ -1,3 +1,6 @@
+#ifndef REL_OPTION_H
+#define REL_OPTION_H
+
 #include "game/object.h"
 
 #include "dolphin/types.h"
@@ -78,3 +81,5 @@ extern omObjData *lbl_1_bss_28;
 extern omObjData *lbl_1_bss_30;
 extern omObjData *lbl_1_bss_38;
 extern omObjData *lbl_1_bss_40;
+
+#endif

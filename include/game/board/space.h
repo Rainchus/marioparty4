@@ -48,7 +48,9 @@ s32 BoardSpaceStarGet(s32 index);
 s32 BoardSpaceStarGetCurr(void);
 s32 BoardSpaceStarCheck(s32 index);
 void BoardSpaceLandExec(s32 player, s32 space);
+void BoardSpaceCameraSet(u16 mask);
 void BoardSpaceBlockPosSet(void);
+void BoardSpaceInit(s32 data_num);
 
 extern s16 boardSpaceStarTbl[8];
 

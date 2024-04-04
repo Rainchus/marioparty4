@@ -114,15 +114,15 @@ static float padConfigPosTbl[4][2] = {
 };
 
 static s32 boardLogoTbl[] = {
-    0x00070057,
-    0x00070058,
-    0x00070059,
-    0x0007005A,
-    0x0007005B,
-    0x0007005C,
-    0x00070057,
-    0x0007005D,
-    0x0007005E
+    DATA_MAKE_NUM(DATADIR_BOARD, 87),
+    DATA_MAKE_NUM(DATADIR_BOARD, 88),
+    DATA_MAKE_NUM(DATADIR_BOARD, 89),
+    DATA_MAKE_NUM(DATADIR_BOARD, 90),
+    DATA_MAKE_NUM(DATADIR_BOARD, 91),
+    DATA_MAKE_NUM(DATADIR_BOARD, 92),
+    DATA_MAKE_NUM(DATADIR_BOARD, 87),
+    DATA_MAKE_NUM(DATADIR_BOARD, 93),
+    DATA_MAKE_NUM(DATADIR_BOARD, 94)
 };
 
 static float turnDigitPosTbl[] = {
@@ -130,14 +130,14 @@ static float turnDigitPosTbl[] = {
 };
 
 static s32 boxMdlTbl[] = {
-    0x00080008,
-    0x00080009,
-    0x0008000A,
-    0x0008000B,
-    0x0008000C,
-    0x0008000D,
-    0x0008000E,
-    0x0008000F
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 8),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 9),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 10),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 11),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 12),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 13),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 14),
+    DATA_MAKE_NUM(DATADIR_BPAUSE, 15)
 };
 
 void BoardPauseStart(void) {
@@ -168,7 +168,7 @@ static void PauseExit(void) {
     DeletePauseScreen();
     DeletePauseControlWin();
     BoardEventFlagReset();
-    HuDataDirClose(0x80000);
+    HuDataDirClose(DATADIR_BPAUSE);
     pausePad = -1;
     omSysPauseCtrl(0);
     if (GWMGExplainGet()) {
@@ -177,17 +177,17 @@ static void PauseExit(void) {
         _ClearFlag(0xB);
     }
     if (GWPartyGet() == 0) {
-        GWGameStat.field10F_bit0 = GWMGExplainGet();
-        GWGameStat.field10F_bit1 = GWMGShowComGet();
-        GWGameStat.field10F_bit2 = GWMGListGet();
-        GWGameStat.field10F_bit4 = GWMessSpeedGet();
-        GWGameStat.field10F_bit6 = GWSaveModeGet();
+        GWGameStat.story_pause.explain_mg = GWMGExplainGet();
+        GWGameStat.story_pause.show_com_mg = GWMGShowComGet();
+        GWGameStat.story_pause.mg_list = GWMGListGet();
+        GWGameStat.story_pause.mess_speed = GWMessSpeedGet();
+        GWGameStat.story_pause.save_mode = GWSaveModeGet();
     } else {
-        GWGameStat.field110_bit0 = GWMGExplainGet();
-        GWGameStat.field110_bit1 = GWMGShowComGet();
-        GWGameStat.field110_bit2 = GWMGListGet();
-        GWGameStat.field110_bit4 = GWMessSpeedGet();
-        GWGameStat.field110_bit6 = GWSaveModeGet();
+        GWGameStat.party_pause.explain_mg = GWMGExplainGet();
+        GWGameStat.party_pause.show_com_mg = GWMGShowComGet();
+        GWGameStat.party_pause.mg_list = GWMGListGet();
+        GWGameStat.party_pause.mess_speed = GWMessSpeedGet();
+        GWGameStat.party_pause.save_mode = GWSaveModeGet();
     }
     mainProcess = NULL;
 }
@@ -197,8 +197,8 @@ static void PauseProcess(void) {
 
     pauseQuitF = 0;
     mainScreenF = 1;
-    BoardFilterFadeInit(0x1E, 0xA0);
-    temp_r31 = BoardDataDirReadAsync(0x80000);
+    BoardFilterFadeInit(30, 0xA0);
+    temp_r31 = BoardDataDirReadAsync(DATADIR_BPAUSE);
     BoardRollWinDispSet(0);
     BoardDiceDigit2DShowSet(0);
     BoardStatusItemSet(0);
@@ -219,12 +219,12 @@ static void PauseProcess(void) {
     DeletePauseScreen();
     DeletePauseControlWin();
     if (pauseQuitF != 0) {
-        HuPrcSleep(0x14);
+        HuPrcSleep(20);
         WipeColorSet(0, 0, 0);
         BoardKill();
     } else {
-        BoardFilterFadeOut(0x1E);
-        HuPrcSleep(0x1E);
+        BoardFilterFadeOut(30);
+        HuPrcSleep(30);
     }
     HuPrcEnd();
 }
@@ -262,28 +262,28 @@ void CreatePauseScreen(void) {
     temp_r27->trans.y = -32.0f + boxPosTbl[cursorPos][1];
     pauseCursorPos = HuSprGrpCreate(2);
     HuSprGrpPosSet(pauseCursorPos, 0.0f, 0.0f);
-    BoardSpriteCreate(0x70055, 0x2BC, 0, &sp8);
+    BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BOARD, 85), 700, 0, &sp8);
     HuSprGrpMemberSet(pauseCursorPos, 0, sp8);
     HuSprZRotSet(pauseCursorPos, 0, 45.0f);
     HuSprAttrSet(pauseCursorPos, 0, 4);
     HuSprAttrSet(pauseCursorPos, 0, 8);
     HuSprPosSet(pauseCursorPos, 0, temp_r27->trans.x, temp_r27->trans.y);
-    BoardSpriteCreate(0x80007, 0x2EE, 0, &sp8);
+    BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 7), 750, 0, &sp8);
     HuSprGrpMemberSet(pauseCursorPos, 1, sp8);
     HuSprAttrSet(pauseCursorPos, 1, 4);
     HuSprAttrSet(pauseCursorPos, 1, 8);
     pauseSprGrp = HuSprGrpCreate(7);
     HuSprGrpPosSet(pauseSprGrp, 0.0f, 0.0f);
-    BoardSpriteCreate(boardLogoTbl[GWBoardGet()], 0x384, 0, &sp8);
+    BoardSpriteCreate(boardLogoTbl[GWBoardGet()], 900, 0, &sp8);
     HuSprGrpMemberSet(pauseSprGrp, 0, sp8);
     HuSprPosSet(pauseSprGrp, 0, 288.0f, 120.0f);
     HuSprAttrSet(pauseSprGrp, 0, 4);
     HuSprAttrSet(pauseSprGrp, 0, 8);
-    BoardSpriteCreate(0x80005, 0x384, 0, &sp8);
+    BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 5), 900, 0, &sp8);
     HuSprGrpMemberSet(pauseSprGrp, 1, sp8);
     HuSprPosSet(pauseSprGrp, 1, 288.0f, 302.0f);
     HuSprAttrSet(pauseSprGrp, 1, 8);
-    BoardSpriteCreate(0x80004, 0x320, 0, &sp8);
+    BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 4), 800, 0, &sp8);
     HuSprGrpMemberSet(pauseSprGrp, 2, sp8);
     HuSprZRotSet(pauseSprGrp, 2, -30.0f);
     HuSprPosSet(pauseSprGrp, 2, 87.0f, 245.0f);
@@ -301,32 +301,32 @@ void CreatePauseScreen(void) {
         HuSprBankSet(pauseSprGrp, 2, 1);
     }
     for (i = 0; i < 4; i++) {
-        BoardSpriteCreate(0x80006, 0x320, 0, &sp8);
+        BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 6), 800, 0, &sp8);
         HuSprGrpMemberSet(pauseSprGrp, i + 3, sp8);
         HuSprPosSet(pauseSprGrp, i + 3, turnDigitPosTbl[i], 301.0f);
         HuSprAttrSet(pauseSprGrp, i + 3, 8);
         HuSprAttrSet(pauseSprGrp, i + 3, 1);
     }
-    padConfigSprGrp = HuSprGrpCreate(0xD);
+    padConfigSprGrp = HuSprGrpCreate(13);
     HuSprGrpPosSet(padConfigSprGrp, 0.0f, 0.0f);
     for (i = 0; i < 4; i++) {
-        BoardSpriteCreate(0x80000, 0x38E, 0, &sp8);
+        BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 0), 910, 0, &sp8);
         HuSprGrpMemberSet(padConfigSprGrp, i, sp8);
         HuSprAttrSet(padConfigSprGrp, i, 8);
         HuSprAttrSet(padConfigSprGrp, i, 1);
-        BoardSpriteCreate(0x80001, 0x2BC, 0, &sp8);
+        BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 1), 700, 0, &sp8);
         HuSprGrpMemberSet(padConfigSprGrp, i + 4, sp8);
         HuSprAttrSet(padConfigSprGrp, i + 4, 8);
         HuSprAttrSet(padConfigSprGrp, i + 4, 1);
-        BoardSpriteCreate(0x80002, 0x320, 0, &sp8);
+        BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 2), 800, 0, &sp8);
         HuSprGrpMemberSet(padConfigSprGrp, i + 8, sp8);
         HuSprAttrSet(padConfigSprGrp, i + 8, 8);
         HuSprAttrSet(padConfigSprGrp, i + 8, 1);
     }
-    BoardSpriteCreate(0x80003, 0x3E8, 0, &sp8);
-    HuSprGrpMemberSet(padConfigSprGrp, 0xC, sp8);
-    HuSprAttrSet(padConfigSprGrp, 0xC, 4);
-    HuSprDrawNoSet(padConfigSprGrp, 0xC, 0x40);
+    BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BPAUSE, 3), 1000, 0, &sp8);
+    HuSprGrpMemberSet(padConfigSprGrp, 12, sp8);
+    HuSprAttrSet(padConfigSprGrp, 12, 4);
+    HuSprDrawNoSet(padConfigSprGrp, 12, 0x40);
     CreatePadConfigSprite();
     ShowPadConfigSprite(0);
     hostOldLayer = BoardModelLayerGet(hostMdl);
@@ -551,15 +551,15 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                         switch (boxState[5]) {
                             case 0:
                                 GWSystem.mess_speed = 2;
-                                GWSystem.mess_delay = 0x30;
+                                GWSystem.mess_delay = 48;
                                 break;
                             case 1:
                                 GWSystem.mess_speed = 1;
-                                GWSystem.mess_delay = 0x20;
+                                GWSystem.mess_delay = 32;
                                 break;
                             case 2:
                                 GWSystem.mess_speed = 0;
-                                GWSystem.mess_delay = 0x10;
+                                GWSystem.mess_delay = 16;
                                 break;
                         }
                     }
@@ -608,14 +608,14 @@ static void UpdatePauseText(s32 arg0) {
 
     switch (arg0) {
         case 0:
-            HuWinMesSet(settingsWin, 0x10001C);
+            HuWinMesSet(settingsWin, MAKE_MESSID(16, 28));
             for (i = 0; i < 4; i++) {
                 for (j = 0; j < 4; j++) {
                     if (i == GWPlayer[j].port) {
                         if (GWPlayer[j].com) {
-                            var_r28 = 0x10001E;
+                            var_r28 = MAKE_MESSID(16, 30);
                         } else {
-                            var_r28 = 0x10001D;
+                            var_r28 = MAKE_MESSID(16, 29);
                         }
                         HuWinInsertMesSet(settingsWin, var_r28, i);
                         break;
@@ -625,66 +625,66 @@ static void UpdatePauseText(s32 arg0) {
             break;
         case 1:
             if (boxState[arg0] != 0) {
-                HuWinMesSet(settingsWin, 0x100021);
+                HuWinMesSet(settingsWin, MAKE_MESSID(16, 33));
             } else {
-                HuWinMesSet(settingsWin, 0x100022);
+                HuWinMesSet(settingsWin, MAKE_MESSID(16, 34));
             }
             break;
         case 2:
             if (boxState[arg0] != 0) {
-                HuWinMesSet(settingsWin, 0x100023);
+                HuWinMesSet(settingsWin, MAKE_MESSID(16, 35));
             } else {
-                HuWinMesSet(settingsWin, 0x100024);
+                HuWinMesSet(settingsWin, MAKE_MESSID(16, 36));
             }
             break;
         case 3:
             switch (boxState[arg0]) {
                 case 0:
-                    HuWinMesSet(settingsWin, 0x100026);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 38));
                     break;
                 case 1:
-                    HuWinMesSet(settingsWin, 0x100025);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 37));
                     break;
                 case 2:
-                    HuWinMesSet(settingsWin, 0x100027);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 39));
                     break;
             }
             break;
         case 4:
             if (boxState[arg0] != 0) {
-                HuWinMesSet(settingsWin, 0x100028);
+                HuWinMesSet(settingsWin, MAKE_MESSID(16, 40));
             } else {
-                HuWinMesSet(settingsWin, 0x100029);
+                HuWinMesSet(settingsWin, MAKE_MESSID(16, 41));
             }
             break;
         case 5:
             switch (boxState[arg0]) {
                 case 0:
-                    HuWinMesSet(settingsWin, 0x10002C);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 44));
                     break;
                 case 1:
-                    HuWinMesSet(settingsWin, 0x10002B);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 43));
                     break;
                 case 2:
-                    HuWinMesSet(settingsWin, 0x10002A);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 42));
                     break;
             }
             break;
         case 6:
             switch (boxState[arg0]) {
                 case 0:
-                    HuWinMesSet(settingsWin, 0x10002F);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 47));
                     break;
                 case 1:
-                    HuWinMesSet(settingsWin, 0x10002D);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 45));
                     break;
                 case 2:
-                    HuWinMesSet(settingsWin, 0x10002E);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 46));
                     break;
             }
             break;
         case 7:
-            HuWinMesSet(settingsWin, 0x100030);
+            HuWinMesSet(settingsWin, MAKE_MESSID(16, 48));
             break;
     }
 }
@@ -699,16 +699,16 @@ static void InitPauseQuit(omObjData *arg0, ConfigWork *arg1) {
             HuPrcSetStat(quitProcess, 0xC);
             HuPrcDestructorSet2(quitProcess, DeletePauseQuit);
             arg1->unk01 = 1;
-            arg1->unk06 = 0xA;
+            arg1->unk06 = 10;
             HuSprAttrSet(pauseCursorPos, 0, 4);
             HuSprAttrSet(pauseCursorPos, 1, 4);
             break;
         case 1:
             if (quitWin != -1 && HuWinStatGet(quitWin) == 3) {
                 if (HuWinChoiceNowGet(quitWin) != 0) {
-                    HuWinMesSet(settingsWin, 0x100033);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 51));
                 } else {
-                    HuWinMesSet(settingsWin, 0x100032);
+                    HuWinMesSet(settingsWin, MAKE_MESSID(16, 50));
                 }
             }
             if (!quitProcess) {
@@ -741,7 +741,7 @@ static void PauseQuitProcess(void) {
     float sp10[2];
     float sp8[2];
 
-    HuWinMesMaxSizeGet(1, sp8, 0x100031);
+    HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(16, 49));
     sp10[0] = -10000.0f;
     sp10[1] = 140.0f;
     quitWin = HuWinExCreate(sp10[0], sp10[1], sp8[0], sp8[1], -1);
@@ -749,10 +749,10 @@ static void PauseQuitProcess(void) {
     temp_r31->active_pad = (1 << pausePad);
     HuWinExAnimIn(quitWin);
     HuWinMesSpeedSet(quitWin, 0);
-    HuWinMesSet(quitWin, 0x100031);
+    HuWinMesSet(quitWin, MAKE_MESSID(16, 49));
     HuWinMesWait(quitWin);
     if (HuWinChoiceGet(quitWin, 0) == 1) {
-        HuPrcSleep(0x3C);
+        HuPrcSleep(60);
         pauseQuitF = 1;
         _SetFlag(0x1001B);
     }
@@ -764,7 +764,7 @@ static void DeletePauseQuit(void) {
         HuWinExCleanup(quitWin);
         quitWin = -1;
     }
-    HuDataDirClose(0x80000);
+    HuDataDirClose(DATADIR_BPAUSE);
     quitProcess = NULL;
 }
 
@@ -807,7 +807,7 @@ static void CreatePadConfig(omObjData *arg0, ConfigWork *arg1) {
     arg0->rot.x = 576.0f;
     arg0->rot.y = 112.0f;
     arg0->rot.z = (32.0f - arg0->rot.x) / 20.0f;
-    arg1->unk07 = 0x14;
+    arg1->unk07 = 20;
     ShowPadConfigSprite(1);
     HuSprGrpPosSet(padConfigSprGrp, arg0->rot.x, arg0->rot.y);
     arg1->unk04 = 0;
@@ -864,7 +864,7 @@ static void CursorMovePadConfig(omObjData *arg0, ConfigWork *arg1) {
     s32 temp_r29;
     u32 temp_r30;
 
-    HuWinMesSet(settingsWin, 0x10001F);
+    HuWinMesSet(settingsWin, MAKE_MESSID(16, 31));
     temp_r30 = HuPadDStkRep[pausePad] | HuPadBtnDown[pausePad];
     temp_r29 = CheckPort(arg1->unk04);
     if (temp_r30 == 0x100) {
@@ -910,9 +910,9 @@ static void ChangeDiffPadConfig(omObjData *arg0, ConfigWork *arg1) {
     u32 var_r30;
 
     var_r30 = 0;
-    if (HuPadStkX[pausePad] < -0x14) {
+    if (HuPadStkX[pausePad] < -20) {
         var_r30 |= 1;
-    } else if (HuPadStkX[pausePad] > 0x14) {
+    } else if (HuPadStkX[pausePad] > 20) {
         var_r30 |= 2;
     }
     temp_r29 = CheckPort(arg1->unk04);
@@ -921,10 +921,10 @@ static void ChangeDiffPadConfig(omObjData *arg0, ConfigWork *arg1) {
     } else {
         var_r27 = 3;
     }
-    HuWinMesSet(settingsWin, 0x100020);
+    HuWinMesSet(settingsWin, MAKE_MESSID(16, 32));
     if (var_r30 != 0) {
         if (arg1->unk0C != 0 && arg1->unk0C == var_r30) {
-            if (arg1->unk09++ < 0xA) {
+            if (arg1->unk09++ < 10) {
                 return;
             }
         } else {
@@ -1061,7 +1061,7 @@ static s32 UpdatePauseBox(omObjData *arg0, ConfigWork *arg1, s32 arg2) {
                 }
                 var_f29 = arg0->rot.x;
                 arg0->rot.y = (var_f30 - var_f29) / 30.0f;
-                arg1->unk07 = 0x1E;
+                arg1->unk07 = 30;
                 arg1->unk01 = 2;
             }
             break;
@@ -1161,7 +1161,7 @@ static s32 UpdatePauseBoxExt(omObjData *arg0, ConfigWork *arg1, s32 arg2) {
                 }
                 var_f29 = arg0->rot.x;
                 arg0->rot.y = (var_f30 - var_f29) / 30.0f;
-                arg1->unk07 = 0x1E;
+                arg1->unk07 = 30;
                 arg1->unk01 = 2;
             }
             break;
@@ -1280,7 +1280,7 @@ static void CreatePauseControlWin(void) {
     float var_f30;
     u32 var_r31;
 
-    var_r31 = 0x100035;
+    var_r31 = MAKE_MESSID(16, 53);
     HuWinMesMaxSizeGet(1, sp8, var_r31);
     var_f31 = 152.0f;
     var_f30 = 280.0f;
@@ -1290,9 +1290,9 @@ static void CreatePauseControlWin(void) {
     HuWinMesSet(settingsControlWin, var_r31);
     HuWinDispOff(settingsControlWin);
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
-        var_r31 = 0x100049;
+        var_r31 = MAKE_MESSID(16, 73);
     } else {
-        var_r31 = 0x100034;
+        var_r31 = MAKE_MESSID(16, 52);
     }
     HuWinMesMaxSizeGet(1, sp8, var_r31);
     var_f31 = -10000.0f;
@@ -1418,7 +1418,7 @@ static void CreatePadConfigSprite(void) {
                 break;
             }
         }
-        temp_f31 = i * 0x60 + 0xB2;
+        temp_f31 = i * 96 + 178;
         temp_f30 = 64.0f;
         temp_r28 = GWPlayer[j].character;
         temp_r27 = GWPlayer[j].diff;
@@ -1434,7 +1434,7 @@ static void CreatePadConfigSprite(void) {
         HuSprPosSet(padConfigSprGrp, i + 4, temp_f31, temp_f30);
         HuSprPosSet(padConfigSprGrp, i + 8, temp_f31, temp_f30);
     }
-    HuSprPosSet(padConfigSprGrp, 0xC, 260.0f, 64.0f);
+    HuSprPosSet(padConfigSprGrp, 12, 260.0f, 64.0f);
     HuSprGrpPosSet(padConfigSprGrp, 0.0f, 0.0f);
 }
 
@@ -1455,9 +1455,9 @@ static void ShowPadConfigSprite(s32 arg0) {
         }
     }
     if (arg0 != 0) {
-        HuSprAttrReset(padConfigSprGrp, 0xC, 4);
+        HuSprAttrReset(padConfigSprGrp, 12, 4);
     } else {
-        HuSprAttrSet(padConfigSprGrp, 0xC, 4);
+        HuSprAttrSet(padConfigSprGrp, 12, 4);
     }
 }
 

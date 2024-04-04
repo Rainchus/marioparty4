@@ -4,7 +4,10 @@
 #include "game/process.h"
 #include "game/window.h"
 
-#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+enum {
+	MAPOBJ_MELON = 0,
+	MAPOBJ_MAX,
+};
 
 typedef struct w10_board_work {
 /* 0x00 */ s32 scene;
@@ -12,13 +15,6 @@ typedef struct w10_board_work {
 /* 0x06 */ u16 msg;
 /* 0x08 */ s16 focus_mdl;
 } W10BoardWork;
-
-typedef struct unkw10Dll {
-    Vec unk0;
-    Vec unk0C;
-    Vec unk18;
-    s32 unk24;
-} unkw10Dll; //sizeof 0x28
 
 typedef void (*TutorialSceneFunc)(void);
 
@@ -83,11 +79,9 @@ void TutorialLotteryExec(void);
 void TutorialBooHouseExec(void);
 
 extern W10BoardWork *boardWork;
-extern s16 lbl_1_bss_10[1];
-extern void* lbl_1_bss_8; //unknown type
+extern s16 boardMapObjMdl[MAPOBJ_MAX];
 extern s16 tutorialDoneF;
-extern s16 w10ExitWin;
-extern unkw10Dll lbl_1_data_0[1];
+extern s16 tutorialExitWin;
 
 extern s16 boardStarHostMdl;
 extern s16 boardShopHostMdl;

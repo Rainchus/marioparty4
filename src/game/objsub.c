@@ -1199,11 +1199,8 @@ void omGameSysInit(Process *objman) {
     omSysPauseEnable(0);
     
     for (i = 0; i < 4; i++) {
-        if (_CheckFlag(0x1000C) == 0) {
-            GWPlayer[i].coin_gain = 0;
-        }
-        
-        GWPlayer[i].unk_26 = 0;
+        GWPlayerCoinWinSet(i, 0);
+        GWPlayerCoinCollectSet(i, 0);
     }
     
     if (mgPracticeEnableF != 0) {

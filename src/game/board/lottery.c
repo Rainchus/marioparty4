@@ -23,8 +23,6 @@
 
 #include "math.h"
 
-void HuSprGrpDrawNoSet(s16 group, s32 draw_no);
-
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef struct {
@@ -525,7 +523,7 @@ static void ExecLottery(void) {
     sp8.x = 0.0f;
     sp8.y = 200.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 0x1B);
+    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 27);
     if (BoardPlayerSizeGet(temp_r31) == 1) {
         BoardModelVisibilitySet(lotteryMdl[3], 1);
     }
@@ -560,7 +558,7 @@ static void ExecLottery(void) {
         HuPrcVSleep();
     }
     BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[0], 0.0f, 10.0f, 0x40000001);
-    if (GWPlayer[temp_r31].field00_bit9 == 0 && GWSystem.max_turn - GWSystem.turn >= 5) {
+    if (GWPlayer[temp_r31].draw_ticket == 0 && GWSystem.max_turn - GWSystem.turn >= 5) {
         SetupTicket(temp_r31);
         ShowTicket();
         var_r27 = 1;
@@ -737,7 +735,7 @@ static void ShowTicket(void) {
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
         return;
     }
-    sp8 = GWPlayer[GWSystem.player_curr].field00_bitA;
+    sp8 = GWPlayer[GWSystem.player_curr].ticket_player;
     var_r28 = (u8*) &sp8;
     temp_r31 = HuSprGrpCreate(4);
     BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 20), 30001, 0, &spA);
@@ -798,8 +796,8 @@ static void SetupTicket(s32 arg0) {
     s32 var_r31;
 
     for (var_r30 = var_r31 = 0; var_r31 < 4; var_r31++) {
-        if (arg0 != var_r31 && GWPlayer[var_r31].field00_bit9 != 0) {
-            sp8[var_r30] = GWPlayer[var_r31].field00_bitA;
+        if (arg0 != var_r31 && GWPlayer[var_r31].draw_ticket != 0) {
+            sp8[var_r30] = GWPlayer[var_r31].ticket_player;
             var_r30++;
         }
     }
@@ -815,8 +813,8 @@ static void SetupTicket(s32 arg0) {
             break;
         }
     }
-    GWPlayer[arg0].field00_bitA = var_r29;
-    GWPlayer[arg0].field00_bit9 = 1;
+    GWPlayer[arg0].ticket_player = var_r29;
+    GWPlayer[arg0].draw_ticket = 1;
 }
 
 static void LotteryInlineFunc00(s32 arg0, s32 arg1) {
@@ -882,7 +880,7 @@ static void ExecBallGame(void) {
         DATA_MAKE_NUM(DATADIR_WARIOMOT, 29),
         DATA_MAKE_NUM(DATADIR_DONKEYMOT, 29),
         DATA_MAKE_NUM(DATADIR_DAISYMOT, 29),
-        DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 29),
+        DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 29)
     };
 
     temp_r27 = GWSystem.player_curr;
@@ -890,7 +888,7 @@ static void ExecBallGame(void) {
     sp4C.x = 0.0f;
     sp4C.y = 210.0f;
     sp4C.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], NULL, &sp4C, 980.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lotteryMdl[0], NULL, &sp4C, 980.0f, -1.0f, 21);
     LotteryInlineFunc00(0, 0);
     BoardCameraMotionWait();
     BoardWinCreate(2, lotteryMessBase + 1, BoardWinPortraitGet());
@@ -1836,7 +1834,7 @@ static void ExecPrize(void) {
     sp14.x = 0.0f;
     sp14.y = 200.0f;
     sp14.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], 0, &sp14, 1300.0f, -1.0f, 21);
+    BoardCameraMotionStartEx(lotteryMdl[0], NULL, &sp14, 1300.0f, -1.0f, 21);
     temp_r30 = GWSystem.player_curr;
     BoardStatusShowSetForce(temp_r30);
     BoardStatusShowSet(temp_r30, 1);
@@ -2039,7 +2037,7 @@ void BoardLotteryTutorialExec(void) {
     sp8.x = 0.0f;
     sp8.y = 200.0f;
     sp8.z = 0.0f;
-    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 0x15);
+    BoardCameraMotionStartEx(lotteryMdl[0], &sp14, &sp8, 1300.0f, -1.0f, 21);
     HuAudFXPlay(0x331);
     HuAudFXPlay(0x344);
     BoardModelMotionStart(lotteryMdl[0], 0, 0);
