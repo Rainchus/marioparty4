@@ -835,7 +835,7 @@ config.libs = [
         objects = {
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m407dll/player.c"),
-            Object(NonMatching, "REL/m407dll/map.c"),
+            Object(Matching, "REL/m407dll/map.c"),
             Object(NonMatching, "REL/m407dll/camera.c"),
             Object(NonMatching, "REL/m407dll/whomp.c"),
             Object(NonMatching, "REL/m407dll/whomp_score.c"),

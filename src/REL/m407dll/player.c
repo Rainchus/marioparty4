@@ -56,12 +56,12 @@ void fn_1_99C(omObjData*);
 void fn_1_A1C(omObjData* arg0);
 void fn_1_26CC(u8);
 void fn_1_4544(s32, s32, f32, f32, f32);
-s16 fn_1_28B8(u8);                                  /* extern */
-s16 fn_1_28E4(u8);                                  /* extern */
+s16 fn_1_28B8(u8);
+s16 fn_1_28E4(u8);
 double cos(double x);
 double sin(double x);
 
-inline SetDominationDataStuff(omObjData* arg0, s32 val0, s32 val1) {
+inline void SetDominationDataStuff(omObjData* arg0, s32 val0, s32 val1) {
     unkDominationData* temp_r29 = arg0->data;
     temp_r29->unk_1C = val0;
     temp_r29->unk_20 = val1;
