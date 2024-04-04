@@ -56,7 +56,7 @@ void fn_1_99C(omObjData*);
 void fn_1_A1C(omObjData* arg0);
 void fn_1_26CC(u8);
 void fn_1_4544(s32, s32, f32, f32, f32);
-s16 fn_1_28B8(u8);
+s16 fn_1_28B8(u8); //s32 fn_1_28B8(s32);
 s16 fn_1_28E4(u8);
 double cos(double x);
 double sin(double x);

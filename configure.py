@@ -840,7 +840,7 @@ config.libs = [
             Object(NonMatching, "REL/m407dll/whomp.c"),
             Object(Matching, "REL/m407dll/whomp_score.c"),
             Object(Matching, "REL/m407dll/effect.c"),
-            Object(NonMatching, "REL/m407dll/main.c"),
+            Object(Matching, "REL/m407dll/main.c"),
             Object(NonMatching, "REL/m407dll/score.c"),
         }
     ),
