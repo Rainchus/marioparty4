@@ -5,6 +5,7 @@
 #include "game/hsfanim.h"
 #include "game/hsfman.h"
 #include "game/minigame_seq.h"
+#include "game/object.h"
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/sprite.h"

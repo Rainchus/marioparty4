@@ -1,16 +1,20 @@
 #include "game/board/boo.h"
 #include "game/audio.h"
 #include "game/chrman.h"
+#include "game/data.h"
+#include "game/flag.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
 #include "game/hsfman.h"
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/process.h"
+#include "game/sprite.h"
 #include "game/window.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/space.h"
 #include "game/board/window.h"
 
 #include "math.h"
@@ -22,8 +26,7 @@ typedef struct {
     s8 unk01;
     s8 unk02;
     char unk03[1];
-    s16 unk04;
-    s16 unk06;
+    s16 unk04[2];
 } BooEventWork;
 
 typedef struct {
@@ -92,8 +95,6 @@ typedef struct {
     float unk04;
 } BallTakeCoinWork;
 
-void BoardSpaceCameraSet(u16);
-
 static void ComSetupStealPlayer(s32 arg0);
 static void ComSetStealPlayerInput(s32 arg0, s32 arg1);
 static void ExecCoinSteal(void);
@@ -152,14 +153,14 @@ static omObjData *ballObj;
 static omObjData *booEventObj;
 
 static s32 booPlayerMotTbl[8][6] = {
-    { 0x0009000B, 0x00090013, 0x0009001B, 0x00090023, 0x0009002B, 0x00090033 },
-    { 0x0009000C, 0x00090014, 0x0009001C, 0x00090024, 0x0009002C, 0x00090034 },
-    { 0x0009000D, 0x00090015, 0x0009001D, 0x00090025, 0x0009002D, 0x00090035 },
-    { 0x0009000E, 0x00090016, 0x0009001E, 0x00090026, 0x0009002E, 0x00090036 },
-    { 0x0009000F, 0x00090017, 0x0009001F, 0x00090027, 0x0009002F, 0x00090037 },
-    { 0x00090010, 0x00090018, 0x00090020, 0x00090028, 0x00090030, 0x00090038 },
-    { 0x00090011, 0x00090019, 0x00090021, 0x00090029, 0x00090031, 0x00090039 },
-    { 0x00090012, 0x0009001A, 0x00090022, 0x0009002A, 0x00090032, 0x0009003A }
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 11), DATA_MAKE_NUM(DATADIR_BYOKODORI, 19), DATA_MAKE_NUM(DATADIR_BYOKODORI, 27), DATA_MAKE_NUM(DATADIR_BYOKODORI, 35), DATA_MAKE_NUM(DATADIR_BYOKODORI, 43), DATA_MAKE_NUM(DATADIR_BYOKODORI, 51) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 12), DATA_MAKE_NUM(DATADIR_BYOKODORI, 20), DATA_MAKE_NUM(DATADIR_BYOKODORI, 28), DATA_MAKE_NUM(DATADIR_BYOKODORI, 36), DATA_MAKE_NUM(DATADIR_BYOKODORI, 44), DATA_MAKE_NUM(DATADIR_BYOKODORI, 52) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 13), DATA_MAKE_NUM(DATADIR_BYOKODORI, 21), DATA_MAKE_NUM(DATADIR_BYOKODORI, 29), DATA_MAKE_NUM(DATADIR_BYOKODORI, 37), DATA_MAKE_NUM(DATADIR_BYOKODORI, 45), DATA_MAKE_NUM(DATADIR_BYOKODORI, 53) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 14), DATA_MAKE_NUM(DATADIR_BYOKODORI, 22), DATA_MAKE_NUM(DATADIR_BYOKODORI, 30), DATA_MAKE_NUM(DATADIR_BYOKODORI, 38), DATA_MAKE_NUM(DATADIR_BYOKODORI, 46), DATA_MAKE_NUM(DATADIR_BYOKODORI, 54) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 15), DATA_MAKE_NUM(DATADIR_BYOKODORI, 23), DATA_MAKE_NUM(DATADIR_BYOKODORI, 31), DATA_MAKE_NUM(DATADIR_BYOKODORI, 39), DATA_MAKE_NUM(DATADIR_BYOKODORI, 47), DATA_MAKE_NUM(DATADIR_BYOKODORI, 55) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 16), DATA_MAKE_NUM(DATADIR_BYOKODORI, 24), DATA_MAKE_NUM(DATADIR_BYOKODORI, 32), DATA_MAKE_NUM(DATADIR_BYOKODORI, 40), DATA_MAKE_NUM(DATADIR_BYOKODORI, 48), DATA_MAKE_NUM(DATADIR_BYOKODORI, 56) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 17), DATA_MAKE_NUM(DATADIR_BYOKODORI, 25), DATA_MAKE_NUM(DATADIR_BYOKODORI, 33), DATA_MAKE_NUM(DATADIR_BYOKODORI, 41), DATA_MAKE_NUM(DATADIR_BYOKODORI, 49), DATA_MAKE_NUM(DATADIR_BYOKODORI, 57) },
+    { DATA_MAKE_NUM(DATADIR_BYOKODORI, 18), DATA_MAKE_NUM(DATADIR_BYOKODORI, 26), DATA_MAKE_NUM(DATADIR_BYOKODORI, 34), DATA_MAKE_NUM(DATADIR_BYOKODORI, 42), DATA_MAKE_NUM(DATADIR_BYOKODORI, 50), DATA_MAKE_NUM(DATADIR_BYOKODORI, 58) }
 };
 
 static s32 booSfxTbl[4][8] = {
@@ -182,17 +183,17 @@ static s32 booSfxTbl[4][8] = {
 };
 
 static s32 hostMess[] = {
-    0x0007000E,
-    0x00070014,
-    0x0007001A,
-    0x00070020,
-    0x00070026,
-    0x0007002C
+    MAKE_MESSID(7, 14),
+    MAKE_MESSID(7, 20),
+    MAKE_MESSID(7, 26),
+    MAKE_MESSID(7, 32),
+    MAKE_MESSID(7, 38),
+    MAKE_MESSID(7, 44)
 };
 
 static s32 ballMdlTbl[] = {
-    0x00090002,
-    0x00090006
+    DATA_MAKE_NUM(DATADIR_BYOKODORI, 2),
+    DATA_MAKE_NUM(DATADIR_BYOKODORI, 6)
 };
 
 s16 BoardBooCreate(s32 arg0, Vec *arg1) {
@@ -218,8 +219,8 @@ s16 BoardBooCreate(s32 arg0, Vec *arg1) {
     booEventObj->trans.x = spC.x;
     booEventObj->trans.y = spC.y;
     booEventObj->trans.z = spC.z;
-    CreateBallMdl(&temp_r31->unk04, &spC);
-    return temp_r31->unk04;
+    CreateBallMdl(temp_r31->unk04, &spC);
+    return temp_r31->unk04[0];
 }
 
 void BoardBooKill(void) {
@@ -256,19 +257,19 @@ s32 BoardBooStealTypeSet(s32 arg0) {
         stealType = -1;
         return 0;
     }
-    if (_CheckFlag(0x10018)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 24))) {
         var_r25 = BoardWinPortraitGet();
         var_r28 = hostMess[GWBoardGet()];
     } else {
         var_r25 = 3;
-        var_r28 = 0x120019;
+        var_r28 = MAKE_MESSID(18, 25);
     }
     BoardWinCreateChoice(1, var_r28, var_r25, 0);
     BoardWinAttrSet(0x10);
     if (stealType == 0) {
-        var_r28 = 0x70030;
+        var_r28 = MAKE_MESSID(7, 48);
     } else {
-        var_r28 = 0x70031;
+        var_r28 = MAKE_MESSID(7, 49);
     }
     BoardWinInsertMesSet(var_r28, 0);
     for (i = 0; i < 3; i++) {
@@ -312,10 +313,10 @@ static void ComSetupStealPlayer(s32 arg0) {
 
     switch (GWPlayer[arg0].diff) {
         case 0:
-            var_r29 = 0x5F;
+            var_r29 = 95;
             break;
         case 1:
-            var_r29 = 0x32;
+            var_r29 = 50;
             break;
         case 2:
             var_r29 = 5;
@@ -324,7 +325,7 @@ static void ComSetupStealPlayer(s32 arg0) {
             var_r29 = 0;
             break;
     }
-    var_r22 = BoardRandMod(0x64);
+    var_r22 = BoardRandMod(100);
     if (var_r22 >= var_r29) {
         var_r24 = 1;
     } else {
@@ -400,9 +401,9 @@ s32 BoardBooStealMain(void) {
     if (var_r31 != -1) {
         stealType = 2;
         BoardPlayerItemRemove(stealTarget, var_r31);
-        var_r30 = 0x70004;
+        var_r30 = MAKE_MESSID(7, 4);
     } else {
-        var_r30 = 0x70003;
+        var_r30 = MAKE_MESSID(7, 3);
     }
     BoardCameraMotionWait();
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
@@ -411,7 +412,7 @@ s32 BoardBooStealMain(void) {
         }
     }
     CreateBallPlayer();
-    omVibrate(stealTarget, 0xC, 4, 2);
+    omVibrate(stealTarget, 12, 4, 2);
     SetBallActive(1);
     while (!CheckBallKill()) {
         HuPrcVSleep();
@@ -470,7 +471,7 @@ static void ExecCoinSteal(void) {
     SetBallPlayerState(4);
     SetBallBooState(3);
     punchCount = 0;
-    HuPrcSleep(0x78);
+    HuPrcSleep(120);
     while (GetBallBooState() != 0) {
         HuPrcVSleep();
     }
@@ -551,7 +552,7 @@ static void CreateBallView(void) {
     ballObj = omAddObjEx(boardObjMan, 0x1001, 0, 0, -1, BallMain);
     temp_r31 = OM_GET_WORK_PTR(ballObj, BallWork);
     temp_r31->unk00_field0 = 0;
-    temp_r31->unk08 = HuSprAnimMake(0x50, 0x50, 2);
+    temp_r31->unk08 = HuSprAnimMake(80, 80, 2);
     temp_r29 = temp_r31->unk08->bmp;
     temp_r29->data = HuMemDirectMallocNum(HEAP_SYSTEM, 0x3200, MEMORY_DEFAULT_NUM);
     memset(temp_r29->data, 0, 0x3200);
@@ -559,7 +560,7 @@ static void CreateBallView(void) {
     Hu3DModelLayerSet(temp_r31->unk04, 3);
     Hu3DModelCameraSet(temp_r31->unk04, 1);
     temp_r31->unk06 = Hu3DProjectionCreate(temp_r31->unk08, 25.0f, 100.0f, 13000.0f);
-    Hu3DModelProjectionSet(BoardModelIDGet(temp_r28->unk06), temp_r31->unk06);
+    Hu3DModelProjectionSet(BoardModelIDGet(temp_r28->unk04[1]), temp_r31->unk06);
     Hu3DProjectionTPLvlSet(temp_r31->unk06, 0.0f);
     ballCameraObj = omAddObjEx(boardObjMan, 0x7E03, 0, 0, -1, UpdateBallCamera);
     temp_r30 = OM_GET_WORK_PTR(ballCameraObj, BallCameraWork);
@@ -589,7 +590,7 @@ static void SetBallView(s32 arg0) {
     BoardSpaceCameraSet(var_r31);
     BoardModelCameraSetAll(var_r31);
     BoardCameraMaskSet((u16) var_r31);
-    BoardCameraScissorSet(0, 0, 0x280, 0x1E0);
+    BoardCameraScissorSet(0, 0, 640, 480);
 }
 
 static void SetBallActive(s32 arg0) {
@@ -623,7 +624,7 @@ static void BallMain(omObjData *arg0) {
     s16 *temp_r29;
 
     if (booKillF != 0 || BoardIsKill() != 0) {
-        temp_r29 = (s16*) &OM_GET_WORK_PTR(booEventObj, BooEventWork)->unk04;
+        temp_r29 = OM_GET_WORK_PTR(booEventObj, BooEventWork)->unk04;
         Hu3DModelProjectionReset(BoardModelIDGet(temp_r29[1]), temp_r30->unk06);
         Hu3DProjectionKill(temp_r30->unk06);
         Hu3DModelKill(temp_r30->unk04);
@@ -642,8 +643,8 @@ static void BallMain(omObjData *arg0) {
     sp14.z = cos(sp20.y * M_PI / 180.0) * sin(sp20.x * M_PI / 180.0);
     if (temp_r30->unk01 != 0) {
         temp_r30->unk02 += temp_r30->unk01;
-        if (temp_r30->unk02 > 0xFF) {
-            temp_r30->unk02 = 0xFF;
+        if (temp_r30->unk02 > 255) {
+            temp_r30->unk02 = 255;
             temp_r30->unk01 = 0;
         } else if (temp_r30->unk02 < 0) {
             temp_r30->unk02 = 0;
@@ -671,15 +672,15 @@ static void BallRenderHook(void) {
     temp_r31 = OM_GET_WORK_PTR(ballObj, BallWork);
     sp10.a = sp10.r = sp10.g = sp10.b = 0;
     GXSetCopyClear(sp10, -1);
-    GXSetTexCopySrc(0, 0, 0xA0, 0xA0);
-    GXSetTexCopyDst(0x50, 0x50, GX_TF_RGB5A3, GX_TRUE);
+    GXSetTexCopySrc(0, 0, 160, 160);
+    GXSetTexCopyDst(80, 80, GX_TF_RGB5A3, GX_TRUE);
     GXCopyTex(temp_r31->unk08->bmp->data, GX_TRUE);
-    DCFlushRange(temp_r31->unk08->bmp->data, 0x3200);
+    DCFlushRange(temp_r31->unk08->bmp->data, 12800);
     GXPixModeSync();
     C_MTXPerspective(sp68, 25.0f, 1.2f, 100.0f, 13000.0f);
     GXSetProjection(sp68, GX_PERSPECTIVE);
     GXSetViewport(0.0f, 0.0f, 160.0f, 160.0f, 0.0f, 1.0f);
-    GXSetScissor(0, 0, 0xA0, 0xA0);
+    GXSetScissor(0, 0, 160, 160);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA6, 0);
@@ -710,8 +711,8 @@ static void BallRenderHook(void) {
     sp20.z = 0.0f;
     C_MTXLookAt(sp38, &sp2C, &sp20, &sp14);
     GXLoadPosMtxImm(sp38, GX_PNMTX0);
-    sp2C.x = sin(5 * M_PI / 72) * 20000.0 * 1.2000000476837158;
-    sp2C.y = sin(5 * M_PI / 72) * 20000.0 * 0.8333333134651184;
+    sp2C.x = sin(5 * M_PI / 72) * 20000.0 * 1.2f;
+    sp2C.y = sin(5 * M_PI / 72) * 20000.0 * 0.8333333f;
     sp2C.z = -9000.0f;
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
     GXPosition3f32(-sp2C.x, -sp2C.y, sp2C.z);
@@ -730,7 +731,7 @@ static void ExecBoo(omObjData *arg0) {
 
     if (temp_r30->unk00_field0 != 0 || BoardIsKill()) {
         for (i = 0; i < 2; i++) {
-            BoardModelKill(((s16*) ((u8*) temp_r30 + 4))[i]);
+            BoardModelKill(((s16*) temp_r30->unk04)[i]);
         }
         BoardWinKill();
         booEventObj = NULL;
@@ -801,8 +802,8 @@ static void CreateBallPlayer(void) {
         temp_r30->unk04[i] = BoardPlayerMotionCreate(stealTarget, var_r26);
     }
     if (stealType == 2) {
-        temp_r30->unk00 = BoardModelCreate(0x70076, 0, 0);
-        temp_r30->unk02 = BoardModelCreate(0x70082, 0, 0);
+        temp_r30->unk00 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 118), 0, 0);
+        temp_r30->unk02 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 130), 0, 0);
         BoardModelLayerSet(temp_r30->unk00, 0);
         BoardModelLayerSet(temp_r30->unk02, 0);
         BoardModelCameraSet(temp_r30->unk00, 1);
@@ -911,7 +912,7 @@ static void BallPlayerZoomOut(omObjData *arg0, BallPlayerWork *arg1) {
         sp8.x = sp14.x + 120.0 * sin(-M_PI / 2);
         sp8.y = sp14.y;
         sp8.z = sp14.z + 120.0 * cos(-M_PI / 2);
-        BoardPlayerPosLerpStart(stealTarget, &sp14, &sp8, 0x14);
+        BoardPlayerPosLerpStart(stealTarget, &sp14, &sp8, 20);
         var_r29 = GWPlayer[stealTarget].character;
         HuAudFXPlay(booSfxTbl[0][var_r29]);
         SetBallPlayerState(3);
@@ -933,7 +934,7 @@ static void BallPlayerScare(omObjData *arg0, BallPlayerWork *arg1) {
             BoardPlayerMotionShiftSet(stealTarget, temp_r29->unk04[3], 0.0f, 10.0f, 0x40000001);
             SetBallPlayerState(0);
         } else {
-            BoardPlayerMotBlendSet(stealTarget, temp_f31, 0xF);
+            BoardPlayerMotBlendSet(stealTarget, temp_f31, 15);
             SetBallPlayerState(2);
         }
     }
@@ -954,25 +955,25 @@ static void BallPlayerPunch(omObjData *arg0, BallPlayerWork *arg1) {
     var_r31 = 0;
     temp_r29 = arg0->data;
     if (GWPlayer[stealTarget].com) {
-        temp_r30 = BoardRandMod(0x64);
+        temp_r30 = BoardRandMod(100);
         switch (GWPlayer[stealTarget].diff) {
             case 0:
-                if (temp_r30 > 0x5A) {
+                if (temp_r30 > 90) {
                     var_r31 = 0x100;
                 }
                 break;
             case 1:
-                if (temp_r30 > 0x53) {
+                if (temp_r30 > 83) {
                     var_r31 = 0x100;
                 }
                 break;
             case 2:
-                if (temp_r30 > 0x4B) {
+                if (temp_r30 > 75) {
                     var_r31 = 0x100;
                 }
                 break;
             case 3:
-                if (temp_r30 > 0x44) {
+                if (temp_r30 > 68) {
                     var_r31 = 0x100;
                 }
                 break;
@@ -980,7 +981,7 @@ static void BallPlayerPunch(omObjData *arg0, BallPlayerWork *arg1) {
     } else {
         var_r31 = HuPadBtnDown[GWPlayer[stealTarget].port] & 0x100;
     }
-    if ((var_r31 & 0x100) && GetBallBooState() == 3 && battleTimer < 0x78) {
+    if ((var_r31 & 0x100) && GetBallBooState() == 3 && battleTimer < 120) {
         punchCount++;
     }
     if (arg1->unk00_field1 != 0) {
@@ -1029,13 +1030,13 @@ static void BallPlayerCatch(omObjData *arg0, BallPlayerWork *arg1) {
         if (stealType == 0) {
             UpdatePlayerCoins();
             HuAudFXPlay(booSfxTbl[2][temp_r28]);
-            omVibrate(stealTarget, 0xC, 4, 2);
+            omVibrate(stealTarget, 12, 4, 2);
             TakeBallCoin();
         }
         if (stealType == 1) {
             BoardPlayerStarsAdd(stealTarget, -1);
             HuAudFXPlay(booSfxTbl[2][temp_r28]);
-            omVibrate(stealTarget, 0xC, 4, 2);
+            omVibrate(stealTarget, 12, 4, 2);
             TakeBallStar();
         }
         BoardPlayerMotionShiftSet(stealTarget, temp_r27->unk04[0], 0.0f, 10.0f, 0);
@@ -1053,11 +1054,11 @@ static void BallPlayerCatch(omObjData *arg0, BallPlayerWork *arg1) {
 }
 
 static s32 ballBooMdl[] = {
-    0x00020013,
-    0x00020014,
-    0x00020015,
-    0x00020016,
-    0x00020017,
+    DATA_MAKE_NUM(DATADIR_BGUEST, 19),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 20),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 21),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 22),
+    DATA_MAKE_NUM(DATADIR_BGUEST, 23),
     -1
 };
 
@@ -1075,7 +1076,7 @@ static void BallBooCreate(void) {
     temp_r31->unk00_field2 = 0;
     temp_r31->unk01 = 0;
     SetBallBooState(1);
-    temp_r31->unk04 = BoardModelCreate(0x20012, ballBooMdl, 0);
+    temp_r31->unk04 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 18), ballBooMdl, 0);
     BoardModelAlphaSet(temp_r31->unk04, 0xFF);
     BoardModelLayerSet(temp_r31->unk04, 0);
     BoardModelCameraSet(temp_r31->unk04, 1);
@@ -1098,7 +1099,7 @@ static void BallBooCreate(void) {
     ballBooObj->rot.x = (sp8.x - ballBooObj->trans.x) / 60.0f;
     ballBooObj->rot.y = (sp8.y - ballBooObj->trans.y) / 60.0f;
     ballBooObj->rot.z = (sp8.z - ballBooObj->trans.z) / 60.0f;
-    temp_r31->unk02 = 0x3C;
+    temp_r31->unk02 = 60;
     ballBooObj->scale.x = 1.0f;
     ballBooObj->scale.z = 1.0f;
     sp8.x = sp14.x - ballBooObj->trans.x;
@@ -1122,7 +1123,7 @@ static void SetBallBooState(s32 arg0) {
         ballBooObj->rot.x = (sp8.x - ballBooObj->trans.x) / 30.0f;
         ballBooObj->rot.y = (sp8.y - ballBooObj->trans.y) / 30.0f;
         ballBooObj->rot.z = (sp8.z - ballBooObj->trans.z) / 30.0f;
-        temp_r31->unk02 = 0x1E;
+        temp_r31->unk02 = 30;
         BoardModelMotionShiftSet(temp_r31->unk04, 1, 0.0f, 10.0f, 0x40000001);
     }
     if (arg0 == 5) {
@@ -1210,7 +1211,7 @@ static void BallBooBattle(omObjData *arg0, BallBooWork *arg1) {
     if (attackTimer != 0) {
         attackTimer--;
     }
-    if (battleTimer >= 0x78) {
+    if (battleTimer >= 120) {
         SetBallBooState(4);
         return;
     }
@@ -1221,14 +1222,14 @@ static void BallBooBattle(omObjData *arg0, BallBooWork *arg1) {
         }
         return;
     }
-    if (BoardRandMod(0x64) <= 0x46) {
+    if (BoardRandMod(100) <= 70) {
         BoardModelMotionStart(arg1->unk04, 2, 0);
         arg1->unk00_field2 = 1;
-        if (BoardRandMod(0x64) > 0x32 && attackTimer == 0) {
+        if (BoardRandMod(100) > 50 && attackTimer == 0) {
             temp_r29 = GWPlayer[stealTarget].character;
             HuAudFXPlay(booSfxTbl[1][temp_r29]);
-            omVibrate(stealTarget, 0xC, 6, 6);
-            attackTimer = 0x30;
+            omVibrate(stealTarget, 12, 6, 6);
+            attackTimer = 48;
         }
     }
 }
@@ -1236,10 +1237,10 @@ static void BallBooBattle(omObjData *arg0, BallBooWork *arg1) {
 static void BallBooAttack(omObjData *arg0, BallBooWork *arg1) {
     float var_f29;
 
-    if (arg1->unk02 < 0x5A) {
+    if (arg1->unk02 < 90) {
         arg1->unk02 += 6;
-        if (arg1->unk02 >= 0x5A) {
-            arg1->unk02 = 0x5A;
+        if (arg1->unk02 >= 90) {
+            arg1->unk02 = 90;
             SetBallBooState(0);
             SetBallPlayerState(5);
         }
@@ -1263,7 +1264,7 @@ static void BallBooFlash(omObjData *arg0, BallBooWork *arg1) {
         arg0->rot.x = (sp8.x - arg0->trans.x) / 72.0f;
         arg0->rot.y = (sp8.y - arg0->trans.y) / 72.0f;
         arg0->rot.z = (sp8.z - arg0->trans.z) / 72.0f;
-        arg1->unk02 = 0x48;
+        arg1->unk02 = 72;
     }
 }
 
@@ -1281,7 +1282,7 @@ static void TakeBallCoin(void) {
     ballTakeCoinObj->trans.z = sp8.z;
     var_r31 = ballTakeCoinObj->data;
     for (i = 0; i < 10; i++, var_r31++) {
-        var_r31->unk00 = BoardModelCreate(0x7000A, NULL, 1);
+        var_r31->unk00 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 10), NULL, 1);
         BoardModelCameraSet(var_r31->unk00, 1);
         fn_8006DDE8(var_r31->unk00, -1.0f);
         BoardModelScaleSet(var_r31->unk00, 0.5f, 0.5f, 0.5f);
@@ -1358,7 +1359,7 @@ void TakeBallStar(void) {
     temp_r31 = OM_GET_WORK_PTR(ballTakeCoinObj, BallTakeCoinWork);
     temp_r31->unk00_field0 = 0;
     temp_r31->unk01 = 0;
-    temp_r31->unk02 = BoardModelCreate(0x7000B, 0, 0);
+    temp_r31->unk02 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 11), 0, 0);
     BoardPlayerPosGet(stealTarget, &sp8);
     ballTakeCoinObj->trans.x = sp8.x;
     ballTakeCoinObj->trans.y = sp8.y + 150.0f;
@@ -1430,27 +1431,27 @@ BOOL BoardBooStealLightCheck(void) {
 }
 
 static s8 stealSuccessTbl[][3] = {
-    { 0x00, 0x00, 0x00 },
-    { 0x01, 0x06, 0x01 },
-    { 0x07, 0x07, 0x03 },
-    { 0x08, 0x0C, 0x02 },
-    { 0x0D, 0x0F, 0x03 },
-    { 0x10, 0x12, 0x04 },
-    { 0x13, 0x14, 0x06 },
-    { 0x15, 0x17, 0x05 },
-    { 0x18, 0x1A, 0x06 },
-    { 0x1B, 0x1C, 0x07 },
-    { 0x1D, 0x1D, 0x08 },
-    { 0x1E, 0x63, 0x09 }
+    {  0,  0, 0 },
+    {  1,  6, 1 },
+    {  7,  7, 3 },
+    {  8, 12, 2 },
+    { 13, 15, 3 },
+    { 16, 18, 4 },
+    { 19, 20, 6 },
+    { 21, 23, 5 },
+    { 24, 26, 6 },
+    { 27, 28, 7 },
+    { 29, 29, 8 },
+    { 30, 99, 9 }
 };
 
 static s8 stealTbl[][3] = {
-    { 0x01, 0x05, 0x0F },
-    { 0x06, 0x0F, 0x19 },
-    { 0x10, 0x19, 0x1B },
-    { 0x1A, 0x23, 0x1E },
-    { 0x24, 0x2D, 0x20 },
-    { 0x2E, 0x32, 0x23 }
+    {  1,  5, 15 },
+    {  6, 15, 25 },
+    { 16, 25, 27 },
+    { 26, 35, 30 },
+    { 36, 45, 32 },
+    { 46, 50, 35 }
 };
 
 static void UpdatePlayerCoins(void) {
@@ -1460,12 +1461,12 @@ static void UpdatePlayerCoins(void) {
     s32 i;
 
     sp8 = punchCount;
-    if (punchCount > 0x63) {
-        punchCount = 0x63;
+    if (punchCount > 99) {
+        punchCount = 99;
     }
     var_r30 = GWSystem.turn;
-    if (var_r30 > 0x32) {
-        var_r30 = 0x32;
+    if (var_r30 > 50) {
+        var_r30 = 50;
     }
     for (stealSuccess = i = 0; i < 12; i++) {
         if (punchCount >= stealSuccessTbl[i][0] && punchCount <= stealSuccessTbl[i][1]) {
