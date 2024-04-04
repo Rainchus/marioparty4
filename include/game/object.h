@@ -26,6 +26,7 @@ typedef enum {
 
 
 #define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
+#define OM_GET_DATA_PTR(object, type) ((type *)(((object)->data)))
 
 typedef void (*omObjFunc)(struct om_obj_data *);
 
