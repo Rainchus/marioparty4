@@ -1,3 +1,4 @@
+#include "src/REL/m407dll/m407dll.h"
 #include "game/process.h"
 #include "game/object.h"
 #include "game/gamework_data.h"
@@ -14,8 +15,6 @@ void fn_1_40F4(omObjData* arg0);
 s32 bssPad;
 Process* lbl_1_bss_37D8;
 omObjData* lbl_1_bss_37C8[4];
-
-typedef void (*ObjFuncs)(omObjData*);
 
 ObjFuncs lbl_1_data_278[] = {
     fn_1_3FF0,
@@ -37,7 +36,7 @@ void fn_1_3AC8(Process* arg0) {
 
     lbl_1_bss_37D8 = arg0;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
         lbl_1_bss_37C8[i] = omAddObjEx(lbl_1_bss_37D8, 0x500, 0U, 0U, 4, fn_1_3E34);
         lbl_1_bss_37C8[i]->work[0] = i;
     }
@@ -47,7 +46,7 @@ void fn_1_3B68(void) {
     s32 temp_r4;
     u32 i;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
         fn_1_3F7C(lbl_1_bss_37C8[i]);
     }
 }
@@ -59,7 +58,7 @@ void fn_1_3BB8(s16 arg0, f32 arg8, f32 arg9) {
     u32 i;
     s16 temp;;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
         obj = lbl_1_bss_37C8[i];
         temp_r31 = OM_GET_DATA_PTR(obj, unkDominationData3);
         if (temp_r31->unk_04 == 0) {
@@ -132,7 +131,7 @@ void fn_1_3F7C(omObjData* arg0) {
     
     temp_r29 = arg0->data;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(temp_r29->unk_18); i++) {
         espKill(temp_r29->unk_18[i]);
     }
 
