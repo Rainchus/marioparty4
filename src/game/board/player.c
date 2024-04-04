@@ -1782,7 +1782,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         temp_r26 = OM_GET_WORK_PTR(temp_r3, bitcopy2);
         temp_r26->field00_bit0 = 1;
         
-        for (var_r19 = 0; var_r19 < 0xB4U; var_r19++) {
+        for (var_r19 = 0; var_r19 < 180; var_r19++) {
             if (BoardPlayerMotBlendCheck(arg0) != 0)
                 break;
             HuPrcVSleep();
@@ -1811,9 +1811,9 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
             temp_r26->field00_bit0 = 1;
             return;
         }
-        if (abs(sp1C) <= 0x5A) {
+        if (abs(sp1C) <= 90) {
             var_r20 = boardMotTbl[var_r18];
-        } else if (abs(sp1C) <= 0xB4) {
+        } else if (abs(sp1C) <= 180) {
             var_r20 = boardMotRevTbl[var_r18];
         } else {
             temp_r26->field00_bit0 = 1;
@@ -1822,7 +1822,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         temp_r26->unk_04h = BoardPlayerMotionCreate(arg0, var_r20);
         OSs16tof32(&arg2, &var_f27);
         temp_f26 = var_f27 / 59.0f;
-        if (0.0f != temp_f26) {
+        if (temp_f26 != 0.0f) {
             var_f27 = 1.0f / temp_f26;
         } else {
             var_f27 = 1.0f;
@@ -1830,7 +1830,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         if (GWPlayer[arg0].bowser_suit != 0) {
             BoardBowserSuitMotionSetWalk();
             BoardModelMotionSpeedSet(BoardBowserSuitModelGet(), var_f27 / 2);
-        } else if (var_f21 = 8.0f * temp_f26, abs(sp1C) > 0x2D) {
+        } else if (var_f21 = 8.0f * temp_f26, abs(sp1C) > 45) {
             var_r22 = temp_r26->unk_04h;
             BoardPlayerMotionShiftSet(arg0, var_r22, var_f24, var_f21, 0);
             BoardPlayerMotionSpeedSet(arg0, var_f27);

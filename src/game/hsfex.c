@@ -457,7 +457,7 @@ void Hu3D3Dto2D(Vec *arg0, s16 arg1, Vec *arg2) {
     temp_r31 = &Hu3DCamera[i];
     C_MTXLookAt(sp1C, &temp_r31->pos, &temp_r31->up, &temp_r31->target);
     PSMTXMultVec(sp1C, arg0, &sp10);
-    temp_f31 = (sin((temp_r31->fov / 2) * M_PI / 180.0) / cos((temp_r31->fov / 2) * M_PI / 180.0)) * sp10.z * 1.2000000476837158;
+    temp_f31 = (sin((temp_r31->fov / 2) * M_PI / 180.0) / cos((temp_r31->fov / 2) * M_PI / 180.0)) * sp10.z * 1.2f;
     temp_f30 = (sin((temp_r31->fov / 2) * M_PI / 180.0) / cos((temp_r31->fov / 2) * M_PI / 180.0)) * sp10.z;
     arg2->x = 288.0f + sp10.x * (288.0f / -temp_f31);
     arg2->y = 240.0f + sp10.y * (240.0f / temp_f30);
