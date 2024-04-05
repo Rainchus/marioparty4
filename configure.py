@@ -1127,7 +1127,7 @@ config.libs = [
     Rel('w05Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w05Dll/main.c"),
+            Object(Matching, "REL/w05Dll/main.c"),
             Object(NonMatching, "REL/w05Dll/hotel.c"),
             Object(NonMatching, "REL/w05Dll/monkey.c"),
             Object(NonMatching, "REL/w05Dll/dolphin.c"),

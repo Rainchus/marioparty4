@@ -51,6 +51,7 @@ void BoardSpaceLandExec(s32 player, s32 space);
 void BoardSpaceCameraSet(u16 mask);
 void BoardSpaceBlockPosSet(void);
 void BoardSpaceInit(s32 data_num);
+void BoardSpaceDestroy(void);
 
 extern s16 boardSpaceStarTbl[8];
 
