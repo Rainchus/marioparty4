@@ -1053,7 +1053,7 @@ config.libs = [
     Rel('resultDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/resultDll/main.c"),
+            Object(Matching, "REL/resultDll/main.c"),
             Object(NonMatching, "REL/resultDll/battle.c"),
             Object(Matching, "REL/resultDll/datalist.c"),
         }
