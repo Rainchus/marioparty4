@@ -1,4 +1,4 @@
-#include "dolphin.h"
+#include "REL/w05Dll.h"
 
 #include "game/gamework_data.h"
 #include "game/chrman.h"
@@ -84,8 +84,8 @@ s16 lbl_1_data_11A = 0xFFFF;
 s16 lbl_1_data_11C = 0xFFFF;
 s16 lbl_1_data_11E = 0xFFFF;
 s16 lbl_1_data_120 = 0xFFFF;
-s32 lbl_1_data_124[9] = {0x5F0000, 0x1A0000, 0x6D0000, 0x8A0000, 0x850000, 0x110000, 0xD0000, 0x810000, 0x790006};
-s32 lbl_1_data_144 = 0xFFFFFFFF;
+s32 lbl_1_data_124[8] = {0x5F0000, 0x1A0000, 0x6D0000, 0x8A0000, 0x850000, 0x110000, 0xD0000, 0x810000};
+s32 lbl_1_data_144[2] = {0x790006, 0xFFFFFFFF};
 s32 lbl_1_data_14C = 0xFFFFFFFF;
 
 // bss
@@ -94,23 +94,6 @@ s32* lbl_1_bss_10;
 s16 lbl_1_bss_8[4];
 Process* lbl_1_bss_4;
 u8* lbl_1_bss_0;
-
-// functions
-void BoardCreate(void);
-void BoardDestroy(void);
-void fn_1_744(void);
-void fn_1_788(void);
-s32 fn_1_78C(void);
-s32 fn_1_82C(void);
-void fn_1_92C(void);
-void fn_1_950(void);
-void fn_1_954(void);
-void fn_1_D4C(void);
-void fn_1_D84(void);
-void fn_1_E04(void);
-void fn_1_E40(void);
-s32 fn_1_1114(void);
-s32 fn_1_1208(s16, f32, f32);
 
 void BoardCreate(void) {
     s32 sp8;
@@ -135,7 +118,7 @@ void BoardCreate(void) {
     fn_8006DDE8(lbl_1_data_11A, -1.0f);
     BoardModelPosSet(lbl_1_data_11A, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_11A, 0, 0x40000001);
-    lbl_1_data_11C = BoardModelCreate(0x790005, &lbl_1_data_144, 0);
+    lbl_1_data_11C = BoardModelCreate(0x790005, lbl_1_data_144, 0);
     BoardModelPosSet(lbl_1_data_11C, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_11C, 1, 0x40000001);
     lbl_1_data_11E = BoardModelCreate(0x2001C, &lbl_1_data_14C, 0);
