@@ -1055,7 +1055,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/resultDll/main.c"),
             Object(NonMatching, "REL/resultDll/battle.c"),
-            Object(NonMatching, "REL/resultDll/datalist.c"),
+            Object(Matching, "REL/resultDll/datalist.c"),
         }
     ),
     Rel('safDll',
