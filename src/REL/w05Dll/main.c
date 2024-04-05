@@ -84,8 +84,8 @@ s16 lbl_1_data_11A = 0xFFFF;
 s16 lbl_1_data_11C = 0xFFFF;
 s16 lbl_1_data_11E = 0xFFFF;
 s16 lbl_1_data_120 = 0xFFFF;
-s32 lbl_1_data_124[9] = {0x5F0000, 0x1A0000, 0x6D0000, 0x8A0000, 0x850000, 0x110000, 0xD0000, 0x810000, 0x790006};
-s32 lbl_1_data_144 = 0xFFFFFFFF;
+s32 lbl_1_data_124[8] = {0x5F0000, 0x1A0000, 0x6D0000, 0x8A0000, 0x850000, 0x110000, 0xD0000, 0x810000};
+s32 lbl_1_data_144[2] = {0x790006, 0xFFFFFFFF};
 s32 lbl_1_data_14C = 0xFFFFFFFF;
 
 // bss
@@ -135,7 +135,7 @@ void BoardCreate(void) {
     fn_8006DDE8(lbl_1_data_11A, -1.0f);
     BoardModelPosSet(lbl_1_data_11A, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_11A, 0, 0x40000001);
-    lbl_1_data_11C = BoardModelCreate(0x790005, &lbl_1_data_144, 0);
+    lbl_1_data_11C = BoardModelCreate(0x790005, lbl_1_data_144, 0);
     BoardModelPosSet(lbl_1_data_11C, 0.0f, 0.0f, 0.0f);
     BoardModelMotionStart(lbl_1_data_11C, 1, 0x40000001);
     lbl_1_data_11E = BoardModelCreate(0x2001C, &lbl_1_data_14C, 0);
