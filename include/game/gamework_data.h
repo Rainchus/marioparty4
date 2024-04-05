@@ -234,6 +234,11 @@ static inline void GWLuckyValueSet(s32 value)
     GWSystem.lucky_value = value;
 }
 
+static inline s16 GWPlayerCoinBattleGet(s32 player)
+{
+	return GWPlayer[player].coins_battle;
+}
+
 static inline s16 GWPlayerCoinCollectGet(s32 player)
 {
 	return GWPlayer[player].coin_collect;

@@ -10,6 +10,7 @@
 #include "game/audio.h"
 #include "game/wipe.h"
 #include "game/pad.h"
+#include "game/armem.h"
 #include "game/saveload.h"
 #include "game/gamework.h"
 #include "game/board/player.h"
@@ -385,7 +386,7 @@ void fn_1_B78(void)
 		lbl_1_bss_12[i][4] = HuSprCreate(anim2, 0, 0);
 		HuSprGrpMemberSet(lbl_1_bss_3A[i], 4, lbl_1_bss_12[i][4]);
 		HuSprPosSet(lbl_1_bss_3A[i], 4, 60.0f, -25.0f);
-		HuSprGrpPosSet(lbl_1_bss_3A[i], lbl_1_data_3D8[(i*2)], lbl_1_data_3D8[(i*2)+1]);
+		HuSprGrpPosSet(lbl_1_bss_3A[i], lbl_1_data_438[(i*2)], lbl_1_data_438[(i*2)+1]);
 		fn_1_3CAC(lbl_1_bss_3A[i], 9);
 		HuSprGrpScaleSet(lbl_1_bss_3A[i], 0.0f, 0.0f);
 	}
@@ -687,7 +688,7 @@ void fn_1_2ADC(void)
 					temp_r27 = temp_r28-(i*20);
 					if(temp_r27 <= 20) {
 						if(temp_r27 <= 10) {
-							HuSprScaleSet(lbl_1_bss_52, i, 1.0f, sin(M_PI*(9.0f*temp_r27)/180.0));
+							HuSprScaleSet(lbl_1_bss_52, i, 1.0f, cos(M_PI*(9.0f*temp_r27)/180.0));
 						} else {
 							HuSprAttrSet(lbl_1_bss_52, i, 4);
 							HuSprAttrReset(lbl_1_data_380, i, 4);
@@ -841,4 +842,203 @@ void fn_1_3E08(void)
 			}
 		}
 	}
+}
+
+s32 lbl_1_data_450[] = {
+	DATADIR_W01,
+	DATADIR_W02,
+	DATADIR_W03,
+	DATADIR_W04,
+	DATADIR_W05,
+	DATADIR_W06
+};
+
+void fn_1_3FD8(void)
+{
+	s32 status;
+	u32 ardma;
+	if(!_CheckFlag(0x10000)) {
+		lbl_1_bss_178 = 1;
+		HuPrcEnd();
+		while(1) {
+			HuPrcVSleep();
+		}
+	}
+	status = HuDataDirReadAsync(DATADIR_BOARD);
+	if(status != -1) {
+		while(!HuDataGetAsyncStat(status)) {
+			HuPrcVSleep();
+		}
+	}
+	ardma = HuAR_MRAMtoARAM(DATADIR_BOARD);
+	if(ardma) {
+		while(HuARDMACheck()) {
+			HuPrcVSleep();
+		}
+	}
+	HuDataDirClose(DATADIR_BOARD);
+	status = HuDataDirReadAsync(lbl_1_data_450[GWSystem.board]);
+	if(status != -1) {
+		while(!HuDataGetAsyncStat(status)) {
+			HuPrcVSleep();
+		}
+	}
+	lbl_1_bss_178 = 1;
+	HuPrcEnd();
+	while(1) {
+		HuPrcVSleep();
+	}
+}
+
+void fn_1_40DC(void)
+{
+	s16 i;
+	s16 sp8[5];
+	fn_1_423C(sp8);
+	sp8[lbl_1_bss_172] += sp8[4];
+	for(i=0; i<4; i++) {
+		GWCoinsAdd(i, sp8[i]);
+		GWPlayerCoinWinSet(i, 0);
+		GWPlayerCoinCollectSet(i, 0);
+		if(mgInfoTbl[GWSystem.mg_next].type != 4) {
+			GWPlayer[i].coins_mg += sp8[i];
+			if(GWPlayer[i].coins_mg > 9999) {
+				GWPlayer[i].coins_mg = 9999;
+			}
+		}
+	}
+}
+
+void fn_1_423C(s16 *data)
+{
+	s16 i;
+	s32 coin;
+	u32 mul_coin;
+	u32 coin_battle;
+	s16 temp_r26;
+	s16 mgtype;
+	float sp10[4];
+	s16 sp8[4];
+	mgtype = mgInfoTbl[GWSystem.mg_next].type;
+	switch(mgtype) {
+		case 4:
+			temp_r26 = 0;
+			for(i=coin_battle=0; i<4; i++) {
+				coin_battle += GWPlayerCoinBattleGet(i);
+			}
+			sp8[0] = sp8[1] = sp8[2] = sp8[3] = 0;
+			for(i=0; i<4; i++) {
+				sp8[GWPlayerCoinWinGet(i)]++;
+			}
+			sp10[0] = sp10[1] = sp10[2] = sp10[3] = 0;
+			if(sp8[0] == 1 && sp8[1] == 1 && sp8[2] == 1) {
+				sp10[0] = 0.7f;
+				sp10[1] = 0.3f;
+			} else if(sp8[0] ==2) {
+				sp10[0] = 0.5f;
+			} else if(sp8[0] == 3) {
+				sp10[0] = 1.0f/3.0f;
+			} else if(sp8[0] == 1 && sp8[1] == 2) {
+				sp10[0] = 0.6f;
+				sp10[1] = 0.2f;
+			} else if(sp8[0] == 1 && sp8[1] == 3) {
+				sp10[0] = 0.7f;
+				sp10[1] = 0.1f;
+			} else if(sp8[0] == 1 && sp8[1] == 1 && sp8[2] == 2) {
+				sp10[0] = 0.7f;
+				sp10[1] = 0.3f;
+			} else if(sp8[0] == 4) {
+				sp10[0] = 0.25f;
+			} else {
+				temp_r26 = 1;
+			}
+			for(i=coin=0; i<4; i++) {
+				if(!temp_r26) {
+					mul_coin = coin_battle*sp10[GWPlayerCoinWinGet(i)];
+				} else {
+					mul_coin = GWPlayerCoinBattleGet(i);
+				}
+				data[i] = mul_coin;
+				coin += mul_coin;
+			}
+			if(coin < coin_battle) {
+				data[4] = coin_battle-coin;
+			} else {
+				data[4] = 0;
+			}
+			break;
+			
+		default:
+			for(i=0; i<4; i++) {
+				coin = GWPlayerCoinWinGet(i)+GWPlayerCoinCollectGet(i);
+				mul_coin = GWLuckyValueGet();
+				if(mul_coin == 0) {
+					mul_coin = 1;
+				}
+				coin *= mul_coin;
+				data[i] = coin;
+			}
+			break;
+	}
+}
+
+void fn_1_461C(void)
+{
+	s16 sprite;
+	Hu3DAllKill();
+	HuSprClose();
+	HuSprInit();
+	espInit();
+	HuPrcVSleep();
+	sprite = espEntry(0x860020, 5000, 0);
+	espPosSet(sprite, 288.0, 240.0);
+	espAttrReset(sprite, 4);
+	Hu3DBGColorSet(0, 0, 0);
+	WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 20);
+	while(WipeStatGet()) {
+		HuPrcVSleep();
+	}
+	if(GWSaveModeGet() == 2) {
+		GWSystem.save_mode = 1;
+	}
+	if(GWPartyGet() == 1) {
+		GWGameStat.party_continue = 1;
+		SLSaveBoard();
+	} else {
+		GWGameStat.story_continue = 1;
+		SLSaveBoardStory();
+	}
+	SLCommonSet();
+	if(SLSave()) {
+		saveExecF = 1;
+	} else {
+		GWSystem.save_mode = 1;
+	}
+	WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
+	while(WipeStatGet()) {
+		HuPrcVSleep();
+	}
+}
+
+s32 lbl_1_data_468[] = {
+	DATADIR_MARIOMDL1,
+	DATADIR_LUIGIMDL1,
+	DATADIR_PEACHMDL1,
+	DATADIR_YOSHIMDL1,
+	DATADIR_WARIOMDL1,
+	DATADIR_DONKEYMDL1,
+	DATADIR_DAISYMDL1,
+	DATADIR_WALUIGIMDL1
+};
+
+Vec lbl_1_data_488[] = {
+	{ 160, 185, 500 },
+	{ 240, 185, 500 },
+	{ 160, 355, 500 },
+	{ 240, 355, 500 },
+};
+
+void fn_1_47FC(void)
+{
+	
 }
