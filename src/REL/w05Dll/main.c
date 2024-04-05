@@ -14,11 +14,31 @@
 #include "game/board/shop.h"
 #include "game/board/space.h"
 #include "game/board/star.h"
+#include "game/board/window.h"
 
+// frand.h
+extern u32 frandmod(u32);
+// #include "REL/w05Dll/hotel.h"
+extern void fn_1_13D4(void);
+extern void fn_1_155C(void);
+extern void fn_1_1E44(void);
+// #include "REL/w05Dll/monkey.h"
+extern void fn_1_2B40(void);
+extern void fn_1_2C7C(s32);
+// #include "REL/w05Dll/dolphin.h"
+extern void fn_1_4034(u32);
 // #include "REL/w05Dll/mg_item.h"
-extern void fn_1_96B4(void);
+extern void fn_1_6B28(void);
+extern void fn_1_6B7C(void);
+extern void fn_1_7314(void);
+extern void fn_1_77B0(void);
+extern void fn_1_88B8(void);
 // #include "REL/w05Dll/mg_coin.h"
 extern u32 fn_1_8884(void);
+extern void fn_1_9680(void);
+extern void fn_1_96B4(void);
+extern void fn_1_9760(void);
+extern void fn_1_97AC(void);
 
 // data
 BoardMapObject lbl_1_data_0[7] = {
@@ -90,7 +110,7 @@ void fn_1_D84(void);
 void fn_1_E04(void);
 void fn_1_E40(void);
 s32 fn_1_1114(void);
-s32 fn_1_1208(s16 arg0, f32 arg8, f32 arg9);
+s32 fn_1_1208(s16, f32, f32);
 
 void BoardCreate(void) {
     s32 sp8;
@@ -120,7 +140,7 @@ void BoardCreate(void) {
     BoardModelMotionStart(lbl_1_data_11C, 1, 0x40000001);
     lbl_1_data_11E = BoardModelCreate(0x2001C, &lbl_1_data_14C, 0);
     BoardModelMotionStart(lbl_1_data_11E, 1, 0x40000001);
-    BoardLightHookSet(fn_1_744, fn_1_788);
+    BoardLightHookSet(&fn_1_744, &fn_1_788);
     
     for (var_r31 = 0; var_r31 < 7; var_r31++) {
         temp_r30 = &lbl_1_data_0[var_r31];
@@ -143,9 +163,9 @@ void BoardCreate(void) {
     fn_1_92C();
     fn_1_13D4();
     fn_1_2B40();
-    BoardSpaceWalkEventFuncSet(fn_1_82C);
+    BoardSpaceWalkEventFuncSet(&fn_1_82C);
     BoardSpaceWalkMiniEventFuncSet(&fn_1_1114);
-    BoardSpaceLandEventFuncSet(fn_1_78C);
+    BoardSpaceLandEventFuncSet(&fn_1_78C);
     BoardStarHostSet(lbl_1_data_11C);
     BoardBooHouseHostSet(lbl_1_data_11E);
     BoardShopHostSet(lbl_1_data_11E);
@@ -229,7 +249,7 @@ s32 fn_1_82C(void) {
     if (GWPlayer[temp_r30].bowser_suit != 0) {
         return 0;
     }
-    if ((u32) (temp_r3->flag & 4) != 0) {
+    if ((temp_r3->flag & 4) != 0) {
         fn_1_155C();
         return 1;
     }
@@ -291,7 +311,7 @@ void fn_1_954(void) {
     BoardWinKill();
     var_r28 = BoardWinChoiceGet();
     if (var_r28 == 1 || var_r28 == -1) {
-        while ((u32) (fn_1_8884() & 0x10) == 0) {
+        while ((fn_1_8884() & 0x10) == 0) {
             HuPrcVSleep();
         }
         BoardWinCreate(2, 0x27000B, 7);
@@ -429,7 +449,7 @@ s32 fn_1_1114(void) {
     temp_r31 = BoardSpaceFlagGet(0, var_r30) & 0x600000;
     BoardDiceDigit2DShowSet(0);
     if ((temp_r31 & 0x200000) != 0) {
-        lbl_1_bss_4 = HuPrcChildCreate(fn_1_954, 0x2003U, 0x3000U, 0, boardMainProc);
+        lbl_1_bss_4 = HuPrcChildCreate(fn_1_954, 0x2003, 0x3000, 0, boardMainProc);
         HuPrcDestructorSet2(lbl_1_bss_4, fn_1_D4C);
 
         while (lbl_1_bss_4 != 0) {
