@@ -52,7 +52,7 @@ static BoardMapObject lbl_1_data_0[MAPOBJ_MAX] = {
 
 static omObjData *lbl_1_bss_8;
 static s32 lbl_1_bss_4;
-void *lbl_1_bss_0;
+UnkW06BoardData *lbl_1_bss_0;
 
 static s16 lbl_1_data_F0 = -1;
 static s16 lbl_1_data_F2 = -1;
@@ -87,7 +87,7 @@ void BoardCreate(void) {
     s32 *var_r29;
     s32 i;
 
-    lbl_1_bss_0 = GWSystem.board_data;
+    lbl_1_bss_0 = (UnkW06BoardData*) GWSystem.board_data;
     BoardSpaceInit(DATA_MAKE_NUM(DATADIR_W06, 0));
     lbl_1_data_F0 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W06, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_F0, -1.0f);

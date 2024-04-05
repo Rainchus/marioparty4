@@ -1782,7 +1782,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
         temp_r26 = OM_GET_WORK_PTR(temp_r3, bitcopy2);
         temp_r26->field00_bit0 = 1;
         
-        for (var_r19 = 0; var_r19 < 180; var_r19++) {
+        for (var_r19 = 0; var_r19 < 180U; var_r19++) {
             if (BoardPlayerMotBlendCheck(arg0) != 0)
                 break;
             HuPrcVSleep();
