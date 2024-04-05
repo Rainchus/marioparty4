@@ -15,8 +15,8 @@ typedef struct save_buf_data {
 	GameStat stat;
 	SystemState system;
 	PlayerState player[4];
-	SystemState systemBackup;
-	PlayerState playerBackup[4];
+	SystemState systemStory;
+	PlayerState playerStory[4];
 } SaveBufData;
 
 typedef union save_buf_all {
@@ -24,7 +24,12 @@ typedef union save_buf_all {
 	u8 ATTRIBUTE_ALIGN(32) buf[SAVE_BUF_SIZE];
 } SaveBufAll;
 
+extern CARDFileInfo curFileInfo;
 extern SaveBufAll saveBuf;
+extern u64 SLSerialNo;
+extern s32 saveExecF;
+extern u8 curBoxNo;
+extern s16 curSlotNo;
 
 s32 SLFileOpen(char *fileName);
 s32 SLFileCreate(char *fileName, u32 size, void *addr);
@@ -39,12 +44,12 @@ void SLSaveDataMake(s32 erase, OSTime *time);
 void SLSaveDataInfoSet(OSTime *time);
 void SLCommonSet(void);
 void SLSaveBoard(void);
-void SLSaveBoardBackup(void);
+void SLSaveBoardStory(void);
 s32 SLSave(void);
 s32 SLLoad(void);
 void SLLoadGameStat(void);
 void SLLoadBoard(void);
-void SLLoadBoardBackup(void);
+void SLLoadBoardStory(void);
 void SLSerialNoGet(void);
 BOOL SLSerialNoCheck(void);
 BOOL SLCheckSumCheck(void);

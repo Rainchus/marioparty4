@@ -12,7 +12,7 @@
 #include "stddef.h"
 
 #define SAVE_GET_PLAYER(player_idx) &saveBuf.buf[((player_idx)*sizeof(PlayerState))+offsetof(SaveBufData, player)]
-#define SAVE_GET_PLAYER_BACKUP(player_idx) &saveBuf.buf[((player_idx)*sizeof(PlayerState))+offsetof(SaveBufData, playerBackup)]
+#define SAVE_GET_PLAYER_STORY(player_idx) &saveBuf.buf[((player_idx)*sizeof(PlayerState))+offsetof(SaveBufData, playerStory)]
 
 static s16 SLCreateSaveWin(void);
 static void SLKillSaveWin(void);
@@ -319,12 +319,12 @@ void SLSaveBoard(void) {
     }
 }
 
-void SLSaveBoardBackup(void) {
+void SLSaveBoardStory(void) {
     s16 i;
 
-    memcpy(&saveBuf.data.systemBackup, &GWSystem, sizeof(SystemState));
+    memcpy(&saveBuf.data.systemStory, &GWSystem, sizeof(SystemState));
     for (i = 0; i < 4; i++) {
-        memcpy(SAVE_GET_PLAYER_BACKUP(i), &GWPlayer[i], sizeof(PlayerState));
+        memcpy(SAVE_GET_PLAYER_STORY(i), &GWPlayer[i], sizeof(PlayerState));
     }
 }
 
@@ -470,12 +470,12 @@ void SLLoadBoard(void) {
     }
 }
 
-void SLLoadBoardBackup(void) {
+void SLLoadBoardStory(void) {
     s16 i;
 
-    memcpy(&GWSystem, &saveBuf.data.systemBackup, 0xDC);
+    memcpy(&GWSystem, &saveBuf.data.systemStory, 0xDC);
     for (i = 0; i < 4; i++) {
-        memcpy(&GWPlayer[i], SAVE_GET_PLAYER_BACKUP(i), sizeof(PlayerState));
+        memcpy(&GWPlayer[i], SAVE_GET_PLAYER_STORY(i), sizeof(PlayerState));
         GWPlayerCfg[i].character = GWPlayer[i].character;
         GWPlayerCfg[i].pad_idx = GWPlayer[i].port;
         GWPlayerCfg[i].diff = GWPlayer[i].diff;

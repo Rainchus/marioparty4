@@ -578,11 +578,11 @@ void SLCurSlotNoSet(void);
 void SLSaveDataMake(void);
 void SLCommonSet(void);
 void SLSaveBoard(void);
-void SLSaveBoardBackup(void);
+void SLSaveBoardStory(void);
 void SLSave(void);
 void SLLoadGameStat(void);
 void SLLoadBoard(void);
-void SLLoadBoardBackup(void);
+void SLLoadBoardStory(void);
 void SLLoad(void);
 void SLCurBoxNoSet(void);
 void SLSaveFlagSet(void);
@@ -1595,11 +1595,11 @@ extern void _kerjmp_SLCurSlotNoSet(void);
 extern void _kerjmp_SLSaveDataMake(void);
 extern void _kerjmp_SLCommonSet(void);
 extern void _kerjmp_SLSaveBoard(void);
-extern void _kerjmp_SLSaveBoardBackup(void);
+extern void _kerjmp_SLSaveBoardStory(void);
 extern void _kerjmp_SLSave(void);
 extern void _kerjmp_SLLoadGameStat(void);
 extern void _kerjmp_SLLoadBoard(void);
-extern void _kerjmp_SLLoadBoardBackup(void);
+extern void _kerjmp_SLLoadBoardStory(void);
 extern void _kerjmp_SLLoad(void);
 extern void _kerjmp_SLCurBoxNoSet(void);
 extern void _kerjmp_SLSaveFlagSet(void);
@@ -3195,16 +3195,16 @@ asm void _kerent(void) {
     b SLCommonSet
     entry _kerjmp_SLSaveBoard
     b SLSaveBoard
-    entry _kerjmp_SLSaveBoardBackup
-    b SLSaveBoardBackup
+    entry _kerjmp_SLSaveBoardStory
+    b SLSaveBoardStory
     entry _kerjmp_SLSave
     b SLSave
     entry _kerjmp_SLLoadGameStat
     b SLLoadGameStat
     entry _kerjmp_SLLoadBoard
     b SLLoadBoard
-    entry _kerjmp_SLLoadBoardBackup
-    b SLLoadBoardBackup
+    entry _kerjmp_SLLoadBoardStory
+    b SLLoadBoardStory
     entry _kerjmp_SLLoad
     b SLLoad
     entry _kerjmp_SLCurBoxNoSet

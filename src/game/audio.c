@@ -597,16 +597,16 @@ void HuAudVoiceInit(s16 ovl) {
     }
 }
 
-void HuAudPlayerVoicePlay(s16 arg0, s16 arg1) {
+s32 HuAudPlayerVoicePlay(s16 arg0, s16 arg1) {
     s16 temp_r31 = GWPlayerCfg[arg0].character;
 
-    HuAudCharVoicePlay(temp_r31, arg1);
+    return HuAudCharVoicePlay(temp_r31, arg1);
 }
 
-void HuAudPlayerVoicePlayPos(s16 arg0, s16 arg1, Vec *arg2) {
+s32 HuAudPlayerVoicePlayPos(s16 arg0, s16 arg1, Vec *arg2) {
     s16 temp_r31 = GWPlayerCfg[arg0].character;
 
-    HuAudCharVoicePlayPos(temp_r31, arg1, arg2);
+    return HuAudCharVoicePlayPos(temp_r31, arg1, arg2);
 }
 
 void HuAudPlayerVoicePlayEntry(s16 arg0, s16 arg1) {

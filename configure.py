@@ -841,7 +841,7 @@ config.libs = [
             Object(Matching, "REL/m407dll/whomp_score.c"),
             Object(Matching, "REL/m407dll/effect.c"),
             Object(Matching, "REL/m407dll/main.c"),
-            Object(NonMatching, "REL/m407dll/score.c"),
+            Object(Matching, "REL/m407dll/score.c"),
         }
     ),
     Rel('m408Dll',
@@ -1053,9 +1053,9 @@ config.libs = [
     Rel('resultDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/resultDll/main.c"),
+            Object(Matching, "REL/resultDll/main.c"),
             Object(NonMatching, "REL/resultDll/battle.c"),
-            Object(NonMatching, "REL/resultDll/datalist.c"),
+            Object(Matching, "REL/resultDll/datalist.c"),
         }
     ),
     Rel('safDll',
@@ -1141,8 +1141,8 @@ config.libs = [
             Object(Matching, "REL/w06Dll/main.c"),
             Object(Matching, "REL/w06Dll/mg_item.c"),
             Object(Matching, "REL/w06Dll/mg_coin.c"),
-            Object(NonMatching, "REL/w06Dll/fire.c"),
-            Object(NonMatching, "REL/w06Dll/bridge.c"),
+            Object(Matching, "REL/w06Dll/fire.c"),
+            Object(Matching, "REL/w06Dll/bridge.c"),
             Object(NonMatching, "REL/w06Dll/bowser.c"),
         }
     ),
