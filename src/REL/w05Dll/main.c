@@ -86,7 +86,7 @@ s16 lbl_1_bss_14[7];
 s32* lbl_1_bss_10;
 s16 lbl_1_bss_8[4];
 Process* lbl_1_bss_4;
-u8* lbl_1_bss_0;
+bitcopy* lbl_1_bss_0;
 
 void BoardCreate(void) {
     s32 sp8;
@@ -94,7 +94,7 @@ void BoardCreate(void) {
     BoardMapObject* temp_r30;
 
     sp8 = GWBoardGet();
-    lbl_1_bss_0 = GWSystem.board_data;
+    lbl_1_bss_0 = (bitcopy*) GWSystem.board_data;
     BoardSpaceInit(0x790000);
     lbl_1_data_118 = BoardModelCreate(0x790001, NULL, 0);
     lbl_1_data_120 = BoardModelCreate(0x790002, NULL, 0);
