@@ -38,7 +38,7 @@ void fn_1_1B1C(Process* arg0) {
     Hu3DCameraPerspectiveSet(1, 45.0f, 10.0f, 40000.0f, 1.2f);
     lbl_1_bss_30 = omAddObjEx(lbl_1_bss_34, 0x80, 0, 0, -1, fn_1_2024);
     lbl_1_bss_30->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData2), MEMORY_DEFAULT_NUM);
-    unkData = OM_GET_DATA_PTR(lbl_1_bss_30, unkDominationData2);
+    unkData = lbl_1_bss_30->data;
     unkData->unk_04 = 0;
     fn_1_1CAC(0.0f, 0.0f, 0.0f);
     fn_1_1D08(0.0f, 0.0f, 0.0f);
@@ -82,14 +82,14 @@ void fn_1_1D74(f32* arg0) {
 }
 
 s32 fn_1_1D88(void) {
-    unkDominationData2* unkData = OM_GET_DATA_PTR(lbl_1_bss_30, unkDominationData2);
+    unkDominationData2* unkData = lbl_1_bss_30->data;
     return unkData->unk_04;
 }
 
 void fn_1_1DB0(Point3d* arg0, Point3d* arg1, f32* arg2, s32 arg3, s32 arg4) {
     unkDominationData2* temp_r31;
 
-    temp_r31 = OM_GET_DATA_PTR(lbl_1_bss_30, unkDominationData2);
+    temp_r31 = lbl_1_bss_30->data;
     temp_r31->unk_00 = arg4;
     temp_r31->unk_08 = (arg0) ? *arg0 : Center;
     temp_r31->unk_14 = (arg1) ? *arg1 : CRot;
@@ -118,7 +118,7 @@ void fn_1_2024(omObjData* arg0) {
     f32 cZoomTemp;
     unkDominationData2* temp_r31;
 
-    temp_r31 = OM_GET_DATA_PTR(arg0, unkDominationData2);
+    temp_r31 = arg0->data;
     if (temp_r31->unk_04 != 0) {
         switch (temp_r31->unk_00) {
         case 0:

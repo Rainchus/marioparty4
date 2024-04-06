@@ -225,13 +225,13 @@ s32 fn_1_508(u8 arg0) {
 }
 
 s32 fn_1_53C(u8 arg0) {
-    return OM_GET_DATA_PTR(lbl_1_bss_8[arg0], unkDominationData)->unk_1C == 0;
+    return ((unkDominationData*)(lbl_1_bss_8[arg0]->data))->unk_1C == 0;
 }
 
 void fn_1_568(s16 arg0, s16 arg1, s16 arg2) {
     unkDominationData* unkData;
 
-    unkData = OM_GET_DATA_PTR(lbl_1_bss_8[arg0], unkDominationData);
+    unkData = lbl_1_bss_8[arg0]->data;
     switch (arg1) {
     case 0:
         omVibrate(unkData->unk_00, arg2, 6, 6);
@@ -248,7 +248,7 @@ void fn_1_568(s16 arg0, s16 arg1, s16 arg2) {
 void fn_1_628(omObjData* arg0, s32 arg1) {
     unkDominationData* temp_r31;
 
-    temp_r31 = OM_GET_DATA_PTR(arg0, unkDominationData);
+    temp_r31 = arg0->data;
     temp_r31->unk_1C = arg1;
     temp_r31->unk_20 = 0;
 }
@@ -327,7 +327,7 @@ void fn_1_A8C(omObjData* arg0) {
     unkDominationData* temp_r31;
 
     var_r29 = 0;
-    temp_r31 = OM_GET_DATA_PTR(arg0, unkDominationData);
+    temp_r31 = arg0->data;
     temp_r31->unk_28 += 1.0f;
     
     if (temp_r31->unk_04 == 0) {
@@ -339,7 +339,7 @@ void fn_1_A8C(omObjData* arg0) {
     
     if (var_r29 != 0) {
         CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[2], 0.0f, 0.0f, 0);
-        fn_1_4544(4, 0x10, 600.0f - (400.0f * (f32) temp_r31->unk_00), -20.0f, -450.0f);
+        fn_1_4544(4, 0x10, 600.0f - (400.0f * temp_r31->unk_00), -20.0f, -450.0f);
         fn_1_26CC(temp_r31->unk_00);
         temp_r31->unk_34 = 1;
         return;
@@ -367,7 +367,7 @@ void fn_1_CF4(omObjData* arg0) {
 
     temp_r31 = arg0->data;
     if (temp_r31->unk_20 == 0) {
-        CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[1], 0.0f, 10.0f, 0x40000001U);
+        CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[1], 0.0f, 10.0f, 0x40000001);
         CharModelItemHookCreate(temp_r31->unk_01, lbl_1_data_13C[temp_r31->unk_01]);
     }
     if (temp_r31->unk_20++ >= 30) {

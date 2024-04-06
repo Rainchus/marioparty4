@@ -61,7 +61,7 @@ void fn_1_3BB8(s16 arg0, f32 arg8, f32 arg9) {
 
     for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
         obj = lbl_1_bss_37C8[i];
-        temp_r31 = OM_GET_DATA_PTR(obj, unkDominationData3);
+        temp_r31 = obj->data;
         if (temp_r31->unk_04 == 0) {
             temp = arg0;
             espBankSet(temp_r31->unk_18[1], (temp / 100));

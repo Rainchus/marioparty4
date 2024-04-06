@@ -50,7 +50,7 @@ void fn_1_14F0(Process* arg0, s32 arg1) {
     lbl_1_bss_2C = arg0;
     lbl_1_bss_20 = arg1;
     lbl_1_bss_28 = omAddObjEx(lbl_1_bss_2C, 0x100, 0xD, 0, 1, fn_1_162C);
-    omSetStatBit(lbl_1_bss_28, 0x100U);
+    omSetStatBit(lbl_1_bss_28, 0x100);
     Hu3DLighInit();
     lbl_1_bss_24 = Hu3DGLightCreateV(&lbl_1_data_1FC, &lbl_1_data_208, &lbl_1_data_214);
     Hu3DGLightInfinitytSet(lbl_1_bss_24);
@@ -78,7 +78,7 @@ void fn_1_162C(omObjData* arg0) {
     Hu3DModelAmbSet(arg0->model[0], 1.0f, 1.0f, 1.0f);
     arg0->model[1] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[3], MEMORY_DEFAULT_NUM, HEAP_DATA));
     Hu3DModelAmbSet(arg0->model[1], 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(arg0->model[1], 1U);
+    Hu3DModelAttrSet(arg0->model[1], 1);
     for (i = 0; i < ARRAY_COUNT(GWPlayerCfg); i++) {
         arg0->model[i+2] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[GWPlayerCfg[i].character + 4], MEMORY_DEFAULT_NUM, HEAP_DATA));
         Hu3DModelAmbSet(arg0->model[i + 2], 1.0f, 1.0f, 1.0f);
