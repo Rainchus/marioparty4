@@ -268,8 +268,7 @@ static char *lbl_1_data_440[] = {
 
 static s32 fn_1_11B0(s16 arg0, s16 arg1) {
     WindowData *temp_r30;
-    float sp10;
-    float spC;
+    float spC[2];
     s32 temp_r28;
     s32 var_r27;
     s32 var_r26;
@@ -288,11 +287,11 @@ static s32 fn_1_11B0(s16 arg0, s16 arg1) {
     for (i = 0; i < 8; i++) {
         HuWinInsertMesSizeGet(MAKE_MESSID_PTR(lbl_1_data_440[i]), (s16) i);
     }
-    HuWinMesMaxSizeGet(1, &spC, temp_r28);
-    if (spC <= 16.0f) {
-        spC = 32.0f;
+    HuWinMesMaxSizeGet(1, &spC[0], temp_r28);
+    if (spC[0] <= 16.0f) {
+        spC[0] = 32.0f;
     }
-    lbl_1_data_410 = HuWinCreate(-10000.0f, -10000.0f, spC, sp10, 0);
+    lbl_1_data_410 = HuWinCreate(-10000.0f, -10000.0f, spC[0], spC[1], 0);
     for (i = 0; i < 8; i++) {
         HuWinInsertMesSet(lbl_1_data_410, MAKE_MESSID_PTR(lbl_1_data_440[i]), (s16) i);
     }

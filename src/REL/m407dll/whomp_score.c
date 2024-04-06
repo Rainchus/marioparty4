@@ -12,7 +12,7 @@ void fn_1_3FF0(omObjData*);
 void fn_1_3FF4(omObjData* arg0);
 void fn_1_40F4(omObjData* arg0);
 
-s32 bssPad;
+//bss
 Process* lbl_1_bss_37D8;
 omObjData* lbl_1_bss_37C8[4];
 
@@ -56,7 +56,7 @@ void fn_1_3BB8(s16 arg0, f32 arg8, f32 arg9) {
     Vec sp14;
     unkDominationData3* temp_r31;
     u32 i;
-    s16 temp;;
+    s16 temp;
 
     for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
         obj = lbl_1_bss_37C8[i];
@@ -100,11 +100,10 @@ void fn_1_3D4C(omObjData* arg0) {
 }
 
 void fn_1_3E34(omObjData* arg0) {
-    unkDominationData3* temp_r29;
     unkDominationData3* temp_r31;
 
     arg0->func = fn_1_3D4C;
-    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, 0x24, 0x10000000U);
+    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData3), 0x10000000);
     temp_r31 = arg0->data;
     temp_r31->unk_00 = arg0->work[0];
     temp_r31->unk_14 = 0;
@@ -120,9 +119,7 @@ void fn_1_3E34(omObjData* arg0) {
     espScaleSet(temp_r31->unk_18[0], 1.8f, 1.8f);
     temp_r31->unk_08.x = (f32) 0.0f;
     temp_r31->unk_08.y = (f32) 0.0f;
-    temp_r29 = arg0->data;
-    temp_r29->unk_04 = 0;
-    temp_r29->unk_14 = 0;
+    fn_1_3D28(arg0, 0);
 }
 
 void fn_1_3F7C(omObjData* arg0) {
@@ -145,7 +142,6 @@ void fn_1_3FF0(omObjData* arg0) {
 }
 
 void fn_1_3FF4(omObjData* arg0) {
-    unkDominationData3* temp_r30;
     unkDominationData3* temp_r31;
 
     temp_r31 = arg0->data;
@@ -164,18 +160,16 @@ void fn_1_3FF4(omObjData* arg0) {
         temp_r31->unk_20 += 0.1f;
     }
 
-    if (temp_r31->unk_14++ >= 0x3C) {
-        temp_r30 = arg0->data;
-        temp_r30->unk_04 = 2;
-        temp_r30->unk_14 = 0;
+    if (temp_r31->unk_14++ >= 60) {
+        fn_1_3D28(arg0, 2);
     }
 }
 
 void fn_1_40F4(omObjData* arg0) {
-    unkDominationData3* temp_r30;
     unkDominationData3* temp_r31;
 
     temp_r31 = arg0->data;
+
     if (temp_r31->unk_20 > 0.0f) {
         espTPLvlSet(temp_r31->unk_18[0], temp_r31->unk_20);
         espTPLvlSet(temp_r31->unk_18[1], temp_r31->unk_20);
@@ -184,13 +178,11 @@ void fn_1_40F4(omObjData* arg0) {
         temp_r31->unk_20 -= 0.05;
         return;
     }
+
     espDispOff(temp_r31->unk_18[0]);
     espDispOff(temp_r31->unk_18[1]);
     espDispOff(temp_r31->unk_18[2]);
     espDispOff(temp_r31->unk_18[3]);
-    temp_r30 = arg0->data;
-    temp_r30->unk_04 = 0;
-    temp_r30->unk_14 = 0;
+    fn_1_3D28(arg0, 0);
 }
 
-f32 pad2[1] = {0.0f};

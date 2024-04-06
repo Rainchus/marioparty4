@@ -7,6 +7,8 @@
 #include "game/hsfman.h"
 #include "rel_sqrt_consts.h"
 
+#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+
 //structs
 typedef struct unkDominationData {
     u8 unk_00;
@@ -30,7 +32,6 @@ typedef struct unkDominationData {
     s32 unk_38;
 } unkDominationData;
 
-s32 pad_20;
 Process* lbl_1_bss_18;
 omObjData* lbl_1_bss_8[4];
 Process* lbl_1_bss_0[2];
@@ -265,7 +266,7 @@ void fn_1_64C(omObjData* arg0) {
     u32 i;
 
     arg0->func = fn_1_A1C;
-    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, 0x3C, 0x10000000U);
+    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData), 0x10000000);
     temp_r31 = arg0->data;
     temp_r29 = arg0->work[0];
     temp_r31->unk_00 = temp_r29;
@@ -285,7 +286,7 @@ void fn_1_64C(omObjData* arg0) {
     Hu3DModelAmbSet(arg0->model[0], 1.0f, 1.0f, 1.0f);
     Hu3DModelAmbSet(arg0->model[1], 1.0f, 1.0f, 1.0f);
     
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < ARRAY_COUNT(lbl_1_data_0); i++) {
         arg0->motion[i] = CharModelMotionCreate(temp_r31->unk_01, lbl_1_data_0[temp_r31->unk_01].unk_00[i]);
     }
     
@@ -339,7 +340,7 @@ void fn_1_A8C(omObjData* arg0) {
         var_r29 = (HuPadBtnDown[temp_r31->unk_0C] & 0x100) ? 1 : 0;
     } else if ((u32) temp_r31->unk_28 >= (u32) temp_r31->unk_2C) {
         var_r29 = 1;
-        temp_r31->unk_2C = (f32) (temp_r31->unk_2C + temp_r31->unk_30);
+        temp_r31->unk_2C += temp_r31->unk_30;
     }
     
     if (var_r29 != 0) {
@@ -405,7 +406,7 @@ void fn_1_DB4(omObjData* arg0) {
     }
     
     temp_r31->unk_14 = 30.0f;
-    CharModelMotionShiftSet((s16) temp_r31->unk_01, arg0->motion[4], 0.0f, 10.0f, 0U);
+    CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[4], 0.0f, 10.0f, 0);
     SetDominationDataStuff(arg0, 0, 0);
 }
 
@@ -421,7 +422,7 @@ void fn_1_F8C(omObjData* arg0) {
         HuAudFXPlay(lbl_1_rodata_70[temp_r31->unk_01]);
     }
     
-    if (temp_r31->unk_20++ >= 0x78) {
+    if (temp_r31->unk_20++ >= 120) {
         CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[0], 0.0f, 10.0f, 0x40000001);
         SetDominationDataStuff(arg0, 0, 0);
     }
@@ -431,10 +432,9 @@ void fn_1_1074(omObjData* arg0) {
     unkDominationData* temp_r31;
 
     temp_r31 = arg0->data;
-    
     if (temp_r31->unk_20 == 0) {
         CharModelVoiceEnableSet(temp_r31->unk_01, arg0->motion[3], 0);
-        CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[3], 0.0f, 10.0f, 0U);
+        CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[3], 0.0f, 10.0f, 0);
         temp_r31->unk_24 = 0.0f;
         temp_r31->unk_20 = 1;
     }
@@ -471,7 +471,7 @@ void fn_1_11CC(omObjData* arg0) {
         CharModelMotionShiftSet(temp_r31->unk_01, arg0->motion[4], 0.0f, 10.0f, 0);
         temp = fn_1_28E4(temp_r31->unk_00);
         //can remove \0 after matching whole rel likely
-        Hu3DModelHookSet(temp, "itemhook_c\0", arg0->model[0]);
+        Hu3DModelHookSet(temp, "itemhook_c", arg0->model[0]);
         temp_r31->unk_10 = 0.0f;
         temp_r31->unk_14 = 0.0f;
         temp_r31->unk_18 = 0.0f;
