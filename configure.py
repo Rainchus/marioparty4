@@ -876,6 +876,31 @@ config.libs = [
             Object(NonMatching, "REL/m411Dll/main.c"),
         }
     ),
+    Rel('m412Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m412Dll/main.c"),
+        }
+    ),
+    Rel('m413Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m413Dll/main.c"),
+        }
+    ),
+    Rel('m414Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m414Dll/main.c"),
+        }
+    ),
+    Rel('m415Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m415Dll/main.c"),
+            Object(NonMatching, "REL/m415Dll/map.c"),
+        }
+    ),
     Rel('m433Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
