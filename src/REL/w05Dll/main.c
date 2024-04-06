@@ -7,8 +7,6 @@
 #include "game/board/boo_house.h"
 #include "game/board/com.h"
 #include "game/board/lottery.h"
-#include "game/board/main.h"
-#include "game/board/map_object.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/shop.h"
@@ -18,10 +16,6 @@
 
 // frand.h
 extern u32 frandmod(u32);
-// #include "REL/w05Dll/hotel.h"
-extern void fn_1_13D4(void);
-extern void fn_1_155C(void);
-extern void fn_1_1E44(void);
 // #include "REL/w05Dll/monkey.h"
 extern void fn_1_2B40(void);
 extern void fn_1_2C7C(s32);
@@ -78,7 +72,6 @@ BoardMapObject lbl_1_data_0[7] = {
         0x79000A
     },
 };
-
 s16 lbl_1_data_118 = 0xFFFF;
 s16 lbl_1_data_11A = 0xFFFF;
 s16 lbl_1_data_11C = 0xFFFF;

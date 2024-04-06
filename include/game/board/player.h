@@ -9,7 +9,6 @@
 #include "game/object.h"
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
-#include "game/gamework_data.h"
 #include "game/board/main.h"
 #include "game/board/space.h"
 #include "game/board/ui.h"
