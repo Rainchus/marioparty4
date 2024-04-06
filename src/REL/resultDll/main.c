@@ -1,4 +1,3 @@
-// include "REL/resultDll/main.h"
 #include "dolphin.h"
 #include "rel_sqrt_consts.h"
 #include "game/object.h"
@@ -14,6 +13,9 @@
 #include "game/saveload.h"
 #include "game/gamework.h"
 #include "game/board/player.h"
+#include "game/frand.h"
+
+#include "math.h"
 
 #include "REL/resultdll.h"
 
@@ -83,8 +85,6 @@ void fn_1_888(void);
 void fn_1_B78(void);
 void fn_1_1F4C(void);
 void fn_1_2ADC(void);
-void fn_1_3FD8(void);
-void fn_1_40DC(void);
 void fn_1_461C(void);
 void fn_1_47FC(void);
 
@@ -320,7 +320,6 @@ void fn_1_3B50(s16 group, s16 value);
 void fn_1_3CAC(s16 group, s16 value);
 
 void fn_1_3E08(void);
-void fn_1_423C(s16 *data);
 
 void fn_1_B78(void)
 {
