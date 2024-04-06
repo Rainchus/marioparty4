@@ -2,6 +2,8 @@
 #include "game/object.h"
 #include "game/esprite.h"
 
+#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+
 typedef struct unkDominationData6 {
 /* 0x00 */ s32 unk_00;
 /* 0x04 */ s32 unk_04;
@@ -39,7 +41,7 @@ void fn_1_5C5C(Process* arg0, s16 arg1) {
 
     lbl_1_bss_398C = arg0;
     lbl_1_bss_3988 = omAddObjEx(lbl_1_bss_398C, 0x800, 0U, 0U, 7, fn_1_5FE4);
-    lbl_1_bss_3988->data = HuMemDirectMallocNum(HEAP_SYSTEM, 0x24, 0x10000000U);
+    lbl_1_bss_3988->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData6), 0x10000000);
     temp_r31 = lbl_1_bss_3988->data;
     temp_r31->unk_08 = arg1;
     temp_r31->unk_0A = 0;
@@ -130,7 +132,7 @@ void fn_1_61A0(void) {
     temp_r31 = lbl_1_bss_3988->data;
 
     if (temp_r31->unk_04 == 0) {
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ARRAY_COUNT(temp_r31->unk_0C); i++) {
             espDispOff(temp_r31->unk_0C[i]);
         }
         temp_r31->unk_04++;
@@ -144,7 +146,7 @@ void fn_1_6218(void) {
     temp_r31 = lbl_1_bss_3988->data;
 
     if (temp_r31->unk_04 == 0) {
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ARRAY_COUNT(temp_r31->unk_0C); i++) {
             espDispOn(temp_r31->unk_0C[i]);
         }
         temp_r31->unk_04++;

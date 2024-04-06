@@ -35,7 +35,7 @@ void fn_1_1B1C(Process* arg0) {
     Hu3DCameraViewportSet(1, 0.0f, 0.0f, 640.0f, 480.0f, 0.0f, 1.0f);
     Hu3DCameraPerspectiveSet(1, 45.0f, 10.0f, 40000.0f, 1.2f);
     lbl_1_bss_30 = omAddObjEx(lbl_1_bss_34, 0x80, 0U, 0U, -1, fn_1_2024);
-    lbl_1_bss_30->data = HuMemDirectMallocNum(HEAP_SYSTEM, 0x4C, 0x10000000U);
+    lbl_1_bss_30->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData2), 0x10000000);
     unkData = OM_GET_DATA_PTR(lbl_1_bss_30, unkDominationData2);
     unkData->unk_04 = 0;
     fn_1_1CAC(0.0f, 0.0f, 0.0f);

@@ -3,8 +3,8 @@
 #include "game/object.h"
 #include "game/hsfmotion.h"
 #include "game/hsfdraw.h"
+
 //bss
-s32 bssPad3;
 Process* lbl_1_bss_3970;
 omObjData* lbl_1_bss_37E0[100];
 
@@ -33,10 +33,8 @@ void fn_1_41CC(Process* arg0) {
     Process* sp8;
     u32 i;
     u32 temp_r30;
-    
 
     lbl_1_bss_3970 = arg0;
-
     temp_r30 = 0;
 
     for (i = 0; i < 40; i++) {
@@ -146,7 +144,7 @@ void fn_1_46EC(omObjData* arg0) {
     unkDominationData4* temp_r30;
 
     arg0->func = fn_1_4680;
-    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, 0x20, 0x10000000);
+    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData4), 0x10000000);
     temp_r30 = arg0->data;
     temp_r30->unk_00 = arg0->work[0];
     temp_r30->unk_08 = arg0->work[1];
@@ -205,5 +203,3 @@ void fn_1_485C(omObjData* arg0) {
         temp_r29->unk_1C = 0;
     }
 }
-
-f32 pad3[1] = {0.0f};

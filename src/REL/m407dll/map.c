@@ -3,6 +3,8 @@
 #include "game/gamework_data.h"
 #include "game/hsfman.h"
 
+#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+
 void fn_1_162C(omObjData*);
 void fn_1_1A8C(omObjData*);
 
@@ -39,8 +41,6 @@ Point3d lbl_1_data_208 = {-0.5f, -0.5f, -0.5f};
 GXColor lbl_1_data_214 = {255, 255, 255, 255};
 Point3d lbl_1_data_218 = {0.0f, 1.0f, 0.0f};
 
-f32 pad[1] = {0.0f};
-
 void fn_1_14F0(Process* arg0, s32 arg1) {
     LightData* sp10;
 
@@ -76,7 +76,7 @@ void fn_1_162C(omObjData* arg0) {
     arg0->model[1] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[3], 0x10000000, HEAP_DATA));
     Hu3DModelAmbSet(arg0->model[1], 1.0f, 1.0f, 1.0f);
     Hu3DModelAttrSet(arg0->model[1], 1U);
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(GWPlayerCfg); i++) {
         arg0->model[i+2] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[GWPlayerCfg[i].character + 4], 0x10000000, HEAP_DATA));
         Hu3DModelAmbSet(arg0->model[i + 2], 1.0f, 1.0f, 1.0f);
         Hu3DModelShadowMapSet(arg0->model[i + 2]);
