@@ -12,20 +12,26 @@ typedef struct {
         u8 unk00_field0 : 1;
         u8 unk00_field1 : 1;
         u8 unk00_field2 : 1;
+        u8 unk00_field3 : 1;
+        u8 unk00_field4 : 1;
     };
     s8 unk01;
     s8 unk02;
+    s8 unk03;
+    s8 unk04;
+    u8 unk05;
+    s16 unk06;
 } UnkW06BoardData;
 
 extern void fn_1_D70(void);
 extern void fn_1_F6C(void);
-extern void fn_1_1054(void); // return s32?
+extern void fn_1_1054(void);
 
 extern void fn_1_4878(void);
 extern void fn_1_4A10(void);
-extern void fn_1_4A60(void); // return s32?
+extern void fn_1_4A60(void);
 
-extern void fn_1_6EF0(void); // return s32?
+extern void fn_1_6EF0(void);
 
 extern void fn_1_7BB0(void);
 extern void fn_1_7F3C(void);

@@ -229,15 +229,15 @@ static s32 fn_1_900(void) {
     var_r30 = GWPlayer[GWSystem.player_curr].space_curr;
     temp_r31 = BoardSpaceFlagGet(0, var_r30) & 0x600000;
     if (temp_r31 == 0x200000) {
-        fn_1_1054(); // TODO: return?
+        fn_1_1054();
     } else if (temp_r31 == 0x400000) {
-        fn_1_4A60(); // TODO: return?
+        fn_1_4A60();
     }
 }
 
 static s32 fn_1_984(void) {
     if (BoardPlayerSizeGet(GWSystem.player_curr) != 2) {
-        fn_1_6EF0(); // TODO: return?
+        fn_1_6EF0();
     }
 }
 
