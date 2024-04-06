@@ -1297,7 +1297,7 @@ config.libs = [
             Object(Matching, "REL/w06Dll/mg_coin.c"),
             Object(Matching, "REL/w06Dll/fire.c"),
             Object(Matching, "REL/w06Dll/bridge.c"),
-            Object(NonMatching, "REL/w06Dll/bowser.c"),
+            Object(Matching, "REL/w06Dll/bowser.c"),
         }
     ),
     Rel('w10Dll',
