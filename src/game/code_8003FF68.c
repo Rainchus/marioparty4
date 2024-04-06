@@ -81,7 +81,7 @@ void fn_8003FF68(unkArg0* arg0) {
 
     for (j = 0; var_r31->unk_00 != -1U; var_r31++, j++) {
         if (var_r31->unk_06 == 0) {
-            temp = HuDataSelHeapReadNum(var_r31->unk_00, 0x10000000, HEAP_DATA);
+            temp = HuDataSelHeapReadNum(var_r31->unk_00, MEMORY_DEFAULT_NUM, HEAP_DATA);
             model = Hu3DModelCreate(temp);
             lbl_80192060[j] = model;
             Hu3DModelAttrSet(model, var_r31->unk_04);
@@ -93,7 +93,7 @@ void fn_8003FF68(unkArg0* arg0) {
                 lbl_80192160[j] = temp_r27->unk_08;
             }
         } else if (var_r31->unk_06 == 1) {
-            temp = HuDataSelHeapReadNum(var_r31->unk_00, 0x10000000, HEAP_DATA);
+            temp = HuDataSelHeapReadNum(var_r31->unk_00, MEMORY_DEFAULT_NUM, HEAP_DATA);
             lbl_80192160[j] = Hu3DMotionCreate(temp);
         }        
     }

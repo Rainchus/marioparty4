@@ -5,14 +5,17 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
+//function signatures
 void fn_1_162C(omObjData*);
 void fn_1_1A8C(omObjData*);
 
+//bss
 Process* lbl_1_bss_2C;
 omObjData* lbl_1_bss_28;
 s16 lbl_1_bss_24;
 s32 lbl_1_bss_20;
 
+//data
 s32 lbl_1_data_198[] = {
     0x00260000,
     0x00260002,
@@ -46,7 +49,7 @@ void fn_1_14F0(Process* arg0, s32 arg1) {
 
     lbl_1_bss_2C = arg0;
     lbl_1_bss_20 = arg1;
-    lbl_1_bss_28 = omAddObjEx(lbl_1_bss_2C, 0x100, 0xDU, 0U, 1, fn_1_162C);
+    lbl_1_bss_28 = omAddObjEx(lbl_1_bss_2C, 0x100, 0xD, 0, 1, fn_1_162C);
     omSetStatBit(lbl_1_bss_28, 0x100U);
     Hu3DLighInit();
     lbl_1_bss_24 = Hu3DGLightCreateV(&lbl_1_data_1FC, &lbl_1_data_208, &lbl_1_data_214);
@@ -70,21 +73,21 @@ void fn_1_162C(omObjData* arg0) {
     s32 i;
 
     arg0->func = fn_1_1A8C;
-    arg0->model[0] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[2], 0x10000000, HEAP_DATA));
+    arg0->model[0] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[2], MEMORY_DEFAULT_NUM, HEAP_DATA));
     Hu3DModelShadowMapSet(arg0->model[0]);
     Hu3DModelAmbSet(arg0->model[0], 1.0f, 1.0f, 1.0f);
-    arg0->model[1] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[3], 0x10000000, HEAP_DATA));
+    arg0->model[1] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[3], MEMORY_DEFAULT_NUM, HEAP_DATA));
     Hu3DModelAmbSet(arg0->model[1], 1.0f, 1.0f, 1.0f);
     Hu3DModelAttrSet(arg0->model[1], 1U);
     for (i = 0; i < ARRAY_COUNT(GWPlayerCfg); i++) {
-        arg0->model[i+2] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[GWPlayerCfg[i].character + 4], 0x10000000, HEAP_DATA));
+        arg0->model[i+2] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[GWPlayerCfg[i].character + 4], MEMORY_DEFAULT_NUM, HEAP_DATA));
         Hu3DModelAmbSet(arg0->model[i + 2], 1.0f, 1.0f, 1.0f);
         Hu3DModelShadowMapSet(arg0->model[i + 2]);
     }
 
     for (i = 0; i < 5; i++) {
         if (i == 0) {
-            arg0->model[i + 6] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[0], 0x10000000, HEAP_DATA));
+            arg0->model[i + 6] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[0], MEMORY_DEFAULT_NUM, HEAP_DATA));
         } else {
             arg0->model[i + 6] = Hu3DModelLink(arg0->model[6]);
         }
@@ -92,8 +95,8 @@ void fn_1_162C(omObjData* arg0) {
         Hu3DModelShadowMapSet(arg0->model[i + 6]);
     }
 
-    arg0->model[11] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[12], 0x10000000, HEAP_DATA));
-    arg0->model[12] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[1], 0x10000000, HEAP_DATA));
+    arg0->model[11] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[12], MEMORY_DEFAULT_NUM, HEAP_DATA));
+    arg0->model[12] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_198[1], MEMORY_DEFAULT_NUM, HEAP_DATA));
 
     for (i = 0; i < 4; i++) {
         Hu3DModelPosSetV(arg0->model[i + 2], &lbl_1_data_1CC[i]);

@@ -1026,8 +1026,7 @@ static GXColor hiliteColTbl[3] = {
 };
 
 static void UpdateMGList(bitcopy* arg0, omObjData* arg1) {
-    f32 sp1C;
-    f32 sp18;
+    f32 sp18[2];
     s32 sp14;
     f32 var_f26;
     f32 var_f25;
@@ -1056,14 +1055,14 @@ static void UpdateMGList(bitcopy* arg0, omObjData* arg1) {
             
             for (var_r23 = 0; var_r23 < arg0->field01_bit0; var_r23++) {
                 HuWinMesSizeCancelCRSet(1);
-                HuWinMesMaxSizeGet(1, &sp18, activeMG[var_r23].unk_04);
+                HuWinMesMaxSizeGet(1, &sp18[0], activeMG[var_r23].unk_04);
                 var_f25 = 152.0f;
                 var_f24 = 280.0f + (var_r23 * 0x18);
-                temp_r3 = HuWinCreate(var_f25, var_f24, sp18, sp1C, 0);
+                temp_r3 = HuWinCreate(var_f25, var_f24, sp18[0], sp18[1], 0);
                 HuWinBGTPLvlSet(temp_r3, 0.0f);
                 HuWinMesSpeedSet(temp_r3, 0);
                 HuWinDispOff(temp_r3);
-                HuWinAttrSet(temp_r3, 0x100U);
+                HuWinAttrSet(temp_r3, 0x100);
                 if (activeMG[var_r23].unk_03 != 0) {
                     sp14 = activeMG[var_r23].unk_04;
                 } else {

@@ -4,6 +4,8 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
+typedef void (*ObjFuncs)(void);
+
 typedef struct unkDominationData6 {
 /* 0x00 */ s32 unk_00;
 /* 0x04 */ s32 unk_04;
@@ -27,8 +29,6 @@ Process* lbl_1_bss_398C;
 omObjData* lbl_1_bss_3988;
 
 //data
-typedef void (*ObjFuncs)(void);
-
 ObjFuncs lbl_1_data_360[] = {
     fn_1_61A0,
     fn_1_6218,
@@ -40,8 +40,8 @@ void fn_1_5C5C(Process* arg0, s16 arg1) {
     u32 i;
 
     lbl_1_bss_398C = arg0;
-    lbl_1_bss_3988 = omAddObjEx(lbl_1_bss_398C, 0x800, 0U, 0U, 7, fn_1_5FE4);
-    lbl_1_bss_3988->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData6), 0x10000000);
+    lbl_1_bss_3988 = omAddObjEx(lbl_1_bss_398C, 0x800, 0, 0, 7, fn_1_5FE4);
+    lbl_1_bss_3988->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData6), MEMORY_DEFAULT_NUM);
     temp_r31 = lbl_1_bss_3988->data;
     temp_r31->unk_08 = arg1;
     temp_r31->unk_0A = 0;
@@ -96,7 +96,6 @@ void fn_1_5F90(void) {
     fn_1_5FB4(0);
 }
 
-//this function is an inline for other TUs, but not this one
 void fn_1_5FB4(s32 arg0) {
     unkDominationData6* temp_r31;
 

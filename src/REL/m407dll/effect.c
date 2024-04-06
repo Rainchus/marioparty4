@@ -4,6 +4,24 @@
 #include "game/hsfmotion.h"
 #include "game/hsfdraw.h"
 
+typedef struct unkDominationData4 {
+/* 0x00 */ u32 unk_00;
+/* 0x04 */ u32 unk_04;
+/* 0x08 */ s32 unk_08;
+/* 0x0C */ s32 unk_0C;
+/* 0x10 */ f32 unk_10;
+/* 0x14 */ f32 unk_14;
+/* 0x18 */ f32 unk_18;
+/* 0x1C */ s32 unk_1C;
+} unkDominationData4; //size of 0x20
+
+//function signatures
+void fn_1_4858(omObjData* arg0);
+void fn_1_485C(omObjData* arg0);
+void fn_1_46EC(omObjData* arg0);
+void fn_1_465C(omObjData* arg0, s32 arg1);
+void fn_1_4808(omObjData* arg0);
+
 //bss
 Process* lbl_1_bss_3970;
 omObjData* lbl_1_bss_37E0[100];
@@ -16,13 +34,6 @@ s32 lbl_1_data_288[] = {
     0x00260018,
     0x00260019
 };
-
-//function signatures
-void fn_1_4858(omObjData* arg0);
-void fn_1_485C(omObjData* arg0);
-void fn_1_46EC(omObjData* arg0);
-void fn_1_465C(omObjData* arg0, s32 arg1);
-void fn_1_4808(omObjData* arg0);
 
 ObjFuncs lbl_1_data_29C[] = {
     fn_1_4858,
@@ -38,7 +49,7 @@ void fn_1_41CC(Process* arg0) {
     temp_r30 = 0;
 
     for (i = 0; i < 40; i++) {
-        lbl_1_bss_37E0[i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1U, 0U, 5, fn_1_46EC);
+        lbl_1_bss_37E0[i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1, 0, 5, fn_1_46EC);
         lbl_1_bss_37E0[i]->work[0] = i;
         lbl_1_bss_37E0[i]->work[1] = 0;
     }
@@ -46,7 +57,7 @@ void fn_1_41CC(Process* arg0) {
     temp_r30 += i;
 
     for (i = 0; i < 4; i++) {
-        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1U, 0U, 5, fn_1_46EC);
+        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1, 0, 5, fn_1_46EC);
         lbl_1_bss_37E0[temp_r30 + i]->work[0] = temp_r30 + i;
         lbl_1_bss_37E0[temp_r30 + i]->work[1] = 1;        
     }
@@ -54,7 +65,7 @@ void fn_1_41CC(Process* arg0) {
     temp_r30 += i;
 
     for (i = 0; i < 30; i++) {
-        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1U, 0U, 5, fn_1_46EC);
+        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1, 0, 5, fn_1_46EC);
         lbl_1_bss_37E0[temp_r30 + i]->work[0] = temp_r30 + i;
         lbl_1_bss_37E0[temp_r30 + i]->work[1] = 2;        
     }
@@ -62,7 +73,7 @@ void fn_1_41CC(Process* arg0) {
     temp_r30 += i;
 
     for (i = 0; i < 4; i++) {
-        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1U, 0U, 5, fn_1_46EC);
+        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1, 0, 5, fn_1_46EC);
         lbl_1_bss_37E0[temp_r30 + i]->work[0] = temp_r30 + i;
         lbl_1_bss_37E0[temp_r30 + i]->work[1] = 3;        
     }
@@ -70,7 +81,7 @@ void fn_1_41CC(Process* arg0) {
     temp_r30 += i;
 
     for (i = 0; i < 22; i++) {
-        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1U, 0U, 5, fn_1_46EC);
+        lbl_1_bss_37E0[temp_r30 + i] = omAddObjEx(lbl_1_bss_3970, 0x800, 1, 0, 5, fn_1_46EC);
         lbl_1_bss_37E0[temp_r30 + i]->work[0] = temp_r30 + i;
         lbl_1_bss_37E0[temp_r30 + i]->work[1] = 4;        
     }
@@ -84,24 +95,8 @@ void fn_1_44F4(void) {
     }
 }
 
-typedef struct unkDominationData4 {
-    u32 unk_00;
-    u32 unk_04;
-    s32 unk_08;
-    s32 unk_0C;
-    f32 unk_10;
-    f32 unk_14;
-    f32 unk_18;
-    s32 unk_1C;
-} unkDominationData4;
-
 void fn_1_4544(s32 arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4) {
-    f32 sp14;
-    f32 sp10;
-    s32 spC;
-    s32 sp8;
     omObjData* temp_r29;
-    u32 var_r30;
     unkDominationData4* temp_r31;
     u32 i;
 
@@ -140,25 +135,22 @@ void fn_1_4680(omObjData* arg0) {
 }
 
 void fn_1_46EC(omObjData* arg0) {
-    unkDominationData4* temp_r29;
     unkDominationData4* temp_r30;
 
     arg0->func = fn_1_4680;
-    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData4), 0x10000000);
+    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData4), MEMORY_DEFAULT_NUM);
     temp_r30 = arg0->data;
     temp_r30->unk_00 = arg0->work[0];
     temp_r30->unk_08 = arg0->work[1];
     temp_r30->unk_1C = 0;
-    *arg0->model = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_288[temp_r30->unk_08], 0x10000000, HEAP_DATA));
-    Hu3DModelAttrSet(*arg0->model, 0x4000U);
-    Hu3DModelAttrSet(*arg0->model, 0x40000002U);
-    Hu3DModelAttrSet(*arg0->model, 1U);
-    temp_r30->unk_10 = (f32) 0.0f;
-    temp_r30->unk_14 = (f32) 0.0f;
-    temp_r30->unk_18 = (f32) 0.0f;
-    temp_r29 = arg0->data;
-    temp_r29->unk_0C = 0;
-    temp_r29->unk_1C = 0;
+    arg0->model[0] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_288[temp_r30->unk_08], MEMORY_DEFAULT_NUM, HEAP_DATA));
+    Hu3DModelAttrSet(arg0->model[0], 0x4000);
+    Hu3DModelAttrSet(arg0->model[0], 0x40000002);
+    Hu3DModelAttrSet(arg0->model[0], 1);
+    temp_r30->unk_10 = 0.0f;
+    temp_r30->unk_14 = 0.0f;
+    temp_r30->unk_18 = 0.0f;
+    fn_1_465C(arg0, 0);
 }
 
 void fn_1_4808(omObjData* arg0) {
@@ -177,7 +169,6 @@ void fn_1_4858(omObjData* arg0) {
 }
 
 void fn_1_485C(omObjData* arg0) {
-    unkDominationData4* temp_r29;
     unkDominationData4* temp_r30;
 
     temp_r30 = arg0->data;
@@ -197,9 +188,7 @@ void fn_1_485C(omObjData* arg0) {
     }
     
     if (Hu3DMotionEndCheck(*arg0->model) != 0) {
-        Hu3DModelAttrSet(*arg0->model, 1U);
-        temp_r29 = arg0->data;
-        temp_r29->unk_0C = 0;
-        temp_r29->unk_1C = 0;
+        Hu3DModelAttrSet(*arg0->model, 1);
+        fn_1_465C(arg0, 0);
     }
 }

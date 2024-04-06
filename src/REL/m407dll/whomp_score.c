@@ -4,6 +4,16 @@
 #include "game/gamework_data.h"
 #include "game/esprite.h"
 
+typedef struct unkDominationData3 {
+/* 0x00 */ u32 unk_00;
+/* 0x04 */ s32 unk_04;
+/* 0x08 */ Vec unk_08;
+/* 0x14 */ s32 unk_14;
+/* 0x18 */ s16 unk_18[4];
+/* 0x20 */ f32 unk_20;
+} unkDominationData3; //sizeof 0x24
+
+//function signatures
 void Hu3D3Dto2D(Vec *arg0, s16 arg1, Vec *arg2);
 void fn_1_3D28(omObjData* arg0, s32 arg1);
 void fn_1_3E34(omObjData*);
@@ -16,20 +26,12 @@ void fn_1_40F4(omObjData* arg0);
 Process* lbl_1_bss_37D8;
 omObjData* lbl_1_bss_37C8[4];
 
+//data
 ObjFuncs lbl_1_data_278[] = {
     fn_1_3FF0,
     fn_1_3FF4,
     fn_1_40F4,
 };
-
-typedef struct unkDominationData3 {
-    u32 unk_00;
-    s32 unk_04;
-    Vec unk_08;
-    s32 unk_14;
-    s16 unk_18[4];
-    f32 unk_20;
-} unkDominationData3;
 
 void fn_1_3AC8(Process* arg0) {
     u32 i;
@@ -37,13 +39,12 @@ void fn_1_3AC8(Process* arg0) {
     lbl_1_bss_37D8 = arg0;
 
     for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
-        lbl_1_bss_37C8[i] = omAddObjEx(lbl_1_bss_37D8, 0x500, 0U, 0U, 4, fn_1_3E34);
+        lbl_1_bss_37C8[i] = omAddObjEx(lbl_1_bss_37D8, 0x500, 0, 0, 4, fn_1_3E34);
         lbl_1_bss_37C8[i]->work[0] = i;
     }
 }
 
 void fn_1_3B68(void) {
-    s32 temp_r4;
     u32 i;
 
     for (i = 0; i < ARRAY_COUNT(lbl_1_bss_37C8); i++) {
@@ -103,7 +104,7 @@ void fn_1_3E34(omObjData* arg0) {
     unkDominationData3* temp_r31;
 
     arg0->func = fn_1_3D4C;
-    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData3), 0x10000000);
+    arg0->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData3), MEMORY_DEFAULT_NUM);
     temp_r31 = arg0->data;
     temp_r31->unk_00 = arg0->work[0];
     temp_r31->unk_14 = 0;

@@ -7,12 +7,26 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
-//bss
-Process* lbl_1_bss_3980;
-omObjData* lbl_1_bss_397C;
-s16 lbl_1_bss_3978;
+typedef void (*ObjFuncs)(void);
 
-//func signatures
+typedef struct unkDominationData5 {
+/* 0x00 */ u32 unk_00;
+/* 0x04 */ s16 unk_04;
+/* 0x06 */ s16 unk_06;
+/* 0x08 */ s16 unk_08;
+/* 0x0A */ char unk_0A[6];
+/* 0x10 */ s16 unk_10;
+/* 0x12 */ char unk_12[10];
+/* 0x1C */ s16 unk_1C[4];
+/* 0x24 */ s16 unk_24;
+/* 0x26 */ char unk_26[2];
+/* 0x28 */ Vec unk_28;
+/* 0x34 */ Vec unk_34;
+/* 0x40 */ f32 unk_40;
+/* 0x44 */ s32 unk_44;
+} unkDominationData5; //sizeof 0x48
+
+//function signatures
 void fn_1_388(u8, s32);
 void fn_1_3C4(u8);
 s32 fn_1_4C0(s32);
@@ -36,7 +50,11 @@ s16 fn_1_5804(void);
 void fn_1_5A80(void);
 void fn_1_5BB0(void);
 
-typedef void (*ObjFuncs)(void);
+//bss
+Process* lbl_1_bss_3980;
+omObjData* lbl_1_bss_397C;
+s16 lbl_1_bss_3978;
+
 //data
 ObjFuncs lbl_1_data_2A8[] = {
     fn_1_4D0C,
@@ -54,30 +72,27 @@ ObjFuncs lbl_1_data_2A8[] = {
     fn_1_4B7C
 };
 
-typedef struct unkDominationData5 {
-    u32 unk_00;
-    s16 unk_04;
-    s16 unk_06;
-    s16 unk_08;
-    char unk_0A[6];
-    s16 unk_10;
-    char unk_12[10];
-    s16 unk_1C[4];
-    s16 unk_24;
-    char unk_26[2];
-    Vec unk_28;
-    Vec unk_34;
-    f32 unk_40;
-    s32 unk_44;
-} unkDominationData5;
+f32 lbl_1_data_2DC[4] = {850.0f, 900.0f, 1300.0f, 1500.0f};
+Vec lbl_1_data_2EC = {540.0f, 0.0f, 10000.0f};
+Vec lbl_1_data_2F8 = {-50.0f, -360.0f, 0.0f};
+f32 lbl_1_data_304 = 2670.0f;
+Vec lbl_1_data_308 = {437.0f, 0.0f, 5000.0f};
+Vec lbl_1_data_314 = {-50.0f, -360.0f, 0.0f};
+f32 lbl_1_data_320 = 2290.0f;
+Vec lbl_1_data_324 = {0.0f, 0.0f, 100.0f};
+Vec lbl_1_data_330 = {-45.0f, -540.0f, 0.0f};
+f32 lbl_1_data_33C = 1910.0f;
+Vec lbl_1_data_340 = {0.0f, 0.0f, 100.0f};
+Vec lbl_1_data_34C = {-53.0f, -680.0f, 0.0f};
+f32 lbl_1_data_358 = 1900.0f;
 
 void fn_1_4980(Process* arg0) {
     s32 i;
     unkDominationData5* temp_r31;
 
     lbl_1_bss_3980 = arg0;
-    lbl_1_bss_397C = omAddObjEx(lbl_1_bss_3980, 0x40, 0U, 0U, 0, fn_1_4C6C);
-    lbl_1_bss_397C->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData5), 0x10000000);
+    lbl_1_bss_397C = omAddObjEx(lbl_1_bss_3980, 0x40, 0, 0, 0, fn_1_4C6C);
+    lbl_1_bss_397C->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(unkDominationData5), MEMORY_DEFAULT_NUM);
     temp_r31 = lbl_1_bss_397C->data;
     Hu3DShadowCreate(45.0f, 10.0f, 10000.0f);
     Hu3DShadowTPLvlSet(0.6f);
@@ -158,28 +173,12 @@ void fn_1_4C6C(omObjData* obj) {
 
 void fn_1_4D0C(void) {
     unkDominationData5* sp8;
-    unkDominationData5* temp_r31;
 
     sp8 = lbl_1_bss_397C->data;
     fn_1_4C3C(1);
 }
 
-f32 lbl_1_data_2DC[4] = {850.0f, 900.0f, 1300.0f, 1500.0f};
-Vec lbl_1_data_2EC = {540.0f, 0.0f, 10000.0f};
-Vec lbl_1_data_2F8 = {-50.0f, -360.0f, 0.0f};
-f32 lbl_1_data_304 = 2670.0f;
-Vec lbl_1_data_308 = {437.0f, 0.0f, 5000.0f};
-Vec lbl_1_data_314 = {-50.0f, -360.0f, 0.0f};
-f32 lbl_1_data_320 = 2290.0f;
-Vec lbl_1_data_324 = {0.0f, 0.0f, 100.0f};
-Vec lbl_1_data_330 = {-45.0f, -540.0f, 0.0f};
-f32 lbl_1_data_33C = 1910.0f;
-Vec lbl_1_data_340 = {0.0f, 0.0f, 100.0f};
-Vec lbl_1_data_34C = {-53.0f, -680.0f, 0.0f};
-f32 lbl_1_data_358 = 1900.0f;
-
 void fn_1_4D54(void) {
-    s16 temp_r0;
     unkDominationData5* temp_r31;
 
     temp_r31 = lbl_1_bss_397C->data;
@@ -208,7 +207,6 @@ void fn_1_4D54(void) {
 
 void fn_1_4E8C(void) {
     s32 i;
-    unkDominationData5* temp_r29;
     unkDominationData5* temp_r31;
 
     temp_r31 = lbl_1_bss_397C->data;
@@ -231,7 +229,6 @@ void fn_1_4E8C(void) {
 }
 
 void fn_1_4FAC(void) {
-    s16 temp_r0;
     unkDominationData5* temp_r31;
     
     temp_r31 = lbl_1_bss_397C->data;
