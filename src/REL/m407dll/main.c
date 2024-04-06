@@ -377,14 +377,6 @@ void fn_1_5574(void) {
 
 void fn_1_5630(void) {
     unkDominationData5* temp_r31;
-    s32 temp_r28;
-    s16 temp_r27;
-    s32 temp_r26;
-    s32 coins;
-    s32 coins2;
-    s32 temp_r23;
-    s32 temp_r22;
-    s32 temp_r21;
     s32 i;
 
     temp_r31 = lbl_1_bss_397C->data;
@@ -398,21 +390,11 @@ void fn_1_5630(void) {
             temp_r31->unk_06 = MGSeqCreate(3, 2);
             HuAudSStreamPlay(4);
         } else {
-            temp_r21 = fn_1_4C0(temp_r31->unk_1C[3]);
-            temp_r22 = fn_1_4C0(temp_r31->unk_1C[2]);
-            temp_r23 = fn_1_4C0(temp_r31->unk_1C[1]);
-            temp_r31->unk_06 = MGSeqCreate(5, 3, fn_1_4C0(temp_r31->unk_1C[0]), temp_r23, temp_r22, temp_r21);
+            temp_r31->unk_06 = MGSeqCreate(5, 3, fn_1_4C0(temp_r31->unk_1C[0]), fn_1_4C0(temp_r31->unk_1C[1]), fn_1_4C0(temp_r31->unk_1C[2]), fn_1_4C0(temp_r31->unk_1C[3]));
             for (i = 0; i < ARRAY_COUNT(temp_r31->unk_1C); i++) {
                 if (temp_r31->unk_1C[i] != -1) {
                     fn_1_3C4(temp_r31->unk_1C[i]);
-                    temp_r26 = temp_r31->unk_1C[i];
-                    coins = GWPlayer[temp_r26].coin_win;
-                    coins2 = coins;
-                    temp_r27 = coins2 + 10;
-                    temp_r28 = temp_r31->unk_1C[i];
-                    if (_CheckFlag(0x1000C) == 0) {
-                        GWPlayer[temp_r28].coin_win = temp_r27;
-                    }
+					GWPlayerCoinWinSet(temp_r31->unk_1C[i], GWPlayerCoinWinGet(temp_r31->unk_1C[i])+10);
                 }                    
             }
             HuAudSStreamPlay(1);
