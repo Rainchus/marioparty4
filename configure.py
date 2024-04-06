@@ -1167,7 +1167,7 @@ config.libs = [
     ),
     Rel('mstory4Dll',
         objects = {
-            Object(NonMatching, "REL/mstory4Dll/main.c"),
+            Object(Matching, "REL/mstory4Dll/main.c"),
         }
     ),
     Rel('mstoryDll',

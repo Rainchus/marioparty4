@@ -36,7 +36,7 @@ typedef struct system_state {
 };
 /* 0x09 */ s8 last5_effect;
 /* 0x0A */ s8 player_curr;
-/* 0x0B */ char unk0B[3];
+/* 0x0B */ s8 unk0B[3];
 /* 0x0E */ s16 block_pos;
 /* 0x10 */ u8 ATTRIBUTE_ALIGN(4) board_data[32];
 /* 0x30 */ u8 mess_delay;
