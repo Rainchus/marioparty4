@@ -967,12 +967,75 @@ config.libs = [
             Object(NonMatching, "REL/m424Dll/claw.c"),
         }
     ),
+    Rel('m425Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m425Dll/main.c"),
+            Object(NonMatching, "REL/m425Dll/thwomp.c"),
+        }
+    ),
+    Rel('m426Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m426Dll/main.c"),
+        }
+    ),
+    Rel('m427Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m427Dll/main.c"),
+            Object(NonMatching, "REL/m427Dll/map.c"),
+            Object(NonMatching, "REL/m427Dll/player.c"),
+        }
+    ),
+    Rel('m428Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m428Dll/main.c"),
+            Object(NonMatching, "REL/m428Dll/map.c"),
+            Object(NonMatching, "REL/m428Dll/player.c"),
+        }
+    ),
+    Rel('m429Dll',
+        objects = {
+            Object(NonMatching, "REL/m429Dll/main.c"),
+        }
+    ),
+    Rel('m430Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m430Dll/main.c"),
+            Object(NonMatching, "REL/m430Dll/water.c"),
+            Object(NonMatching, "REL/m430Dll/player.c"),
+        }
+    ),
+    Rel('m431Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m431Dll/main.c"),
+            Object(NonMatching, "REL/m431Dll/object.c"),
+        }
+    ),
+    Rel('m432Dll',
+        objects = {
+            Object(NonMatching, "REL/m432Dll/main.c"),
+        }
+    ),
     Rel('m433Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m433Dll/main.c"),
             Object(NonMatching, "REL/m433Dll/map.c"),
             Object(NonMatching, "REL/m433Dll/player.c"),
+        }
+    ),
+    Rel('m434Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m434Dll/main.c"),
+            Object(NonMatching, "REL/m434Dll/map.c"),
+            Object(NonMatching, "REL/m434Dll/player.c"),
+            Object(NonMatching, "REL/m434Dll/fish.c"),
         }
     ),
     Rel('m442Dll',
