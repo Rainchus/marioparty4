@@ -198,7 +198,6 @@ void fn_1_155C(void) {
     BoardDiceDigit2DShowSet(1);
 }
 
-s16 lbl_1_data_184 = 0x2564;
 s32 lbl_1_data_188[4] = { 0x79000C, 0x79000E, 0x79000F, 0x790010 };
 s32 lbl_1_data_198[2] = { 28, 25 };
 
