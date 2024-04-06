@@ -87,35 +87,13 @@ s32 fn_1_1D88(void) {
 }
 
 void fn_1_1DB0(Point3d* arg0, Point3d* arg1, f32* arg2, s32 arg3, s32 arg4) {
-    Point3d* var_r30;
-    Point3d* var_r29;
-    f32 var_f31;
     unkDominationData2* temp_r31;
 
     temp_r31 = OM_GET_DATA_PTR(lbl_1_bss_30, unkDominationData2);
     temp_r31->unk_00 = arg4;
-    
-    if (arg0) {
-        var_r30 = arg0;
-    } else {
-        var_r30 = &Center;
-    }
-    temp_r31->unk_08 = *var_r30;
-    if (arg1) {
-        var_r29 = arg1;
-    } else {
-        var_r29 = &CRot;
-    }
-    
-    temp_r31->unk_14 = *var_r29;
-    
-    if (arg2) {
-        var_f31 = *arg2;
-    } else {
-        var_f31 = CZoom;
-    }
-    
-    temp_r31->unk_20 = var_f31;
+    temp_r31->unk_08 = (arg0) ? *arg0 : Center;
+    temp_r31->unk_14 = (arg1) ? *arg1 : CRot;
+    temp_r31->unk_20 = (arg2) ? *arg2 : CZoom;
     temp_r31->unk_24 = Center;
     temp_r31->unk_30 = CRot;
     temp_r31->unk_3C = CZoom;
