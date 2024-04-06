@@ -27,6 +27,10 @@ typedef struct datalist_sprite {
 	GXColor color;
 } DataListSprite;
 
+void fn_1_3FD8(void);
+void fn_1_40DC(void);
+void fn_1_423C(s16 *data);
+
 void fn_1_6490(void);
 
 void fn_1_8FF8(DataListModel *model_list);
@@ -37,5 +41,8 @@ extern s16 lbl_1_bss_1A9C[32];
 extern s16 lbl_1_bss_1A5C[32];
 extern s16 lbl_1_bss_1A1A[33];
 extern s16 lbl_1_bss_1A18;
+extern s32 lbl_1_bss_178;
+extern s32 lbl_1_bss_174;
+extern s16 lbl_1_bss_172;
 
 #endif
