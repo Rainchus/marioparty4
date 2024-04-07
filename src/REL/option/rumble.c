@@ -129,14 +129,13 @@ static void fn_1_32F0(omObjData *arg0) {
                     fn_1_39E0(temp_r31->unk00, 1, 1);
                     temp_r31->unk20 = 1;
                     temp_r31->unk28 = 0;
-                    GWGameStat.rumble = 1;
+					GWRumbleSet(1);
                     arg0->unk10 = 3;
                 } else if (fn_1_584(4) != 0 && temp_r31->unk20 != 0) {
                     fn_1_39E0(temp_r31->unk00, 0, 1);
                     temp_r31->unk20 = 0;
                     temp_r31->unk28 = 0;
-                    GWGameStat.rumble = 0;
-                    HuPadRumbleAllStop();
+					GWRumbleSet(0);
                     arg0->unk10 = 3;
                 }
             }
@@ -201,7 +200,7 @@ static omObjData *fn_1_38BC(void) {
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
     temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 2));
     Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
-    if (GWGameStat.rumble != 0) {
+    if (GWRumbleGet()) {
         Hu3DMotionTimeSet(temp_r31->model[0], 60.0f);
     } else {
         Hu3DMotionTimeSet(temp_r31->model[0], 0.0f);
@@ -319,7 +318,7 @@ static omObjData *fn_1_3F28(void) {
 
     temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
     temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 11));
-    if (GWGameStat.rumble != 0) {
+    if (GWRumbleGet()) {
         Hu3DModelAttrReset(temp_r31->model[0], 1);
     } else {
         Hu3DModelAttrSet(temp_r31->model[0], 1);

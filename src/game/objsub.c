@@ -1210,9 +1210,8 @@ void omGameSysInit(Process *objman) {
 }
 
 void omVibrate(s16 player, s16 duration, s16 off, s16 on) {
-    s32 rumble = GWGameStat.rumble;
     
-    if (rumble != 0 && GWPlayerCfg[player].iscom == 0) {
+    if (GWRumbleGet() != 0 && GWPlayerCfg[player].iscom == 0) {
         HuPadRumbleSet(GWPlayerCfg[player].pad_idx, duration, off, on);
     }
 }

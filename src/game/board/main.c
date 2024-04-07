@@ -341,7 +341,7 @@ void BoardStoryConfigSet(s32 mg_list, s32 diff_story)
 	GWSystem.team = 0;
 	GWSystem.diff_story = diff_story;
 	GWSystem.bonus_star = 0;
-	GWSystem.mg_list = mg_list;
+	GWMGListSet(mg_list);
 	GWPlayer[0].handicap = 0;
 	GWPlayer[1].handicap = 0;
 	GWPlayer[2].handicap = 0;
@@ -365,7 +365,7 @@ void BoardPartyConfigSet(s32 team, s32 bonus_star, s32 mg_list, s32 max_turn, s3
 	GWSystem.team = team;
 	GWSystem.diff_story = 0;
 	GWSystem.bonus_star = bonus_star;
-	GWSystem.mg_list = mg_list;
+	GWMGListSet(mg_list);
 	GWSystem.max_turn = max_turn;
 	memset(GWPlayer, 0, 4*sizeof(PlayerState));
 	GWPlayer[0].handicap = p1_handicap;
@@ -613,27 +613,12 @@ s32 BoardStartCheck(void)
 static void CreateBoard(void)
 {
 	s32 guest_status;
-	s32 mess_speed;
 	
 	GWSystem.mg_next = -1;
 	if(!GWGameStat.field10E_bit5 && GWMGListGet() == 2) {
-		GWSystem.mg_list = 0;
+		GWMGListSet(0);
 	}
-	mess_speed = GWMessSpeedGet();
-	GWSystem.mess_speed = mess_speed;
-	switch(mess_speed) {
-		case 0:
-			GWSystem.mess_delay = 16;
-			break;
-			
-		case 2:
-			GWSystem.mess_delay = 48;
-			break;
-			
-		default:
-			GWSystem.mess_delay = 32;
-			break;
-	}
+	GWMessSpeedSet(GWMessSpeedGet());
 	if(GWMGExplainGet()) {
 		_SetFlag(FLAG_ID_MAKE(0, 11));
 	} else {

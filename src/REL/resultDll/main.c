@@ -998,7 +998,7 @@ void fn_1_461C(void)
 		HuPrcVSleep();
 	}
 	if(GWSaveModeGet() == 2) {
-		GWSystem.save_mode = 1;
+		GWSaveModeSet(1);
 	}
 	if(GWPartyGet() == 1) {
 		GWGameStat.party_continue = 1;
@@ -1011,7 +1011,7 @@ void fn_1_461C(void)
 	if(SLSave()) {
 		saveExecF = 1;
 	} else {
-		GWSystem.save_mode = 1;
+		GWSaveModeSet(1);
 	}
 	WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
 	while(WipeStatGet()) {

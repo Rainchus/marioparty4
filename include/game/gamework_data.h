@@ -4,6 +4,9 @@
 #include "dolphin.h"
 #include "game/flag.h"
 
+//HACK: to prevent prototype errors
+extern void HuPadRumbleAllStop(void);
+
 typedef struct player_config {
     s16 character;
     s16 pad_idx;
@@ -175,14 +178,32 @@ static inline s32 GWRumbleGet(void)
     return GWGameStat.rumble;
 }
 
+static inline void GWRumbleSet(s32 value)
+{
+    GWGameStat.rumble = value;
+	if(value == 0) {
+		HuPadRumbleAllStop();
+	}
+}
+
 static inline s32 GWMGExplainGet(void)
 {
     return GWSystem.explain_mg;
 }
 
+static inline void GWMGExplainSet(s32 value)
+{
+    GWSystem.explain_mg = value;
+}
+
 static inline s32 GWMGShowComGet(void)
 {
     return GWSystem.show_com_mg;
+}
+
+static inline void GWMGShowComSet(s32 value)
+{
+    GWSystem.show_com_mg = value;
 }
 
 static inline s32 GWMGListGet(void)
@@ -193,6 +214,11 @@ static inline s32 GWMGListGet(void)
     return GWSystem.mg_list;
 }
 
+static inline void GWMGListSet(s32 value)
+{
+    GWSystem.mg_list = value;
+}
+
 static inline s32 GWMessSpeedGet(void)
 {
     if (GWSystem.mess_speed == 3) {
@@ -201,10 +227,33 @@ static inline s32 GWMessSpeedGet(void)
     return GWSystem.mess_speed;
 }
 
+static inline void GWMessSpeedSet(s32 value)
+{
+	GWSystem.mess_speed = value;
+	switch(value) {
+		case 0:
+			GWSystem.mess_delay = 16;
+			break;
+			
+		case 2:
+			GWSystem.mess_delay = 48;
+			break;
+			
+		default:
+			GWSystem.mess_delay = 32;
+			break;
+	}
+}
+
+static inline void GWSaveModeSet(s32 value)
+{
+    GWSystem.save_mode = value;
+}
+
 static inline s32 GWSaveModeGet(void)
 {
     if (GWSystem.save_mode == 3) {
-        GWSystem.save_mode = 1;
+		GWSaveModeSet(1);
     }
     return GWSystem.save_mode;
 }

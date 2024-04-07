@@ -154,25 +154,24 @@ static void FortuneMain(void)
 	while(fortunePlatformObj) {
 		HuPrcVSleep();
 	}
-	if(GWPlayer[GWSystem.player_curr].com) {
-		if((int)GWSystem.show_com_mg == 0) {
-			HuPrcSleep(60);
-			for(i=0; i<4; i++) {
-				s32 bit11 = GWPlayer[i].team_backup;
-				GWPlayer[i].team = bit11;
-				GWPlayerCfg[i].group = bit11;
-			}
-			ConfigComFortune();
-			FortunePostMG();
-			BoardMusStartBoard();
-			ExecComFortuneWin();
-			return;
+	if(GWPlayer[GWSystem.player_curr].com && !GWMGShowComGet()) {
+		HuPrcSleep(60);
+		for(i=0; i<4; i++) {
+			s32 bit11 = GWPlayer[i].team_backup;
+			GWPlayer[i].team = bit11;
+			GWPlayerCfg[i].group = bit11;
 		}
+		ConfigComFortune();
+		FortunePostMG();
+		BoardMusStartBoard();
+		ExecComFortuneWin();
+		return;
+	} else {
+		GWMGAvailSet(444);
+		GWSystem.mg_next = 43;
+		_SetFlag(0x10005);
+		BoardNextOvlSet(OVL_M444);
 	}
-	GWMGAvailSet(444);
-	GWSystem.mg_next = 43;
-	_SetFlag(0x10005);
-	BoardNextOvlSet(OVL_M444);
 }
 
 static void FortunePostMG(void)
