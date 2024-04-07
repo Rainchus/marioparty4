@@ -267,7 +267,7 @@ s32 BoardPauseDisableGet()
 
 void BoardSaveInit(s32 board)
 {
-	int i;
+	s32 i;
 	GWSystem.board = board;
 	_ClearFlag(FLAG_ID_MAKE(1, 0));
 	_ClearFlag(FLAG_ID_MAKE(1, 1));
@@ -382,6 +382,8 @@ static void DestroyMainFunc(void)
 	boardMainProc = NULL;
 }
 
+#define CHECK_LAST5_TURN() ((s32)(GWSystem.max_turn-GWSystem.turn) < 5)
+
 static void MainFunc(void)
 {
 	s32 i;
@@ -416,7 +418,7 @@ static void MainFunc(void)
 	if(ExecTurnStart()) {
 		turn_cont = 1;
 	}
-	if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && GWSystem.player_curr == 0 && !turn_cont) {
+	if(CHECK_LAST5_TURN() && GWSystem.player_curr == 0 && !turn_cont) {
 		if(!_CheckFlag(FLAG_ID_MAKE(0, 8))) {
 			BoardLast5Exec();
 			_SetFlag(FLAG_ID_MAKE(0, 8));
@@ -440,7 +442,7 @@ static void MainFunc(void)
 		BoardMusStartBoard();
 		for(i=GWSystem.player_curr; i<4; i++) {
 			if(GWBoardGet() == 7 || GWBoardGet() == 8) {
-				if((int)(GWSystem.max_turn-GWSystem.turn) < 5 && i == 0 && !turn_cont) {
+				if(CHECK_LAST5_TURN() && i == 0 && !turn_cont) {
 					BoardLast5GfxInit();
 					_SetFlag(FLAG_ID_MAKE(0, 8));
 				}
@@ -611,16 +613,11 @@ s32 BoardStartCheck(void)
 static void CreateBoard(void)
 {
 	s32 guest_status;
-	int mess_speed;
-	s32 clear_flags;
-	s32 reset_unk32;
+	s32 mess_speed;
 	
 	GWSystem.mg_next = -1;
-	if(!GWGameStat.field10E_bit5) {
-		s32 type_temp;
-		if(GWMGListGet() == 2) {
-			GWSystem.mg_list = 0;
-		}
+	if(!GWGameStat.field10E_bit5 && GWMGListGet() == 2) {
+		GWSystem.mg_list = 0;
 	}
 	mess_speed = GWMessSpeedGet();
 	GWSystem.mess_speed = mess_speed;
@@ -637,17 +634,12 @@ static void CreateBoard(void)
 			GWSystem.mess_delay = 32;
 			break;
 	}
-	if((int)GWSystem.explain_mg != 0) {
+	if(GWMGExplainGet()) {
 		_SetFlag(FLAG_ID_MAKE(0, 11));
 	} else {
 		_ClearFlag(FLAG_ID_MAKE(0, 11));
 	}
-	if(_CheckFlag(FLAG_ID_MAKE(1, 2)) || _CheckFlag(FLAG_ID_MAKE(1, 3)) || _CheckFlag(FLAG_ID_MAKE(1, 4)) || _CheckFlag(FLAG_ID_MAKE(1, 5)) || _CheckFlag(FLAG_ID_MAKE(1, 6))) {
-		clear_flags = 1;
-	} else {
-		clear_flags = 0;
-	}
-	if(!clear_flags) {
+	if(!BoardStartCheck()) {
 		_ClearFlag(FLAG_ID_MAKE(1, 2));
 		_ClearFlag(FLAG_ID_MAKE(1, 3));
 		_ClearFlag(FLAG_ID_MAKE(1, 4));
@@ -655,12 +647,7 @@ static void CreateBoard(void)
 		_ClearFlag(FLAG_ID_MAKE(1, 6));
 	}
 	_ClearFlag(FLAG_ID_MAKE(1, 8));
-	if(_CheckFlag(FLAG_ID_MAKE(1, 2)) || _CheckFlag(FLAG_ID_MAKE(1, 3)) || _CheckFlag(FLAG_ID_MAKE(1, 4)) || _CheckFlag(FLAG_ID_MAKE(1, 5)) || _CheckFlag(FLAG_ID_MAKE(1, 6))) {
-		reset_unk32 = 1;
-	} else {
-		reset_unk32 = 0;
-	}
-	if(!reset_unk32) {
+	if(!BoardStartCheck()) {
 		GWSystem.lucky_value = 1;
 	}
 	guest_status = BoardDataDirReadAsync(DATADIR_BGUEST);
@@ -768,6 +755,7 @@ void BoardLightResetExec(void)
 	Hu3DReflectNoSet(0);
 }
 
+//Fixes order of boardCamera and cameraBackup
 static BoardCameraData *BoardCameraGet(void)
 {
 	return &boardCamera;
@@ -1290,8 +1278,8 @@ CAM_LERP(t, (x1).z, (x2).z, (out).z)
 
 static void CalcCameraPos(BoardCameraData *camera)
 {
-	
-	volatile unsigned int lerp_t1, lerp_t2;
+	//These variables must be volatile to match
+	volatile u32 lerp_t1, lerp_t2;
 	volatile float lerp_x1, lerp_x2;
 	float time;
 	
@@ -1420,9 +1408,9 @@ float BoardArcSin(float value)
 		return 0;
 	}
 	if(value <= (float)(M_PI/2)) {
-		result = atanf(value/(float)sqrtf(1-(value*value)));
+		result = atanf(value/sqrtf(1-(value*value)));
 	} else {
-		result = ((float)M_PI/2.0f)-atanf((float)sqrtf(1-(value*value))/value);
+		result = (float)(M_PI/2)-atanf(sqrtf(1-(value*value))/value);
 	}
 	if(sign) {
 		result = BOARD_FABS(result);
@@ -1435,7 +1423,7 @@ float BoardArcCos(float value)
 	if(BOARD_FABS(value) > 1) {
 		return 0;
 	}
-	return ((float)M_PI/2.0f)-BoardArcSin(value);
+	return (float)(M_PI/2)-BoardArcSin(value);
 }
 
 void BoardRandInit(void)
@@ -1457,22 +1445,22 @@ u32 BoardRandMod(u32 value)
 float BoardRandFloat(void)
 {
 	float value;
-	*((u32 *)&value) = (BoardRand() & 0x7FFFFF)|0x3F800000;
+	*((u32 *)&value) = (BoardRand() & 0x7FFFFF)|0x3F800000; //Generate float from 1.0f to 2.0f
 	return value-1.0f;
 }
 
 float BoardVecDistXZCalc(Vec *vec1, Vec *vec2)
 {
-	float x = vec1->x-vec2->x;
-	float z = vec1->z-vec2->z;
-	return sqrtf((x*x)+(z*z));
+	float dx = vec1->x-vec2->x;
+	float dz = vec1->z-vec2->z;
+	return sqrtf((dx*dx)+(dz*dz));
 }
 
 s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist)
 {
-	float z = vec1->z-vec2->z;
-	float x = vec1->x-vec2->x;
-	float dist = sqrtf((x*x)+(z*z));
+	float dz = vec1->z-vec2->z;
+	float dx = vec1->x-vec2->x;
+	float dist = sqrtf((dx*dx)+(dz*dz));
 	if(dist <= max_dist) {
 		return 1;
 	} else {
@@ -1482,8 +1470,8 @@ s32 BoardVecMaxDistXZCheck(Vec *vec1, Vec *vec2, float max_dist)
 
 void BoardDAngleCalcVec(Vec *vec1)
 {
-	int i;
-	float *data = (float *)(&vec1->x);
+	s32 i;
+	float *data = &vec1->x;
 	for(i=0; i<3; i++) {
 		while(*data > 180.0f) {
 			*data -= 360.0f;
@@ -1535,7 +1523,6 @@ s32 BoardDAngleCalcRange(float *value, float min, float range)
 s32 BoardVecMinDistCheck(Vec *vec1, Vec *vec2, float min_dist)
 {
 	Vec temp;
-	Mtx temp_mtx;
 	VECSubtract(vec1, vec2, &temp);
 	if(VECSquareMag(&temp) >= (min_dist*min_dist)) {
 		return 0;
@@ -1812,7 +1799,7 @@ static void UpdateConfetti(omObjData *object)
 static void SpawnConfetti(omObjData *object)
 {
 	ConfettiWork *work = OM_GET_WORK_PTR(object, ConfettiWork);
-	int i;
+	s32 i;
 	if(work->paused) {
 		return;
 	}
@@ -1825,7 +1812,7 @@ static void SpawnConfetti(omObjData *object)
 	for(i=0; i<work->spawn_speed; i++) {
 		ConfettiParticle *particle;
 		float angle;
-		int j;
+		s32 j;
 		particle = work->data;
 		for(j=0; j<work->count; j++, particle++) {
 			if(particle->time == -1) {
@@ -1857,8 +1844,8 @@ static void SpawnConfetti(omObjData *object)
 static void MoveConfetti(omObjData *object)
 {
 	ConfettiWork *work = OM_GET_WORK_PTR(object, ConfettiWork);
-	int i;
-	int existF;
+	s32 i;
+	s32 existF;
 	ConfettiParticle *particle;
 	
 	existF = 0;
@@ -1912,7 +1899,7 @@ static void DrawConfetti(ModelData *model, Mtx matrix)
 		ConfettiWork *work = OM_GET_WORK_PTR(confettiObj, ConfettiWork);
 		ModelData *model = &Hu3DData[work->gfx_mdl];
 		ConfettiParticle *particle;
-		int i;
+		s32 i;
 		if(!model->hsfData) {
 			return;
 		}
@@ -2135,7 +2122,7 @@ static void TauntUpdate(omObjData *object);
 
 void BoardTauntInit(void)
 {
-	int i;
+	s32 i;
 	tauntObj = omAddObjEx(boardObjMan, 32258, 0, 0, -1, TauntUpdate);
 	for(i=0; i<4; i++) {
 		tauntActiveFXTbl[i] = -1;
@@ -2156,7 +2143,7 @@ void BoardTauntKill(void)
 
 static void TauntUpdate(omObjData *object)
 {
-	int i;
+	s32 i;
 	s32 port;
 	s32 character;
 	TauntWork *work;
@@ -2183,14 +2170,13 @@ static void TauntUpdate(omObjData *object)
 	if(_CheckFlag(FLAG_ID_MAKE(1, 14))) {
 		return;
 	}
-	if(WipeStatGet() != 0) {
+	if(WipeStatGet()) {
 		return;
 	}
 	if(GWSystem.player_curr == -1) {
 		return;
 	}
 	for(i=0; i<4; i++) {
-		
 		if(i == GWSystem.player_curr || GWPlayer[i].com) {
 			continue;
 		}
