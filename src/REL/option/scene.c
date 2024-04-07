@@ -197,7 +197,7 @@ static void fn_1_6E8(void) {
     }
     SLCommonSet();
     if (SLSave() == 0) {
-        GWSystem.save_mode = 1;
+        GWSaveModeSet(1);
     }
     WipeCreate(2, 0, 0x14);
     while (WipeStatGet() != 0) {

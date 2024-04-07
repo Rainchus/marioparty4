@@ -483,8 +483,6 @@ static void PauseConfigObjFunc(omObjData *arg0) {
     ConfigWork *temp_r31;
     s16 temp_r28;
     s32 var_r29;
-    s32 var_r27;
-    s32 var_r26;
 
     temp_r31 = OM_GET_WORK_PTR(arg0, ConfigWork);
     if (temp_r31->unk00_field0 != 0 || BoardIsKill()) {
@@ -508,15 +506,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     break;
                 case 1:
                     if (UpdatePauseBox(arg0, temp_r31, 1) != 0) {
-                        var_r27 = boxState[1];
-                        GWSystem.explain_mg = var_r27;
+						GWMGExplainSet(boxState[1]);
                     }
                     UpdatePauseText(cursorPos);
                     break;
                 case 2:
                     if (UpdatePauseBox(arg0, temp_r31, 2) != 0) {
-                        var_r26 = boxState[2];
-                        GWSystem.show_com_mg = var_r26;
+						GWMGShowComSet(boxState[2]);
                     }
                     UpdatePauseText(cursorPos);
                     break;
@@ -524,13 +520,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     if (UpdatePauseBoxExt(arg0, temp_r31, 3) != 0) {
                         switch (boxState[3]) {
                             case 0:
-                                GWSystem.mg_list = 1;
+                                GWMGListSet(1);
                                 break;
                             case 1:
-                                GWSystem.mg_list = 0;
+                                GWMGListSet(0);
                                 break;
                             case 2:
-                                GWSystem.mg_list = 2;
+                                GWMGListSet(2);
                                 break;
                         }
                     }
@@ -538,11 +534,7 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     break;
                 case 4:
                     if (UpdatePauseBox(arg0, temp_r31, 4) != 0) {
-                        var_r29 = boxState[4];
-                        GWGameStat.rumble = var_r29;
-                        if (var_r29 == 0) {
-                            HuPadRumbleAllStop();
-                        }
+						GWRumbleSet(boxState[4]);
                     }
                     UpdatePauseText(cursorPos);
                     break;
@@ -550,16 +542,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     if (UpdatePauseBoxExt(arg0, temp_r31, 5) != 0) {
                         switch (boxState[5]) {
                             case 0:
-                                GWSystem.mess_speed = 2;
-                                GWSystem.mess_delay = 48;
+								GWMessSpeedSet(2);
                                 break;
                             case 1:
-                                GWSystem.mess_speed = 1;
-                                GWSystem.mess_delay = 32;
+								GWMessSpeedSet(1);
                                 break;
                             case 2:
-                                GWSystem.mess_speed = 0;
-                                GWSystem.mess_delay = 16;
+								GWMessSpeedSet(0);
                                 break;
                         }
                     }
@@ -573,13 +562,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     if (UpdatePauseBoxExt(arg0, temp_r31, 6) != 0) {
                         switch (boxState[6]) {
                             case 0:
-                                GWSystem.save_mode = 1;
+								GWSaveModeSet(1);
                                 break;
                             case 1:
-                                GWSystem.save_mode = 0;
+								GWSaveModeSet(0);
                                 break;
                             case 2:
-                                GWSystem.save_mode = 2;
+								GWSaveModeSet(2);
                                 break;
                         }
                     }

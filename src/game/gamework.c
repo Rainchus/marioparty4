@@ -36,12 +36,11 @@ static inline void InitPlayerConfig(void)
 
 static inline void ResetBoardSettings(void)
 {
-    GWGameStat.rumble = 1;
-    GWSystem.explain_mg = 1;
-    GWSystem.show_com_mg = 1;
-    GWSystem.mess_speed = 1;
-    GWSystem.mess_delay = 32;
-    GWSystem.save_mode = 0;
+	GWRumbleSet(1);
+	GWMGExplainSet(1);
+	GWMGShowComSet(1);
+	GWMessSpeedSet(1);
+	GWSaveModeSet(0);
 }
 
 void GWInit(void)
