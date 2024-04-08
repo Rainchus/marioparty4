@@ -1131,10 +1131,10 @@ config.libs = [
     Rel('modeseldll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/modeseldll/main.c"),
+            Object(Matching, "REL/modeseldll/main.c"),
             Object(NonMatching, "REL/modeseldll/modesel.c"),
             Object(NonMatching, "REL/modeseldll/filesel.c"),
-            Object(NonMatching, "REL/modeseldll/datalist.c"),
+            Object(Matching, "REL/modeseldll/datalist.c"),
         }
     ),
     Rel('mpexDll',
