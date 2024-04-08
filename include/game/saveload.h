@@ -24,6 +24,7 @@ typedef union save_buf_all {
 	u8 ATTRIBUTE_ALIGN(32) buf[SAVE_BUF_SIZE];
 } SaveBufAll;
 
+extern char *SaveFileNameTbl[];
 extern CARDFileInfo curFileInfo;
 extern SaveBufAll saveBuf;
 extern u64 SLSerialNo;
