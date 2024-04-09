@@ -231,7 +231,7 @@ void SLCurSlotNoSet(s16 slotno) {
     curSlotNo = slotno;
 }
 
-void SLCurBoxNoSet(s8 boxno) {
+void SLCurBoxNoSet(s16 boxno) {
     curBoxNo = boxno;
 }
 
