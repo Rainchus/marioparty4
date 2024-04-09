@@ -38,7 +38,7 @@ s32 SLFileWrite(s32 length, void *addr);
 s32 SLFileRead(s32 length, void *addr);
 s32 SLFileClose(void);
 void SLCurSlotNoSet(s16 slotno);
-void SLCurBoxNoSet(s8 boxno);
+void SLCurBoxNoSet(s16 boxno);
 void SLSaveFlagSet(s32 flag);
 s32 SLSaveFlagGet(void);
 void SLSaveDataMake(s32 erase, OSTime *time);
