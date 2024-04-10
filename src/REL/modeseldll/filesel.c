@@ -8,6 +8,7 @@
 #include "game/card.h"
 #include "game/hsfman.h"
 #include "game/pad.h"
+#include "game/hsfdraw.h"
 
 #include "math.h"
 
@@ -424,7 +425,7 @@ s32 fn_1_3AAC(void)
 						Hu3DModelPosSetV(lbl_1_bss_19A[temp_r31], &sp1C);
 						lbl_1_bss_108[temp_r31] *= cos(M_PI*(90.0f*temp_f31)/180.0);
 						lbl_1_bss_100[temp_r31] = 1.0-temp_f31;
-						temp_f31 = 1.0+(0.3*sin(M_PI*(180.0f*temp_f31)/180.0));
+						temp_f31 = 1.0+(0.3*cos(M_PI*(180.0f*temp_f31)/180.0));
 						Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31], temp_f31, temp_f31, temp_f31);
 					}
 				}
@@ -605,30 +606,30 @@ void fn_1_57C8(s16 arg0)
 }
 
 typedef struct work_filesel {
-	s16 slot;
+	s16 index;
 	s32 param;
 } WorkFilesel;
 
 void fn_1_5850(void)
 {
-	s16 slot;
+	s16 index;
 	WorkFilesel *work;
 	s16 i;
 	s32 param;
 	Process *curr;
 	curr = HuPrcCurrentGet();
 	work = curr->user_data;
-	slot = work->slot;
+	index = work->index;
 	param = work->param;
-	Hu3DModelAttrSet(lbl_1_bss_19A[slot+2], 1);
-	Hu3DModelAttrReset(lbl_1_bss_19A[slot+4], 1);
-	Hu3DMotionSet(lbl_1_bss_19A[slot+4], lbl_1_bss_16A[6]);
-	Hu3DMotionSpeedSet(lbl_1_bss_19A[slot+4], 2.0f);
+	Hu3DModelAttrSet(lbl_1_bss_19A[index+2], 1);
+	Hu3DModelAttrReset(lbl_1_bss_19A[index+4], 1);
+	Hu3DMotionSet(lbl_1_bss_19A[index+4], lbl_1_bss_16A[6]);
+	Hu3DMotionSpeedSet(lbl_1_bss_19A[index+4], 2.0f);
 	if(param) {
-		Hu3DModelAttrReset(lbl_1_bss_19A[slot+4], 0x40000004);
+		Hu3DModelAttrReset(lbl_1_bss_19A[index+4], 0x40000004);
 	} else {
-		Hu3DModelAttrSet(lbl_1_bss_19A[slot+4], 0x40000004);
-		Hu3DMotionTimeSet(lbl_1_bss_19A[slot+4], Hu3DMotionMaxTimeGet(lbl_1_bss_19A[6]));
+		Hu3DModelAttrSet(lbl_1_bss_19A[index+4], 0x40000004);
+		Hu3DMotionTimeSet(lbl_1_bss_19A[index+4], Hu3DMotionMaxTimeGet(lbl_1_bss_19A[6]));
 	}
 	for(i=0; i<10; i++) {
 		float scale;
@@ -638,18 +639,17 @@ void fn_1_5850(void)
 		} else {
 			scale = 1.0+(0.3*cos(M_PI*(90.0f*time)/180.0));
 		}
-		Hu3DModelScaleSet(lbl_1_bss_19A[slot+2], scale, scale, scale);
-		Hu3DModelScaleSet(lbl_1_bss_19A[slot+4], scale, scale, scale);
-		Hu3DModelScaleSet(lbl_1_bss_19A[slot], scale, scale, scale);
+		Hu3DModelScaleSet(lbl_1_bss_19A[index+2], scale, scale, scale);
+		Hu3DModelScaleSet(lbl_1_bss_19A[index+4], scale, scale, scale);
+		Hu3DModelScaleSet(lbl_1_bss_19A[index], scale, scale, scale);
 		HuPrcVSleep();
 	}
 	if(!param) {
-		Hu3DModelAttrReset(lbl_1_bss_19A[slot+2], 1);
-		Hu3DModelAttrSet(lbl_1_bss_19A[slot+4], 1);
+		Hu3DModelAttrReset(lbl_1_bss_19A[index+2], 1);
+		Hu3DModelAttrSet(lbl_1_bss_19A[index+4], 1);
 	}
 	HuMemDirectFree(work);
 	HuPrcEnd();
-	
 	while(1) {
 		HuPrcVSleep();
 	}
@@ -664,7 +664,7 @@ void fn_1_5BAC(s16 arg0, s32 arg1)
 	child = HuPrcChildCreate(fn_1_5850, 50, 8192, 0, parent);
 	work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(WorkFilesel), MEMORY_DEFAULT_NUM);
 	child->user_data = work;
-	work->slot = arg0;
+	work->index = arg0;
 	work->param = arg1;
 }
 
@@ -738,6 +738,7 @@ void fn_1_7628(s16 boxno, s32 flag);
 
 s32 fn_1_76B4(char *name, s16 slotno);
 s32 fn_1_7B74(s16 boxno);
+s32 fn_1_812C(void);
 s32 fn_1_83B4(void);
 s32 fn_1_8540(s16 boxno);
 s32 fn_1_8C30(s16 boxno);
@@ -1067,4 +1068,984 @@ s32 fn_1_61B4(void)
 	}
 	HuWinKill(lbl_1_bss_146);
 	return temp_r31;
+}
+
+void fn_1_72DC(void)
+{
+	s16 index;
+	WorkFilesel *work;
+	s16 i;
+	s32 param;
+	Process *curr;
+	curr = HuPrcCurrentGet();
+	work = curr->user_data;
+	index = work->index;
+	param = work->param;
+	if(param) {
+		Hu3DModelAttrReset(lbl_1_bss_19A[index+8], 1);
+		Hu3DModelAttrSet(lbl_1_bss_19A[index+11], 1);
+	} else {
+		Hu3DModelAttrSet(lbl_1_bss_19A[index+8], 1);
+		Hu3DModelAttrReset(lbl_1_bss_19A[index+11], 1);
+	}
+	for(i=0; i<=10; i++) {
+		float scale;
+		Vec pos_2d;
+		Vec pos_3d;
+		if(param) {
+			scale = sin(M_PI*(90.0f*(i/10.0f))/180.0);
+		} else {
+			scale = cos(M_PI*(90.0f*(i/10.0f))/180.0);
+		}
+		pos_2d.x = 158.0f+(index*130);
+		pos_2d.y = 230;
+		pos_2d.z = 800;
+		Hu3D2Dto3D(&pos_2d, 1, &pos_3d);
+		pos_3d.z = 800+(100.0f*scale);
+		Hu3DModelPosSetV(lbl_1_bss_19A[index+8], &pos_3d);
+		Hu3DModelPosSetV(lbl_1_bss_19A[index+11], &pos_3d);
+		Hu3DModelScaleSet(lbl_1_bss_19A[index+8], 1, 1, 1);
+		Hu3DModelScaleSet(lbl_1_bss_19A[index+11], 1, 1, 1);
+		HuPrcVSleep();
+	}
+	(void)curr;
+	HuMemDirectFree(work);
+	HuPrcEnd();
+	while(1) {
+		HuPrcVSleep();
+	}
+}
+
+void fn_1_7628(s16 boxno, s32 flag)
+{
+	WorkFilesel *work;
+	Process *parent;
+	Process *child;
+	
+	parent = HuPrcCurrentGet();
+	child = HuPrcChildCreate(fn_1_72DC, 50, 8192, 0, parent);
+	work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(WorkFilesel), MEMORY_DEFAULT_NUM);
+	child->user_data = work;
+	work->index = boxno;
+	work->param = flag;
+}
+
+s32 fn_1_76B4(char *name, s16 slotno)
+{
+	s32 result;
+	s16 choice;
+	s16 filecnt;
+	filecnt = 0;
+	while(1) {
+		filecnt++;
+		result = HuCardMount(slotno);
+		if(result == 0) {
+			result = HuCardOpen(slotno, name, &curFileInfo);
+			if(result == 0 || result == -4) {
+				if(SLSerialNoCheck()) {
+					return result;
+				}
+			}
+		} 
+		if(result == -2) {
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[slotno]), 0);
+			HuWinMesSet(lbl_1_bss_148, 0x100037);
+			HuWinMesWait(lbl_1_bss_148);
+			return result;
+		}
+		if(result == -128 || filecnt > 3) {
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[slotno]), 0);
+			HuWinMesSet(lbl_1_bss_148, 0x100053);
+			HuWinMesWait(lbl_1_bss_148);
+			return result;
+		} else if(result == -3) {
+			HuWinMesSet(lbl_1_bss_148, 0x100002);
+			HuWinMesWait(lbl_1_bss_148);
+			return result;
+		} else if(result == -4 || !SLSerialNoCheck()) {
+			OSReport("Card Open Error:No File\n");
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+			HuWinMesSet(lbl_1_bss_148, 0x100045);
+			HuWinMesWait(lbl_1_bss_148);
+			break;
+		} else if(result == -6) {
+			UnMountCnt = 0;
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[slotno]), 0);
+			HuWinAttrSet(lbl_1_bss_148, 0x10);
+			HuWinMesSet(lbl_1_bss_148, 0x100004);
+			HuWinMesWait(lbl_1_bss_148);
+			choice = HuWinChoiceGet(lbl_1_bss_148, 1);
+			if(choice == 0) {
+				HuWinMesSet(lbl_1_bss_148, 0x10004E);
+				HuWinMesWait(lbl_1_bss_148);
+				choice = HuWinChoiceGet(lbl_1_bss_148, 1);
+				if(choice == 0) {
+					fn_1_B8CC(0x100038);
+					HuWinMesSet(lbl_1_bss_148, 0x10000B);
+					HuWinMesWait(lbl_1_bss_148);
+					HuPrcSleep(60);
+					if(UnMountCnt & (1 << curSlotNo)) {
+						fn_1_BA20();
+						HuWinMesSet(lbl_1_bss_148, 0x100050);
+						HuWinMesWait(lbl_1_bss_148);
+					} else {
+						_SetFlag(0x30000);
+						result = HuCardFormat(slotno);
+						_ClearFlag(0x30000);
+						if(result == 0) {
+							SLSerialNoGet();
+						}
+						fn_1_BA20();
+						if(result == -128) {
+							HuWinMesSet(lbl_1_bss_148, 0x100036);
+							HuWinMesWait(lbl_1_bss_148);
+							HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+							HuWinMesSet(lbl_1_bss_148, 0x100053);
+							HuWinMesWait(lbl_1_bss_148);
+							return result;
+						} else if(result == -3) {
+							HuWinMesSet(lbl_1_bss_148, 0x100002);
+							HuWinMesWait(lbl_1_bss_148);
+							return result;
+						}
+					}
+				} else {
+					return result;
+				}
+				continue;
+			}
+			return result;
+		}
+		break;
+	}
+	return result;
+}
+
+s32 fn_1_7B74(s16 boxno)
+{
+	s32 result;
+	s32 i;
+	result = HuCardMount(curSlotNo);
+	if(result == 0 && !SLSerialNoCheck()) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100045);
+		HuWinMesWait(lbl_1_bss_148);
+	} else {
+		result = HuCardSectorSizeGet(curSlotNo);
+		if(result == -3) {
+			fn_1_BA20();
+			OSReport("SectorSize Check Error:No Card %d\n", curSlotNo);
+			HuWinMesSet(lbl_1_bss_148, 0x100002);
+			HuWinMesWait(lbl_1_bss_148);
+		} else {
+			if(result != 8192) {
+				fn_1_BA20();
+				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+				HuWinMesSet(lbl_1_bss_148, 0x100039);
+				HuWinMesWait(lbl_1_bss_148);
+			} else {
+				u32 byteNotUsed;
+				u32 filesNotUsed;
+				result = HuCardFreeSpaceGet(curSlotNo, &byteNotUsed, &filesNotUsed);
+				if(filesNotUsed == 0 && byteNotUsed < SAVE_BUF_SIZE) {
+					fn_1_BA20();
+					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+					HuWinMesSet(lbl_1_bss_148, 0x10004A);
+					HuWinMesWait(lbl_1_bss_148);
+				} else if(filesNotUsed == 0) {
+					fn_1_BA20();
+					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+					HuWinMesSet(lbl_1_bss_148, 0x10004A);
+					HuWinMesWait(lbl_1_bss_148);
+				} else if(byteNotUsed < SAVE_BUF_SIZE) {
+					fn_1_BA20();
+					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+					HuWinMesSet(lbl_1_bss_148, 0x10004A);
+					HuWinMesWait(lbl_1_bss_148);
+				} else {
+					HuWinMesSet(lbl_1_bss_148, 0x10000B);
+					HuWinMesWait(lbl_1_bss_148);
+					for(i=0; i<=40; i++) {
+						float time = i/40.0;
+						Hu3DModelTPLvlSet(lbl_1_bss_19A[boxno+8], 0.6+(0.4*time));
+						Hu3DModelTPLvlSet(lbl_1_bss_19A[boxno+11], 0.3+(0.7*time));
+						HuPrcVSleep();
+					}
+					_SetFlag(0x30000);
+					result = HuCardCreate(curSlotNo, SaveFileNameTbl[boxno], SAVE_BUF_SIZE, &curFileInfo);
+					if(result == -3) {
+						_ClearFlag(0x30000);
+						fn_1_BA20();
+						OSReport("File Create Error:No Card\n");
+						HuWinMesSet(lbl_1_bss_148, 0x100002);
+						HuWinMesWait(lbl_1_bss_148);
+					} else if(result == -2) {
+						_ClearFlag(0x30000);
+						fn_1_BA20();
+						HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+						HuWinMesSet(lbl_1_bss_148, 0x100037);
+						HuWinMesWait(lbl_1_bss_148);
+					} else if(result < 0) {
+						_ClearFlag(0x30000);
+						fn_1_BA20();
+						HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+						HuWinMesSet(lbl_1_bss_148, 0x100053);
+						HuWinMesWait(lbl_1_bss_148);
+					} else {
+						result = fn_1_812C();
+						_ClearFlag(0x30000);
+						if(result != 0) {
+							return 1;
+						}
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+s32 fn_1_812C(void)
+{
+	s32 result;
+	SLCheckSumSet();
+	_SetFlag(0x30000);
+	result = HuCardWrite(&curFileInfo, &saveBuf.buf[0], SAVE_BUF_SIZE, 0);
+	_ClearFlag(0x30000);
+	if(result == -3) {
+		HuWinMesSet(lbl_1_bss_148, 0x100002);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	if(result == -2) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100037);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	if(result < 0) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100053);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	result = SLStatSet(0);
+	if(result == -3) {
+		HuWinMesSet(lbl_1_bss_148, 0x100002);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	if(result == -2) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100037);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	if(result < 0) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100053);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	return 1;
+}
+
+s32 fn_1_83B4(void)
+{
+	s32 result;
+	result = HuCardRead(&curFileInfo, &saveBuf.buf[0], SAVE_BUF_SIZE, 0);
+	if(result == -3) {
+		OSReport("Card Read Error:No Card\n");
+		HuWinMesSet(lbl_1_bss_148, 0x100002);
+		HuWinMesWait(lbl_1_bss_148);
+	} else if(result == -4 || !SLSerialNoCheck()) {
+		OSReport("Card Read Error:No File\n", result);
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100045);
+		HuWinMesWait(lbl_1_bss_148);
+	} else if(result < 0) {
+		OSReport("Card Read Error:Fatal Error %d\n", result);
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100053);
+		HuWinMesWait(lbl_1_bss_148);
+	}
+	return result;
+}
+
+s32 fn_1_8540(s16 boxno)
+{
+	float scale;
+	s32 result;
+	s32 time;
+	AnimData *sprite;
+	result = HuCardMount(curSlotNo);
+	if(result == -3) {
+		OSReport("Card Delete Error:No Card\n");
+		HuWinMesSet(lbl_1_bss_148, 0x100002);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	if(result == -4 || !SLSerialNoCheck()) {
+		OSReport("Card Delete Error:No File\n", result);
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100045);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	if(result < 0) {
+		OSReport("Card Delete Error:Fatal Error %d\n", result);
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100053);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	
+	fn_1_B8CC(0x10003B);
+	HuWinMesSet(lbl_1_bss_148, 0x10000B);
+	HuWinMesWait(lbl_1_bss_148);
+	HuPrcSleep(60);
+	if(UnMountCnt & (1 << curSlotNo)) {
+		fn_1_BA20();
+		HuWinMesSet(lbl_1_bss_148, 0x100050);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	} else {
+		_SetFlag(0x30000);
+		result = HuCardDelete(curSlotNo, SaveFileNameTbl[boxno]);
+		_ClearFlag(0x30000);
+		fn_1_BA20();
+		if(result == -3) {
+			OSReport("Card Delete Error:No Card\n");
+			HuWinMesSet(lbl_1_bss_148, 0x100002);
+			HuWinMesWait(lbl_1_bss_148);
+			return 0;
+		}
+		if(result == -4 || !SLSerialNoCheck()) {
+			OSReport("Card Delete Error:No File\n", result);
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+			HuWinMesSet(lbl_1_bss_148, 0x100045);
+			HuWinMesWait(lbl_1_bss_148);
+			return 0;
+		}
+		if(result < 0) {
+			OSReport("Card Delete Error:Fatal Error %d\n", result);
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+			HuWinMesSet(lbl_1_bss_148, 0x100053);
+			HuWinMesWait(lbl_1_bss_148);
+			return 0;
+		}
+		for(time=0; time<=10; time++) {
+			scale = cos(M_PI*(90.0*(time/10.0))/180.0);
+			Hu3DModelScaleSet(lbl_1_bss_19A[boxno+8], scale, scale, scale);
+			HuPrcVSleep();
+		}
+		Hu3DAnimKill(lbl_1_bss_13A[boxno]);
+		Hu3DAnimKill(lbl_1_bss_134[boxno]);
+		sprite = HuSprAnimRead(HuDataReadNum(lbl_1_data_21C[8], MEMORY_DEFAULT_NUM));
+		lbl_1_bss_13A[boxno] = Hu3DAnimCreate(sprite, lbl_1_bss_19A[boxno+8], "star");
+		sprite = HuSprAnimRead(HuDataReadNum(lbl_1_data_21C[17], MEMORY_DEFAULT_NUM));
+		lbl_1_bss_134[boxno] = Hu3DAnimCreate(sprite, lbl_1_bss_19A[boxno+11], "star");
+		lbl_1_bss_EE[boxno] = -1;
+		Hu3DModelTPLvlSet(lbl_1_bss_19A[boxno+8], 0.6f);
+		Hu3DModelTPLvlSet(lbl_1_bss_19A[boxno+11], 0.3f);
+		for(time=0; time<=20; time++) {
+			scale = sin(M_PI*(90.0*(time/20.0))/180.0);
+			Hu3DModelScaleSet(lbl_1_bss_19A[boxno+8], scale, scale, scale);
+			HuPrcVSleep();
+		}
+		lbl_1_bss_140[boxno] = 0;
+		lbl_1_bss_88--;
+		return 1;
+	}
+}
+
+s32 fn_1_8C30(s16 boxno)
+{
+	float temp_f31;
+	s16 temp_r31;
+	s16 temp_r30;
+	s32 temp_r29;
+	s16 temp_r26;
+	s16 temp_r25;
+	AnimData *temp_r19;
+	Vec sp60;
+	Vec sp54;
+	Vec sp48;
+	Vec sp3C;
+	s32 sp38;
+	s32 sp34;
+	Process *sp30;
+	ModelData *sp2C;
+	sp30 = HuPrcCurrentGet();
+	OSReport("Card Copy Seq.:Open\n");
+	temp_r29 = fn_1_76B4(SaveFileNameTbl[boxno], curSlotNo);
+	if(temp_r29 < 0 || !SLSerialNoCheck()) {
+		return 0;
+	}
+	OSReport("Card Copy Seq.:Read\n");
+	temp_r29 = fn_1_83B4();
+	if(temp_r29 != 0) {
+		return 0;
+	}
+	OSReport("Card Copy Seq.:CheckSum Check\n");
+	if(!SLCheckSumCheck()) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_288[boxno]), 0);
+		HuWinAttrSet(lbl_1_bss_148, 0x10);
+		HuWinMesSet(lbl_1_bss_148, 0x10003A);
+		HuWinMesWait(lbl_1_bss_148);
+		temp_r29 = HuWinChoiceGet(lbl_1_bss_148, 1);
+		if(temp_r29 != 0) {
+			return 1;
+		} else {
+			temp_r29 = fn_1_8540(boxno);
+			return temp_r29;
+		}
+	}
+	if(!SLSerialNoCheck()) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x100045);
+		HuWinMesWait(lbl_1_bss_148);
+		return 0;
+	}
+	temp_r29 = HuCardFreeSpaceGet(curSlotNo, (u32 *)&sp34, (u32 *)&sp38);
+	if(sp38 == 0 && sp34 < SAVE_BUF_SIZE) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x10004A);
+		HuWinMesWait(lbl_1_bss_148);
+		return 1;
+	} else if(sp38 == 0) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x10004A);
+		HuWinMesWait(lbl_1_bss_148);
+		return 1;
+	} else if(sp34 < SAVE_BUF_SIZE) {
+		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+		HuWinMesSet(lbl_1_bss_148, 0x10004A);
+		HuWinMesWait(lbl_1_bss_148);
+		return 1;
+	}
+	for(temp_r30=0; temp_r30<3; temp_r30++) {
+		if(!lbl_1_bss_140[temp_r30]) {
+			break;
+		}
+	}
+	if(temp_r30 == 3) {
+		return 1;
+	}
+	temp_r31 = temp_r30;
+	HuWinMesSet(lbl_1_bss_148, 0x100009);
+	HuWinMesWait(lbl_1_bss_148);
+	HuWinMesSet(lbl_1_bss_146, 0x100035);
+	HuWinDispOn(lbl_1_bss_146);
+	lbl_1_bss_90 = boxno;
+	Hu3DModelAttrReset(lbl_1_bss_19A[23], 1);
+	sp2C = &Hu3DData[lbl_1_bss_19A[boxno+8]];
+	Hu3DModelPosSetV(lbl_1_bss_19A[23], &sp2C->pos);
+	for(temp_r30=1; temp_r30<=10; temp_r30++) {
+		temp_f31 = 0.7+(0.3*(temp_r30/10.0));
+		Hu3DModelScaleSet(lbl_1_bss_19A[23], temp_f31, temp_f31, temp_f31);
+		HuPrcVSleep();
+	}
+	fn_1_7628(temp_r31, 1);
+	while(1) {
+		HuPrcVSleep();
+		if(UnMountCnt & (1 << curSlotNo)) {
+			HuWinMesSet(lbl_1_bss_148, 0x100050);
+			HuWinMesWait(lbl_1_bss_148);
+			break;
+		} else {
+			temp_r26 = 0;
+			if(HuPadDStkRep[0] & 0x1) {
+				temp_r26 = -1;
+			} else if(HuPadDStkRep[0] & 0x2) {
+				temp_r26 = 1;
+			}
+			(void)temp_r26;
+			if(temp_r26) {
+				HuAudFXPlay(0);
+				fn_1_7628(temp_r31, 0);
+				while(1) {
+					temp_r31 += temp_r26;
+					if(temp_r31 < 0) {
+						temp_r31 = 2;
+					} else if(temp_r31 >= 3) {
+						temp_r31 = 0;
+					}
+					if(lbl_1_bss_140[temp_r31] == 0) {
+						break;
+					}
+				}
+				fn_1_7628(temp_r31, 1);
+				HuPrcSleep(10);
+			}
+			if(HuPadBtnDown[0] & PAD_BUTTON_A) {
+				HuAudFXPlay(2096);
+			} else if(!(HuPadBtnDown[0] & PAD_BUTTON_B)) {
+				continue;
+			} else {
+				HuAudFXPlay(3);
+				Hu3DModelAttrSet(lbl_1_bss_19A[23], 1);
+				Hu3DModelAttrReset(lbl_1_bss_19A[boxno+8], 1);
+				fn_1_7628(temp_r31, 0);
+				HuWinDispOff(lbl_1_bss_146);
+				return 1;
+			}
+			HuWinDispOff(lbl_1_bss_146);
+			temp_r29 = fn_1_76B4(SaveFileNameTbl[boxno], curSlotNo);
+			if(temp_r29 >= 0 && SLSerialNoCheck()) {
+				fn_1_B8CC(0x10000A);
+				HuWinMesSet(lbl_1_bss_148, 0x10000B);
+				HuWinMesWait(lbl_1_bss_148);
+				Hu3DModelAttrReset(lbl_1_bss_19A[boxno+8], 1);
+				OSReport("CheckSum Check\n");
+				if(!SLCheckSumCheck()) {
+					HuPrcSleep(60);
+					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_288[boxno]), 0);
+					HuWinAttrSet(lbl_1_bss_148, 0x10);
+					HuWinMesSet(lbl_1_bss_148, 0x10003A);
+					HuWinMesWait(lbl_1_bss_148);
+					temp_r29 = HuWinChoiceGet(lbl_1_bss_148, 1);
+					if(temp_r29 == 0) {
+						temp_r29 = fn_1_8540(boxno);
+					}
+				} else {
+					fn_1_9E14();
+					for(temp_r30=0; temp_r30<=10; temp_r30++) {
+						temp_f31 = cos(M_PI*(90.0*(temp_r30/10.0))/180.0);
+						Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31+8], temp_f31, temp_f31, temp_f31);
+						HuPrcVSleep();
+					}
+					Hu3DModelAttrSet(lbl_1_bss_19A[23], 1);
+					Hu3DModelAttrReset(lbl_1_bss_19A[boxno+8], 1);
+					if(UnMountCnt & (1 << curSlotNo)) {
+						fn_1_BA20();
+						HuWinMesSet(lbl_1_bss_148, 0x100050);
+						HuWinMesWait(lbl_1_bss_148);
+					} else {
+						OSReport("File Create\n");
+						SLCurBoxNoSet(temp_r31);
+						SLLoadGameStat();
+						SLSaveDataMake(0, &GWGameStat.create_time);
+						if(fn_1_7B74(temp_r31)) {
+							fn_1_9E14();
+							fn_1_A8C0(temp_r31);
+							Hu3DAnimKill(lbl_1_bss_13A[temp_r31]);
+							Hu3DAnimKill(lbl_1_bss_134[temp_r31]);
+							temp_r25 = lbl_1_bss_E8[temp_r31];
+							if(temp_r25 < 0) {
+								temp_r25 = 8;
+							}
+							(void)temp_r25;
+							temp_r19 = HuSprAnimRead(HuDataReadNum(lbl_1_data_21C[temp_r25], MEMORY_DEFAULT_NUM));
+							lbl_1_bss_13A[temp_r31] = Hu3DAnimCreate(temp_r19, lbl_1_bss_19A[temp_r31+8], "star");
+							temp_r19 = HuSprAnimRead(HuDataReadNum(lbl_1_data_21C[temp_r25], MEMORY_DEFAULT_NUM));
+							lbl_1_bss_134[temp_r31] = Hu3DAnimCreate(temp_r19, lbl_1_bss_19A[temp_r31+11], "star");
+							Hu3DModelAttrReset(lbl_1_bss_19A[temp_r31+11], 1);
+							Hu3DModelAttrSet(lbl_1_bss_19A[temp_r31+8], 1);
+							sp60.x = 158.0f+(boxno*130);
+							sp60.y = 230;
+							sp60.z = 800;
+							Hu3D2Dto3D(&sp60, 1, &sp54);
+							sp54.z = 900;
+							sp60.x = 158.0f+(temp_r31*130);
+							Hu3D2Dto3D(&sp60, 1, &sp48);
+							sp48.z = 800;
+							VECSubtract(&sp48, &sp54, &sp3C);
+							Hu3DModelTPLvlSet(lbl_1_bss_19A[temp_r31+8], 1.0f);
+							Hu3DModelTPLvlSet(lbl_1_bss_19A[temp_r31+11], 1.0f);
+							lbl_1_bss_120[temp_r31] = 0;
+							for(temp_r30=1; temp_r30<=30; temp_r30++) {
+								temp_f31 = temp_r30/30.0;
+								sp60.x = sp3C.x*temp_f31;
+								sp60.y = sp3C.y*temp_f31;
+								sp60.z = (sp3C.z*temp_f31)+(-300*sin(M_PI*(180.0f*temp_f31)/180.0));
+								VECAdd(&sp60, &sp54, &sp60);
+								Hu3DModelPosSetV(lbl_1_bss_19A[temp_r31+11], &sp60);
+								HuPrcVSleep();
+							}
+							lbl_1_bss_120[temp_r31] = 1;
+							fn_1_BA20();
+							lbl_1_bss_140[temp_r31] = 1;
+							lbl_1_bss_88++;
+							return 1;
+						}
+					}
+				}
+				
+			}
+			break;
+		}
+	}
+	fn_1_BA20();
+	Hu3DModelAttrSet(lbl_1_bss_19A[23], 1);
+	Hu3DModelAttrReset(lbl_1_bss_19A[boxno+8], 1);
+	for(temp_r30=0; temp_r30<=10; temp_r30++) {
+		temp_f31 = sin(M_PI*(90.0*(temp_r30/10.0))/180.0);
+		Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31+8], temp_f31, temp_f31, temp_f31);
+		HuPrcVSleep();
+	}
+	fn_1_7628(temp_r31, 0);
+	return 0;
+}
+
+s32 fn_1_9E14(void)
+{
+	s32 result = HuCardClose(&curFileInfo);
+	return result;
+}
+
+s16 lbl_1_data_400[] = {
+	15, 15, 13,
+	15, 15, 8,
+	15, 15, 8,
+	15, 15
+};
+
+s32 fn_1_9E4C(void)
+{
+	s16 temp_r31;
+	s16 temp_r30;
+	s16 temp_r29;
+	ModelData *temp_r28;
+	s16 temp_r27;
+	s16 temp_r26;
+	s16 temp_r25;
+	AnimData *temp_r24;
+	s16 temp_r23;
+	AnimData *temp_r22;
+	Mtx sp24;
+	Vec sp18;
+	Vec spC;
+	WindowData *sp8;
+	temp_r23 = -1;
+	sp8 = &winData[lbl_1_bss_148];
+	OSReport("Init\n");
+	MTXScale(sp24, 0.5f, 0.5f, 0.5f);
+	for(temp_r31=0; temp_r31<3; temp_r31++) {
+		if(lbl_1_bss_116[temp_r31] != -1) {
+			HuSprGrpKill(lbl_1_bss_116[temp_r31]);
+		}
+	}
+	for(temp_r31=0; temp_r31<3; temp_r31++) {
+		if(lbl_1_bss_110[temp_r31] != -1) {
+			HuSprGrpKill(lbl_1_bss_110[temp_r31]);
+		}
+	}
+	lbl_1_bss_FC = HuSprAnimRead(HuDataReadNum(0x630022, MEMORY_DEFAULT_NUM));
+	lbl_1_bss_F8 = HuSprAnimRead(HuDataReadNum(0x630023, MEMORY_DEFAULT_NUM));
+	lbl_1_bss_F4 = HuSprAnimRead(HuDataReadNum(0x630025, MEMORY_DEFAULT_NUM));
+	temp_r22 = HuSprAnimRead(HuDataReadNum(0x630024, MEMORY_DEFAULT_NUM));
+	for(temp_r31=0; temp_r31<3; temp_r31++) {
+		Hu3DModelAttrSet(lbl_1_bss_19A[temp_r31+8], 1);
+		Hu3DModelAttrReset(lbl_1_bss_19A[temp_r31+11], 1);
+		temp_r27 = lbl_1_bss_E8[temp_r31];
+		if(temp_r27 < 0 || temp_r27 >= 8) {
+			temp_r27 = 8;
+		}
+		if(lbl_1_bss_13A[temp_r31] != -1) {
+			Hu3DAnimKill(lbl_1_bss_13A[temp_r31]);
+		}
+		if(lbl_1_bss_134[temp_r31] != -1) {
+			Hu3DAnimKill(lbl_1_bss_134[temp_r31]);
+		}
+		temp_r24 = HuSprAnimRead(HuDataReadNum(lbl_1_data_21C[temp_r27], MEMORY_DEFAULT_NUM));
+		lbl_1_bss_13A[temp_r31] = Hu3DAnimCreate(temp_r24, lbl_1_bss_19A[temp_r31+8], "star");
+		temp_r24 = HuSprAnimRead(HuDataReadNum(lbl_1_data_21C[temp_r27+9], MEMORY_DEFAULT_NUM));
+		lbl_1_bss_134[temp_r31] = Hu3DAnimCreate(temp_r24, lbl_1_bss_19A[temp_r31+11], "star");
+		if(!lbl_1_bss_140[temp_r31]) {
+			Hu3DModelTPLvlSet(lbl_1_bss_19A[temp_r31+8], 0.6f);
+			Hu3DModelTPLvlSet(lbl_1_bss_19A[temp_r31+11], 0.3f);
+		} else {
+			Hu3DModelTPLvlSet(lbl_1_bss_19A[temp_r31+8], 1.0f);
+			Hu3DModelTPLvlSet(lbl_1_bss_19A[temp_r31+11], 1.0f);
+		}
+		sp18.x = 158.0f+(temp_r31*130);
+		sp18.y = 230;
+		sp18.z = 800;
+		Hu3D2Dto3D(&sp18, 1, &spC);
+		spC.z = 800;
+		Hu3DModelPosSetV(lbl_1_bss_19A[temp_r31+8], &spC);
+		Hu3DModelPosSetV(lbl_1_bss_19A[temp_r31+11], &spC);
+		Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31+8], 0, 0, 0);
+		Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31+11], 0, 0, 0);
+		temp_r28 = &Hu3DData[lbl_1_bss_19A[temp_r31+8]];
+		MTXCopy(sp24, temp_r28->unk_F0);
+		temp_r28 = &Hu3DData[lbl_1_bss_19A[temp_r31+11]];
+		MTXCopy(sp24, temp_r28->unk_F0);
+		lbl_1_bss_116[temp_r31] = HuSprGrpCreate(9);
+		temp_r29 = HuSprCreate(lbl_1_bss_FC, 3000, 0);
+		HuSprGrpMemberSet(lbl_1_bss_116[temp_r31], 0, temp_r29);
+		HuSprPosSet(lbl_1_bss_116[temp_r31], 0, -48, 0);
+		for(temp_r30=0; temp_r30<4; temp_r30++) {
+			temp_r29 = HuSprCreate(lbl_1_bss_F8, 3000, 0);
+			HuSprGrpMemberSet(lbl_1_bss_116[temp_r31], temp_r30+1, temp_r29);
+			HuSprPosSet(lbl_1_bss_116[temp_r31], temp_r30+1, (temp_r30*24)-24, 0);
+		}
+		temp_r29 = HuSprCreate(lbl_1_bss_F4, 3000, 0);
+		HuSprGrpMemberSet(lbl_1_bss_116[temp_r31], 5, temp_r29);
+		HuSprPosSet(lbl_1_bss_116[temp_r31], 5, 16, 0);
+		HuSprGrpScissorSet(lbl_1_bss_116[temp_r31], 0, 16, 640, 448);
+		lbl_1_bss_110[temp_r31] = HuSprGrpCreate(11);
+		for(temp_r30=temp_r25=0; temp_r30<11; temp_r30++) {
+			temp_r25 += lbl_1_data_400[temp_r30];
+		}
+		for(temp_r30=temp_r26=0; temp_r30<11; temp_r30++) {
+			temp_r29 = HuSprCreate(temp_r22, 3000, 0);
+			HuSprGrpMemberSet(lbl_1_bss_110[temp_r31], temp_r30, temp_r29);
+			HuSprPosSet(lbl_1_bss_110[temp_r31], temp_r30, -(temp_r25/2)+8+temp_r26, 0);
+			temp_r26 += lbl_1_data_400[temp_r30];
+		}
+		HuSprAttrSet(lbl_1_bss_110[temp_r31], 5, 4);
+		HuSprBankSet(lbl_1_bss_110[temp_r31], 2, 10);
+		HuSprBankSet(lbl_1_bss_110[temp_r31], 8, 11);
+		HuSprGrpScissorSet(lbl_1_bss_110[temp_r31], 0, 16, 640, 448);
+	}
+	MTXScale(sp24, 0.45f, 0.45f, 0.45f);
+	temp_r28 = &Hu3DData[lbl_1_bss_19A[23]];
+	Hu3DModelAttrSet(lbl_1_bss_19A[23], 0x40000001);
+	MTXCopy(sp24, temp_r28->unk_F0);
+	return temp_r23;
+}
+
+void fn_1_A8C0(s16 boxno)
+{
+	SLLoadGameStat();
+	SLLoadBoardStory();
+	lbl_1_bss_EE[boxno] = GWGameStat.total_stars;
+	lbl_1_bss_D0[boxno] = GWGameStat.create_time;
+	lbl_1_bss_E8[boxno] = GWSystem.unk0B[1];
+	lbl_1_bss_C4[boxno] = GWGameStat.story_continue;
+	lbl_1_bss_B8[boxno] = GWGameStat.party_continue;
+	if(GWGameStat.story_continue) {
+		SLLoadBoardStory();
+		lbl_1_bss_A4[boxno] = GWSystem.board;
+		lbl_1_bss_AC[boxno] = 0;
+	}
+	if(GWGameStat.party_continue) {
+		SLLoadBoard();
+		lbl_1_bss_9E[boxno] = GWSystem.board;
+		lbl_1_bss_98[boxno] = GWSystem.turn;
+		lbl_1_bss_92[boxno] = GWSystem.max_turn;
+	}
+}
+
+void fn_1_AAB8(void)
+{
+	float temp_f31;
+	float temp_f30;
+	float temp_f29;
+	ModelData *temp_r31;
+	s16 temp_r30;
+	s16 temp_r29;
+	s16 temp_r28;
+	Mtx sp48;
+	OSCalendarTime sp20;
+	Vec sp14;
+	Vec sp8;
+	for(temp_r30=0; temp_r30<2; temp_r30++) {
+		lbl_1_bss_12C[temp_r30] = 1;
+	}
+	while(1) {
+		for(temp_r30=0; temp_r30<2; temp_r30++) {
+			MTXScale(sp48, 0.5f, 0.5f, 0.5f);
+			mtxRotCat(sp48, 0.0f, 0.0f, 15.0f*lbl_1_bss_100[temp_r30]);
+			temp_r31 = &Hu3DData[lbl_1_bss_19A[temp_r30]];
+			MTXCopy(sp48, temp_r31->unk_F0);
+			Hu3DModelRotSet(lbl_1_bss_19A[temp_r30], 0, lbl_1_bss_8C*lbl_1_bss_108[temp_r30]*GET_ZEROSIGN(temp_r30 == 0), 0);
+			if(!lbl_1_bss_12C[temp_r30]) {
+				espAttrSet(lbl_1_bss_152[temp_r30+2], 4);
+			} else {
+				temp_r31 = &Hu3DData[lbl_1_bss_19A[temp_r30+2]];
+				if(temp_r31->attr & 0x1) {
+					temp_r31 = &Hu3DData[lbl_1_bss_19A[temp_r30+4]];
+				}
+				if(temp_r31->attr & 0x1) {
+					espAttrSet(lbl_1_bss_152[temp_r30+2], 4);
+				} else {
+					espAttrReset(lbl_1_bss_152[temp_r30+2], 4);
+				}
+				sp8 = temp_r31->pos;
+				sp8.y -= 30.0f*temp_r31->scale.x;
+				Hu3D3Dto2D(&sp8, 1, &sp14);
+				espPosSet(lbl_1_bss_152[temp_r30+2], sp14.x, sp14.y);
+				espScaleSet(lbl_1_bss_152[temp_r30+2], temp_r31->scale.x, temp_r31->scale.x);
+			}
+		}
+		lbl_1_bss_8C += 3.0f;
+		if(lbl_1_bss_8C > 1080.0f) {
+			lbl_1_bss_8C -= 360;
+		}
+		if(lbl_1_bss_11C == -1) {
+			espAttrSet(lbl_1_bss_152[4], 4);
+		} else {
+			temp_r31 = &Hu3DData[lbl_1_bss_19A[lbl_1_bss_11C]];
+			if(temp_r31->attr & 0x1) {
+				espAttrSet(lbl_1_bss_152[4], 4);
+			} else {
+				espBankSet(lbl_1_bss_152[4], lbl_1_bss_11C);
+				espAttrReset(lbl_1_bss_152[4], 4);
+				sp8 = temp_r31->pos;
+				sp8.y += 5.0f*temp_r31->scale.x;
+				Hu3D3Dto2D(&sp8, 1, &sp14);
+				espPosSet(lbl_1_bss_152[4], sp14.x, sp14.y);
+				espScaleSet(lbl_1_bss_152[4], temp_r31->scale.x, temp_r31->scale.x);
+			}
+		}
+		for(temp_r30=0; temp_r30<3; temp_r30++) {
+			if(!lbl_1_bss_120[temp_r30]) {
+				espAttrSet(lbl_1_bss_152[temp_r30+5], 4);
+				continue;
+			}
+			temp_r31 = &Hu3DData[lbl_1_bss_19A[temp_r30+8]];
+			if(temp_r31->attr & 0x1) {
+				temp_r31 = &Hu3DData[lbl_1_bss_19A[temp_r30+11]];
+			}
+			temp_f30 = (900.0+(50.0*temp_r31->scale.x))*sin(M_PI/12);
+			temp_f29 = (temp_r31->pos.z+(50.0*temp_r31->scale.x))*sin(M_PI/12);
+			temp_f31 = temp_r31->scale.x*(temp_f29/temp_f30);
+			if(temp_r31->attr & 0x1) {
+				espAttrSet(lbl_1_bss_152[temp_r30+5], 4);
+			} else {
+				espAttrReset(lbl_1_bss_152[temp_r30+5], 4);
+			}
+			sp8 = temp_r31->pos;
+			sp8.y += 40.0*temp_r31->scale.x;
+			sp8.z += 50.0*temp_r31->scale.x;
+			Hu3D3Dto2D(&sp8, 1, &sp14);
+			espPosSet(lbl_1_bss_152[temp_r30+5], sp14.x, sp14.y);
+			espScaleSet(lbl_1_bss_152[temp_r30+5], temp_f31, temp_f31);
+			if(lbl_1_bss_EE[temp_r30] == -1) {
+				HuSprGrpPosSet(lbl_1_bss_116[temp_r30], 0, -500);
+			} else {
+				sp8 = temp_r31->pos;
+				sp8.y -= 30.0*temp_r31->scale.x;
+				sp8.z += 50.0*temp_r31->scale.x;
+				Hu3D3Dto2D(&sp8, 1, &sp14);
+				HuSprGrpPosSet(lbl_1_bss_116[temp_r30], sp14.x, sp14.y);
+				HuSprGrpScaleSet(lbl_1_bss_116[temp_r30], temp_f31, temp_f31);
+				if(lbl_1_bss_EE[temp_r30] > 9999) {
+					for(temp_r28=0; temp_r28<4; temp_r28++) {
+						HuSprAttrSet(lbl_1_bss_116[temp_r30], temp_r28+1, 4);
+					}
+					HuSprAttrReset(lbl_1_bss_116[temp_r30], 5, 4);
+				} else {
+					for(temp_r28=0; temp_r28<4; temp_r28++) {
+						HuSprAttrReset(lbl_1_bss_116[temp_r30], temp_r28+1, 4);
+					}
+					HuSprAttrSet(lbl_1_bss_116[temp_r30], 5, 4);
+					temp_r29 = lbl_1_bss_EE[temp_r30];
+					HuSprBankSet(lbl_1_bss_116[temp_r30], 1, temp_r29/1000);
+					temp_r29 -= (temp_r29/1000)*1000;
+					HuSprBankSet(lbl_1_bss_116[temp_r30], 2, temp_r29/100);
+					temp_r29 -= (temp_r29/100)*100;
+					HuSprBankSet(lbl_1_bss_116[temp_r30], 3, temp_r29/10);
+					temp_r29 -= (temp_r29/10)*10;
+					HuSprBankSet(lbl_1_bss_116[temp_r30], 4, temp_r29);
+				}
+				sp8 = temp_r31->pos;
+				sp8.y -= 40.0*temp_r31->scale.x;
+				sp8.z += 50.0*temp_r31->scale.x;
+				Hu3D3Dto2D(&sp8, 1, &sp14);
+				HuSprGrpPosSet(lbl_1_bss_110[temp_r30], sp14.x, sp14.y);
+				HuSprGrpScaleSet(lbl_1_bss_110[temp_r30], temp_f31, temp_f31);
+				OSTicksToCalendarTime(lbl_1_bss_D0[temp_r30], &sp20);
+				temp_r29 = sp20.mon+1;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 0, temp_r29/10);
+				temp_r29 -= (temp_r29/10)*10;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 1, temp_r29);
+				temp_r29 = sp20.mday;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 3, temp_r29/10);
+				temp_r29 -= (temp_r29/10)*10;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 4, temp_r29);
+				temp_r29 = sp20.hour;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 6, temp_r29/10);
+				temp_r29 -= (temp_r29/10)*10;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 7, temp_r29);
+				temp_r29 = sp20.min;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 9, temp_r29/10);
+				temp_r29 -= (temp_r29/10)*10;
+				HuSprBankSet(lbl_1_bss_110[temp_r30], 10, temp_r29);
+			}
+		}
+		HuPrcVSleep();
+	}
+	
+}
+
+s16 lbl_1_data_41C = -1;
+
+void fn_1_B8CC(u32 arg0)
+{
+	float size[2];
+	if(lbl_1_data_41C != -1) {
+		HuWinExCleanup(lbl_1_data_41C);
+	}
+	HuWinInsertMesSizeGet(MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+	HuWinMesMaxSizeGet(1, size, arg0);
+	lbl_1_data_41C = HuWinExCreateStyled(-10000, 308, size[0], size[1], -1, 2);
+	HuWinMesSpeedSet(lbl_1_data_41C, 0);
+	HuWinExAnimIn(lbl_1_data_41C);
+	HuWinInsertMesSet(lbl_1_data_41C, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
+	HuWinMesSet(lbl_1_data_41C, arg0);
+	HuWinMesWait(lbl_1_data_41C);
+}
+
+void fn_1_BA20(void)
+{
+	if(lbl_1_data_41C != -1) {
+		HuWinExAnimOut(lbl_1_data_41C);
+		HuWinExCleanup(lbl_1_data_41C);
+		lbl_1_data_41C = -1;
+	}
+}
+
+void fn_1_BA80(s16 boxno)
+{
+	char mesMaxTurn[4];
+	char mesTurn[4];
+	char mesDummy[1] = {0};
+	if(lbl_1_bss_EE[boxno] < 0) {
+		HuWinMesSet(lbl_1_bss_148, 0x100011);
+	} else {
+		if(!lbl_1_bss_C4[boxno] && !lbl_1_bss_B8[boxno]) {
+			HuWinInsertMesSet(lbl_1_bss_148, 0x100011, 0);
+			HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesDummy), 1);
+			HuWinMesSet(lbl_1_bss_148, 0x100043);
+		} else {
+			if(!lbl_1_bss_C4[boxno]) {
+				HuWinInsertMesSet(lbl_1_bss_148, 0x100011, 0);
+				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesDummy), 1);
+				HuWinInsertMesSet(lbl_1_bss_148, 0x100012+lbl_1_bss_9E[boxno], 2);
+				sprintf(mesMaxTurn, "%d", lbl_1_bss_98[boxno]);
+				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesMaxTurn), 3);
+				sprintf(mesTurn, "%d", lbl_1_bss_92[boxno]);
+				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesTurn), 4);
+				HuWinMesSet(lbl_1_bss_148, 0x100042);
+			} else {
+				if(!lbl_1_bss_B8[boxno]) {
+					HuWinInsertMesSet(lbl_1_bss_148, 0x100012+lbl_1_bss_A4[boxno], 0);
+					if(lbl_1_bss_AC[boxno]) {
+						HuWinInsertMesSet(lbl_1_bss_148, 0x100018, 1);
+					} else {
+						HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesDummy), 1);
+					}
+					HuWinMesSet(lbl_1_bss_148, 0x100043);
+				} else {
+					HuWinInsertMesSet(lbl_1_bss_148, 0x100012+lbl_1_bss_A4[boxno], 0);
+					if(lbl_1_bss_AC[boxno]) {
+						HuWinInsertMesSet(lbl_1_bss_148, 0x100018, 1);
+					} else {
+						HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesDummy), 1);
+					}
+					HuWinInsertMesSet(lbl_1_bss_148, 0x100012+lbl_1_bss_9E[boxno], 2);
+					sprintf(mesMaxTurn, "%d", lbl_1_bss_98[boxno]);
+					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesMaxTurn), 3);
+					sprintf(mesTurn, "%d", lbl_1_bss_92[boxno]);
+					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesTurn), 4);
+					HuWinMesSet(lbl_1_bss_148, 0x100042);
+				}
+			}
+		}
+	}
+	HuWinMesWait(lbl_1_bss_148);
 }
