@@ -132,5 +132,6 @@ extern float CZoom;
 extern Vec CRotM[16];
 extern Vec CenterM[16];
 extern float CZoomM[16];
+extern s16 omDBGMenuButton;
 
 #endif
