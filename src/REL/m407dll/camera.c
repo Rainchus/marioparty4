@@ -1,8 +1,7 @@
 #include "game/process.h"
 #include "game/object.h"
 #include "game/hsfdraw.h"
-
-#define M_PI 3.141592653589793
+#include "math.h"
 
 typedef struct unkDominationData2 {
 /* 0x00 */ s32 unk_00;
@@ -23,8 +22,6 @@ void fn_1_1CAC(f32, f32, f32);
 void fn_1_1D08(f32, f32, f32);
 void fn_1_1D64(f32);
 void fn_1_2024(omObjData*);
-double cos(double x);
-double sin(double x);
 
 //bss
 Process* lbl_1_bss_34;

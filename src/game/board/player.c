@@ -15,6 +15,8 @@
 #include "game/board/basic_space.h"
 #include "game/board/audio.h"
 #include "game/pad.h"
+#include "stdlib.h"
+#include "math.h"
 
 static void InitJunction(s32, s32, f32);
 static void UpdateJunctionGfx(omObjData*);

@@ -9,6 +9,7 @@
 #include "game/objsub.h"
 #include "game/gamework_data.h"
 #include "math.h"
+#include "stdlib.h"
 
 typedef struct bit_copy {
     struct {

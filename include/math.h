@@ -43,8 +43,6 @@ float cosf(float x);
 float atan2f(float y, float x);
 float acosf(float x);
 
-#define abs(x) __abs(x)
-
 extern inline double fabs(double x)
 {
    return __fabs(x);
