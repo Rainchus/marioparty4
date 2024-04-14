@@ -22,9 +22,6 @@
 #include "dolphin.h"
 #include "math.h"
 
-// TODO: required to match fn_1_3C9C. Can be removed once abs is removed from math.h.
-#undef abs
-
 typedef struct {
     /* 0x00 */ char unk00[0x50];
     /* 0x50 */ u32 unk50; // pointer?

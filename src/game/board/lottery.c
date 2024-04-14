@@ -22,6 +22,7 @@
 #include "game/board/window.h"
 
 #include "math.h"
+#include "stdlib.h"
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 

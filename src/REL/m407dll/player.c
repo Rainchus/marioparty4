@@ -5,6 +5,8 @@
 #include "game/objsub.h"
 #include "game/chrman.h"
 #include "game/hsfman.h"
+#include "math.h"
+
 #include "rel_sqrt_consts.h"
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
@@ -51,8 +53,6 @@ void fn_1_1074(omObjData* arg0);
 void fn_1_11CC(omObjData* arg0);
 void fn_1_13E4(omObjData* arg0);
 void fn_1_1460(omObjData* arg0);
-double cos(double x);
-double sin(double x);
 
 //bss
 Process* lbl_1_bss_18;
