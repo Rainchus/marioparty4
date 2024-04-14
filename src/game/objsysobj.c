@@ -15,7 +15,7 @@ Vec CRotM[16];
 Vec CenterM[16];
 float CZoomM[16];
 
-omObjData *omDBGMenuButton;
+s16 omDBGMenuButton;
 
 void omOutView(omObjData *object)
 {
