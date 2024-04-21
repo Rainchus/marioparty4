@@ -484,8 +484,8 @@ void SLLoadBoardStory(void) {
     }
 }
 
-void SLSerialNoGet(void) {
-    CARDGetSerialNo(curSlotNo, &SLSerialNo);
+s32 SLSerialNoGet(void) {
+    return CARDGetSerialNo(curSlotNo, &SLSerialNo);
 }
 
 BOOL SLSerialNoCheck(void) {
