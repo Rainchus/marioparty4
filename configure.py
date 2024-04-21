@@ -1133,7 +1133,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/modeseldll/main.c"),
             Object(NonMatching, "REL/modeseldll/modesel.c"),
-            Object(NonMatching, "REL/modeseldll/filesel.c"),
+            Object(Matching, "REL/modeseldll/filesel.c"),
             Object(Matching, "REL/modeseldll/datalist.c"),
         }
     ),

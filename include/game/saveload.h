@@ -51,7 +51,7 @@ s32 SLLoad(void);
 void SLLoadGameStat(void);
 void SLLoadBoard(void);
 void SLLoadBoardStory(void);
-void SLSerialNoGet(void);
+s32 SLSerialNoGet(void);
 BOOL SLSerialNoCheck(void);
 BOOL SLCheckSumCheck(void);
 u16 SLCheckSumGet(void);
