@@ -1038,6 +1038,32 @@ config.libs = [
             Object(NonMatching, "REL/m434Dll/fish.c"),
         }
     ),
+    Rel('m435Dll',
+        objects = {
+            Object(NonMatching, "REL/m435Dll/main.c"),
+            Object(NonMatching, "REL/m435Dll/sequence.c"),
+        }
+    ),
+    Rel('m436Dll',
+        objects = {
+            Object(NonMatching, "REL/m436Dll/main.c"),
+            Object(NonMatching, "REL/m436Dll/sequence.c"),
+        }
+    ),
+    Rel('m437Dll',
+        objects = {
+            Object(NonMatching, "REL/m437Dll/main.c"),
+            Object(NonMatching, "REL/m437Dll/sequence.c"),
+        }
+    ),
+    Rel('m438Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m438Dll/main.c"),
+            Object(NonMatching, "REL/m438Dll/map.c"),
+            Object(NonMatching, "REL/m438Dll/fire.c"),
+        }
+    ),
     Rel('m442Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
