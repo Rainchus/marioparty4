@@ -4,6 +4,43 @@
 #include "game/object.h"
 #include "stdarg.h"
 
+#define MG_SEQ_TYPE_TIMER 1
+#define MG_SEQ_TYPE_AUTO 3
+#define MG_SEQ_TYPE_1VS3 4
+#define MG_SEQ_TYPE_WIN 5
+#define MG_SEQ_TYPE_BATTLE 6
+#define MG_SEQ_TYPE_STORY 7
+#define MG_SEQ_TYPE_4P 8
+#define MG_SEQ_TYPE_2VS2 9
+#define MG_SEQ_TYPE_PINBALL 10
+#define MG_SEQ_TYPE_BOWSER 11
+#define MG_SEQ_TYPE_ALTWIN 12
+#define MG_SEQ_TYPE_DRAW 13
+#define MG_SEQ_TYPE_RECORD 14
+
+#define MG_SEQ_WIN_TYPE_WIN 3
+#define MG_SEQ_WIN_TYPE_LOSE 4
+#define MG_SEQ_WIN_TYPE_CHAMPION 5
+
+#define MG_SEQ_WORD_START 0
+#define MG_SEQ_WORD_FINISH 1
+#define MG_SEQ_WORD_DRAW 2
+
+#define MGSeqTimerCreate(value) MGSeqCreate(MG_SEQ_TYPE_TIMER, (value), -1, -1)
+#define MGSeqTimerCreateXY(value, x, y) MGSeqCreate(MG_SEQ_TYPE_TIMER, (value), (int)(x), (int)(y))
+#define MGSeqStartCreate() MGSeqCreate(MG_SEQ_TYPE_AUTO, MG_SEQ_WORD_START)
+#define MGSeqFinishCreate() MGSeqCreate(MG_SEQ_TYPE_AUTO, MG_SEQ_WORD_FINISH)
+#define MGSeqDrawCreate() MGSeqCreate(MG_SEQ_TYPE_AUTO, MG_SEQ_WORD_DRAW)
+#define MGSeqStartCreateType(type) MGSeqCreate((type), MG_SEQ_WORD_START)
+#define MGSeqFinishCreateType(type) MGSeqCreate((type), MG_SEQ_WORD_FINISH)
+#define MGSeqDrawCreateType(type) MGSeqCreate((type), MG_SEQ_WORD_DRAW)
+#define MGSeqWinCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_WIN, MG_SEQ_WIN_TYPE_WIN, (player_1), (player_2), (player_3), (player_4))
+#define MGSeqLoseCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_WIN, MG_SEQ_WIN_TYPE_LOSE, (player_1), (player_2), (player_3), (player_4))
+#define MGSeqChampionCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_ALTWIN, MG_SEQ_WIN_TYPE_CHAMPION, (player_1), (player_2), (player_3), (player_4))
+#define MGSeqRecordCreate(value) MGSeqCreate(MG_SEQ_TYPE_RECORD, (value))
+
+
+
 typedef struct seq_work SeqWork;
 
 typedef int (*SeqUpdateFunc)(SeqWork *work);

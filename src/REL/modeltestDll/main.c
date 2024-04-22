@@ -11,6 +11,7 @@
 #include "game/window.h"
 #include "game/gamework_data.h"
 #include "game/sprite.h"
+#include "game/minigame_seq.h"
 
 #include "REL/modeltestDll.h"
 
@@ -287,7 +288,7 @@ void fn_1_29C(omObjData * arg0)
     HuSprExecLayerSet(0x40, 1);
     HuSprGrpDrawNoSet(lbl_1_bss_99C, 0x40);
     lbl_1_bss_458 = 0x293;
-    lbl_1_bss_45A[0] = MGSeqCreate(1, lbl_1_bss_458 / 60, -1, -1);
+    lbl_1_bss_45A[0] = MGSeqTimerCreate(lbl_1_bss_458 / 60);
     temp_r29 = HuDataSelHeapReadNum(0x120001, 0x10000000, 2);
     temp_r28 = HuSprAnimRead(temp_r29);
     lbl_1_bss_888 = Hu3DParManCreate(temp_r28, 0x3E8, &lbl_1_data_208);
@@ -505,27 +506,27 @@ void fn_1_F9C(struct om_obj_data * omData)
     }
 
     if ((HuPadBtnDown[0] & PAD_BUTTON_B) != 0) {
-        var_r30 = MGSeqCreate(teropPatterns.unk0[lbl_1_bss_24], 0);
+        var_r30 = MGSeqStartCreateType(teropPatterns.unk0[lbl_1_bss_24]);
     }
     if ((HuPadBtnDown[0] & PAD_BUTTON_A) != 0) {
-        var_r30 = MGSeqCreate(teropPatterns.unk0[lbl_1_bss_24], 2);
+        var_r30 = MGSeqDrawCreateType(teropPatterns.unk0[lbl_1_bss_24]);
     }
     if ((HuPadBtnDown[0] & PAD_BUTTON_Y) != 0) {
-        var_r30 = MGSeqCreate(0xE, 0x3B);
+        var_r30 = MGSeqRecordCreate(59);
     }
 
     if ((HuPadBtnDown[0] & (PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT | PAD_BUTTON_UP | PAD_BUTTON_DOWN)) != 0) {
         if ((HuPadBtnDown[0] & PAD_BUTTON_UP) != 0) {
-            MGSeqCreate(0xC, 5, GWPlayerCfg[0].character, -1, -1, -1);
+            MGSeqChampionCreate(GWPlayerCfg[0].character, -1, -1, -1);
         }
         if ((HuPadBtnDown[0] & PAD_BUTTON_LEFT) != 0) {
-            MGSeqCreate(0xC, 5, GWPlayerCfg[0].character, GWPlayerCfg[1].character, -1, -1);
+            MGSeqChampionCreate(GWPlayerCfg[0].character, GWPlayerCfg[1].character, -1, -1);
         }
         if ((HuPadBtnDown[0] & PAD_BUTTON_DOWN) != 0) {
-            MGSeqCreate(0xC, 5, GWPlayerCfg[0].character, GWPlayerCfg[1].character, GWPlayerCfg[2].character, -1);
+            MGSeqChampionCreate(GWPlayerCfg[0].character, GWPlayerCfg[1].character, GWPlayerCfg[2].character, -1);
         }
         if ((HuPadBtnDown[0] & PAD_BUTTON_RIGHT) != 0) {
-            MGSeqCreate(0xC, 5, GWPlayerCfg[0].character, GWPlayerCfg[1].character, GWPlayerCfg[2].character, GWPlayerCfg[3].character);
+            MGSeqChampionCreate(GWPlayerCfg[0].character, GWPlayerCfg[1].character, GWPlayerCfg[2].character, GWPlayerCfg[3].character);
         }
     }
     fontcolor = 5;
