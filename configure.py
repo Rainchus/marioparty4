@@ -1064,11 +1064,46 @@ config.libs = [
             Object(NonMatching, "REL/m438Dll/fire.c"),
         }
     ),
+    Rel('m439Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m439Dll/main.c"),
+        }
+    ),
+    Rel('m440Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m440Dll/main.c"),
+            Object(NonMatching, "REL/m440Dll/object.c"),
+        }
+    ),
+    Rel('m441Dll',
+        objects = {
+            Object(NonMatching, "REL/m441Dll/main.c"),
+        }
+    ),
     Rel('m442Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m442Dll/main.c"),
             Object(NonMatching, "REL/m442Dll/score.c"),
+        }
+    ),
+    Rel('m443Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m443Dll/main.c"),
+            Object(NonMatching, "REL/m443Dll/map.c"),
+            Object(NonMatching, "REL/m443Dll/player.c"),
+        }
+    ),
+    Rel('m444dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m444dll/main.c"),
+            Object(NonMatching, "REL/m444dll/pinball.c"),
+            Object(NonMatching, "REL/m444dll/datalist.c"),
+            Object(NonMatching, "REL/m444dll/shadow.c"),
         }
     ),
     Rel('m450Dll',
