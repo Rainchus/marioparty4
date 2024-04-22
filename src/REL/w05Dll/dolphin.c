@@ -2,10 +2,7 @@
 
 #include "game/hsfdraw.h"
 #include "game/audio.h"
-#include "game/pad.h"
 #include "game/objsub.h"
-#include "game/wipe.h"
-#include "game/chrman.h"
 #include "game/frand.h"
 
 #include "game/board/model.h"
