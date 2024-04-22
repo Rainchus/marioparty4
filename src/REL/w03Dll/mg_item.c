@@ -345,7 +345,7 @@ void fn_1_A44C(s32 arg0) {
     s32 temp_r28;
 
     BoardMusStart(1, 0x17, 0x7F, 0);
-    temp_r30 = MGSeqCreate(3, 0);
+    temp_r30 = MGSeqStartCreate();
 
     while (MGSeqStatGet(temp_r30) != 0) {
         HuPrcVSleep();
@@ -434,7 +434,7 @@ void fn_1_A7A0(s32 arg0) {
     temp_r31->unk00_bit1 = 0;
     temp_r31->unk1 = 5U;
     temp_r31->unk2 = 0x3C;
-    temp_r31->unk4 = MGSeqCreate(1, temp_r31->unk1, 0x120, 0x40);
+    temp_r31->unk4 = MGSeqTimerCreateXY(temp_r31->unk1, 288, 64);
     fn_1_BB74(lbl_1_bss_194);
     lbl_1_bss_18C = fn_1_AE4C(arg0, lbl_1_bss_194);
 }

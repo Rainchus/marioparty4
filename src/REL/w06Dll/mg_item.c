@@ -295,7 +295,7 @@ static void fn_1_15CC(s32 arg0) {
     s32 var_r31;
 
     BoardMusStart(1, 0x26, 0x7F, 0);
-    temp_r26 = MGSeqCreate(3, 0);
+    temp_r26 = MGSeqStartCreate();
     while (MGSeqStatGet(temp_r26) != 0) {
         HuPrcVSleep();
     }
@@ -1072,7 +1072,7 @@ static void fn_1_4070(void) {
     temp_r31->unk00_field0 = 0;
     temp_r31->unk01 = 5;
     temp_r31->unk02 = 60;
-    temp_r31->unk04 = MGSeqCreate(1, temp_r31->unk01, 0x120, 0x40);
+    temp_r31->unk04 = MGSeqTimerCreateXY(temp_r31->unk01, 288, 64);
 }
 
 static void fn_1_4124(void) {
