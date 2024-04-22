@@ -171,8 +171,6 @@ s32 fn_1_5C38(void);
 void fn_1_B8CC(u32 arg0);
 void fn_1_BA20(void);
 
-//Various temporary register errors
-//Scratch: https://decomp.me/scratch/BDhfa
 s32 fn_1_3AAC(void)
 {
 	s16 temp_r31;
@@ -197,179 +195,176 @@ s32 fn_1_3AAC(void)
 	lbl_1_bss_146 = HuWinExCreateStyled(-10000.0f, 316.0f, sp8[0], sp8[1], -1, 0);
 	HuWinBGTPLvlSet(lbl_1_bss_146, 0);
 	HuWinMesSpeedSet(lbl_1_bss_146, 0);
-    while (1) {
-    	repeat:
-    	sp28.x = 188;
-    	sp28.y = 250;
-    	sp28.z = 600;
-    	Hu3D2Dto3D(&sp28, 1, &sp1C);
-    	Hu3DModelPosSetV(lbl_1_bss_19A[2], &sp1C);
-    	Hu3DModelPosSetV(lbl_1_bss_19A[4], &sp1C);
-    	Hu3DModelPosSetV(lbl_1_bss_19A[0], &sp1C);
-    	sp28.x = 388;
-    	Hu3D2Dto3D(&sp28, 1, &sp1C);
-    	Hu3DModelPosSetV(lbl_1_bss_19A[3], &sp1C);
-    	Hu3DModelPosSetV(lbl_1_bss_19A[5], &sp1C);
-    	Hu3DModelPosSetV(lbl_1_bss_19A[1], &sp1C);
-    	Hu3DModelAttrReset(lbl_1_bss_19A[2], 1);
-    	Hu3DModelAttrSet(lbl_1_bss_19A[4], 1);
-    	Hu3DModelAttrReset(lbl_1_bss_19A[3], 1);
-    	Hu3DModelAttrSet(lbl_1_bss_19A[5], 1);
-    	Hu3DModelRotSet(lbl_1_bss_19A[2], 0, 0, 0);
-    	Hu3DModelRotSet(lbl_1_bss_19A[3], 0, 0, 0);
-    	fn_1_57C8(lbl_1_bss_19A[4]);
-    	fn_1_57C8(lbl_1_bss_19A[5]);
-    	lbl_1_bss_12C[0] = lbl_1_bss_12C[1] = 1;
-    	lbl_1_bss_108[0] = lbl_1_bss_108[1] = lbl_1_bss_100[0] = lbl_1_bss_100[1] = 1.0f;
-    	lbl_1_bss_11C = -1;
-    	fn_1_5C38();
-    	for(temp_r30=0; temp_r30<=20; temp_r30++) {
-    		temp_f31 = temp_r30/20.0;
-    		temp_f31 = sin(M_PI*(90.0f*temp_f31)/180.0);
-    		Hu3DModelScaleSet(lbl_1_bss_19A[0], temp_f31, temp_f31, temp_f31);
-    		Hu3DModelScaleSet(lbl_1_bss_19A[1], temp_f31, temp_f31, temp_f31);
-    		Hu3DModelScaleSet(lbl_1_bss_19A[2], temp_f31, temp_f31, temp_f31);
-    		Hu3DModelScaleSet(lbl_1_bss_19A[3], temp_f31, temp_f31, temp_f31);
-    		Hu3DModelScaleSet(lbl_1_bss_19A[4], temp_f31, temp_f31, temp_f31);
-    		Hu3DModelScaleSet(lbl_1_bss_19A[5], temp_f31, temp_f31, temp_f31);
-    		HuPrcVSleep();
-    	}
-    	while(1) {
-    		repeat_loop:
-    		HuWinDispOff(lbl_1_bss_146);
-    		temp_r28 = fn_1_562C();
-    		if(temp_r28 == 0 && fn_1_5C38() == 0) {
-    			if(fn_1_5C38() == 0) {
-    				HuWinMesSet(lbl_1_bss_148, 0x100002);
-    				HuWinMesWait(lbl_1_bss_148);
-    			}
-    			HuWinMesSet(lbl_1_bss_148, 0x10004F);
-    			HuWinAttrSet(lbl_1_bss_148, 0x10);
-    			HuWinMesWait(lbl_1_bss_148);
-    			temp_r27 = HuWinChoiceGet(lbl_1_bss_148, 1);
-    			if(temp_r27 == 0) {
-    				SLSaveFlagSet(0);
-    				temp_r29 = 1;
-    				goto cleanup;
-    			}
-    			HuWinInsertMesSet(lbl_1_bss_148, 0x100052, 0);
-    			HuWinMesSet(lbl_1_bss_148, 0x10004C);
-    			HuWinMesWait(lbl_1_bss_148);
-    			while(!(HuPadBtnDown[0] & PAD_BUTTON_A)) {
-    				HuPrcVSleep();
-    			}
-    		}
-    		while(!fn_1_5C38()) {
-    			temp_r28 = fn_1_562C();
-    			HuWinMesSet(lbl_1_bss_148, 0x100002);
-    			HuWinMesWait(lbl_1_bss_148);
-    			if(temp_r23->key_down & PAD_BUTTON_B) {
-    				HuAudFXPlay(3);
-    				return 0;
-    			}
-    			if(fn_1_5C38()) {
-    				break;
-    			}
-    			HuWinMesSet(lbl_1_bss_148, 0x10004B);
-    			HuWinAttrSet(lbl_1_bss_148, 0x10);
-    			HuWinMesWait(lbl_1_bss_148);
-    			temp_r27 = HuWinChoiceGet(lbl_1_bss_148, 1);
-    			if(temp_r27 == 0) {
-    				SLSaveFlagSet(0);
-    				temp_r29 = 1;
-    				goto cleanup;
-    			}
-    			HuWinInsertMesSet(lbl_1_bss_148, 0x100052, 0);
-    			HuWinMesSet(lbl_1_bss_148, 0x10004C);
-    			HuWinMesWait(lbl_1_bss_148);
-    			while(!(HuPadBtnDown[0] & PAD_BUTTON_A)) {
-    				HuPrcVSleep();
-    			}
-    		}
-    		SLSaveFlagSet(1);
-    		HuWinMesSet(lbl_1_bss_148, 0x100001);
-    		HuWinMesWait(lbl_1_bss_148);
-    		HuWinMesSet(lbl_1_bss_146, 0x10000C);
-    		HuWinDispOn(lbl_1_bss_146);
-    		if(curSlotNo == 0) {
-    			if(lbl_1_bss_14C & 0x1) {
-    				temp_r31 = 0;
-    			} else {
-    				temp_r31 = 1;
-    			}
-    		} else {
-    			if(lbl_1_bss_14C & 0x2) {
-    				temp_r31 = 1;
-    			} else {
-    				temp_r31 = 0;
-    			}
-    		}
-    		fn_1_5BAC(temp_r31, 1);
-    		HuPrcSleep(10);
-    		temp_r24 = temp_r31;
-    		while(1) {
-    			if(!fn_1_5C38()) {
-    				fn_1_5BAC(temp_r31, 0);
-    				HuPrcSleep(10);
-    				goto repeat_loop;
-    			} else {
-    				if((HuPadDStkRep[0] & 0x1) && (lbl_1_bss_14C & 0x1)) {
-    					temp_r31 = 0;
-    				} else if((HuPadDStkRep[0] & 0x2) && (lbl_1_bss_14C & 0x2)) {
-    					temp_r31 = 1;
-    				} else if(!(lbl_1_bss_14C & (1 << temp_r31))) {
-    					if(!(lbl_1_bss_14C & (1 << ((temp_r31+1) & 0x1)))) {
-    						fn_1_5BAC(temp_r31, 0);
-    						HuPrcSleep(10);
-    						goto repeat_loop;
-    					} else {
-    						temp_r31 = (temp_r31+1) & 0x1;
-    					}
-    				}
-    				if(temp_r24 != temp_r31) {
-    					HuAudFXPlay(0);
-    					fn_1_5BAC(temp_r31, 1);
-    					fn_1_5BAC((temp_r31+1) & 0x1, 0);
-    					HuPrcSleep(10);
-    					temp_r24 = temp_r31;
-    				}
-    				if(HuPadBtnDown[0] & PAD_BUTTON_A) {
-    					HuAudFXPlay(2096);
-    					goto loop_exit;
-    				} else if(HuPadBtnDown[0] & PAD_BUTTON_B) {
-    					HuAudFXPlay(3);
-    					return 0;
-    				}
-    			}
-    			HuPrcVSleep();
-    		}
-    	}
-    	loop_exit:
-    	HuWinHomeClear(lbl_1_bss_148);
-    	temp_r26 = (temp_r31+1)&0x1;
-    	Hu3DMotionSet(lbl_1_bss_19A[temp_r31+4], lbl_1_bss_16A[7]);
-    	Hu3DMotionSpeedSet(lbl_1_bss_19A[temp_r31+4], 2.0f);
-    	lbl_1_bss_12C[0] = lbl_1_bss_12C[1] = 0;
-    	lbl_1_bss_11C = temp_r31;
-    	SLCurSlotNoSet(temp_r31);
-    	temp_r28 = HuCardMount(temp_r31);
-    	if(temp_r28 == 0) {
-    		SLSerialNoGet();
-    		temp_r28 = HuCardOpen(temp_r31, SaveFileNameTbl[0], &sp34);
-    		if(temp_r28 != 0 && temp_r28 != -4) {
-    			temp_r29 = 1;
-    		} else {
-    			temp_r29 = 0;
-    		}
-    		HuCardClose(&sp34);
-            break;
-    	} else {
-    		if(temp_r28 != -3) {
-    			temp_r29 = 1;
-                break;
-    		}
-    	}
-    }
+	repeat:
+	sp28.x = 188;
+	sp28.y = 250;
+	sp28.z = 600;
+	Hu3D2Dto3D(&sp28, 1, &sp1C);
+	Hu3DModelPosSetV(lbl_1_bss_19A[2], &sp1C);
+	Hu3DModelPosSetV(lbl_1_bss_19A[4], &sp1C);
+	Hu3DModelPosSetV(lbl_1_bss_19A[0], &sp1C);
+	sp28.x = 388;
+	Hu3D2Dto3D(&sp28, 1, &sp1C);
+	Hu3DModelPosSetV(lbl_1_bss_19A[3], &sp1C);
+	Hu3DModelPosSetV(lbl_1_bss_19A[5], &sp1C);
+	Hu3DModelPosSetV(lbl_1_bss_19A[1], &sp1C);
+	Hu3DModelAttrReset(lbl_1_bss_19A[2], 1);
+	Hu3DModelAttrSet(lbl_1_bss_19A[4], 1);
+	Hu3DModelAttrReset(lbl_1_bss_19A[3], 1);
+	Hu3DModelAttrSet(lbl_1_bss_19A[5], 1);
+	Hu3DModelRotSet(lbl_1_bss_19A[2], 0, 0, 0);
+	Hu3DModelRotSet(lbl_1_bss_19A[3], 0, 0, 0);
+	fn_1_57C8(lbl_1_bss_19A[4]);
+	fn_1_57C8(lbl_1_bss_19A[5]);
+	lbl_1_bss_12C[0] = lbl_1_bss_12C[1] = 1;
+	lbl_1_bss_108[0] = lbl_1_bss_108[1] = lbl_1_bss_100[0] = lbl_1_bss_100[1] = 1.0f;
+	lbl_1_bss_11C = -1;
+	fn_1_5C38();
+	for(temp_r30=0; temp_r30<=20; temp_r30++) {
+		temp_f31 = temp_r30/20.0;
+		temp_f31 = sin(M_PI*(90.0f*temp_f31)/180.0);
+		Hu3DModelScaleSet(lbl_1_bss_19A[0], temp_f31, temp_f31, temp_f31);
+		Hu3DModelScaleSet(lbl_1_bss_19A[1], temp_f31, temp_f31, temp_f31);
+		Hu3DModelScaleSet(lbl_1_bss_19A[2], temp_f31, temp_f31, temp_f31);
+		Hu3DModelScaleSet(lbl_1_bss_19A[3], temp_f31, temp_f31, temp_f31);
+		Hu3DModelScaleSet(lbl_1_bss_19A[4], temp_f31, temp_f31, temp_f31);
+		Hu3DModelScaleSet(lbl_1_bss_19A[5], temp_f31, temp_f31, temp_f31);
+		HuPrcVSleep();
+	}
+	while(1) {
+		repeat_loop:
+		HuWinDispOff(lbl_1_bss_146);
+		temp_r28 = fn_1_562C();
+		if(temp_r28 == 0 && fn_1_5C38() == 0) {
+			if(fn_1_5C38() == 0) {
+				HuWinMesSet(lbl_1_bss_148, 0x100002);
+				HuWinMesWait(lbl_1_bss_148);
+			}
+			HuWinMesSet(lbl_1_bss_148, 0x10004F);
+			HuWinAttrSet(lbl_1_bss_148, 0x10);
+			HuWinMesWait(lbl_1_bss_148);
+			temp_r27 = HuWinChoiceGet(lbl_1_bss_148, 1);
+			if(temp_r27 == 0) {
+				SLSaveFlagSet(0);
+				temp_r29 = 1;
+				goto cleanup;
+			}
+			HuWinInsertMesSet(lbl_1_bss_148, 0x100052, 0);
+			HuWinMesSet(lbl_1_bss_148, 0x10004C);
+			HuWinMesWait(lbl_1_bss_148);
+			while(!(HuPadBtnDown[0] & PAD_BUTTON_A)) {
+				HuPrcVSleep();
+			}
+		}
+		while(!fn_1_5C38()) {
+			temp_r28 = fn_1_562C();
+			HuWinMesSet(lbl_1_bss_148, 0x100002);
+			HuWinMesWait(lbl_1_bss_148);
+			if(temp_r23->key_down & PAD_BUTTON_B) {
+				HuAudFXPlay(3);
+				return 0;
+			}
+			if(fn_1_5C38()) {
+				break;
+			}
+			HuWinMesSet(lbl_1_bss_148, 0x10004B);
+			HuWinAttrSet(lbl_1_bss_148, 0x10);
+			HuWinMesWait(lbl_1_bss_148);
+			temp_r27 = HuWinChoiceGet(lbl_1_bss_148, 1);
+			if(temp_r27 == 0) {
+				SLSaveFlagSet(0);
+				temp_r29 = 1;
+				goto cleanup;
+			}
+			HuWinInsertMesSet(lbl_1_bss_148, 0x100052, 0);
+			HuWinMesSet(lbl_1_bss_148, 0x10004C);
+			HuWinMesWait(lbl_1_bss_148);
+			while(!(HuPadBtnDown[0] & PAD_BUTTON_A)) {
+				HuPrcVSleep();
+			}
+		}
+		SLSaveFlagSet(1);
+		HuWinMesSet(lbl_1_bss_148, 0x100001);
+		HuWinMesWait(lbl_1_bss_148);
+		HuWinMesSet(lbl_1_bss_146, 0x10000C);
+		HuWinDispOn(lbl_1_bss_146);
+		if(curSlotNo == 0) {
+			if(lbl_1_bss_14C & 0x1) {
+				temp_r31 = 0;
+			} else {
+				temp_r31 = 1;
+			}
+		} else {
+			if(lbl_1_bss_14C & 0x2) {
+				temp_r31 = 1;
+			} else {
+				temp_r31 = 0;
+			}
+		}
+		fn_1_5BAC(temp_r31, 1);
+		HuPrcSleep(10);
+		temp_r24 = temp_r31;
+		while(1) {
+			if(!fn_1_5C38()) {
+				fn_1_5BAC(temp_r31, 0);
+				HuPrcSleep(10);
+				goto repeat_loop;
+			} else {
+				if((HuPadDStkRep[0] & 0x1) && (lbl_1_bss_14C & 0x1)) {
+					temp_r31 = 0;
+				} else if((HuPadDStkRep[0] & 0x2) && (lbl_1_bss_14C & 0x2)) {
+					temp_r31 = 1;
+				} else if(!(lbl_1_bss_14C & (1 << temp_r31))) {
+					if(!(lbl_1_bss_14C & (1 << ((temp_r31+1) & 0x1)))) {
+						fn_1_5BAC(temp_r31, 0);
+						HuPrcSleep(10);
+						goto repeat_loop;
+					} else {
+						temp_r31 = (temp_r31+1) & 0x1;
+					}
+				}
+				if(temp_r24 != temp_r31) {
+					HuAudFXPlay(0);
+					fn_1_5BAC(temp_r31, 1);
+					fn_1_5BAC((temp_r31+1) & 0x1, 0);
+					HuPrcSleep(10);
+					temp_r24 = temp_r31;
+				}
+				if(HuPadBtnDown[0] & PAD_BUTTON_A) {
+					HuAudFXPlay(2096);
+					goto loop_exit;
+				} else if(HuPadBtnDown[0] & PAD_BUTTON_B) {
+					HuAudFXPlay(3);
+					return 0;
+				}
+			}
+			HuPrcVSleep();
+		}
+	}
+	loop_exit:
+	HuWinHomeClear(lbl_1_bss_148);
+	temp_r26 = (temp_r31+1)&0x1;
+	Hu3DMotionSet(lbl_1_bss_19A[temp_r31+4], lbl_1_bss_16A[7]);
+	Hu3DMotionSpeedSet(lbl_1_bss_19A[temp_r31+4], 2.0f);
+	lbl_1_bss_12C[0] = lbl_1_bss_12C[1] = 0;
+	lbl_1_bss_11C = temp_r31;
+	SLCurSlotNoSet(temp_r31);
+	temp_r28 = HuCardMount(temp_r31);
+	if(temp_r28 == 0) {
+		SLSerialNoGet();
+		temp_r28 = HuCardOpen(temp_r31, SaveFileNameTbl[0], &sp34);
+		if(temp_r28 != 0 && temp_r28 != -4) {
+			temp_r29 = 1;
+		} else {
+			temp_r29 = 0;
+		}
+		HuCardClose(&sp34);
+	} else {
+		if(temp_r28 == -3) {
+			goto repeat;
+		}
+        temp_r29 = 1;
+	}
 	temp_r27 = HuCardSectorSizeGet(curSlotNo);
 	if(temp_r27 > 0 && temp_r27 != 8192) {
 		HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(lbl_1_data_278[curSlotNo]), 0);
@@ -425,7 +420,7 @@ s32 fn_1_3AAC(void)
 						Hu3DModelPosSetV(lbl_1_bss_19A[temp_r31], &sp1C);
 						lbl_1_bss_108[temp_r31] *= cos(M_PI*(90.0f*temp_f31)/180.0);
 						lbl_1_bss_100[temp_r31] = 1.0-temp_f31;
-						temp_f31 = 1.0+(0.3*cos(M_PI*(180.0f*temp_f31)/180.0));
+						temp_f31 = 1.0+(0.3*cos(M_PI*(90.0f*temp_f31)/180.0));
 						Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31], temp_f31, temp_f31, temp_f31);
 					}
 				}
@@ -553,7 +548,7 @@ s32 fn_1_3AAC(void)
 			Hu3DModelPosSetV(lbl_1_bss_19A[temp_r31], &sp1C);
 			lbl_1_bss_108[temp_r31] *= cos(M_PI*(90.0f*temp_f31)/180.0);
 			lbl_1_bss_100[temp_r31] = 1.0-temp_f31;
-			temp_f31 = 1.0+(0.3*cos(M_PI*(180.0f*temp_f31)/180.0));
+			temp_f31 = 1.0+(0.5*cos(M_PI*(90.0f*temp_f31)/180.0));
 			Hu3DModelScaleSet(lbl_1_bss_19A[temp_r31], temp_f31, temp_f31, temp_f31);
 		}
 		HuPrcVSleep();
@@ -2016,9 +2011,9 @@ void fn_1_BA80(s16 boxno)
 				HuWinInsertMesSet(lbl_1_bss_148, 0x100011, 0);
 				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesDummy), 1);
 				HuWinInsertMesSet(lbl_1_bss_148, 0x100012+lbl_1_bss_9E[boxno], 2);
-				sprintf(mesMaxTurn, "%d", lbl_1_bss_98[boxno]);
+				sprintf(mesMaxTurn, "%2d", lbl_1_bss_98[boxno]);
 				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesMaxTurn), 3);
-				sprintf(mesTurn, "%d", lbl_1_bss_92[boxno]);
+				sprintf(mesTurn, "%2d", lbl_1_bss_92[boxno]);
 				HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesTurn), 4);
 				HuWinMesSet(lbl_1_bss_148, 0x100042);
 			} else {
@@ -2038,9 +2033,9 @@ void fn_1_BA80(s16 boxno)
 						HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesDummy), 1);
 					}
 					HuWinInsertMesSet(lbl_1_bss_148, 0x100012+lbl_1_bss_9E[boxno], 2);
-					sprintf(mesMaxTurn, "%d", lbl_1_bss_98[boxno]);
+					sprintf(mesMaxTurn, "%2d", lbl_1_bss_98[boxno]);
 					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesMaxTurn), 3);
-					sprintf(mesTurn, "%d", lbl_1_bss_92[boxno]);
+					sprintf(mesTurn, "%2d", lbl_1_bss_92[boxno]);
 					HuWinInsertMesSet(lbl_1_bss_148, MAKE_MESSID_PTR(mesTurn), 4);
 					HuWinMesSet(lbl_1_bss_148, 0x100042);
 				}

@@ -1038,11 +1038,114 @@ config.libs = [
             Object(NonMatching, "REL/m434Dll/fish.c"),
         }
     ),
+    Rel('m435Dll',
+        objects = {
+            Object(NonMatching, "REL/m435Dll/main.c"),
+            Object(NonMatching, "REL/m435Dll/sequence.c"),
+        }
+    ),
+    Rel('m436Dll',
+        objects = {
+            Object(NonMatching, "REL/m436Dll/main.c"),
+            Object(NonMatching, "REL/m436Dll/sequence.c"),
+        }
+    ),
+    Rel('m437Dll',
+        objects = {
+            Object(NonMatching, "REL/m437Dll/main.c"),
+            Object(NonMatching, "REL/m437Dll/sequence.c"),
+        }
+    ),
+    Rel('m438Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m438Dll/main.c"),
+            Object(NonMatching, "REL/m438Dll/map.c"),
+            Object(NonMatching, "REL/m438Dll/fire.c"),
+        }
+    ),
+    Rel('m439Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m439Dll/main.c"),
+        }
+    ),
+    Rel('m440Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m440Dll/main.c"),
+            Object(NonMatching, "REL/m440Dll/object.c"),
+        }
+    ),
+    Rel('m441Dll',
+        objects = {
+            Object(NonMatching, "REL/m441Dll/main.c"),
+        }
+    ),
     Rel('m442Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m442Dll/main.c"),
             Object(NonMatching, "REL/m442Dll/score.c"),
+        }
+    ),
+    Rel('m443Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m443Dll/main.c"),
+            Object(NonMatching, "REL/m443Dll/map.c"),
+            Object(NonMatching, "REL/m443Dll/player.c"),
+        }
+    ),
+    Rel('m444dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m444dll/main.c"),
+            Object(NonMatching, "REL/m444dll/pinball.c"),
+            Object(NonMatching, "REL/m444dll/datalist.c"),
+            Object(NonMatching, "REL/m444dll/shadow.c"),
+        }
+    ),
+    Rel('m445Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m445Dll/main.c"),
+        }
+    ),
+    Rel('m446dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m446dll/main.c"),
+            Object(NonMatching, "REL/m446dll/card.c"),
+            Object(NonMatching, "REL/m446dll/deck.c"),
+            Object(NonMatching, "REL/m446dll/table.c"),
+            Object(NonMatching, "REL/m446dll/player.c"),
+            Object(NonMatching, "REL/m446dll/camera.c"),
+            Object(NonMatching, "REL/m446dll/cursor.c"),
+            Object(NonMatching, "REL/m446dll/stage.c"),
+        }
+    ),
+    Rel('m447dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m447dll/main.c"),
+            Object(NonMatching, "REL/m447dll/stage.c"),
+            Object(NonMatching, "REL/m447dll/camera.c"),
+            Object(NonMatching, "REL/m447dll/player.c"),
+            Object(NonMatching, "REL/m447dll/player_col.c"),
+            Object(NonMatching, "REL/m447dll/block.c"),
+        }
+    ),
+    Rel('m448Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m448Dll/main.c"),
+        }
+    ),
+    Rel('m449Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m449Dll/main.c"),
         }
     ),
     Rel('m450Dll',
@@ -1061,6 +1164,32 @@ config.libs = [
             Object(NonMatching, "REL/m453Dll/main.c"),
             Object(NonMatching, "REL/m453Dll/map.c"),
             Object(NonMatching, "REL/m453Dll/score.c"),
+        }
+    ),
+    Rel('m455Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m455Dll/main.c"),
+            Object(NonMatching, "REL/m455Dll/stage.c"),
+        }
+    ),
+    Rel('m456Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m456Dll/main.c"),
+            Object(NonMatching, "REL/m456Dll/stage.c"),
+        }
+    ),
+    Rel('m457Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m457Dll/main.c"),
+        }
+    ),
+    Rel('m458Dll',
+        objects = {
+            Object(Matching, "REL/executor.c"),
+            Object(NonMatching, "REL/m458Dll/main.c"),
         }
     ),
     Rel('m459dll',
@@ -1133,7 +1262,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/modeseldll/main.c"),
             Object(NonMatching, "REL/modeseldll/modesel.c"),
-            Object(NonMatching, "REL/modeseldll/filesel.c"),
+            Object(Matching, "REL/modeseldll/filesel.c"),
             Object(Matching, "REL/modeseldll/datalist.c"),
         }
     ),
