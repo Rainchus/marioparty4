@@ -16,11 +16,6 @@
 
 // frand.h
 extern u32 frandmod(u32);
-// #include "REL/w05Dll/monkey.h"
-extern void fn_1_2B40(void);
-extern void fn_1_2C7C(s32);
-// #include "REL/w05Dll/dolphin.h"
-extern void fn_1_4034(u32);
 // #include "REL/w05Dll/mg_item.h"
 extern void fn_1_6B28(void);
 extern void fn_1_6B7C(void);

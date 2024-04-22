@@ -115,7 +115,6 @@ void BoardPlayerVoiceEnableSet(s32, s32, s32);
 
 
 void BoardPlayerMoveTo(s32, s32);
-void BoardPlayerMoveBetween(s32, s32, s32);
 void BoardPlayerMoveToAsync(s32, s32);
 void BoardPlayerPosLerpStart(s32, Vec*, Vec*, s16);
 void BoardPlayerDiceJumpStart(s32);
