@@ -4,10 +4,10 @@
 #include "math.h"
 #include "dolphin/mtx.h"
 
-typedef struct vector2 {
+typedef struct vec2f {
 	float x;
 	float y;
-} Vector2;
+} Vec2f;
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 

@@ -437,7 +437,7 @@ typedef struct e3_player_cnt_work {
 	AnimData *frame[3];
 	AnimData *arrow;
 	AnimData *arrowHilite;
-	Vector2 winSize;
+	Vec2f winSize;
 	s16 frameGroup;
 	s16 arrowGroupL;
 	s16 arrowGroupR;
@@ -550,8 +550,8 @@ static void InitPlayerCnt(omObjData *object)
 	s16 group;
 	AnimData *anim;
 	u32 mess;
-	float sizeMax[2]; //FIXME: Change to Vector2
-	float size[2]; //FIXME: Change to Vector2
+	float sizeMax[2]; //FIXME: Change to Vec2f
+	float size[2]; //FIXME: Change to Vec2f
 	
 	omSetStatBit(object, 0x100);
 	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3PlayerCntWork), MEMORY_DEFAULT_NUM);
@@ -614,7 +614,7 @@ static void InitPlayerCnt(omObjData *object)
 	HuWinMesMaxSizeGet(4, sizeMax, 0x220001, 0x220002, 0x220003, 0x220004);
 	index2 = HuWinCreate(-10000, 58, sizeMax[0], sizeMax[1], 0);
 	work->winPlayer = index2;
-	work->winSize = *(Vector2 *)(sizeMax); //FIXME: Remove Cast
+	work->winSize = *(Vec2f *)(sizeMax); //FIXME: Remove Cast
 	HuWinBGTPLvlSet(index2, 0);
 	HuWinMesSpeedSet(index2, 0);
 	HuWinMesMaxSizeGet(1, size, mess);
@@ -649,7 +649,7 @@ typedef struct e3_char_sel_work {
 	s16 currPlayer;
 } E3CharSelWork;
 
-static Vector2 charPosTbl[] = {
+static Vec2f charPosTbl[] = {
 	85, 248,
 	143, 248,
 	201, 248,
@@ -1131,7 +1131,7 @@ typedef struct e3_rumble_cfg_work {
 	AnimData *frame[3];
 	AnimData *arrow;
 	AnimData *arrowHilite;
-	Vector2 winSize;
+	Vec2f winSize;
 	s16 frameGroup;
 	s16 arrowGroupL;
 	s16 arrowGroupR;
@@ -1231,8 +1231,8 @@ static void InitRumbleCfg(omObjData *object)
 	s32 index;
 	AnimData *anim;
 	u32 mess;
-	float sizeMax[2]; //FIXME: Change to Vector2
-	float size[2]; //FIXME: Change to Vector2
+	float sizeMax[2]; //FIXME: Change to Vec2f
+	float size[2]; //FIXME: Change to Vec2f
 	
 	omSetStatBit(object, 0x100);
 	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3RumbleCfgWork), MEMORY_DEFAULT_NUM);
@@ -1295,7 +1295,7 @@ static void InitRumbleCfg(omObjData *object)
 	HuWinMesMaxSizeGet(2, sizeMax, 0x220007, 0x220008);
 	index2 = HuWinCreate(-10000, 299, sizeMax[0], sizeMax[1], 0);
 	work->winValue = index2;
-	work->winSize = *(Vector2 *)(sizeMax); //FIXME: Remove Cast
+	work->winSize = *(Vec2f *)(sizeMax); //FIXME: Remove Cast
 	HuWinBGTPLvlSet(index2, 0);
 	HuWinMesSpeedSet(index2, 0);
 	HuWinMesMaxSizeGet(1, size, mess);
@@ -1310,8 +1310,8 @@ static void InitRumbleCfg(omObjData *object)
 
 typedef struct e3_mode_sel_work {
 	AnimData *frame[7];
-	Vector2 winSizeMode;
-	Vector2 winSizeBoard;
+	Vec2f winSizeMode;
+	Vec2f winSizeBoard;
 	s16 frameGroup;
 	s16 arrowGroupL;
 	s16 arrowGroupR;
@@ -1325,12 +1325,12 @@ typedef struct e3_mode_sel_work {
 	s16 boardOld;
 } E3ModeSelWork;
 
-static Vector2 modeSelCursorPosTbl[] = {
+static Vec2f modeSelCursorPosTbl[] = {
 	144, 418,
 	288, 418
 };
 
-static Vector2 boardSelCursorPosTbl[] = {
+static Vec2f boardSelCursorPosTbl[] = {
 	94, 418,
 	284, 418
 };
@@ -1459,7 +1459,7 @@ static void InitModeSel(omObjData *object)
 	s32 index;
 	s16 group;	
 	AnimData *anim;
-	float size[2]; //FIXME: Change to Vector2
+	float size[2]; //FIXME: Change to Vec2f
 	
 	omSetStatBit(object, 0x100);
 	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3ModeSelWork), MEMORY_DEFAULT_NUM);
@@ -1536,7 +1536,7 @@ static void InitModeSel(omObjData *object)
 #define E3_BG_MAX_TILE (E3_BG_TILE_COL*E3_BG_TILE_ROW)
 
 typedef struct e3_bg_tile {
-	Vector2 pos;
+	Vec2f pos;
 	s16 sprite;
 } E3BGTile;
 
