@@ -10,13 +10,14 @@
 #include "game/chrman.h"
 #include "game/sprite.h"
 #include "game/window.h"
+#include "ext_math.h"
 
 #include "REL/E3SetupDLL.h"
 
 static struct {
 	s16 playerCnt;
 	s16 rumble;
-	s16 mgF;
+	s16 mode;
 	s16 board;
 	s16 port[4];
 	s16 character[4];
@@ -129,8 +130,8 @@ static void InitCamera(omObjData *object);
 static void InitMenuControl(omObjData *object);
 static void InitPlayerCnt(omObjData *object);
 static void InitCharSel(omObjData *object);
-static void InitVibrateCfg(omObjData *object);
-static void InitGameModeSel(omObjData *object);
+static void InitRumbleCfg(omObjData *object);
+static void InitModeSel(omObjData *object);
 
 void E3MainInit(void)
 {
@@ -145,7 +146,7 @@ void E3MainInit(void)
 	configE3.playerCnt = idx-1;
 	port = (GWRumbleGet()) ? 1 : 0;
 	configE3.rumble = port;
-	configE3.mgF = 0;
+	configE3.mode = 0;
 	configE3.board = 0;
 	for(port=0,idx=0; port<4; idx++, port++) {
 		while(idx < 8) {
@@ -196,8 +197,8 @@ void E3MainInit(void)
 	configModeObj[0] = omAddObjEx(objman, 30, 0, 0, -1, InitPlayerCnt);
 	configModeObj[0]->work[0] = 1;
 	configModeObj[1] = omAddObjEx(objman, 30, 0, 0, -1, InitCharSel);
-	configModeObj[2] = omAddObjEx(objman, 30, 0, 0, -1, InitVibrateCfg);
-	configModeObj[3] = omAddObjEx(objman, 30, 0, 0, -1, InitGameModeSel);
+	configModeObj[2] = omAddObjEx(objman, 30, 0, 0, -1, InitRumbleCfg);
+	configModeObj[3] = omAddObjEx(objman, 30, 0, 0, -1, InitModeSel);
 	E3LightInit();
 	WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
 }
@@ -365,11 +366,11 @@ static void UpdateMenuControl(omObjData *object)
 	if(pos >= 4) {
 		s32 playerCnt;
 		e3ExitMode = 2;
-		if(configE3.mgF) {
+		if(configE3.mode != 0) {
 			e3NextOvl = OVL_E3SETUP;
 			e3NextEvent = 1;
 		} else {
-			if(configE3.board) {
+			if(configE3.board != 0) {
 				e3NextOvl = OVL_W02;
 			} else {
 				e3NextOvl = OVL_W01;
@@ -382,7 +383,7 @@ static void UpdateMenuControl(omObjData *object)
 			GWPlayerCfg[pos].pad_idx = configE3.port[pos];
 			character = configE3.character[pos];
 			GWPlayerCfg[pos].character = character;
-			if(!configE3.mgF) {
+			if(configE3.mode == 0) {
 				HuAudFXPlay(charSfxTbl[character]);
 			}
 			GWPlayerCfg[pos].group = pos;
@@ -435,11 +436,11 @@ void E3OvlWatchInit(omObjData *object)
 typedef struct e3_player_cnt_work {
 	AnimData *frame[3];
 	AnimData *arrow;
-	AnimData *arrow_hilite;
-	float winSize[2]; //Should be struct
+	AnimData *arrowHilite;
+	Vector2 winSize;
 	s16 frameGroup;
-	s16 arrowGroup;
-	s16 arrowGroup2;
+	s16 arrowGroupL;
+	s16 arrowGroupR;
 	s16 unk22[6];
 	s16 winHeader;
 	s16 winPlayer;
@@ -515,8 +516,8 @@ static void UpdatePlayerCnt(omObjData *object)
 			HuSprAttrSet(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
 			if(e3ConfigPlayerCnt > 1) {
 				for(i=0; i<2; i++) {
-					HuSprAttrReset(work->arrowGroup, i, HUSPR_ATTR_DISPOFF);
-					HuSprAttrReset(work->arrowGroup2, i, HUSPR_ATTR_DISPOFF);
+					HuSprAttrReset(work->arrowGroupL, i, HUSPR_ATTR_DISPOFF);
+					HuSprAttrReset(work->arrowGroupR, i, HUSPR_ATTR_DISPOFF);
 				}
 			}
 			object->work[2] = 1;
@@ -525,8 +526,8 @@ static void UpdatePlayerCnt(omObjData *object)
 		case 4:
 			HuSprAttrReset(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
 			for(i=0; i<2; i++) {
-				HuSprAttrSet(work->arrowGroup, i, HUSPR_ATTR_DISPOFF);
-				HuSprAttrSet(work->arrowGroup2, i, HUSPR_ATTR_DISPOFF);
+				HuSprAttrSet(work->arrowGroupL, i, HUSPR_ATTR_DISPOFF);
+				HuSprAttrSet(work->arrowGroupR, i, HUSPR_ATTR_DISPOFF);
 			}
 			object->work[2] = 0;
 			break;
@@ -535,7 +536,7 @@ static void UpdatePlayerCnt(omObjData *object)
 		float size[2];
 		mess = playerCntMessTbl[work->playerCnt];
 		HuWinMesMaxSizeGet(1, size, mess);
-		HuWinCenterPosSet(work->winPlayer, (work->winSize[0]-size[0])/-2.0f, (work->winSize[1]-size[1])/-2.0f);
+		HuWinCenterPosSet(work->winPlayer, (work->winSize.x-size[0])/-2.0f, (work->winSize.y-size[1])/-2.0f);
 		HuWinMesSet(work->winPlayer, mess);
 		work->playerCntOld = work->playerCnt;
 	}
@@ -543,5 +544,1159 @@ static void UpdatePlayerCnt(omObjData *object)
 
 static void InitPlayerCnt(omObjData *object)
 {
+	E3PlayerCntWork *work;
+	s16 index2;
+	s32 index;
+	s16 group;
+	AnimData *anim;
+	u32 mess;
+	float sizeMax[2]; //FIXME: Change to Vector2
+	float size[2]; //FIXME: Change to Vector2
 	
+	omSetStatBit(object, 0x100);
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3PlayerCntWork), MEMORY_DEFAULT_NUM);
+	work = object->data;
+	index = 0;
+	group = HuSprGrpCreate(3);
+	work->frameGroup = group;
+	HuSprGrpPosSet(group, 288, 80);
+	anim = HuSprAnimRead(HuDataReadNum(2, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 30008, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	HuSprTPLvlSet(group, index, 0.5f);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(1, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 30000, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(3, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 1, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	HuSprTPLvlSet(group, index, 0.4f);
+	anim = HuSprAnimRead(HuDataReadNum(12, MEMORY_DEFAULT_NUM));
+	work->arrow = anim;
+	work->arrowHilite = HuSprAnimRead(HuDataReadNum(13, MEMORY_DEFAULT_NUM));
+	group = HuSprGrpCreate(2);
+	work->arrowGroupL = group;
+	HuSprGrpPosSet(group, 140, 96);
+	index2 = HuSprCreate(anim, 4, 0);
+	HuSprGrpMemberSet(group, 0, index2);
+	index2 = HuSprCreate(work->arrowHilite, 6, 0);
+	HuSprGrpMemberSet(group, 1, index2);
+	HuSprTPLvlSet(group, 1, 0.5f);
+	HuSprPosSet(group, 1, 0, -4);
+	group = HuSprGrpCreate(2);
+	work->arrowGroupR = group;
+	HuSprGrpPosSet(group, 436, 96);
+	index2 = HuSprCreate(anim, 4, 1);
+	HuSprGrpMemberSet(group, 0, index2);
+	index2 = HuSprCreate(work->arrowHilite, 6, 1);
+	HuSprGrpMemberSet(group, 1, index2);
+	HuSprTPLvlSet(group, 1, 0.5f);
+	HuSprPosSet(group, 1, 0, -4);
+	index2 = work->arrowGroupL;
+	for(index=0; index<2; index++) {
+		HuSprAttrSet(group, index, HUSPR_ATTR_DISPOFF);
+		HuSprAttrSet(index2, index, HUSPR_ATTR_DISPOFF);
+	}
+	HuWinMesMaxSizeGet(1, sizeMax, 0x220000);
+	index2 = HuWinCreate(-10000, 26, sizeMax[0], sizeMax[1], 0);
+	work->winHeader = index2;
+	HuWinMesColSet(index2, 4);
+	HuWinBGTPLvlSet(index2, 0);
+	HuWinMesSpeedSet(index2, 0);
+	HuWinMesSet(index2, 0x220000);
+	work->playerCntOld = work->playerCnt = configE3.playerCnt;
+	mess = playerCntMessTbl[work->playerCnt];
+	HuWinMesMaxSizeGet(4, sizeMax, 0x220001, 0x220002, 0x220003, 0x220004);
+	index2 = HuWinCreate(-10000, 58, sizeMax[0], sizeMax[1], 0);
+	work->winPlayer = index2;
+	work->winSize = *(Vector2 *)(sizeMax); //FIXME: Remove Cast
+	HuWinBGTPLvlSet(index2, 0);
+	HuWinMesSpeedSet(index2, 0);
+	HuWinMesMaxSizeGet(1, size, mess);
+	HuWinCenterPosSet(index2, (sizeMax[0]-size[0])/-2.0f, (sizeMax[1]-size[1])/-2.0f);
+	HuWinMesSet(index2, mess);
+	if(object->work[0] == 1) {
+		HuSprAttrSet(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+		if(e3ConfigPlayerCnt > 1) {
+			group = work->arrowGroupR;
+			index2 = work->arrowGroupL;
+			for(index=0; index<2; index++) {
+				HuSprAttrReset(group, index, HUSPR_ATTR_DISPOFF);
+				HuSprAttrReset(index2, index, HUSPR_ATTR_DISPOFF);
+			}
+		}
+		object->work[1] = 1;
+		object->work[2] = 1;
+	}
+	object->func = UpdatePlayerCnt;
+	(void)object;
 }
+
+typedef struct e3_char_sel_work {
+	AnimData *anims[24];
+	s16 frameGroup;
+	s16 charGroup;
+	s16 cursorGroup;
+	s16 hiliteGroup;
+	s16 unk68[6];
+	s16 cursorPos[4];
+	s16 cursorStat[4];
+	s16 currPlayer;
+} E3CharSelWork;
+
+static Vector2 charPosTbl[] = {
+	85, 248,
+	143, 248,
+	201, 248,
+	259, 248,
+	317, 248,
+	375, 248,
+	433, 248,
+	491, 248
+};
+
+static s32 charComSfxTbl[] = {
+	294,
+	358,
+	422,
+	486,
+	550,
+	614,
+	678,
+	742
+};
+
+static void UpdateCharSelCursor(omObjData *object, s32 backF)
+{
+	s32 i;
+	E3CharSelWork *work;
+	s16 cursorPos;
+	s16 cursorGroup;
+	s16 playerSpr;
+	s16 playerCnt;
+	s16 hiliteGroup;
+	work = object->data;
+	cursorGroup = work->cursorGroup;
+	hiliteGroup = work->hiliteGroup;
+	if(!backF) {
+		for(i=0; i<7; i++) {
+			HuSprAttrSet(cursorGroup, i, HUSPR_ATTR_DISPOFF);
+			HuSprAttrSet(hiliteGroup, i, HUSPR_ATTR_DISPOFF);
+		}
+		return;
+	}
+	playerCnt = playerCntTbl[configE3.playerCnt];
+	for(i=0; i<playerCnt; i++) {
+		cursorPos = 0;
+		if(work->cursorStat[i]) {
+			cursorPos = 1;
+		}
+		HuSprBankSet(cursorGroup, i, cursorPos);
+		cursorPos = work->cursorPos[i];
+		HuSprPosSet(cursorGroup, i, charPosTbl[cursorPos].x, charPosTbl[cursorPos].y);
+		HuSprAttrReset(cursorGroup, i, HUSPR_ATTR_DISPOFF);
+	}
+	for(; i<4; i++) {
+		cursorPos = 0;
+		playerSpr = (4+i)-(s32)playerCnt;
+		if(work->cursorStat[i] != 0) {
+			if(work->cursorStat[i] == 3) {
+				cursorPos = 1;
+			}
+			HuSprBankSet(cursorGroup, playerSpr, cursorPos);
+			cursorPos = work->cursorPos[i];
+			HuSprPosSet(cursorGroup, playerSpr, charPosTbl[cursorPos].x, charPosTbl[cursorPos].y);
+			HuSprAttrReset(cursorGroup, playerSpr, HUSPR_ATTR_DISPOFF);
+		} else {
+			HuSprAttrSet(cursorGroup, playerSpr, HUSPR_ATTR_DISPOFF);
+		}
+	}
+}
+
+static s32 UpdateCharSelPlayerCursor(omObjData *object)
+{
+	E3CharSelWork *temp_r31;
+	s32 temp_r30;
+	s16 temp_r29;
+	s32 temp_r28;
+	s16 temp_r27;
+	s32 temp_r26;
+	s16 temp_r25;
+	s16 temp_r24;
+	s16 temp_r23;
+	s32 temp_r22;
+	s16 temp_r21;
+	s16 temp_r20;
+	s16 temp_r19;
+	s16 temp_r18;
+	s16 sp8[8];
+	temp_r31 = object->data;
+	temp_r22 = 0;
+	temp_r23 = playerCntTbl[configE3.playerCnt];
+	temp_r24 = 0;
+	temp_r20 = 0;
+	for(temp_r30=0; temp_r30 < temp_r23; temp_r30++) {
+		temp_r19 = configE3.port[temp_r30];
+		if(e3PadData[temp_r19].enable) {
+			if(temp_r31->cursorStat[temp_r30] == 0) {
+				temp_r31->cursorStat[temp_r30] = 1;
+			}
+			temp_r24++;
+			continue;
+		}
+		temp_r25 = e3PadData[temp_r19].btnDown;
+		if(temp_r25 & PAD_BUTTON_A) {
+			HuAudFXPlay(1);
+			temp_r28 = charTbl[temp_r31->cursorPos[temp_r30]];
+			HuAudFXPlay(charComSfxTbl[temp_r28]);
+			temp_r31->cursorStat[temp_r30] = 1;
+		} else if(temp_r25 & PAD_BUTTON_B) {
+			HuAudFXPlay(3);
+			if(temp_r30 == e3PadCtrl && temp_r31->cursorStat[temp_r30] == 0) {
+				temp_r20 = 1;
+			}
+			temp_r31->cursorStat[temp_r30] = 0;
+		}
+		if(temp_r31->cursorStat[temp_r30] != 0) {
+			temp_r24++;
+			continue;
+		}
+		if(temp_r25 & (PAD_BUTTON_LEFT|PAD_BUTTON_RIGHT)) {
+			temp_r27 = 0;
+			for(temp_r28=0; temp_r28<8; temp_r28++) {
+				if(charTbl[temp_r28] >= 0) {
+					if(temp_r28 == temp_r31->cursorPos[temp_r30]) {
+						temp_r29 = temp_r27;
+						sp8[temp_r27++] = temp_r28;
+					} else {
+						for(temp_r26=0; temp_r26<temp_r23; temp_r26++) {
+							if(temp_r30 == temp_r26) {
+								continue;
+							}
+							if(temp_r31->cursorPos[temp_r26] == temp_r28) {
+								break;
+							}
+						}
+						if(temp_r26 >= temp_r23) {
+							sp8[temp_r27++] = temp_r28;
+						}
+					}
+				}
+			}
+			sp8[temp_r27] = -1;
+			temp_r21 = temp_r27;
+			temp_r18 = temp_r29;
+			if(temp_r21 > 1) {
+				if(temp_r25 & PAD_BUTTON_LEFT) {
+					HuAudFXPlay(26);
+					temp_r29--;
+					if(temp_r29 < 0) {
+						temp_r29 = temp_r21-1;
+					}
+				} else if(temp_r25 & PAD_BUTTON_RIGHT) {
+					HuAudFXPlay(26);
+					temp_r29++;
+					if(temp_r29 >= temp_r21) {
+						temp_r29 = 0;
+					}
+				}
+				if(temp_r18 != temp_r29) {
+					temp_r31->cursorPos[temp_r30] = sp8[temp_r29];
+				}
+			}
+		}
+	}
+	if(temp_r24 >= temp_r23) {
+		temp_r22 = 1;
+	}
+	if(temp_r20) {
+		temp_r22 = -1;
+	}
+	return temp_r22;
+}
+
+static s32 UpdateCharSelComCursor(omObjData *object)
+{
+	E3CharSelWork *temp_r31;
+	s16 temp_r30;
+	s16 temp_r29;
+	s32 temp_r28;
+	s32 temp_r27;
+	s16 temp_r26;
+	s16 temp_r25;
+	s32 temp_r24;
+	s16 temp_r23;
+	s16 temp_r22;
+	s32 temp_r21;
+	s16 temp_r20;
+	s16 temp_r19;
+	s16 sp8[8];
+	temp_r31 = object->data;
+	temp_r21 = 0;
+	temp_r20 = playerCntTbl[configE3.playerCnt];
+	temp_r19 = 4-temp_r20;
+	temp_r30 = temp_r20+temp_r31->currPlayer-1;
+	temp_r31->cursorStat[temp_r30] = 1;
+	temp_r26 = temp_r31->cursorPos[temp_r30];
+	for(temp_r28=0; temp_r28<temp_r30; temp_r28++) {
+		if(temp_r31->cursorPos[temp_r28] == temp_r26) {
+			break;
+		}
+	}
+	if(temp_r28<temp_r30) {
+		temp_r26 = -1;
+	}
+	temp_r25 = 0;
+	for(temp_r27=0; temp_r27<8; temp_r27++) {
+		if(charTbl[temp_r27] >= 0) {
+			if(temp_r27 == temp_r26) {
+				temp_r29 = temp_r25;
+				sp8[temp_r25++] = temp_r27;
+			} else {
+				for(temp_r24=0; temp_r24<temp_r30; temp_r24++) {
+					if(temp_r31->cursorPos[temp_r24] == temp_r27) {
+						break;
+					}
+				}
+				if(temp_r24 >= temp_r30) {
+					sp8[temp_r25++] = temp_r27;
+				}
+			}
+		}
+	}
+	temp_r22 = temp_r25;
+	if(temp_r26 < 0) {
+		temp_r29 = 0;
+		temp_r31->cursorPos[temp_r30] = sp8[temp_r29];
+	}
+	temp_r23 = e3PadData[e3PadCtrl].btnDown;
+	if(temp_r23 & PAD_BUTTON_A) {
+		HuAudFXPlay(1);
+		HuAudFXPlay(charComSfxTbl[charTbl[temp_r31->cursorPos[temp_r30]]]);
+		temp_r31->cursorStat[temp_r30] = 3;
+		if(temp_r31->currPlayer >= temp_r19) {
+			temp_r21 = 1;
+		} else {
+			temp_r31->currPlayer++;
+		}
+	} else if(temp_r23 & PAD_BUTTON_B) {
+		HuAudFXPlay(3);
+		temp_r31->cursorStat[temp_r30] = 0;
+		temp_r31->currPlayer--;
+		if(temp_r31->currPlayer != 0) {
+			temp_r30--;
+			temp_r31->cursorStat[temp_r30] = 1;
+		} else {
+			for(temp_r28=0; temp_r28<4; temp_r28++) {
+				temp_r31->cursorStat[temp_r28] = 0;
+			}
+		}
+	} else if(temp_r23 & (PAD_BUTTON_LEFT|PAD_BUTTON_RIGHT)) {
+		temp_r26 = temp_r29;
+		if(temp_r22 > 1) {
+			if(temp_r23 & PAD_BUTTON_LEFT) {
+				HuAudFXPlay(26);
+				temp_r29--;
+				if(temp_r29 < 0) {
+					temp_r29 = temp_r22-1;
+				}
+			} else if(temp_r23 & PAD_BUTTON_RIGHT) {
+				HuAudFXPlay(26);
+				temp_r29++;
+				if(temp_r29 >= temp_r22) {
+					temp_r29 = 0;
+				}
+			}
+			if(temp_r26 != temp_r29) {
+				temp_r31->cursorPos[temp_r28] = sp8[temp_r29];
+			}
+		}
+	}
+	return temp_r21;
+}
+
+static s32 CheckCharSel(omObjData *object)
+{
+	E3CharSelWork *work;
+	s32 result;
+	work = object->data;
+	result = 0;
+	if(work->currPlayer == 0) {
+		result = UpdateCharSelPlayerCursor(object);
+		if(result == 1) {
+			if(playerCntTbl[configE3.playerCnt] < 4) {
+				result = 0;
+				work->currPlayer++;
+			}
+		}
+	} else {
+		result = UpdateCharSelComCursor(object);
+	}
+	return result;
+}
+
+static void UpdateCharSel(omObjData *object)
+{
+	s32 i;
+	E3CharSelWork *work;
+	u16 btnDown;
+	work = object->data;
+	if(object->work[1] != object->work[0]) {
+		if(object->work[0] == 0) {
+			object->work[2] = 4;
+		} else {
+			object->work[2] = 3;
+		}
+		object->work[1] = object->work[0];
+	}
+	btnDown = e3PadData[e3PadCtrl].btnDown;
+	switch(object->work[2]) {
+		case 0:
+			break;
+			
+		case 1:
+			i = CheckCharSel(object);
+			if(i == 1) {
+				for(i=0; i<4; i++) {
+					configE3.character[i] = work->cursorPos[i];
+				}
+				object->work[0] = 0;
+				object->work[3] = 1;
+			} else {
+				if(i < 0) {
+					for(i=0; i<4; i++) {
+						work->cursorPos[i] = configE3.character[i];
+					}
+					object->work[0] = 0;
+					object->work[3] = 0;
+				}
+			}
+			UpdateCharSelCursor(object, 1);
+			break;
+			
+		case 3:
+			HuSprAttrSet(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+			object->work[2] = 1;
+			if(work->currPlayer != 0) {
+				i = work->currPlayer+(i = playerCntTbl[configE3.playerCnt]-1);
+				OSReport("selmode %d %d\n", work->currPlayer, i);
+				work->cursorStat[i] = 0;
+			} else {
+				for(i=0; i<4; i++) {
+					work->cursorStat[i] = 0;
+				}
+			}
+			UpdateCharSelCursor(object, 1);
+			break;
+			
+		case 4:
+			HuSprAttrReset(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+			object->work[2] = 0;
+			UpdateCharSelCursor(object, object->work[3]);
+			break;
+	}
+}
+
+static s32 charSpriteTbl[] = {
+	25,
+	26,
+	27,
+	28,
+	29,
+	30,
+	31,
+	32
+};
+
+static s32 cursorSpriteTbl[] = {
+	14,
+	15,
+	16,
+	17,
+	18
+};
+
+static s32 hiliteSprTbl[] = {
+	19,
+	20,
+	21,
+	22,
+	23
+};
+
+static void InitCharSel(omObjData *object)
+{
+	E3CharSelWork *work;
+	s32 i;
+	s16 member;
+	s16 group;
+	AnimData *anim;
+	s16 sprite;
+	s16 j;
+	s16 x;
+	omSetStatBit(object, 0x100);
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3CharSelWork), MEMORY_DEFAULT_NUM);
+	work = object->data;
+	i=0;
+	member=0;
+	group = HuSprGrpCreate(3);
+	work->frameGroup = group;
+	HuSprGrpPosSet(group, 288, 200);
+	anim = HuSprAnimRead(HuDataReadNum(2, MEMORY_DEFAULT_NUM));
+	work->anims[member] = anim;
+	sprite = HuSprCreate(anim, 30008, 0);
+	HuSprGrpMemberSet(group, member, sprite);
+	HuSprTPLvlSet(group, member, 0.5f);
+	member++;
+	anim = HuSprAnimRead(HuDataReadNum(1, MEMORY_DEFAULT_NUM));
+	work->anims[member] = anim;
+	sprite = HuSprCreate(anim, 30000, 0);
+	HuSprGrpMemberSet(group, member, sprite);
+	member++;
+	anim = HuSprAnimRead(HuDataReadNum(3, MEMORY_DEFAULT_NUM));
+	work->anims[member] = anim;
+	sprite = HuSprCreate(anim, 1, 0);
+	HuSprGrpMemberSet(group, member, sprite);
+	HuSprTPLvlSet(group, member, 0.4f);
+	member++;
+	group = HuSprGrpCreate(16);
+	work->charGroup = group;
+	HuSprGrpPosSet(group, 288, 200);
+	x = -203;
+	for(j=0; j<8; j++, member++) {
+		anim = HuSprAnimRead(HuDataReadNum(charSpriteTbl[j], MEMORY_DEFAULT_NUM));
+		work->anims[member] = anim;
+		sprite = HuSprCreate(anim, 28010, 0);
+		HuSprGrpMemberSet(group, j, sprite);
+		HuSprPosSet(group, j, x, 0);
+		x += 58;
+	}
+	anim = HuSprAnimRead(HuDataReadNum(24, MEMORY_DEFAULT_NUM));
+	work->anims[member] = anim;
+	member++;
+	x = -203;
+	for(i=0; i<8; i++) {
+		if(charTbl[i] < 0){ 
+			sprite = HuSprCreate(anim, 28000, 0);
+			HuSprGrpMemberSet(group, j, sprite);
+			HuSprPosSet(group, j, x, 0);
+			HuSprTPLvlSet(group, j, 0.5f);
+			j++;
+		}
+		x += 58;
+	}
+	group = HuSprGrpCreate(7);
+	work->cursorGroup = group;
+	HuSprGrpPosSet(group, 0, 0);
+	for(i=0; i<7; i++) {
+		if(i < 5) {
+			anim = HuSprAnimRead(HuDataReadNum(cursorSpriteTbl[i], MEMORY_DEFAULT_NUM));
+			work->anims[member] = anim;
+			member++;
+		}
+		sprite = HuSprCreate(anim, 10010, 0);
+		HuSprGrpMemberSet(group, i, sprite);
+		HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
+	}
+	group = HuSprGrpCreate(7);
+	work->hiliteGroup = group;
+	HuSprGrpPosSet(group, 0, 0);
+	for(i=0; i<7; i++) {
+		if(i < 5) {
+			anim = HuSprAnimRead(HuDataReadNum(hiliteSprTbl[i], MEMORY_DEFAULT_NUM));
+			work->anims[member] = anim;
+			member++;
+		}
+		sprite = HuSprCreate(anim, 10000, 0);
+		HuSprGrpMemberSet(group, i, sprite);
+		HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
+	}
+	for(i=0; i<4; i++) {
+		work->cursorPos[i] = configE3.character[i];
+		work->cursorStat[i] = 0;
+	}
+	work->currPlayer = 0;
+	object->work[1] = 0;
+	object->work[2] = 0;
+	object->work[3] = 0;
+	object->func = UpdateCharSel;
+}
+
+typedef struct e3_rumble_cfg_work {
+	AnimData *frame[3];
+	AnimData *arrow;
+	AnimData *arrowHilite;
+	Vector2 winSize;
+	s16 frameGroup;
+	s16 arrowGroupL;
+	s16 arrowGroupR;
+	s16 unk22[6];
+	s16 winHeader;
+	s16 winValue;
+	s16 rumbleVal;
+	s16 rumbleValOld;
+} E3RumbleCfgWork;
+
+static u32 rumbleMess[] = {
+	0x220008,
+	0x220007
+};
+
+static void UpdateRumbleCfg(omObjData *object)
+{
+	E3RumbleCfgWork *work;
+	s32 i;
+	u16 btnDown;
+	
+	work = object->data;
+	if(object->work[1] != object->work[0]) {
+		if(object->work[0] == 0) {
+			object->work[2] = 4;
+		} else {
+			object->work[2] = 3;
+		}
+		object->work[1] = object->work[0];
+	}
+	btnDown = e3PadData[e3PadCtrl].btnDown;
+	switch(object->work[2]) {
+		
+		case 0:
+			break;
+			
+		case 1:
+			if(btnDown & PAD_BUTTON_A) {
+				HuAudFXPlay(1);
+				configE3.rumble = work->rumbleVal;
+				object->work[0] = 0;
+				object->work[3] = 1;
+			} else if(btnDown & PAD_BUTTON_B) {
+				HuAudFXPlay(3);
+				work->rumbleVal = configE3.rumble;
+				object->work[0] = 0;
+				object->work[3] = 0;
+			} else if(btnDown & PAD_BUTTON_LEFT) {
+				HuAudFXPlay(0);
+				work->rumbleVal--;
+				if(work->rumbleVal < 0) {
+					work->rumbleVal = 1;
+				}
+			} else if(btnDown & PAD_BUTTON_RIGHT) {
+				HuAudFXPlay(0);
+				work->rumbleVal++;
+				if(work->rumbleVal > 1) {
+					work->rumbleVal = 0;
+				}
+			}
+			break;
+			
+		case 3:
+			HuSprAttrSet(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+			for(i=0; i<2; i++) {
+				HuSprAttrReset(work->arrowGroupL, i, HUSPR_ATTR_DISPOFF);
+				HuSprAttrReset(work->arrowGroupR, i, HUSPR_ATTR_DISPOFF);
+			}
+			object->work[2] = 1;
+			break;
+			
+		case 4:
+			HuSprAttrReset(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+			for(i=0; i<2; i++) {
+				HuSprAttrSet(work->arrowGroupL, i, HUSPR_ATTR_DISPOFF);
+				HuSprAttrSet(work->arrowGroupR, i, HUSPR_ATTR_DISPOFF);
+			}
+			object->work[2] = 0;
+			break;
+	}
+	if(work->rumbleValOld != work->rumbleVal) {
+		u32 mess;
+		float size[2];
+		mess = rumbleMess[work->rumbleVal];
+		HuWinMesMaxSizeGet(1, size, mess);
+		HuWinCenterPosSet(work->winValue, (work->winSize.x-size[0])/-2.0f, (work->winSize.y-size[1])/-2.0f);
+		HuWinMesSet(work->winValue, mess);
+		work->rumbleValOld = work->rumbleVal;
+	}
+}
+
+static void InitRumbleCfg(omObjData *object)
+{
+	E3RumbleCfgWork *work;
+	s16 index2;
+	s16 group;
+	s32 index;
+	AnimData *anim;
+	u32 mess;
+	float sizeMax[2]; //FIXME: Change to Vector2
+	float size[2]; //FIXME: Change to Vector2
+	
+	omSetStatBit(object, 0x100);
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3RumbleCfgWork), MEMORY_DEFAULT_NUM);
+	work = object->data;
+	index = 0;
+	group = HuSprGrpCreate(3);
+	work->frameGroup = group;
+	HuSprGrpPosSet(group, 288, 303);
+	anim = HuSprAnimRead(HuDataReadNum(8, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 30008, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	HuSprTPLvlSet(group, index, 0.5f);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(7, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 30000, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(9, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 1, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	HuSprTPLvlSet(group, index, 0.4f);
+	anim = HuSprAnimRead(HuDataReadNum(12, MEMORY_DEFAULT_NUM));
+	work->arrow = anim;
+	work->arrowHilite = HuSprAnimRead(HuDataReadNum(13, MEMORY_DEFAULT_NUM));
+	group = HuSprGrpCreate(2);
+	work->arrowGroupL = group;
+	HuSprGrpPosSet(group, 240, 319);
+	index2 = HuSprCreate(anim, 4, 0);
+	HuSprGrpMemberSet(group, 0, index2);
+	index2 = HuSprCreate(work->arrowHilite, 6, 0);
+	HuSprGrpMemberSet(group, 1, index2);
+	HuSprTPLvlSet(group, 1, 0.5f);
+	HuSprPosSet(group, 1, 0, -4);
+	group = HuSprGrpCreate(2);
+	work->arrowGroupR = group;
+	HuSprGrpPosSet(group, 336, 319);
+	index2 = HuSprCreate(anim, 4, 1);
+	HuSprGrpMemberSet(group, 0, index2);
+	index2 = HuSprCreate(work->arrowHilite, 6, 1);
+	HuSprGrpMemberSet(group, 1, index2);
+	HuSprTPLvlSet(group, 1, 0.5f);
+	HuSprPosSet(group, 1, 0, -4);
+	index2 = work->arrowGroupL;
+	for(index=0; index<2; index++) {
+		HuSprAttrSet(group, index, HUSPR_ATTR_DISPOFF);
+		HuSprAttrSet(index2, index, HUSPR_ATTR_DISPOFF);
+	}
+	HuWinMesMaxSizeGet(1, sizeMax, 0x220006);
+	index2 = HuWinCreate(-10000, 267, sizeMax[0], sizeMax[1], 0);
+	work->winHeader = index2;
+	HuWinMesColSet(index2, 4);
+	HuWinBGTPLvlSet(index2, 0);
+	HuWinMesSpeedSet(index2, 0);
+	HuWinMesSet(index2, 0x220006);
+	work->rumbleValOld = work->rumbleVal = configE3.rumble;
+	mess = rumbleMess[work->rumbleVal];
+	HuWinMesMaxSizeGet(2, sizeMax, 0x220007, 0x220008);
+	index2 = HuWinCreate(-10000, 299, sizeMax[0], sizeMax[1], 0);
+	work->winValue = index2;
+	work->winSize = *(Vector2 *)(sizeMax); //FIXME: Remove Cast
+	HuWinBGTPLvlSet(index2, 0);
+	HuWinMesSpeedSet(index2, 0);
+	HuWinMesMaxSizeGet(1, size, mess);
+	HuWinCenterPosSet(index2, (sizeMax[0]-size[0])/-2.0f, 0);
+	HuWinMesSet(index2, mess);
+	object->work[1] = 0;
+	object->work[2] = 0;
+	object->work[3] = 0;
+	object->func = UpdateRumbleCfg;
+	(void)object;
+}
+
+typedef struct e3_mode_sel_work {
+	AnimData *frame[7];
+	Vector2 winSizeMode;
+	Vector2 winSizeBoard;
+	s16 frameGroup;
+	s16 arrowGroupL;
+	s16 arrowGroupR;
+	s16 cursorGroup;
+	s16 unk34[6];
+	s16 winMode;
+	s16 winBoard;
+	s16 mode;
+	s16 modeOld;
+	s16 board;
+	s16 boardOld;
+} E3ModeSelWork;
+
+static Vector2 modeSelCursorPosTbl[] = {
+	144, 418,
+	288, 418
+};
+
+static Vector2 boardSelCursorPosTbl[] = {
+	94, 418,
+	284, 418
+};
+
+static void UpdateModeSel(omObjData *object)
+{
+	E3ModeSelWork *work;
+	u16 btnDown;
+	float winSize[2];
+	
+	work = object->data;
+	if(object->work[1] != object->work[0]) {
+		if(object->work[0] == 0) {
+			object->work[2] = 4;
+		} else {
+			object->work[2] = 3;
+		}
+		object->work[1] = object->work[0];
+	}
+	btnDown = e3PadData[e3PadCtrl].btnDown;
+	switch(object->work[2]) {
+		case 0:
+			break;
+			
+		case 1:
+			if(btnDown & PAD_BUTTON_A) {
+				HuAudFXPlay(1);
+				configE3.mode = work->mode;
+				if(work->mode != 0) {
+					object->work[0] = 0;
+					object->work[3] = 1;
+				} else {
+					object->work[2] = 2;
+					work->boardOld = -1;
+					HuWinMesColSet(work->winMode, 4);
+					HuWinMesMaxSizeGet(1, winSize, 0x22000F);
+					HuWinCenterPosSet(work->winMode, (work->winSizeMode.x-winSize[0])/-2.0f, (work->winSizeMode.y-winSize[1])/-2.0f);
+					HuWinMesSet(work->winMode, 0x22000F);
+					HuWinMesMaxSizeGet(1, winSize, 0x220010);
+					HuWinCenterPosSet(work->winBoard, (work->winSizeBoard.x-winSize[0])/-2.0f, (work->winSizeBoard.y-winSize[1])/-2.0f);
+					HuWinMesSet(work->winBoard, 0x220010);
+				}
+			} else if(btnDown & PAD_BUTTON_B) {
+				HuAudFXPlay(3);
+				work->mode = configE3.mode;
+				object->work[0] = 0;
+				object->work[3] = 0;
+			} else if(btnDown & PAD_BUTTON_LEFT) {
+				HuAudFXPlay(0);
+				work->mode--;
+				if(work->mode < 0) {
+					work->mode = 1;
+				}
+			} else if(btnDown & PAD_BUTTON_RIGHT) {
+				HuAudFXPlay(0);
+				work->mode++;
+				if(work->mode > 1) {
+					work->mode = 0;
+				}
+			}
+			break;
+			
+		case 2:
+			if(btnDown & PAD_BUTTON_A) {
+				HuAudFXPlay(1);
+				configE3.board = work->board;
+				object->work[0] = 0;
+				object->work[3] = 1;
+			} else if(btnDown & PAD_BUTTON_B) {
+				HuAudFXPlay(3);
+				work->boardOld = work->board;
+				work->modeOld = -1;
+				object->work[2] = 1;
+				HuWinMesColSet(work->winMode, 4);
+				HuWinMesMaxSizeGet(1, winSize, 0x220009);
+				HuWinCenterPosSet(work->winMode, (work->winSizeMode.x-winSize[0])/-2.0f, (work->winSizeMode.y-winSize[1])/-2.0f);
+				HuWinMesSet(work->winMode, 0x220009);
+				HuWinMesMaxSizeGet(1, winSize, 0x22000A);
+				HuWinCenterPosSet(work->winBoard, (work->winSizeBoard.x-winSize[0])/-2.0f, (work->winSizeBoard.y-winSize[1])/-2.0f);
+				HuWinMesSet(work->winBoard, 0x22000A);
+			} else if(btnDown & PAD_BUTTON_LEFT) {
+				HuAudFXPlay(0);
+				work->board--;
+				if(work->board < 0) {
+					work->board = 1;
+				}
+			} else if(btnDown & PAD_BUTTON_RIGHT) {
+				HuAudFXPlay(0);
+				work->board++;
+				if(work->board > 1) {
+					work->board = 0;
+				}
+			}
+			break;
+			
+		case 3:
+			HuSprAttrSet(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+			HuSprAttrReset(work->cursorGroup, 0, HUSPR_ATTR_DISPOFF);
+			HuSprAttrReset(work->cursorGroup, 1, HUSPR_ATTR_DISPOFF);
+			object->work[2] = 1;
+			break;
+			
+		case 4:
+			HuSprAttrReset(work->frameGroup, 2, HUSPR_ATTR_DISPOFF);
+			HuSprAttrSet(work->cursorGroup, 0, HUSPR_ATTR_DISPOFF);
+			HuSprAttrSet(work->cursorGroup, 1, HUSPR_ATTR_DISPOFF);
+			object->work[2] = 0;
+			break;
+	}
+	if(object->work[0]) {
+		if(work->modeOld != work->mode) {
+			HuSprGrpPosSet(work->cursorGroup, modeSelCursorPosTbl[work->mode].x, modeSelCursorPosTbl[work->mode].y);
+			work->modeOld = work->mode;
+		}
+		if(work->boardOld != work->board) {
+			HuSprGrpPosSet(work->cursorGroup, boardSelCursorPosTbl[work->board].x, boardSelCursorPosTbl[work->board].y);
+			work->boardOld = work->board;
+		}
+	}
+}
+
+static void InitModeSel(omObjData *object)
+{
+	E3ModeSelWork *work;
+	s16 index2;
+	s32 index;
+	s16 group;	
+	AnimData *anim;
+	float size[2]; //FIXME: Change to Vector2
+	
+	omSetStatBit(object, 0x100);
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3ModeSelWork), MEMORY_DEFAULT_NUM);
+	work = object->data;
+	index = 0;
+	group = HuSprGrpCreate(3);
+	work->frameGroup = group;
+	HuSprGrpPosSet(group, 288, 398);
+	anim = HuSprAnimRead(HuDataReadNum(5, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 30008, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	HuSprTPLvlSet(group, index, 0.5f);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(4, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 30000, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(6, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 1, 0);
+	HuSprGrpMemberSet(group, index, index2);
+	HuSprTPLvlSet(group, index, 0.4f);
+	index++;
+	work->modeOld = work->mode = configE3.mode;
+	work->board = work->boardOld = 0;
+	group = HuSprGrpCreate(2);
+	work->cursorGroup = group;
+	HuSprGrpPosSet(group, modeSelCursorPosTbl[work->mode].x, modeSelCursorPosTbl[work->mode].y);
+	anim = HuSprAnimRead(HuDataReadNum(10, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 10000, 0);
+	HuSprGrpMemberSet(group, 0, index2);
+	index++;
+	anim = HuSprAnimRead(HuDataReadNum(11, MEMORY_DEFAULT_NUM));
+	work->frame[index] = anim;
+	index2 = HuSprCreate(anim, 10008, 0);
+	HuSprGrpMemberSet(group, 1, index2);
+	HuSprTPLvlSet(group, 1, 0.5f);
+	HuSprPosSet(group, 1, 0, -4);
+	index++;
+	HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
+	HuSprAttrSet(group, 1, HUSPR_ATTR_DISPOFF);
+	HuWinMesMaxSizeGet(2, &work->winSizeMode.x, 0x220009, 0x22000F);
+	index2 = HuWinCreate(-10000, 350, work->winSizeMode.x, work->winSizeMode.y, 0);
+	work->winMode = index2;
+	HuWinMesColSet(index2, 4);
+	HuWinBGTPLvlSet(index2, 0);
+	HuWinMesSpeedSet(index2, 0);
+	HuWinMesMaxSizeGet(1, size, 0x220009);
+	HuWinCenterPosSet(index2, (work->winSizeMode.x-size[0])/-2.0f, (work->winSizeMode.y-size[1])/-2.0f);
+	HuWinMesSet(index2, 0x220009);
+	HuWinMesMaxSizeGet(2, &work->winSizeBoard.x, 0x22000A, 0x220010);
+	index2 = HuWinCreate(-10000, 390, work->winSizeBoard.x, work->winSizeBoard.y, 0);
+	work->winBoard = index2;
+	HuWinBGTPLvlSet(index2, 0);
+	HuWinMesSpeedSet(index2, 0);
+	HuWinMesMaxSizeGet(1, size, 0x22000A);
+	HuWinCenterPosSet(index2, (work->winSizeBoard.x-size[0])/-2.0f, (work->winSizeBoard.y-size[1])/-2.0f);
+	HuWinMesSet(index2, 0x22000A);
+	object->work[0] = 0;
+	object->work[1] = 0;
+	object->work[2] = 0;
+	object->work[3] = 0;
+	object->func = UpdateModeSel;
+}
+
+#define E3_BG_SPEED 0.5f
+#define E3_BG_TILE_W 128
+#define E3_BG_TILE_H 128
+#define E3_BG_TILE_COL 6
+#define E3_BG_TILE_ROW 5
+#define E3_BG_MAX_TILE (E3_BG_TILE_COL*E3_BG_TILE_ROW)
+
+typedef struct e3_bg_tile {
+	Vector2 pos;
+	s16 sprite;
+} E3BGTile;
+
+typedef struct e3_bg_work {
+	AnimData *anim;
+	s16 group;
+	E3BGTile tiles[E3_BG_MAX_TILE];
+} E3BGWork;
+
+static void E3BGUpdate(omObjData *object)
+{
+	E3BGTile *tile;
+	s32 i;
+	E3BGWork *work;
+	s16 group;
+	work = object->data;
+	tile = &work->tiles[0];
+	group = work->group;
+	for(i=0; i<E3_BG_MAX_TILE; i++, tile++) {
+		tile->pos.x -= E3_BG_SPEED;
+		if(tile->pos.x <= -(E3_BG_TILE_W/2)) {
+			tile->pos.x += E3_BG_TILE_W*E3_BG_TILE_COL;
+		}
+		tile->pos.y -= E3_BG_SPEED;
+		if(tile->pos.y <= -(E3_BG_TILE_H/2)) {
+			tile->pos.y += E3_BG_TILE_H*E3_BG_TILE_ROW;
+		}
+		HuSprPosSet(group, i, tile->pos.x, tile->pos.y);
+	}
+}
+
+void E3BGCreate(omObjData *object)
+{
+	E3BGTile *tile;
+	E3BGWork *work;
+	s32 tile_idx;
+	s16 group;
+	s16 col;
+	s16 row;
+	AnimData *anim;
+	s16 sprite;
+	float x;
+	float y;
+	
+	omSetStatBit(object, 0x100);
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(E3BGWork), MEMORY_DEFAULT_NUM);
+	work = object->data;
+	group = HuSprGrpCreate(E3_BG_MAX_TILE);
+	work->group = group;
+	anim = HuSprAnimRead(HuDataReadNum(0, MEMORY_DEFAULT_NUM));
+	work->anim =anim;
+	tile = &work->tiles[0];
+	tile_idx = 0;
+	y = E3_BG_TILE_H/2;
+	for(row=0; row<E3_BG_TILE_ROW; row++) {
+		x = E3_BG_TILE_W/2;
+		for(col=0; col<E3_BG_TILE_COL; col++) {
+			sprite = HuSprCreate(anim, -1, 0);
+			HuSprGrpMemberSet(group, tile_idx, sprite);
+			HuSprPosSet(group, tile_idx, x, y);
+			tile->sprite = sprite;
+			tile->pos.x = x;
+			tile->pos.y = y;
+			tile++;
+			tile_idx++;
+			x += E3_BG_TILE_W;
+		}
+		y += E3_BG_TILE_H;
+	}
+	object->work[0] = 0;
+	object->work[1] = 0;
+	object->work[2] = 0;
+	object->work[3] = 0;
+	object->func = E3BGUpdate;
+}
+
+typedef struct camera_view_params {
+	Vec rot;
+	Vec pos;
+	float zoom;
+	float fov;
+} CameraViewParams;
+
+static CameraViewParams camViewTbl[] = {
+	{
+		-42, 0, 0,
+		0, 50, -57,
+		2488,
+		30
+	},
+	{
+		-90, 0, 0,
+		0, 50, 0,
+		2990,
+		30
+	},
+	{
+		-13, 0, 0,
+		0, 50, -1025,
+		2488,
+		30
+	}
+};
+
+static void UpdateCamera(omObjData *object);
+
+static void InitCamera(omObjData *object)
+{
+	u32 *work;
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, 3*sizeof(u32), MEMORY_DEFAULT_NUM);
+	work = object->data;
+	work[0] = 0;
+	object->work[0] = 0;
+	object->work[1] = 0;
+	object->work[2] = 0;
+	object->work[3] = 0;
+	object->func = UpdateCamera;
+}
+
+static void UpdateCamera(omObjData *object)
+{
+	u32 *work = object->data;
+	if(object->work[0]) {
+		if((s32)object->work[0] != 1) {
+			(void)object;
+		} else {
+			CameraViewParams *view = &camViewTbl[object->work[1]];
+			CRot = view->rot;
+			Center = view->pos;
+			CZoom = view->zoom;
+			if(e3CameraFov != view->fov) {
+				e3CameraFov = view->fov;
+				Hu3DCameraPerspectiveSet(1, e3CameraFov, 100, 25000, 4.0f/3.0f);
+			}
+		}
+		object->work[0] = 0;
+	}
+	if(object->work[2]) {
+		(void)object;
+	}
+}
+
+Vec lbl_2_data_478[] = {
+	-90, 0, 2990,
+	-42, -57, 2488,
+	9999, 9999, 9999
+};
+
+Vec lbl_2_data_49C[] = {
+	-42, -57, 2488,
+	-13, -1025, 2350,
+	9999, 9999, 9999
+};
+
+struct unkstruct_4C0 {
+	Vec *unk0;
+	float unk4;
+};
+
+struct unkstruct_4C0 lbl_2_data_4C0[] = {
+	lbl_2_data_478, 60,
+	lbl_2_data_49C, 60
+};
