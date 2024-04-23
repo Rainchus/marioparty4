@@ -783,7 +783,7 @@ config.libs = [
         objects = {
             Object(NonMatching, "REL/E3setupDLL/mgselect.c"),
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/E3setupDLL/main.c"),
+            Object(Matching, "REL/E3setupDLL/main.c"),
         }
     ),
     Rel('instDll',
