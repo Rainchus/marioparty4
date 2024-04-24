@@ -211,7 +211,7 @@ void fn_1_4E8C(void) {
 
     temp_r31 = lbl_1_bss_397C->data;
     if (temp_r31->unk_06 == -1) {
-        temp_r31->unk_06 = MGSeqCreate(3, 0);
+        temp_r31->unk_06 = MGSeqStartCreate();
         temp_r31->unk_44 = HuAudSeqPlay(0x46);
         fn_1_2564();
         for (i = 0; i < 4; i++) {
@@ -222,7 +222,7 @@ void fn_1_4E8C(void) {
         MGSeqKill(temp_r31->unk_06);
         temp_r31->unk_06 = -1;
         temp_r31->unk_10 = 0x258;
-        temp_r31->unk_08 = MGSeqCreate(1, temp_r31->unk_10 / 60, -1, -1);
+        temp_r31->unk_08 = MGSeqTimerCreate(temp_r31->unk_10 / 60);
         fn_1_1E4();
         fn_1_4C3C(3);
     }
@@ -299,7 +299,7 @@ void fn_1_52AC(void) {
 
     temp_r31 = lbl_1_bss_397C->data;
     if (temp_r31->unk_04 == 0) {
-        temp_r31->unk_06 = MGSeqCreate(3, 1);
+        temp_r31->unk_06 = MGSeqFinishCreate();
         temp_r31->unk_04++;
         HuAudSeqFadeOut(temp_r31->unk_44, 100);
     }
@@ -362,7 +362,7 @@ void fn_1_5574(void) {
     temp_r31 = lbl_1_bss_397C->data;
     if (temp_r31->unk_04 == 0) {
         GWMGRecordSet(1, fn_1_28D4());
-        temp_r31->unk_06 = MGSeqCreate(14, fn_1_28D4());
+        temp_r31->unk_06 = MGSeqRecordCreate(fn_1_28D4());
         fn_1_5F40(1);
         temp_r31->unk_04++;
         return;
@@ -384,15 +384,15 @@ void fn_1_5630(void) {
             }
         }
         if (temp_r31->unk_24 == 0) {
-            temp_r31->unk_06 = MGSeqCreate(3, 2);
+            temp_r31->unk_06 = MGSeqDrawCreate();
             HuAudSStreamPlay(4);
         } else {
-            temp_r31->unk_06 = MGSeqCreate(5, 3, fn_1_4C0(temp_r31->unk_1C[0]), fn_1_4C0(temp_r31->unk_1C[1]), fn_1_4C0(temp_r31->unk_1C[2]), fn_1_4C0(temp_r31->unk_1C[3]));
+            temp_r31->unk_06 = MGSeqWinCreate(fn_1_4C0(temp_r31->unk_1C[0]), fn_1_4C0(temp_r31->unk_1C[1]), fn_1_4C0(temp_r31->unk_1C[2]), fn_1_4C0(temp_r31->unk_1C[3]));
             for (i = 0; i < ARRAY_COUNT(temp_r31->unk_1C); i++) {
                 if (temp_r31->unk_1C[i] != -1) {
                     fn_1_3C4(temp_r31->unk_1C[i]);
-					GWPlayerCoinWinSet(temp_r31->unk_1C[i], GWPlayerCoinWinGet(temp_r31->unk_1C[i])+10);
-                }                    
+                    GWPlayerCoinWinAdd(temp_r31->unk_1C[i], 10);
+                }
             }
             HuAudSStreamPlay(1);
         }
@@ -500,7 +500,7 @@ void fn_1_5BB0(void) {
 
     temp_r31 = lbl_1_bss_397C->data;
     if (temp_r31->unk_04 == 0) {
-        temp_r31->unk_06 = MGSeqCreate(3, 2);
+        temp_r31->unk_06 = MGSeqDrawCreate();
         temp_r31->unk_04++;
     }
     if (MGSeqStatGet(temp_r31->unk_06) == 0) {

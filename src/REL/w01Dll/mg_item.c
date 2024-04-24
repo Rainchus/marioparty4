@@ -337,7 +337,7 @@ static void fn_1_E914(omObjData *arg0) {
             lbl_1_bss_7FC[i]->func = fn_1_FED0;
         }
         BoardPlayerMotionShiftSet(lbl_1_bss_7E4, lbl_1_bss_7B8, 0.0f, 5.0f, 0x40000001);
-        lbl_1_bss_7D6 = MGSeqCreate(3, 0);
+        lbl_1_bss_7D6 = MGSeqStartCreate();
         BoardMusStart(1, 0xE, 0x7F, 0);
         arg0->func = fn_1_ECD4;
     }
@@ -359,7 +359,7 @@ static void fn_1_ECD4(omObjData *arg0) {
         arg0->func = fn_1_EED8;
         lbl_1_bss_7D2 = 5;
         lbl_1_bss_7D0 = 60;
-        lbl_1_bss_7D4 = MGSeqCreate(1, lbl_1_bss_7D2, 0x120, 0x40);
+        lbl_1_bss_7D4 = MGSeqTimerCreateXY(lbl_1_bss_7D2, 288, 64);
     }
     BoardModelMotionSpeedSet(lbl_1_bss_6C4[17], lbl_1_bss_7EC);
     BoardModelMotionSpeedSet(lbl_1_bss_6C4[18], lbl_1_bss_7E8);

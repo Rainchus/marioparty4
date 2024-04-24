@@ -35,13 +35,10 @@ extern Point3d Center;
 extern f32 CZoom;
 void fn_1_29C();
 void fn_1_28F8(Point3d * arg0, Point3d * arg1);
-extern void omOutView();
 void fn_1_37DC(omObjData*);
 void fn_1_439C(omObjData*);
 void fn_1_46F0();
 
-s16 MGSeqCreate(s16, ...);
-void MGSeqParamSet(s16, s16, s16);
 typedef void (omObjFunc2)(struct om_obj_data *);
 omObjFunc2 fn_1_F9C;
 

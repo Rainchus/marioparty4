@@ -209,7 +209,7 @@ void fn_1_8140(s32 arg0) {
     
     fn_1_81E0(arg0);
     BoardMusStart(1, 0x16, 0x7F, 0);
-    temp_r31 = MGSeqCreate(3, 0);
+    temp_r31 = MGSeqStartCreate();
 
     while (MGSeqStatGet(temp_r31)) {
         HuPrcVSleep();
@@ -305,7 +305,7 @@ void fn_1_84A8(s32 arg0) {
         temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_144, someBits3);
         temp_r31->unk00_bit1 = arg0;
         if (arg0 == 0) {
-            temp_r31->unk_04 = MGSeqCreate(1, temp_r31->unk2, 0x120, 0x40);
+            temp_r31->unk_04 = MGSeqTimerCreateXY(temp_r31->unk2, 288, 64);
         }
     }
 }
