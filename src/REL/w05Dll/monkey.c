@@ -1,6 +1,7 @@
 #include "REL/w05Dll.h"
 
 #include "game/hsfdraw.h"
+#include "game/frand.h"
 
 #include "game/board/model.h"
 #include "game/board/player.h"
@@ -211,7 +212,7 @@ void fn_1_3514(void) {
     HuAudFXPlay(0x48A);
     BoardModelMotionStart(lbl_1_bss_4E[lbl_1_bss_48], 2, 0);
     var_r31 = BoardSpaceLinkFlagSearch(0, GWPlayer[lbl_1_bss_4C].space_curr, 0x100);
-    if ((frand() & 1) != 0) {
+    if (frandBool() != 0) {
         var_r31 = BoardSpaceLinkFlagSearch(0, var_r31, 0x200);
     } else {
         var_r31 = BoardSpaceLinkFlagSearch(0, var_r31, 0x400);

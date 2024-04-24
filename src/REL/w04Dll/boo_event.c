@@ -18,6 +18,7 @@
 #include "game/board/space.h"
 #include "game/board/ui.h"
 #include "game/board/window.h"
+#include "game/frand.h"
 
 #include "dolphin.h"
 #include "math.h"
@@ -361,7 +362,7 @@ static void fn_1_2C10(void) {
         temp_r31->unk18 = 0.0f;
         BoardModelAlphaSet(temp_r31->unk04, temp_r31->unk18);
         BoardModelVisibilitySet(temp_r31->unk04, 0);
-        temp_r31->unk14 = 0.003921569f * (frand() & 0xFF) * 360.0f;
+        temp_r31->unk14 = 0.003921569f * frand8() * 360.0f;
         temp_r31->unk08 = -1;
         temp_r31->unk00 = 0;
         temp_r31->unk06 = i;
@@ -747,7 +748,7 @@ static s32 fn_1_3C9C(void) {
                     var_r21--;
                 } else {
                     var_r21 = frandmod(10) + 15;
-                    if ((frand() & 1) || var_r18 == 3) {
+                    if (frandBool() || var_r18 == 3) {
                         var_r19 = 0x100;
                     } else {
                         OSReport("com sel chg: %d \n", var_r29);
@@ -1170,19 +1171,19 @@ static void fn_1_5A2C(ModelData *model, ParticleData *particle, Mtx matrix) {
                 }
             }
             if (j != particle->unk_30) {
-                var_r31->unk08.x = 0.003921569f * (frand() & 0xFF) * 360.0f;
-                var_r31->unk08.y = 1.0f + 0.003921569f * (frand() & 0xFF) * 1.5f;
+                var_r31->unk08.x = 0.003921569f * frand8() * 360.0f;
+                var_r31->unk08.y = 1.0f + 0.003921569f * frand8() * 1.5f;
                 var_r31->unk08.z = 240.0f;
                 var_r31->unk40.r = 0x40;
                 var_r31->unk40.g = 0xD2;
                 var_r31->unk40.b = 0xFF;
-                var_r31->unk20 = 2.0f + 0.003921569f * (frand() & 0xFF) * 8.0f;
-                var_r31->unk24 = 2.0f + 0.003921569f * (frand() & 0xFF) * 6.0f;
-                var_r31->unk28 = 1.0f + 0.003921569f * (frand() & 0xFF) * 3.0f;
-                var_r31->unk34.x = -100.0f + 0.003921569f * (frand() & 0xFF) * 200.0f;
-                var_r31->unk34.y = 0.003921569f * (frand() & 0xFF) * 10.0f;
-                var_r31->unk34.z = -100.0f + 0.003921569f * (frand() & 0xFF) * 200.0f;
-                var_r31->unk2C = 7.0f + 0.003921569f * (frand() & 0xFF) * 3.0f;
+                var_r31->unk20 = 2.0f + 0.003921569f * frand8() * 8.0f;
+                var_r31->unk24 = 2.0f + 0.003921569f * frand8() * 6.0f;
+                var_r31->unk28 = 1.0f + 0.003921569f * frand8() * 3.0f;
+                var_r31->unk34.x = -100.0f + 0.003921569f * frand8() * 200.0f;
+                var_r31->unk34.y = 0.003921569f * frand8() * 10.0f;
+                var_r31->unk34.z = -100.0f + 0.003921569f * frand8() * 200.0f;
+                var_r31->unk2C = 7.0f + 0.003921569f * frand8() * 3.0f;
             }
         }
     }

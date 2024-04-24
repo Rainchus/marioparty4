@@ -1,4 +1,5 @@
 #include "REL/w02Dll.h"
+#include "game/frand.h"
 
 // Temporary defines
 #define BOARD_ITEM_MINI           0x0
@@ -76,8 +77,6 @@ s8 BoardComPreferItemCheck(s32, s8, s8, s8);
 extern void BoardComKeySetLeft();
 extern void BoardComKeySetRight();
 extern void CharModelDataClose(s16);
-extern u32 frand();
-extern u32 frandmod(u32);
 
 // function is probably global. only inlined in rels?
 inline s32 get_current_board(void) {

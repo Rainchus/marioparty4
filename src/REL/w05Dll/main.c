@@ -2,6 +2,7 @@
 
 #include "game/gamework_data.h"
 #include "game/chrman.h"
+#include "game/frand.h"
 
 #include "game/board/audio.h"
 #include "game/board/boo_house.h"
@@ -14,8 +15,6 @@
 #include "game/board/star.h"
 #include "game/board/window.h"
 
-// frand.h
-extern u32 frandmod(u32);
 // #include "REL/w05Dll/mg_item.h"
 extern void fn_1_6B28(void);
 extern void fn_1_6B7C(void);
@@ -362,7 +361,7 @@ void fn_1_E40(void) {
     fn_1_96B4();
     BoardWinCreateChoice(2, 0x27000F, 7, 0);
     if (GWPlayer[temp_r31].com != 0) {
-        if ((frand() & 1) != 0) {
+        if (frandBool() != 0) {
             BoardComKeySetLeft();
         } else {
             BoardComKeySetRight();
