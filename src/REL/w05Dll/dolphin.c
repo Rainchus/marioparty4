@@ -4,6 +4,7 @@
 #include "game/audio.h"
 #include "game/objsub.h"
 #include "game/frand.h"
+#include "game/chrman.h"
 
 #include "game/board/model.h"
 #include "game/board/player.h"
