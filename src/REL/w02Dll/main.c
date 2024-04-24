@@ -268,7 +268,7 @@ void fn_1_990(void) {
     currPlayer = GWSystem.player_curr;
     BoardWinCreateChoice(2, 0x130011U, 4, 0);
     if (GWPlayer[currPlayer].com) {
-        if ((s32) (frand() & 1) != 0) {
+        if (frandBool() != 0) {
             BoardComKeySetLeft();
         } else {
             BoardComKeySetRight();
