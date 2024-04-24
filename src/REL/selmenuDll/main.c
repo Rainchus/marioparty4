@@ -12,6 +12,7 @@
 #include "game/board/main.h"
 #include "game/armem.h"
 #include "game/audio.h"
+#include "game/frand.h"
 
 #include "rel_sqrt_consts.h"
 
@@ -456,14 +457,14 @@ static void SMGroupGen(s32 index)
 		for(i=0; i<4; i++) {
 			team_players[smPlayerCfg[i].group][team_cnt[smPlayerCfg[i].group]++] = i;
 		}
-		if(frand() & 1) {
+		if(frandBool()) {
 			GWPlayerCfg[team_players[0][0]].group = 0;
 			GWPlayerCfg[team_players[0][1]].group = 1;
 		} else {
 			GWPlayerCfg[team_players[0][0]].group = 1;
 			GWPlayerCfg[team_players[0][1]].group = 0;
 		}
-		if(frand() & 1) {
+		if(frandBool()) {
 			GWPlayerCfg[team_players[1][0]].group = 2;
 			GWPlayerCfg[team_players[1][1]].group = 3;
 		} else {

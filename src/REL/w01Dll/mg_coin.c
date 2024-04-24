@@ -4,6 +4,8 @@
 #include "game/data.h"
 #include "game/gamework_data.h"
 #include "game/hsfanim.h"
+#include "game/frand.h"
+
 #include "game/hsfman.h"
 #include "game/memory.h"
 #include "game/minigame_seq.h"
@@ -789,10 +791,10 @@ static void fn_1_C25C(void) {
         BoardModelVisibilitySet(lbl_1_bss_760[i], 1);
         sp11C[i] = sp20;
         sp11C[i].y += 600.0f + i * 120;
-        sp11C[i].x += -25.0f + 50.0f * (frand() & 0xFF) * 0.003921569f;
-        sp11C[i].z += -25.0f + 50.0f * (frand() & 0xFF) * 0.003921569f;
+        sp11C[i].x += -25.0f + 50.0f * frand8() * 0.003921569f;
+        sp11C[i].z += -25.0f + 50.0f * frand8() * 0.003921569f;
         sp2C[i].x = sp2C[i].z = 0.0f;
-        sp2C[i].y = 360.0f * (frand() & 0xFF) * 0.003921569f;
+        sp2C[i].y = 360.0f * frand8() * 0.003921569f;
         BoardModelPosSetV(lbl_1_bss_760[i], &sp11C[i]);
         BoardModelScaleSetV(lbl_1_bss_760[i], &sp14);
         BoardModelRotSetV(lbl_1_bss_760[i], &sp2C[i]);
@@ -1015,7 +1017,7 @@ static void fn_1_D114(ModelData *model, ParticleData *particle, Mtx matrix) {
                 }
             }
             if (j != particle->unk_30) {
-                temp_r26 = frand() & 0xFFFF;
+                temp_r26 = frand16();
                 temp_f31 = (-15.0f + 30.0f * (temp_r26 / 65536.0f)) * temp_r28->unk1C;
                 var_r31->unk08.x = sp8.x + temp_f31;
                 var_r31->unk08.y = sp8.y;

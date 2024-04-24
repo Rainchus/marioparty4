@@ -5,6 +5,7 @@
 #include "game/objsub.h"
 #include "game/chrman.h"
 #include "game/hsfman.h"
+#include "game/frand.h"
 #include "math.h"
 
 #include "rel_sqrt_consts.h"
@@ -272,8 +273,7 @@ void fn_1_64C(omObjData* arg0) {
     temp_r31->unk_34 = 0;
     temp_r31->unk_38 = 0;
     temp_r31->unk_28 = 0.0f;
-    //frand implicit declaration? (probably frandf inline?)
-    temp_r31->unk_30 = (600.0f / (lbl_1_data_184[temp_r31->unk_02][0] - ((frand() & 0x7FFFFFFF) % lbl_1_data_184[temp_r31->unk_02][1])));
+    temp_r31->unk_30 = (600.0f / (lbl_1_data_184[temp_r31->unk_02][0] - frandmod31(lbl_1_data_184[temp_r31->unk_02][1])));
     temp_r31->unk_2C = temp_r31->unk_30;
     arg0->model[0] = CharModelCreate(temp_r31->unk_01, 8);
     arg0->model[1] = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_data_100[temp_r31->unk_01], MEMORY_DEFAULT_NUM, HEAP_DATA));
