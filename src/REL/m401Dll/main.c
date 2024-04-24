@@ -178,19 +178,19 @@ void ModuleProlog(void)
 	lbl_2_bss_11C = HuAudFXPlay(1290);
 }
 
-typedef struct work_70C {
+typedef struct m401_work_player {
 	s16 unk0;
 	u8 unk2[0x66];
 	s16 unk68;
 	u8 unk6A[8];
 	s16 unk72;
 	s16 unk74;
-} Work70C;
+} M401WorkPlayer;
 
 void fn_2_70C(omObjData *object)
 {
 	s32 temp_r31;
-	Work70C *temp_r30;
+	M401WorkPlayer *temp_r30;
 	s16 temp_r29;
 	switch(lbl_2_bss_120) {
 		case 0:
@@ -262,7 +262,7 @@ void fn_2_A98(void)
 	Hu3DBGColorSet(10, 60, 160);
 }
 
-typedef struct work_AEC {
+typedef struct m401_work_2d {
 	s16 unk0[4];
 	s16 unk8[4][3];
 	u8 unk20[0x30];
@@ -283,11 +283,11 @@ typedef struct work_AEC {
 	s16 unk130[4];
 	s16 unk138[4];
 	s16 unk140[4];
-} WorkAEC;
+} M401Work2D;
 
 void fn_2_AEC(s16 arg0)
 {
-	WorkAEC *temp_r31;
+	M401Work2D *temp_r31;
 	s32 i;
 	s32 j;
 	temp_r31 = lbl_2_bss_E0->data;
@@ -328,10 +328,10 @@ s32 lbl_2_data_80[] = {
 
 void fn_2_C1C(omObjData *object)
 {
-	WorkAEC *temp_r31;
+	M401Work2D *temp_r31;
 	s32 i;
 	s32 j;
-	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(WorkAEC), MEMORY_DEFAULT_NUM);
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(M401Work2D), MEMORY_DEFAULT_NUM);
 	temp_r31 = object->data;
 	for(i=0; i<4; i++) {
 		temp_r31->unk0[i] = espEntry(lbl_2_data_80[GWPlayerCfg[i].character], 2, 0);
@@ -379,13 +379,13 @@ void fn_2_15C4(s16 arg0);
 
 void fn_2_11D0(omObjData *object)
 {
-	WorkAEC *temp_r31;
+	M401Work2D *temp_r31;
 	s32 i;
 	s32 j;
 	omObjData *temp_r28;
 	Vec sp18;
 	Vec spC;
-	Work70C *sp8;
+	M401WorkPlayer *sp8;
 	temp_r31 = object->data;
 	for(i=0; i<4; i++) {
 		sp8 = lbl_2_bss_118[i]->data;
@@ -435,9 +435,9 @@ void fn_2_11D0(omObjData *object)
 
 void fn_2_15C4(s16 arg0)
 {
-	WorkAEC *temp_r31;
+	M401Work2D *temp_r31;
 	s32 temp_r30;
-	Work70C *temp_r29;
+	M401WorkPlayer *temp_r29;
 	temp_r31 = lbl_2_bss_E0->data;
 	temp_r29 = lbl_2_bss_118[arg0]->data;
 	temp_r30 = temp_r29->unk72;
@@ -447,9 +447,9 @@ void fn_2_15C4(s16 arg0)
 
 void fn_2_169C(s16 arg0)
 {
-	WorkAEC *temp_r31;
+	M401Work2D *temp_r31;
 	s32 i;
-	Work70C *temp_r28;
+	M401WorkPlayer *temp_r28;
 	temp_r31 = lbl_2_bss_E0->data;
 	temp_r28 = lbl_2_bss_118[arg0]->data;
 	for(i=0; i<2; i++ ){
@@ -466,8 +466,8 @@ void fn_2_169C(s16 arg0)
 
 void fn_2_1858(s16 arg0, s16 arg1)
 {
-	WorkAEC *temp_r31;
-	Work70C *temp_r29;
+	M401Work2D *temp_r31;
+	M401WorkPlayer *temp_r29;
 	s32 i;
 	temp_r31 = lbl_2_bss_E0->data;
 	temp_r29 = lbl_2_bss_118[arg0]->data;
