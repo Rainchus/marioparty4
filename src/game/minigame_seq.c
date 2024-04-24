@@ -83,15 +83,15 @@ static s32 seqType2SprTbl[6] = {
 };
 
 static s16 mgSeqTypeTbl[9] = {
-	8,
-	4,
-	9,
-	11,
-	6,
-	10,
-	7,
-	11,
-	7
+	MG_SEQ_TYPE_4P,
+	MG_SEQ_TYPE_1VS3,
+	MG_SEQ_TYPE_2VS2,
+	MG_SEQ_TYPE_BOWSER,
+	MG_SEQ_TYPE_BATTLE,
+	MG_SEQ_TYPE_PINBALL,
+	MG_SEQ_TYPE_STORY,
+	MG_SEQ_TYPE_BOWSER,
+	MG_SEQ_TYPE_STORY
 };
 
 static char lbl_8012F336[] = {
@@ -252,9 +252,9 @@ s16 MGSeqCreate(s16 type, ...)
 	s16 ret;
 	va_list params;
 	va_start(params, type);
-	if(type == 3) {
+	if(type == MG_SEQ_TYPE_AUTO) {
 		if(GWSystem.mg_next == 0xFFFF) {
-			type = 8;
+			type = MG_SEQ_TYPE_4P;
 		} else {
 			type = mgSeqTypeTbl[mgInfoTbl[GWSystem.mg_next].type];
 		}
