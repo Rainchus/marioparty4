@@ -10,13 +10,18 @@ enum {
     MAPOBJ_MAX = 16
 };
 
+typedef struct {
+    s8 unk00;
+    u8 unk01;
+} UnkW04BoardData;
+
 extern s32 fn_1_1130(s16 arg0, float arg1, float arg2);
 
 extern void fn_1_12FC(void);
 extern void fn_1_15C8(void);
 extern void fn_1_1618(void);
-
 extern void fn_1_2058(void);
+
 extern void fn_1_55B4(void);
 
 extern void fn_1_6024(void);
@@ -33,8 +38,6 @@ extern void fn_1_C7D4(void);
 
 extern s16 lbl_1_bss_14[MAPOBJ_MAX];
 extern BoardMapObject lbl_1_data_0[MAPOBJ_MAX];
-extern s8 *lbl_1_bss_0;
-
-extern Process *lbl_1_bss_38;
+extern UnkW04BoardData *lbl_1_bss_0;
 
 #endif

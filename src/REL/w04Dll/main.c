@@ -55,7 +55,7 @@ BoardMapObject lbl_1_data_0[MAPOBJ_MAX] = {
 static s32 *lbl_1_bss_10;
 static s16 lbl_1_bss_8[4];
 static Process *lbl_1_bss_4;
-s8 *lbl_1_bss_0;
+UnkW04BoardData *lbl_1_bss_0;
 
 static s16 lbl_1_data_280 = -1;
 static s16 lbl_1_data_282 = -1;
@@ -79,7 +79,7 @@ void BoardCreate(void) {
 
     omDBGMenuButton = 1;
     sp8 = GWBoardGet();
-    lbl_1_bss_0 = (s8*) GWSystem.board_data;
+    lbl_1_bss_0 = (UnkW04BoardData*) GWSystem.board_data;
     BoardSpaceInit(DATA_MAKE_NUM(DATADIR_W04, 0));
     lbl_1_data_280 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W04, 1), NULL, 0);
     fn_8006DDE8(lbl_1_data_280, -1.0f);
@@ -204,7 +204,7 @@ static s32 fn_1_7FC(void) {
         return 1;
     }
     if (temp_r3->flag & 0x100) {
-        if (lbl_1_bss_0[0] & 1) {
+        if (lbl_1_bss_0->unk00 & 1) {
             fn_1_55B4();
         } else {
             BoardDiceDigit2DShowSet(0);
@@ -422,12 +422,12 @@ s32 fn_1_1130(s16 arg0, float arg1, float arg2) {
         }
         if (var_f29 < 180.0f) {
             if (var_f29 > arg2) {
-                var_f31 = var_f31 + arg2;
+                var_f31 += arg2;
             } else {
                 var_f31 = arg1;
             }
         } else if (360.0f - var_f29 > arg2) {
-            var_f31 = var_f31 - arg2;
+            var_f31 -= arg2;
         } else {
             var_f31 = arg1;
         }

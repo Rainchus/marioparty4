@@ -29,7 +29,7 @@
 #include "game/board/map_object.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -768,8 +768,8 @@ static void fn_1_1B3C(void) {
         PSMTXConcat(lbl_1_bss_678, sp48, lbl_1_bss_678);
     } else {
         if (sp30.z != 0.0f || sp30.x != 0.0f) {
-            lbl_1_bss_660.y = 180.0 * (atan2(sp30.x, sp30.z) / M_PI);
-            lbl_1_bss_660.x = -(180.0 * (atan2(sp30.y, sqrtf(sp30.x * sp30.x + sp30.z * sp30.z)) / M_PI));
+            lbl_1_bss_660.y = atan2d(sp30.x, sp30.z);
+            lbl_1_bss_660.x = -atan2d(sp30.y, VECMagXZ(&sp30));
         } else {
             lbl_1_bss_660.x = lbl_1_bss_660.y = 0.0f;
         }
@@ -816,7 +816,7 @@ static void fn_1_1FA4(void) {
     PSVECAdd(&spC, &lbl_1_bss_618, &lbl_1_bss_618);
     PSVECSubtract(&lbl_1_bss_654, &lbl_1_bss_648, &spC);
     if (spC.x != 0.0f || spC.z != 0.0f) {
-        temp_f29 = atan2f(spC.y, sqrtf(spC.x * spC.x + spC.z * spC.z));
+        temp_f29 = atan2f(spC.y, VECMagXZ(&spC));
         temp_f28 = atan2f(-spC.x, -spC.z);
     } else {
         temp_f29 = temp_f28 = 0.0f;
@@ -833,9 +833,9 @@ static void fn_1_1FA4(void) {
         } else {
             var_f27 = 2500.0f;
         }
-        sp18.x = sp18.x + var_f27 * sin(1.4137166738510132); // 81 * M_PI / 180.0
+        sp18.x = sp18.x + var_f27 * sin(1.4137166738510132); // TODO: should be sind(81)
         sp18.y = sp18.y + -150.0f;
-        sp18.z = sp18.z + var_f27 * cos(1.4137166738510132); // 81 * M_PI / 180.0
+        sp18.z = sp18.z + var_f27 * cos(1.4137166738510132); // TODO: should be cosd(81)
         PSVECSubtract(&sp18, &lbl_1_bss_630, &spC);
         PSVECScale(&spC, &spC, lbl_1_bss_66C);
         PSVECAdd(&spC, &lbl_1_bss_630, &lbl_1_bss_630);
@@ -880,7 +880,7 @@ static float fn_1_2524(void) {
             return 0.0f;
         }
         PSVECSubtract(&sp18, &sp24, &spC);
-        var_f30 = 180.0 * (atan2(spC.x, spC.z) / M_PI);
+        var_f30 = atan2d(spC.x, spC.z);
         if (var_f30 > 0.0f) {
             var_f30 = 45.0f;
         } else {
@@ -946,8 +946,8 @@ static void fn_1_2F18(void) {
         BoardModelPosGet(lbl_1_bss_6C4[0], &spC);
         PSVECSubtract(&lbl_1_bss_654, &lbl_1_bss_648, &sp18);
         if (sp18.z != 0.0f || sp18.x != 0.0f) {
-            sp24.y = 180.0 * (atan2(sp18.x, sp18.z) / M_PI);
-            sp24.x = -(180.0 * (atan2(sp18.y, sqrtf(sp18.x * sp18.x + sp18.z * sp18.z)) / M_PI));
+            sp24.y = atan2d(sp18.x, sp18.z);
+            sp24.x = -atan2d(sp18.y, VECMagXZ(&sp18));
         } else {
             sp24.x = sp24.y = 0.0f;
         }
@@ -1096,9 +1096,9 @@ static void fn_1_3624(void) {
     BoardCameraMotionStartEx(lbl_1_bss_6C4[0], &sp30, NULL, 150.0f, -1.0f, 2);
     BoardCameraMotionWait();
     BoardModelPosGet(lbl_1_bss_6C4[0], &lbl_1_bss_618);
-    lbl_1_bss_630.x = lbl_1_bss_618.x + 1000.0 * (sin(sp30.y * M_PI / 180.0) * cos(sp30.x * M_PI / 180.0));
-    lbl_1_bss_630.y = lbl_1_bss_618.y + 1000.0 * -sin(sp30.x * M_PI / 180.0);
-    lbl_1_bss_630.z = lbl_1_bss_618.z + 1000.0 * (cos(sp30.y * M_PI / 180.0) * cos(sp30.x * M_PI / 180.0));
+    lbl_1_bss_630.x = lbl_1_bss_618.x + 1000.0 * (sind(sp30.y) * cosd(sp30.x));
+    lbl_1_bss_630.y = lbl_1_bss_618.y + 1000.0 * -sind(sp30.x);
+    lbl_1_bss_630.z = lbl_1_bss_618.z + 1000.0 * (cosd(sp30.y) * cosd(sp30.x));
     PSMTXRotRad(lbl_1_bss_678, 'y', MTXDegToRad(lbl_1_bss_63C));
     BoardModelMtxSet(lbl_1_bss_6C4[0], &lbl_1_bss_678);
     BoardPlayerMtxSet(lbl_1_bss_6B4, &lbl_1_bss_678);
@@ -1273,7 +1273,7 @@ static s32 fn_1_48B4(void) {
     BoardSpacePosGet(0, temp_r28, &sp14);
     PSVECSubtract(&sp14, &sp20, &sp8);
     PSVECNormalize(&sp8, &sp8);
-    var_f31 = 180.0 * (atan2(-sp8.x, -sp8.z) / M_PI);
+    var_f31 = atan2d(-sp8.x, -sp8.z);
     BoardPlayerRotSet(lbl_1_bss_6B4, 0.0f, var_f31, 0.0f);
     BoardPlayerMoveBetween(lbl_1_bss_6B4, temp_r30, temp_r28);
     while (GWPlayer[lbl_1_bss_6B4].moving) {
@@ -1331,7 +1331,7 @@ static s32 fn_1_48B4(void) {
     BoardCameraTargetPlayerSet(lbl_1_bss_6B4);
     PSVECSubtract(&sp20, &sp14, &sp8);
     PSVECNormalize(&sp8, &sp8);
-    var_f31 = 180.0 * (atan2(-sp8.x, -sp8.z) / M_PI);
+    var_f31 = atan2d(-sp8.x, -sp8.z);
     BoardPlayerRotSet(lbl_1_bss_6B4, 0.0f, var_f31, 0.0f);
     BoardPlayerMoveBetween(lbl_1_bss_6B4, temp_r28, temp_r30);
     while (GWPlayer[lbl_1_bss_6B4].moving) {
@@ -1410,13 +1410,13 @@ static void fn_1_50D4(void) {
             }
             PSVECSubtract(&sp14, &temp_r31->pos, &sp8);
             PSVECNormalize(&sp8, &sp8);
-            var_f31 = 180.0 * (atan2(sp8.z, sp8.x) / M_PI);
+            var_f31 = atan2d(sp8.z, sp8.x);
             if (var_r27 != 0) {
                 var_f31 += 180.0f;
             }
-            sp20.x = temp_r31->pos.x + temp_f30 * sin(var_f31 * M_PI / 180.0);
+            sp20.x = temp_r31->pos.x + temp_f30 * sind(var_f31);
             sp20.y = temp_r31->pos.y + 80.0f;
-            sp20.z = temp_r31->pos.z + temp_f30 * cos(var_f31 * M_PI / 180.0);
+            sp20.z = temp_r31->pos.z + temp_f30 * cosd(var_f31);
             BoardModelPosSetV(lbl_1_bss_5D0[i], &sp20);
             BoardModelVisibilitySet(lbl_1_bss_5D0[i], 1);
             sp14 = temp_r31->pos;
@@ -1752,7 +1752,7 @@ static void fn_1_63F0(Bss18Work *arg0, omObjData *arg1) {
             OSu8tof32(&arg0->unk01, &temp_f29);
             temp_f29 -= 12.0f;
             temp_f29 = 90.0f * (temp_f29 / 12.5f);
-            var_f28 = cos(temp_f29 * M_PI / 180.0);
+            var_f28 = cosd(temp_f29);
             if (var_f28 < 0.1f) {
                 var_f28 = 0.1f;
             }
@@ -1779,7 +1779,7 @@ static void fn_1_6A14(Bss18Work *arg0, omObjData *arg1) {
     arg1->scale.y = sp20.y;
     arg1->scale.z = sp20.z;
     BoardPlayerMotionShiftSet(GWSystem.player_curr, 4, 15.0f, 5.0f, 0);
-    BoardPlayerRotYSet(GWSystem.player_curr, 180.0 * (atan2(sp8.x, sp8.z) / M_PI));
+    BoardPlayerRotYSet(GWSystem.player_curr, atan2d(sp8.x, sp8.z));
     arg0->unk00_field1 = 3;
     arg0->unk01 = 0;
 }
@@ -1820,7 +1820,7 @@ static void fn_1_6BC0(Bss18Work *arg0, omObjData *arg1) {
             OSu8tof32(&arg0->unk01, &temp_f29);
             temp_f29 -= 12.0f;
             temp_f29 = 90.0f * (temp_f29 / 12.5f);
-            var_f28 = sin(temp_f29 * M_PI / 180.0);
+            var_f28 = sind(temp_f29);
             if (var_f28 < 0.1f) {
                 var_f28 = 0.1f;
             }
@@ -2157,7 +2157,7 @@ static void fn_1_8988(BssCData *arg0, omObjData *arg1) {
     BoardModelPosGet(*lbl_1_bss_6C4, &sp20);
     BoardPlayerPosGet(arg0->unk01, &sp14);
     PSVECSubtract(&sp20, &sp14, &sp8);
-    BoardPlayerRotYSet(arg0->unk01, 180.0 * (atan2(sp8.x, sp8.z) / M_PI));
+    BoardPlayerRotYSet(arg0->unk01, atan2d(sp8.x, sp8.z));
     arg0->unk00 = 1;
 }
 
@@ -2199,7 +2199,7 @@ static void fn_1_8B6C(BssCData *arg0, omObjData *arg1) {
     BoardPlayerPosGet(arg0->unk01, &arg0->unk14);
     BoardModelPosGet(lbl_1_bss_6C4[0], &sp20);
     PSVECSubtract(&sp20, &arg0->unk14, &sp14);
-    BoardPlayerRotYSet(arg0->unk01, -(180.0 * (atan2(sp14.x, sp14.z) / M_PI)));
+    BoardPlayerRotYSet(arg0->unk01, -atan2d(sp14.x, sp14.z));
     BoardPlayerMotionStart(arg0->unk01, 3, 0x40000001);
     BoardPlayerMotionSpeedSet(arg0->unk01, 2.0f);
     temp_f30 = BoardModelMotionTimeGet(lbl_1_bss_6AE);
@@ -2265,8 +2265,8 @@ static void fn_1_8DDC(BssCData *arg0, omObjData *arg1) {
         PSMTXTranspose(sp54, arg0->unk20);
     } else {
         if (sp24.z != 0.0f || sp24.x != 0.0f) {
-            sp3C.y = 180.0 * (atan2(sp24.x, sp24.z) / M_PI);
-            sp3C.x = -(180.0 * (atan2(sp24.y, sqrtf(sp24.x * sp24.x + sp24.z * sp24.z)) / M_PI));
+            sp3C.y = atan2d(sp24.x, sp24.z);
+            sp3C.x = -atan2d(sp24.y, VECMagXZ(&sp24));
         } else {
             sp3C.x = sp3C.y = 0.0f;
         }
@@ -2296,7 +2296,7 @@ static void fn_1_918C(BssCData *arg0, omObjData *arg1) {
     BoardPlayerPosGet(arg0->unk01, &sp14);
     BoardPlayerMtxSet(arg0->unk01, &arg0->unk20);
     PSVECSubtract(&sp20, &sp14, &sp8);
-    BoardPlayerRotYSet(arg0->unk01, 180.0 * (atan2(-sp8.z, -sp8.x) / M_PI));
+    BoardPlayerRotYSet(arg0->unk01, atan2d(-sp8.z, -sp8.x));
     BoardPlayerPosLerpStart(arg0->unk01, &sp14, &sp20, 20);
     arg0->unk00 = 5;
 }
@@ -2547,7 +2547,7 @@ static void fn_1_9BBC(Bss20Work *arg0) {
             BoardModelVisibilitySet(temp_r31->unk02, 0);
         } else {
             if (temp_r31->unk00 <= 3) {
-                temp_r31->unk04 = sin(30.0f * temp_r31->unk00 * M_PI / 180.0);
+                temp_r31->unk04 = sind(30.0f * temp_r31->unk00);
             }
             PSVECAdd(&temp_r31->unk08, &temp_r31->unk14, &temp_r31->unk08);
             BoardModelMtxSet(temp_r31->unk02, &lbl_1_bss_678);

@@ -22,7 +22,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     /* 0x00 */ Vec unk00;
@@ -640,7 +640,7 @@ static void fn_1_B478(omObjData *arg0) {
         MGSeqParamSet(lbl_1_bss_744, 2, -1);
         lbl_1_bss_714[lbl_1_bss_730]->work[1] = 1;
         BoardPlayerPosGet(lbl_1_bss_798, &spC);
-        var_f28 = sqrtf((temp_r31->unk04.x - spC.x) * (temp_r31->unk04.x - spC.x) + (temp_r31->unk04.z - spC.z) * (temp_r31->unk04.z - spC.z));
+        var_f28 = VECDistanceXZ(&temp_r31->unk04, &spC);
         fn_1_C94C(&spC, &temp_r31->unk04, &temp_r31->unk10);
         temp_r31->unk10.y = 0.0f;
         temp_r31->unk10.x *= var_f28 / 30.0f;
@@ -664,7 +664,7 @@ static void fn_1_BAF8(omObjData *arg0) {
     BoardPlayerPosGet(lbl_1_bss_798, &sp14);
     sp14.x += temp_r31->unk10.x;
     sp14.z += temp_r31->unk10.z;
-    sp14.y = lbl_1_bss_738.y + 80.0 * sin(6.0f * temp_r31->unk20 * M_PI / 180.0);
+    sp14.y = lbl_1_bss_738.y + 80.0 * sind(6.0f * temp_r31->unk20);
     BoardModelPosGet(lbl_1_bss_714[lbl_1_bss_730]->work[0], &sp8);
     if ((temp_r31->unk20 += 1.0f) == 30.0f) {
         sp14.y = sp8.y + 5.0f;
@@ -892,7 +892,7 @@ static float fn_1_C998(Vec *arg0) {
                 return 270.0f;
             }
         }
-        temp_f31 = 180.0 * (atan2(arg0->z, arg0->x) / M_PI);
+        temp_f31 = atan2d(arg0->z, arg0->x);
         if (arg0->z < 0.0f) {
             temp_f31 = 90.0f - temp_f31;
         } else {
@@ -1051,8 +1051,8 @@ static void fn_1_D114(ModelData *model, ParticleData *particle, Mtx matrix) {
                 var_r31->unk24 = 0.0f;
             }
             temp_r26 = 80.0f * (2.0f * ((sp8.x - var_r31->unk08.x) / 15.0f) - rand8() / 255.0f);
-            var_r31->unk20 = 8.0 * sin(temp_r26 * M_PI / 180.0);
-            var_r31->unk28 = 8.0 * cos(temp_r26 * M_PI / 180.0);
+            var_r31->unk20 = 8.0 * sind(temp_r26);
+            var_r31->unk28 = 8.0 * cosd(temp_r26);
         }
         var_r31->unk24 -= 0.35f;
         if ((var_r31->unk14.x -= 25.5f) < 0.0f) {

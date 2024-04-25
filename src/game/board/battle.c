@@ -17,7 +17,7 @@
 #include "game/board/ui.h"
 #include "game/board/window.h"
 
-#define ABS(x) ((x) < 0 ? -(x) : (x))
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -630,7 +630,7 @@ static void ShowBattleGame(BattleWork *arg0, omObjData *arg1) {
         arg0->unk01 = 90;
     }
     OSs8tof32((s8*) &arg0->unk01, &var_r29);
-    arg1->trans.z = sin(var_r29 * M_PI / 180.0);
+    arg1->trans.z = sind(var_r29);
     arg0->unk01 += 4;
 }
 
@@ -712,7 +712,7 @@ static void ShowBattleCoin(BattleWork *arg0, omObjData *arg1) {
     while (var_f30 > 180.0f) {
         var_f30 -= 180.0f;
     }
-    temp_f29 = 0.9f + sin(var_f30 * M_PI / 180.0);
+    temp_f29 = 0.9f + sind(var_f30);
     HuSprScaleSet(arg0->unk08, 1, temp_f29, temp_f29);
 }
 

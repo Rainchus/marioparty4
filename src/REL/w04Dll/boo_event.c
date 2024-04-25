@@ -21,7 +21,7 @@
 #include "game/frand.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     /* 0x00 */ char unk00[0x50];
@@ -46,7 +46,6 @@ typedef struct {
     /* 0x2C */ Process *unk2C;
 } BssE4Data; // Size 0x30
 
-static void fn_1_2044(void);
 static void fn_1_20EC(void);
 static void fn_1_28BC(void);
 static void fn_1_2B8C(void);
@@ -137,21 +136,6 @@ static float lbl_1_data_358[] = {
     -150.00001f, -170.00001f, -30.0f, -220.0f
 };
 
-static void fn_1_2044(void) {
-    lbl_1_bss_38 = NULL;
-}
-
-void fn_1_2058(void) {
-    s32 sp8;
-
-    sp8 = GWSystem.player_curr;
-    lbl_1_bss_38 = HuPrcChildCreate(fn_1_1618, 0x2003, 0x2000, 0, boardMainProc);
-    HuPrcDestructorSet2(lbl_1_bss_38, fn_1_2044);
-    while (lbl_1_bss_38) {
-        HuPrcVSleep();
-    }
-}
-
 static void fn_1_20EC(void) {
     Vec sp20;
     Vec sp14;
@@ -223,7 +207,7 @@ static void fn_1_20EC(void) {
     lbl_1_bss_74 = lbl_1_bss_78 = var_r27->link[0];
     BoardSpacePosGet(0, lbl_1_bss_78, &sp14);
     BoardModelPosGet(lbl_1_bss_FA, &sp20);
-    while (fn_1_1130(lbl_1_bss_FA, 180.0 * (atan2(sp14.x - sp20.x, sp14.z - sp20.z) / M_PI), 2.0f) == 0) {
+    while (fn_1_1130(lbl_1_bss_FA, atan2d(sp14.x - sp20.x, sp14.z - sp20.z), 2.0f) == 0) {
         HuPrcVSleep();
     }
     PSVECSubtract(&sp14, &sp20, &sp8);
@@ -236,7 +220,7 @@ static void fn_1_20EC(void) {
     BoardAudSeqPause(0, 1, 1000);
     BoardModelPosSetV(lbl_1_bss_FA, &sp14);
     BoardPlayerPosGet(temp_r30, &sp14);
-    while (fn_1_1130(lbl_1_bss_FA, 180.0 * (atan2(sp14.x - sp20.x, sp14.z - sp20.z) / M_PI), 3.0f) == 0) {
+    while (fn_1_1130(lbl_1_bss_FA, atan2d(sp14.x - sp20.x, sp14.z - sp20.z), 3.0f) == 0) {
         HuPrcVSleep();
     }
     fn_1_2EE8(1);
@@ -306,7 +290,7 @@ static void fn_1_28BC(void) {
             }
             BoardSpacePosGet(0, var_r31, &sp20);
             BoardModelPosGet(lbl_1_bss_FA, &sp14);
-            temp_f30 = 180.0 * (atan2(sp20.x - sp14.x, sp20.z - sp14.z) / M_PI);
+            temp_f30 = atan2d(sp20.x - sp14.x, sp20.z - sp14.z);
             BoardModelRotYSet(lbl_1_bss_FA, temp_f30);
             PSVECSubtract(&sp20, &sp14, &sp8);
             PSVECScale(&sp8, &sp8, 0.022222223f);
@@ -427,7 +411,7 @@ static void fn_1_2FDC(void) {
     temp_r31 = HuPrcCurrentGet()->user_data;
     while (TRUE) {
         BoardModelPosGet(temp_r31->unk04, &sp8);
-        sp8.y = temp_r31->unk1C + 4.0 * sin(temp_r31->unk14 * M_PI / 180.0);
+        sp8.y = temp_r31->unk1C + 4.0 * sind(temp_r31->unk14);
         BoardModelPosSetV(temp_r31->unk04, &sp8);
         if (temp_r31->unk08 != -1) {
             sp8.y += 50.0f;
@@ -484,7 +468,7 @@ static void fn_1_30A4(void) {
                 }
                 fn_1_5980(temp_r22);
                 BoardModelPosGet(temp_r31->unk04, &sp20);
-                temp_f31 = 180.0 * (atan2(temp_r31->unk20.x - sp20.x, temp_r31->unk20.z - sp20.z) / M_PI);
+                temp_f31 = atan2d(temp_r31->unk20.x - sp20.x, temp_r31->unk20.z - sp20.z);
                 while (fn_1_1130(temp_r31->unk04, temp_f31, 5.0f) == 0) {
                     HuPrcVSleep();
                 }
@@ -543,7 +527,7 @@ static void fn_1_30A4(void) {
                 break;
             case 3:
                 BoardModelPosGet(temp_r31->unk04, &sp20);
-                temp_f31 = 180.0 * (atan2(temp_r31->unk20.x - sp20.x, temp_r31->unk20.z - sp20.z) / M_PI);
+                temp_f31 = atan2d(temp_r31->unk20.x - sp20.x, temp_r31->unk20.z - sp20.z);
                 BoardModelRotYSet(temp_r31->unk04, temp_f31);
                 if (temp_r31->unk08 != -1) {
                     BoardPlayerRotYSet(temp_r31->unk08, temp_f31);
@@ -623,7 +607,7 @@ static void fn_1_38D8(void) {
     sp18 = lbl_1_bss_80[temp_r31];
     GWPlayer[temp_r31].space_curr = lbl_1_bss_B0;
     BoardPlayerPosGet(temp_r31, &sp24);
-    var_f28 = 180.0 * (atan2(sp18.x - sp24.x, sp18.z - sp24.z) / M_PI);
+    var_f28 = atan2d(sp18.x - sp24.x, sp18.z - sp24.z);
     BoardPlayerRotYSet(temp_r31, var_f28);
     PSVECSubtract(&sp18, &sp24, &spC);
     PSVECScale(&spC, &spC, 0.025f);
@@ -637,7 +621,7 @@ static void fn_1_38D8(void) {
             sp24.y = sp18.y;
             break;
         }
-        var_f28 = sqrtf((sp18.x - sp24.x) * (sp18.x - sp24.x) + (sp18.z - sp24.z) * (sp18.z - sp24.z));
+        var_f28 = VECDistanceXZ(&sp18, &sp24);
         if (var_f28 <= 1.0f) {
             spC.x = spC.z = 0.0f;
         }
@@ -712,7 +696,7 @@ static s32 fn_1_3C9C(void) {
             BoardSpacePosGet(0, sp20[i], &sp44);
             sp50.y = sp44.y;
             PSVECSubtract(&sp44, &sp50, &sp38);
-            var_f31 = 180.0 * (atan2(sp38.x, sp38.z) / M_PI);
+            var_f31 = atan2d(sp38.x, sp38.z);
             if (var_f31 < 0.0f) {
                 var_f31 += 360.0f;
             }
@@ -768,7 +752,7 @@ static s32 fn_1_3C9C(void) {
                 var_r25 = 0;
             }
             if (var_r26 != 0 || var_r25 != 0) {
-                var_f30 = 180.0 * (atan2(-var_r26, var_r25) / M_PI) - 180.0;
+                var_f30 = atan2d(-var_r26, var_r25) - 180.0;
                 var_f30 += var_f29;
                 if (var_f30 >= 360.0f) {
                     var_f30 -= 360.0f;
@@ -793,7 +777,7 @@ static s32 fn_1_3C9C(void) {
             }
             for (i = 0; i < var_r29; i++) {
                 if (var_r27 == i) {
-                    sp38.x = sp38.y = sp38.z = 1.7999999523162842 + sin(var_f31 * M_PI / 180.0);
+                    sp38.x = sp38.y = sp38.z = 1.8f + sind(var_f31);
                     var_f31 += 8.0f;
                     if (var_f31 > 180.0f) {
                         var_f31 -= 180.0f;
@@ -925,7 +909,7 @@ static void fn_1_4848(void) {
     BoardPlayerMotBlendSet(temp_r30, BoardModelRotYGet(lbl_1_bss_FA) - 180.0f, 0xA);
     while (!BoardPlayerMotBlendCheck(temp_r30)) {
         BoardModelPosGet(lbl_1_bss_FA, &sp14);
-        temp_f28 = sqrtf((sp20.x - sp14.x) * (sp20.x - sp14.x) + (sp20.z - sp14.z) * (sp20.z - sp14.z));
+        temp_f28 = VECDistanceXZ(&sp20, &sp14);
         if (temp_f28 <= 200.0f) {
             HuAudPlayerVoicePlay(temp_r30, 0x128);
             goto block_A;
@@ -936,7 +920,7 @@ static void fn_1_4848(void) {
     HuAudPlayerVoicePlay(temp_r30, 0x128);
     for (i = 0; i < 65; i++) {
         BoardModelPosGet(lbl_1_bss_FA, &sp14);
-        temp_f28 = sqrtf((sp20.x - sp14.x) * (sp20.x - sp14.x) + (sp20.z - sp14.z) * (sp20.z - sp14.z));
+        temp_f28 = VECDistanceXZ(&sp20, &sp14);
         if (temp_f28 <= 200.0f) {
             goto block_A;
         }
@@ -944,7 +928,7 @@ static void fn_1_4848(void) {
     }
     BoardPlayerMotionShiftSet(temp_r30, 1, 0.0f, 5.0f, 0);
     BoardModelPosGet(lbl_1_bss_FA, &sp14);
-    temp_f28 = sqrtf((sp20.x - sp14.x) * (sp20.x - sp14.x) + (sp20.z - sp14.z) * (sp20.z - sp14.z));
+    temp_f28 = VECDistanceXZ(&sp20, &sp14);
     if (temp_f28 > 200.0f) {
         HuPrcVSleep();
     }
@@ -1006,7 +990,7 @@ static void fn_1_5018(void) {
     BoardModelPosGet(lbl_1_bss_FA, &spC);
     for (i = 0; i < lbl_1_bss_C2; i++) {
         BoardPlayerPosGet(lbl_1_bss_BA[i], &sp18);
-        var_f29 = sqrtf((sp18.x - spC.x) * (sp18.x - spC.x) + (sp18.z - spC.z) * (sp18.z - spC.z));
+        var_f29 = VECDistanceXZ(&sp18, &spC);
         if (var_f29 < 900.0f && lbl_1_bss_B2[lbl_1_bss_BA[i]] == 0) {
             temp_r3 = HuPrcChildCreate(fn_1_4848, 0x2003, 0x2000, 0, boardMainProc);
             lbl_1_bss_D4[lbl_1_bss_BA[i]] = temp_r3;
@@ -1191,10 +1175,10 @@ static void fn_1_5A2C(ModelData *model, ParticleData *particle, Mtx matrix) {
     var_r26 = 0;
     for (i = 0; i < particle->unk_30; i++, var_r31++) {
         if (var_r31->unk08.z != 0.0f) {
-            var_r31->unk34.x += var_r31->unk28 * sin(var_r31->unk08.x * M_PI / 180.0);
+            var_r31->unk34.x += var_r31->unk28 * sind(var_r31->unk08.x);
             var_r31->unk34.y += var_r31->unk08.y;
-            var_r31->unk34.z += var_r31->unk28 * cos(var_r31->unk08.x * M_PI / 180.0);
-            var_r31->unk08.x += var_r31->unk24 * sin(var_r31->unk08.x * M_PI / 180.0);
+            var_r31->unk34.z += var_r31->unk28 * cosd(var_r31->unk08.x);
+            var_r31->unk08.x += var_r31->unk24 * sind(var_r31->unk08.x);
             if (var_r31->unk08.x >= 360.0f) {
                 var_r31->unk08.x -= 360.0f;
             }

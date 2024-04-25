@@ -12,7 +12,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 static void fn_1_6F80(void);
 static void fn_1_7210(void);
@@ -162,7 +162,7 @@ static void fn_1_72CC(s32 arg0) {
             lbl_1_bss_C2[i] = 0;
         }
     }
-    fn_1_73EC(180.0 * (atan2(spC.x, spC.z) / M_PI));
+    fn_1_73EC(atan2d(spC.x, spC.z));
 }
 
 static void fn_1_73EC(float arg0) {
