@@ -1175,8 +1175,6 @@ void fn_2_3F28(omObjData *object)
 			
 		case 1:
 			if(object->trans.y < 1100) {
-				
-				
 				temp_r31->unk0 = 2;
 				temp_f27 = VECDistanceAlt(&object->trans, &temp_r31->unk24);
 				temp_r31->unk58.z = temp_f27;
