@@ -20,7 +20,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -260,7 +260,7 @@ static void fn_1_95AC(s32 arg0) {
     sp14.y = 150.0f;
     sp14.z = 0.0f;
     sp8.x = -14.0f;
-    sp8.y = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI);
+    sp8.y = atan2d(-sp20.x, -sp20.z);
     sp8.z = 0.0f;
     BoardCameraMotionStartEx(lbl_1_data_49A, &sp8, &sp14, 1620.0f, -1.0f, 21);
     BoardCameraMotionWait();
@@ -394,7 +394,7 @@ static void fn_1_9E5C(s32 arg0) {
     sp14.y = 150.0f;
     sp14.z = 0.0f;
     sp8.x = -14.0f;
-    sp8.y = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI);
+    sp8.y = atan2d(-sp20.x, -sp20.z);
     sp8.z = 0.0f;
     BoardCameraMotionStartEx(lbl_1_data_49A, &sp8, &sp14, 1620.0f, -1.0f, 21);
     BoardCameraMotionWait();
@@ -510,7 +510,7 @@ static void fn_1_A408(s32 arg0) {
     sp14.y = 250.0f;
     sp14.z = 0.0f;
     sp8.x = -8.0f;
-    sp8.y = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI) - 45.0;
+    sp8.y = atan2d(-sp20.x, -sp20.z) - 45.0;
     sp8.z = 0.0f;
     BoardCameraMotionStartEx(lbl_1_data_49A, &sp8, &sp14, 1700.0f, -1.0f, 63);
     BoardCameraMotionWait();
@@ -658,13 +658,13 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
     BoardModelPosGet(lbl_1_data_49A, &sp30);
     PSVECSubtract(&sp30, &sp3C, &sp24);
     PSVECNormalize(&sp24, &sp24);
-    BoardPlayerRotYSet(arg0, 180.0 * (atan2(sp24.x, sp24.z) / M_PI));
+    BoardPlayerRotYSet(arg0, atan2d(sp24.x, sp24.z));
     BoardPlayerSizeSet(arg0, 2);
     sp18.x = 0.0f;
     sp18.y = 150.0f;
     sp18.z = 0.0f;
     spC.x = -25.0f;
-    spC.y = 180.0 * (atan2(-sp24.x, -sp24.z) / M_PI);
+    spC.y = atan2d(-sp24.x, -sp24.z);
     spC.z = 0.0f;
     BoardCameraMotionStartEx(lbl_1_data_49A, &spC, &sp18, 2000.0f, -1.0f, 2);
     BoardCameraMotionWait();
@@ -783,7 +783,7 @@ static void fn_1_B27C(s32 arg0) {
     sp14.y = 150.0f;
     sp14.z = 0.0f;
     sp8.x = -14.0f;
-    sp8.y = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI);
+    sp8.y = atan2d(-sp20.x, -sp20.z);
     sp8.z = 0.0f;
     BoardCameraMotionStartEx(lbl_1_data_49A, &sp8, &sp14, 1620.0f, -1.0f, 21);
     BoardCameraMotionWait();
@@ -890,7 +890,7 @@ static void fn_1_B8E0(omObjData *arg0) {
     // Bug? Likely to be "%=" instead.
     temp_r30->unk0C % 360;
     OSs16tof32(&temp_r30->unk0C, &temp_f30);
-    temp_f30 = 0.5 * sin(temp_f30 * M_PI / 180.0);
+    temp_f30 = 0.5 * sind(temp_f30);
     BoardModelPosGet(lbl_1_data_49A, &sp8);
     sp8.y += temp_f30;
     BoardModelPosSetV(lbl_1_data_49A, &sp8);
@@ -961,7 +961,7 @@ static void fn_1_BD8C(s32 arg0) {
     BoardPlayerPosGet(arg0, &sp18);
     BoardModelPosGet(lbl_1_data_49A, &sp24);
     PSVECSubtract(&sp18, &sp24, &spC);
-    var_f26 = 180.0 * (atan2(spC.x, spC.z) / M_PI);
+    var_f26 = atan2d(spC.x, spC.z);
     BoardPlayerMotBlendSet(arg0, var_f26 + 180.0f, 0x14);
     fn_1_B6A0(var_f25, 20);
     while (!BoardPlayerMotBlendCheck(arg0)) {
@@ -1043,8 +1043,8 @@ static void fn_1_C40C(void) {
     var_r29 = BoardSpaceLinkFlagSearch(0, var_r29, 0x04000000);
     BoardSpacePosGet(0, var_r29, &sp14);
     BoardModelPosGet(lbl_1_data_498, &sp20);
-    sp20.x += -100.0 * sin(BoardModelRotYGet(lbl_1_data_498) * M_PI / 180.0);
-    sp20.z += -100.0 * cos(BoardModelRotYGet(lbl_1_data_498) * M_PI / 180.0);
+    sp20.x += -100.0 * sind(BoardModelRotYGet(lbl_1_data_498));
+    sp20.z += -100.0 * cosd(BoardModelRotYGet(lbl_1_data_498));
     sp20.y += 250.0f;
     BoardModelPosSetV(lbl_1_data_4A0, &sp20);
     BoardModelScaleSet(lbl_1_data_4A0, 10.0f, 10.0f, 10.0f);

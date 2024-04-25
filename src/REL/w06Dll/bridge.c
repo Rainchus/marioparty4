@@ -13,7 +13,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -227,7 +227,7 @@ static s32 fn_1_8490(s32 arg0, s8 arg1) {
     BoardPlayerPosGet(arg0, &sp18);
     BoardSpacePosGet(0, lbl_1_bss_E2, &sp24);
     PSVECSubtract(&sp24, &sp18, &spC);
-    temp_f30 = 180.0 * (atan2(spC.x, spC.z) / M_PI);
+    temp_f30 = atan2d(spC.x, spC.z);
     BoardPlayerMotBlendSet(arg0, temp_f30, 0xF);
     while (!BoardPlayerMotBlendCheck(arg0)) {
         HuPrcVSleep();

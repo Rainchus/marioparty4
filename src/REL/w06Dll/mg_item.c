@@ -21,9 +21,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
-
-#define ABS(x) ((x) < 0 ? -(x) : (x))
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -277,7 +275,7 @@ static s32 fn_1_12A0(s32 arg0) {
     BoardSpacePosGet(0, lbl_1_bss_34, &sp38);
     PSVECSubtract(&sp38, &sp2C, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    BoardPlayerRotYSet(arg0, 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI));
+    BoardPlayerRotYSet(arg0, atan2d(-sp20.x, -sp20.z));
     BoardPlayerPosLerpStart(arg0, &sp2C, &sp38, 20);
     while (GWPlayer[arg0].moving) {
         HuPrcVSleep();
@@ -983,7 +981,7 @@ static void fn_1_3698(s8 arg0) {
     }
     PSVECSubtract(&sp18, &sp24, &spC);
     lbl_1_bss_28->trans.y = temp_f31 / var_f30;
-    BoardModelRotYSet(lbl_1_bss_C[4], 180.0 * (atan2(spC.x, spC.z) / M_PI));
+    BoardModelRotYSet(lbl_1_bss_C[4], atan2d(spC.x, spC.z));
     BoardModelMotionShiftSet(lbl_1_bss_C[4], temp_r31->unk08, 0.0f, 8.0f, 0x40000001);
     BoardModelMotionSpeedSet(lbl_1_bss_C[4], 2.0f);
 }
@@ -1175,8 +1173,8 @@ static void fn_1_4460(ModelData *model, ParticleData *particle, Mtx matrix) {
         if (j != particle->unk_30) {
             temp_f30 = 0.003921569f * frand8() * 360.0f;
             temp_f29 = var_f31 * (20.0f + 0.003921569f * frand8() * 60.0f);
-            var_r31->unk34.x = sp8.x + temp_f29 * sin(temp_f30 * M_PI / 180.0);
-            var_r31->unk34.z = sp8.z + temp_f29 * cos(temp_f30 * M_PI / 180.0);
+            var_r31->unk34.x = sp8.x + temp_f29 * sind(temp_f30);
+            var_r31->unk34.z = sp8.z + temp_f29 * cosd(temp_f30);
             var_r31->unk34.y = sp8.y + var_f31 * (-30.0f + 0.003921569f * frand8() * 40.0f);
             var_r31->unk08.x = 0.5f + 0.003921569f * frand8() * 3.0f;
             var_r31->unk08.y = 0.3f + 0.003921569f * frand8() * 2.0f;

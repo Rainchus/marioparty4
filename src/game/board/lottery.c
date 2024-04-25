@@ -21,10 +21,8 @@
 #include "game/board/ui.h"
 #include "game/board/window.h"
 
-#include "math.h"
+#include "ext_math.h"
 #include "stdlib.h"
-
-#define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef struct {
     struct {
@@ -510,7 +508,7 @@ static void ExecLottery(void) {
         PSVECScale(&sp20, &sp20, 0.95f);
         PSVECAdd(&sp20, &sp38, &sp2C);
     }
-    temp_r26 = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI);
+    temp_r26 = atan2d(-sp20.x, -sp20.z);
     if (BoardPlayerSizeGet(temp_r31) == 1) {
         BoardModelVisibilitySet(gripMdl[0], 0);
         BoardModelVisibilitySet(gripMdl[1], 1);
@@ -550,7 +548,7 @@ static void ExecLottery(void) {
             BoardPlayerPosGet(i, &sp38);
             PSVECSubtract(&sp2C, &sp38, &sp20);
             PSVECNormalize(&sp20, &sp20);
-            BoardPlayerMotBlendSet(i, 180.0 * (atan2(sp20.x, sp20.z) / M_PI), 7);
+            BoardPlayerMotBlendSet(i, atan2d(sp20.x, sp20.z), 7);
         }
     }
     BoardMusStart(1, 2, 0x7F, 0);
@@ -971,7 +969,7 @@ static void ExecBallGame(void) {
             } else {
                 OSs8tof32(&spB, &var_f26);
                 OSs8tof32(&spA, &var_f19);
-                var_f25 = 180.0 * (atan2(var_f26, var_f19) / M_PI);
+                var_f25 = atan2d(var_f26, var_f19);
                 if (var_f25 < 0.0f) {
                     var_f25 += 360.0f;
                 }
@@ -1162,7 +1160,7 @@ static void ExecScratchTicket(s32 arg0) {
     BoardModelLayerSet(lotteryMdl[4], 6);
     BoardModelPassSet(lotteryMdl[4], 0);
     BoardCameraDirGet(&spC);
-    BoardModelRotYSet(lotteryMdl[4], 180.0 * (atan2(-spC.x, -spC.z) / M_PI));
+    BoardModelRotYSet(lotteryMdl[4], atan2d(-spC.x, -spC.z));
     BoardModelScaleSet(lotteryMdl[4], 3.0f, 3.0f, 3.0f);
     sp24.x = 320.0f;
     sp24.y = 480.0f;
@@ -1511,7 +1509,7 @@ static void ExecTicketFocus(s32 arg0) {
     }
     temp_r29 = OM_GET_WORK_PTR(ticketObj[arg0], TicketWork);
     for (var_f31 = 0.0f; var_f31 < 90.0f; var_f31 += 2.0f) {
-        temp_f30 = 1.0 + 1.3f * sin(var_f31 * M_PI / 180.0);
+        temp_f30 = 1.0 + 1.3f * sind(var_f31);
         HuSprScaleSet(ticketSprGrp, temp_r29->unk00_field2, temp_f30, temp_f30);
         HuSprScaleSet(ticketSprGrp, temp_r29->unk00_field2 + 12, temp_f30, temp_f30);
         HuPrcVSleep();
@@ -1790,7 +1788,7 @@ static void ExecItemPrize(void) {
     for (i = 0; i < 30; i++) {
         sp14.y += temp_f29;
         var_f30 = BoardDAngleCalc(15.0f + var_f30);
-        var_f31 = cos(var_f28 * M_PI / 180.0);
+        var_f31 = cosd(var_f28);
         if (var_f31 <= 0.0f) {
             var_f31 = 0.01f;
         }
@@ -2031,7 +2029,7 @@ void BoardLotteryTutorialExec(void) {
     BoardSpacePosGet(0, temp_r29, &sp2C);
     PSVECSubtract(&sp2C, &sp38, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    temp_r28 = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI);
+    temp_r28 = atan2d(-sp20.x, -sp20.z);
     sp14.x = -3.0f;
     sp14.y = temp_r28;
     sp14.z = 0.0f;
