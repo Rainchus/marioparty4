@@ -12,6 +12,8 @@ typedef struct vec2f {
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 
 #define VECDistanceXZ(a, b) sqrtf((((a)->x-(b)->x)*((a)->x-(b)->x))+(((a)->z-(b)->z)*((a)->z-(b)->z)))
+#define VECDistanceAlt(a, b) sqrtf((((a)->x-(b)->x)*((a)->x-(b)->x))+(((a)->y-(b)->y)*((a)->y-(b)->y))+(((a)->z-(b)->z)*((a)->z-(b)->z)))
+
 #define VECMagXZ(a) sqrtf(((a)->x*(a)->x)+((a)->z*(a)->z))
 
 #define sind(x) sin(M_PI*(x)/180.0)
