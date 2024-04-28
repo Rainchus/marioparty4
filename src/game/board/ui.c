@@ -18,9 +18,7 @@
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
 
-#include "math.h"
-
-#define ABS(x) (((x) < 0) ? -(x) : (x))
+#include "ext_math.h"
 
 typedef struct {
     /* 0x00 */ struct {
@@ -964,7 +962,7 @@ static void GrowYourTurn(UnkUiWork02 *arg0, omObjData *arg1) {
         arg0->unk00_bit3 = 1;
     }
     OSs8tof32(&arg0->unk01, &temp_f30);
-    temp_f30 = 1.2999999523162842 * sin(M_PI * temp_f30 / 180.0);
+    temp_f30 = 1.3f * sind(temp_f30);
     HuSprScaleSet(yourTurnSprGrp, 0, temp_f30, temp_f30);
 }
 
@@ -977,7 +975,7 @@ static void WaitYourTurn(UnkUiWork02 *arg0, omObjData *arg1) {
         arg0->unk00_bit0 = 1;
     }
     OSs8tof32(&arg0->unk01, &temp_f30);
-    temp_f30 = sin(M_PI * temp_f30 / 180.0);
+    temp_f30 = sind(temp_f30);
     HuSprScaleSet(yourTurnSprGrp, 0, 1.3f + temp_f30, 1.3f + temp_f30);
     HuSprTPLvlSet(yourTurnSprGrp, 0, 1.0f - temp_f30);
 }
@@ -1398,7 +1396,7 @@ static void UpdateItemPick(omObjData *arg0) {
             for (j = 0; j < 3; j++) {
                 if (itemMdlId[i][j] != -1) {
                     OSs8tof32(&temp_r28->unk03, &temp_f30);
-                    temp_f30 = 1.0 + 0.5 * sin(M_PI * temp_f30 / 180.0);
+                    temp_f30 = 1.0 + 0.5 * sind(temp_f30);
                     BoardModelScaleSet(itemMdlId[i][j], temp_f30, temp_f30, temp_f30);
                     sp14.x = temp_r27[i][j + 2].x;
                     sp14.y = temp_r27[i][j + 2].y;

@@ -18,7 +18,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -205,7 +205,7 @@ static s32 fn_1_4BF8(s32 arg0) {
     sp38.z += 115.0 * cos(M_PI);
     PSVECSubtract(&sp38, &sp2C, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    BoardPlayerRotYSet(arg0, 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI));
+    BoardPlayerRotYSet(arg0, atan2d(-sp20.x, -sp20.z));
     BoardPlayerPosLerpStart(arg0, &sp2C, &sp38, 40);
     BoardModelPosGet(lbl_1_bss_C[5], &sp2C);
     BoardModelMotionShiftSet(lbl_1_bss_C[5], lbl_1_data_1DA, 0.0f, 8.0f, 0x40000001);
@@ -213,7 +213,7 @@ static s32 fn_1_4BF8(s32 arg0) {
     while (GWPlayer[arg0].moving) {
         BoardPlayerPosGet(arg0, &sp38);
         PSVECSubtract(&sp38, &sp2C, &sp20);
-        BoardModelRotYSet(lbl_1_bss_C[5], 180.0 * (atan2(sp20.x, sp20.z) / M_PI));
+        BoardModelRotYSet(lbl_1_bss_C[5], atan2d(sp20.x, sp20.z));
         HuPrcVSleep();
     }
     BoardModelMotionShiftSet(lbl_1_bss_C[5], 1, 0.0f, 8.0f, 0x40000001);
@@ -286,7 +286,7 @@ static void fn_1_519C(s32 arg0) {
         while (GWPlayer[arg0].moving) {
             BoardPlayerPosGet(arg0, &sp14);
             PSVECSubtract(&sp14, &sp20, &sp8);
-            BoardModelRotYSet(lbl_1_bss_C[5], 180.0 * (atan2(sp8.x, sp8.z) / M_PI));
+            BoardModelRotYSet(lbl_1_bss_C[5], atan2d(sp8.x, sp8.z));
             HuPrcVSleep();
         }
         BoardModelMotionShiftSet(lbl_1_bss_C[5], 1, 0.0f, 8.0f, 0x40000001);
@@ -346,7 +346,7 @@ static void fn_1_5490(s32 arg0) {
     BoardModelPosSetV(temp_r31->unk04, &sp3C);
     BoardModelScaleSet(temp_r31->unk04, temp_f31, temp_f31, temp_f31);
     BoardModelVisibilitySet(temp_r31->unk04, 0);
-    BoardModelRotYSet(temp_r31->unk04, 180.0 * (atan2(sp18.x, sp18.z) / M_PI));
+    BoardModelRotYSet(temp_r31->unk04, atan2d(sp18.x, sp18.z));
     BoardModelMotionStart(temp_r31->unk04, 1, 0x40000001);
     BoardModelMotionStart(lbl_1_data_1DC, 0, 0);
 }
@@ -436,8 +436,8 @@ static void fn_1_59D0(s32 arg0) {
     temp_r31 = OM_GET_WORK_PTR(lbl_1_bss_4C, Bss4CWork);
     temp_r31->unk00_field1 = arg0;
     if (arg0 == 1) {
-        lbl_1_bss_4C->trans.x = 0.96666666f * sin(90 * M_PI / 180.0);
-        lbl_1_bss_4C->trans.z = 0.96666666f * cos(90 * M_PI / 180.0);
+        lbl_1_bss_4C->trans.x = 0.96666666f * sind(90);
+        lbl_1_bss_4C->trans.z = 0.96666666f * cosd(90);
         temp_r31->unk01 = 60;
         return;
     }
@@ -520,8 +520,8 @@ static void fn_1_5CE4(s32 arg0) {
         BoardPlayerMotionStart(temp_r31->unk00_field1, temp_r31->unk02, 0x40000001);
         omVibrate(temp_r31->unk00_field1, 12, 4, 2);
         fn_1_5968(&sp14);
-        sp8.x = sp14.x + 18.0 * sin(90 * M_PI / 180.0);
-        sp8.z = sp14.z + 18.0 * cos(90 * M_PI / 180.0);
+        sp8.x = sp14.x + 18.0 * sind(90);
+        sp8.z = sp14.z + 18.0 * cosd(90);
         BoardPlayerPosSetV(temp_r31->unk00_field1, &sp8);
         BoardModelPosSetV(temp_r31->unk04, &sp8);
         return;
@@ -641,8 +641,8 @@ static void fn_1_606C(omObjData *arg0) {
             }
             fn_1_5968(&sp64);
             BoardPlayerPosGet(temp_r31->unk00_field1, &sp58);
-            sp58.x = sp64.x + 18.0 * sin(90 * M_PI / 180.0);
-            sp58.z = sp64.z + 18.0 * cos(90 * M_PI / 180.0);
+            sp58.x = sp64.x + 18.0 * sind(90);
+            sp58.z = sp64.z + 18.0 * cosd(90);
             BoardPlayerPosSetV(temp_r31->unk00_field1, &sp58);
             BoardModelPosSetV(temp_r31->unk04, &sp58);
             BoardModelRotYSet(temp_r31->unk04, BoardPlayerRotYGet(temp_r31->unk00_field1));
@@ -737,8 +737,8 @@ static void fn_1_6C4C(s32 arg0) {
         }
         temp_r31 = &temp_r30->unk0C[i];
         temp_r31->unk00 = 1;
-        temp_r31->unk08.x = sp8.x + 50.0 * sin(360.0f * var_f31 * M_PI / 180.0);
-        temp_r31->unk08.z = sp8.z + 50.0 * cos(360.0f * var_f31 * M_PI / 180.0);
+        temp_r31->unk08.x = sp8.x + 50.0 * sind(360.0f * var_f31);
+        temp_r31->unk08.z = sp8.z + 50.0 * cosd(360.0f * var_f31);
         temp_r31->unk08.y = sp8.y + 600.0f + 500.0f * BoardRandFloat();
         temp_r31->unk01 = 0;
         temp_r31->unk04 = 360.0f * BoardRandFloat();

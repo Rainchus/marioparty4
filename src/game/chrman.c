@@ -11,7 +11,7 @@
 #include "game/process.h"
 #include "game/sprite.h"
 
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;
@@ -401,13 +401,13 @@ static void UpdateCharAnim(s16 character, s16 arg1, s16 arg2, u8 arg3, s16 arg4,
                 break;
             }
             if (!(arg4 & 0xF) && !(temp_r29->unkAC & 0x10)) {
-                effectDustParam.unk0C.x = 2.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
-                effectDustParam.unk0C.y = 1.0 + 0.1 * frandmod(0xA);
-                effectDustParam.unk0C.z = 2.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
-                sp1C.x = temp_r30->pos.x + temp_r30->scale.x * (frandmod(0x32) - 0x19);
+                effectDustParam.unk0C.x = 2.0 * -sind(temp_r30->rot.y);
+                effectDustParam.unk0C.y = 1.0 + 0.1 * frandmod(10);
+                effectDustParam.unk0C.z = 2.0 * -cosd(temp_r30->rot.y);
+                sp1C.x = temp_r30->pos.x + temp_r30->scale.x * (frandmod(50) - 25);
                 sp1C.y = temp_r30->pos.y;
-                sp1C.z = temp_r30->pos.z + temp_r30->scale.x * (frandmod(0x32) - 0x19);
-                CreateEffectDust(arg1, sp1C.x, sp1C.y, sp1C.z, frandmod(0xA) + 0x1E, &effectDustParam);
+                sp1C.z = temp_r30->pos.z + temp_r30->scale.x * (frandmod(50) - 25);
+                CreateEffectDust(arg1, sp1C.x, sp1C.y, sp1C.z, frandmod(10) + 30, &effectDustParam);
             }
             for (i = 0; i < 4; i++) {
                 if (lbl_801309A0[character * 4 + i] == arg4) {
@@ -424,13 +424,13 @@ static void UpdateCharAnim(s16 character, s16 arg1, s16 arg2, u8 arg3, s16 arg4,
                 break;
             }
             if (!(arg4 & 3) && !(temp_r29->unkAC & 0x10)) {
-                effectDustParam.unk0C.x = 4.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
-                effectDustParam.unk0C.y = 2.0 + 0.1 * frandmod(0xA);
-                effectDustParam.unk0C.z = 4.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
-                sp1C.x = temp_r30->pos.x + temp_r30->scale.x * (frandmod(0x32) - 0x19);
+                effectDustParam.unk0C.x = 4.0 * -sind(temp_r30->rot.y);
+                effectDustParam.unk0C.y = 2.0 + 0.1 * frandmod(10);
+                effectDustParam.unk0C.z = 4.0 * -cosd(temp_r30->rot.y);
+                sp1C.x = temp_r30->pos.x + temp_r30->scale.x * (frandmod(50) - 25);
                 sp1C.y = temp_r30->pos.y;
-                sp1C.z = temp_r30->pos.z + temp_r30->scale.x * (frandmod(0x32) - 0x19);
-                CreateEffectDust(arg1, sp1C.x, sp1C.y, sp1C.z, frandmod(0xA) + 0x1E, &effectDustParam);
+                sp1C.z = temp_r30->pos.z + temp_r30->scale.x * (frandmod(50) - 25);
+                CreateEffectDust(arg1, sp1C.x, sp1C.y, sp1C.z, frandmod(10) + 30, &effectDustParam);
             }
             for (i = 0; i < 4; i++) {
                 if (lbl_801309C0[character * 4 + i] == arg4) {
@@ -441,13 +441,13 @@ static void UpdateCharAnim(s16 character, s16 arg1, s16 arg2, u8 arg3, s16 arg4,
             break;
         case 4:
             if (arg4 < 5 && !(temp_r29->unkAC & 0x10)) {
-                effectDustParam.unk0C.x = 6.0 * sin(temp_r30->rot.y * M_PI / 180.0);
-                effectDustParam.unk0C.z = 6.0 * cos(temp_r30->rot.y * M_PI / 180.0);
+                effectDustParam.unk0C.x = 6.0 * sind(temp_r30->rot.y);
+                effectDustParam.unk0C.z = 6.0 * cosd(temp_r30->rot.y);
                 for (i = 0; i < 5; i++) {
-                    effectDustParam.unk0C.y = 2.0 + 0.1 * frandmod(0xA);
-                    sp1C.x = temp_r30->pos.x + temp_r30->scale.x * (frandmod(0x32) - 0x19);
+                    effectDustParam.unk0C.y = 2.0 + 0.1 * frandmod(10);
+                    sp1C.x = temp_r30->pos.x + temp_r30->scale.x * (frandmod(50) - 25);
                     sp1C.y = temp_r30->pos.y;
-                    sp1C.z = temp_r30->pos.z + temp_r30->scale.x * (frandmod(0x32) - 0x19);
+                    sp1C.z = temp_r30->pos.z + temp_r30->scale.x * (frandmod(50) - 25);
                     CreateEffectDust(arg1, sp1C.x, sp1C.y, sp1C.z, 20.0f, &effectDustParam);
                 }
             }
@@ -458,15 +458,15 @@ static void UpdateCharAnim(s16 character, s16 arg1, s16 arg2, u8 arg3, s16 arg4,
         case 6:
             if (arg4 == 5 && !(temp_r29->unkAC & 0x10)) {
                 for (i = 0; i < 8; i++) {
-                    effectDustParam.unk0C.x = 4.0 * sin(45.0f * i * M_PI / 180.0) * temp_r30->scale.x;
+                    effectDustParam.unk0C.x = 4.0 * sind(45.0f * i) * temp_r30->scale.x;
                     effectDustParam.unk0C.y = 0.0f;
-                    effectDustParam.unk0C.z = 4.0 * cos(45.0f * i * M_PI / 180.0) * temp_r30->scale.x;
+                    effectDustParam.unk0C.z = 4.0 * cosd(45.0f * i) * temp_r30->scale.x;
                     CreateEffectDust(arg1, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 20.0f, &effectDustParam);
                 }
                 for (i = 0; i < 8; i++) {
-                    effectDustParam.unk0C.x = 2.0 * sin((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                    effectDustParam.unk0C.x = 2.0 * sind(45.0f * i + 22.5) * temp_r30->scale.x;
                     effectDustParam.unk0C.y = 0.0f;
-                    effectDustParam.unk0C.z = 2.0 * cos((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                    effectDustParam.unk0C.z = 2.0 * cosd(45.0f * i + 22.5) * temp_r30->scale.x;
                     CreateEffectDust(arg1, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 20.0f, &effectDustParam);
                 }
             }
@@ -518,15 +518,15 @@ static void UpdateCharAnim(s16 character, s16 arg1, s16 arg2, u8 arg3, s16 arg4,
             if (arg4 == 0) {
                 if (!(temp_r29->unkAC & 0x10)) {
                     for (i = 0; i < 8; i++) {
-                        effectStarParam.unk0C.x = 10.0 * sin(45.0f * i * M_PI / 180.0) * temp_r30->scale.x;
+                        effectStarParam.unk0C.x = 10.0 * sind(45.0f * i) * temp_r30->scale.x;
                         effectStarParam.unk0C.y = 0.0f;
-                        effectStarParam.unk0C.z = 10.0 * cos(45.0f * i * M_PI / 180.0) * temp_r30->scale.x;
+                        effectStarParam.unk0C.z = 10.0 * cosd(45.0f * i) * temp_r30->scale.x;
                         CreateEffectStar(arg1, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 40.0f, &effectStarParam);
                     }
                     for (i = 0; i < 8; i++) {
-                        effectDustParam.unk0C.x = 4.0 * sin((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                        effectDustParam.unk0C.x = 4.0 * sind(45.0f * i + 22.5) * temp_r30->scale.x;
                         effectDustParam.unk0C.y = 0.0f;
-                        effectDustParam.unk0C.z = 4.0 * cos((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                        effectDustParam.unk0C.z = 4.0 * cosd(45.0f * i + 22.5) * temp_r30->scale.x;
                         CreateEffectDust(arg1, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 20.0f, &effectDustParam);
                     }
                 }
@@ -560,9 +560,9 @@ static void UpdateCharAnim(s16 character, s16 arg1, s16 arg2, u8 arg3, s16 arg4,
                 }
                 if (arg4 == 30) {
                     for (i = 0; i < 8; i++) {
-                        effectDustParam.unk0C.x = 4.0 * sin((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                        effectDustParam.unk0C.x = 4.0 * sind(45.0f * i + 22.5) * temp_r30->scale.x;
                         effectDustParam.unk0C.y = 0.0f;
-                        effectDustParam.unk0C.z = 4.0 * cos((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                        effectDustParam.unk0C.z = 4.0 * cosd(45.0f * i + 22.5) * temp_r30->scale.x;
                         CreateEffectDust(arg1, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 20.0f, &effectDustParam);
                     }
                 }
@@ -972,12 +972,12 @@ static void RotateEffect(HsfanimStruct01 *arg0) {
 
     temp_r30 = &Hu3DData[(s32) arg0->unk08.x];
     if (arg0->unk00_s16 < 8) {
-        var_f31 = 0.3 + sin((40.0f + 10.0f * (arg0->unk00_s16 + 1)) * M_PI / 180.0);
+        var_f31 = 0.3 + sind(40.0f + 10.0f * (arg0->unk00_s16 + 1));
         arg0->unk2C = 50.0f * var_f31 * temp_r30->scale.x;
         arg0->unk40.a = 0xFF;
-        var_f31 = 0.3 + sin((15.0f * (arg0->unk00_s16 + 1)) * M_PI / 180.0);
+        var_f31 = 0.3 + sind(15.0f * (arg0->unk00_s16 + 1));
     } else {
-        var_f31 = 0.3 + sin(3 * M_PI / 4);
+        var_f31 = 0.3 + sind(135);
     }
     var_f31 *= temp_r30->scale.x;
     arg0->unk34.x = temp_r30->pos.x + arg0->unk14.x * var_f31;
@@ -1020,9 +1020,9 @@ static void PlayEffectSound(HsfanimStruct01 *arg0) {
         var_r25 = voiceParam[temp_r28 * 2 + 1];
     }
     temp_r26 = (arg0->unk00_s16 * 5) % 360;
-    arg0->unk34.x = temp_r30->pos.x + 40.0 * sin((arg0->unk08.y + temp_r26) * M_PI / 180.0) * temp_r30->scale.x;
+    arg0->unk34.x = temp_r30->pos.x + 40.0 * sind(arg0->unk08.y + temp_r26) * temp_r30->scale.x;
     arg0->unk34.y = temp_r30->pos.y + var_r25 * temp_r30->scale.x;
-    arg0->unk34.z = temp_r30->pos.z + 40.0 * cos((arg0->unk08.y + temp_r26) * M_PI / 180.0) * temp_r30->scale.x;
+    arg0->unk34.z = temp_r30->pos.z + 40.0 * cosd(arg0->unk08.y + temp_r26) * temp_r30->scale.x;
     arg0->unk00_s16++;
     if (arg0->unk00_s16 >= 0x8F) {
         arg0->unk00_s16 = 0x48;
@@ -1477,8 +1477,8 @@ void CharModelEffectCreate(s16 arg0, Vec *arg1) {
         var_r27 = var_r26->unk_120;
         var_r31 = &var_r27->unk_48[temp_r28];
         var_r31->unk02 = 2;
-        var_r31->unk08.x = 30.0 * sin(i * 45 * M_PI / 180.0);
-        var_r31->unk08.y = 30.0 * cos(i * 45 * M_PI / 180.0);
+        var_r31->unk08.x = 30.0 * sind(i * 45);
+        var_r31->unk08.y = 30.0 * cosd(i * 45);
         var_r31->unk08.z = 0.0f;
         var_r31->unk14 = *arg1;
         var_r31->unk20 = 1.15f;
@@ -1527,7 +1527,7 @@ static void OrbitEffect(HsfanimStruct01 *arg0) {
     if (var_f30 > 90.0f) {
         var_f30 = 90.0f;
     }
-    temp_f31 = sin((M_PI * var_f30) / 180.0);
+    temp_f31 = sind(var_f30);
     arg0->unk34.x = arg0->unk14.x + arg0->unk08.x * temp_f31;
     arg0->unk34.y = arg0->unk14.y + arg0->unk08.y * temp_f31;
     arg0->unk34.z = arg0->unk14.z + arg0->unk08.z * temp_f31;
@@ -1569,9 +1569,9 @@ void CharModelCoinEffectCreate(s16 arg0, Vec *arg1) {
 
     for (i = 0; i < 16; i++) {
         temp_r29 = i * 22.5f;
-        coinParticleParam.unk0C.x = 5.0 * sin(temp_r29 * M_PI / 180.0);
+        coinParticleParam.unk0C.x = 5.0 * sind(temp_r29);
         coinParticleParam.unk0C.y = 0.1f * (frandmod(100) - 50);
-        coinParticleParam.unk0C.z = 5.0 * cos(temp_r29 * M_PI / 180.0);
+        coinParticleParam.unk0C.z = 5.0 * cosd(temp_r29);
         var_r28 = CreateEffect(effectMdl[5], arg0, arg1->x, arg1->y, arg1->z, 30.0f, &coinParticleParam);
         if (var_r28 == -1) {
             break;
@@ -1650,9 +1650,9 @@ void fn_8004EDA4(s16 arg0, Vec *arg1, Vec *arg2) {
     sp20.z = sp2C[2][2];
     for (i = 0; i < 8; i++) {
         temp_f31 = i * 45;
-        sp14.x = sp20.x * sp20.y * (1.0 - cos(temp_f31 * M_PI / 180.0)) - sp20.z * sin(temp_f31 * M_PI / 180.0);
-        sp14.y = sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cos(temp_f31 * M_PI / 180.0);
-        sp14.z = sp20.y * sp20.z * (1.0 - cos(temp_f31 * M_PI / 180.0)) + sp20.x * sin(temp_f31 * M_PI / 180.0);
+        sp14.x = sp20.x * sp20.y * (1.0 - cosd(temp_f31)) - sp20.z * sind(temp_f31);
+        sp14.y = sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cosd(temp_f31);
+        sp14.z = sp20.y * sp20.z * (1.0 - cosd(temp_f31)) + sp20.x * sind(temp_f31);
         PSVECNormalize(&sp14, &sp14);
         PSVECScale(&sp14, &lbl_80131030.unk0C, 10.0f);
         var_r28 = CreateEffect(effectMdl[4], arg0, arg1->x, arg1->y, arg1->z, 20.0f, &lbl_80131030);
@@ -1732,9 +1732,9 @@ void fn_8004F13C(s16 arg0, Vec *arg1, Vec *arg2) {
     sp20.z = sp2C[2][2];
     for (i = 0; i < 8; i++) {
         temp_f31 = i * 45;
-        sp14.x = sp20.x * sp20.y * (1.0 - cos(temp_f31 * M_PI / 180.0)) - sp20.z * sin(temp_f31 * M_PI / 180.0);
-        sp14.y = sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cos(temp_f31 * M_PI / 180.0);
-        sp14.z = sp20.y * sp20.z * (1.0 - cos(temp_f31 * M_PI / 180.0)) + sp20.x * sin(temp_f31 * M_PI / 180.0);
+        sp14.x = sp20.x * sp20.y * (1.0 - cosd(temp_f31)) - sp20.z * sind(temp_f31);
+        sp14.y = sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cosd(temp_f31);
+        sp14.z = sp20.y * sp20.z * (1.0 - cosd(temp_f31)) + sp20.x * sind(temp_f31);
         PSVECNormalize(&sp14, &sp14);
         PSVECScale(&sp14, &lbl_801310BC.unk0C, 10.0f);
         var_r28 = CreateEffect(effectMdl[4], arg0, arg1->x, arg1->y, arg1->z, 20.0f, &lbl_801310BC);
@@ -1931,9 +1931,9 @@ static void UpdateNpcEffect(void) {
         switch (temp_r27[2]) {
             case 0:
                 if (!(temp_r26 & 0xF) && !(lbl_801975B0[temp_r28] & 0x10)) {
-                    effectDustParam.unk0C.x = 2.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
+                    effectDustParam.unk0C.x = 2.0 * -sind(temp_r30->rot.y);
                     effectDustParam.unk0C.y = 1.0 + 0.1 * frandmod(10);
-                    effectDustParam.unk0C.z = 2.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
+                    effectDustParam.unk0C.z = 2.0 * -cosd(temp_r30->rot.y);
                     sp2C.x = temp_r30->pos.x + (frandmod(50) - 25);
                     sp2C.y = temp_r30->pos.y;
                     sp2C.z = temp_r30->pos.z + (frandmod(50) - 25);
@@ -1950,9 +1950,9 @@ static void UpdateNpcEffect(void) {
                 break;
             case 1:
                 if (!(temp_r26 & 3) && !(lbl_801975B0[temp_r28] & 0x10)) {
-                    effectDustParam.unk0C.x = 4.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
+                    effectDustParam.unk0C.x = 4.0 * -sind(temp_r30->rot.y);
                     effectDustParam.unk0C.y = 2.0 + 0.1 * frandmod(10);
-                    effectDustParam.unk0C.z = 4.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
+                    effectDustParam.unk0C.z = 4.0 * -cosd(temp_r30->rot.y);
                     sp2C.x = temp_r30->pos.x + (frandmod(50) - 25);
                     sp2C.y = temp_r30->pos.y;
                     sp2C.z = temp_r30->pos.z + (frandmod(50) - 25);
@@ -1970,9 +1970,9 @@ static void UpdateNpcEffect(void) {
             case 2:
                 if (temp_r28 != -1) {
                     if (!(temp_r26 & 0x1F) && !(lbl_801975B0[temp_r28] & 0x10)) {
-                        effectDustParam.unk0C.x = 2.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
+                        effectDustParam.unk0C.x = 2.0 * -sind(temp_r30->rot.y);
                         effectDustParam.unk0C.y = 1.0 + 0.1 * frandmod(10);
-                        effectDustParam.unk0C.z = 2.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
+                        effectDustParam.unk0C.z = 2.0 * -cosd(temp_r30->rot.y);
                         sp2C.x = temp_r30->pos.x + (frandmod(50) - 25);
                         sp2C.y = temp_r30->pos.y;
                         sp2C.z = temp_r30->pos.z + (frandmod(50) - 25);
@@ -1989,9 +1989,9 @@ static void UpdateNpcEffect(void) {
             case 3:
                 if (temp_r28 != -1) {
                     if (!(temp_r26 & 3) && !(lbl_801975B0[temp_r28] & 0x10)) {
-                        effectDustParam.unk0C.x = 2.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
+                        effectDustParam.unk0C.x = 2.0 * -sind(temp_r30->rot.y);
                         effectDustParam.unk0C.y = 1.0 + 0.1 * frandmod(10);
-                        effectDustParam.unk0C.z = 2.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
+                        effectDustParam.unk0C.z = 2.0 * -cosd(temp_r30->rot.y);
                         sp2C.x = temp_r30->pos.x + (frandmod(50) - 25);
                         sp2C.y = temp_r30->pos.y;
                         sp2C.z = temp_r30->pos.z + (frandmod(50) - 25);
@@ -2008,9 +2008,9 @@ static void UpdateNpcEffect(void) {
             case 4:
                 if (temp_r28 != -1) {
                     if (!(temp_r26 & 7) && !(lbl_801975B0[temp_r28] & 0x10)) {
-                        effectDustParam.unk0C.x = 2.0 * -sin(temp_r30->rot.y * M_PI / 180.0);
+                        effectDustParam.unk0C.x = 2.0 * -sind(temp_r30->rot.y);
                         effectDustParam.unk0C.y = 1.0 + 0.1 * frandmod(10);
-                        effectDustParam.unk0C.z = 2.0 * -cos(temp_r30->rot.y * M_PI / 180.0);
+                        effectDustParam.unk0C.z = 2.0 * -cosd(temp_r30->rot.y);
                         sp2C.x = temp_r30->pos.x + (frandmod(50) - 25);
                         sp2C.y = temp_r30->pos.y;
                         sp2C.z = temp_r30->pos.z + (frandmod(50) - 25);
@@ -2032,15 +2032,15 @@ static void UpdateNpcEffect(void) {
                     break;
                 }
                 for (i = 0; i < 8; i++) {
-                    effectStarParam.unk0C.x = 10.0 * sin(45.0f * i * M_PI / 180.0) * temp_r30->scale.x;
+                    effectStarParam.unk0C.x = 10.0 * sind(45.0f * i) * temp_r30->scale.x;
                     effectStarParam.unk0C.y = 0.0f;
-                    effectStarParam.unk0C.z = 10.0 * cos(45.0f * i * M_PI / 180.0) * temp_r30->scale.x;
+                    effectStarParam.unk0C.z = 10.0 * cosd(45.0f * i) * temp_r30->scale.x;
                     CreateEffectStar(temp_r25, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 40.0f, &effectStarParam);
                 }
                 for (i = 0; i < 8; i++) {
-                    effectDustParam.unk0C.x = 4.0 * sin((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                    effectDustParam.unk0C.x = 4.0 * sind(45.0f * i + 22.5) * temp_r30->scale.x;
                     effectDustParam.unk0C.y = 0.0f;
-                    effectDustParam.unk0C.z = 4.0 * cos((45.0f * i + 22.5) * M_PI / 180.0) * temp_r30->scale.x;
+                    effectDustParam.unk0C.z = 4.0 * cosd(45.0f * i + 22.5) * temp_r30->scale.x;
                     CreateEffectDust(temp_r25, temp_r30->pos.x, temp_r30->pos.y + 10.0f * temp_r30->scale.x, temp_r30->pos.z, 20.0f, &effectDustParam);
                 }
                 if (temp_r28 != -1) {

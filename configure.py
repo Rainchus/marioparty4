@@ -1402,9 +1402,9 @@ config.libs = [
             Object(Matching, "REL/w04Dll/main.c"),
             Object(Matching, "REL/w04Dll/bridge.c"),
             Object(Matching, "REL/w04Dll/boo_event.c"),
-            Object(NonMatching, "REL/w04Dll/big_boo.c"),
-            Object(NonMatching, "REL/w04Dll/mg_item.c"),
-            Object(NonMatching, "REL/w04Dll/mg_coin.c"),
+            Object(Matching, "REL/w04Dll/big_boo.c"),
+            Object(Matching, "REL/w04Dll/mg_item.c"),
+            Object(Matching, "REL/w04Dll/mg_coin.c"),
         }
     ),
     Rel('w05Dll',

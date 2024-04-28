@@ -23,7 +23,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 static void fn_1_E100(void);
 static void fn_1_E154(void);
@@ -308,7 +308,7 @@ static void fn_1_E44C(omObjData *arg0) {
         arg0->trans.x = spC.x;
         arg0->trans.y = spC.y;
         arg0->trans.z = spC.z;
-        arg0->rot.x = sqrtf((lbl_1_bss_7D8.x - sp18.x) * (lbl_1_bss_7D8.x - sp18.x) + (lbl_1_bss_7D8.z - sp18.z) * (lbl_1_bss_7D8.z - sp18.z));
+        arg0->rot.x = VECDistanceXZ(&lbl_1_bss_7D8, &sp18);
         arg0->rot.y = 10.0f;
         arg0->rot.z = sp18.y;
         arg0->scale.x = 0.0f;
@@ -327,7 +327,7 @@ static void fn_1_E914(omObjData *arg0) {
     spC.z += arg0->trans.z * arg0->rot.x / 32.760002f;
     spC.y += arg0->rot.y - 0.016666668f * arg0->scale.x * arg0->scale.x;
     arg0->scale.x += 1.0f;
-    if (sqrtf((lbl_1_bss_7D8.x - spC.x) * (lbl_1_bss_7D8.x - spC.x) + (lbl_1_bss_7D8.z - spC.z) * (lbl_1_bss_7D8.z - spC.z)) < 2.0f) {
+    if (VECDistanceXZ(&lbl_1_bss_7D8, &spC) < 2.0f) {
         spC = lbl_1_bss_7D8;
         BoardPlayerRotSet(lbl_1_bss_7E4, 0.0f, fn_1_10BB0(arg0->work[2]), 0.0f);
         lbl_1_bss_7EC = 0.05f;
@@ -460,7 +460,7 @@ static void fn_1_F3F8(omObjData *arg0) {
     arg0->trans.x = spC.x;
     arg0->trans.y = spC.y;
     arg0->trans.z = spC.z;
-    arg0->rot.x = sqrtf((lbl_1_bss_7C4.x - sp18.x) * (lbl_1_bss_7C4.x - sp18.x) + (lbl_1_bss_7C4.z - sp18.z) * (lbl_1_bss_7C4.z - sp18.z));
+    arg0->rot.x = VECDistanceXZ(&lbl_1_bss_7C4, &sp18);
     arg0->scale.y = 20.0f + 40.0f * (arg0->rot.x / 445.0f);
     arg0->rot.y = 0.016666668f * (arg0->scale.y / 2) * (arg0->scale.y / 2);
     arg0->rot.z = sp18.y;
@@ -673,8 +673,8 @@ static void fn_1_101B8(s16 arg0) {
     if (var_f31 >= 360.0f) {
         var_f31 -= 360.0f;
     }
-    temp_f30 = lbl_1_bss_80C.x - 100.0 * cos(var_f31 * M_PI / 180.0);
-    temp_f28 = lbl_1_bss_80C.z - 100.0 * sin(var_f31 * M_PI / 180.0);
+    temp_f30 = lbl_1_bss_80C.x - 100.0 * cosd(var_f31);
+    temp_f28 = lbl_1_bss_80C.z - 100.0 * sind(var_f31);
     temp_f29 = lbl_1_bss_80C.y + 66.0f + 1.0f;
     omSetTra(var_r31, temp_f30, temp_f29, temp_f28);
     var_r31->work[0] = 0;
@@ -715,7 +715,7 @@ static void fn_1_10664(omObjData *arg0) {
         }
         omSetSca(arg0, var_f31, var_f31, var_f31);
     } else {
-        arg0->trans.y += sin(temp_r31[1] * M_PI / 180.0);
+        arg0->trans.y += sind(temp_r31[1]);
         temp_r31[1] += 4.0f;
         if (temp_r31[1] >= 360.0f) {
             temp_r31[1] -= 360.0f;
@@ -739,7 +739,7 @@ static void fn_1_10820(omObjData *arg0) {
         sp24.y = 0.0f;
         PSVECSubtract(&sp24, &sp18, &spC);
         PSVECNormalize(&spC, &spC);
-        var_f28 = sqrtf((sp24.x - sp18.x) * (sp24.x - sp18.x) + (sp24.z - sp18.z) * (sp24.z - sp18.z));
+        var_f28 = VECDistanceXZ(&sp24, &sp18);
         if (var_f28 < 8.0f) {
             arg0->trans.x = sp24.x;
             arg0->trans.z = sp24.z;
@@ -749,7 +749,7 @@ static void fn_1_10820(omObjData *arg0) {
             arg0->trans.z += 8.0f * spC.z;
         }
     }
-    arg0->trans.y += sin(temp_r30[1] * M_PI / 180.0);
+    arg0->trans.y += sind(temp_r30[1]);
     temp_r30[1] += 4.0f;
     if (temp_r30[1] >= 360.0f) {
         temp_r30[1] -= 360.0f;
@@ -836,7 +836,7 @@ static float fn_1_10EB8(Vec *arg0) {
                 return 270.0f;
             }
         }
-        var_f31 = 180.0 * (atan2(arg0->z, arg0->x) / M_PI);
+        var_f31 = atan2d(arg0->z, arg0->x);
         if (arg0->z < 0.0f) {
             var_f31 = 90.0f - var_f31;
         } else {
@@ -877,8 +877,8 @@ static void fn_1_11064(ModelData *model, ParticleData *particle, Mtx matrix) {
         if (var_r28 != particle->unk_30) {
             temp_f30 = 0.003921569f * frand8() * 360.0f;
             temp_f29 = 0.003921569f * frand8() * 70.0f * temp_f31;
-            var_r31->unk34.x = lbl_1_bss_7F0->trans.x + temp_f29 * sin(temp_f30 * M_PI / 180.0);
-            var_r31->unk34.z = lbl_1_bss_7F0->trans.z + temp_f29 * cos(temp_f30 * M_PI / 180.0);
+            var_r31->unk34.x = lbl_1_bss_7F0->trans.x + temp_f29 * sind(temp_f30);
+            var_r31->unk34.z = lbl_1_bss_7F0->trans.z + temp_f29 * cosd(temp_f30);
             var_r31->unk34.y = lbl_1_bss_7F0->trans.y + temp_f31 * (-30.0f + 0.003921569f * frand8() * 60.0f);
             var_r31->unk08.x = 0.5f + 0.003921569f * frand8() * 3.0f;
             var_r31->unk08.y = 0.3f + 0.003921569f * frand8() * 2.0f;
@@ -919,14 +919,14 @@ static void fn_1_11484(ModelData *model, ParticleData *particle, Mtx matrix) {
         for (var_r28 = 0; var_r28 < particle->unk_30; var_r28++, var_r31++) {
             temp_f30 = 0.003921569f * frand8() * 360.0f;
             temp_f31 = 0.003921569f * frand8() * 50.0f;
-            var_r31->unk08.x = temp_f31 * cos(temp_f30 * M_PI / 180.0);
+            var_r31->unk08.x = temp_f31 * cosd(temp_f30);
             var_r31->unk08.y = 2.0f + 0.003921569f * frand8() * 4.0f;
-            var_r31->unk08.z = temp_f31 * sin(temp_f30 * M_PI / 180.0);
+            var_r31->unk08.z = temp_f31 * sind(temp_f30);
             temp_f29 = 60.0f + 20.0f * frand8() * 0.003921569f;
             temp_f31 = 4.0f + 5.0f * frand8() * 0.003921569f;
-            var_r31->unk14.x = temp_f31 * sin(temp_f30 * M_PI / 180.0) * cos(temp_f29 * M_PI / 180.0);
-            var_r31->unk14.y = temp_f31 * sin(temp_f29 * M_PI / 180.0);
-            var_r31->unk14.z = temp_f31 * cos(temp_f30 * M_PI / 180.0) * cos(temp_f29 * M_PI / 180.0);
+            var_r31->unk14.x = temp_f31 * sind(temp_f30) * cosd(temp_f29);
+            var_r31->unk14.y = temp_f31 * sind(temp_f29);
+            var_r31->unk14.z = temp_f31 * cosd(temp_f30) * cosd(temp_f29);
             var_r31->unk20 = 1.0f;
             var_r31->unk40.a = 0xB4;
             var_r31->unk2C = 9.0f + 0.003921569f * frand8() * 4.0f;

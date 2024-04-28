@@ -5,7 +5,7 @@
 #include "game/process.h"
 #include "game/sprite.h"
 
-#include "math.h"
+#include "ext_math.h"
 #include "string.h"
 
 typedef struct {
@@ -1148,8 +1148,8 @@ static void ParManFunc(void) {
                             PSVECCrossProduct(&sp14, &sp2C, &sp8);
                         }
                         PSVECNormalize(&sp8, &sp8);
-                        temp_f31 = sin(M_PI * var_f28 / 180.0);
-                        temp_f30 = cos(M_PI * var_f28 / 180.0);
+                        temp_f31 = sind(var_f28);
+                        temp_f30 = cosd(var_f28);
                         sp14.x = sp8.x * (sp2C.x * sp2C.x + temp_f30 * (1.0f - sp2C.x * sp2C.x))
                             + sp8.y * (sp2C.x * sp2C.y * (1.0f - temp_f30) - sp2C.z * temp_f31)
                             + sp8.z * (sp2C.x * sp2C.z * (1.0f - temp_f30) + sp2C.y * temp_f31);
@@ -1160,8 +1160,8 @@ static void ParManFunc(void) {
                             + sp8.y * (sp2C.y * sp2C.z * (1.0f - temp_f30) + sp2C.x * temp_f31)
                             + sp8.z * (sp2C.z * sp2C.z + temp_f30 * (1.0f - sp2C.z * sp2C.z));
                         PSVECCrossProduct(&sp14, &sp2C, &sp8);
-                        temp_f31 = sin(M_PI * var_f29 / 180.0);
-                        temp_f30 = cos(M_PI * var_f29 / 180.0);
+                        temp_f31 = sind(var_f29);
+                        temp_f30 = cosd(var_f29);
                         sp14.x = sp2C.x * (sp8.x * sp8.x + temp_f30 * (1.0f - sp8.x * sp8.x))
                             + sp2C.y * (sp8.x * sp8.y * (1.0f - temp_f30) - sp8.z * temp_f31)
                             + sp2C.z * (sp8.x * sp8.z * (1.0f - temp_f30) + sp8.y * temp_f31);
