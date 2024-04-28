@@ -46,6 +46,7 @@ s32 BoardModelAttrReset(s16 model, u32 attr);
 s32 BoardModelMotionTimeSet(s16 model, float time);
 float BoardModelMotionTimeGet(s16 model);
 float BoardModelMotionMaxTimeGet(s16 model);
+float BoardModelMotionSpeedGet(s16 model);
 s32 BoardModelMotionSpeedSet(s16 model, float speed);
 s32 BoardModelMotionEndCheck(s16 model);
 s32 BoardModelAlphaSet(s16 model, u8 alpha);

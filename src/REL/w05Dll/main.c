@@ -2,6 +2,7 @@
 
 #include "game/gamework_data.h"
 #include "game/chrman.h"
+#include "game/frand.h"
 
 #include "game/board/audio.h"
 #include "game/board/boo_house.h"
@@ -13,21 +14,6 @@
 #include "game/board/space.h"
 #include "game/board/star.h"
 #include "game/board/window.h"
-
-// frand.h
-extern u32 frandmod(u32);
-// #include "REL/w05Dll/mg_item.h"
-extern void fn_1_6B28(void);
-extern void fn_1_6B7C(void);
-extern void fn_1_7314(void);
-extern void fn_1_77B0(void);
-extern void fn_1_88B8(void);
-// #include "REL/w05Dll/mg_coin.h"
-extern u32 fn_1_8884(void);
-extern void fn_1_9680(void);
-extern void fn_1_96B4(void);
-extern void fn_1_9760(void);
-extern void fn_1_97AC(void);
 
 // data
 BoardMapObject lbl_1_data_0[7] = {
@@ -255,7 +241,7 @@ void fn_1_954(void) {
     lbl_1_bss_8[0] = 0;
     
     for (var_r31 = 1; var_r31 < 3;) {
-        lbl_1_bss_8[var_r31] = frandmod(0xE);
+        lbl_1_bss_8[var_r31] = (u32)frandmod(0xE);
         if ((lbl_1_bss_8[var_r31] == 0xA) || (lbl_1_bss_8[var_r31] == 0xD)) {
             continue;
         }
@@ -269,7 +255,7 @@ void fn_1_954(void) {
         }
         var_r31++;
     }
-    fn_1_74D0(&lbl_1_bss_8);
+    fn_1_74D0(lbl_1_bss_8);
     BoardWinCreateChoice(2, 0x27000A, 7, 0);
     if (GWPlayer[temp_r30].com != 0) {
         if (BoardComPreferItemCheck(temp_r30, lbl_1_bss_8[0], lbl_1_bss_8[1], lbl_1_bss_8[2]) != -1) {
@@ -282,7 +268,7 @@ void fn_1_954(void) {
     BoardWinKill();
     var_r28 = BoardWinChoiceGet();
     if (var_r28 == 1 || var_r28 == -1) {
-        while ((fn_1_8884() & 0x10) == 0) {
+        while (((u32)fn_1_8884() & 0x10) == 0) {
             HuPrcVSleep();
         }
         BoardWinCreate(2, 0x27000B, 7);
@@ -305,7 +291,7 @@ void fn_1_954(void) {
     sp8.z = 0.0f;
     BoardCameraMotionStartEx(lbl_1_bss_14[0], &sp14, &sp8, 1250.0f, 25.0f, 0x15);
 
-    while ((fn_1_8884() & 0x10) == 0) {
+    while (((u32)fn_1_8884() & 0x10) == 0) {
         HuPrcVSleep();
     }
     temp_r27 = GWPlayer[temp_r30].space_curr;
@@ -362,7 +348,7 @@ void fn_1_E40(void) {
     fn_1_96B4();
     BoardWinCreateChoice(2, 0x27000F, 7, 0);
     if (GWPlayer[temp_r31].com != 0) {
-        if ((frand() & 1) != 0) {
+        if (((s32)frand() & 1) != 0) {
             BoardComKeySetLeft();
         } else {
             BoardComKeySetRight();

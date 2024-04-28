@@ -1415,7 +1415,7 @@ config.libs = [
             Object(Matching, "REL/w05Dll/monkey.c"),
             Object(Matching, "REL/w05Dll/dolphin.c"),
             Object(Matching, "REL/w05Dll/mg_item.c"),
-            Object(NonMatching, "REL/w05Dll/mg_coin.c"),
+            Object(Matching, "REL/w05Dll/mg_coin.c"),
         }
     ),
     Rel('w06Dll',
