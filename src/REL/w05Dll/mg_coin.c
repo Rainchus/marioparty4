@@ -483,7 +483,7 @@ void fn_1_B2B0(omObjData* arg0, u16* arg1, s16* arg2) {
         *arg2 = 1;
         return;
     }
-    if (((s32)frand() & 1) != 0) {
+    if (frandBool() != 0) {
         *arg2 = 1;
         return;
     }

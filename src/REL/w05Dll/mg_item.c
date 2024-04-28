@@ -526,11 +526,11 @@ void fn_1_8798(dataCopy* arg0, s32* arg1, s32* arg2, s32* arg3) {
         return;
     }
     arg0->unk_12 -= 1;
-    if (((s32)frand() & 1) != 0) {
-        *arg1 = ((frand() & 1) * 0x8C) - 0x46;
+    if (frandBool() != 0) {
+        *arg1 = (frandBool() * 0x8C) - 0x46;
         return;
     }
-    *arg2 = ((frand() & 1) * 0x8C) - 0x46;
+    *arg2 = (frandBool() * 0x8C) - 0x46;
 }
 
 void* fn_1_8884(void) {
