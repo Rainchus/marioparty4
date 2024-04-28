@@ -24,6 +24,7 @@
 #include "game/board/ui.h"
 #include "game/board/window.h"
 #include "game/board/view.h"
+#include "game/frand.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;
@@ -51,8 +52,6 @@ typedef struct {
     /* 0x04 */ Vec unk04;
     /* 0x04 */ Vec unk10;
 } UnkGenieCameraStruct; // Size 0x1C
-
-extern u32 frandmod(u32);
 
 static void ItemProcess(void);
 static void RestoreProcess(void);
@@ -699,7 +698,7 @@ static void ExecItemHammer(void) {
     temp_r27 = ItemGetTarget();
     suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
     BoardModelLayerSet(suitMdl, 2);
-    var_r30 = frand() & 1;
+    var_r30 = frandBool();
     if (var_r30 != 0) {
         BoardModelMotionTimeSet(suitMdl, 1.5f);
     } else {
@@ -1125,12 +1124,12 @@ static void ExecItemSwap(void) {
     for (var_r31 = 0; var_r31 < 60; var_r31++) {
         for (var_r30 = 0; var_r30 < var_r28 / 2; var_r30++) {
             sp6C = sp1A4[var_r30];
-            sp6C.x += 3.0 * sin((frand() % 360) * M_PI / 180.0);
-            sp6C.y += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            sp6C.x += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
+            sp6C.y += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
             BoardModelPosSetV(sp54[var_r30], &sp6C);
             sp6C = sp180[var_r30];
-            sp6C.x += 3.0 * sin((frand() % 360) * M_PI / 180.0);
-            sp6C.y += 3.0 * sin((frand() % 360) * M_PI / 180.0);
+            sp6C.x += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
+            sp6C.y += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
             BoardModelPosSetV(sp54[var_r30 + 3], &sp6C);
         }
         HuPrcSleep(2);
@@ -1362,7 +1361,7 @@ static void ExecItemWhistle(void) {
     temp_r19 = GWBoardGet();
     temp_r21 = BoardModelMotionCreate(temp_r28, callAttackMotTbl[temp_r19]);
     temp_r20 = BoardModelMotionCreate(temp_r28, callAttackMotTbl2[temp_r19]);
-    var_f31 = 0.003921569f * (frand() & 0xFF) * 360.0f;
+    var_f31 = 0.003921569f * frand8() * 360.0f;
     spA8.x = spA8.y = spA8.z = 0.5f;
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         sp20[var_r31] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BGUEST, 39), NULL, 1);
@@ -1962,10 +1961,10 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
                 sp8 = 12.0f;
                 var_r31->unk08.x = 12.0 * cos((i * 110.0f + 35.0f) * M_PI / 180.0);
                 var_r31->unk08.y = 12.0 * sin((i * 110.0f + 35.0f) * M_PI / 180.0);
-                var_r31->unk08.z = 3.0f + (frand() & 0xFF) * 5.0f * 0.003921569f;
+                var_r31->unk08.z = 3.0f + frand8() * 5.0f * 0.003921569f;
                 var_r31->unk14.y = 255.0f;
                 var_r31->unk2C = 25.0f;
-                temp_f30 = 175.0f + (frand() & 0xFF) * 0x50 * 0.003921569f;
+                temp_f30 = 175.0f + frand8() * 0x50 * 0.003921569f;
                 var_r31->unk40.r = var_r31->unk40.g = var_r31->unk40.b = temp_f30;
                 var_r31->unk00_s16 = 0;
             }
@@ -1983,7 +1982,7 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
                 var_r31->unk14.y -= 2.8333333f;
                 if (var_r31->unk14.y <= 120.0f) {
                     var_r31->unk14.y = 200.0f;
-                    temp_f31 = (frand() & 0xFF) * 180.0f * 0.003921569f;
+                    temp_f31 = frand8() * 180.0f * 0.003921569f;
                     var_r31->unk08.x = 6.0 * cos(temp_f31 * M_PI / 180.0);
                     var_r31->unk08.y = -4.0f;
                     var_r31->unk08.z = 6.0 * sin(temp_f31 * M_PI / 180.0);
@@ -2014,18 +2013,18 @@ static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx ma
     if (particle->unk_34 == 0) {
         var_r31 = particle->unk_48;
         for (i = 0; i < particle->unk_30; i++, var_r31++) {
-            var_r31->unk34.x = -50.0f + (frand() & 0xFF) * 100.0f * 0.003921569f;
-            var_r31->unk34.y = -50.0f + (frand() & 0xFF) * 100.0f * 0.003921569f;
-            var_r31->unk34.z = -10.0f + (frand() & 0xFF) * 20.0f * 0.003921569f;
-            temp_f31 = 0.5f + (frand() & 0xFF) * 3.0f * 0.003921569f;
+            var_r31->unk34.x = -50.0f + frand8() * 100.0f * 0.003921569f;
+            var_r31->unk34.y = -50.0f + frand8() * 100.0f * 0.003921569f;
+            var_r31->unk34.z = -10.0f + frand8() * 20.0f * 0.003921569f;
+            temp_f31 = 0.5f + frand8() * 3.0f * 0.003921569f;
             var_r31->unk08.x = temp_f31 * cos((i * 110.0f + 35.0f) * M_PI / 180.0);
             var_r31->unk08.y = temp_f31 * sin((i * 110.0f + 35.0f) * M_PI / 180.0);
             var_r31->unk08.z = 0.0f;
             var_r31->unk14.y = 255.0f;
-            temp_f30 = 125.0f + (frand() & 0xFF) * 0x64 * 0.003921569f;
+            temp_f30 = 125.0f + frand8() * 0x64 * 0.003921569f;
             var_r31->unk40.r = var_r31->unk40.g = var_r31->unk40.b = temp_f30;
             var_r31->unk00 = 0;
-            var_r31->unk2C = 80.0f + (frand() & 0xFF) * 60.0f * 0.003921569f;
+            var_r31->unk2C = 80.0f + frand8() * 60.0f * 0.003921569f;
         }
     }
     var_r31 = particle->unk_48;

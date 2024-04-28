@@ -5,6 +5,7 @@
 #include "game/hsfman.h"
 #include "game/hsfdraw.h"
 #include "game/printfunc.h"
+#include "game/frand.h"
 
 #include "game/hsfmotion.h"
 
@@ -86,14 +87,14 @@ void ModuleProlog(void)
 		for(i=0; i<4; i++) {
 			team_players[GWPlayerCfg[i].group][team_cnt[GWPlayerCfg[i].group]++] = i;
 		}
-		if(frand() & 1) {
+		if(frandBool()) {
 			GWPlayerCfg[team_players[0][0]].group = 0;
 			GWPlayerCfg[team_players[0][1]].group = 1;
 		} else {
 			GWPlayerCfg[team_players[0][0]].group = 1;
 			GWPlayerCfg[team_players[0][1]].group = 0;
 		}
-		if(frand() & 1) {
+		if(frandBool()) {
 			GWPlayerCfg[team_players[1][0]].group = 2;
 			GWPlayerCfg[team_players[1][1]].group = 3;
 		} else {

@@ -10,6 +10,7 @@
 #include "game/process.h"
 #include "game/sprite.h"
 #include "game/window.h"
+#include "game/frand.h"
 #include "game/board/audio.h"
 #include "game/board/com.h"
 #include "game/board/main.h"
@@ -1172,13 +1173,13 @@ static void fn_1_4460(ModelData *model, ParticleData *particle, Mtx matrix) {
             }
         }
         if (j != particle->unk_30) {
-            temp_f30 = 0.003921569f * (frand() & 0xFF) * 360.0f;
-            temp_f29 = var_f31 * (20.0f + 0.003921569f * (frand() & 0xFF) * 60.0f);
+            temp_f30 = 0.003921569f * frand8() * 360.0f;
+            temp_f29 = var_f31 * (20.0f + 0.003921569f * frand8() * 60.0f);
             var_r31->unk34.x = sp8.x + temp_f29 * sin(temp_f30 * M_PI / 180.0);
             var_r31->unk34.z = sp8.z + temp_f29 * cos(temp_f30 * M_PI / 180.0);
-            var_r31->unk34.y = sp8.y + var_f31 * (-30.0f + 0.003921569f * (frand() & 0xFF) * 40.0f);
-            var_r31->unk08.x = 0.5f + 0.003921569f * (frand() & 0xFF) * 3.0f;
-            var_r31->unk08.y = 0.3f + 0.003921569f * (frand() & 0xFF) * 2.0f;
+            var_r31->unk34.y = sp8.y + var_f31 * (-30.0f + 0.003921569f * frand8() * 40.0f);
+            var_r31->unk08.x = 0.5f + 0.003921569f * frand8() * 3.0f;
+            var_r31->unk08.y = 0.3f + 0.003921569f * frand8() * 2.0f;
             var_r31->unk40.a = 0xB4;
             var_r31->unk2C = 15.0f * var_f31;
         }

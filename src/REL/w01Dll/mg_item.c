@@ -12,6 +12,8 @@
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/sprite.h"
+#include "game/frand.h"
+
 #include "game/window.h"
 #include "game/board/audio.h"
 #include "game/board/main.h"
@@ -873,13 +875,13 @@ static void fn_1_11064(ModelData *model, ParticleData *particle, Mtx matrix) {
             }
         }
         if (var_r28 != particle->unk_30) {
-            temp_f30 = 0.003921569f * (frand() & 0xFF) * 360.0f;
-            temp_f29 = 0.003921569f * (frand() & 0xFF) * 70.0f * temp_f31;
+            temp_f30 = 0.003921569f * frand8() * 360.0f;
+            temp_f29 = 0.003921569f * frand8() * 70.0f * temp_f31;
             var_r31->unk34.x = lbl_1_bss_7F0->trans.x + temp_f29 * sin(temp_f30 * M_PI / 180.0);
             var_r31->unk34.z = lbl_1_bss_7F0->trans.z + temp_f29 * cos(temp_f30 * M_PI / 180.0);
-            var_r31->unk34.y = lbl_1_bss_7F0->trans.y + temp_f31 * (-30.0f + 0.003921569f * (frand() & 0xFF) * 60.0f);
-            var_r31->unk08.x = 0.5f + 0.003921569f * (frand() & 0xFF) * 3.0f;
-            var_r31->unk08.y = 0.3f + 0.003921569f * (frand() & 0xFF) * 2.0f;
+            var_r31->unk34.y = lbl_1_bss_7F0->trans.y + temp_f31 * (-30.0f + 0.003921569f * frand8() * 60.0f);
+            var_r31->unk08.x = 0.5f + 0.003921569f * frand8() * 3.0f;
+            var_r31->unk08.y = 0.3f + 0.003921569f * frand8() * 2.0f;
             var_r31->unk40.a = 0xB4;
             var_r31->unk2C = 15.0f * temp_f31;
         }
@@ -915,19 +917,19 @@ static void fn_1_11484(ModelData *model, ParticleData *particle, Mtx matrix) {
     if (particle->unk_00 == 0) {
         var_r31 = particle->unk_48;
         for (var_r28 = 0; var_r28 < particle->unk_30; var_r28++, var_r31++) {
-            temp_f30 = 0.003921569f * (frand() & 0xFF) * 360.0f;
-            temp_f31 = 0.003921569f * (frand() & 0xFF) * 50.0f;
+            temp_f30 = 0.003921569f * frand8() * 360.0f;
+            temp_f31 = 0.003921569f * frand8() * 50.0f;
             var_r31->unk08.x = temp_f31 * cos(temp_f30 * M_PI / 180.0);
-            var_r31->unk08.y = 2.0f + 0.003921569f * (frand() & 0xFF) * 4.0f;
+            var_r31->unk08.y = 2.0f + 0.003921569f * frand8() * 4.0f;
             var_r31->unk08.z = temp_f31 * sin(temp_f30 * M_PI / 180.0);
-            temp_f29 = 60.0f + 20.0f * (frand() & 0xFF) * 0.003921569f;
-            temp_f31 = 4.0f + 5.0f * (frand() & 0xFF) * 0.003921569f;
+            temp_f29 = 60.0f + 20.0f * frand8() * 0.003921569f;
+            temp_f31 = 4.0f + 5.0f * frand8() * 0.003921569f;
             var_r31->unk14.x = temp_f31 * sin(temp_f30 * M_PI / 180.0) * cos(temp_f29 * M_PI / 180.0);
             var_r31->unk14.y = temp_f31 * sin(temp_f29 * M_PI / 180.0);
             var_r31->unk14.z = temp_f31 * cos(temp_f30 * M_PI / 180.0) * cos(temp_f29 * M_PI / 180.0);
             var_r31->unk20 = 1.0f;
             var_r31->unk40.a = 0xB4;
-            var_r31->unk2C = 9.0f + 0.003921569f * (frand() & 0xFF) * 4.0f;
+            var_r31->unk2C = 9.0f + 0.003921569f * frand8() * 4.0f;
         }
         particle->unk_00 = 1;
     }

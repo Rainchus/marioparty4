@@ -372,7 +372,7 @@ void fn_1_5648(void) {
 
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         BoardModelRotGet(lbl_1_bss_6C[var_r31], &sp8);
-        sp8.y = 0.003921569f * (360.0f * (int)(frand() & 0xFF));
+        sp8.y = 0.003921569f * (360.0f * frand8());
         BoardModelRotSetV(lbl_1_bss_6C[var_r31], &sp8);
     }
 loop_3:

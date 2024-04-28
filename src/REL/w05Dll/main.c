@@ -348,7 +348,7 @@ void fn_1_E40(void) {
     fn_1_96B4();
     BoardWinCreateChoice(2, 0x27000F, 7, 0);
     if (GWPlayer[temp_r31].com != 0) {
-        if (((s32)frand() & 1) != 0) {
+        if (frandBool() != 0) {
             BoardComKeySetLeft();
         } else {
             BoardComKeySetRight();
