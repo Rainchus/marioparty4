@@ -3,10 +3,8 @@
 #include "game/hsfformat.h"
 #include "game/hsfload.h"
 
-#include "math.h"
+#include "ext_math.h"
 #include "string.h"
-
-#define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef struct {
     /* 0x00 */ ModelData *unk00;
@@ -408,7 +406,7 @@ s32 ObjCullCheck(HsfData *arg0, HsfObject *arg1, Mtx arg2) {
     if (temp_f18 + temp_f21 < temp_r30->near || temp_f18 - temp_f21 > temp_r30->far) {
         return 0;
     }
-    sp24 = sin(temp_r30->fov * 0.5 * M_PI / 180.0) / cos(temp_r30->fov * 0.5 * M_PI / 180.0);
+    sp24 = sind(temp_r30->fov * 0.5) / cosd(temp_r30->fov * 0.5);
     temp_f27 = sp24 * temp_f18;
     temp_f24 = 1.2f * temp_f27;
     temp_f24 = temp_f21 + ABS(temp_f24);

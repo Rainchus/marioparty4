@@ -4,6 +4,7 @@
 #include "game/gamework_data.h"
 #include "game/memory.h"
 #include "game/objsub.h"
+#include "game/process.h"
 #include "game/window.h"
 #include "game/board/main.h"
 #include "game/board/model.h"

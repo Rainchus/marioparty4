@@ -10,6 +10,7 @@
 #include "game/msm.h"
 #include "game/objsub.h"
 #include "game/pad.h"
+#include "game/process.h"
 #include "game/sprite.h"
 #include "game/window.h"
 #include "game/wipe.h"
