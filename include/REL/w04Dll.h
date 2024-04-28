@@ -1,7 +1,6 @@
 #ifndef REL_W04_H
 #define REL_W04_H
 
-#include "game/process.h"
 #include "game/board/map_object.h"
 
 #include "dolphin/types.h"
