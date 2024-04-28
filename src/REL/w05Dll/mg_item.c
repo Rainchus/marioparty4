@@ -9,20 +9,8 @@
 #include "game/minigame_seq.h"
 
 #include "game/board/model.h"
-#include "game/board/player.h"
 #include "game/board/window.h"
 #include "game/board/audio.h"
-
-typedef struct UnkStruct {
-    s16 unk_00;
-    s16 unk_02;
-    s16 unk_04;
-    s16 unk_06;
-    s16 unk_08;
-    s16 unk_0A[3];
-    s16 unk_10;
-    s16 unk_12;
-} unkStruct;
 
 // data
 s32 lbl_1_data_310[2] = { 0x79, 0x7A };
@@ -44,24 +32,6 @@ s32 lbl_1_bss_88;
 s32 lbl_1_bss_7C[3];
 AnimData* lbl_1_bss_78;
 
-// prototypes
-void fn_1_7284(omObjData*);
-void fn_1_7314(void);
-void fn_1_73C0(void);
-void fn_1_77B0(void);
-void fn_1_78A0(omObjData*);
-void fn_1_799C(void);
-void fn_1_7E4C(omObjData*);
-void fn_1_7F04(omObjData*);
-void fn_1_80D8(omObjData*);
-void fn_1_8410(omObjData*);
-void fn_1_850C(omObjData*);
-void fn_1_8668(omObjData*);
-void fn_1_8798(unkStruct*, s32*, s32*, s32*);
-void fn_1_88B8(void);
-void fn_1_896C(void);
-void fn_1_91DC(void);
-void fn_1_9268(ModelData*, ParticleData*, f32[3][4]);
 
 void fn_1_6B28(void) {
     BoardModelAttrSet(*lbl_1_bss_14, 0x40000002U);
@@ -392,7 +362,7 @@ void fn_1_7E4C(omObjData* arg0) {
     omDelObjEx(boardObjMan, arg0);
 }
 
-void fn_1_7E94(unkStruct* arg0) {
+void fn_1_7E94(dataCopy* arg0) {
     if (--arg0->unk_02 == 0) {
         arg0->unk_02 = 0x3C;
         if (--arg0->unk_00 >= 0) {
@@ -406,7 +376,7 @@ void fn_1_7F04(omObjData* arg0) {
     f32 sp8;
     s32 var_r30;
     s32 var_r28;
-    unkStruct* temp_r31;
+    dataCopy* temp_r31;
 
     temp_r31 = arg0->data;
     temp_r31->unk_00 = 5;
@@ -447,7 +417,7 @@ void fn_1_80D8(omObjData* arg0) {
     f32 var_f31;
     s32 temp_r30;
     s32 var_r29;
-    unkStruct* temp_r31;
+    dataCopy* temp_r31;
 
     temp_r31 = arg0->data;
     fn_1_7E94(temp_r31);
@@ -490,7 +460,7 @@ void fn_1_80D8(omObjData* arg0) {
 
 void fn_1_8410(omObjData* arg0) {
     s32 temp_r30;
-    unkStruct* temp_r31;
+    dataCopy* temp_r31;
 
     temp_r31 = arg0->data;
     if (BoardPlayerMotionTimeGet(lbl_1_bss_B6) >= 30.0f) {
@@ -544,7 +514,7 @@ void fn_1_8668(omObjData* arg0) {
     arg0->work[0] -= 1;
 }
 
-void fn_1_8798(unkStruct* arg0, s32* arg1, s32* arg2, s32* arg3) {
+void fn_1_8798(dataCopy* arg0, s32* arg1, s32* arg2, s32* arg3) {
     *arg1 = *arg2 = *arg3 = 0;
     if (arg0->unk_10 != 0) {
         arg0->unk_10 -= 1;
@@ -556,11 +526,11 @@ void fn_1_8798(unkStruct* arg0, s32* arg1, s32* arg2, s32* arg3) {
         return;
     }
     arg0->unk_12 -= 1;
-    if (((s32)frand() & 1) != 0) {
-        *arg1 = ((frand() & 1) * 0x8C) - 0x46;
+    if (frandBool() != 0) {
+        *arg1 = (frandBool() * 0x8C) - 0x46;
         return;
     }
-    *arg2 = ((frand() & 1) * 0x8C) - 0x46;
+    *arg2 = (frandBool() * 0x8C) - 0x46;
 }
 
 void* fn_1_8884(void) {
