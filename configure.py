@@ -796,7 +796,7 @@ config.libs = [
     Rel('m401Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m401Dll/main.c"),
+            Object(Matching, "REL/m401Dll/main.c"),
             Object(NonMatching, "REL/m401Dll/main_ex.c"),
         }
     ),
