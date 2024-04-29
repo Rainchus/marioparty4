@@ -2590,6 +2590,28 @@ void fn_2_A914(s32 player)
 
 void fn_2_A940(omObjData *object)
 {
+	Vec spC;
+	omObjData *sp8;
+	M401WorkPlayer *temp_r28;
+	s32 temp_r23;
+	temp_r28 = object->data;
+	if(temp_r28->unk78 != 0) {
+		return;
+	}
+	spC.x = object->trans.x;
+	spC.y = object->trans.y;
+	spC.z = object->trans.z;
+	if((temp_r23 = fn_2_AC2C(&spC, 90, &sp8)) != 0) {
+		if(temp_r23 == 1) {
+			omVibrate(temp_r28->unk4, 12, 4, 2);
+		} else if(temp_r23 == 3) {
+			omVibrate(temp_r28->unk4, 12, 4, 2);
+		} else {
+			omVibrate(temp_r28->unk4, 12, 12, 0);
+		}
+		fn_2_7C3C(object);
+		fn_2_1858(temp_r28->unk4, sp8->work[3]);
+	}
 	
 }
 
