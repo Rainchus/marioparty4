@@ -10,6 +10,7 @@
 #include "game/sprite.h"
 #include "game/frand.h"
 #include "game/chrman.h"
+#include "game/pad.h"
 
 #include "REL/m401Dll.h"
 #include "math.h"
@@ -1176,7 +1177,7 @@ void fn_2_3F28(omObjData *object)
 		case 1:
 			if(object->trans.y < 1100) {
 				temp_r31->unk0 = 2;
-				temp_f27 = VECDistanceAlt(&object->trans, &temp_r31->unk24);
+				temp_f27 = VECMagPoint(object->trans.x-temp_r31->unk24.x, object->trans.y-temp_r31->unk24.y, object->trans.z-temp_r31->unk24.z);
 				temp_r31->unk58.z = temp_f27;
 				temp_r31->unk58.y = 0;
 				temp_r31->unk6E = 110;
@@ -1224,7 +1225,7 @@ void fn_2_3F28(omObjData *object)
 			object->trans.z = temp_r31->unk30.z+(temp_r31->unk58.z*(sp28.z*sind(temp_r31->unk58.y)));
 			temp_r31->unk58.y += 9.0f/11.0f;
 			omSetRot(object, atan2d(sp28.y, sp28.z)+90.0, 0, 0);
-			temp_f27 = VECDistanceAlt(&object->trans, &sp1C);
+			temp_f27 = VECMagPoint(object->trans.x-sp1C.x, object->trans.y-sp1C.y, object->trans.z-sp1C.z);
 			if(--temp_r31->unk6E == 60 && temp_r31->unk4 == 0 && lbl_2_bss_4 == NULL) {
 				temp_r29 = &Hu3DCamera[0];
 				lbl_2_bss_4 = omAddObjEx(HuPrcCurrentGet(), 1400, 0, 0, -1, fn_2_D3E8);
@@ -1261,4 +1262,1338 @@ void fn_2_3F28(omObjData *object)
 			fn_2_6B44(object);
 			break;
 	}
+}
+
+void fn_2_6B44(omObjData *object);
+
+void fn_2_48A0(omObjData *object)
+{
+	M401WorkPlayer *temp_r31;
+	Work2FA4 *temp_r29;
+	float temp_f29;
+	Vec sp4C;
+	Vec sp40;
+	s32 sp30[] = { -10, -50, -80, -130 };
+	Vec sp24;
+	Vec sp18;
+	Vec spC;
+	temp_r31 = object->data;
+	temp_r29 = lbl_2_bss_10C->data;
+	if(temp_r31->unk4 == 0) {
+		lbl_2_bss_1A--;
+	}
+	switch(temp_r31->unk0) {
+		case 5:
+			if(temp_r31->unk6A == 1) {
+				CharModelMotionShiftSet(temp_r31->unk86, object->motion[1], 0, 8, 0x40000001);
+				temp_r31->unk6A = 0;
+			}
+			omSetRot(object, 0, 180, 0);
+			object->trans.z -= 5.0f;
+			fn_2_6B44(object);
+			break;
+			
+		case 6:
+			object->trans.y += temp_r31->unk58.x;
+			if(object->trans.y >= 910.0f) {
+				if(temp_r31->unk6C == 0) {
+					temp_r31->unk6C = 1;
+					Hu3DModelAttrReset(object->model[2], 1);
+					Hu3DModelAttrSet(object->model[2], 0x40000001);
+					Hu3DModelPosSet(object->model[2], object->trans.x, 950, 30+object->trans.z);
+					Hu3DModelScaleSet(object->model[2], 1, 1, 1);
+					Hu3DMotionTimeSet(object->model[2], 0);
+					sp4C.x = object->trans.x;
+					sp4C.y = 950;
+					sp4C.z = 30+object->trans.z;
+					fn_2_10A88(&sp4C, 7);
+					HuAudFXEmiterPlay(1289, &sp4C);
+				}
+				temp_r31->unk58.x *= 0.7f;
+				if(temp_r31->unk58.x <= 0.5f) {
+					temp_r31->unk0 = 7;
+					temp_r31->unk58.x = -0.5f;
+					CharModelMotionShiftSet(temp_r31->unk86, object->motion[0], 0, 30, 0x40000001);
+					temp_r31->unk80 = 0;
+					temp_r31->unk6C = 0;
+				}
+			}
+			
+			break;
+			
+		case 7:
+			object->trans.y += temp_r31->unk58.x;
+			if(object->trans.y <= 890) {
+				object->trans.y = 890;
+				if(lbl_2_bss_BA) {
+					if(temp_r31->unk68) {
+						temp_r31->unk0 = 16;
+					} else {
+						temp_r31->unk0 = 9;
+					}
+				} else {
+					temp_r31->unk0 = 8;
+					temp_r29->unk8.z = 0.5f;
+					temp_r31->unk6E = 0;
+					HuAudSStreamPlay(4);
+					lbl_2_bss_C0 = MGSeqDrawCreate();
+					lbl_2_bss_1A = 210;
+				}
+			}
+			temp_r31->unk58.x *= 1.17f;
+			object->trans.y -= 0.35f*sind(temp_r31->unk80);
+			temp_r31->unk80 += 3.0f;
+			if(temp_r31->unk80 >= 360.0f) {
+				temp_r31->unk80 -= 360.0f;
+			}
+			break;
+			
+		case 8:
+			object->trans.y -= 0.35f*sind(temp_r31->unk80);
+			temp_r31->unk80 += 3.0f;
+			if(temp_r31->unk80 >= 360.0f) {
+				temp_r31->unk80 -= 360.0f;
+			}
+			if(temp_r31->unk6E == 13) {
+				Hu3DModelAttrReset(lbl_2_bss_10C->model[6], 1);
+				Hu3DMotionTimeSet(lbl_2_bss_10C->model[6], 0);
+			} else if(temp_r31->unk6E == 50) {
+				Hu3DMotionOverlaySet(object->model[0], object->motion[8]);
+				Hu3DMotionOverlayTimeSet(object->model[0], 31.0f);
+				Hu3DData[object->model[0]].unk_78 = 1;
+			}
+			if(temp_r31->unk6E >= 70) {
+				if(object->rot.y < 90.0f) {
+					object->rot.y += 2.25f;
+				} else {
+					object->rot.y = 90.0f;
+				}
+			}
+			temp_r31->unk6E++;
+			if(temp_r29->unk8.y >= 1500.0f) {
+				temp_r29->unk8.z = 0;
+				if(temp_r31->unk4 == 0) {
+					temp_r31->unk0 = 14;
+				}
+			}
+			break;
+			
+		case 16:
+			if(!temp_r31->unk6C) {
+				temp_r31->unk6C = 1;
+				HuAudPlayerVoicePlay(temp_r31->unk4, 292);
+				Hu3DMotionOverlaySet(object->model[0], object->motion[9]);
+				if(temp_r31->unk4 == lbl_2_bss_B2[0]) {
+					HuAudSStreamPlay(1);
+					lbl_2_bss_C0 = MGSeqWinCreate(lbl_2_bss_AA[0], lbl_2_bss_AA[1], lbl_2_bss_AA[2], lbl_2_bss_AA[3]);
+					lbl_2_bss_1A = 210;
+					temp_r31->unk6E = 160;
+					temp_r31->unk0 = 13;
+				}
+			}
+			temp_r31->unk58.x *= 1.17f;
+			object->trans.y -= 0.35f*sind(temp_r31->unk80);
+			temp_r31->unk80 += 3.0f;
+			if(temp_r31->unk80 >= 360.0f) {
+				temp_r31->unk80 -= 360.0f;
+			}
+			if(73.0f <= Hu3DMotionOverlayTimeGet(object->model[0])) {
+				Hu3DMotionOverlayTimeSet(object->model[0], 35.0f);
+			}
+			break;
+			
+		case 10:
+			object->trans.y += temp_r31->unk58.x;
+			if(object->trans.y >= 910.0f) {
+				if(temp_r31->unk6C == 0) {
+					temp_r31->unk6C = 1;
+					omVibrate(temp_r31->unk4, 12, 4, 2);
+					Hu3DModelAttrReset(object->model[2], 1);
+					Hu3DModelAttrReset(object->model[2], 0x40000002);
+					Hu3DModelAttrSet(object->model[2], 0x40000001);
+					Hu3DModelPosSet(object->model[2], object->trans.x, 950, 30+object->trans.z);
+					Hu3DModelScaleSet(object->model[2], 1, 1, 1);
+					Hu3DMotionTimeSet(object->model[2], 0);
+					Hu3DModelAttrReset(object->model[3], 0x40000002);
+					Hu3DModelAttrReset(object->model[3], 1);
+					Hu3DModelClusterAttrReset(object->model[3], 0, 0xC0000002);
+					Hu3DModelPosSet(object->model[3], object->trans.x, 0, 30+object->trans.z);
+					Hu3DMotionTimeSet(object->model[3], 0);
+					sp4C.x = object->trans.x;
+					sp4C.y = 950;
+					sp4C.z = 30+object->trans.z;
+					fn_2_10A88(&sp4C, 7);
+					HuAudFXEmiterPlay(1289, &sp4C);
+				}
+				temp_r31->unk0 = 11;
+				temp_r31->unk24.x = sp30[temp_r31->unk4];
+				temp_r31->unk24.y = 1030;
+				temp_r31->unk24.z = 40;
+				sp4C.x = object->trans.x;
+				sp4C.y = object->trans.y;
+				sp4C.z = object->trans.z;
+				VECSubtract(&temp_r31->unk24, &sp4C, &sp40);
+				VECNormalize(&sp40, &sp40);
+				temp_f29 = VECDistanceXZ(&temp_r31->unk24, &object->trans);
+				temp_r31->unk30.x = (sp40.x*temp_f29)/60.0f;
+				temp_r31->unk30.z = (sp40.z*temp_f29)/60.0f;
+				temp_r31->unk30.y = 18.75f;
+				temp_r31->unk58.y = 0;
+			}
+			break;
+			
+		case 11:
+			temp_f29 = temp_r31->unk30.y-(0.020833334f*temp_r31->unk58.y*temp_r31->unk58.y);
+			object->trans.x += temp_r31->unk30.x;
+			object->trans.z += temp_r31->unk30.z;
+			object->trans.y += temp_f29;
+			temp_r31->unk58.y += 1.0f;
+			if(object->trans.y <= 1030.0f && temp_f29 < 0) {
+				temp_r31->unk0 = 12;
+				object->trans.y = 1030+temp_r29->unk4;
+				CharModelMotionShiftSet(temp_r31->unk86, object->motion[2], 0, 15, 0x40000001);
+				temp_r31->unk58.x =  0;
+			}
+			break;
+			
+		case 12:
+			object->trans.y = 1030+temp_r29->unk4;
+			sp24.x = (sind(temp_r31->unk58.x), 0.0);
+			sp24.y = -100*sind(temp_r31->unk58.x)+1300;
+			sp24.z = -500*sind(temp_r31->unk58.x)+1300;
+			sp18.x = (sind(temp_r31->unk58.x), 0.0);
+			sp18.y = 330*sind(temp_r31->unk58.x)+920;
+			sp18.z = (sind(temp_r31->unk58.x), 0.0) + -100.0;
+			spC.x = 0;
+			spC.y = 1;
+			spC.z = 0;
+			Hu3DCameraPosSetV(1, &sp24, &spC, &sp18);
+			temp_r31->unk58.x += 3.0f;
+			if(temp_r31->unk58.x > 90.0f) {
+				temp_r31->unk0 = 13;
+				CharModelMotionShiftSet(temp_r31->unk86, object->motion[5], 0, 20, 0);
+				HuAudSStreamPlay(1);
+				lbl_2_bss_C0 = MGSeqWinCreate(lbl_2_bss_AA[0], -1, -1, -1);
+				lbl_2_bss_1A = 210;
+			}
+			temp_r31->unk6E = 160;
+			break;
+			
+		case 13:
+			if(lbl_2_bss_BA == 1) {
+				object->trans.y = 1030+temp_r29->unk4;
+			} else {
+				temp_r31->unk58.x *= 1.17f;
+				object->trans.y -= 0.35f*sind(temp_r31->unk80);
+				temp_r31->unk80 += 3.0f;
+				if(temp_r31->unk80 >= 360.0f) {
+					temp_r31->unk80 -= 360.0f;
+				}
+				if(73.0f <= Hu3DMotionOverlayTimeGet(object->model[0])) {
+					Hu3DMotionOverlayTimeSet(object->model[0], 35.0f);
+				}
+			}
+			if(--temp_r31->unk6E == 0) {
+				temp_r31->unk0 = 14;
+			}
+			
+			break;
+			
+		case 14:
+			if(temp_r31->unk68) {
+				if(lbl_2_bss_BA == 1) {
+					object->trans.y = 1030+temp_r29->unk4;
+				} else {
+					temp_r31->unk58.x *= 1.17f;
+					object->trans.y -= 0.35f*sind(temp_r31->unk80);
+					temp_r31->unk80 += 3.0f;
+					if(temp_r31->unk80 >= 360.0f) {
+						temp_r31->unk80 -= 360.0f;
+					}
+					if(73.0f <= Hu3DMotionOverlayTimeGet(object->model[0])) {
+						Hu3DMotionOverlayTimeSet(object->model[0], 35.0f);
+					}
+				}
+			}
+			if(lbl_2_bss_1A <= 0) {
+				WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
+				HuAudSeqFadeOut(lbl_2_bss_A4, 100);
+				HuAudFXStop(lbl_2_bss_11C);
+				temp_r31->unk0 = 15;
+			}
+			break;
+			
+		case 15:
+			if(temp_r31->unk68) {
+				if(lbl_2_bss_BA == 1) {
+					object->trans.y = 1030+temp_r29->unk4;
+				} else {
+					temp_r31->unk58.x *= 1.17f;
+					object->trans.y -= 0.35f*sind(temp_r31->unk80);
+					temp_r31->unk80 += 3.0f;
+					if(temp_r31->unk80 >= 360.0f) {
+						temp_r31->unk80 -= 360.0f;
+					}
+					if(73.0f <= Hu3DMotionOverlayTimeGet(object->model[0])) {
+						Hu3DMotionOverlayTimeSet(object->model[0], 35.0f);
+					}
+				}
+			}
+			if(!WipeStatGet()) {
+				lbl_2_bss_110->func = fn_2_A10;
+			}
+			break;
+	}
+}
+
+void fn_2_65FC(omObjData *object);
+void fn_2_6AF4(omObjData *object);
+void fn_2_A940(omObjData *object);
+
+void fn_2_6C94(omObjData *object, s8 *x, s8 *y, u16 *btn);
+
+void fn_2_5CC0(omObjData *object)
+{
+	M401WorkPlayer *temp_r31;
+	float temp_f29;
+	Vec sp20;
+	Vec sp14;
+	s32 sp10;
+	u16 spA;
+	s8 sp9;
+	s8 sp8;
+	temp_f29 = 0;
+	temp_r31 = object->data;
+	sp9 = sp8 = spA = 0;
+	if(temp_r31->unk78 == 0) {
+		if(GWPlayerCfg[temp_r31->unk4].iscom) {
+			fn_2_6C94(object, &sp9, &sp8, &spA);
+		} else {
+			sp9 = HuPadStkX[temp_r31->unk8];
+			sp8 = HuPadStkY[temp_r31->unk8];
+			spA = HuPadBtnDown[temp_r31->unk8];
+		}
+		if(sp9 != 0 || sp8 != 0) {
+			temp_r31->unk58.z = sqrtf((sp9*sp9)+(sp8*sp8))/9.0f;
+		}
+		temp_r31->unk64 = atan2d(sp9, sp8);
+		if(spA & PAD_BUTTON_A) {
+			temp_r31->unk88 += 1.51f*lbl_2_data_0;
+			if(temp_r31->unk88 < 1.51f*lbl_2_data_0) {
+				temp_r31->unk88 = 1.51f*lbl_2_data_0;
+			}
+		}
+		if(temp_r31->unk88 >= 0.0f){ 
+			temp_f29 = 0;
+		} else {
+			temp_f29 = fabs(temp_r31->unk88/(1.51f*lbl_2_data_0));
+		}
+		if(temp_r31->unk84) {
+			if(--temp_r31->unk84 == 0) {
+				CharModelMotionShiftSet(temp_r31->unk86, object->motion[1], 0, 8, 0x40000001);
+				temp_r31->unk6A = 0;
+			}
+		}
+	} else {
+		temp_r31->unk84 = 0;
+		if(--temp_r31->unk7A == 0) {
+			sp10 = GWPlayerCfg[temp_r31->unk4].character;
+			CharModelMotionShiftSet(temp_r31->unk86, object->motion[1], 0, 8, 0x40000001);
+			temp_r31->unk78 = 0;
+			temp_r31->unk6A = 0;
+		}
+		if(temp_r31->unk7A & 0x1) {
+			Hu3DModelAttrSet(object->model[0], 1);
+		} else {
+			Hu3DModelAttrReset(object->model[0], 1);
+		}
+	}
+	if(temp_f29 != 0) {
+		if(++temp_r31->unk8C > 15) {
+			temp_r31->unk8C  = 15;
+		}
+		temp_r31->unk8E = 0;
+	} else {
+		if(++temp_r31->unk8E > 5) {
+			temp_r31->unk8E = 5;
+			temp_r31->unk8C = 0;
+		}
+	}
+	if(temp_r31->unk78 == 0 && temp_r31->unk84 == 0) {
+		if(temp_r31->unk58.z > 0 || temp_r31->unk8C >= 5) {
+			if(temp_r31->unk6A == 0) {
+				temp_r31->unk6A = 1;
+				CharModelMotionShiftSet(temp_r31->unk86, object->motion[3], 0, 8, 0x40000001);
+			}
+		} else {
+			if(temp_r31->unk6A == 1) {
+				CharModelMotionShiftSet(temp_r31->unk86, object->motion[1], 0, 8, 0x40000001);
+				temp_r31->unk6A = 0;
+			}
+		}
+	}
+	CharModelMotionSpeedSet(temp_r31->unk86, 1.0f+temp_f29);
+	fn_2_65FC(object);
+	if(temp_r31->unk58.z > 0.1f) {
+		temp_r31->unk58.z *= 0.9f;
+	} else {
+		temp_r31->unk58.z = 0.0f;
+	}
+	temp_r31->unk88 -= 0.15f*lbl_2_data_0;
+	if(temp_r31->unk88 > -lbl_2_data_0) {
+		temp_r31->unk88 = -lbl_2_data_0;
+	}
+	sp20.x = object->trans.x;
+	sp20.y = object->trans.y;
+	sp20.z = object->trans.z;
+	omSetTra(object, temp_r31->unkC.x, temp_r31->unkC.y, lbl_2_bss_60.z+temp_r31->unkC.z);
+	sp14.x = object->trans.x;
+	sp14.y = object->trans.y;
+	sp14.z = object->trans.z;
+	if(sp8 != 0) {
+		object->rot.x -= 0.05f*sp8;
+	} else {
+		object->rot.x *= 0.8f;
+		if(object->rot.x < 0.01f) {
+			object->rot.x = 0;
+		}
+	}
+	if(sp9 != 0) {
+		object->rot.z -= 0.05f*sp9;
+	} else {
+		object->rot.z *= 0.8f;
+		if(object->rot.z < 0.01f) {
+			object->rot.z = 0;
+		}
+	}
+	if(object->rot.x < -30.0f) {
+		object->rot.x = -30.0f;
+	}
+	if(object->rot.x > 30.0f) {
+		object->rot.x = 30.0f;
+	}
+	if(object->rot.z < -30.0f) {
+		object->rot.z = -30.0f;
+	}
+	if(object->rot.z > 30.0f) {
+		object->rot.z = 30.0f;
+	}
+	object->rot.y = 180;
+	fn_2_6AF4(object);
+	fn_2_A940(object);
+	temp_r31->unk70 = 0;
+}
+
+void fn_2_65FC(omObjData *object)
+{
+	M401WorkPlayer *temp_r31;
+	M401WorkPlayer *temp_r30;
+	s32 temp_r29;
+	omObjData *temp_r28;
+	float temp_f31;
+	float temp_f30;
+	float temp_f29;
+	float temp_f26;
+	float temp_f24;
+	
+	Vec sp24;
+	Vec sp18;
+	Vec spC;
+	temp_r30 = object->data;
+	temp_f26 = temp_r30->unk58.z;
+	sp24.x = sind(temp_r30->unk64);
+	sp24.y = cosd(temp_r30->unk64);
+	sp24.z = temp_r30->unk88+lbl_2_data_0;
+	VECNormalize(&sp24, &sp18);
+	sp24.x *= temp_f26;
+	sp24.y *= temp_f26;
+	sp24.z -= lbl_2_data_0;
+	temp_f31 = temp_r30->unkC.x+sp24.x;
+	temp_f30 = temp_r30->unkC.y+sp24.y;
+	temp_f29 = temp_r30->unkC.z+sp24.z;
+	if(temp_f31 < -400) {
+		temp_f31 = -400;
+	}
+	if(temp_f31 > 400) {
+		temp_f31 = 400;
+	}
+	if(temp_f30 < -300) {
+		temp_f30 = -300;
+	}
+	if(temp_f30 > 300) {
+		temp_f30 = 300;
+	}
+	if(temp_f29 < 400) {
+		temp_f29 = 400;
+	}
+	if(temp_f29 > 800) {
+		temp_f29 = 800;
+	}
+	for(temp_r29=0; temp_r29<4; temp_r29++) {
+		if(lbl_2_bss_118[temp_r29] != object) {
+			temp_r28 = lbl_2_bss_118[temp_r29];
+			temp_r31 = temp_r28->data;
+			temp_f24 = VECMagPoint(temp_f31-temp_r31->unkC.x, temp_f30-temp_r31->unkC.y, temp_f29-temp_r31->unkC.z);
+			if(temp_f24 < 127.0f) {
+				spC.x = temp_f31-temp_r31->unkC.x;
+				spC.y = temp_f30-temp_r31->unkC.y;
+				spC.z = temp_f29-temp_r31->unkC.z;
+				VECNormalize(&spC, &spC);
+				temp_f31 = temp_r31->unkC.x+127.0f*spC.x;
+				temp_f30 = temp_r31->unkC.y+127.0f*spC.y;
+				temp_f29 = temp_r31->unkC.z+127.0f*spC.z;
+			}
+		}
+	}
+	if(temp_f31 < -400) {
+		temp_f31 = -400;
+	}
+	if(temp_f31 > 400) {
+		temp_f31 = 400;
+	}
+	if(temp_f30 < -300) {
+		temp_f30 = -300;
+	}
+	if(temp_f30 > 300) {
+		temp_f30 = 300;
+	}
+	if(temp_f29 < 400) {
+		temp_f29 = 400;
+	}
+	if(temp_f29 > 800) {
+		temp_f29 = 800;
+	}
+	temp_r30->unkC.x = temp_f31;
+	temp_r30->unkC.y = temp_f30;
+	temp_r30->unkC.z = temp_f29;
+}
+
+void fn_2_6AF4(omObjData *object)
+{
+	M401WorkPlayer *temp_r31 = object->data;
+	temp_r31->unk18.x = temp_r31->unkC.x+lbl_2_bss_60.x;
+	temp_r31->unk18.y = object->trans.y;
+	temp_r31->unk18.z = 80+object->trans.z;
+}
+
+void fn_2_6B44(omObjData *object)
+{
+	M401WorkPlayer *temp_r30;
+	float temp_f31;
+	float temp_f30;
+	float temp_f29;
+	temp_r30 = object->data;
+	temp_f31 = 80.0*sind(object->rot.y+180.0f);
+	temp_f29 = 80.0*-cosd(object->rot.y);
+	temp_f30 = 80.0*sind(object->rot.x);
+	temp_r30->unk18.x = object->trans.x+temp_f31;
+	temp_r30->unk18.y = object->trans.y+temp_f30;
+	temp_r30->unk18.z = object->trans.z+temp_f29;
+}
+
+omObjData *fn_2_792C(omObjData *object);
+
+void fn_2_6C94(omObjData *object, s8 *x, s8 *y, u16 *btn)
+{
+	M401WorkPlayer *temp_r31;
+	s32 temp_r30;
+	omObjData *temp_r28;
+	s32 temp_r27;
+	u16 temp_r26 = 0;
+	float temp_f31;
+	float temp_f30;
+	float temp_f29;
+	s16 sp50[][8] = {
+		0, 2, 0, 2, 0, 2, 0, 2,
+		0, 2, 0, 2, 0, 0, 0, 2,
+		0, 0, 0, 2, 0, 0, 0, 2,
+		0, 0, 0, 0, 0, 0, 0, 0,
+	};
+	Vec sp44;
+	Vec sp38;
+	Vec sp2C;
+	Vec sp20;
+	s16 sp18[] = {
+		50, 125, 200, 245
+	};
+	s16 sp10[] = {
+		75, 150, 200, 250
+	};
+	s16 sp8[] = {
+		9, 6, 4, 2
+	};
+	temp_r31 = object->data;
+	*x = *y = 0;
+	*btn = 0;
+	if(temp_r31->unk7C == 0) {
+		temp_r31->unk7E = sp50[GWPlayerCfg[temp_r31->unk4].diff][frand() & 0x7];
+		temp_r31->unk7C = (frand()%60)+30;
+		temp_r31->unk92 = 0;
+		if((u32)frand8() < sp18[GWPlayerCfg[temp_r31->unk4].diff]) {
+			temp_r31->unk92 |= 1;
+		}
+		if((u32)frand8() < sp10[GWPlayerCfg[temp_r31->unk4].diff]) {
+			temp_r31->unk92 |= 2;
+		}
+	} else {
+		temp_r31->unk7C--;
+	}
+	temp_r26 = temp_r31->unk92;
+	sp44.x = sp44.y = sp44.z = 0;
+	switch(temp_r31->unk7E) {
+		case 0:
+			temp_r28 = fn_2_792C(object);
+			if(temp_r28) {
+				sp44.x = temp_r28->trans.x-object->trans.x;
+				sp44.y = temp_r28->trans.y-object->trans.y;
+				sp44.z = temp_r28->trans.z-object->trans.z;
+			}
+			break;
+			
+		case 2:
+			break;
+	}
+	if(temp_r26 & 0x1) {
+		sp38.x = object->trans.x;
+		sp38.y = object->trans.y;
+		sp38.z = object->trans.z;
+		for(temp_r27=0; temp_r27<4; temp_r27++) {
+			if(lbl_2_bss_118[temp_r27] != object) {
+				sp20.x = lbl_2_bss_118[temp_r27]->trans.x;
+				sp20.y = lbl_2_bss_118[temp_r27]->trans.y;
+				sp20.z = lbl_2_bss_118[temp_r27]->trans.z;
+				VECSubtract(&sp38, &sp20, &sp2C);
+				temp_f31 = VECMag(&sp2C)-110.0f;
+				if(temp_f31 < 110.0f) {
+					temp_f31 -= 60.0f;
+					if(temp_f31 < 0.01f) {
+						temp_f31 = 0.01;
+					}
+					VECScale(&sp2C, &sp2C, 1.0f/temp_f31);
+					VECAdd(&sp44, &sp2C, &sp44);
+				}
+			}
+		}
+	}
+	if(temp_r26 & 0x2) {
+		for(temp_r30=0; temp_r30<4; temp_r30++) {
+			if(lbl_2_bss_E4[temp_r30]->func != NULL) {
+				sp20.x = lbl_2_bss_E4[temp_r30]->trans.x;
+				sp20.y = lbl_2_bss_E4[temp_r30]->trans.y;
+				sp20.z = lbl_2_bss_E4[temp_r30]->trans.z;
+				VECSubtract(&sp38, &sp20, &sp2C);
+				temp_f31 = VECMag(&sp2C)-110.0f;
+				if(temp_f31 < 110.0f) {
+					temp_f31 -= 60.0f;
+					if(temp_f31 < 0.01f) {
+						temp_f31 = 0.01;
+					}
+					VECScale(&sp2C, &sp2C, 1.0f/temp_f31);
+					VECAdd(&sp44, &sp2C, &sp44);
+				}
+			}
+		}
+		for(temp_r30=0; temp_r30<2; temp_r30++) {
+			if(lbl_2_bss_100[temp_r30]->func != NULL) {
+				sp20.x = lbl_2_bss_100[temp_r30]->trans.x;
+				sp20.y = lbl_2_bss_100[temp_r30]->trans.y;
+				sp20.z = lbl_2_bss_100[temp_r30]->trans.z;
+				VECSubtract(&sp38, &sp20, &sp2C);
+				temp_f31 = VECMag(&sp2C)-110.0f;
+				if(temp_f31 < 110.0f) {
+					temp_f31 -= 60.0f;
+					if(temp_f31 < 0.01f) {
+						temp_f31 = 0.01;
+					}
+					VECScale(&sp2C, &sp2C, 1.0f/temp_f31);
+					VECAdd(&sp44, &sp2C, &sp44);
+				}
+			}
+		}
+		sp20.x = lbl_2_bss_FC->trans.x;
+		sp20.y = lbl_2_bss_FC->trans.y;
+		sp20.z = lbl_2_bss_FC->trans.z;
+		VECSubtract(&sp38, &sp20, &sp2C);
+		sp2C.x = 0;
+		temp_f31 = VECMag(&sp2C)-220.0f;
+		if(temp_f31 < 220.0f) {
+			temp_f31 -= 160.0f;
+			if(temp_f31 < 0.01f) {
+				temp_f31 = 0.01;
+			}
+			VECScale(&sp2C, &sp2C, 1.0f/temp_f31);
+			VECAdd(&sp44, &sp2C, &sp44);
+		}
+	}
+	
+	if(sp44.z < 0.0f) {
+		if(temp_r31->unk90 == 0) {
+			*btn |= 0x100;
+			temp_r31->unk90 = (frand()%sp8[GWPlayerCfg[temp_r31->unk4].diff])+3;
+		} else {
+			temp_r31->unk90--;
+		}
+	}
+	sp44.z = 0;
+	temp_f30 = VECMag(&sp44);
+	temp_f30 *= 0.2f;
+	temp_f29 = atan2d(sp44.y, sp44.x);
+	if(temp_f30 > 72.0f) { 
+		temp_f30 = 72.0f;
+	}
+	if(temp_f30 < 10.0f) { 
+		temp_f30 = 0.0f; 
+	}
+	*x = temp_f30*cosd(temp_f29);
+	*y = temp_f30*sind(temp_f29);
+}
+
+s32 fn_2_AC2C(Vec *pos, float dist, omObjData **newobj);
+
+s32 fn_2_7640(omObjData *object, omObjData **newobj)
+{
+	Vec spC;
+	spC.x = object->trans.x;
+	spC.y = object->trans.y;
+	spC.z = object->trans.z-100.0f;
+	return fn_2_AC2C(&spC, 270.0f, newobj);
+}
+
+void fn_2_76AC(omObjData *object, s32 arg1)
+{
+	M401WorkPlayer *temp_r31;
+	if(arg1) {
+		temp_r31 = object->data;
+		temp_r31->unk7E = 1;
+		temp_r31->unk7C = 5;
+		switch(arg1) {
+			case 1:
+				temp_r31->unk80 = 180.0+atan2d(temp_r31->unk54->trans.x-object->trans.x, temp_r31->unk54->trans.y-object->trans.y);
+				break;
+				
+			case 2:
+				if(temp_r31->unkC.y > temp_r31->unk54->trans.y) {
+					temp_r31->unk80 = 80.0f+((1.0f/255.0f)*(20.0f*(u32)frand8()));
+				} else {
+					temp_r31->unk80 = 260.0f+((1.0f/255.0f)*(20.0f*(u32)frand8()));
+				}
+				break;
+				
+			case 3:
+				if(temp_r31->unkC.y > temp_r31->unk54->trans.y) {
+					temp_r31->unk80 = 80.0f+((1.0f/255.0f)*(20.0f*(u32)frand8()));
+				} else {
+					temp_r31->unk80 = 260.0f+((1.0f/255.0f)*(20.0f*(u32)frand8()));
+				}
+				break;
+		}
+	}
+}
+
+omObjData *fn_2_792C(omObjData *object)
+{
+	omObjData **temp_r31;
+	s32 temp_r30;
+	omObjData *temp_r28;
+	float temp_f31, temp_f30, temp_f29;
+	float temp_f27, temp_f26;
+	temp_r31 = omGetGroupMemberListEx(HuPrcCurrentGet(), 1);
+	temp_f26 = 100000;
+	temp_r28 = NULL;
+	for(temp_r30=0; temp_r30<28; temp_r30++) {
+		if(temp_r31[temp_r30] == NULL || temp_r31[temp_r30]->trans.z-lbl_2_bss_60.z > 850.0f || temp_r31[temp_r30]->trans.z-lbl_2_bss_60.z < -2500.0f) {
+			continue;
+		}
+		temp_f30 = temp_r31[temp_r30]->trans.x-object->trans.x;
+		temp_f29 = temp_r31[temp_r30]->trans.y-object->trans.y;
+		temp_f31 = temp_r31[temp_r30]->trans.z-object->trans.z;
+		temp_f31 *= 0.15f;
+		temp_f27 = VECMagPoint(temp_f30, temp_f29, temp_f31);
+		if(temp_f27 < temp_f26 && temp_f27 < 2000.0f) {
+			temp_f26 = temp_f27;
+			temp_r28 = temp_r31[temp_r30];
+		}
+	}
+	return temp_r28;
+}
+
+void fn_2_A914(s32 player);
+
+void fn_2_7C3C(omObjData *object)
+{
+	M401WorkPlayer *temp_r31 = object->data;
+	temp_r31->unk78 = 1;
+	temp_r31->unk7A = 120;
+	CharModelMotionShiftSet(temp_r31->unk86, object->motion[7], 0, 10, 0);
+	fn_2_A914(temp_r31->unk4);
+}
+
+typedef struct work_7CB4 {
+	s16 unk0;
+	Vec unk4;
+	Vec unk10;
+	s16 unk1C;
+	s16 unk1E;
+	s16 unk20;
+	s16 unk22;
+	s16 unk24;
+	float unk28;
+	s16 unk2C;
+	s16 unk2E;
+	float unk30;
+} Work7CB4;
+
+void fn_2_7E6C(omObjData *object);
+
+void fn_2_7CB4(omObjData *object)
+{
+	Work7CB4 *temp_r31;
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(Work7CB4), MEMORY_DEFAULT_NUM);
+	temp_r31 = object->data;
+	temp_r31->unk10.x = 0;
+	temp_r31->unk10.y = 200;
+	temp_r31->unk10.z = 0;
+	temp_r31->unk1E = 0;
+	temp_r31->unk22 = 100;
+	temp_r31->unk4.x = 0;
+	temp_r31->unk4.y = 200;
+	temp_r31->unk24 = 0;
+	temp_r31->unk28 = 0;
+	object->model[0] = Hu3DModelCreateFile(0x20000B);
+	Hu3DModelClusterAttrSet(object->model[0], 0, 0xC0000001);
+	Hu3DModelAttrSet(object->model[0], 0x1);
+	Hu3DModelAmbSet(object->model[0], 0.6f, 0.6f, 0.6f);
+	Hu3DModelShadowSet(object->model[0]);
+	temp_r31->unk0 = 0;
+	temp_r31->unk22 = 180;
+	omSetTra(object, 0, 200, 200);
+	omSetRot(object, 0, 180, 0);
+	object->func = fn_2_7E6C;
+}
+
+void fn_2_7E6C(omObjData *object)
+{
+	Work7CB4 *temp_r31;
+	temp_r31 = object->data;
+	switch(temp_r31->unk0) {
+		case 0:
+			if(--temp_r31->unk22 == 0) {
+				temp_r31->unk0 = 1;
+			}
+			break;
+			
+		case 1:
+			object->trans.z += -11.333333f;
+			break;
+	}
+}
+
+s32 gap_04_00000328_data = 0x20000C;
+s32 lbl_2_data_32C[] = {
+	4, 6
+};
+Vec lbl_2_data_334[][10] = {
+	{
+		{ 1400, -600, -21500 },
+		{ -100, 100, -22000 },
+		{ -1000, -200, -23000 },
+		{ -2000, -200, -23500 },
+		{ -2200, -200, -23500 },
+		{ -2300, -200, -23500 },
+	},
+	{
+		{ -1000, 500, -29500 },
+		{ -300, 300, -31500 },
+		{ 300, -150, -32500 },
+		{ -200, 250, -34000 },
+		{ -300, 300, -35000 },
+		{ -600, 300, -36000 },
+		{ 1000, -180, -40000 },
+		{ 1000, -180, -40000 },
+	}
+	
+};
+
+void fn_2_7EDC(s32 arg0, s32 arg1, float arg2, Vec *arg3)
+{
+	Vec *temp_r31;
+	Vec *temp_r30;
+	Vec *temp_r29;
+	Vec *temp_r28;
+	float temp_f31 = arg2*arg2;
+	if(arg1 == 0) {
+		temp_r31 = &lbl_2_data_334[arg0][arg1];
+		temp_r30 = &lbl_2_data_334[arg0][arg1+1];
+		temp_r29 = &lbl_2_data_334[arg0][arg1+2];
+		temp_r28 = &lbl_2_data_334[arg0][arg1+3];
+		arg3->x = (0.5f * ((2.0f * temp_r31->x) + ((temp_f31 * (temp_r29->x + (temp_r31->x - (2.0f * temp_r30->x)))) + (arg2 * (((-3.0f * temp_r31->x) + (4.0f * temp_r30->x)) - temp_r29->x)))));
+		arg3->y = (0.5f * ((2.0f * temp_r31->y) + ((temp_f31 * (temp_r29->y + (temp_r31->y - (2.0f * temp_r30->y)))) + (arg2 * (((-3.0f * temp_r31->y) + (4.0f * temp_r30->y)) - temp_r29->y)))));
+		arg3->z = (0.5f * ((2.0f * temp_r31->z) + ((temp_f31 * (temp_r29->z + (temp_r31->z - (2.0f * temp_r30->z)))) + (arg2 * (((-3.0f * temp_r31->z) + (4.0f * temp_r30->z)) - temp_r29->z)))));
+	} else {
+		temp_r31 = &lbl_2_data_334[arg0][arg1-1];
+		temp_r30 = &lbl_2_data_334[arg0][arg1];
+		temp_r29 = &lbl_2_data_334[arg0][arg1+1];
+		temp_r28 = &lbl_2_data_334[arg0][arg1+2];
+		arg3->x = (0.5f * ((2.0f * temp_r30->x) + ((arg2 * (-temp_r31->x + temp_r29->x)) + ((arg2 * (temp_f31 * (temp_r28->x + ((-temp_r31->x + (3.0f * temp_r30->x)) - (3.0f * temp_r29->x))))) + (temp_f31 * (((4.0f * temp_r29->x) + ((2.0f * temp_r31->x) - (5.0f * temp_r30->x))) - temp_r28->x))))));
+		arg3->y = (0.5f * ((2.0f * temp_r30->y) + ((arg2 * (-temp_r31->y + temp_r29->y)) + ((arg2 * (temp_f31 * (temp_r28->y + ((-temp_r31->y + (3.0f * temp_r30->y)) - (3.0f * temp_r29->y))))) + (temp_f31 * (((4.0f * temp_r29->y) + ((2.0f * temp_r31->y) - (5.0f * temp_r30->y))) - temp_r28->y))))));
+		arg3->z = (0.5f * ((2.0f * temp_r30->z) + ((arg2 * (-temp_r31->z + temp_r29->z)) + ((arg2 * (temp_f31 * (temp_r28->z + ((-temp_r31->z + (3.0f * temp_r30->z)) - (3.0f * temp_r29->z))))) + (temp_f31 * (((4.0f * temp_r29->z) + ((2.0f * temp_r31->z) - (5.0f * temp_r30->z))) - temp_r28->z))))));
+	}
+}
+
+s32 fn_2_8450(omObjData *object)
+{
+	Work7CB4 *temp_r31;
+	Vec *temp_r29;
+	Vec *temp_r28;
+	float temp_f29;
+	Vec sp18;
+	Vec spC;
+	temp_r31 = object->data;
+	while(1) {
+		if(temp_r31->unk2E == lbl_2_data_32C[temp_r31->unk2C]) {
+			return 1;
+		}
+		temp_r28 = &lbl_2_data_334[temp_r31->unk2C][temp_r31->unk2E+1];
+		temp_r29 = &lbl_2_data_334[temp_r31->unk2C][temp_r31->unk2E];
+		sp18.x = temp_r28->x - temp_r29->x;
+		sp18.y = temp_r28->y - temp_r29->y;
+		sp18.z = temp_r28->z - temp_r29->z;
+		temp_f29 = VECMagPoint(sp18.x, sp18.y, sp18.z);
+		if(temp_r31->unk30 > temp_f29) {
+			temp_r31->unk30 -= temp_f29;
+			temp_r31->unk2E++;
+			continue;
+		}
+		break;
+	}
+	fn_2_7EDC(temp_r31->unk2C, temp_r31->unk2E, temp_r31->unk30/temp_f29, &spC);
+	sp18.x = spC.x-object->trans.x;
+	sp18.y = spC.y-object->trans.y;
+	sp18.z = spC.z-object->trans.z;
+	VECNormalize(&sp18, &sp18);
+	object->trans.x = spC.x;
+	object->trans.y = spC.y;
+	object->trans.z = spC.z;
+	object->rot.y = atan2d(sp18.x, sp18.z);
+	object->rot.x = -90.0f*sp18.y;
+	return 0;
+}
+
+s32 fn_2_873C(omObjData *object)
+{
+	Work7CB4 *temp_r30;
+	Vec sp8;
+	temp_r30 = object->data;
+	if(object->trans.x > -400.0f 
+		&& object->trans.x < 400.0f
+		&& object->trans.z-lbl_2_bss_60.z < 300.0f
+		&& object->trans.y > -300.0f
+		&& object->trans.y < 300.0f) {
+		if(temp_r30->unk1E == 0) {
+			if(temp_r30->unk20 != 0) {
+				temp_r30->unk20--;
+				sp8.x = object->trans.x;
+				sp8.y = object->trans.y;
+				sp8.z = object->trans.z-lbl_2_bss_60.z;
+				fn_2_10A88(&sp8, 1);
+				return 1;
+			}
+			
+		} else {
+			temp_r30->unk1E--;
+		}
+	}
+	return 0;
+}
+
+void fn_2_8968(omObjData *object);
+
+void fn_2_8868(omObjData *object)
+{
+	Work7CB4 *temp_r31;
+	temp_r31 = object->data;
+	if(lbl_2_bss_60.z < -20800.0f) {
+		Hu3DModelAttrReset(object->model[0], 1);
+		temp_r31->unk2C = 0;
+		temp_r31->unk2E = 0;
+		temp_r31->unk30 = 0;
+		temp_r31->unk1E = ((frand()%10)+13)*0.43478262f;
+		temp_r31->unk20 = 2;
+		fn_2_8450(object);
+		object->func = fn_2_8968;
+	}
+}
+
+void fn_2_8B58(omObjData *object);
+
+void fn_2_8968(omObjData *object)
+{
+	Work7CB4 *temp_r29;
+	temp_r29 = object->data;
+	temp_r29->unk30 += 25.875;
+	if(fn_2_873C(object)) {
+		temp_r29->unk1E = ((frand()%15)+22)*0.43478262f;
+	}
+	if(fn_2_8450(object)) {
+		Hu3DModelAttrSet(object->model[0], 1);
+		object->func = fn_2_8B58;
+	}
+}
+
+void fn_2_8C58(omObjData *object);
+
+void fn_2_8B58(omObjData *object)
+{
+	Work7CB4 *temp_r31;
+	temp_r31 = object->data;
+	if(lbl_2_bss_60.z < -30500.0f) {
+		Hu3DModelAttrReset(object->model[0], 1);
+		temp_r31->unk2C = 1;
+		temp_r31->unk2E = 0;
+		temp_r31->unk30 = 0;
+		temp_r31->unk1E = ((frand()%60)+50)*0.43478262f;
+		temp_r31->unk20 = 3;
+		fn_2_8450(object);
+		object->func = fn_2_8C58;
+	}
+}
+
+s32 lbl_2_data_424[] = {
+	50, 95
+};
+
+void fn_2_8C58(omObjData *object)
+{
+	Work7CB4 *temp_r29;
+	temp_r29 = object->data;
+	temp_r29->unk30 += 25.875;
+	if(fn_2_873C(object)) {
+		temp_r29->unk1E = ((frand()%15)+lbl_2_data_424[lbl_2_bss_14++])*0.43478262f;
+	}
+	if(fn_2_8450(object)) {
+		Hu3DModelAttrSet(object->model[0], 1);
+		object->func = NULL;
+	}
+}
+
+typedef struct work_8E74 {
+	Vec unk0;
+	Vec unkC;
+	Vec unk18;
+	Vec unk24;
+	float unk30;
+	Vec unk34;
+} Work8E74;
+
+void fn_2_9298(omObjData *object);
+
+void fn_2_8E74(omObjData *object)
+{
+	Work8E74 *temp_r31;
+	object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(Work8E74), MEMORY_DEFAULT_NUM);
+	temp_r31 = object->data;
+	temp_r31->unk24.x = 6;
+	temp_r31->unk24.z = 90;
+	temp_r31->unk24.y = 100;
+	object->model[0] = Hu3DModelCreateFile(0x20000D);
+	object->motion[0] = Hu3DJointMotionFile(object->model[0], 0x200010);
+	Hu3DMotionSet(object->model[0], object->motion[0]);
+	Hu3DModelAttrSet(object->model[0], 0x40000001);
+	Hu3DModelAttrSet(object->model[0], 1);
+	omSetTra(object, -1000, 0, -23000);
+	omSetRot(object, 0, 90, 0);
+	temp_r31->unkC.x = 1000.0f-object->trans.x;
+	temp_r31->unkC.y = temp_r31->unk24.y-object->trans.y;
+	temp_r31->unkC.z = 0;
+	temp_r31->unk34.x = 1000;
+	temp_r31->unk34.y = 30;
+	temp_r31->unk34.z = 360.0f+((1.0f/255.0f)*(u32)frand8());
+	temp_r31->unk30 = VECMagPoint(temp_r31->unkC.x, temp_r31->unkC.y, temp_r31->unkC.z);
+	VECNormalize(&temp_r31->unkC, &temp_r31->unk0);
+	Hu3DModelShadowSet(object->model[0]);
+	object->work[3] = 2;
+	object->func = fn_2_9298;
+}
+
+void fn_2_91AC(omObjData *object, Vec *pos)
+{
+	Work8E74 *temp_r30;
+	temp_r30 = object->data;
+	temp_r30->unk18 = *pos;
+	temp_r30->unk34.z = (1.0f/255.0f)*(360.0f*(u32)frand8());
+	Hu3DModelAttrReset(object->model[0], 1);
+	omSetTra(object, pos->x, pos->y, pos->z);
+	object->work[2] = HuAudFXEmiterPlay(1284, &pos);
+	object->func = fn_2_9298;
+}
+
+void fn_2_9298(omObjData *object)
+{
+	Work8E74 *temp_r31;
+	float temp_f29;
+	Vec spC;
+	temp_r31 = object->data;
+	object->trans.x = temp_r31->unk18.x+1000.0f*sind(temp_r31->unk34.z);
+	temp_f29 = (temp_r31->unk34.y/temp_r31->unk34.x)*sqrtf((temp_r31->unk34.x*temp_r31->unk34.x)-(object->trans.x*object->trans.x));
+	if(temp_r31->unk34.z >= 90.0f && temp_r31->unk34.z <= 270.0f) {
+		temp_f29 = -temp_f29;
+	}
+	object->trans.z = temp_r31->unk18.z+temp_f29;
+	temp_r31->unk34.z += 0.6f+(0.6f*fabs(cosd(temp_r31->unk34.z)));
+	if(temp_r31->unk34.z >= 360.0f) {
+		temp_r31->unk34.z -= 360.0f;
+	}
+	omSetRot(object, 0, 90.0f+temp_r31->unk34.z , 0);
+	spC.x = object->trans.x;
+	spC.y = object->trans.y;
+	spC.z = object->trans.z;
+	HuAudFXEmiterUpDate(object->work[2], &spC);
+	if(object->trans.z > lbl_2_bss_6C.z-220.0f) {
+		Hu3DModelAttrSet(object->model[0], 1);
+		HuAudFXStop(object->work[2]);
+		object->func = NULL;
+	}
+}
+
+void fn_2_979C(omObjData *object);
+
+void fn_2_95E4(omObjData *object)
+{
+	object->model[0] = Hu3DModelCreateFile(0x200018);
+	object->motion[0] = Hu3DJointMotionFile(object->model[0], 0x200019);
+	object->motion[1] = Hu3DJointMotionFile(object->model[0], 0x20001A);
+	omSetTra(object, 3000, 0, -37000);
+	omSetRot(object, 0, 270, 0);
+	Hu3DMotionSet(object->model[0], object->motion[0]);
+	Hu3DModelAttrSet(object->model[0], 0x1);
+	Hu3DModelAttrSet(object->model[0], 0x40000001);
+	object->work[3] = 3;
+	Hu3DModelShadowSet(object->model[0]);
+	object->func = fn_2_979C;
+}
+
+void fn_2_9734(s32 flag)
+{
+	if(flag) {
+		Hu3DModelAttrReset(lbl_2_bss_FC->model[0], 1);
+	} else {
+		Hu3DModelAttrSet(lbl_2_bss_FC->model[0], 1);
+	}
+}
+
+void fn_2_988C(omObjData *object);
+
+void fn_2_979C(omObjData *object)
+{
+	if(lbl_2_bss_60.z < -19000.0f) {
+		fn_2_9734(1);
+		omSetTra(object, -2500, -800, -21000);
+		omSetRot(object, 0, 125, 0);
+		Hu3DMotionSet(object->model[0], object->motion[0]);
+		Hu3DModelAttrSet(object->model[0], 0x40000001);
+		object->func = fn_2_988C;
+	}
+}
+
+void fn_2_99A4(omObjData *object);
+
+void fn_2_988C(omObjData *object)
+{
+	object->trans.x += 2.3f*(26.0*sind(object->rot.y));
+	object->trans.z += 2.3f*(26.0*cosd(object->rot.y));
+	if(object->trans.x > 6000.0f) {
+		fn_2_9734(0);
+		object->func = fn_2_99A4;
+	}
+}
+
+void fn_2_9B90(omObjData *object);
+
+void fn_2_99A4(omObjData *object)
+{
+	float temp_f31;
+	if(lbl_2_bss_60.z <= -36200.0f+((1.0f/255.0f)*(200.0f*(u32)frand8()))) {
+		temp_f31 = -250.0f+((1.0f/255.0f)*(500.0f*(u32)frand8()));
+		fn_2_9734(1);
+		omSetTra(object, 3000, temp_f31, -37000);
+		omSetRot(object, 0, 270, 0);
+		Hu3DMotionSet(object->model[0], object->motion[0]);
+		Hu3DModelAttrSet(object->model[0], 0x40000001);
+		object->func = fn_2_9B90;
+		lbl_2_bss_78.x = object->trans.x;
+		lbl_2_bss_78.y = object->trans.y;
+		lbl_2_bss_78.z = object->trans.z;
+		lbl_2_bss_8C = HuAudFXEmiterPlay(1286, &lbl_2_bss_78);
+	}
+}
+
+void fn_2_9B90(omObjData *object)
+{
+	object->trans.x += 2.3f*(17.0*sind(object->rot.y));
+	object->trans.z += 2.3f*(17.0*cosd(object->rot.y));
+	lbl_2_bss_78.x = object->trans.x;
+	lbl_2_bss_78.y = object->trans.y;
+	lbl_2_bss_78.z = object->trans.z;
+	HuAudFXEmiterUpDate(lbl_2_bss_8C, &lbl_2_bss_78);
+	if(object->trans.x <= -3000.0f) {
+		fn_2_9734(0);
+		object->func = NULL;
+		HuAudFXStop(lbl_2_bss_8C);
+	}
+}
+
+typedef struct work_a318 {
+	Vec unk0;
+	s16 unkC;
+} Work9E28;
+
+s32 lbl_2_data_42C[] = {
+	0x20001C,
+	0x20001D
+};
+
+void fn_2_9D00(Process *objman)
+{
+	omObjData *temp_r31;
+	s32 temp_r30;
+	s32 temp_r29;
+	for(temp_r29=0; temp_r29<4; temp_r29++) {
+		temp_r31 = omAddObjEx(objman, 1130, 1, 2, -1, NULL);
+		lbl_2_bss_E4[temp_r29] = temp_r31;
+		temp_r31->model[0] = Hu3DModelCreateFile(0x20001B);
+		for(temp_r30=0; temp_r30<2; temp_r30++) {
+			temp_r31->motion[temp_r30] = Hu3DJointMotionFile(temp_r31->model[0], lbl_2_data_42C[temp_r30]);
+		}
+		Hu3DModelAttrSet(temp_r31->model[0], 1);
+		temp_r31->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(Work9E28), MEMORY_DEFAULT_NUM);
+		Hu3DModelShadowSet(temp_r31->model[0]);
+		temp_r31->work[3] = 1;
+	}
+}
+
+void fn_2_A318(omObjData *object);
+
+
+void fn_2_9E28(float arg1, float arg2)
+{
+	s32 temp_r31;
+	Work9E28 *temp_r30;
+	float temp_f31;
+	float temp_f30;
+	float temp_f29;
+	temp_f30 = (arg2-arg1)/4;
+	temp_f31 = arg1;
+	for(temp_r31=0; temp_r31<4; temp_r31++) {
+		temp_r30 = lbl_2_bss_E4[temp_r31]->data;
+		Hu3DModelAttrReset(lbl_2_bss_E4[temp_r31]->model[0], 1);
+		temp_f29 = -400.0f+((1.0f/255.0f)*(800.0f*(u32)frand8()));
+		temp_r30->unk0.x = -250.0f+((1.0f/255.0f)*(500.0f*(u32)frand8()));
+		omSetTra(lbl_2_bss_E4[temp_r31], temp_f29, temp_r30->unk0.x+lbl_2_bss_60.y, temp_f31);
+		Hu3DMotionSet(lbl_2_bss_E4[temp_r31]->model[0], lbl_2_bss_E4[temp_r31]->motion[0]);
+		Hu3DModelAttrSet(lbl_2_bss_E4[temp_r31]->model[0], 0x40000001);
+		temp_f31 += temp_f30;
+		temp_r30->unkC = (frand()%30)+30;
+		temp_r30->unk0.z = 0;
+		lbl_2_bss_E4[temp_r31]->func = fn_2_A318;
+	}
+}
+
+omObjData *fn_2_A0B0(omObjData *object)
+{
+	omObjData *temp_r31;
+	s32 temp_r30;
+	omObjData *temp_r29;
+	M401WorkPlayer *spC;
+	
+	float temp_f27;
+	float temp_f26;
+	temp_f26 = 999999;
+	for(temp_r30=0; temp_r30<4; temp_r30++) {
+		float temp_f31;
+		float temp_f30;
+		float temp_f29;
+		temp_r31 = lbl_2_bss_118[temp_r30];
+		spC = temp_r31->data;
+		temp_f31 = temp_r31->trans.x - object->trans.x;
+		temp_f30 = temp_r31->trans.y - object->trans.y;
+		temp_f29 = 0.4f*(temp_r31->trans.z - object->trans.z);
+		temp_f27 = VECMagPoint(temp_f31, temp_f30, temp_f29);
+		if(temp_f27 < temp_f26) {
+			temp_r29 = lbl_2_bss_118[temp_r30];
+			temp_f26 = temp_f27;
+		}
+	}
+	return temp_r29;
+}
+
+void fn_2_A318(omObjData *object)
+{
+	Work9E28 *temp_r30;
+	omObjData *temp_r28;
+	M401WorkPlayer *sp10;
+	temp_r30 = object->data;
+	if(0.0f == temp_r30->unk0.z) {
+		if(temp_r30->unkC == 0) {
+			temp_r28 = fn_2_A0B0(object);
+			sp10 = temp_r28->data;
+			temp_r30->unk0.y = atan2d(temp_r28->trans.y - object->trans.y, temp_r28->trans.x - object->trans.x);
+			temp_r30->unk0.z = 8.0f+((1.0f/255.0f)*((9.0f*(u32)frand8())));
+			Hu3DMotionSet(object->model[0], object->motion[1]);
+			Hu3DModelAttrReset(object->model[0], 0x40000001);
+			lbl_2_bss_78.x = object->trans.x;
+			lbl_2_bss_78.y = object->trans.y;
+			lbl_2_bss_78.z = object->trans.z;
+			HuAudFXEmiterPlay(1282, &lbl_2_bss_78);
+		} else {
+			temp_r30->unkC--;
+			temp_r30->unk0.x -= 2.5f;
+		}
+	} else {
+		temp_r30->unk0.x = temp_r30->unk0.x+(temp_r30->unk0.z*sind(temp_r30->unk0.y));
+		object->trans.x += temp_r30->unk0.z*cosd(temp_r30->unk0.y);
+		temp_r30->unk0.z *= 0.94f;
+		if(temp_r30->unk0.z < 0.1f) { 
+			temp_r30->unk0.z = 0;
+			temp_r30->unkC = (frand()%30)+25;
+			Hu3DMotionSet(object->model[0], object->motion[0]);
+			Hu3DModelAttrSet(object->model[0], 0x40000001);
+		}
+	}
+	if(temp_r30->unk0.x < -300.0f) {
+		temp_r30->unk0.x = -300.0f;
+	}
+	if(temp_r30->unk0.x > 300.0f) {
+		temp_r30->unk0.x = 300.0f;
+	}
+	if(object->trans.x < -400.0f) {
+		object->trans.x = -400.0f;
+	}
+	if(object->trans.x > 400.0f) {
+		object->trans.x = 400.0f;
+	}
+	omSetTra(object, object->trans.x, temp_r30->unk0.x+lbl_2_bss_60.y, object->trans.z);
+	if(object->trans.z > lbl_2_bss_6C.z-160.0f) {
+		Hu3DModelAttrSet(object->model[0], 1);
+		object->func = NULL;
+	}
+}
+
+void fn_2_A8A4(omObjData *object, float x, float y, float z)
+{
+	omSetTra(object, lbl_2_bss_60.x+x, lbl_2_bss_60.y+y, lbl_2_bss_60.z+z);
+}
+
+void fn_2_A914(s32 player)
+{
+	HuAudPlayerVoicePlay(player, 301);
+}
+
+void fn_2_A940(omObjData *object)
+{
+	
+}
+
+s32 fn_2_AC2C(Vec *pos, float dist, omObjData **newobj)
+{
+	
 }
