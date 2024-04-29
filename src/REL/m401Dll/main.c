@@ -2583,6 +2583,17 @@ void fn_2_A8A4(omObjData *object, float x, float y, float z)
 	omSetTra(object, lbl_2_bss_60.x+x, lbl_2_bss_60.y+y, lbl_2_bss_60.z+z);
 }
 
+s32 lbl_2_data_434[] = {
+	0x12D,
+	0x16D,
+	0x1AD,
+	0x1ED,
+	0x22D,
+	0x26D,
+	0x2AD,
+	0x2ED
+};
+
 void fn_2_A914(s32 player)
 {
 	HuAudPlayerVoicePlay(player, 301);
@@ -2617,5 +2628,197 @@ void fn_2_A940(omObjData *object)
 
 s32 fn_2_AC2C(Vec *pos, float dist, omObjData **newobj)
 {
+	omObjData *temp_r30;
+	s32 temp_r29;
+	float temp_f20;
+	float temp_f19;
+	float temp_f18;
+	Work9E28 *sp70;
+	float sp6C;
 	
+	*newobj = NULL;
+	for(temp_r29=0; temp_r29<4; temp_r29++) {
+		temp_r30 = lbl_2_bss_E4[temp_r29];
+		if(temp_r30->func != NULL) {
+			sp70 = temp_r30->data;
+			temp_f20 = VECMagPoint(pos->x-temp_r30->trans.x, pos->y-temp_r30->trans.y, pos->z-temp_r30->trans.z);
+			if(temp_f20 < sqrtf(1024.0f+(dist*dist))) {
+				*newobj = temp_r30;
+				return 1;
+			}
+		}
+	}
+	temp_r30 = lbl_2_bss_FC;
+	temp_f20 = VECDistanceZY(pos, &temp_r30->trans);
+	if(temp_f20 < sqrtf(6400.0f+(dist*dist))
+		&& temp_r30->trans.x < pos->x-(dist/2.0f)
+		&& 1500.0f+temp_r30->trans.x > pos->x+(dist/2.0f)) {
+		*newobj = temp_r30;
+		return 2;
+	}
+	for(temp_r29=0; temp_r29<2; temp_r29++) {
+		if(lbl_2_bss_100[temp_r29]->func != NULL) {
+			temp_f19 = lbl_2_bss_100[temp_r29]->trans.x+(70.0*sind(lbl_2_bss_100[temp_r29]->rot.y));
+			temp_f18 = lbl_2_bss_100[temp_r29]->trans.z+(70.0*cosd(lbl_2_bss_100[temp_r29]->rot.y));
+			sp6C = lbl_2_bss_100[temp_r29]->trans.y-10.0f;
+			temp_f20 = VECMagPoint(pos->x-temp_f19, pos->y-sp6C, pos->z-temp_f18);
+			if(temp_f20 < sqrtf(4900.0f+(dist*dist))) {
+				*newobj = lbl_2_bss_100[temp_r29];
+				return 3;
+			}
+			temp_f19 = lbl_2_bss_100[temp_r29]->trans.x;
+			temp_f18 = lbl_2_bss_100[temp_r29]->trans.z;
+			sp6C = lbl_2_bss_100[temp_r29]->trans.y-10.0f;
+			temp_f20 = VECMagPoint(pos->x-temp_f19, pos->y-sp6C, pos->z-temp_f18);
+			if(temp_f20 < sqrtf(4900.0f+(dist*dist))) {
+				*newobj = lbl_2_bss_100[temp_r29];
+				return 3;
+			}
+			temp_f19 = lbl_2_bss_100[temp_r29]->trans.x+(70.0*sind(lbl_2_bss_100[temp_r29]->rot.y+180.0f));
+			temp_f18 = lbl_2_bss_100[temp_r29]->trans.z+(70.0*cosd(lbl_2_bss_100[temp_r29]->rot.y+180.0f));
+			sp6C = lbl_2_bss_100[temp_r29]->trans.y-10.0f;
+			temp_f20 = VECMagPoint(pos->x-temp_f19, pos->y-sp6C, pos->z-temp_f18);
+			if(temp_f20 < sqrtf(4410.0f+(dist*dist))) {
+				*newobj = lbl_2_bss_100[temp_r29];
+				return 3;
+			}
+		}
+	}
+	return 0;
+}
+
+void fn_2_D8CC(omObjData *object);
+
+void fn_2_BD90(omObjData *object)
+{
+	s32 temp_r27;
+	M401WorkPlayer *temp_r26;
+	switch(object->work[0]) {
+		case 0:
+			WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);;
+			object->work[0] = 1;
+			break;
+			
+		case 1:
+			if(!WipeStatGet()) {
+				object->work[0] = 2;
+				object->work[1] = 180;
+			}
+			break;
+			
+		case 2:
+			if(object->work[1] == 0) {
+				lbl_2_bss_C0 = MGSeqStartCreate();
+				object->work[0] = 3;
+				lbl_2_bss_A4 = HuAudSeqPlay(68);
+			} else {
+				object->work[1]--;
+			}
+			break;
+			
+		case 3:
+			if(!MGSeqStatGet(lbl_2_bss_C0)) {
+				fn_2_AEC(1);
+				lbl_2_bss_120 = 1;
+				fn_2_1A38(lbl_2_bss_10C);
+				
+				lbl_2_bss_10C->func = fn_2_34B8;
+				for(temp_r27=0; temp_r27<4; temp_r27++) {
+					temp_r26 = lbl_2_bss_118[temp_r27]->data;
+					temp_r26->unk58.z = 0;
+					temp_r26->unkC.z = 800;
+					lbl_2_bss_118[temp_r27]->func = fn_2_5CC0;
+					object->trans.x = object->trans.y = object->trans.z = 0;
+				}
+				lbl_2_bss_108->func = fn_2_8868;
+				omDelObjEx(HuPrcCurrentGet(), object);
+				lbl_2_bss_114 = NULL;
+				lbl_2_bss_4->func = fn_2_D8CC;
+			}
+			
+			break;
+	}
+}
+
+void fn_2_C130(omObjData *object)
+{
+	M401WorkPlayer *temp_r31;
+	s32 temp_r30;
+	LightData *temp_r28;
+	Vec sp14;
+	Vec sp8;
+	switch(object->work[0]) {
+		case 0:
+			if(!MGSeqStatGet(lbl_2_bss_C0)) {
+				object->work[0] = 1;
+				HuAudFXStop(lbl_2_bss_11C);
+				WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
+				WipeColorSet(255, 255, 255);
+			}
+			break;
+			
+		case 1:
+			if(WipeStatGet()) {
+				return;
+			}
+			Hu3DFogClear();
+			temp_r28 = &Hu3DGlobalLight[0];
+			temp_r28->color.r = 255;
+			temp_r28->color.g = 255;
+			temp_r28->color.b = 255;
+			sp14.x = 0;
+			sp14.y = 2500;
+			sp14.z = 1000;
+			sp8.x = 0;
+			sp8.y = 1030;
+			sp8.z = 0;
+			Hu3DGLightPosAimSetV(lbl_2_bss_A8, &sp14, &sp8);
+			lbl_2_data_30.x = 0;
+			lbl_2_data_30.y = 2500;
+			lbl_2_data_30.z = 1000;
+			lbl_2_data_48.x = 0;
+			lbl_2_data_48.y = 1030;
+			lbl_2_data_48.z = 0;
+			Hu3DShadowPosSet(&lbl_2_data_30, &lbl_2_data_3C, &lbl_2_data_48);
+			HuAudAUXVolSet(-1, -1);
+			fn_2_2ED0(lbl_2_bss_10C);
+			for(temp_r30=0; temp_r30<4; temp_r30++) {
+				temp_r31 = lbl_2_bss_118[temp_r30]->data;
+				temp_r31->unk50->work[0] = 1;
+				temp_r31->unk6C = 0;
+				CharModelMotionSet(((M401WorkPlayer *)(lbl_2_bss_118[temp_r30]->data))->unk86, lbl_2_bss_118[temp_r30]->motion[4]);
+				Hu3DModelAttrReset(lbl_2_bss_118[temp_r30]->model[0], 0x40000001);
+				lbl_2_bss_118[temp_r30]->func = fn_2_48A0;
+				Hu3DModelAmbSet(lbl_2_bss_118[temp_r30]->model[0], 0.7f, 0.7f, 0.7f);
+				omSetTra(lbl_2_bss_118[temp_r30], -225.0f+(temp_r30*150), 740, 400);
+				omSetRot(lbl_2_bss_118[temp_r30], 0, 0, 0);
+				if(temp_r31->unk68) {
+					if(lbl_2_bss_BA == 1) {
+						temp_r31->unk0 = 10;
+						temp_r31->unk58.x = 13;
+					} else {
+						temp_r31->unk58.x = 10;
+						temp_r31->unk0 = 6;
+					}
+					OSReport("GetCoin:%d\n", temp_r30);
+					GWPlayerCoinWinSet(temp_r30, 10);
+				} else {
+					temp_r31->unk58.x = 10;
+					temp_r31->unk0 = 6;
+				}
+			}
+			fn_2_26E0(lbl_2_bss_10C);
+			object->work[0] = 2;
+			lbl_2_bss_F4->work[0] = 1;
+			fn_2_141B0();
+			lbl_2_bss_10C->func = fn_2_3838;
+			lbl_2_bss_11C = HuAudFXPlay(1280);
+			WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
+			omDelObjEx(HuPrcCurrentGet(), lbl_2_bss_C8);
+			break;
+			
+		case 2:
+			WipeStatGet() == 0;
+			break;
+	}
 }
