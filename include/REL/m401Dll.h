@@ -66,6 +66,7 @@ void fn_2_10710(void);
 void fn_2_1079C(void);
 omObjData *fn_2_10A88(Vec *arg0, s16 arg1);
 
+void fn_2_141B0(void);
 omObjData *fn_2_14640(Process *objman);
 
 #endif
