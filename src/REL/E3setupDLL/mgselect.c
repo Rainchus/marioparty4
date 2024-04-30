@@ -405,7 +405,7 @@ static void CreateMGSelect(omObjData *object)
         var_r26++;
     }
     object->work[3] = 1;
-    object->func = &UpdateMGSelect;
+    object->func = UpdateMGSelect;
 }
 
 static void UpdateMGPic(omObjData *object)
@@ -456,7 +456,7 @@ static void CreateMGPic(omObjData *object)
     index2++;
     object->work[1] = object->work[0];
     HuSprAttrReset(temp_r3, object->work[1], 4);
-    object->func = &UpdateMGPic;
+    object->func = UpdateMGPic;
 }
 
 static void UpdateMGInterface(omObjData *object) { void *sp8 = object->data; }
