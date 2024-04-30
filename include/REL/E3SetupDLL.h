@@ -13,70 +13,43 @@ typedef struct e3pad {
 } E3Pad;
 
 typedef struct mgInterface {
-	/* 0x00 */ AnimData *unk00[2];
-	/* 0x08 */ s32 pad;
-	/* 0x0C	*/ s32 pad2;
-	/* 0x10 */ s32 pad3;
-	/* 0x14 */ s32 pad4;
-	/* 0x18 */ s32 pad5;
+	/* 0x00 */ AnimData *unk_00[2];
+	/* 0x08 */ s32 unk08[5];
 	/* 0x1C */ s16 group;
 	/* 0x1E */ s16 group2;
-	/* 0x20 */ s32 pad6;
-	/* 0x24 */ s32 pad7;
-	/* 0x28 */ s32 pad8;
-	/* 0x2C */ s16 unk2C;
-	/* 0x2E */ s32 pad9;
-	/* the struct is 0x34 big */
+	/* 0x20 */ s32 unk20[3];
+	/* 0x2C */ s16 unk_2C;
+	/* 0x30 */ s32 unk30;
 } mgInterface;
 
 typedef struct mgPic {
-	/* 0x00 */ AnimData *unk00[2];
-	/* 0x08 */ s32 pad;
-	/* 0x0C	*/ s32 pad2;
-	/* 0x10 */ s32 pad3;
-	/* 0x14 */ s32 pad4;
-	/* 0x18 */ s32 pad5;
-	/* 0x1C */ s16 pad6;
-	/* 0x1E */ s16 pad7;
-	/* 0x20 */ s32 pad8;
-	/* 0x24 */ s32 pad9;
-	/* 0x28 */ s32 pad10;
-	/* 0x2C */ s16 unk2C;
-	/* 0x2E */ s32 pad11;
-	/* 0x32 */ s32 pad12;
-	/* 0x36 */ s32 pad13;
-	/* 0x3A */ s32 pad14;
-	/* 0x40 */ s16 unk40;
-	/* 0x44 */ s32 pad15;
-	/* 0x48	*/ s32 pad16;
-	/* 0x4C */ s32 unk4C;
-	/* 0x50 */ s32 pad18;
-	/* the struct is 0x54 big */
+	/* 0x00 */ AnimData *unk_00[2];
+	/* 0x08 */ s32 unk08[9];
+	/* 0x2C */ s16 unk_2C;
+	/* 0x2E */ s32 unk2E[4];
+	/* 0x40 */ s16 unk_40;
+	/* 0x44 */ s32 unk44[2];
+	/* 0x4C */ s32 unk_4C;
+	/* 0x50 */ s32 unk50;
 } mgPic;
 
 typedef struct mgSelect {
-	/* 0x00 */ AnimData *unk00[4];
-	/* 0x10 */ s32 pad3;
-	/* 0x14 */ s32 pad4;
-	/* 0x18 */ s32 pad5;
-	/* 0x1C */ s16 unk1C;
-	/* 0x1E */ s16 unk1E;
-	/* 0x20 */ s16 unk20;
-	/* 0x22 */ s16 pad20;
-	/* 0x24 */ s32 pad9;
-	/* 0x28 */ s32 pad10;
-	/* 0x2C */ s16 unk2C;
-	/* 0x2E */ s16 unk2E[4];
-	/* 0x36 */ s16 pad13;
-	/* 0x38 */ s16 unk38[4];
-	/* 0x40 */ s16 pad15;
-	/* 0x42 */ s16 unk42;
-	/* 0x44 */ s16 unk44;
-	/* 0x46 */ s16 unk46;
-	/* 0x48	*/ s32 pad17;
-	/* 0x4C */ s32 pad18;
-	/* 0x50 */ s32 pad19;
-	/* the struct is 0x54 big */
+	/* 0x00 */ AnimData *unk_00[4];
+	/* 0x10 */ s32 unk10[3];
+	/* 0x1C */ s16 unk_1C;
+	/* 0x1E */ s16 unk_1E;
+	/* 0x20 */ s16 unk_20;
+	/* 0x22 */ s16 unk22;
+	/* 0x24 */ s32 unk24[2];
+	/* 0x2C */ s16 unk_2C;
+	/* 0x2E */ s16 unk_2E[4];
+	/* 0x36 */ s16 unk36;
+	/* 0x38 */ s16 unk_38[4];
+	/* 0x40 */ s16 unk40;
+	/* 0x42 */ s16 unk_42;
+	/* 0x44 */ s16 unk_44;
+	/* 0x46 */ s16 unk_46;
+	/* 0x48	*/ s32 unk48[3];
 } mgSelect;
 
 extern E3Pad e3PadData[4];
