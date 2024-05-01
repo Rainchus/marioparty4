@@ -1441,7 +1441,7 @@ config.libs = [
     Rel('w20Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w20Dll/main.c"),
+            Object(Matching, "REL/w20Dll/main.c"),
         }
     ),
     Rel('w21Dll',
