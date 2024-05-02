@@ -4,7 +4,7 @@
 #include "dolphin/types.h"
 
 typedef struct UnkStaffDllStruct {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ u32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ float unk_08;
     /* 0x0C */ u32 unk_0C;
