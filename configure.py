@@ -299,7 +299,7 @@ def MusyX(objects, mw_version="GC/1.3.2", debug=False, major=1, minor=5, patch=4
 def Rel(lib_name, objects):
     return {
         "lib": lib_name,
-        "mw_version": "GC/2.6",
+        "mw_version": "GC/1.3.2",
         "cflags": cflags_rel,
         "host": True,
         "objects": objects,
@@ -802,7 +802,7 @@ config.libs = [
     ),
     Rel('m402Dll',
         objects = {
-            Object(NonMatching, "REL/m402Dll/main.c"),
+            Object(Matching, "REL/m402Dll/main.c"),
         }
     ),
     Rel('m403Dll',
