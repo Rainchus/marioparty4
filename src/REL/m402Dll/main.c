@@ -537,7 +537,7 @@ static s16 fn_1_46C(s32 arg0) {
     return Hu3DModelCreateFile(arg0);
 }
 
-static void fn_1_580(s32 *arg0, s32 arg1, s32 arg2) {
+void fn_1_580(s32 *arg0, s32 arg1, s32 arg2) {
     s32 var_r30;
 
     espBankSet(arg0[arg1 + 1], 10);
@@ -1243,7 +1243,8 @@ static void fn_1_43D8(omObjData *arg0) {
                 arg0->func = fn_1_3204;
             }
             break;
-        case 2011:
+			
+        case 2010:
             if (temp_r31->unk54 == lbl_1_bss_26) {
                 temp_r31->unk4C = 2012;
                 temp_r31->unk20 = 10.5f;
@@ -1258,6 +1259,10 @@ static void fn_1_43D8(omObjData *arg0) {
                 fn_1_2B30(temp_r31, arg0, temp_r30);
             }
             break;
+			
+		case 2011:
+			break;
+			
         case 2012:
             temp_r31->unk1C -= temp_r31->unk20;
             if (0.0f > temp_r31->unk1C) {
@@ -1287,13 +1292,13 @@ static void fn_1_43D8(omObjData *arg0) {
                 temp_r31->unk4C = 2011;
             }
             break;
-        case 0x7DE:
+        case 2014:
             if (fn_1_2DBC(temp_r31, temp_r30) != 0) {
                 temp_r31->unk4C++;
                 temp_r31->unk50 = 120;
             }
             break;
-        case 0x7DF:
+        case 2015:
             fn_1_313C(temp_r31, temp_r30);
             temp_r31->unk50 -= 1.0f;
             if (temp_r31->unk50 == 32) {
