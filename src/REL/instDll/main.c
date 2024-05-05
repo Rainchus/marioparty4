@@ -19,6 +19,7 @@
 #include "game/chrman.h"
 
 #include "math.h"
+#include "ext_math.h"
 
 #include "rel_sqrt_consts.h"
 
@@ -260,7 +261,7 @@ static void fn_1_994(void)
 	}
 	pos_z = -500.0f;
 	for(i=0; i<=50; i++) {
-		Hu3DModelPosSet(model, 0.0f, 2500.0*cos(M_PI*(i*1.8f)/180.0)-200.0, pos_z);
+		Hu3DModelPosSet(model, 0.0f, 2500.0*cosd(i*1.8f)-200.0, pos_z);
 		Hu3DModelRotSet(model, 0, 0, 45.0f*(1.0f-(i/50.0f)));
 		pos_z += 50.0/7.0;
 		Hu3DShadowTPLvlSet(0.5*(i/50.0f));
@@ -269,8 +270,8 @@ static void fn_1_994(void)
 	HuAudFXPlay(1211);
 	Hu3DModelAttrReset(model, 0x40000002);
 	for(i=1; i<=20; i++) {
-		Hu3DModelPosSet(model, 0.0f, (200.0*(sin(M_PI*(i*2.25f)/180.0)*(1.0/sin(M_PI/4))))-200.0, pos_z);
-		rot_x = (20-i)*cos(M_PI*(i*13.5f)/180.0);
+		Hu3DModelPosSet(model, 0.0f, (200.0*(sind(i*2.25f)*(1.0/sind(45))))-200.0, pos_z);
+		rot_x = (20-i)*cosd(i*13.5f);
 		Hu3DModelRotSet(model, rot_x, 0.0f, 0.0f);
 		pos_z += 50.0/7.0;
 		HuPrcVSleep();
@@ -546,7 +547,7 @@ static void fn_1_17E4(void)
 				CharModelMotionSet(char_tbl[j], mot_tbl[j][1]);
 			}
 			if(time <= 30) {
-				Hu3DModelPosSet(player_mdl[j], player_pos[j].x, player_pos[j].y+(300.0*sin(M_PI*(time*9.0f)/180.0)), player_pos[j].z-(time*20));
+				Hu3DModelPosSet(player_mdl[j], player_pos[j].x, player_pos[j].y+(300.0*sind(time*9.0f)), player_pos[j].z-(time*20));
 				if(time <= 10) {
 					tplvl = 1-(0.1*time);
 					Hu3DModelTPLvlSet(platform_mdl[j], 0.5*tplvl);
@@ -624,11 +625,11 @@ static void fn_1_220C(void)
 	Hu3DMotionTimeSet(model, 40);
 	HuAudFXPlay(lbl_1_data_10C[lbl_1_bss_12*2]);
 	for(i=0; i<=20; i++) {
-		Hu3DModelPosSet(model, -153.0f-(100.0f-(100.0f*(i/20.0f))), (100.0*sin(M_PI*(i*9.0f)/180.0)) + -150.0 + ofs_x, 356.0f);
+		Hu3DModelPosSet(model, -153.0f-(100.0f-(100.0f*(i/20.0f))), (100.0*sind(i*9.0f)) + -150.0 + ofs_x, 356.0f);
 		HuPrcVSleep();
 	}
 	for(i=0; i<=10; i++) {
-		Hu3DModelPosSet(model, -153.0f, (15.0*sin(M_PI*(i*18.0f)/180.0)) + -150.f + ofs_x, 356.0f);
+		Hu3DModelPosSet(model, -153.0f, (15.0*sind(i*18.0f)) + -150.f + ofs_x, 356.0f);
 		Hu3DModelRotSet(model, 0.0f, 90-((i/10.0f)*70), 0);
 		HuPrcVSleep();
 	}
@@ -645,7 +646,7 @@ static void fn_1_220C(void)
 	HuPrcSleep(20);
 	HuAudFXPlay(lbl_1_data_10C[(lbl_1_bss_12*2)+1]);
 	for(i=0; i<=30; i++) {
-		Hu3DModelPosSet(model, (i*5)-153, (50.0*sin(M_PI*(i*9.0f)/180.0)) + -150.0 + ofs_x, (i*20)+356);
+		Hu3DModelPosSet(model, (i*5)-153, (50.0*sind(i*9.0f)) + -150.0 + ofs_x, (i*20)+356);
 		HuPrcVSleep();
 	}
 	HuPrcEnd();
@@ -698,7 +699,7 @@ static void fn_1_2804(void)
 	}
 	HuPrcSleep(40);
 	for(i=0; i<=20; i++) {
-		pos_x = 500.0*cos(M_PI*(i*4.5f)/180.0)+142.0;
+		pos_x = 500.0*cosd(i*4.5f)+142.0;
 		HuWinPosSet(window, pos_x, 320);
 		HuPrcVSleep();
 	}
@@ -725,7 +726,7 @@ static void fn_1_2804(void)
 			HuWinMesPalSet(window, 7, 0, 0, 192);
 			HuWinPosSet(window_other, 142.0f, 320.0f);
 			for(i=0; i<=10; i++) {
-				HuWinPosSet(window_other, 30.0*sin(M_PI*(i*9.0f)/180.0)+142.0, 160.0*(1.0-cos(M_PI*(i*9.0f)/180.0))+320.0);
+				HuWinPosSet(window_other, 30.0*sind(i*9.0f)+142.0, 160.0*(1.0-cosd(i*9.0f))+320.0);
 				HuPrcVSleep();
 			}
 			HuPrcSleep(5);
@@ -734,7 +735,7 @@ static void fn_1_2804(void)
 		HuPrcVSleep();
 	}
 	for(i=0; i<=20; i++) {
-		pos_x = 500.0*(1.0-cos(M_PI*(i*4.5f)/180.0))+142.0;
+		pos_x = 500.0*(1.0-cosd(i*4.5f))+142.0;
 		HuWinPosSet(window, pos_x, 320);
 		HuPrcVSleep();
 	}
@@ -870,9 +871,9 @@ static void fn_1_2FA0(void)
 	for(temp_r31=0; temp_r31<36; temp_r31++) {
 		temp_f30 = temp_r31;
 		if(temp_f30 <= 20.0f) {
-			temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+temp_f29;
+			temp_f31 = 300.0*cosd(4.5f*temp_f30)+temp_f29;
 			HuSprGrpPosSet(temp_r25, temp_f31, temp_f28);
-			temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+(576.0f-(temp_r22/2)-24.0f);
+			temp_f31 = 300.0*cosd(4.5f*temp_f30)+(576.0f-(temp_r22/2)-24.0f);
 			for(temp_r30=0; temp_r30<temp_r26; temp_r30++) {
 				HuSprGrpPosSet(work.spr_grp[temp_r30], temp_f31, (temp_r30*28)+70);
 			}
@@ -880,25 +881,25 @@ static void fn_1_2FA0(void)
 		temp_f30 = temp_r31-3;
 		if(temp_f30 > 0.0f) {
 			if(temp_f30 <= 20.0f) {
-				temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+lbl_1_data_124[2];
+				temp_f31 = 300.0*cosd(4.5f*temp_f30)+lbl_1_data_124[2];
 				HuSprGrpPosSet(temp_r24, temp_f31, 186.0f);
-				temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+(lbl_1_data_124[2]-88.0f);
+				temp_f31 = 300.0*cosd(4.5f*temp_f30)+(lbl_1_data_124[2]-88.0f);
 				HuWinPosSet(sp10[0], 16.0f+temp_f31, 168.0f);
 			}
 		}
 		temp_f30 = temp_r31-6;
 		if(temp_f30 > 0.0f) {
 			if(temp_f30 <= 20.0f) {
-				temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+lbl_1_data_124[4];
+				temp_f31 = 300.0*cosd(4.5f*temp_f30)+lbl_1_data_124[4];
 				HuSprGrpPosSet(temp_r23, temp_f31, 242.0f);
-				temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+(lbl_1_data_124[4]-100.0f);
+				temp_f31 = 300.0*cosd(4.5f*temp_f30)+(lbl_1_data_124[4]-100.0f);
 				HuWinPosSet(sp10[1], 16.0f+temp_f31, 224.0f);
 			}
 		}
 		temp_f30 = temp_r31-9;
 		if(temp_f30 > 0.0f) {
 			if(temp_f30 <= 20.0f) {
-				temp_f31 = 300.0*cos(M_PI*(4.5f*temp_f30)/180.0)+(lbl_1_data_124[6]-217.0f);
+				temp_f31 = 300.0*cosd(4.5f*temp_f30)+(lbl_1_data_124[6]-217.0f);
 				HuWinPosSet(sp10[2], 16.0f+temp_f31, 274.0f);
 			}
 		}
@@ -919,14 +920,14 @@ static void fn_1_2FA0(void)
 				HuWinMesSet(sp10[2], 0x240002+lbl_1_bss_10+lbl_1_bss_6);
 			}
 			for(temp_r31=0; temp_r31<=10; temp_r31++) {
-				HuWinPosSet(temp_r27, 30.0*sin(M_PI*(temp_r31*9.0f)/180.0)+temp_f31, 200.0*(1.0-cos(M_PI*(temp_r31*9.0f)/180.0))+274.0);
+				HuWinPosSet(temp_r27, 30.0*sind(temp_r31*9.0f)+temp_f31, 200.0*(1.0-cosd(temp_r31*9.0f))+274.0);
 				HuPrcVSleep();
 			}
 		}
 		HuPrcVSleep();
 	}
 	for(temp_r31=0; temp_r31<20; temp_r31++) {
-		temp_f30 = 1.0-cos(M_PI*(temp_r31*4.5f)/180.0);
+		temp_f30 = 1.0-cosd(temp_r31*4.5f);
 		temp_f31 = temp_f29+(500.0f*temp_f30);
 		HuSprGrpPosSet(temp_r25, temp_f31, temp_f28);
 		temp_f31 = ((576.0f-(work.alt_word_len/2))-24.0f)+(500.0f*temp_f30);
@@ -968,15 +969,15 @@ static void fn_1_4174(omObjData *object)
 		y = lbl_1_bss_40[i].y;
 		z = lbl_1_bss_40[i].z;
 		
-		pos.x = (((sin((M_PI*y)/180.0)*cos((M_PI*x)/180.0))*lbl_1_bss_20[i])+lbl_1_bss_28[i].x);
-		pos.y = (-sin((M_PI*x)/180.0)*lbl_1_bss_20[i])+lbl_1_bss_28[i].y;
-		pos.z = ((cos((M_PI*y)/180.0)*cos((M_PI*x)/180.0))*lbl_1_bss_20[i])+lbl_1_bss_28[i].z;
+		pos.x = (((sind(y)*cosd(x))*lbl_1_bss_20[i])+lbl_1_bss_28[i].x);
+		pos.y = (-sind(x)*lbl_1_bss_20[i])+lbl_1_bss_28[i].y;
+		pos.z = ((cosd(y)*cosd(x))*lbl_1_bss_20[i])+lbl_1_bss_28[i].z;
 		target.x = lbl_1_bss_28[i].x;
 		target.y = lbl_1_bss_28[i].y;
 		target.z = lbl_1_bss_28[i].z;
-		up.x = sin((M_PI*y)/180.0)*sin((M_PI*x)/180.0);
-		up.y = cos((M_PI*x)/180.0);
-		up.z = cos((M_PI*y)/180.0)*sin((M_PI*x)/180.0);
+		up.x = sind(y)*sind(x);
+		up.y = cosd(x);
+		up.z = cosd(y)*sind(x);
 		Hu3DCameraPosSet(lbl_1_data_144[i], pos.x, pos.y, pos.z, up.x, up.y, up.z, target.x, target.y, target.z);
 	}
 }
@@ -1000,27 +1001,27 @@ static void fn_1_4528(omObjData *object)
         if (lbl_1_bss_20[0] < 100.0f) {
             lbl_1_bss_20[0] = 100.0f;
         }
-        pos.x = lbl_1_bss_28[0].x + (lbl_1_bss_20[0] * (sin((M_PI * lbl_1_bss_40[0].y) / 180.0) * cos((M_PI * lbl_1_bss_40[0].x) / 180.0)));
-        pos.y = (lbl_1_bss_28[0].y + (lbl_1_bss_20[0] * -sin((M_PI * lbl_1_bss_40[0].x) / 180.0)));
-        pos.z = (lbl_1_bss_28[0].z + (lbl_1_bss_20[0] * (cos((M_PI * lbl_1_bss_40[0].y) / 180.0) * cos((M_PI * lbl_1_bss_40[0].x) / 180.0))));
+		pos.x = lbl_1_bss_28[0].x + (lbl_1_bss_20[0] * (sind(lbl_1_bss_40[0].y) * cosd(lbl_1_bss_40[0].x)));
+        pos.y = (lbl_1_bss_28[0].y + (lbl_1_bss_20[0] * -sind(lbl_1_bss_40[0].x)));
+        pos.z = (lbl_1_bss_28[0].z + (lbl_1_bss_20[0] * (cosd(lbl_1_bss_40[0].y) * cosd(lbl_1_bss_40[0].x))));
         offset.x = lbl_1_bss_28[0].x - pos.x;
         offset.y = lbl_1_bss_28[0].y - pos.y;
         offset.z = lbl_1_bss_28[0].z - pos.z;
-        dir.x = (sin((M_PI * lbl_1_bss_40[0].y) / 180.0) * sin((M_PI * lbl_1_bss_40[0].x) / 180.0));
-        dir.y = cos((M_PI * lbl_1_bss_40[0].x) / 180.0);
-        dir.z = (cos((M_PI * lbl_1_bss_40[0].y) / 180.0) * sin((M_PI * lbl_1_bss_40[0].x) / 180.0));
+        dir.x = (sind(lbl_1_bss_40[0].y) * sind(lbl_1_bss_40[0].x));
+        dir.y = cosd(lbl_1_bss_40[0].x);
+        dir.z = (cosd(lbl_1_bss_40[0].y) * sind(lbl_1_bss_40[0].x));
         z_rot = lbl_1_bss_40[0].z;
-        y_offset.x = dir.x * (offset.x * offset.x + (1.0f - offset.x * offset.x) * cos((M_PI * z_rot) / 180.0))
-              + dir.y * (offset.x * offset.y * (1.0f - cos((M_PI * z_rot) / 180.0)) - offset.z * sin((M_PI * z_rot) / 180.0))
-              + dir.z * (offset.x * offset.z * (1.0f - cos((M_PI * z_rot) / 180.0)) + offset.y * sin((M_PI * z_rot) / 180.0));
+        y_offset.x = dir.x * (offset.x * offset.x + (1.0f - offset.x * offset.x) * cosd(z_rot))
+              + dir.y * (offset.x * offset.y * (1.0f - cosd(z_rot)) - offset.z * sind(z_rot))
+              + dir.z * (offset.x * offset.z * (1.0f - cosd(z_rot)) + offset.y * sind(z_rot));
 
-        y_offset.y = dir.y * (offset.y * offset.y + (1.0f - offset.y * offset.y) * cos((M_PI * z_rot) / 180.0))
-              + dir.x * (offset.x * offset.y * (1.0f - cos((M_PI * z_rot) / 180.0)) + offset.z * sin((M_PI * z_rot) / 180.0))
-              + dir.z * (offset.y * offset.z * (1.0f - cos((M_PI * z_rot) / 180.0)) - offset.x * sin((M_PI * z_rot) / 180.0));
+        y_offset.y = dir.y * (offset.y * offset.y + (1.0f - offset.y * offset.y) * cosd(z_rot))
+              + dir.x * (offset.x * offset.y * (1.0f - cosd(z_rot)) + offset.z * sind(z_rot))
+              + dir.z * (offset.y * offset.z * (1.0f - cosd(z_rot)) - offset.x * sind(z_rot));
         
-        y_offset.z = dir.z * (offset.z * offset.z + (1.0f - offset.z * offset.z) * cos((M_PI * z_rot) / 180.0))
-                      + (dir.x * (offset.x * offset.z * (1.0 - cos((M_PI * z_rot) / 180.0)) - offset.y * sin((M_PI * z_rot) / 180.0))
-                      + dir.y * (offset.y * offset.z * (1.0 - cos((M_PI * z_rot) / 180.0)) + offset.x * sin((M_PI * z_rot) / 180.0)));
+        y_offset.z = dir.z * (offset.z * offset.z + (1.0f - offset.z * offset.z) * cosd(z_rot))
+                      + (dir.x * (offset.x * offset.z * (1.0 - cosd(z_rot)) - offset.y * sind(z_rot))
+                      + dir.y * (offset.y * offset.z * (1.0 - cosd(z_rot)) + offset.x * sind(z_rot)));
 
         PSVECCrossProduct(&dir, &offset, &offset);
         PSVECNormalize(&offset, &offset);
@@ -1070,14 +1071,14 @@ static void fn_1_50B0(ModelData *model, Mtx mtx)
 	GXSetVtxDesc(GX_VA_NRM, GX_DIRECT);
 	GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_NRM, GX_NRM_XYZ, GX_F32, 0);
 	target.x = target.z = 0.0f;
-	target.x = lbl_1_data_14C*sin(M_PI*lbl_1_bss_40[0].y/180.0);
-	target.z = lbl_1_data_14C*cos(M_PI*lbl_1_bss_40[0].y/180.0);
+	target.x = lbl_1_data_14C*sind(lbl_1_bss_40[0].y);
+	target.z = lbl_1_data_14C*cosd(lbl_1_bss_40[0].y);
 	target.y = 415.0f;
-	pos.x = (sin(M_PI*lbl_1_bss_40[0].y/180.0)*cos(M_PI*lbl_1_bss_40[0].x/180.0)*lbl_1_bss_20[0])+lbl_1_bss_28[0].x;
-	pos.y = (-sin(M_PI*lbl_1_bss_40[0].x/180.0)*lbl_1_bss_20[0])+lbl_1_bss_28[0].y;
-	pos.z = (cos(M_PI*lbl_1_bss_40[0].y/180.0)*cos(M_PI*lbl_1_bss_40[0].x/180.0)*lbl_1_bss_20[0])+lbl_1_bss_28[0].z;
-	up.x = -sin(M_PI*lbl_1_bss_40[0].y/180.0);
-	up.z = -cos(M_PI*lbl_1_bss_40[0].y/180.0);
+	pos.x = (sind(lbl_1_bss_40[0].y)*cosd(lbl_1_bss_40[0].x)*lbl_1_bss_20[0])+lbl_1_bss_28[0].x;
+	pos.y = (-sind(lbl_1_bss_40[0].x)*lbl_1_bss_20[0])+lbl_1_bss_28[0].y;
+	pos.z = (cos(M_PI*lbl_1_bss_40[0].y/180.0)*cosd(lbl_1_bss_40[0].x)*lbl_1_bss_20[0])+lbl_1_bss_28[0].z;
+	up.x = -sind(lbl_1_bss_40[0].y);
+	up.z = -cosd(lbl_1_bss_40[0].y);
 	up.y = 0;
 	MTXLookAt(lookat, &pos, &up, &target);
 	MTXLightPerspective(light, lbl_1_bss_C, 1.2f, 0.5f, -0.5f, 0.5f, 0.5f);
