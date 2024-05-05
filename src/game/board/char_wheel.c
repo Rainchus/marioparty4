@@ -10,7 +10,7 @@
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
 
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -374,7 +374,7 @@ static void GrowCharWheel(CharWheelWork *arg0) {
     if (arg0->unk02 < 90) {
         arg0->unk02 += 3;
     } else {
-        if (_CheckFlag(0x1000B)) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
             BoardTutorialHookExec(0x14, 0);
         }
         arg0->unk02 = 90;
@@ -382,7 +382,7 @@ static void GrowCharWheel(CharWheelWork *arg0) {
         wheelFXStat = HuAudFXPlay(0x30A);
     }
     OSs8tof32(&arg0->unk02, &temp_f30);
-    HuSprGrpScaleSet(wheelSprGrp, sin(temp_f30 * M_PI / 180.0), sin(temp_f30 * M_PI / 180.0));
+    HuSprGrpScaleSet(wheelSprGrp, sind(temp_f30), sind(temp_f30));
 }
 
 static void ShrinkCharWheel(CharWheelWork *arg0) {
@@ -397,7 +397,7 @@ static void ShrinkCharWheel(CharWheelWork *arg0) {
         targetF = 0;
     }
     OSs8tof32(&arg0->unk02, &temp_f30);
-    HuSprGrpScaleSet(wheelSprGrp, sin(temp_f30 * M_PI / 180.0), sin(temp_f30 * M_PI / 180.0));
+    HuSprGrpScaleSet(wheelSprGrp, sind(temp_f30), sind(temp_f30));
 }
 
 static void KillCharWheelSpr(void) {

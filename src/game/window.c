@@ -10,7 +10,7 @@
 #include "game/armem.h"
 #include "game/audio.h"
 
-#include "math.h"
+#include "ext_math.h"
 #include "stdarg.h"
 #include "string.h"
 
@@ -1784,7 +1784,7 @@ static s32 winPortraitTbl[] = {
     WIN_BOWSER_TALK_ANM,
     WIN_KKID_TALK_ANM,
     WIN_KOOPA_TALK_ANM,
-	WIN_CONDOR_TALK_ANM,
+    WIN_CONDOR_TALK_ANM,
     WIN_BOO_BLUE_TALK_ANM,
     WIN_DOLPHIN_TALK_ANM,
     WIN_BOO_RED_TALK_ANM,
@@ -1842,7 +1842,7 @@ void HuWinExAnimIn(s16 window) {
         HuSprScaleSet(window_ptr->group, 0, 1.0f, 0.0f);
         HuWinDispOn(window);
         for (i=0; i<=10; i++) {
-            HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0 - 1.1 * cos(M_PI * (9.0f * i) / 180.0));
+            HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0 - 1.1 * cosd(9.0f * i));
             HuPrcVSleep();
         }
         HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0f);
@@ -1852,13 +1852,13 @@ void HuWinExAnimIn(s16 window) {
         HuWinDispOn(window);
         for (i=0; i<=20; i++) {
             if (i <= 10) {
-                HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.1 * (1.0 - cos(M_PI * (9.0f * i) / 180.0)));
+                HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.1 * (1.0 - cosd(9.0f * i)));
             } else {
                 HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0f);
             }
             if (i > 10) {
                 s16 time = i - 10;
-                HuSprScaleSet(window_ptr->group, 2, 1.0f, 1.0 - 1.1 * cos(M_PI * (9.0f * time) / 180.0));
+                HuSprScaleSet(window_ptr->group, 2, 1.0f, 1.0 - 1.1 * cosd(9.0f * time));
             }
             HuPrcVSleep();
         }
@@ -1873,18 +1873,18 @@ void HuWinExAnimOut(s16 window) {
     _HuWinHomeClear(window_ptr);
     if (window_ptr->sprite_id[2] == -1) {
         for (i=0; i<=10; i++) {
-            HuSprScaleSet(window_ptr->group, 0, 1.0f, cos(M_PI * (9.0f * i) / 180.0));
+            HuSprScaleSet(window_ptr->group, 0, 1.0f, cosd(9.0f * i));
             HuPrcVSleep();
         }
         HuWinDispOff(window);
     } else {
         for (i=0; i<=15; i++) {
             if (i <= 10) {
-                HuSprScaleSet(window_ptr->group, 2, 1.0f, cos(M_PI * (9.0f * i) / 180.0));
+                HuSprScaleSet(window_ptr->group, 2, 1.0f, cosd(9.0f * i));
             }
             if (i > 5) {
                 s16 time = i - 5;
-                HuSprScaleSet(window_ptr->group, 0, 1.0f, cos(M_PI * (9.0f * time) / 180.0));
+                HuSprScaleSet(window_ptr->group, 0, 1.0f, cosd(9.0f * time));
             }
             HuPrcVSleep();
         }
@@ -1901,13 +1901,13 @@ void HuWinExAnimPopIn(s16 window, s16 portrait) {
     s16 i;
 
     for (i=0; i<=10; i++) {
-        HuSprScaleSet(window_ptr->group, 2, 1.0f, cos(M_PI * (9.0f * i) / 180.0));
+        HuSprScaleSet(window_ptr->group, 2, 1.0f, cosd(9.0f * i));
         HuPrcVSleep();
     }
     HuWinSprKill(window, 2);
     HuWinExCreatePortrait(window, portrait, 48.0f, 48.0f);
     for (i=0; i<=10; i++) {
-        HuSprScaleSet(window_ptr->group, 2, 1.0f, sin(M_PI * (9.0f * i) / 180.0));
+        HuSprScaleSet(window_ptr->group, 2, 1.0f, sind(9.0f * i));
         HuPrcVSleep();
     }
     HuSprScaleSet(window_ptr->group, 2, 1.0f, 1.0f);
