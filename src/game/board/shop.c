@@ -21,7 +21,7 @@
 #include "game/board/window.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -262,7 +262,7 @@ static void ExecShop(void) {
     BoardSpacePosGet(0, temp_r25, &sp2C);
     PSVECSubtract(&sp2C, &sp38, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    temp_f31 = 180.0 * (atan2(-sp20.x, -sp20.z) / M_PI);
+    temp_f31 = atan2d(-sp20.x, -sp20.z);
     sp14.x = -10.0f;
     sp14.y = temp_f31;
     sp14.z = 0.0f;
@@ -535,7 +535,7 @@ static void UpdateShopWin(omObjData *arg0) {
                 temp_r28->unk04 = 90;
             }
             OSs8tof32(&temp_r28->unk04, &var_f28);
-            arg0->scale.x = arg0->scale.y = arg0->scale.z = 0.25 * sin(var_f28 * M_PI / 180.0);
+            arg0->scale.x = arg0->scale.y = arg0->scale.z = 0.25 * sind(var_f28);
         }
         if (temp_r28->unk00_field1 == 5) {
             var_f29 = -12.5f;
@@ -575,7 +575,7 @@ static void SetShopWinItem(ShopWinWork *arg0, omObjData *arg1) {
             BoardModelMotionSpeedSet(itemMdl, 0.033333335f);
         }
         BoardCameraDirGet(&spC);
-        arg1->rot.y = BoardDAngleCalc(180.0 * (atan2(-spC.x, -spC.z) / M_PI));
+        arg1->rot.y = BoardDAngleCalc(atan2d(-spC.x, -spC.z));
         OSf32tos16(&arg1->rot.y, &angleVal);
     }
 }
@@ -689,7 +689,7 @@ static void MoveItemGive(omObjData *arg0, ItemGiveWork *arg1) {
         temp_f27 = -0.08166667f * temp_f27 * temp_f27;
         arg0->trans.y += temp_f27;
         BoardCameraDirGet(&sp10);
-        var_f26 = BoardDAngleCalc(180.0 * (atan2(-sp10.x, -sp10.z) / M_PI));
+        var_f26 = BoardDAngleCalc(atan2d(-sp10.x, -sp10.z));
         OSf32tos16(&var_f26, &angleVal);
     } else {
         arg0->scale.x += arg0->scale.y;
@@ -723,7 +723,7 @@ static void ShrinkItemGive(omObjData *arg0, ItemGiveWork *arg1) {
     if (var_f30 > 90.0f) {
         var_f30 = 90.0f;
     }
-    arg0->scale.x = cos(var_f30 * M_PI / 180.0);
+    arg0->scale.x = cosd(var_f30);
     arg0->trans.y += arg0->rot.x;
     angleVal += 8;
     if (angleVal > 360) {
@@ -1137,7 +1137,7 @@ void BoardShopTutorialExec(s32 arg0) {
     BoardSpacePosGet(0, temp_r27, &sp3C);
     PSVECSubtract(&sp3C, &sp48, &sp30);
     PSVECNormalize(&sp30, &sp30);
-    temp_f31 = 180.0 * (atan2(-sp30.x, -sp30.z) / M_PI);
+    temp_f31 = atan2d(-sp30.x, -sp30.z);
     sp24.x = -10.0f;
     sp24.y = temp_f31;
     sp24.z = 0.0f;

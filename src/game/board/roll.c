@@ -12,6 +12,8 @@
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
 
+#include "ext_math.h"
+
 typedef struct {
     struct {
         u8 unk00_field0 : 1;
@@ -481,7 +483,7 @@ static void DiceMain(omObjData *arg0) {
                     var_f27 = 1.0f;
                     var_f28 = 0.5f;
                 }
-                arg0->scale.x = var_f27 + var_f28 * sin((float) (temp_r29->unk04 % 180) * M_PI / 180.0);
+                arg0->scale.x = var_f27 + var_f28 * sind((float) (temp_r29->unk04 % 180));
                 arg0->scale.y = arg0->scale.x;
                 arg0->scale.z = arg0->scale.x;
                 if (temp_r29->unk04 <= 360) {
@@ -502,7 +504,7 @@ static void DiceMain(omObjData *arg0) {
                 temp_r29->unk04 -= 360;
             }
             OSs16tof32(&temp_r29->unk04, &temp_f29);
-            arg0->trans.y += 0.20000000298023224 * sin(temp_f29 * M_PI / 180.0);
+            arg0->trans.y += 0.2f * sind(temp_f29);
             break;
         case 2:
             temp_r29->unk04++;
@@ -523,7 +525,7 @@ static void DiceMain(omObjData *arg0) {
                 OSs16tof32(&temp_r29->unk04, &temp_f29);
                 if (temp_r29->unk04 < 4) {
                     arg0->trans.y += 10.0f + (0.5f * temp_f29);
-                    arg0->scale.x = (arg0->scale.x + (0.10000000149011612 * sin((M_PI * (4.0f * temp_f29)) / 180.0)));
+                    arg0->scale.x += 0.1f * sind(4.0f * temp_f29);
                     arg0->scale.y = arg0->scale.x;
                     arg0->scale.z = arg0->scale.x;
                 } else {

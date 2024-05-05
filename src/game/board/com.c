@@ -9,7 +9,7 @@
 #include "game/board/window.h"
 #include "game/board/boo.h"
 
-#include "math.h"
+#include "ext_math.h"
 
 typedef BOOL (*UseCheckFunc)(s32 player, s32 item);
 
@@ -625,7 +625,7 @@ s32 BoardComJunctionInputGet(s32 item, Vec *input, s32 num_dirs, float *dirs) {
             BoardSpacePosGet(0, space, &pos_junction);
             BoardSpacePosGet(0, space_next, &pos_next);
             PSVECSubtract(&pos_next, &pos_junction, &dir);
-            angle = BoardDAngleCalc(90.0 - 180.0 * (atan2(dir.z, dir.x) / M_PI));
+            angle = BoardDAngleCalc(90.0 - atan2d(dir.z, dir.x));
             if (angle < 0.0f) {
                 angle += 360.0f;
             }

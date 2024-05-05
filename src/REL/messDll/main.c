@@ -8,7 +8,7 @@
 #include "game/wipe.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 #include "rel_sqrt_consts.h"
 
 extern s32 sprintf(char*, const char*, s32);
@@ -68,25 +68,25 @@ static void fn_1_300(omObjData *arg0) {
     CRot.y += HuPadSubStkX[0] / 20;
     CZoom += HuPadTrigL[0] / 2;
     CZoom -= HuPadTrigR[0] / 2;
-    sp2C.x = Center.x + CZoom * (sin(CRot.y * M_PI / 180.0) * cos(CRot.x * M_PI / 180.0));
-    sp2C.y = Center.y + CZoom * -sin(CRot.x * M_PI / 180.0);
-    sp2C.z = Center.z + CZoom * (cos(CRot.y * M_PI / 180.0) * cos(CRot.x * M_PI / 180.0));
+    sp2C.x = Center.x + CZoom * (sind(CRot.y) * cosd(CRot.x));
+    sp2C.y = Center.y + CZoom * -sind(CRot.x);
+    sp2C.z = Center.z + CZoom * (cosd(CRot.y) * cosd(CRot.x));
     sp20.x = Center.x - sp2C.x;
     sp20.y = Center.y - sp2C.y;
     sp20.z = Center.z - sp2C.z;
-    sp14.x = sin(CRot.y * M_PI / 180.0) * sin(CRot.x * M_PI / 180.0);
-    sp14.y = cos(CRot.x * M_PI / 180.0);
-    sp14.z = cos(CRot.y * M_PI / 180.0) * sin(CRot.x * M_PI / 180.0);
+    sp14.x = sind(CRot.y) * sind(CRot.x);
+    sp14.y = cosd(CRot.x);
+    sp14.z = cosd(CRot.y) * sind(CRot.x);
     temp_f31 = CRot.z;
-    sp8.x = sp14.x * (sp20.x * sp20.x + (1.0f - sp20.x * sp20.x) * cos(temp_f31 * M_PI / 180.0))
-          + sp14.y * (sp20.x * sp20.y * (1.0 - cos(temp_f31 * M_PI / 180.0)) - sp20.z * sin(temp_f31 * M_PI / 180.0))
-          + sp14.z * (sp20.x * sp20.z * (1.0 - cos(temp_f31 * M_PI / 180.0)) + sp20.y * sin(temp_f31 * M_PI / 180.0));
-    sp8.y = sp14.x * (sp20.x * sp20.y * (1.0 - cos(temp_f31 * M_PI / 180.0)) + sp20.z * sin(temp_f31 * M_PI / 180.0))
-          + sp14.y * (sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cos(temp_f31 * M_PI / 180.0))
-          + sp14.z * (sp20.y * sp20.z * (1.0 - cos(temp_f31 * M_PI / 180.0)) - sp20.x * sin(temp_f31 * M_PI / 180.0));
-    sp8.z = sp14.x * (sp20.x * sp20.z * (1.0 - cos(temp_f31 * M_PI / 180.0)) - sp20.y * sin(temp_f31 * M_PI / 180.0))
-          + sp14.y * (sp20.y * sp20.z * (1.0 - cos(temp_f31 * M_PI / 180.0)) + sp20.x * sin(temp_f31 * M_PI / 180.0))
-          + sp14.z * (sp20.z * sp20.z + (1.0f - sp20.z * sp20.z) * cos(temp_f31 * M_PI / 180.0));
+    sp8.x = sp14.x * (sp20.x * sp20.x + (1.0f - sp20.x * sp20.x) * cosd(temp_f31))
+          + sp14.y * (sp20.x * sp20.y * (1.0 - cosd(temp_f31)) - sp20.z * sind(temp_f31))
+          + sp14.z * (sp20.x * sp20.z * (1.0 - cosd(temp_f31)) + sp20.y * sind(temp_f31));
+    sp8.y = sp14.x * (sp20.x * sp20.y * (1.0 - cosd(temp_f31)) + sp20.z * sind(temp_f31))
+          + sp14.y * (sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cosd(temp_f31))
+          + sp14.z * (sp20.y * sp20.z * (1.0 - cosd(temp_f31)) - sp20.x * sind(temp_f31));
+    sp8.z = sp14.x * (sp20.x * sp20.z * (1.0 - cosd(temp_f31)) - sp20.y * sind(temp_f31))
+          + sp14.y * (sp20.y * sp20.z * (1.0 - cosd(temp_f31)) + sp20.x * sind(temp_f31))
+          + sp14.z * (sp20.z * sp20.z + (1.0f - sp20.z * sp20.z) * cosd(temp_f31));
     PSVECCrossProduct(&sp14, &sp20, &sp20);
     PSVECNormalize(&sp20, &sp20);
     temp_r31 = HuPadSubStkX[0] & 0xF8;

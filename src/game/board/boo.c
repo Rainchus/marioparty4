@@ -17,7 +17,7 @@
 #include "game/board/space.h"
 #include "game/board/window.h"
 
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -635,12 +635,12 @@ static void BallMain(omObjData *arg0) {
     temp_f30 = 240.0f;
     BoardCameraRotGet(&sp20);
     BoardCameraTargetGet(&sp2C);
-    sp8.x = sp2C.x + sin(sp20.y * M_PI / 180.0) * cos(sp20.x * M_PI / 180.0) * temp_f30;
-    sp8.y = sp2C.y + -sin(sp20.x * M_PI / 180.0) * temp_f30;
-    sp8.z = sp2C.z + cos(sp20.y * M_PI / 180.0) * cos(sp20.x * M_PI / 180.0) * temp_f30;
-    sp14.x = sin(sp20.y * M_PI / 180.0) * sin(sp20.x * M_PI / 180.0);
-    sp14.y = cos(sp20.x * M_PI / 180.0);
-    sp14.z = cos(sp20.y * M_PI / 180.0) * sin(sp20.x * M_PI / 180.0);
+    sp8.x = sp2C.x + sind(sp20.y) * cosd(sp20.x) * temp_f30;
+    sp8.y = sp2C.y + -sind(sp20.x) * temp_f30;
+    sp8.z = sp2C.z + cosd(sp20.y) * cosd(sp20.x) * temp_f30;
+    sp14.x = sind(sp20.y) * sind(sp20.x);
+    sp14.y = cosd(sp20.x);
+    sp14.z = cosd(sp20.y) * sind(sp20.x);
     if (temp_r30->unk01 != 0) {
         temp_r30->unk02 += temp_r30->unk01;
         if (temp_r30->unk02 > 255) {
@@ -711,8 +711,8 @@ static void BallRenderHook(void) {
     sp20.z = 0.0f;
     C_MTXLookAt(sp38, &sp2C, &sp20, &sp14);
     GXLoadPosMtxImm(sp38, GX_PNMTX0);
-    sp2C.x = sin(5 * M_PI / 72) * 20000.0 * 1.2f;
-    sp2C.y = sin(5 * M_PI / 72) * 20000.0 * 0.8333333f;
+    sp2C.x = sind(12.5) * 20000.0 * 1.2f;
+    sp2C.y = sind(12.5) * 20000.0 * 0.8333333f;
     sp2C.z = -9000.0f;
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
     GXPosition3f32(-sp2C.x, -sp2C.y, sp2C.z);
@@ -754,12 +754,12 @@ static void UpdateBallCamera(omObjData *arg0) {
     sp20.x = arg0->trans.x;
     sp20.y = arg0->trans.y + arg0->rot.y;
     sp20.z = arg0->trans.z;
-    sp14.x = sp20.x + sin(0.0) * cos(arg0->rot.x * M_PI / 180.0) * arg0->rot.z;
-    sp14.y = sp20.y + -sin(arg0->rot.x * M_PI / 180.0) * arg0->rot.z;
-    sp14.z = sp20.z + cos(0.0) * cos(arg0->rot.x * M_PI / 180.0) * arg0->rot.z;
-    sp8.x = sin(0.0) * sin(arg0->rot.x * M_PI / 180.0);
-    sp8.y = cos(arg0->rot.x * M_PI / 180.0);
-    sp8.z = cos(0.0) * sin(arg0->rot.x * M_PI / 180.0);
+    sp14.x = sp20.x + sin(0.0) * cosd(arg0->rot.x) * arg0->rot.z;
+    sp14.y = sp20.y + -sind(arg0->rot.x) * arg0->rot.z;
+    sp14.z = sp20.z + cos(0.0) * cosd(arg0->rot.x) * arg0->rot.z;
+    sp8.x = sin(0.0) * sind(arg0->rot.x);
+    sp8.y = cosd(arg0->rot.x);
+    sp8.z = cos(0.0) * sind(arg0->rot.x);
     Hu3DCameraPosSetV(var_r30->unk02, &sp14, &sp8, &sp20);
 }
 
@@ -909,9 +909,9 @@ static void BallPlayerZoomOut(omObjData *arg0, BallPlayerWork *arg1) {
         sp14.x = arg0->trans.x;
         sp14.y = arg0->trans.y;
         sp14.z = arg0->trans.z;
-        sp8.x = sp14.x + 120.0 * sin(-M_PI / 2);
+        sp8.x = sp14.x + 120.0 * sind(-90);
         sp8.y = sp14.y;
-        sp8.z = sp14.z + 120.0 * cos(-M_PI / 2);
+        sp8.z = sp14.z + 120.0 * cosd(-90);
         BoardPlayerPosLerpStart(stealTarget, &sp14, &sp8, 20);
         var_r29 = GWPlayer[stealTarget].character;
         HuAudFXPlay(booSfxTbl[0][var_r29]);
@@ -1082,9 +1082,9 @@ static void BallBooCreate(void) {
     BoardModelCameraSet(temp_r31->unk04, 1);
     temp_f31 = BoardPlayerRotYGet(stealTarget);
     BoardPlayerPosGet(stealTarget, &sp14);
-    ballBooObj->trans.x = sp14.x + 240.0 * sin(-temp_f31 * M_PI / 180.0);
+    ballBooObj->trans.x = sp14.x + 240.0 * sind(-temp_f31);
     ballBooObj->trans.y = sp14.y + 160.0f;
-    ballBooObj->trans.z = sp14.z + 240.0 * cos(-temp_f31 * M_PI / 180.0);
+    ballBooObj->trans.z = sp14.z + 240.0 * cosd(-temp_f31);
     BoardModelPosSet(temp_r31->unk04, ballBooObj->trans.x, ballBooObj->trans.y, ballBooObj->trans.z);
     if (stealType == 2) {
         var_f30 = 126.0f;
@@ -1093,9 +1093,9 @@ static void BallBooCreate(void) {
         var_f30 = 90.0f;
         var_f29 = 100.0f;
     }
-    sp8.x = sp14.x + var_f30 * sin(-temp_f31 * M_PI / 180.0);
+    sp8.x = sp14.x + var_f30 * sind(-temp_f31);
     sp8.y = sp14.y + var_f29;
-    sp8.z = sp14.z + var_f30 * cos(-temp_f31 * M_PI / 180.0);
+    sp8.z = sp14.z + var_f30 * cosd(-temp_f31);
     ballBooObj->rot.x = (sp8.x - ballBooObj->trans.x) / 60.0f;
     ballBooObj->rot.y = (sp8.y - ballBooObj->trans.y) / 60.0f;
     ballBooObj->rot.z = (sp8.z - ballBooObj->trans.z) / 60.0f;
@@ -1104,7 +1104,7 @@ static void BallBooCreate(void) {
     ballBooObj->scale.z = 1.0f;
     sp8.x = sp14.x - ballBooObj->trans.x;
     sp8.z = sp14.z - ballBooObj->trans.z;
-    ballBooObj->scale.y = 180.0 * (atan2(sp8.x, sp8.z) / M_PI);
+    ballBooObj->scale.y = atan2d(sp8.x, sp8.z);
     BoardModelRotYSet(temp_r31->unk04, ballBooObj->scale.y);
     BoardModelMotionStart(temp_r31->unk04, 1, 0x40000001);
 }
@@ -1246,7 +1246,7 @@ static void BallBooAttack(omObjData *arg0, BallBooWork *arg1) {
         }
     }
     OSu8tof32(&arg1->unk02, &var_f29);
-    arg0->scale.z = 1.0 + sin(var_f29 * M_PI / 180.0);
+    arg0->scale.z = 1.0 + sind(var_f29);
 }
 
 static void BallBooFlash(omObjData *arg0, BallBooWork *arg1) {
@@ -1258,9 +1258,9 @@ static void BallBooFlash(omObjData *arg0, BallBooWork *arg1) {
         BoardModelMotionShiftSet(arg1->unk04, 3, 0.0f, 10.0f, 0x40000001);
         temp_f31 = BoardPlayerRotYGet(stealTarget);
         BoardPlayerPosGet(stealTarget, &sp8);
-        sp8.x += 500.0 * sin(-temp_f31 * M_PI / 180.0);
+        sp8.x += 500.0 * sind(-temp_f31);
         sp8.y = sp8.y + 160.0f;
-        sp8.z += 500.0 * cos(-temp_f31 * M_PI / 180.0);
+        sp8.z += 500.0 * cosd(-temp_f31);
         arg0->rot.x = (sp8.x - arg0->trans.x) / 72.0f;
         arg0->rot.y = (sp8.y - arg0->trans.y) / 72.0f;
         arg0->rot.z = (sp8.z - arg0->trans.z) / 72.0f;
@@ -1365,8 +1365,8 @@ void TakeBallStar(void) {
     ballTakeCoinObj->trans.y = sp8.y + 150.0f;
     ballTakeCoinObj->trans.z = sp8.z;
     temp_r31->unk04 = sp8.y;
-    ballTakeCoinObj->rot.x = 3.0 * sin(4 * M_PI / 9);
-    ballTakeCoinObj->rot.z = 3.0 * cos(4 * M_PI / 9);
+    ballTakeCoinObj->rot.x = 3.0 * sind(80);
+    ballTakeCoinObj->rot.z = 3.0 * cosd(80);
     ballTakeCoinObj->rot.y = 0.0f;
     BoardModelPosSet(temp_r31->unk02, ballTakeCoinObj->trans.x, ballTakeCoinObj->trans.y, ballTakeCoinObj->trans.z);
     BoardModelVisibilitySet(temp_r31->unk02, 1);
