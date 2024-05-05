@@ -537,12 +537,12 @@ static s16 fn_1_46C(s32 arg0) {
     return Hu3DModelCreateFile(arg0);
 }
 
-void fn_1_580(s32 *arg0, s32 arg1, s32 arg2) {
+static void fn_1_580(s32 *arg0, s32 arg1, s32 arg2) {
     s32 var_r30;
 
     espBankSet(arg0[arg1 + 1], 10);
     espBankSet(arg0[arg1 + 4], 11);
-    if (36000 <= arg2) { // TODO: not matching.
+    if (36000 <= arg2) {
         arg2 = 35999;
     }
     var_r30 = arg2 / 3600;
