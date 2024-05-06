@@ -1326,11 +1326,11 @@ config.libs = [
     Rel('present',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/present/init.c"),
-            Object(NonMatching, "REL/present/camera.c"),
+            Object(Matching, "REL/present/init.c"),
+            Object(Matching, "REL/present/camera.c"),
             Object(NonMatching, "REL/present/present.c"),
-            Object(NonMatching, "REL/present/main.c"),
-            Object(NonMatching, "REL/present/common.c"),
+            Object(Matching, "REL/present/main.c"),
+            Object(Matching, "REL/present/common.c"),
         }
     ),
     Rel('resultDll',
