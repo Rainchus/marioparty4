@@ -1328,7 +1328,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/present/init.c"),
             Object(Matching, "REL/present/camera.c"),
-            Object(NonMatching, "REL/present/present.c"),
+            Object(Matching, "REL/present/present.c"),
             Object(Matching, "REL/present/main.c"),
             Object(Matching, "REL/present/common.c"),
         }

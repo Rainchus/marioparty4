@@ -132,8 +132,8 @@ typedef struct UnkPresentNestedInnerStruct {
 } UnkPresentNestedInnerStruct;
 
 typedef struct UnkPresentNestedOuterStruct {
-    /* 0x00 */ UnkPresentNestedInnerStruct unk_00[11];
-    /* 0xB0 */ s32 unkB0;
+    /* 0x00 */ s32 unk00;
+	/* 0x04 */ UnkPresentNestedInnerStruct unk_04[11];
 } UnkPresentNestedOuterStruct;
 
 typedef struct UnkPresentStruct7 {
