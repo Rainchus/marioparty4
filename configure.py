@@ -808,8 +808,8 @@ config.libs = [
     Rel('m403Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m403Dll/main.c"),
-            Object(NonMatching, "REL/m403Dll/scene.c"),
+            Object(Matching, "REL/m403Dll/main.c"),
+            Object(Matching, "REL/m403Dll/scene.c"),
         }
     ),
     Rel('m404Dll',

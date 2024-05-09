@@ -148,7 +148,7 @@ static void ExecStart(void) {
     InitCamera();
     CreateTapWin();
     InitHost();
-    WipeCreate(1, 0, 0x15);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -172,7 +172,7 @@ static void ExecStart(void) {
     if (_CheckFlag(0x1000B)) {
         BoardTutorialHookExec(4, 0);
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 0x15);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -188,7 +188,7 @@ static void ExecStart(void) {
         BoardCameraMotionWait();
         BoardCameraMoveSet(1);
         BoardModelVisibilitySet(BoardStarHostMdlGet(), 0);
-        WipeCreate(1, 0, 0x15);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -197,7 +197,7 @@ static void ExecStart(void) {
     BoardCameraNearFarSet(100.0f, 13000.0f);
     if (GWBoardGet() == 7 || GWBoardGet() == 8) {
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 0x15);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -213,7 +213,7 @@ static void ExecStart(void) {
         BoardCameraViewSet(2);
         BoardCameraMotionWait();
         BoardCameraMoveSet(1);
-        WipeCreate(1, 0, 0x15);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }

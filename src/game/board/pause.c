@@ -506,13 +506,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     break;
                 case 1:
                     if (UpdatePauseBox(arg0, temp_r31, 1) != 0) {
-						GWMGExplainSet(boxState[1]);
+                        GWMGExplainSet(boxState[1]);
                     }
                     UpdatePauseText(cursorPos);
                     break;
                 case 2:
                     if (UpdatePauseBox(arg0, temp_r31, 2) != 0) {
-						GWMGShowComSet(boxState[2]);
+                        GWMGShowComSet(boxState[2]);
                     }
                     UpdatePauseText(cursorPos);
                     break;
@@ -534,7 +534,7 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     break;
                 case 4:
                     if (UpdatePauseBox(arg0, temp_r31, 4) != 0) {
-						GWRumbleSet(boxState[4]);
+                        GWRumbleSet(boxState[4]);
                     }
                     UpdatePauseText(cursorPos);
                     break;
@@ -542,13 +542,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     if (UpdatePauseBoxExt(arg0, temp_r31, 5) != 0) {
                         switch (boxState[5]) {
                             case 0:
-								GWMessSpeedSet(2);
+                                GWMessSpeedSet(2);
                                 break;
                             case 1:
-								GWMessSpeedSet(1);
+                                GWMessSpeedSet(1);
                                 break;
                             case 2:
-								GWMessSpeedSet(0);
+                                GWMessSpeedSet(0);
                                 break;
                         }
                     }
@@ -562,13 +562,13 @@ static void PauseConfigObjFunc(omObjData *arg0) {
                     if (UpdatePauseBoxExt(arg0, temp_r31, 6) != 0) {
                         switch (boxState[6]) {
                             case 0:
-								GWSaveModeSet(1);
+                                GWSaveModeSet(1);
                                 break;
                             case 1:
-								GWSaveModeSet(0);
+                                GWSaveModeSet(0);
                                 break;
                             case 2:
-								GWSaveModeSet(2);
+                                GWSaveModeSet(2);
                                 break;
                         }
                     }

@@ -751,24 +751,6 @@ static void fn_1_1F58(s32 arg0) {
     lbl_1_bss_1A4 = -1;
 }
 
-static inline float fn_1_1FC4InlineFunc(float arg0, float arg1, float arg2) {
-    float var_f29;
-    float var_f27;
-
-    var_f29 = fmod(arg1 - arg0, 360.0);
-    if (0.0f > var_f29) {
-        var_f29 += 360.0f;
-    }
-    if (180.0f < var_f29) {
-        var_f29 -= 360.0f;
-    }
-    var_f27 = fmod(arg0 + var_f29 * arg2, 360.0);
-    if (0.0f > var_f27) {
-        var_f27 += 360.0f;
-    }
-    return var_f27;
-}
-
 static void fn_1_1FC4(Vec *arg0, float *arg1, s32 arg2, s32 arg3) {
     Vec sp18;
     float var_f28;
@@ -789,7 +771,7 @@ static void fn_1_1FC4(Vec *arg0, float *arg1, s32 arg2, s32 arg3) {
             sp18.x = 10.0f * sp18.x;
             sp18.z = 10.0f * sp18.z;
         }
-        *arg1 = fn_1_1FC4InlineFunc(*arg1, atan2d(sp18.x, sp18.z), 0.4f);
+        *arg1 = fn_1_1E20(*arg1, atan2d(sp18.x, sp18.z), 0.4f);
         if (8.0f <= var_f28) {
             var_r30 = 2;
         } else {
@@ -943,7 +925,6 @@ static void fn_1_3204(omObjData *arg0) {
     omObjData *temp_r29;
     UnkData234Struct *temp_r28;
     u16 var_r26;
-    s32 temp_r20;
 
     temp_r31 = arg0->data;
     if (lbl_1_bss_58->work[0] == 1007) {
@@ -960,10 +941,7 @@ static void fn_1_3204(omObjData *arg0) {
         }
         Hu3DMotionSpeedSet(arg0->model[0], 1.0f);
         if (lbl_1_bss_26 == temp_r31->unk54) {
-            temp_r20 = temp_r31->unk54;
-            if (!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
-                GWPlayer[temp_r20].coin_win = 10;
-            }
+            GWPlayerCoinWinSet(temp_r31->unk54, 10);
         }
         arg0->func = fn_1_43D8;
         return;
@@ -1243,7 +1221,7 @@ static void fn_1_43D8(omObjData *arg0) {
                 arg0->func = fn_1_3204;
             }
             break;
-			
+
         case 2010:
             if (temp_r31->unk54 == lbl_1_bss_26) {
                 temp_r31->unk4C = 2012;
@@ -1259,10 +1237,10 @@ static void fn_1_43D8(omObjData *arg0) {
                 fn_1_2B30(temp_r31, arg0, temp_r30);
             }
             break;
-			
-		case 2011:
-			break;
-			
+
+        case 2011:
+            break;
+
         case 2012:
             temp_r31->unk1C -= temp_r31->unk20;
             if (0.0f > temp_r31->unk1C) {

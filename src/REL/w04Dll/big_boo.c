@@ -301,7 +301,7 @@ static void fn_1_68D8(void) {
                     HuPrcVSleep();
                 }
                 BoardModelAlphaSet(lbl_1_bss_274, 0);
-                WipeCreate(2, 0, 60);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                 WipeColorSet(0, 0, 0);
                 while (WipeStatGet() != 0) {
                     HuPrcVSleep();
@@ -384,7 +384,7 @@ static void fn_1_6CF8(void) {
     BoardCameraXRotZoomSet(1600.0f, -5.0f);
     lbl_1_bss_104 = HuPrcChildCreate(fn_1_75D8, 0x2003, 0x1000, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_104, fn_1_757C);
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -417,7 +417,7 @@ static void fn_1_7300(void) {
     s32 i;
     s32 j;
 
-    WipeCreate(2, 0, 30);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -453,7 +453,7 @@ static void fn_1_7300(void) {
     sp8.x = sp8.y = sp8.z = 3.0f;
     BoardModelScaleSetV(lbl_1_bss_274, &sp8);
     BoardModelPosSetV(lbl_1_bss_274, &lbl_1_bss_108);
-    WipeCreate(1, 0, 30);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

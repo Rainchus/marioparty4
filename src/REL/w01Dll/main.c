@@ -1114,7 +1114,7 @@ static void fn_1_3624(void) {
     }
     temp_r19 = HuAudFXPlay(0x40C);
     fn_1_4774();
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
     lbl_1_bss_6B0 = 1;
     HuAudFXPlay(0x413);
     while (TRUE) {
@@ -1163,7 +1163,7 @@ static void fn_1_3624(void) {
     lbl_1_bss_660.x = lbl_1_bss_660.z = 0.0f;
     BoardAudSeqFadeOut(1, 1000);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     HuAudFXPlay(0x401);
     temp_f28 = (-lbl_1_bss_63C - lbl_1_bss_660.y) / 30.0f;
     for (i = 0; i < 30; i++) {
@@ -1213,7 +1213,7 @@ static void fn_1_45F4(void) {
     BoardAudSeqPause(0, 0, 1000);
     BoardCameraMoveSet(1);
     BoardCameraMotionWait();
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1316,7 +1316,7 @@ static s32 fn_1_48B4(void) {
         HuAudFXPlay(0x402);
         BoardStatusShowSetAll(0);
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 21);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -1930,7 +1930,7 @@ static void fn_1_77EC(s32 arg0, s32 arg1) {
 static void fn_1_7894(void) {
     lbl_1_bss_6B1 = 1;
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 21);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1987,7 +1987,7 @@ static void fn_1_7A64(void) {
     fn_1_852C();
     BoardModelMotionSpeedSet(lbl_1_bss_6AE, lbl_1_bss_670);
     BoardCameraMotionWait();
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
     lbl_1_bss_6B0 = 1;
     temp_r19 = HuAudFXPlay(0x412);
     while (TRUE) {
@@ -2005,13 +2005,13 @@ static void fn_1_7A64(void) {
         if (lbl_1_bss_0->unk00_field0 == 0) {
             if (BoardModelMotionTimeGet(lbl_1_bss_6AE) <= 20.0f && var_r28 == 0) {
                 WipeColorSet(0, 0, 0);
-                WipeCreate(2, 0, -1);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
                 var_r28 = 1;
             }
         } else {
             if (BoardModelMotionTimeGet(lbl_1_bss_6AE) >= lbl_1_bss_644 - 20.0f && var_r28 == 0) {
                 WipeColorSet(0, 0, 0);
-                WipeCreate(2, 0, -1);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
                 var_r28 = 1;
             }
         }
