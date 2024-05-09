@@ -129,13 +129,13 @@ static void fn_1_32F0(omObjData *arg0) {
                     fn_1_39E0(temp_r31->unk00, 1, 1);
                     temp_r31->unk20 = 1;
                     temp_r31->unk28 = 0;
-					GWRumbleSet(1);
+                    GWRumbleSet(1);
                     arg0->unk10 = 3;
                 } else if (fn_1_584(4) != 0 && temp_r31->unk20 != 0) {
                     fn_1_39E0(temp_r31->unk00, 0, 1);
                     temp_r31->unk20 = 0;
                     temp_r31->unk28 = 0;
-					GWRumbleSet(0);
+                    GWRumbleSet(0);
                     arg0->unk10 = 3;
                 }
             }

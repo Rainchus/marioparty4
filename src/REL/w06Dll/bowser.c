@@ -317,7 +317,7 @@ static void fn_1_95AC(s32 arg0) {
         HuPrcVSleep();
     }
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 1, 1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSS, 1);
     HuPrcSleep(2);
     BoardCameraMoveSet(0);
     BoardModelVisibilitySet(BoardPlayerModelGet(arg0), 0);
@@ -334,7 +334,7 @@ static void fn_1_95AC(s32 arg0) {
     sp38.z = sp2C.z;
     BoardPlayerPosSetV(arg0, &sp38);
     BoardModelVisibilitySet(BoardPlayerModelGet(arg0), 1);
-    WipeCreate(1, 1, 30);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_CROSS, 30);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -553,7 +553,7 @@ static void fn_1_A408(s32 arg0) {
     _SetFlag(FLAG_ID_MAKE(1, 28));
     _SetFlag(FLAG_ID_MAKE(1, 14));
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -669,7 +669,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
     BoardCameraMotionStartEx(lbl_1_data_49A, &spC, &sp18, 2000.0f, -1.0f, 2);
     BoardCameraMotionWait();
     BoardCameraTargetModelSet(-1);
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1048,7 +1048,7 @@ static void fn_1_C40C(void) {
     sp20.y += 250.0f;
     BoardModelPosSetV(lbl_1_data_4A0, &sp20);
     BoardModelScaleSet(lbl_1_data_4A0, 10.0f, 10.0f, 10.0f);
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1083,7 +1083,7 @@ static void fn_1_C40C(void) {
     BoardWinKill();
     BoardAudSeqFadeOut(1, 1000);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 21);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

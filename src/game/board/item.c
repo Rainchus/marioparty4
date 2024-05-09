@@ -863,7 +863,7 @@ static void ExecItemPipe(void) {
             HuPrcVSleep();
         }
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 30);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -889,7 +889,7 @@ static void ExecItemPipe(void) {
             BoardPlayerVoiceEnableSet(sp2C[var_r31], 4, 0);
             BoardModelVisibilitySet(BoardPlayerModelGet(sp2C[var_r31]), 0);
         }
-        WipeCreate(1, 0, 30);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -1422,7 +1422,7 @@ static void ExecItemWhistle(void) {
         HuPrcVSleep();
     }
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 60);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1437,7 +1437,7 @@ static void ExecItemWhistle(void) {
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         BoardModelVisibilitySet(sp20[var_r31], 1);
     }
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1540,7 +1540,7 @@ static void ExecItemWhistle(void) {
             BoardModelPosSetV(temp_r28, &sp9C);
             var_f30 *= 0.945f;
             if (sp9C.y >= 500.0f && var_r26 == 0) {
-                WipeCreate(2, 0, 45);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 45);
                 BoardAudSeqFadeOut(0, 1000);
                 var_r26 = 1;
             }
@@ -2248,7 +2248,7 @@ static void GenieSceneExec(void) {
     Hu3DModelPosSet(temp_r27, booCamPos.x, booCamPos.y, booCamPos.z - 175.0f);
     temp_r23 = Hu3DData[temp_r27].unk_120;
     temp_r23->unk_02 = 1;
-    WipeCreate(1, 0, 45);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 45);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -2345,7 +2345,7 @@ static void GenieSceneExec(void) {
         }
         HuPrcVSleep();
     }
-    WipeCreate(2, 0, 45);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 45);
     BoardAudSeqFadeOut(1, 1000);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -2428,7 +2428,7 @@ static void ExecItemGenie(void) {
     HuAudFXStop(temp_r25);
     HuAudFXPauseAll(1);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, 45);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 45);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -2448,7 +2448,7 @@ static void ExecItemGenie(void) {
     BoardPlayerPosSetV(currItemRestore, &spC);
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
-    WipeCreate(1, 0, 45);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 45);
     HuPrcSleep(15);
     BoardAudSeqPause(0, 0, 1000);
     while (WipeStatGet() != 0) {

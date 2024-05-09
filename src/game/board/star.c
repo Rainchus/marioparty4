@@ -663,7 +663,7 @@ void BoardStarShowNext(s32 arg0) {
     var_r26 = &wipeData;
     if (var_r26->mode == 0) {
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 21);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -727,7 +727,7 @@ void BoardStarShowNext(s32 arg0) {
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
     HuPrcSleep(1);
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -758,7 +758,7 @@ void BoardStarShowNext(s32 arg0) {
     }
     BoardAudSeqFadeOut(1, 1000);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 21);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -774,7 +774,7 @@ void BoardStarShowNext(s32 arg0) {
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
     BoardStatusItemSet(1);
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

@@ -152,7 +152,7 @@ s32 SLFileCreate(char *fileName, u32 size, void *addr) {
     }
     _SetFlag(FLAG_ID_MAKE(3, 0));
     result = HuCardWrite(&curFileInfo, addr, size, 0);
-	_ClearFlag(FLAG_ID_MAKE(3, 0));
+    _ClearFlag(FLAG_ID_MAKE(3, 0));
     if (result < 0) {
         HuWinExAnimOut(window);
         HuWinExCleanup(window);
@@ -552,18 +552,18 @@ s32 SLStatSet(s32 reportF) {
         }
         return CARD_RESULT_FATAL_ERROR;
     }
-	CARDSetCommentAddress(&stat, 0);
-	CARDSetIconAddress(&stat, 64);
-	CARDSetBannerFormat(&stat, CARD_STAT_BANNER_C8);
-	CARDSetIconFormat(&stat, 0, CARD_STAT_ICON_C8);
-	CARDSetIconFormat(&stat, 1, CARD_STAT_ICON_C8);
-	CARDSetIconFormat(&stat, 2, CARD_STAT_ICON_C8);
-	CARDSetIconFormat(&stat, 3, CARD_STAT_ICON_C8);
+    CARDSetCommentAddress(&stat, 0);
+    CARDSetIconAddress(&stat, 64);
+    CARDSetBannerFormat(&stat, CARD_STAT_BANNER_C8);
+    CARDSetIconFormat(&stat, 0, CARD_STAT_ICON_C8);
+    CARDSetIconFormat(&stat, 1, CARD_STAT_ICON_C8);
+    CARDSetIconFormat(&stat, 2, CARD_STAT_ICON_C8);
+    CARDSetIconFormat(&stat, 3, CARD_STAT_ICON_C8);
     CARDSetIconSpeed(&stat, 0, CARD_STAT_SPEED_MIDDLE);
-	CARDSetIconSpeed(&stat, 1, CARD_STAT_SPEED_MIDDLE);
-	CARDSetIconSpeed(&stat, 2, CARD_STAT_SPEED_MIDDLE);
-	CARDSetIconSpeed(&stat, 3, CARD_STAT_SPEED_MIDDLE);
-	CARDSetIconSpeed(&stat, 4, CARD_STAT_SPEED_END);
+    CARDSetIconSpeed(&stat, 1, CARD_STAT_SPEED_MIDDLE);
+    CARDSetIconSpeed(&stat, 2, CARD_STAT_SPEED_MIDDLE);
+    CARDSetIconSpeed(&stat, 3, CARD_STAT_SPEED_MIDDLE);
+    CARDSetIconSpeed(&stat, 4, CARD_STAT_SPEED_END);
     CARDSetIconAnim(&stat, CARD_STAT_ANIM_LOOP);
 
     result = CARDSetStatus(curSlotNo, fileNo, &stat);
@@ -706,43 +706,43 @@ s16 SLMessOut(s16 mess) {
     slot_mess = 0;
     has_choice = 0;
     HuWinInit(1);
-	SLKillSaveWin();
+    SLKillSaveWin();
     switch (mess) {
         case 0:
             save_mess = MAKE_MESSID(16, 2);
             break;
-			
+
         case 1:
             save_mess = MAKE_MESSID(16, 83);
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
-			
+
         case 2:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             save_mess = MAKE_MESSID(16, 74);
             break;
-			
+
         case 3:
             save_mess = MAKE_MESSID(16, 74);
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
-			
+
         case 4:
             save_mess = MAKE_MESSID(16, 74);
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
-			
+
         case 5:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             save_mess = MAKE_MESSID(16, 4);
             has_choice = 1;
             break;
-			
+
         case 6:
             save_mess = MAKE_MESSID(16, 54);
             break;
@@ -751,30 +751,30 @@ s16 SLMessOut(s16 mess) {
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             save_mess = MAKE_MESSID(16, 55);
             break;
-			
+
         case 8:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             save_mess = MAKE_MESSID(16, 57);
             break;
-			
+
         case 9:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             save_mess = MAKE_MESSID(16, 69);
             break;
-			
+
         case 10:
             save_mess = MAKE_MESSID(16, 70);
             has_choice = 1;
             break;
-			
+
         case 11:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             save_mess = MAKE_MESSID(16, 72);
             break;
-			
+
         case 12:
             save_mess = MAKE_MESSID(16, 80);
             break;

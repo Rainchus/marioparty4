@@ -1500,7 +1500,7 @@ void Hu3DLLightInfinitytSet(s16 dataIndex, s16 lightIndex) {
     Hu3DLightInfinitytSet(light);
 }
 
-inline void Hu3DLightPointSet(LightData *light, u16 arg1, f32 arg8, f32 arg9) {
+inline void Hu3DLightPointSet(LightData *light, f32 arg8, f32 arg9, u16 arg1) {
     light->unk_00 &= 0xFF00;
     light->unk_00 |= 2;
     light->unk_04 = arg8;
@@ -1508,19 +1508,19 @@ inline void Hu3DLightPointSet(LightData *light, u16 arg1, f32 arg8, f32 arg9) {
     light->unk_02 = arg1;
 }
 
-void Hu3DGLightPointSet(s16 arg0, u16 arg1, f32 arg8, f32 arg9) {
+void Hu3DGLightPointSet(s16 arg0, f32 arg8, f32 arg9, u16 arg1) {
     LightData* light = &Hu3DGlobalLight[arg0];
     
-    Hu3DLightPointSet(light, arg1, arg8, arg9);
+    Hu3DLightPointSet(light, arg8, arg9, arg1);
 }
 
-void Hu3DLLightPointSet(s16 arg0, s16 arg1, u16 arg2, f32 arg8, f32 arg9) {
+void Hu3DLLightPointSet(s16 arg0, s16 arg1, f32 arg8, f32 arg9, u16 arg2) {
     ModelData* data;
     LightData* light;
 
     data = &Hu3DData[arg0];
     light = &Hu3DLocalLight[data->unk_38[arg1]];
-    Hu3DLightPointSet(light, arg2, arg8, arg9);
+    Hu3DLightPointSet(light, arg8, arg9, arg2);
 }
 
 void Hu3DGLightKill(s16 index) {
@@ -1755,7 +1755,7 @@ s32 Hu3DModelLightInfoSet(s16 arg0, s16 arg1) {
                 Hu3DGLightSpotSet(sp12, 2, var_r18->light.cutoff);
                 break;
             case 1:
-                Hu3DGLightPointSet(sp12, 2, var_r18->data.base.scale.x - var_r18->data.base.rot.z, 1.0f);
+                Hu3DGLightPointSet(sp12, var_r18->data.base.scale.x - var_r18->data.base.rot.z, 1.0f, 2);
                 Hu3DGLightPosSet(sp12, var_r18->light.pos.x, var_r18->light.pos.y, var_r18->light.pos.z, var_r18->light.target.x, var_r18->light.target.y, var_r18->light.target.z);
                 break;
             case 2:
