@@ -668,8 +668,8 @@ void fn_1_1344(omObjData *object)
     memset(var_r31, 0, 484);
     var_r31->unk_02 = lbl_1_bss_20++;
     var_r31->unk_04 = GWPlayerCfg[var_r31->unk_02].pad_idx;
-    var_r24 = GWPlayerCfg[var_r31->unk_02].character;
-    var_r31->unk_0C = var_r24;
+    
+    var_r31->unk_0C = var_r24 = GWPlayerCfg[var_r31->unk_02].character;
     var_r31->unk_0E = GWPlayerCfg[var_r31->unk_02].diff;
     var_r31->unk_10 = GWPlayerCfg[var_r31->unk_02].group;
     object->model[0] = CharModelCreate(var_r24, 2);
@@ -742,12 +742,10 @@ void fn_1_1344(omObjData *object)
 void fn_1_1AFC(omObjData *object)
 {
     UnkM404Struct3 *var_r31;
-    s32 var_r29;
-    s32 var_r28;
+
 
     var_r31 = object->data;
-    var_r29 = lbl_1_bss_48;
-    if (var_r29 >= 1) {
+    if (fn_1_38C() >= 1) {
         if (var_r31->unk_00_field2) {
             if (var_r31->unk_38 != 0) {
                 if (--var_r31->unk_38 == 0) {
@@ -763,8 +761,7 @@ void fn_1_1AFC(omObjData *object)
                     HuAudFXPlay(1326);
                 }
             }
-            var_r28 = lbl_1_bss_48;
-            if (var_r28 != 2) {
+            if (fn_1_38C() != 2) {
                 return;
             }
             var_r31->unk_24 = 0.0f;
@@ -875,23 +872,23 @@ float fn_1_2EBC(float arg0[], float arg8)
 
 float fn_1_3A38(float arg0[], float arg8, float arg9)
 {
-    float sp3C[2];
+	volatile float sp40;
+    volatile float sp3C;
     float var_f24;
     float var_f18;
     s32 var_r30;
 
-    sp3C[0] = 0.00001f;
+    sp3C = 0.00001f;
     var_r30 = 0;
     do {
         var_f18 = fn_1_2EBC(arg0, arg8) - arg9;
-        var_f24 = fn_1_1DF8(arg0, arg8);
-        if (fabs(var_f24) < sp3C[0]) {
+        if (fabs(var_f24 = fn_1_1DF8(arg0, arg8)) < sp3C) {
             var_f24 = 1.0f;
         }
-        sp3C[1] = arg8;
+        sp40 = arg8;
         arg8 -= var_f18 / var_f24;
         var_r30++;
-    } while (arg8 != sp3C[1] && var_r30 < 16);
+    } while (arg8 != sp40 && var_r30 < 16);
     return arg8;
 }
 
@@ -962,17 +959,14 @@ void fn_1_44A0(omObjData *object)
     ModelData *var_r29;
     s32 var_r28;
     s16 var_r27;
-    s32 var_r26;
-    s32 var_r25;
+
 
     var_r31 = object->data;
     var_r28 = -1;
-    var_r26 = lbl_1_bss_48;
-    if (var_r26 == 6) {
+    if (fn_1_38C() == 6) {
         object->func = fn_1_4C7C;
     }
-    var_r25 = lbl_1_bss_48;
-    if (var_r25 == 3 && !var_r31->unk_00_field0) {
+    if (fn_1_38C() == 3 && !var_r31->unk_00_field0) {
         switch (var_r31->unk_12) {
         case 0:
             if (GWPlayerCfg[var_r31->unk_02].iscom == 0) {
@@ -1103,20 +1097,16 @@ void fn_1_4F4C(omObjData *object)
     UnkM404Struct3 *var_r30;
     s32 var_r29;
     u16 var_r23;
-    s32 var_r18;
-    s32 var_r17;
 
     var_r30 = object->data;
-    var_r18 = lbl_1_bss_48;
-    if (var_r18 == 7) {
+    if (fn_1_38C() == 7) {
         var_r23 = fn_1_F70(object, (Center.x - lbl_1_data_738[1].unk_04) / (3000.0f - lbl_1_data_738[1].unk_04));
         if (!var_r30->unk_00_field1 && var_r23 == var_r30->unk_5C) {
             var_r30->unk_00_field1 = 1;
         }
         var_r30->unk_58 = var_r23;
     }
-    var_r17 = lbl_1_bss_48;
-    if (var_r17 == 9 && var_r30->unk_2C < 0) {
+    if (fn_1_38C() == 9 && var_r30->unk_2C < 0) {
         for (var_r29 = 0; var_r29 < 4; var_r29++) {
             if (var_r30->unk_02 == lbl_1_bss_38[var_r29]) {
                 break;
