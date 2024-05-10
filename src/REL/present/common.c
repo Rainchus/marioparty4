@@ -175,7 +175,6 @@ void fn_1_4A04(omObjData *object)
 {
     float var_f29;
     float var_f30;
-    double var_f31;
     s16 var_r29;
     UnkPresentStruct5 *var_r31;
 
