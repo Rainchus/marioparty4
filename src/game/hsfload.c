@@ -981,7 +981,7 @@ static void PaletteLoad(void)
 char *MakeObjectName(char *name)
 {
     static char buf[768];
-    int index, num_minus;
+    s32 index, num_minus;
     char *temp_name;
     num_minus = 0;
     index = 0;
@@ -1009,9 +1009,9 @@ char *MakeObjectName(char *name)
     return buf;
 }
 
-int CmpObjectName(char *name1, char *name2)
+s32 CmpObjectName(char *name1, char *name2)
 {
-    int temp = 0;
+    s32 temp = 0;
     return strcmp(name1, name2);
 }
 
@@ -1054,7 +1054,7 @@ static inline s32 FindClusterName(char *name)
     return -1;
 }
 
-static inline int FindMotionClusterName(char *name)
+static inline s32 FindMotionClusterName(char *name)
 {
     s32 i;
     HsfCluster *cluster;
@@ -1085,7 +1085,7 @@ static inline s32 FindAttributeName(char *name)
     return -1;
 }
 
-static inline int FindMotionAttributeName(char *name)
+static inline s32 FindMotionAttributeName(char *name)
 {
     s32 i;
     HsfAttribute *attribute;
