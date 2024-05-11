@@ -34,12 +34,12 @@ omObjData *omDBGSysKeyObj;
 Process *omwatchproc;
 OverlayID omnextovl;
 OverlayID omcurovl;
-int omcurdll;
-int omovlhisidx;
-int omovlevtno;
-int omnextovlevtno;
-int omovlstat;
-static int omnextovlstat;
+s32 omcurdll;
+s32 omovlhisidx;
+s32 omovlevtno;
+s32 omnextovlevtno;
+s32 omovlstat;
+static s32 omnextovlstat;
 char omUPauseFlag;
 s16 omSysExitReq;
 s16 omdispinfo;
@@ -52,7 +52,7 @@ OverlayID omprevovl = OVL_INVALID;
 static void omWatchOverlayProc(void);
 static void omInsertObj(Process *objman_process, omObjData *object);
 
-void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl)
+void omMasterInit(s32 prio, FileListEntry *ovl_list, s32 ovl_count, OverlayID start_ovl)
 {
     omDLLInit(ovl_list);
     omwatchproc = HuPrcCreate(omWatchOverlayProc, prio, 8192, 0);
@@ -106,7 +106,7 @@ static void omWatchOverlayProc(void)
     }
 }
 
-void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat)
+void omOvlCallEx(OverlayID overlay, s16 arg2, s32 event, s32 stat)
 {
     OSReport("objman>Call New Ovl %d(%d)\n", overlay, arg2);
     if(omovlhisidx >= OM_OVL_HIS_MAX) {
@@ -119,7 +119,7 @@ void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat)
     omOvlGotoEx(overlay, arg2, event, stat);
 }
 
-void omOvlGotoEx(OverlayID overlay, s16 arg2, int event, int stat)
+void omOvlGotoEx(OverlayID overlay, s16 arg2, s32 event, s32 stat)
 {
     omprevovl = omcurovl;
     if(omcurovl >= 0) {
@@ -162,7 +162,7 @@ void omOvlKill(s16 arg)
     omDBGSysKeyObj = NULL;
 }
 
-void omOvlHisChg(s32 level, OverlayID overlay, int event, int stat)
+void omOvlHisChg(s32 level, OverlayID overlay, s32 event, s32 stat)
 {
     omOvlHisData *history;
     if(omovlhisidx-level < 0 || omovlhisidx-level >= OM_OVL_HIS_MAX) {
@@ -184,12 +184,12 @@ omOvlHisData *omOvlHisGet(s32 level)
     return &omovlhis[omovlhisidx-level];
 }
 
-Process *omInitObjMan(s16 max_objs, int prio)
+Process *omInitObjMan(s16 max_objs, s32 prio)
 {
     omObjGroup *group_all;
     omObjData *obj_all;
     omObjData *obj;
-    int i;
+    s32 i;
     omObjMan *objman;
     Process *process;
     OSReport("objman>InitObjMan start\n");
@@ -245,7 +245,7 @@ void omDestroyObjMan(void)
 
 omObjData *omAddObjEx(Process *objman_process, s16 prio, u16 mdlcnt, u16 mtncnt, s16 group, void (*func)(omObjData *))
 {
-    int i;
+    s32 i;
     omObjData *object;
     s16 next_idx;
     omObjMan *objman = objman_process->user_data;
@@ -408,7 +408,7 @@ void omDelMember(Process *objman_process, omObjData *object)
 
 void omMakeGroupEx(Process *objman_process, u16 group, u16 max_objs)
 {
-    int i;
+    s32 i;
     omObjMan *objman = objman_process->user_data;
     omObjGroup *group_ptr = &objman->group[group];
     if(group_ptr->obj != NULL) {
@@ -521,7 +521,7 @@ static void omDumpObj(Process *objman_process)
 {
     omObjMan *objman = objman_process->user_data;
     omObjData *obj_all = objman->obj;
-    int i;
+    s32 i;
     OSReport("=================== 現在登録されている OBJECT ==================\n");
     OSReport("STAT PRI GRPN MEMN PROG (TRA) (ROT) (SCA) mdlcnt mtncnt work[0] work[1] work[2] work[3] *data\n");
     for(i=0; i<objman->max_objs; i++) {
@@ -540,7 +540,7 @@ void omAllPause(BOOL pause)
 {
     Process *objman_process = HuPrcCurrentGet();
     omObjMan *objman = objman_process->user_data;
-    int i;
+    s32 i;
     if(pause) {
         for(i=0; i<objman->max_objs; i++) {
             if((objman->obj[i].stat & (OM_STAT_DELETED|OM_STAT_NOPAUSE)) == 0) {

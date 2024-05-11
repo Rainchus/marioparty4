@@ -453,7 +453,7 @@ void fn_1_EC(void)
 	}
 }
 
-int _prolog(void) {
+s32 _prolog(void) {
     const VoidFunc* ctors = _ctors;
     while (*ctors != 0) {
         (**ctors)();

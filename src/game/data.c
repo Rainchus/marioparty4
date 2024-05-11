@@ -26,7 +26,7 @@ static DataReadStat ATTRIBUTE_ALIGN(32) ReadDataStat[DATA_MAX_READSTAT];
 
 void HuDataInit(void)
 {
-    int i = 0;
+    s32 i = 0;
     FileListEntry *dir_stat = DataDirStat;
     DataReadStat *read_stat;
     while(dir_stat->name) {
@@ -45,9 +45,9 @@ void HuDataInit(void)
     }
 }
 
-static int HuDataReadStatusGet(void)
+static s32 HuDataReadStatusGet(void)
 {
-    int i;
+    s32 i;
     for(i=0; i<DATA_MAX_READSTAT; i++) {
         if(ReadDataStat[i].dir_id == -1) {
             break;
@@ -59,9 +59,9 @@ static int HuDataReadStatusGet(void)
     return i;
 }
 
-int HuDataReadChk(s32 data_num)
+s32 HuDataReadChk(s32 data_num)
 {
-    int i;
+    s32 i;
     data_num >>= 16;
     for(i=0; i<DATA_MAX_READSTAT; i++) {
         if(ReadDataStat[i].dir_id == data_num && ReadDataStat[i].status != 1) {
@@ -76,7 +76,7 @@ int HuDataReadChk(s32 data_num)
 
 DataReadStat *HuDataGetStatus(void *dir_ptr)
 {
-    int i;
+    s32 i;
     for(i=0; i<DATA_MAX_READSTAT; i++) {
         if(ReadDataStat[i].dir == dir_ptr) {
             break;
@@ -90,7 +90,7 @@ DataReadStat *HuDataGetStatus(void *dir_ptr)
 
 void *HuDataGetDirPtr(s32 data_num)
 {
-    int status = HuDataReadChk(data_num);
+    s32 status = HuDataReadChk(data_num);
     if(status < 0) {
         return NULL;
     }
@@ -100,7 +100,7 @@ void *HuDataGetDirPtr(s32 data_num)
 DataReadStat *HuDataDirRead(s32 data_num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     s32 dir_id;
     dir_id  = data_num >> 16;
     if(DataDirMax <= dir_id) {
@@ -135,7 +135,7 @@ DataReadStat *HuDataDirRead(s32 data_num)
 static DataReadStat *HuDataDirReadNum(s32 data_num, s32 num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     s32 dir_id;
     dir_id  = data_num >> 16;
     if(DataDirMax <= dir_id) {
@@ -176,7 +176,7 @@ static DataReadStat *HuDataDirReadNum(s32 data_num, s32 num)
 DataReadStat *HuDataDirSet(void *dir_ptr, s32 data_num)
 {
     DataReadStat *read_stat = HuDataGetStatus(dir_ptr);
-    int status;
+    s32 status;
     if((status = HuDataReadChk(read_stat->dir_id << 16)) >= 0) {
         HuDataDirClose(data_num);
     }
@@ -194,7 +194,7 @@ DataReadStat *HuDataDirSet(void *dir_ptr, s32 data_num)
 void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo)
 {
     DataReadStat *read_stat;
-    int i;
+    s32 i;
     for(i=0; i<DATA_MAX_READSTAT; i++) {
         if(ReadDataStat[i].status == 1 && ReadDataStat[i].file_info.startAddr == fileInfo->startAddr) {
             break;
@@ -211,7 +211,7 @@ void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo)
 s32 HuDataDirReadAsync(s32 data_num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     s32 dir_id;
     dir_id  = data_num >> 16;
     if(DataDirMax <= dir_id) {
@@ -244,7 +244,7 @@ s32 HuDataDirReadAsync(s32 data_num)
 s32 HuDataDirReadNumAsync(s32 data_num, s32 num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     s32 dir_id;
     dir_id  = data_num >> 16;
     if(DataDirMax <= dir_id) {
@@ -291,7 +291,7 @@ static void GetFileInfo(DataReadStat *read_stat, s32 file_num)
 void *HuDataRead(s32 data_num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     void *buf;
     if(!HuDataDirRead(data_num)) {
         (void)data_num;
@@ -312,7 +312,7 @@ void *HuDataRead(s32 data_num)
 void *HuDataReadNum(s32 data_num, s32 num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     void *buf;
     if(!HuDataDirReadNum(data_num, num)) {
         return NULL;
@@ -332,7 +332,7 @@ void *HuDataReadNum(s32 data_num, s32 num)
 void *HuDataSelHeapRead(s32 data_num, HeapID heap)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     void *buf;
     if(!HuDataDirRead(data_num)) {
         return NULL;
@@ -368,7 +368,7 @@ void *HuDataSelHeapRead(s32 data_num, HeapID heap)
 void *HuDataSelHeapReadNum(s32 data_num, s32 num, HeapID heap)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     void *buf;
     if(!HuDataDirReadNum(data_num, num)) {
         return NULL;
@@ -412,7 +412,7 @@ static void **HuDataReadMultiSub(s32 *data_ids, BOOL use_num, s32 num)
     char **paths;
     void **dir_ptrs;
     void **out_ptrs;
-    int i, count, total_files;
+    s32 i, count, total_files;
     u32 dir_id;
     for(i=0, count=0; data_ids[i] != -1; i++) {
         dir_id = data_ids[i] >> 16;
@@ -433,7 +433,7 @@ static void **HuDataReadMultiSub(s32 *data_ids, BOOL use_num, s32 num)
     for(i=0, count=0; data_ids[i] != -1; i++) {
         dir_id = data_ids[i] >> 16;
         if(HuDataReadChk(data_ids[i]) < 0) {
-            int j;
+            s32 j;
             for(j=0; dir_ids[j] != -1; j++) {
                 if(dir_ids[j] == dir_id){
                     break;
@@ -481,7 +481,7 @@ static void **HuDataReadMultiSub(s32 *data_ids, BOOL use_num, s32 num)
 s32 HuDataGetSize(s32 data_num)
 {
     DataReadStat *read_stat;
-    int status;
+    s32 status;
     if((status = HuDataReadChk(data_num)) == -1) {
         return -1;
     }
@@ -499,7 +499,7 @@ void HuDataClose(void *ptr)
 
 void HuDataCloseMulti(void **ptrs)
 {
-    int i;
+    s32 i;
     for(i=0; ptrs[i]; i++) {
         void *ptr = ptrs[i];
         if(ptr) {
@@ -514,7 +514,7 @@ void HuDataCloseMulti(void **ptrs)
 void HuDataDirClose(s32 data_id)
 {
     DataReadStat *read_stat;
-    int i;
+    s32 i;
     s32 dir_id = data_id >> 16;
     for(i=0; i<DATA_MAX_READSTAT; i++) {
         if(ReadDataStat[i].dir_id == dir_id) {
@@ -537,7 +537,7 @@ void HuDataDirClose(s32 data_id)
 
 void HuDataDirCloseNum(s32 num)
 {
-    int i;
+    s32 i;
     for(i=0; i<DATA_MAX_READSTAT; i++) {
         if(ReadDataStat[i].used == TRUE && ReadDataStat[i].num == num) {
             HuDataDirClose(ReadDataStat[i].dir_id << 16);

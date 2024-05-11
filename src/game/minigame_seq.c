@@ -31,30 +31,30 @@ typedef struct seq_info {
 	s32 time_max;
 } SeqInfo;
 
-static int SeqInitTimer(SeqWork *work, va_list params);
-static int SeqUpdateTimer(SeqWork *work);
+static s32 SeqInitTimer(SeqWork *work, va_list params);
+static s32 SeqUpdateTimer(SeqWork *work);
 
-static int SeqInitType2(SeqWork *work, va_list params);
-static int SeqUpdateType2(SeqWork *work);
+static s32 SeqInitType2(SeqWork *work, va_list params);
+static s32 SeqUpdateType2(SeqWork *work);
 
-static int SeqInitMGBasic(SeqWork *work, va_list params);
-static int SeqUpdateMGBasic(SeqWork *work);
-static int SeqInitMGCommon(SeqWork *work, va_list params);
-static int SeqUpdateMG1vs3(SeqWork *work);
-static int SeqUpdateMGBattle(SeqWork *work);
-static int SeqUpdateMGStory(SeqWork *work);
-static int SeqUpdateMG2vs2(SeqWork *work);
-static int SeqUpdateMGBowser(SeqWork *work);
+static s32 SeqInitMGBasic(SeqWork *work, va_list params);
+static s32 SeqUpdateMGBasic(SeqWork *work);
+static s32 SeqInitMGCommon(SeqWork *work, va_list params);
+static s32 SeqUpdateMG1vs3(SeqWork *work);
+static s32 SeqUpdateMGBattle(SeqWork *work);
+static s32 SeqUpdateMGStory(SeqWork *work);
+static s32 SeqUpdateMG2vs2(SeqWork *work);
+static s32 SeqUpdateMGBowser(SeqWork *work);
 
-static int SeqInitWin(SeqWork *work, va_list params);
-static int SeqUpdateWin(SeqWork *work);
-static int SeqInitDraw(SeqWork *work, va_list params);
-static int SeqUpdateDraw(SeqWork *work);
-static int SeqInitRecord(SeqWork *work, va_list params);
-static int SeqUpdateRecord(SeqWork *work);
+static s32 SeqInitWin(SeqWork *work, va_list params);
+static s32 SeqUpdateWin(SeqWork *work);
+static s32 SeqInitDraw(SeqWork *work, va_list params);
+static s32 SeqUpdateDraw(SeqWork *work);
+static s32 SeqInitRecord(SeqWork *work, va_list params);
+static s32 SeqUpdateRecord(SeqWork *work);
 
-static int SeqInitFlip(SeqWork *work, va_list params);
-static int SeqUpdateFlip(SeqWork *work);
+static s32 SeqInitFlip(SeqWork *work, va_list params);
+static s32 SeqUpdateFlip(SeqWork *work);
 
 OverlayID mgSeqOvlPrev = OVL_INVALID;
 
@@ -118,7 +118,7 @@ static u8 seqDoneF;
 u8 lbl_801D3D94;
 static s16 seqSpeed;
 static s16 seqPauseF;
-static s32 seqRecordVal;
+static int seqRecordVal;
 static s32 pauseWaitF;
 static s32 pauseExitF;
 static s32 pauseActiveF;
@@ -130,7 +130,7 @@ void fn_80036BC8(void);
 
 void MGSeqInit(void)
 {
-	int i;
+	s32 i;
 	SeqWork *work;
 	work = &seqWorkData[0];
 	for(i=8; i!=0; i--, work++) {
@@ -204,8 +204,8 @@ static s16 CreateSeq(s16 seq_no, va_list params)
 {
 	SeqWork *work;
 	SeqInfo *info;
-	int i;
-	int temp;
+	s32 i;
+	s32 temp;
 	work = seqWorkData;
 	info = &seqInfoTbl[(u8)seq_no];
 	for(i=0; i<8; i++, work++) {
@@ -269,7 +269,7 @@ u8 MGSeqStatGet(s16 id)
 	SeqWork *work;
 	u8 ret = 0;
 	if(id < 0) {
-		int i;
+		s32 i;
 		work = seqWorkData;
 		for(i=8; i != 0; i--, work++) {
 			ret |= work->stat;
@@ -334,7 +334,7 @@ void MGSeqStub(void)
 
 void MGSeqSprKill(SeqWork *work)
 {
-	int i;
+	s32 i;
 	for(i=0; i<16; i++) {
 		if(work->spr_grp[i] >= 0) {
 			HuSprGrpKill(work->spr_grp[i]);
@@ -350,7 +350,7 @@ static void *SeqReadFile(s32 file)
 	return HuAR_ARAMtoMRAMFileRead(file, MEMORY_DEFAULT_NUM, HEAP_DATA);
 }
 
-static int SeqInitTimer(SeqWork *work, va_list params)
+static s32 SeqInitTimer(SeqWork *work, va_list params)
 {
 	AnimData *spr_anim;
 	s16 sprite;
@@ -407,7 +407,7 @@ static int SeqInitTimer(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateTimer(SeqWork *work)
+static s32 SeqUpdateTimer(SeqWork *work)
 {
 	float scale;
 	float tp_lvl;
@@ -563,7 +563,7 @@ static int SeqUpdateTimer(SeqWork *work)
 	}
 }
 
-static int SeqInitType2(SeqWork *work, va_list params)
+static s32 SeqInitType2(SeqWork *work, va_list params)
 {
 	s16 spr_idx;
 	s16 spr_grp;
@@ -662,7 +662,7 @@ static int SeqInitType2(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateType2(SeqWork *work)
+static s32 SeqUpdateType2(SeqWork *work)
 {
 	float tp_lvl;
 	s16 spr_grp;
@@ -920,7 +920,7 @@ static float ForceDefine480()
 
 static void SeqPlayStartFX(void);
 
-static int SeqInitMGBasic(SeqWork *work, va_list params)
+static s32 SeqInitMGBasic(SeqWork *work, va_list params)
 {
 	s16 i;
 	s16 word_grp;
@@ -967,7 +967,7 @@ static int SeqInitMGBasic(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateMGBasic(SeqWork *work)
+static s32 SeqUpdateMGBasic(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -1130,7 +1130,7 @@ static int SeqUpdateMGBasic(SeqWork *work)
 	return 1;
 }
 
-static int SeqInitMGCommon(SeqWork *work, va_list params)
+static s32 SeqInitMGCommon(SeqWork *work, va_list params)
 {
 	s16 i;
 	float tp_lvl;
@@ -1204,7 +1204,7 @@ static int SeqInitMGCommon(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateMGBattle(SeqWork *work)
+static s32 SeqUpdateMGBattle(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -1446,7 +1446,7 @@ static int SeqUpdateMGBattle(SeqWork *work)
 	return 1;
 }
 
-static int SeqUpdateMG1vs3(SeqWork *work)
+static s32 SeqUpdateMG1vs3(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -1652,7 +1652,7 @@ static int SeqUpdateMG1vs3(SeqWork *work)
 	return 1;
 }
 
-static int SeqUpdateMGStory(SeqWork *work)
+static s32 SeqUpdateMGStory(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -1859,7 +1859,7 @@ static int SeqUpdateMGStory(SeqWork *work)
 	return 1;
 }
 
-static int SeqUpdateMG2vs2(SeqWork *work)
+static s32 SeqUpdateMG2vs2(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -2036,7 +2036,7 @@ static int SeqUpdateMG2vs2(SeqWork *work)
 	return 1;
 }
 
-static int SeqInitFlip(SeqWork *work, va_list params)
+static s32 SeqInitFlip(SeqWork *work, va_list params)
 {
 	s16 i;
 	s16 word_grp;
@@ -2117,7 +2117,7 @@ static int SeqInitFlip(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateFlip(SeqWork *work)
+static s32 SeqUpdateFlip(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -2285,7 +2285,7 @@ static int SeqUpdateFlip(SeqWork *work)
 	return 1;
 }
 
-static int SeqUpdateMGBowser(SeqWork *work)
+static s32 SeqUpdateMGBowser(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -2500,7 +2500,7 @@ static int SeqUpdateMGBowser(SeqWork *work)
 	return 1;
 }
 
-static int SeqInitDraw(SeqWork *work, va_list params)
+static s32 SeqInitDraw(SeqWork *work, va_list params)
 {
 	s16 word_grp;
 	work->state = 2;
@@ -2529,7 +2529,7 @@ static int SeqInitDraw(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateDraw(SeqWork *work)
+static s32 SeqUpdateDraw(SeqWork *work)
 {
 	s16 idx;
 	float scale;
@@ -2700,9 +2700,9 @@ static s16 winnerNameW[8];
 #define GET_WIN_KANAF() ((seqLanguage == 0) ? 1 : 0)
 
 
-static int SeqInitWin(SeqWork *work, va_list params)
+static s32 SeqInitWin(SeqWork *work, va_list params)
 {
-	s32 win_type = va_arg(params, int);
+	int win_type = va_arg(params, int);
 	s16 word_idx;
 	s16 word_grp;
 	s32 i;
@@ -2731,7 +2731,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 	num_winners = 0;
 	work->win_scale = 1.0f;
 	for(j=0; j<4; j++) {
-		s32 winner = va_arg(params, int);
+		int winner = va_arg(params, int);
 		if(winner < 0) {
 			continue;
 		}
@@ -2825,7 +2825,7 @@ static int SeqInitWin(SeqWork *work, va_list params)
 }
 
 
-static int SeqUpdateWin(SeqWork *work)
+static s32 SeqUpdateWin(SeqWork *work)
 {
 	s32 idx;
 	float tp_lvl;
@@ -2948,7 +2948,7 @@ static int SeqUpdateWin(SeqWork *work)
 	return 1;
 }
 
-static int SeqInitRecord(SeqWork *work, va_list params)
+static s32 SeqInitRecord(SeqWork *work, va_list params)
 {
 	AnimData *spr_data;
 	s16 spr_grp;
@@ -3063,7 +3063,7 @@ static int SeqInitRecord(SeqWork *work, va_list params)
 	return 1;
 }
 
-static int SeqUpdateRecord(SeqWork *work)
+static s32 SeqUpdateRecord(SeqWork *work)
 {
 	s16 group;
 	if(_CheckFlag(0x1000C)) {

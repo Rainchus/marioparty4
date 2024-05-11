@@ -677,7 +677,7 @@ s32 BoardSpaceBlockExec(s32 player, s32 space)
 	if(space == GWSystem.block_pos) {
 		event_exec = 1;
 	}
-	if((int)GWSystem.bonus_star == 0 && GWPartyGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
+	if(!GWBonusStarGet() && GWPartyGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		event_exec = 0;
 	}
 	if(GWBoardGet() == 7 || GWBoardGet() == 8) {

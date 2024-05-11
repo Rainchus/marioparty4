@@ -43,8 +43,8 @@
 
 typedef struct seq_work SeqWork;
 
-typedef int (*SeqUpdateFunc)(SeqWork *work);
-typedef int (*SeqInitFunc)(SeqWork *work, va_list params);
+typedef s32 (*SeqUpdateFunc)(SeqWork *work);
+typedef s32 (*SeqInitFunc)(SeqWork *work, va_list params);
 
 typedef struct seq_work {
 	SeqUpdateFunc update;

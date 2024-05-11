@@ -6,7 +6,7 @@
 
 s16 HuSysVWaitGet(s16 old);
 
-typedef int (*fadeFunc)(void);
+typedef s32 (*fadeFunc)(void);
 
 WipeState wipeData;
 BOOL wipeFadeInF;
@@ -15,9 +15,9 @@ static void WipeColorFill(GXColor color);
 static void WipeFrameStill(GXColor color);
 
 
-static int WipeNormalFade(void);
-static int WipeCrossFade(void);
-static int WipeDummyFade(void);
+static s32 WipeNormalFade(void);
+static s32 WipeCrossFade(void);
+static s32 WipeDummyFade(void);
 
 static fadeFunc fadeInFunc[3] = { WipeNormalFade, WipeCrossFade, WipeDummyFade };
 static fadeFunc fadeOutFunc[3] = { WipeNormalFade, WipeCrossFade, WipeDummyFade };
@@ -25,7 +25,7 @@ static fadeFunc fadeOutFunc[3] = { WipeNormalFade, WipeCrossFade, WipeDummyFade 
 void WipeInit(GXRenderModeObj *rmode)
 {
 	WipeState *wipe;
-	int i;
+	s32 i;
 	wipe = &wipeData;
 	wipe->unk00 = 0;
 	wipe->unk04 = 0;
@@ -46,7 +46,7 @@ void WipeInit(GXRenderModeObj *rmode)
 
 void WipeExecAlways(void)
 {
-	int i;
+	s32 i;
 	WipeState *wipe;
 	wipe = &wipeData;
 	switch(wipe->mode) {
@@ -151,12 +151,12 @@ u8 WipeStatGet(void)
 	return wipeData.stat;
 }
 
-static int WipeDummyFade(void)
+static s32 WipeDummyFade(void)
 {
 	return 0;
 }
 
-static int WipeNormalFade(void)
+static s32 WipeNormalFade(void)
 {
 	u8 alpha;
 	WipeState *wipe = &wipeData;
@@ -192,9 +192,9 @@ static void WipeColorFill(GXColor color)
 	WipeState *wipe;
 	u16 ulx, lrx, uly, lry;
 	wipe = &wipeData;
-	ulx = (int)wipe->x;
+	ulx = (s32)wipe->x;
 	lrx = wipe->x+wipe->w;
-	uly = (int)wipe->y;
+	uly = (s32)wipe->y;
 	lry = wipe->x+wipe->h+1;
 	MTXOrtho(proj, uly, lry, ulx, lrx, 0, 10);
 	GXSetProjection(proj, GX_ORTHOGRAPHIC);
@@ -227,7 +227,7 @@ static void WipeColorFill(GXColor color)
 	GXSetChanMatColor(GX_COLOR0A0, colorN);
 }
 
-static int WipeCrossFade(void)
+static s32 WipeCrossFade(void)
 {
 	u32 size;
 	u8 alpha;
@@ -273,9 +273,9 @@ static void WipeFrameStill(GXColor color)
 	WipeState *wipe;
 	u16 ulx, lrx, uly, lry;
 	wipe = &wipeData;
-	ulx = (int)wipe->x;
+	ulx = (s32)wipe->x;
 	lrx = wipe->x+wipe->w;
-	uly = (int)wipe->y;
+	uly = (s32)wipe->y;
 	lry = wipe->x+wipe->h+1;
 	MTXOrtho(proj, uly, lry, ulx, lrx, 0, 10);
 	GXSetProjection(proj, GX_ORTHOGRAPHIC);

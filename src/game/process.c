@@ -2,7 +2,7 @@
 #include "game/memory.h"
 #include "dolphin/os.h"
 
-#define PROCESS_MEMORY_RETADDR 0xA5A5A5A5
+#define FAKE_RETADDR 0xA5A5A5A5
 
 #define EXEC_NORMAL 0
 #define EXEC_SLEEP 1
@@ -14,7 +14,6 @@ static Process *processtop;
 static Process *processcur;
 static u16 processcnt;
 u32 procfunc;
-
 
 void HuPrcInit(void)
 {
@@ -49,12 +48,9 @@ static void UnlinkProcess(Process **root, Process *process) {
     if (process->next) {
         process->next->prev = process->prev;
     }
-
     if (process->prev) {
         process->prev->next = process->next;
-    }
-
-    else {
+    } else {
         *root = process->next;
     }
 }
@@ -75,13 +71,13 @@ Process *HuPrcCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_siz
         return NULL;
     }
     HuMemHeapInit(heap, alloc_size);
-    process = HuMemMemoryAlloc(heap, sizeof(Process), PROCESS_MEMORY_RETADDR);
+    process = HuMemMemoryAlloc(heap, sizeof(Process), FAKE_RETADDR);
     process->heap = heap;
     process->exec = EXEC_NORMAL;
     process->stat = 0;
     process->prio = prio;
     process->sleep_time = 0;
-    process->base_sp = ((u32)HuMemMemoryAlloc(heap, stack_size, PROCESS_MEMORY_RETADDR))+stack_size-8;
+    process->base_sp = ((u32)HuMemMemoryAlloc(heap, stack_size, FAKE_RETADDR))+stack_size-8;
     gcsetjmp(&process->jump);
     process->jump.lr = (u32)func;
     process->jump.sp = process->base_sp;
@@ -144,7 +140,7 @@ Process *HuPrcCurrentGet()
     return processcur;
 }
 
-static int SetKillStatusProcess(Process *process)
+static s32 SetKillStatusProcess(Process *process)
 {
     if(process->exec != EXEC_KILLED) {
         HuPrcWakeup(process);
@@ -155,7 +151,7 @@ static int SetKillStatusProcess(Process *process)
     }
 }
 
-int HuPrcKill(Process *process)
+s32 HuPrcKill(Process *process)
 {
     if(process == NULL) {
         process = HuPrcCurrentGet();
@@ -196,7 +192,7 @@ void HuPrcEnd()
     gcTerminateProcess(process);
 }
 
-void HuPrcSleep(int time)
+void HuPrcSleep(s32 time)
 {
     Process *process = HuPrcCurrentGet();
     if(time != 0 && process->exec != EXEC_KILLED) {
@@ -210,10 +206,7 @@ void HuPrcSleep(int time)
 
 void HuPrcVSleep()
 {
-    Process *process = HuPrcCurrentGet();
-    if(!gcsetjmp(&process->jump)) {
-        gclongjmp(&processjmpbuf, 1);
-    }
+    HuPrcSleep(0);
 }
 
 void HuPrcWakeup(Process *process)
@@ -232,10 +225,10 @@ void HuPrcDestructorSet(void (*func)(void))
     process->dtor = func;
 }
 
-void HuPrcCall(int tick)
+void HuPrcCall(s32 tick)
 {
     Process *process;
-    int ret;
+    s32 ret;
     processcur = processtop;
     ret = gcsetjmp(&processjmpbuf);
     while(1) {
@@ -293,12 +286,12 @@ void HuPrcCall(int tick)
 void *HuPrcMemAlloc(s32 size)
 {
     Process *process = HuPrcCurrentGet();
-    return HuMemMemoryAlloc(process->heap, size, PROCESS_MEMORY_RETADDR);
+    return HuMemMemoryAlloc(process->heap, size, FAKE_RETADDR);
 }
 
 void HuPrcMemFree(void *ptr)
 {
-    HuMemMemoryFree(ptr, PROCESS_MEMORY_RETADDR);
+    HuMemMemoryFree(ptr, FAKE_RETADDR);
 }
 
 void HuPrcSetStat(Process *process, u16 value)
@@ -311,7 +304,7 @@ void HuPrcResetStat(Process *process, u16 value)
     process->stat &= ~value;
 }
 
-void HuPrcAllPause(int flag)
+void HuPrcAllPause(s32 flag)
 {
     Process *process = processtop;
     if(flag) {
@@ -333,7 +326,7 @@ void HuPrcAllPause(int flag)
     }
 }
 
-void HuPrcAllUPause(int flag)
+void HuPrcAllUPause(s32 flag)
 {
     Process *process = processtop;
     if(flag) {
