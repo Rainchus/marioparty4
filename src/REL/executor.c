@@ -1,6 +1,6 @@
 #include "REL/executor.h"
 
-int _prolog(void) {
+s32 _prolog(void) {
     const VoidFunc* ctors = _ctors;
     while (*ctors != 0) {
         (**ctors)();

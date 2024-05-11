@@ -30,7 +30,7 @@ typedef struct data_read_stat {
 } DataReadStat;
 
 void HuDataInit(void);
-int HuDataReadChk(s32 data_num);
+s32 HuDataReadChk(s32 data_num);
 DataReadStat *HuDataGetStatus(void *dir_ptr);
 void *HuDataGetDirPtr(s32 data_num);
 DataReadStat *HuDataDirRead(s32 data_num);
@@ -52,7 +52,7 @@ void HuDataDirClose(s32 data_id);
 void HuDataDirCloseNum(s32 num);
 void *HuDataReadNumHeapShortForce(s32 data_id, s32 num, HeapID heap);
 
-void HuDecodeData(void *src, void *dst, u32 size, int decode_type);
+void HuDecodeData(void *src, void *dst, u32 size, s32 decode_type);
 
 extern u32 DirDataSize;
 

@@ -20,7 +20,7 @@ typedef struct process {
     u16 exec;
     u16 stat;
     u16 prio;
-    int sleep_time;
+    s32 sleep_time;
     u32 base_sp;
     jmp_buf jump;
     void (*dtor)(void);
@@ -35,19 +35,19 @@ void HuPrcChildUnlink(Process *process);
 Process *HuPrcChildCreate(void (*func)(void), u16 prio, u32 stack_size, s32 extra_size, Process *parent);
 void HuPrcChildWatch(void);
 Process *HuPrcCurrentGet(void);
-int HuPrcKill(Process *process);
+s32 HuPrcKill(Process *process);
 void HuPrcChildKill(Process *process);
-void HuPrcSleep(int time);
+void HuPrcSleep(s32 time);
 void HuPrcVSleep();
 void HuPrcWakeup(Process *process);
 void HuPrcDestructorSet2(Process *process, void (*func)(void));
 void HuPrcDestructorSet(void (*func)(void));
-void HuPrcCall(int tick);
+void HuPrcCall(s32 tick);
 void *HuPrcMemAlloc(s32 size);
 void HuPrcMemFree(void *ptr);
 void HuPrcSetStat(Process *process, u16 value);
 void HuPrcResetStat(Process *process, u16 value);
-void HuPrcAllPause(int flag);
-void HuPrcAllUPause(int flag);
+void HuPrcAllPause(s32 flag);
+void HuPrcAllUPause(s32 flag);
 
 #endif

@@ -95,7 +95,7 @@ void omSystemKeyCheck(omObjData *object)
 			HuAudSeqPauseAll(0);
 		}
 	} else {
-		int i;
+		s32 i;
 		s16 pause = 0;
 		if(WipeStatGet() || omCurrentOvlGet() == OVL_INVALID || omSysExitReq) {
 			return;

@@ -21,7 +21,7 @@ static void HuDecodeNone(struct decode_data *decode)
 static void HuDecodeLz(struct decode_data *decode)
 {
     u16 flag, pos;
-    int i, j, copy_len;
+    s32 i, j, copy_len;
     flag = 0;
     pos = 958;
     
@@ -54,7 +54,7 @@ static void HuDecodeLz(struct decode_data *decode)
 
 static inline void SlideReadHeader(struct decode_data *decode)
 {
-    int size;
+    s32 size;
     size = (*decode->src++) << 24;
     size += (*decode->src++) << 16;
     size += (*decode->src++) << 8;
@@ -78,7 +78,7 @@ static void HuDecodeSlide(struct decode_data *decode)
             num_bits = 32;
         }
         if(flag >> 31) {
-            *decode->dst++ = (int)*decode->src++;
+            *decode->dst++ = (s32)*decode->src++;
             decode->size--;
         } else {
             u8 *src;
@@ -125,7 +125,7 @@ static void HuDecodeFslide(struct decode_data *decode)
             num_bits = 32;
         }
         if(flag >> 31) {
-            *decode->dst++ = (int)*decode->src++;
+            *decode->dst++ = (s32)*decode->src++;
             decode->size--;
         } else {
             u8 *src;
@@ -155,11 +155,11 @@ static void HuDecodeFslide(struct decode_data *decode)
 
 static void HuDecodeRle(struct decode_data *decode)
 {
-    int i;
+    s32 i;
     while(decode->size) {
-        int size = *decode->src++;
+        s32 size = *decode->src++;
         if(size < 128) {
-            int fill = *decode->src++;
+            s32 fill = *decode->src++;
             for(i=0; i<size; i++) {
                 *decode->dst++ = fill;
             }
@@ -173,7 +173,7 @@ static void HuDecodeRle(struct decode_data *decode)
     }
 }
 
-void HuDecodeData(void *src, void *dst, u32 size, int decode_type)
+void HuDecodeData(void *src, void *dst, u32 size, s32 decode_type)
 {
     struct decode_data decode;
     struct decode_data *decode_ptr = &decode;

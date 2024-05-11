@@ -32,8 +32,8 @@ typedef void (*omObjFunc)(struct om_obj_data *);
 
 typedef struct om_ovl_his_data {
     OverlayID overlay;
-    int event;
-    int stat;
+    s32 event;
+    s32 stat;
 } omOvlHisData;
 
 typedef struct om_obj_data {
@@ -65,14 +65,14 @@ typedef struct om_dll_data {
 	s32 ret;
 } omDllData;
 
-void omMasterInit(int prio, FileListEntry *ovl_list, int ovl_count, OverlayID start_ovl);
-void omOvlCallEx(OverlayID overlay, s16 arg2, int event, int stat);
-void omOvlGotoEx(OverlayID overlay, s16 arg2, int event, int stat);
+void omMasterInit(s32 prio, FileListEntry *ovl_list, s32 ovl_count, OverlayID start_ovl);
+void omOvlCallEx(OverlayID overlay, s16 arg2, s32 event, s32 stat);
+void omOvlGotoEx(OverlayID overlay, s16 arg2, s32 event, s32 stat);
 void omOvlReturnEx(s16 level, s16 arg2);
 void omOvlKill(s16 arg);
-void omOvlHisChg(s32 level, OverlayID overlay, int event, int stat);
+void omOvlHisChg(s32 level, OverlayID overlay, s32 event, s32 stat);
 omOvlHisData *omOvlHisGet(s32 level);
-Process *omInitObjMan(s16 max_objs, int prio);
+Process *omInitObjMan(s16 max_objs, s32 prio);
 void omDestroyObjMan(void);
 omObjData *omAddObjEx(Process *objman_process, s16 prio, u16 mdlcnt, u16 mtncnt, s16 group, omObjFunc func);
 void omAddMember(Process *objman_process, u16 group, omObjData *object);
@@ -93,7 +93,7 @@ OverlayID omCurrentOvlGet(void);
 
 void omDLLDBGOut(void);
 void omDLLInit(FileListEntry *ovl_list);
-int omDLLStart(s16 overlay, s16 flag);
+s32 omDLLStart(s16 overlay, s16 flag);
 void omDLLNumEnd(s16 overlay, s16 flag);
 void omDLLEnd(s16 dllno, s16 flag);
 omDllData *omDLLLink(omDllData **dll_ptr, s16 overlay, s16 flag);
@@ -113,11 +113,11 @@ extern omObjData *omDBGSysKeyObj;
 extern Process *omwatchproc;
 extern OverlayID omnextovl;
 extern OverlayID omcurovl;
-extern int omcurdll;
-extern int omovlhisidx;
-extern int omovlevtno;
-extern int omnextovlevtno;
-extern int omovlstat;
+extern s32 omcurdll;
+extern s32 omovlhisidx;
+extern s32 omovlevtno;
+extern s32 omnextovlevtno;
+extern s32 omovlstat;
 extern char omUPauseFlag;
 extern s16 omSysExitReq;
 extern s16 omdispinfo;
