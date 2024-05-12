@@ -7,7 +7,7 @@ static void *HeapTbl[HEAP_MAX];
 
 void HuMemInitAll(void)
 {
-    int i;
+    s32 i;
     void *ptr;
     u32 free_size;
     for(i=0; i<4; i++) {

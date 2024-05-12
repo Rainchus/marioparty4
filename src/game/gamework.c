@@ -147,19 +147,19 @@ s32 GWMessDelayGet(void)
     return GWSystem.mess_delay;
 }
 
-void GWMGRecordSet(int index, s32 value)
+void GWMGRecordSet(s32 index, s32 value)
 {
     if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         GWGameStat.mg_record[index] = value;
     }
 }
 
-s32 GWMGRecordGet(int index)
+s32 GWMGRecordGet(s32 index)
 {
     return GWGameStat.mg_record[index];
 }
 
-void GWCharColorGet(int character, GXColor *color)
+void GWCharColorGet(s32 character, GXColor *color)
 {
     GXColor char_color[] = {
         { 227, 67, 67, 255 },
@@ -174,7 +174,7 @@ void GWCharColorGet(int character, GXColor *color)
     *color = char_color[character];
 }
 
-void GWBoardPlayCountSet(int board, u8 value)
+void GWBoardPlayCountSet(s32 board, u8 value)
 {
     if(value > 99) {
         value = 99;
@@ -182,7 +182,7 @@ void GWBoardPlayCountSet(int board, u8 value)
     GWGameStat.board_play_count[board] = value;
 }
 
-void GWBoardPlayCountAdd(int board, u8 value)
+void GWBoardPlayCountAdd(s32 board, u8 value)
 {
     value += GWGameStat.board_play_count[board];
     if(value > 99) {
@@ -192,34 +192,34 @@ void GWBoardPlayCountAdd(int board, u8 value)
 }
 
 
-u8 GWBoardPlayCountGet(int board)
+u8 GWBoardPlayCountGet(s32 board)
 {
     return GWGameStat.board_play_count[board];
 }
 
-void GWBoardMaxStarsSet(int board, int value)
+void GWBoardMaxStarsSet(s32 board, s32 value)
 {
     GWGameStat.board_max_stars[board] = value;
 }
 
-u16 GWBoardMaxStarsGet(int board)
+u16 GWBoardMaxStarsGet(s32 board)
 {
     return GWGameStat.board_max_stars[board];
 }
 
-void GWBoardMaxCoinsSet(int board, int value)
+void GWBoardMaxCoinsSet(s32 board, s32 value)
 {
     GWGameStat.board_max_coins[board] = value;
 }
 
-u16 GWBoardMaxCoinsGet(int board)
+u16 GWBoardMaxCoinsGet(s32 board)
 {
     return GWGameStat.board_max_coins[board];
 }
 
-int GWBoardWinCountInc(int character, int board)
+s32 GWBoardWinCountInc(s32 character, s32 board)
 {
-    int win_count = GWGameStat.board_win_count[board][character]+1;
+    s32 win_count = GWGameStat.board_win_count[board][character]+1;
     if(win_count > 99) {
         win_count = 99;
     }
@@ -227,20 +227,20 @@ int GWBoardWinCountInc(int character, int board)
     return win_count;
 }
 
-int GWBoardWinCountGet(int character, int board)
+s32 GWBoardWinCountGet(s32 character, s32 board)
 {
     return GWGameStat.board_win_count[board][character];
 }
 
-void GWBoardWinCountSet(int character, int board, int value)
+void GWBoardWinCountSet(s32 character, s32 board, s32 value)
 {
     GWGameStat.board_win_count[board][character] = value;
 }
 
-int GWMGAvailGet(int id)
+s32 GWMGAvailGet(s32 id)
 {
-    int word;
-    int bit;
+    s32 word;
+    s32 bit;
     id -= 401;
     word = id >> 5;
     bit = id % 32;
@@ -251,20 +251,20 @@ int GWMGAvailGet(int id)
     }
 }
 
-int GWMGAvailSet(int id)
+s32 GWMGAvailSet(s32 id)
 {
-    int word;
-    int bit;
+    s32 word;
+    s32 bit;
     id -= 401;
     word = id >> 5;
     bit = id % 32;
     GWGameStat.mg_avail[word] |= (1 << bit);
 }
 
-int GWMGCustomGet(int id)
+s32 GWMGCustomGet(s32 id)
 {
-    int word;
-    int bit;
+    s32 word;
+    s32 bit;
     id -= 401;
     word = id >> 5;
     bit = id % 32;
@@ -275,32 +275,32 @@ int GWMGCustomGet(int id)
     }
 }
 
-int GWMGCustomSet(int id)
+s32 GWMGCustomSet(s32 id)
 {
-    int word;
-    int bit;
+    s32 word;
+    s32 bit;
     id -= 401;
     word = id >> 5;
     bit = id % 32;
     GWGameStat.mg_custom[word] |= (1 << bit);
 }
 
-int GWMGCustomReset(int id)
+s32 GWMGCustomReset(s32 id)
 {
-    int word;
-    int bit;
+    s32 word;
+    s32 bit;
     id -= 401;
     word = id >> 5;
     bit = id % 32;
     GWGameStat.mg_custom[word] &= ~(1 << bit);
 }
 
-s16 GWCoinsGet(int player)
+s16 GWCoinsGet(s32 player)
 {
     return GWPlayer[player].coins;
 }
 
-void GWCoinsSet(int player, s16 value)
+void GWCoinsSet(s32 player, s16 value)
 {
     if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         if(value < 0) {
@@ -316,12 +316,12 @@ void GWCoinsSet(int player, s16 value)
     }
 }
 
-void GWCoinsAdd(int player, s16 amount)
+void GWCoinsAdd(s32 player, s16 amount)
 {
     GWCoinsSet(player, GWPlayer[player].coins+amount);
 }
 
-void GWStarsSet(int player, s16 value)
+void GWStarsSet(s32 player, s16 value)
 {
     if(value < 0) {
         value = 0;
@@ -335,12 +335,12 @@ void GWStarsSet(int player, s16 value)
     GWPlayer[player].stars = value;
 }
 
-void GWStarsAdd(int player, s16 amount)
+void GWStarsAdd(s32 player, s16 amount)
 {
     GWStarsSet(player, GWPlayer[player].stars+amount);
 }
 
-s32 GWStarsGet(int player)
+s32 GWStarsGet(s32 player)
 {
     return GWPlayer[player].stars;
 }

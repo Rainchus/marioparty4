@@ -13,7 +13,7 @@ typedef struct jump_buf {
     double flt_regs[19];
 } jmp_buf;
 
-int gcsetjmp(jmp_buf *jump);
-int gclongjmp(jmp_buf *jump, int status);
+s32 gcsetjmp(jmp_buf *jump);
+s32 gclongjmp(jmp_buf *jump, s32 status);
 
 #endif

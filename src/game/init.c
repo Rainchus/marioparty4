@@ -166,7 +166,7 @@ void HuSysBeforeRender()
 
 void HuSysDoneRender(s32 retrace_count)
 {
-    int retrace_dist;
+    s32 retrace_dist;
     if(DemoStatEnable) {
         GXDrawDone();
         DEMOUpdateStats(1);

@@ -4,6 +4,7 @@
 #include "dolphin/types.h"
 
 #define frandBool() (((s32)frand() & 0x1))
+#define frandu8() (((u32)frand() & 0xFF))
 #define frand8() (((s32)frand() & 0xFF))
 #define frandmods(range) ((s32)frand() % (range))
 #define frand16() (((s32)frand() & 0xFFFF))

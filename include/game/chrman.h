@@ -10,7 +10,7 @@ void CharARAMClose(s16 character);
 void CharKill(s16 arg0);
 void CharKillAll(void);
 s16 CharModelCreate(s16 character, s16 lod);
-s16 CharModelMotionCreate(s16 character, s32 arg1);
+s16 CharModelMotionCreate(s16 character, s32 data_num);
 void CharModelMotionIndexSet(s16 character, s16 arg1, s32 arg2);
 void CharModelMotionKill(s16 character, u32 motion);
 void CharModelMotionDataClose(s16 character);

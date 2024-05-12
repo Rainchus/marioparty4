@@ -172,7 +172,7 @@ static void ExecBoardWindow(void) {
     HuPrcEnd();
 }
 
-int BoardWinChoiceGet(void) {
+s32 BoardWinChoiceGet(void) {
     return winChoice;
 }
 
@@ -292,7 +292,7 @@ void BoardWinKeyWait(void) {
     winWait = 1;
 }
 
-int BoardWinSpeedGet(void) {
+s32 BoardWinSpeedGet(void) {
     return winSpeedTbl[GWMessSpeedGet()];
 }
 

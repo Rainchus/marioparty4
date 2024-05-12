@@ -15,6 +15,8 @@
 #include "game/board/player.h"
 #include "game/board/window.h"
 
+#include "ext_math.h"
+
 // bss
 static s16 houseMdl[6];
 
@@ -134,7 +136,7 @@ static void ExecBooHouse(void) {
     Vec sp20;
     Vec sp14;
     Vec sp8;
-    f32 temp_f31;
+    float temp_f31;
     s16 temp_r29;
     s32 var_r31;
     s16 var_r30;
@@ -187,7 +189,7 @@ static void ExecBooHouse(void) {
     BoardSpacePosGet(0, temp_r29, &sp2C);
     PSVECSubtract(&sp2C, &sp38, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    temp_f31 = (180.0 * (atan2(-sp20.x, -sp20.z) / M_PI));
+    temp_f31 = atan2d(-sp20.x, -sp20.z);
     sp14.x = -15.0f;
     sp14.y = temp_f31;
     sp14.z = 0.0f;
@@ -577,7 +579,7 @@ void ApplySteal(void) {
     s32 temp_r30;
     s32 temp_r6;
     s32 var_r31;
-    f32 var_f31;
+    float var_f31;
 
     BoardModelHookSet(houseMdl[0], "yoko8", booMdl);
     BoardModelVisibilitySet(booMdl, 1);
@@ -749,7 +751,7 @@ void BoardBooHouseTutorialExec(void) {
     Vec sp20;
     Vec sp14;
     Vec sp8;
-    f32 temp_f31;
+    float temp_f31;
     s16 temp_r28;
     s16 temp_r29;
     s32 temp_r27;
@@ -765,7 +767,7 @@ void BoardBooHouseTutorialExec(void) {
     BoardSpacePosGet(0, temp_r28, &sp2C);
     PSVECSubtract(&sp2C, &sp38, &sp20);
     PSVECNormalize(&sp20, &sp20);
-    temp_f31 = (180.0 * (atan2(-sp20.x, -sp20.z) / M_PI));
+    temp_f31 = atan2d(-sp20.x, -sp20.z);
     sp14.x = -15.0f;
     sp14.y = temp_f31;
     sp14.z = 0.0f;

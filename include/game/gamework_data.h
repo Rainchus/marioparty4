@@ -186,6 +186,12 @@ static inline void GWRumbleSet(s32 value)
 	}
 }
 
+static inline s32 GWBonusStarGet(void)
+{
+    return GWSystem.bonus_star;
+}
+
+
 static inline s32 GWMGExplainGet(void)
 {
     return GWSystem.explain_mg;

@@ -16,7 +16,7 @@ void omDLLDBGOut(void)
 
 void omDLLInit(FileListEntry *ovl_list)
 {
-	int i;
+	s32 i;
 	OSReport("DLL DBG OUT\n");
 	for(i=0; i<OM_DLL_MAX; i++) {
 		omDLLinfoTbl[i] = NULL;
@@ -24,9 +24,9 @@ void omDLLInit(FileListEntry *ovl_list)
 	omDLLFileList = ovl_list;
 }
 
-int omDLLStart(s16 overlay, s16 flag)
+s32 omDLLStart(s16 overlay, s16 flag)
 {
-	int dllno;
+	s32 dllno;
 	OSReport("DLLStart %d %d\n", overlay, flag);
 	dllno = omDLLSearch(overlay);
 	if(dllno >= 0 && !flag) {

@@ -10,12 +10,12 @@ REL/executor.c:
 	.text       start:0x00000000 end:0x000000A0
 
 REL/present/init.c:
-	.text       start:0x000000A0 end:0x00000920
+	.text       start:0x000000A0 end:0x000006B4
 	.rodata     start:0x00000000 end:0x00000020
 	.bss        start:0x00000000 end:0x00000020
 
 REL/present/camera.c:
-	.text       start:0x00000920 end:0x00001458
+	.text       start:0x000006B4 end:0x00001458
 	.rodata     start:0x00000020 end:0x000000A0
 	.data       start:0x00000000 end:0x00000050
 

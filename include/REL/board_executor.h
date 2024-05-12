@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-extern int _prolog();
+#include "dolphin/types.h"
+
+extern s32 _prolog();
 extern void _epilog();
 
 typedef void (*VoidFunc)(void);

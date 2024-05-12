@@ -299,7 +299,7 @@ def MusyX(objects, mw_version="GC/1.3.2", debug=False, major=1, minor=5, patch=4
 def Rel(lib_name, objects):
     return {
         "lib": lib_name,
-        "mw_version": "GC/2.6",
+        "mw_version": "GC/1.3.2",
         "cflags": cflags_rel,
         "host": True,
         "objects": objects,
@@ -781,7 +781,7 @@ config.libs = [
     ),
     Rel('E3setupDLL',
         objects = {
-            Object(NonMatching, "REL/E3setupDLL/mgselect.c"),
+            Object(Matching, "REL/E3setupDLL/mgselect.c"),
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/E3setupDLL/main.c"),
         }
@@ -796,20 +796,20 @@ config.libs = [
     Rel('m401Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m401Dll/main.c"),
+            Object(Matching, "REL/m401Dll/main.c"),
             Object(NonMatching, "REL/m401Dll/main_ex.c"),
         }
     ),
     Rel('m402Dll',
         objects = {
-            Object(NonMatching, "REL/m402Dll/main.c"),
+            Object(Matching, "REL/m402Dll/main.c"),
         }
     ),
     Rel('m403Dll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m403Dll/main.c"),
-            Object(NonMatching, "REL/m403Dll/scene.c"),
+            Object(Matching, "REL/m403Dll/main.c"),
+            Object(Matching, "REL/m403Dll/scene.c"),
         }
     ),
     Rel('m404Dll',
@@ -1326,11 +1326,11 @@ config.libs = [
     Rel('present',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/present/init.c"),
-            Object(NonMatching, "REL/present/camera.c"),
-            Object(NonMatching, "REL/present/present.c"),
-            Object(NonMatching, "REL/present/main.c"),
-            Object(NonMatching, "REL/present/common.c"),
+            Object(Matching, "REL/present/init.c"),
+            Object(Matching, "REL/present/camera.c"),
+            Object(Matching, "REL/present/present.c"),
+            Object(Matching, "REL/present/main.c"),
+            Object(Matching, "REL/present/common.c"),
         }
     ),
     Rel('resultDll',
@@ -1355,7 +1355,7 @@ config.libs = [
     Rel('staffDll',
         objects = {
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/staffDll/main.c"),
+            Object(Matching, "REL/staffDll/main.c"),
         }
     ),
     Rel('subchrselDll',
@@ -1441,7 +1441,7 @@ config.libs = [
     Rel('w20Dll',
         objects = {
             Object(Matching, "REL/board_executor.c"),
-            Object(NonMatching, "REL/w20Dll/main.c"),
+            Object(Matching, "REL/w20Dll/main.c"),
         }
     ),
     Rel('w21Dll',

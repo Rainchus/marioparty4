@@ -26,6 +26,8 @@
 #include "game/board/view.h"
 #include "game/frand.h"
 
+#include "ext_math.h"
+
 typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02;
@@ -285,7 +287,7 @@ static void ItemSizeShowAnim(void) {
     BoardModelRotSetV(suitMdl, &spC);
     BoardModelPosSetV(suitMdl, &sp24);
     for (i = 0; i < 120; i++) {
-        sp24.y += 3.0 * sin(var_f31 * M_PI / 180.0);
+        sp24.y += 3.0 * sind(var_f31);
         BoardModelPosSetV(suitMdl, &sp24);
         var_f31 += 9.0f;
         if (var_f31 >= 360.0f) {
@@ -318,7 +320,7 @@ static void ItemRotProc(void) {
     while (1) {
         if (temp_r31->unk00 == 0) {
             sp14 = sp20;
-            sp14.y += temp_r31->unk04 * sin(temp_r31->unk0C * M_PI / 180.0);
+            sp14.y += temp_r31->unk04 * sind(temp_r31->unk0C);
             BoardModelPosSetV(temp_r31->unk02, &sp14);
             temp_r31->unk0C += temp_r31->unk08;
             if (temp_r31->unk0C >= 360.0f) {
@@ -489,8 +491,8 @@ static Process *ItemShowProc(UnkItemShowProcStruct *arg0, Vec *arg1) {
     if (arg0 == NULL || arg0->unk1C != 0) {
         CharModelLayerSetAll(3);
         sp20.y += 35.0f;
-        sp20.z += 50.0 * cos(sp14.y * M_PI / 180.0);
-        sp20.x += 50.0 * sin(sp14.y * M_PI / 180.0);
+        sp20.z += 50.0 * cosd(sp14.y);
+        sp20.x += 50.0 * sind(sp14.y);
         CharModelEffectCreate(1, &sp20);
         HuPrcSleep(10);
     }
@@ -861,7 +863,7 @@ static void ExecItemPipe(void) {
             HuPrcVSleep();
         }
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 30);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -887,7 +889,7 @@ static void ExecItemPipe(void) {
             BoardPlayerVoiceEnableSet(sp2C[var_r31], 4, 0);
             BoardModelVisibilitySet(BoardPlayerModelGet(sp2C[var_r31]), 0);
         }
-        WipeCreate(1, 0, 30);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -1124,12 +1126,12 @@ static void ExecItemSwap(void) {
     for (var_r31 = 0; var_r31 < 60; var_r31++) {
         for (var_r30 = 0; var_r30 < var_r28 / 2; var_r30++) {
             sp6C = sp1A4[var_r30];
-            sp6C.x += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
-            sp6C.y += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
+            sp6C.x += 3.0 * sind(frandmods(360));
+            sp6C.y += 3.0 * sind(frandmods(360));
             BoardModelPosSetV(sp54[var_r30], &sp6C);
             sp6C = sp180[var_r30];
-            sp6C.x += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
-            sp6C.y += 3.0 * sin((frandmods(360)) * M_PI / 180.0);
+            sp6C.x += 3.0 * sind(frandmods(360));
+            sp6C.y += 3.0 * sind(frandmods(360));
             BoardModelPosSetV(sp54[var_r30 + 3], &sp6C);
         }
         HuPrcSleep(2);
@@ -1263,8 +1265,8 @@ static void ExecItemSpark(void) {
     BoardSpaceRotGet(0, GWPlayer[currItemRestore].space_curr, &sp20);
     BoardModelRotSetV(suitMdl, &sp20);
     BoardModelPosGet(suitMdl, &sp2C);
-    sp2C.z += 106.0 * sin(sp20.x * M_PI / 180.0);
-    sp2C.x -= 106.0 * sin(sp20.z * M_PI / 180.0);
+    sp2C.z += 106.0 * sind(sp20.x);
+    sp2C.x -= 106.0 * sind(sp20.z);
     BoardModelPosSetV(suitMdl, &sp2C);
     HuAudFXPlay(0x31B);
     BoardModelMotionStart(suitMdl, 1, 0);
@@ -1369,9 +1371,9 @@ static void ExecItemWhistle(void) {
         temp_r17 = BoardModelMotionCreate(sp20[var_r31], DATA_MAKE_NUM(DATADIR_BGUEST, 40));
         BoardModelMotionStart(sp20[var_r31], temp_r17, 0x40000001);
         sp28[var_r31] = 120.0f;
-        spF0[var_r31].x = spB4.x + 120.0 * sin(var_f31 * M_PI / 180.0);
+        spF0[var_r31].x = spB4.x + 120.0 * sind(var_f31);
         spF0[var_r31].y = 1000.0f + spB4.y + 100.0f * var_r31;
-        spF0[var_r31].z = spB4.z + 120.0 * cos(var_f31 * M_PI / 180.0);
+        spF0[var_r31].z = spB4.z + 120.0 * cosd(var_f31);
         spC0[var_r31].x = spC0[var_r31].z = 0.0f;
         spC0[var_r31].y = var_f31 + 90.0f;
         if (spC0[var_r31].y >= 360.0f) {
@@ -1420,7 +1422,7 @@ static void ExecItemWhistle(void) {
         HuPrcVSleep();
     }
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 60);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1435,7 +1437,7 @@ static void ExecItemWhistle(void) {
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         BoardModelVisibilitySet(sp20[var_r31], 1);
     }
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1490,8 +1492,8 @@ static void ExecItemWhistle(void) {
             if (spC0[var_r31].y >= 360.0f) {
                 spC0[var_r31].y -= 360.0f;
             }
-            spF0[var_r31].x = spB4.x + 120.0 * sin(sp38[var_r31] * M_PI / 180.0);
-            spF0[var_r31].z = spB4.z + 120.0 * cos(sp38[var_r31] * M_PI / 180.0);
+            spF0[var_r31].x = spB4.x + 120.0 * sind(sp38[var_r31]);
+            spF0[var_r31].z = spB4.z + 120.0 * cosd(sp38[var_r31]);
             BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
             BoardModelRotSetV(sp20[var_r31], &spC0[var_r31]);
         }
@@ -1523,8 +1525,8 @@ static void ExecItemWhistle(void) {
                     spF0[var_r31].y = spB4.y;
                     sp48[var_r31] = -1.0f;
                 }
-                spF0[var_r31].x = spB4.x + sp28[var_r31] * sin(sp38[var_r31] * M_PI / 180.0);
-                spF0[var_r31].z = spB4.z + sp28[var_r31] * cos(sp38[var_r31] * M_PI / 180.0);
+                spF0[var_r31].x = spB4.x + sp28[var_r31] * sind(sp38[var_r31]);
+                spF0[var_r31].z = spB4.z + sp28[var_r31] * cosd(sp38[var_r31]);
                 BoardModelPosSetV(sp20[var_r31], &spF0[var_r31]);
             }
         }
@@ -1538,7 +1540,7 @@ static void ExecItemWhistle(void) {
             BoardModelPosSetV(temp_r28, &sp9C);
             var_f30 *= 0.945f;
             if (sp9C.y >= 500.0f && var_r26 == 0) {
-                WipeCreate(2, 0, 45);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 45);
                 BoardAudSeqFadeOut(0, 1000);
                 var_r26 = 1;
             }
@@ -1955,12 +1957,12 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
                 }
             }
             if (j != particle->unk_30) {
-                var_r31->unk34.x = 60.0 * sin((spC.y - 90.0f) * M_PI / 180.0);
+                var_r31->unk34.x = 60.0 * sind(spC.y - 90.0f);
                 var_r31->unk34.y = 30.0f;
-                var_r31->unk34.z = 60.0 * cos((spC.y - 90.0f) * M_PI / 180.0);
+                var_r31->unk34.z = 60.0 * cosd(spC.y - 90.0f);
                 sp8 = 12.0f;
-                var_r31->unk08.x = 12.0 * cos((i * 110.0f + 35.0f) * M_PI / 180.0);
-                var_r31->unk08.y = 12.0 * sin((i * 110.0f + 35.0f) * M_PI / 180.0);
+                var_r31->unk08.x = 12.0 * cosd(i * 110.0f + 35.0f);
+                var_r31->unk08.y = 12.0 * sind(i * 110.0f + 35.0f);
                 var_r31->unk08.z = 3.0f + frand8() * 5.0f * 0.003921569f;
                 var_r31->unk14.y = 255.0f;
                 var_r31->unk2C = 25.0f;
@@ -1983,9 +1985,9 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
                 if (var_r31->unk14.y <= 120.0f) {
                     var_r31->unk14.y = 200.0f;
                     temp_f31 = frand8() * 180.0f * 0.003921569f;
-                    var_r31->unk08.x = 6.0 * cos(temp_f31 * M_PI / 180.0);
+                    var_r31->unk08.x = 6.0 * cosd(temp_f31);
                     var_r31->unk08.y = -4.0f;
-                    var_r31->unk08.z = 6.0 * sin(temp_f31 * M_PI / 180.0);
+                    var_r31->unk08.z = 6.0 * sind(temp_f31);
                     var_r31->unk00_s16 = 1;
                 }
                 var_r31->unk40.a = var_r31->unk14.y;
@@ -2017,11 +2019,11 @@ static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx ma
             var_r31->unk34.y = -50.0f + frand8() * 100.0f * 0.003921569f;
             var_r31->unk34.z = -10.0f + frand8() * 20.0f * 0.003921569f;
             temp_f31 = 0.5f + frand8() * 3.0f * 0.003921569f;
-            var_r31->unk08.x = temp_f31 * cos((i * 110.0f + 35.0f) * M_PI / 180.0);
-            var_r31->unk08.y = temp_f31 * sin((i * 110.0f + 35.0f) * M_PI / 180.0);
+            var_r31->unk08.x = temp_f31 * cosd(i * 110.0f + 35.0f);
+            var_r31->unk08.y = temp_f31 * sind(i * 110.0f + 35.0f);
             var_r31->unk08.z = 0.0f;
             var_r31->unk14.y = 255.0f;
-            temp_f30 = 125.0f + frand8() * 0x64 * 0.003921569f;
+            temp_f30 = 125.0f + frand8() * 100 * 0.003921569f;
             var_r31->unk40.r = var_r31->unk40.g = var_r31->unk40.b = temp_f30;
             var_r31->unk00 = 0;
             var_r31->unk2C = 80.0f + frand8() * 60.0f * 0.003921569f;
@@ -2246,7 +2248,7 @@ static void GenieSceneExec(void) {
     Hu3DModelPosSet(temp_r27, booCamPos.x, booCamPos.y, booCamPos.z - 175.0f);
     temp_r23 = Hu3DData[temp_r27].unk_120;
     temp_r23->unk_02 = 1;
-    WipeCreate(1, 0, 45);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 45);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -2288,9 +2290,9 @@ static void GenieSceneExec(void) {
     booCamUp.x = sp38.x + (sp50.x - sp38.x) * 0.7f;
     booCamUp.y = sp38.y + 400.0f;
     booCamUp.z = sp38.z + (sp50.z - sp38.z) * 0.7f;
-    booCamPos.x = booCamUp.x + sin(-5 * M_PI / 9) * 1100.0;
+    booCamPos.x = booCamUp.x + sind(-100) * 1100.0;
     booCamPos.y = booCamUp.y + 950.0f;
-    booCamPos.z = booCamUp.z + cos(-5 * M_PI / 9) * 1100.0;
+    booCamPos.z = booCamUp.z + cosd(-100) * 1100.0;
     HuAudFXPlay(0x356);
     BoardWinCreate(2, MAKE_MESSID(18, 27), -1);
     BoardWinWait();
@@ -2343,7 +2345,7 @@ static void GenieSceneExec(void) {
         }
         HuPrcVSleep();
     }
-    WipeCreate(2, 0, 45);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 45);
     BoardAudSeqFadeOut(1, 1000);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -2426,7 +2428,7 @@ static void ExecItemGenie(void) {
     HuAudFXStop(temp_r25);
     HuAudFXPauseAll(1);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, 45);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 45);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -2446,7 +2448,7 @@ static void ExecItemGenie(void) {
     BoardPlayerPosSetV(currItemRestore, &spC);
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
-    WipeCreate(1, 0, 45);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 45);
     HuPrcSleep(15);
     BoardAudSeqPause(0, 0, 1000);
     while (WipeStatGet() != 0) {
@@ -2565,7 +2567,7 @@ static void ExecItemBagShow(void) {
             break;
         }
         sp8 = sp14;
-        sp8.y += 15.0 * sin(var_f31 * M_PI / 180.0);
+        sp8.y += 15.0 * sind(var_f31);
         BoardModelPosSetV(suitMdl, &sp8);
         var_f31 += 36.0f;
         HuPrcVSleep();

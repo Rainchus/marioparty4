@@ -20,7 +20,7 @@
 #include "game/board/ui.h"
 #include "game/board/window.h"
 
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
     struct {
@@ -207,7 +207,7 @@ static void ExecStar(void) {
     var_r22 = BoardSpaceLinkFlagSearch(0, temp_r24, 0x04000000);
     BoardSpacePosGet(0, var_r22, &sp18);
     PSVECSubtract(&sp18, &sp24, &spC);
-    temp_f30 = 90.0 - 180.0 * (atan2(spC.z, spC.x) / M_PI);
+    temp_f30 = 90.0 - atan2d(spC.z, spC.x);
     temp_f30 = 90.0f * ((temp_f30 + 3.0f) / 90.0f);
     temp_f29 = BoardPlayerRotYGet(temp_r31);
     BoardPlayerIdleSet(temp_r31);
@@ -511,7 +511,7 @@ static void ShrinkGiveStar(GiveStarWork *arg0, omObjData *arg1) {
             }
         }
         OSs16tof32(&arg0->unk08, &var_f30);
-        arg1->scale.x = sin((var_f30 + 90.0f) * M_PI / 180.0);
+        arg1->scale.x = sind(var_f30 + 90.0f);
         if (arg1->scale.x <= 0.0f) {
             arg1->scale.x = 0.001f;
         }
@@ -663,7 +663,7 @@ void BoardStarShowNext(s32 arg0) {
     var_r26 = &wipeData;
     if (var_r26->mode == 0) {
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 21);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -727,7 +727,7 @@ void BoardStarShowNext(s32 arg0) {
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
     HuPrcSleep(1);
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -758,7 +758,7 @@ void BoardStarShowNext(s32 arg0) {
     }
     BoardAudSeqFadeOut(1, 1000);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 21);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -774,7 +774,7 @@ void BoardStarShowNext(s32 arg0) {
     BoardCameraMotionWait();
     BoardCameraMoveSet(1);
     BoardStatusItemSet(1);
-    WipeCreate(1, 0, 21);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
