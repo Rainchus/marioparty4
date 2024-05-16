@@ -47,7 +47,7 @@ void ModuleProlog(void) {
 }
 
 static void fn_1_2BC(omObjData *arg0) {
-    WipeCreate(1, 0, 10);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
     arg0->func = fn_1_300;
 }
 

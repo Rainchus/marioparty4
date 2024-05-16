@@ -197,7 +197,7 @@ static void ExecBattle(void) {
     }
     if (_CheckFlag(0x10004)) {
         BoardStatusItemSet(1);
-        WipeCreate(1, 0, -1);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -296,7 +296,7 @@ static void ExecBattle(void) {
         }
         _SetFlag(0x1000E);
         WipeColorSet(0xFF, 0xFF, 0xFF);
-        WipeCreate(2, 0, -1);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }

@@ -59,7 +59,7 @@ void ModuleProlog(void)
     lbl_1_bss_9A0 = omAddObjEx(prc, 0x7FDA, 0, 0, -1, omOutView);
 
     Hu3DBGColorSet(0x20U, 0x80U, 0x80U);
-    WipeCreate(1, 0, 0x1E);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
 }
 
 // -------------------------------------------------------------------------- //

@@ -160,7 +160,7 @@ void fn_1_5EC(omObjData *object)
         }
         object->unk10 = 2;
     case 2:
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         HuAudFadeOut(1000);
         object->unk10 = 3;
         break;

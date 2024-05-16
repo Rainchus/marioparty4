@@ -150,7 +150,7 @@ typedef struct hsf_face {
     s16 mat;
     union {
         struct {
-			s16 indices[3][4];
+            s16 indices[3][4];
             u32 count;
             s16 *data;
         } strip;

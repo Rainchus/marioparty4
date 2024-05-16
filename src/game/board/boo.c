@@ -683,7 +683,7 @@ static void BallRenderHook(void) {
     GXSetScissor(0, 0, 160, 160);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA6, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_RGBA6, 0);
     sp10.r = 0;
     sp10.g = 0;
     sp10.b = 0;

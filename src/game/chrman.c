@@ -2051,7 +2051,7 @@ static void UpdateNpcEffect(void) {
     }
 }
 
-s32 CharModelStepTypeSet(s16 character, s32 arg1) {
+void CharModelStepTypeSet(s16 character, s32 arg1) {
     UnkCharInstanceStruct *temp_r31 = &charInstance[character];
 
     temp_r31->unkB0 = arg1;

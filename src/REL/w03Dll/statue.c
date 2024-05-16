@@ -662,19 +662,20 @@ void fn_1_2B44(void) {
     GXSetBlendMode(GX_BM_BLEND, GX_BL_INVDSTCLR, GX_BL_SRCALPHA, GX_LO_NOOP);
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_S, GX_RGBX8, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_RGBX8, 0);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_RGBA6, 0);
     GXSetZMode(1, GX_LEQUAL, 0);
     GXSetAlphaUpdate(1);
     GXSetColorUpdate(1);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
     GXPosition2u16(temp_f28, temp_f27);
-    GXPosition2f32(0.0f, 0.0f);
+    GXTexCoord2f32(0.0f, 0.0f);
     GXPosition2u16(temp_f30, temp_f27);
-    GXPosition2f32(1.0f, 0.0f);
+    GXTexCoord2f32(1.0f, 0.0f);
     GXPosition2u16(temp_f30, temp_f29);
-    GXPosition2f32(1.0f, 1.0f);
+    GXTexCoord2f32(1.0f, 1.0f);
     GXPosition2u16(temp_f28, temp_f29);
-    GXPosition2f32(0.0f, 1.0f);
+    GXTexCoord2f32(0.0f, 1.0f);
+    GXEnd();
     GXSetChanMatColor(GX_COLOR0A0, sp1C);
 }

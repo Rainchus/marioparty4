@@ -5,8 +5,8 @@
 #include "dolphin/mtx.h"
 
 typedef struct vec2f {
-	float x;
-	float y;
+    float x;
+    float y;
 } Vec2f;
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))

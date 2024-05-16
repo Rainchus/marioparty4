@@ -103,7 +103,7 @@ void BoardViewOverheadExec(s32 arg0) {
     }
     _SetFlag(0x1001C);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 1, 1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSS, 1);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -314,7 +314,7 @@ static void ExecOverheadView(void) {
     HuPrcVSleep();
     SetTargetView();
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(1, 1, 0xA);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_CROSS, 10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

@@ -5,8 +5,8 @@
 #include "game/window.h"
 
 enum {
-	MAPOBJ_MELON = 0,
-	MAPOBJ_MAX,
+    MAPOBJ_MELON = 0,
+    MAPOBJ_MAX,
 };
 
 typedef struct w10_board_work {

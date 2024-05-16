@@ -8,7 +8,7 @@
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
 enum {
-	MAPOBJ_MAX = 12
+    MAPOBJ_MAX = 12
 };
 
 typedef struct w03UnkStruct2{

@@ -73,7 +73,7 @@ static void fn_1_2FB0(omObjData *arg0) {
             arg0->unk10 = 1;
             /* fallthrough */
         case 1:
-            WipeCreate(1, -1, 0x3C);
+            WipeCreate(WIPE_MODE_IN, -1, 60);
             arg0->unk10 = 2;
             break;
         case 2:
