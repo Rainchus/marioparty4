@@ -148,7 +148,7 @@ static void WarpLaunch(s32 player) {
     BoardPlayerPosSetV(player, &warpPos);
     if (!(warpPos.y < warpYFloor)) {
         WipeColorSet(0U, 0U, 0U);
-        WipeCreate(2, 0, 21);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
@@ -182,7 +182,7 @@ static void WarpStartImpact(s32 player) {
     BoardCameraMoveSet(0);
     BoardCameraTargetSpaceSet(warpSpace);
     HuPrcSleep(1);
-    WipeCreate(1, 0, 0x15);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

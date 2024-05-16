@@ -177,7 +177,7 @@ static void ExecMGSetup(void) {
     sp54.z = 0.0f;
     BoardCameraMotionStartEx(-1, NULL, &sp54, 1300.0f, -1.0f, 21);
     BoardCameraMotionWait();
-    WipeCreate(1, 0, 0x15);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 21);
     
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -268,7 +268,7 @@ static void ExecMGSetup(void) {
     BoardAudSeqFadeOut(0, 0x3E8U);
     _SetFlag(0x1000EU);
     WipeColorSet(0xFFU, 0xFFU, 0xFFU);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

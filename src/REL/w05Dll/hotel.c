@@ -147,21 +147,21 @@ void fn_1_155C(void) {
         BoardCameraTargetModelSet(lbl_1_data_164);
         BoardCameraOffsetSet(0.0f, 200.0f, 0.0f);
         BoardCameraMotionWait();
-        HuPrcSleep(0x3C);
+        HuPrcSleep(60);
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 0x30);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 48);
 
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
         fn_1_14D0();
         fn_1_13D4();
-        WipeCreate(1, 0, 0x30);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 48);
 
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
-        HuPrcSleep(0x3C);
+        HuPrcSleep(60);
         BoardCameraTargetPlayerSet(lbl_1_bss_28);
         BoardCameraMotionWait();
     }

@@ -109,7 +109,7 @@ void fn_1_4980(Process* arg0) {
     fn_1_3AC8(lbl_1_bss_3980);
     fn_1_41CC(lbl_1_bss_3980);
     fn_1_5C5C(lbl_1_bss_3980, lbl_1_bss_3978);
-    WipeCreate(1, 0, 0x3C);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     temp_r31->unk_06 = -1;
     temp_r31->unk_08 = -1;
     temp_r31->unk_24 = 0;
@@ -127,7 +127,7 @@ void fn_1_4B7C(void) {
 
     temp_r31 = lbl_1_bss_397C->data;
     if (temp_r31->unk_04 == 0) {
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         temp_r31->unk_04++;
     }
     if (WipeStatGet() == 0) {

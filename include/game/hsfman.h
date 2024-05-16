@@ -38,9 +38,9 @@ typedef struct model_data {
     u32 motion_attr;
     Point3d unk_58;
     f32 unk_64;
-	f32 unk_68;
-	f32 unk_6C;
-	f32 unk_70;
+    f32 unk_68;
+    f32 unk_6C;
+    f32 unk_70;
     f32 unk_74;
     f32 unk_78;
     f32 unk_7C;
@@ -55,10 +55,10 @@ typedef struct model_data {
     f32 unk_A0;
     f32 unk_A4[4];
     f32 unk_B4[4];
-	union {
-		HsfData *hsfData;
-		ModelHookFunc hook;
-	};
+    union {
+        HsfData *hsfData;
+        ModelHookFunc hook;
+    };
     HsfData *unk_C8;
     Vec pos;
     Vec rot;

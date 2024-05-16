@@ -46,7 +46,7 @@ void fn_1_34B0()
     lbl_1_bss_9A8 = HuPrcCreate(fn_1_46F0, 0x64U, 0x2000U, 0);
 
     Hu3DBGColorSet(0x20U, 0x80U, 0x80U);
-    WipeCreate(1, 0, 0x1E);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
 }
 
 // -------------------------------------------------------------------------- //

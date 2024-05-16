@@ -42,6 +42,6 @@ void fn_8004F52C(s16 character, s32 arg1);
 void CharModelEffectEnableSet(s16 character, s32 arg1);
 s32 CharModelEffectNpcInit(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 s32 CharModelEffectNpcInitSilent(s16 arg0, s16 arg1, s16 arg2);
-s32 CharModelStepTypeSet(s16 character, s32 arg1);
+void CharModelStepTypeSet(s16 character, s32 arg1);
 
 #endif
