@@ -816,7 +816,7 @@ void fn_1_33AC(omObjData *object)
         var_r31->unk_254 = 1.0f / 360.0f;
         object->unk10 = 1;
     case 1:
-        WipeCreate(1, 0, 120);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 120);
         object->unk10 = 2;
     case 2:
         var_f31 = sind(90.0f * var_r31->unk_24C);

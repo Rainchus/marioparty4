@@ -5,6 +5,7 @@
 #include "game/objsub.h"
 #include "game/sprite.h"
 #include "game/window.h"
+#include "game/wipe.h"
 #include "rel_sqrt_consts.h"
 
 #include "REL/E3SetupDLL.h"
@@ -69,7 +70,7 @@ void E3MGSelectInit()
     mgPicObj = omAddObjEx(var_r31, 31, 0, 0, -1, CreateMGPic);
     mgPicObj->work[0] = mgDefault;
     E3LightInit();
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
 }
 
 s16 lbl_2_data_36[] = { 0x0023, 0x0026, 0x0029, 0x002C };

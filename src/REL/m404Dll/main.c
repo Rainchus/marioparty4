@@ -281,7 +281,7 @@ void fn_1_39C(omObjData *object)
 {
     fn_1_37C(0);
     lbl_1_bss_24 = 60;
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     object->func = fn_1_400;
 }
 
@@ -326,7 +326,7 @@ void fn_1_400(omObjData *object)
         if (!MGSeqStatGet(lbl_1_bss_C)) {
             fn_1_37C(5);
             WipeColorSet(255, 255, 255);
-            WipeCreate(2, 0, 30);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
             lbl_1_bss_24 = 60;
         }
     case 5:
@@ -334,7 +334,7 @@ void fn_1_400(omObjData *object)
             break;
         }
         fn_1_37C(6);
-        WipeCreate(1, 0, 60);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
         break;
     case 6:
         if (WipeStatGet()) {
@@ -362,14 +362,14 @@ void fn_1_400(omObjData *object)
         if (--lbl_1_bss_24) {
             break;
         }
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_784;
         break;
     default:
         break;
     }
     if (omSysExitReq && !WipeStatGet()) {
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_784;
     }
 }

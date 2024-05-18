@@ -44,7 +44,7 @@ void ModuleProlog(void)
     Process *sp8 = omInitObjMan(0x32, 0x2000);
     Hu3DBGColorSet(0, 0, 0);
     HuPrcChildCreate(SubchrMain, 4096, 12288, 0, HuPrcCurrentGet());
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
 }
 
 static u16 GetBtns(void)
@@ -97,7 +97,7 @@ static void SubchrMain()
                 }
             }
             HuAudFadeOut(30);
-            WipeCreate(2, 0, -1);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
             HuPrcSleep(wipeData.duration+1.0f);
             MGSeqKillAll();
             omOvlGotoEx(OVL_M433, 1, 0, 0);
@@ -149,7 +149,7 @@ static void SubchrMain()
             }
             if(GetBtns() & PAD_BUTTON_B) {
                 HuAudFadeOut(30);
-                WipeCreate(2, 0, -1);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
                 HuPrcSleep(wipeData.duration+1.0f);
                 MGSeqKillAll();
                 omOvlReturnEx(1, 1);

@@ -159,7 +159,7 @@ static void fn_1_5EC(omObjData *arg0) {
             arg0->unk10 = 2;
             /* fallthrough */
         case 2:
-            WipeCreate(2, 0, 0x3C);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
             HuAudFadeOut(1000);
             arg0->unk10 = 3;
             /* fallthrough */
@@ -191,7 +191,7 @@ static void fn_1_6E8(void) {
     espPosSet(temp_r31, 288.0f, 240.0f);
     espAttrReset(temp_r31, 4);
     Hu3DBGColorSet(0, 0, 0);
-    WipeCreate(1, 0, 0xA);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -199,7 +199,7 @@ static void fn_1_6E8(void) {
     if (SLSave() == 0) {
         GWSaveModeSet(1);
     }
-    WipeCreate(2, 0, 0x14);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
