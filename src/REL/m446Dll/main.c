@@ -1,5 +1,7 @@
 #include "dolphin/types.h"
+#include "rel_sqrt_consts.h"
 
+#include "game/gamework_data.h"
 #include "game/hsfman.h"
 #include "game/audio.h"
 #include "game/jmp.h"
@@ -45,7 +47,7 @@ typedef struct _unkStruct {
     s32 unk14;
     s32 unk18;
     s32 unk1C;
-    unkSubStruct2 *unk20;
+    unkSubStruct *unk20;
     s32 unk24;
     s32 unk28;
     unkSubStruct *unk2C[2];
@@ -61,22 +63,34 @@ typedef void (*m446Func)(unkStruct *);
 extern s32 fn_1_2064(void);
 extern void fn_1_207C(void);
 extern void fn_1_20D4(void);
+extern void fn_1_2EC0(unkSubStruct3*, s32);
 // deck.c
 extern void fn_1_3180(s32);
+extern void fn_1_31D8(s32, s32*, s32*, s32);
 extern s32 fn_1_38E0(void);
 extern s32 fn_1_3064(void);
+extern void fn_1_34A0(s32, s32*, s32, s32);
+extern void fn_1_3700(s32, unkSubStruct3*, s32);
 // table.c
 extern s32 fn_1_3924(void);
 extern void fn_1_393C(void);
 extern void fn_1_3994(void);
-extern unkSubStruct2 *fn_1_39D0(void);
-void fn_1_3B4C(unkSubStruct2*);
+extern unkSubStruct *fn_1_39D0(void);
+extern void fn_1_3B4C(unkSubStruct*);
+extern s32 fn_1_3BF0(unkSubStruct*, unkSubStruct3*, s32);
+extern s32 fn_1_3EB4(unkSubStruct*, unkSubStruct3*, s32);
+extern void fn_1_4000(unkSubStruct*, s32);
+extern s32 fn_1_4088(unkSubStruct*, u8, u8, s32, unkSubStruct3**, s32);
+extern void fn_1_46D0(unkSubStruct*);
 // player.c
 extern s32 fn_1_480C(void);
 extern void fn_1_4824(void);
 extern void fn_1_487C(void);
-extern unkSubStruct *fn_1_4B00(s32, unkSubStruct2*);
+extern unkSubStruct *fn_1_4B00(s32, unkSubStruct*);
 extern void fn_1_509C(unkSubStruct*);
+extern s32 fn_1_5504(unkSubStruct*, unkSubStruct3*, s32);
+extern unkSubStruct *fn_1_5648(unkSubStruct*, s32, unkSubStruct3**);
+extern s32 fn_1_5678(unkSubStruct*, unkSubStruct3**, s32);
 extern void fn_1_5B34(unkSubStruct*);
 extern void fn_1_5C10(unkSubStruct*);
 extern void fn_1_5CEC(unkSubStruct*);
@@ -110,7 +124,6 @@ void fn_1_4B4(unkStruct*);
 void fn_1_53C(unkStruct*);
 void fn_1_958(unkStruct*);
 void fn_1_B78(unkStruct*);
-//...
 void fn_1_C0C(unkStruct*);
 void fn_1_CA0(unkStruct*);
 s32 fn_1_17FC(unkStruct*);
@@ -318,13 +331,13 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk10 = 6;
             break;
         case 6:
-            fn_1_31D8(arg0->unk28, arg0->unk38, &arg0->unk94, 1);
+            fn_1_31D8(arg0->unk28, &arg0->unk38[0], &arg0->unk94, 1);
             arg0->unk10 = 7;
             arg0->unk14 = 0;
             break;
         case 7:
             if (arg0->unk14++ < 0x78) break;
-            fn_1_34A0(arg0->unk28, arg0->unk38, arg0->unk94, 1);
+            fn_1_34A0(arg0->unk28, &arg0->unk38[0], arg0->unk94, 1);
             arg0->unk10 = 8;
             arg0->unk14 = 0;
             break;
@@ -643,14 +656,14 @@ void fn_1_CA0(unkStruct* arg0) {
             break;
         case 18:
             if (arg0->unk14++ >= 60) {
-                fn_1_31D8(arg0->unk28, &arg0->unk38, &arg0->unk94, 1);
+                fn_1_31D8(arg0->unk28, &arg0->unk38[0], &arg0->unk94, 1);
                 arg0->unk10 = 19;
                 arg0->unk14 = 0;
             }
             break;
         case 19:
             if (arg0->unk14++ >= 120) {
-                fn_1_34A0(arg0->unk28, &arg0->unk38, arg0->unk94, 1);
+                fn_1_34A0(arg0->unk28, &arg0->unk38[0], arg0->unk94, 1);
                 arg0->unk10 = 20;
                 arg0->unk14 = 0;
             }
@@ -695,7 +708,7 @@ void fn_1_CA0(unkStruct* arg0) {
             break;
         case 24:
             for (var_r29 = 0; var_r29 < 3; var_r29++) {
-                fn_1_5648(var_r29, var_r30, &arg0->unk34);
+                fn_1_5648(var_r30, var_r29, &arg0->unk34);
                 if (arg0->unk34) {
                     fn_1_2D94(arg0->unk34);
                 }
@@ -776,7 +789,6 @@ void fn_1_19D4(void) {
             HuWinMesColSet(temp_r3, 0);
             HuWinMesSet(temp_r3, temp_r27);
             fn_1_18EC(temp_r3, 0x3C);
-            
         }
     } else {
         HuWinMesColSet(temp_r3, 0);
