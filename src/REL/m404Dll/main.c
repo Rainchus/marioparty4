@@ -76,20 +76,21 @@ typedef struct UnkM404Struct3 {
     s32 unk78[91];
 } UnkM404Struct3; // size 0x1E4
 
-s32 lbl_1_bss_0;
-float lbl_1_bss_4;
-s16 lbl_1_bss_C;
-Vec lbl_1_bss_10;
-s32 lbl_1_bss_1C;
-s32 lbl_1_bss_20;
-s32 lbl_1_bss_24;
-s32 lbl_1_bss_28[4];
-s32 lbl_1_bss_38[4];
-s32 lbl_1_bss_48;
-omObjData *lbl_1_bss_4C;
-omObjData *lbl_1_bss_50;
-omObjData *lbl_1_bss_54;
 omObjData *lbl_1_bss_58;
+omObjData *lbl_1_bss_54;
+omObjData *lbl_1_bss_50;
+omObjData *lbl_1_bss_4C;
+s32 lbl_1_bss_48;
+s32 lbl_1_bss_38[4];
+s32 lbl_1_bss_28[4];
+s32 lbl_1_bss_24;
+s32 lbl_1_bss_20;
+s32 lbl_1_bss_1C;
+Vec lbl_1_bss_10;
+s16 lbl_1_bss_C;
+s32 lbl_1_bss_8;
+float lbl_1_bss_4;
+s32 lbl_1_bss_0;
 
 float lbl_1_data_0[][2] = {
     { -0.00026f, 0.51953f },
@@ -859,7 +860,7 @@ float fn_1_2EBC(float arg0[], float arg8)
     var_f22 = var_f27 * (fn_1_1DF8(arg0, var_f31) + fn_1_1DF8(arg0, arg8)) / 2;
 
     for (var_r30 = 1; var_r30 <= var_r29; var_r30 *= 2) {
-        for (var_f23 = 0.0f, var_r31 = 1; var_r31 <= var_r30; var_r31 += 1) {
+        for (var_f23 = 0.0f, var_r31 = 1; var_r31 <= var_r30; var_r31++) {
             var_f23 += fn_1_1DF8(arg0, var_f31 + var_f27 * (var_r31 - 0.5f));
         }
         var_f23 *= var_f27;
