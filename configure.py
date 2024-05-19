@@ -831,7 +831,7 @@ config.libs = [
     Rel(
         "m405Dll",
         objects={
-            Object(NonMatching, "REL/m405Dll/main.c"),
+            Object(Matching, "REL/m405Dll/main.c"),
         },
     ),
     Rel(
