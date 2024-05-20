@@ -205,7 +205,7 @@ void fn_1_3FC(unkStruct* arg0) {
     HuMemDirectFree(arg0);
 }
 
-m446Func lbl_1_data_A0[5] = {fn_1_53C, fn_1_B78, fn_1_CA0, fn_1_C0C, fn_1_958};
+m446Func1 lbl_1_data_A0[5] = {fn_1_53C, fn_1_B78, fn_1_CA0, fn_1_C0C, fn_1_958};
 
 void fn_1_4B4(unkStruct* arg0) {
     if (lbl_1_data_A0[arg0->unk0]) {
