@@ -4,7 +4,7 @@
 #include "math.h"
 
 // data
-m446Func4 lbl_1_data_150[3] = {NULL, NULL, NULL};
+m446Func4 lbl_1_data_150[3] = {NULL, fn_1_2AA8, fn_1_2DA8};
 static const s32 lbl_1_rodata_58[5] = {0x4D0001, 0x4D0002, 0x4D0003, 0x4D0004, 0x4D0000};
 static const s32 lbl_1_rodata_6C[5] = {0x4D001B, 0x4D001C, 0x4D001D, 0x4D001E, 0x4D001E};
 
@@ -459,7 +459,7 @@ void fn_1_2AA8(unkStruct4* arg0) {
             arg0->unk8 = 0;
             Hu3DModelAttrSet(arg0->unkC, 1);
             arg0->unk6C = 0;
-            return; // ???
+            return;
     }
 }
 
