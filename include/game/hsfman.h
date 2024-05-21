@@ -64,7 +64,7 @@ typedef struct model_data {
     Vec rot;
     Vec scale;
     Mtx unk_F0;
-    ParticleData *unk_120;
+    void *unk_120;
 } ModelData; // sizeof 0x124
 typedef struct camera_data {
     f32 fov;

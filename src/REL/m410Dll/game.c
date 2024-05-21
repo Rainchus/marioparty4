@@ -34,12 +34,12 @@ void fn_1_34C0(omObjData *object);
 void fn_1_3614(omObjData *object);
 void fn_1_3BE0(s16 arg0);
 float fn_1_48D8(UnkM410Struct2 *arg0, u8 *arg1);
-float fn_1_4C04(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float arg9);
-float fn_1_4FEC(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float arg9, float argA);
-float fn_1_55C8(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, float arg9);
+float fn_1_4C04(Vec arg0, Vec arg1, float arg8, Vec arg2, Vec arg3, float arg9);
+float fn_1_4FEC(Vec arg0, Vec arg1, float arg8, Vec arg2, Vec arg3, float arg9, float argA);
+float fn_1_55C8(Vec arg0, Vec arg1, float arg8, Vec arg2, float arg9);
 s32 fn_1_598C(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float arg9, float argA);
 void fn_1_5AF4(UnkM410Struct2 *arg0, u8 arg1);
-void fn_1_5CA0(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4);
+void fn_1_5CA0(Vec arg0, Vec arg1, Vec arg2, Vec *arg3, Vec *arg4);
 void fn_1_61DC(UnkM410Struct2 *arg0, UnkM410Struct2 *arg1);
 void fn_1_6364(UnkM410Struct2 *arg0, UnkM410Struct2 *arg1);
 void fn_1_66B8(UnkM410Struct2 *arg0, UnkM410Struct2 *arg1);
@@ -192,23 +192,7 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
     UnkM410Struct2 *spC0[60]; // TODO get size right
     Vec spB4;
     Vec spA8;
-    Vec sp9C;
-    Vec sp90;
-    Vec sp84;
-    Vec sp78;
-    Vec sp6C;
-    Vec sp60;
-    Vec sp54;
-    Vec sp48;
-    Vec sp3C;
-    Vec sp30;
-    Vec sp24;
-    Vec *sp20;
-    Vec *sp1C;
-    Vec *sp18;
-    Vec *sp14;
-    Vec *sp10;
-    Vec *spC;
+
     u8 sp8;
 
     f32 var_f31;
@@ -225,14 +209,10 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
     s32 var_r24;
     omObjData *var_r23;
     omObjData **var_r22;
-    Vec *var_r21;
-    Vec *var_r20;
-    Vec *var_r19;
-    Vec *var_r18;
-    Vec *var_r17;
 
     var_r24 = 0;
     if (omPauseChk()) {
+		
         return;
     }
 
@@ -289,15 +269,7 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
                 var_r28 = spC0[var_r26];
                 if (var_r30 != var_r28 && (var_r30->unk_40 != var_r28 || var_r28->unk_40 != var_r30)
                     && !(var_r30->unk_00_field3 ^ var_r28->unk_00_field3)) {
-                    sp78 = var_r28->unk_1C;
-                    var_r21 = &sp78;
-                    sp84 = var_r28->unk_04;
-                    var_r20 = &sp84;
-                    sp90 = var_r30->unk_1C;
-                    var_r19 = &sp90;
-                    sp9C = var_r30->unk_04;
-                    var_r18 = &sp9C;
-                    var_f31 = fn_1_4C04(var_r18, var_r19, var_r30->unk_28, var_r20, var_r21, var_r28->unk_28);
+                    var_f31 = fn_1_4C04(var_r30->unk_04, var_r30->unk_1C, var_r30->unk_28, var_r28->unk_04, var_r28->unk_1C, var_r28->unk_28);
                     if (var_f31 >= 0.0f && var_f31 < var_f30) {
                         var_r30->unk_00_field5 = 0;
                         if (var_f31 <= var_f29) {
@@ -316,14 +288,8 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
             var_r22 = omGetGroupMemberListEx(lbl_1_bss_40, 0);
             for (var_r26 = 0; var_r26 < 4; var_r26++) {
                 var_r23 = var_r22[var_r26];
-                if (var_r30->unk_40 != var_r23 && var_r30->unk_00_field1) {
-                    sp54 = var_r23->trans;
-                    var_r17 = &sp54;
-                    sp60 = var_r30->unk_1C;
-                    sp20 = &sp60;
-                    sp6C = var_r30->unk_04;
-                    sp1C = &sp6C;
-                    var_f31 = fn_1_55C8(sp1C, sp20, var_r30->unk_28, var_r17, 30.000002f);
+                if (var_r30->unk_40 != var_r23 && var_r30->unk_00_field3) {
+                    var_f31 = fn_1_55C8(var_r30->unk_04, var_r30->unk_1C, var_r30->unk_28, var_r23->trans, 30.000002f);
                     if (var_f31 >= 0.0f && var_f31 < var_f30) {
                         var_r30->unk_00_field5 = 0;
                         if (var_f31 <= var_f29) {
@@ -344,15 +310,7 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
 
                 for (var_r26 = 0; var_r26 < 18; var_r26++, var_r28++) {
                     if (var_r30->unk_40 != var_r28 || var_r28->unk_40 != var_r30) {
-                        sp24 = var_r28->unk_1C;
-                        sp18 = &sp24;
-                        sp30 = var_r28->unk_04;
-                        sp14 = &sp30;
-                        sp3C = var_r30->unk_1C;
-                        sp10 = &sp3C;
-                        sp48 = var_r30->unk_04;
-                        spC = &sp48;
-                        var_f31 = fn_1_4FEC(spC, sp10, var_r30->unk_28, sp14, sp18, var_r28->unk_28, var_r28->unk_2C);
+                        var_f31 = fn_1_4FEC(var_r30->unk_04, var_r30->unk_1C, var_r30->unk_28, var_r28->unk_04, var_r28->unk_1C, var_r28->unk_28, var_r28->unk_2C);
                         if (var_f31 >= 0.0f && var_f31 < var_f30) {
                             var_r30->unk_00_field5 = 0;
                             if (var_f31 <= var_f29) {
@@ -420,7 +378,8 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
         var_f30 *= 1.0f - var_f29;
         var_r24++;
     } while (var_r24 < 100);
-
+	(void)var_r24;
+	
     for (var_r29 = 0; var_r29 < var_r25; var_r29++) {
         var_r31 = spC0[var_r29];
         var_r31->unk_04.x += var_r31->unk_1C.x * var_f30;
@@ -439,7 +398,7 @@ void fn_1_3BE0(s16 arg0) // what happens with the argument?
         PSVECSubtract(&var_r30->unk_04, &var_r30->unk_10, &spB4);
         var_r28 = lbl_1_bss_54->data;
 
-        for (var_r26 = 0; var_r26 < 18; var_r29++, var_r28++) {
+        for (var_r26 = 0; var_r26 < 18; var_r26++, var_r28++) {
             PSVECSubtract(&var_r28->unk_04, &var_r28->unk_10, &spA8);
             if (fn_1_598C(&var_r30->unk_10, &spB4, var_r30->unk_28, &var_r28->unk_10, &spA8, var_r28->unk_28, var_r28->unk_2C)
                 && !var_r30->unk_00_field1 && var_r28->unk_38 == NULL) {
@@ -521,7 +480,7 @@ float fn_1_48D8(UnkM410Struct2 *arg0, u8 *arg1)
     return -1.0f;
 }
 
-float fn_1_4C04(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float arg9)
+float fn_1_4C04(Vec arg0, Vec arg1, float arg8, Vec arg2, Vec arg3, float arg9)
 {
     float var_f30;
     float var_f29;
@@ -531,15 +490,15 @@ float fn_1_4C04(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float ar
     float var_f22;
     float var_f21;
 
-    PSVECSubtract(arg2, arg0, arg2);
-    PSVECSubtract(arg3, arg1, arg3);
-    if (PSVECMag(arg2) > arg9 + (arg8 + PSVECMag(arg3))) {
+    PSVECSubtract(&arg2, &arg0, &arg2);
+    PSVECSubtract(&arg3, &arg1, &arg3);
+    if (PSVECMag(&arg2) > arg9 + (arg8 + PSVECMag(&arg3))) {
         return -1.0f;
     }
     var_f22 = (arg8 + arg9) * (arg8 + arg9);
-    var_f28 = arg3->z * arg3->z + (arg3->x * arg3->x + (arg3->y * arg3->y));
-    var_f27 = 2.0f * (arg3->z * arg2->z + (arg3->x * arg2->x + arg3->y * arg2->y));
-    var_f21 = (arg2->z * arg2->z + (arg2->x * arg2->x + arg2->y * arg2->y)) - var_f22;
+    var_f28 = arg3.z * arg3.z + (arg3.x * arg3.x + (arg3.y * arg3.y));
+    var_f27 = 2.0f * (arg3.z * arg2.z + (arg3.x * arg2.x + arg3.y * arg2.y));
+    var_f21 = (arg2.z * arg2.z + (arg2.x * arg2.x + arg2.y * arg2.y)) - var_f22;
     if (0.0f == var_f28) {
         return -1.0f;
     }
@@ -561,7 +520,7 @@ float fn_1_4C04(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float ar
     return -1.0f;
 }
 
-float fn_1_4FEC(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float arg9, float argA)
+float fn_1_4FEC(Vec arg0, Vec arg1, float arg8, Vec arg2, Vec arg3, float arg9, float argA)
 {
     float sp2C;
 
@@ -574,21 +533,20 @@ float fn_1_4FEC(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float ar
     float var_f21;
     float var_f18;
 
-    PSVECSubtract(arg0, arg2, arg0);
-    PSVECSubtract(arg1, arg3, arg1);
+    PSVECSubtract(&arg0, &arg2, &arg0);
+    PSVECSubtract(&arg1, &arg3, &arg1);
 
-    if (PSVECMag(arg0) > (arg8) + PSVECMag(arg1) + arg9 + argA) {
+    if (PSVECMag(&arg0) > (arg8) + PSVECMag(&arg1) + arg9 + argA) {
         return -1.0f;
     }
     arg8 += arg9;
-    var_f24 = VECMagXZ(arg0);
+    var_f24 = VECMagXZ(&arg0);
 
-    var_f26 = ((arg0->x + arg1->x) * (arg0->x + arg1->x)) + ((arg0->z + arg1->z) * (arg0->z + arg1->z)); // maybe macro?
-    var_f23 = sqrtf(var_f26) - var_f24;
+    var_f23 = VECSumXZ(&arg0, &arg1) - var_f24;
 
-    var_f22 = (var_f23 * var_f23) + (arg1->y * arg1->y);
-    var_f21 = 2.0f * ((arg0->y * arg1->y) + ((-argA * var_f23) + (var_f24 * var_f23)));
-    sp2C = (arg0->y * arg0->y + (((argA * argA) + (var_f24 * var_f24)) - (2.0f * argA * var_f24))) - (arg8 * arg8);
+    var_f22 = (var_f23 * var_f23) + (arg1.y * arg1.y);
+    var_f21 = 2.0f * ((arg0.y * arg1.y) + ((-argA * var_f23) + (var_f24 * var_f23)));
+    sp2C = (arg0.y * arg0.y + (((argA * argA) + (var_f24 * var_f24)) - (2.0f * argA * var_f24))) - (arg8 * arg8);
     if (0.0f == var_f22) {
         return -1.0f;
     }
@@ -612,7 +570,7 @@ float fn_1_4FEC(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, Vec *arg3, float ar
     return -1.0f;
 }
 
-float fn_1_55C8(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, float arg9)
+float fn_1_55C8(Vec arg0, Vec arg1, float arg8, Vec arg2, float arg9)
 {
     float var_f30;
     float var_f29;
@@ -622,16 +580,16 @@ float fn_1_55C8(Vec *arg0, Vec *arg1, float arg8, Vec *arg2, float arg9)
     float var_f22;
     float var_f21;
 
-    PSVECSubtract(arg0, arg2, arg0);
-    arg0->y = 0.0f;
-    arg1->y = 0.0f;
-    if (PSVECMag(arg0) > arg8 + PSVECMag(arg1) + arg9) {
+    PSVECSubtract(&arg0, &arg2, &arg0);
+    arg0.y = 0.0f;
+    arg1.y = 0.0f;
+    if (PSVECMag(&arg0) > arg8 + PSVECMag(&arg1) + arg9) {
         return -1.0f;
     }
     var_f22 = (arg8 + arg9) * (arg8 + arg9);
-    var_f28 = (arg1->x * arg1->x) + (arg1->z * arg1->z);
-    var_f27 = 2.0f * ((arg1->x * arg0->x) + (arg1->z * arg0->z));
-    var_f21 = ((arg0->x * arg0->x) + (arg0->z * arg0->z)) - var_f22;
+    var_f28 = (arg1.x * arg1.x) + (arg1.z * arg1.z);
+    var_f27 = 2.0f * ((arg1.x * arg0.x) + (arg1.z * arg0.z));
+    var_f21 = ((arg0.x * arg0.x) + (arg0.z * arg0.z)) - var_f22;
     if (0.0f == var_f28) {
         return -1.0f;
     }
@@ -705,7 +663,7 @@ void fn_1_5AF4(UnkM410Struct2 *arg0, u8 arg1)
     arg0->unk_1C.z *= 0.7f;
 }
 
-void fn_1_5CA0(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4)
+void fn_1_5CA0(Vec arg0, Vec arg1, Vec arg2, Vec *arg3, Vec *arg4)
 {
     Vec sp34;
     Vec sp28;
@@ -716,7 +674,7 @@ void fn_1_5CA0(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4)
     float var_f29;
     float var_f28;
 
-    sp34 = *arg1;
+    sp34 = arg1;
     var_f31 = PSVECMag(&sp34);
     if (var_f31 < 0.001f) {
         arg3->x = arg3->y = arg3->z = 0.0f;
@@ -725,13 +683,13 @@ void fn_1_5CA0(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4)
     }
     PSVECNormalize(&sp34, &sp34);
     var_f31 *= 0.9f;
-    PSVECSubtract(arg2, arg0, &sp28);
+    PSVECSubtract(&arg2, &arg0, &sp28);
     PSVECNormalize(&sp28, &sp28);
     var_f28 = PSVECDotProduct(&sp34, &sp28);
     if (var_f28 < 0.0f) {
-        arg3->x = arg1->x;
-        arg3->y = arg1->y;
-        arg3->z = arg1->z;
+        arg3->x = arg1.x;
+        arg3->y = arg1.y;
+        arg3->z = arg1.z;
         arg4->x = arg4->y = arg4->z = 0.0f;
         return;
     }
@@ -828,20 +786,8 @@ void fn_1_61DC(UnkM410Struct2 *arg0, UnkM410Struct2 *arg1)
         }
         return;
     }
-    sp2C = arg1->unk_04;
-    var_r29 = &sp2C;
-    sp38 = arg0->unk_1C;
-    var_r28 = &sp38;
-    sp44 = arg0->unk_04;
-    var_r27 = &sp44;
-    fn_1_5CA0(var_r27, var_r28, var_r29, &sp68, &sp74);
-    sp8 = arg0->unk_04;
-    var_r26 = &sp8;
-    sp14 = arg1->unk_1C;
-    var_r25 = &sp14;
-    sp20 = arg1->unk_04;
-    var_r24 = &sp20;
-    fn_1_5CA0(var_r24, var_r25, var_r26, &sp50, &sp5C);
+    fn_1_5CA0(arg0->unk_04, arg0->unk_1C, arg1->unk_04, &sp68, &sp74);
+    fn_1_5CA0(arg1->unk_04, arg1->unk_1C, arg0->unk_04, &sp50, &sp5C);
     PSVECAdd(&sp68, &sp5C, &arg0->unk_1C);
     PSVECAdd(&sp74, &sp50, &arg1->unk_1C);
 }
@@ -1045,7 +991,8 @@ void fn_1_6DB4(omObjData *object)
     for (var_r29 = 0; var_r29 < 18; var_r29++, var_r31++) {
         var_r31->unk_34 = var_r29 / 6;
         object->model[var_r29] = Hu3DModelCreateFile(lbl_1_data_104[var_r31->unk_34]);
-        //var_r28 = object->model[var_r29];
+        var_r28 = object->model[var_r29];
+		(void)var_r28;
         Hu3DModelAttrSet(object->model[var_r29], 0x40000002);
         Hu3DData[object->model[var_r29]].cluster_attr[0] = 0;
         var_r31->unk_30 = object->model[var_r29];
