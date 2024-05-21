@@ -158,52 +158,42 @@ void fn_1_63C(omObjData *object)
         return;
     }
     switch (var_r31->unk_00) {
-    case 0:
-        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
-        Hu3DCameraPerspectiveSet(1, 41.5f, 5.0f, 5000.0f, 1.2f);
-        var_r31->unk_00 = 1;
-        var_r31->unk_10 = 0;
-        object->func = fn_1_19C8(lbl_1_bss_28, object);
-        break;
-    case 1:
-        var_r31->unk_00 = 2;
-        var_r31->unk_18 = 0;
-        object->func = fn_1_FF0;
-        break;
-    case 2:
-        var_r31->unk_00 = 3;
-        var_r31->unk_28 = 0;
-        object->func = fn_1_216C(lbl_1_bss_28, object);
-        break;
-    case 3:
-    case 4:
-        var_r31->unk_08 = 1;
-        var_r31->unk_00 = 5;
-        object->func = fn_1_ABC;
-        break;
-    case 5:
-    default:
-        var_r31->unk_00 = 5;
-        object->func = fn_1_DEC;
-        break;
+		case 0:
+			WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
+			Hu3DCameraPerspectiveSet(1, 41.5f, 5.0f, 5000.0f, 1.2f);
+			var_r31->unk_00 = 1;
+			var_r31->unk_10 = 0;
+			object->func = fn_1_19C8(lbl_1_bss_28, object);
+			break;
+		case 1:
+			var_r31->unk_00 = 2;
+			var_r31->unk_18 = 0;
+			object->func = fn_1_FF0;
+			break;
+		case 2:
+			var_r31->unk_00 = 3;
+			var_r31->unk_28 = 0;
+			object->func = fn_1_216C(lbl_1_bss_28, object);
+			break;
+		case 3:
+		case 4:
+			var_r31->unk_08 = 1;
+			var_r31->unk_00 = 5;
+			object->func = fn_1_ABC;
+			break;
+		case 5:
+		default:
+			var_r31->unk_00 = 5;
+			object->func = fn_1_DEC;
+			break;
     }
     var_r31->unk_04 = 0;
+	
 }
 
 void fn_1_7A8(omObjData *object)
 {
-    UnkM410Struct *var_r28;
-
-    var_r28 = object->data;
-    var_r28->unk_04++;
-    var_r28->unk_10++;
-    var_r28->unk_18++;
-    var_r28->unk_28++;
-
-    if (omSysExitReq && var_r28->unk_00 != 5) {
-        var_r28->unk_00 = 4;
-        fn_1_63C(object);
-    }
+    fn_1_5A8(object);
     fn_1_63C(object);
 }
 
@@ -243,35 +233,38 @@ void fn_1_FF0(omObjData *object)
 
     fn_1_5A8(object);
     switch (var_r29->unk_14) {
-    case 0:
-        var_r29->unk_1C = 30;
-        var_r29->unk_20 = 60;
-        lbl_1_bss_14 = MGSeqCreate(3, 0);
-        MGSeqPosSet(lbl_1_bss_14, 320.0f, 240.0f);
-        CRot.x = -11.2f;
-        CRot.y = CRot.z = 0.0f;
-        Center.x = 0.0f;
-        Center.y = 367.0f;
-        Center.z = 252.0f;
-        CZoom = 592.0f;
-        var_r29->unk_14 = 1;
-        var_r29->unk_18 = 0;
-        return;
-    case 1:
-        break;
-    default:
-        return;
+		case 0:
+			var_r29->unk_1C = 30;
+			var_r29->unk_20 = 60;
+			lbl_1_bss_14 = MGSeqCreate(3, 0);
+			MGSeqPosSet(lbl_1_bss_14, 320.0f, 240.0f);
+			CRot.x = -11.2f;
+			CRot.y = CRot.z = 0.0f;
+			Center.x = 0.0f;
+			Center.y = 367.0f;
+			Center.z = 252.0f;
+			CZoom = 592.0f;
+			var_r29->unk_14 = 1;
+			var_r29->unk_18 = 0;
+			break;
+			
+		case 1:
+			if (lbl_1_bss_4 < 0 && MGSeqStatGet(lbl_1_bss_14) & 16) {
+				lbl_1_bss_4 = HuAudSeqPlay(71);
+			}
+			if (!MGSeqStatGet(lbl_1_bss_14) && !var_r29->unk_08) {
+				lbl_1_bss_1C = MGSeqCreate(1, var_r29->unk_1C, -1, -1);
+				var_r29->unk_14 = 2;
+				var_r29->unk_18 = 0;
+				object->func = fn_1_139C;
+			}
+			break;
+			
+		default:
+			break;
     }
 
-    if (lbl_1_bss_4 < 0 && MGSeqStatGet(lbl_1_bss_14) & 16) {
-        lbl_1_bss_4 = HuAudSeqPlay(71);
-    }
-    if (!MGSeqStatGet(lbl_1_bss_14) && !var_r29->unk_08) {
-        lbl_1_bss_1C = MGSeqCreate(1, var_r29->unk_1C, -1, -1);
-        var_r29->unk_14 = 2;
-        var_r29->unk_18 = 0;
-        object->func = fn_1_139C;
-    }
+    
 }
 
 void fn_1_139C(omObjData *object)
@@ -407,7 +400,7 @@ void fn_1_2188(omObjData *object)
             sp10[var_r26] = -1;
             if (var_r27->unk_2C & var_r25) {
                 sp10[var_r24++] = GWPlayerCfg[var_r26].character;
-                GWPlayerCoinWinSet(var_r26, GWPlayer[var_r26].coin_win + 10);
+                GWPlayerCoinWinAdd(var_r26, 10);
             }
         }
         if (sp10[0] == -1) {

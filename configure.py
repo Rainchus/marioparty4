@@ -880,7 +880,7 @@ config.libs = [
         "m410Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m410Dll/main.c"),
+            Object(Matching, "REL/m410Dll/main.c"),
             Object(Matching, "REL/m410Dll/stage.c"),
             Object(NonMatching, "REL/m410Dll/game.c"),
             Object(Matching, "REL/m410Dll/player.c"),
