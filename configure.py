@@ -1168,7 +1168,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m446dll/main.c"),
-            Object(NonMatching, "REL/m446dll/card.c"),
+            Object(Matching, "REL/m446dll/card.c"),
             Object(NonMatching, "REL/m446dll/deck.c"),
             Object(NonMatching, "REL/m446dll/table.c"),
             Object(NonMatching, "REL/m446dll/player.c"),

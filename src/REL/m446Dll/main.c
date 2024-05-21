@@ -1,86 +1,37 @@
-#include "dolphin/types.h"
+#include "REL/m446Dll.h"
 #include "rel_sqrt_consts.h"
 
 #include "game/gamework_data.h"
 #include "game/hsfman.h"
 #include "game/audio.h"
 #include "game/jmp.h"
-#include "game/process.h"
 #include "game/window.h"
 #include "game/wipe.h"
 #include "game/frand.h"
-#include "game/object.h"
 #include "game/minigame_seq.h"
-
-typedef struct _unkSubStruct {
-    s32 unk0;
-    char unk4[0x20];
-    s32 unk24;
-    char unk28[0x3C];
-    u8 unk64;
-    u8 unk65;
-    u8 unk66;
-    s32 unk68;
-    char unk6C[0x4];
-} unkSubStruct;
-
-typedef struct _unkSubStruct2 {
-    char unk0;
-} unkSubStruct2;
-
-typedef struct _unkSubStruct3 {
-    s32 unk0;
-    s32 unk4;
-    char unk8[0x68];
-    s32 unk70;
-    s32 unk74;
-    s32 unk78;
-} unkSubStruct3;
-
-typedef struct _unkStruct {
-    s32 unk0;
-    s16 unk4;
-    s16 unk6;
-    char unk8[0x4];
-    s32 unkC;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    unkSubStruct *unk20;
-    s32 unk24;
-    s32 unk28;
-    unkSubStruct *unk2C[2];
-    unkSubStruct3 *unk34;
-    s32 unk38[23];
-    s32 unk94;
-    Process *unk98;
-} unkStruct;
-
-typedef void (*m446Func)(unkStruct *);
 
 // card.c
 extern s32 fn_1_2064(void);
 extern void fn_1_207C(void);
 extern void fn_1_20D4(void);
-extern void fn_1_2EC0(unkSubStruct3*, s32);
+extern void fn_1_2EC0(unkSubStruct2*, s32);
 // deck.c
 extern void fn_1_3180(s32);
 extern void fn_1_31D8(s32, s32*, s32*, s32);
 extern s32 fn_1_38E0(void);
 extern s32 fn_1_3064(void);
 extern void fn_1_34A0(s32, s32*, s32, s32);
-extern void fn_1_3700(s32, unkSubStruct3*, s32);
+extern void fn_1_3700(s32, unkSubStruct2*, s32);
 // table.c
 extern s32 fn_1_3924(void);
 extern void fn_1_393C(void);
 extern void fn_1_3994(void);
 extern unkSubStruct *fn_1_39D0(void);
 extern void fn_1_3B4C(unkSubStruct*);
-extern s32 fn_1_3BF0(unkSubStruct*, unkSubStruct3*, s32);
-extern s32 fn_1_3EB4(unkSubStruct*, unkSubStruct3*, s32);
+extern s32 fn_1_3BF0(unkSubStruct*, unkSubStruct2*, s32);
+extern s32 fn_1_3EB4(unkSubStruct*, unkSubStruct2*, s32);
 extern void fn_1_4000(unkSubStruct*, s32);
-extern s32 fn_1_4088(unkSubStruct*, u8, u8, s32, unkSubStruct3**, s32);
+extern s32 fn_1_4088(unkSubStruct*, u8, u8, s32, unkSubStruct2**, s32);
 extern void fn_1_46D0(unkSubStruct*);
 // player.c
 extern s32 fn_1_480C(void);
@@ -88,9 +39,9 @@ extern void fn_1_4824(void);
 extern void fn_1_487C(void);
 extern unkSubStruct *fn_1_4B00(s32, unkSubStruct*);
 extern void fn_1_509C(unkSubStruct*);
-extern s32 fn_1_5504(unkSubStruct*, unkSubStruct3*, s32);
-extern unkSubStruct *fn_1_5648(unkSubStruct*, s32, unkSubStruct3**);
-extern s32 fn_1_5678(unkSubStruct*, unkSubStruct3**, s32);
+extern s32 fn_1_5504(unkSubStruct*, unkSubStruct2*, s32);
+extern unkSubStruct *fn_1_5648(unkSubStruct*, s32, unkSubStruct2**);
+extern s32 fn_1_5678(unkSubStruct*, unkSubStruct2**, s32);
 extern void fn_1_5B34(unkSubStruct*);
 extern void fn_1_5C10(unkSubStruct*);
 extern void fn_1_5CEC(unkSubStruct*);
@@ -114,23 +65,6 @@ extern void fn_1_7C60(void);
 extern s32 fn_1_80C0(void);
 extern void fn_1_83F0(s32);
 extern void fn_1_84AC(s32);
-
-// prototypes
-void ModuleProlog(void);
-void fn_1_13C(omObjData*);
-unkStruct* m446FlowCreate(void);
-void fn_1_3FC(unkStruct*);
-void fn_1_4B4(unkStruct*);
-void fn_1_53C(unkStruct*);
-void fn_1_958(unkStruct*);
-void fn_1_B78(unkStruct*);
-void fn_1_C0C(unkStruct*);
-void fn_1_CA0(unkStruct*);
-s32 fn_1_17FC(unkStruct*);
-void fn_1_183C(unkStruct*);
-void fn_1_1874(unkStruct*);
-void fn_1_18B0(unkStruct*);
-void fn_1_19D4(void);
 
 // bss
 s32 lbl_1_bss_14;
@@ -271,7 +205,7 @@ void fn_1_3FC(unkStruct* arg0) {
     HuMemDirectFree(arg0);
 }
 
-m446Func lbl_1_data_A0[5] = {fn_1_53C, fn_1_B78, fn_1_CA0, fn_1_C0C, fn_1_958};
+m446Func1 lbl_1_data_A0[5] = {fn_1_53C, fn_1_B78, fn_1_CA0, fn_1_C0C, fn_1_958};
 
 void fn_1_4B4(unkStruct* arg0) {
     if (lbl_1_data_A0[arg0->unk0]) {
