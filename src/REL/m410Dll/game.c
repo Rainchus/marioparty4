@@ -1091,15 +1091,14 @@ void fn_1_7494(void)
 void fn_1_7520(Vec *arg0)
 {
     ParticleData *var_r30; // no, custom struct
-    void *var_r31;
+    HsfanimStruct01 *var_r31;
 
     var_r30 = Hu3DData[lbl_1_bss_38].unk_120; // unk_120 is not ParticleData
-    // var_r31 = var_r30->unk_48 + (var_r30->unk_02++ * 0x44);
-    100.0f; // to fit rodata temporarily
-    // var_r31->unk_2C = 100.0f;
-    //   var_r31->unk_34 = arg0->x;
-    //   var_r31->unk_38 = arg0->y;
-    //   var_r31->unk_3C = arg0->z;
+    var_r31 = &var_r30->unk_48[var_r30->unk_02++];
+    var_r31->unk2C = 100.0f;
+    var_r31->unk34.x = arg0->x;
+    var_r31->unk34.y = arg0->y;
+    var_r31->unk34.z = arg0->z;
 }
 
 s32 lbl_1_data_110 = 60;
@@ -1107,58 +1106,48 @@ s32 lbl_1_data_110 = 60;
 void fn_1_75A0(ModelData *model, ParticleData *particle, Mtx matrix)
 {
     HsfanimStruct01 *var_r30;
-    s16 var_r29;
-    u8 var_r28;
+    s32 var_r29;
+    s32 var_r28;
 
     if (!particle->unk_00) {
         particle->unk_00 = 1;
-        var_r30 = &particle->unk_48[particle->unk_02]; // TODO
-        var_r29 = particle->unk_02;
-        for (; var_r29 < particle->unk_30; var_r29++, var_r30 += 0x44) {
+        var_r30 = &particle->unk_48[particle->unk_02];
+        for (var_r29 = particle->unk_02; var_r29 < particle->unk_30; var_r29++, var_r30++) {
             var_r30->unk2C = 0.0f;
         }
     }
     var_r28 = (lbl_1_data_110 * 0xFF) / 60;
     var_r30 = particle->unk_48;
 
-    // for (var_r29 = 0; var_r29 < particle->unk_02; var_r29++, var_r30 += 0x44) {
-    //     var_r30->unk_43 = var_r28; // 43?
-    // }
-    // if (--lbl_1_data_110 == 0) {
-    //     model->unk_50 = model->unk_50 | 1;
-    // }
-    // DCStoreRange(particle->unk_048, particle->unk_30 * 0x44);
+    for (var_r29 = 0; var_r29 < particle->unk_02; var_r29++, var_r30++) {
+		var_r30->unk40.a = var_r28; // 43?
+    }
+    if (--lbl_1_data_110 == 0) {
+		model->attr |= 1;
+    }
+    DCStoreRange(particle->unk_48, particle->unk_30 * 0x44);
 }
 
-s32 fn_1_76B8(void *arg0, Vec *arg1, u16 arg2)
+s32 fn_1_76B8(Vec arg0, Vec arg1, u16 arg2)
 {
-    UnkM410Struct2 *var_r31;
+    UnkM410Struct2 *var_r31 = lbl_1_bss_58->data;
     s32 var_r30;
 
-    var_r31 = &((UnkM410Struct2 *)lbl_1_bss_58->data)[arg2 * 15];
-    var_r30 = 0;
-    while (TRUE) {
-        if (var_r30 >= 15) {
-            return 0;
-        }
-        if (!var_r31->unk_00_field0) {
-            var_r31->unk_00_field4 = 0; // TODO this sets two bytes... so maybe wrong struct, the size is right though
-            // var_r31->unk_0 = var_r31->unk_0 | 0x80;
-            // var_r31->unk_0 = var_r31->unk_0 | 0x20;
-            // var_r31->unk_04 = arg0->unk_0;
-            // var_r31->unk_08 = arg0->unk_04;
-            // var_r31->unk_0C = arg0->unk_08;
-            // var_r31->unk_1C = arg1->unk_0;
-            // var_r31->unk_20 = arg1->unk_04;
-            // var_r31->unk_24 = arg1->unk_08;
-            var_r31->unk_28 = 30.000002f;
-            var_r31->unk_38 = 0;
-            var_r31->unk_36 = 0;
-            return 1;
-        }
-        var_r30++;
-        var_r31++;
-    }
+    var_r31 = &var_r31[arg2 * 15];
+	for(var_r30=0; var_r30<15; var_r30++, var_r31++) {
+		if (!var_r31->unk_00_field0) {
+			*(s16 *)var_r31 = 0;
+			var_r31->unk_00_field0 = 1;
+			var_r31->unk_00_field2 = 1;
+			var_r31->unk_04 = arg0;
+			var_r31->unk_1C = arg1;
+			var_r31->unk_28 = 30.000002f;
+			var_r31->unk_38 = NULL;
+			var_r31->unk_36  = 0;
+			return 1;
+		}
+	}
+	return 0;
 }
 
 void fn_1_77A4(u16 arg0, u16 arg1, u16 arg2)

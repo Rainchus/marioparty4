@@ -528,11 +528,7 @@ void fn_1_9040(omObjData *object)
         sp2C.y = 0.016666668f * var_f27;
         sp2C.z = (sp20.z - var_r31->unk_70.z) * 0.016666668f / var_f31;
     }
-    sp8 = sp2C;
-    var_r26 = &sp8;
-    sp14 = var_r31->unk_70;
-    var_r25 = &sp14;
-    fn_1_76B8(var_r25, var_r26, object->work[0]);
+    fn_1_76B8(var_r31->unk_70, sp2C, object->work[0]);
     var_r31->unk_18 = 0;
     var_r31->unk_24 = 0;
     if (var_r31->unk_1C) {
