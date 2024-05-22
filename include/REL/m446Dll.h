@@ -96,8 +96,14 @@ typedef struct _unkStruct5 {
 typedef void (*m446Func1)(unkStruct *);
 typedef void (*m446Func4)(unkStruct4 *);
 
-// bss
+////// BSS //////
+// table.c
+extern unkStruct3* lbl_1_bss_28;
+// deck.c
+extern u32 lbl_1_bss_20[2];
+// card.c
 extern unkStruct3* lbl_1_bss_18;
+// main.c
 extern s32 lbl_1_bss_14;
 extern s32 lbl_1_bss_10;
 extern Process* lbl_1_bss_C;
@@ -105,7 +111,8 @@ extern omObjData *lbl_1_bss_8;
 extern s32 lbl_1_bss_4;
 extern unkStruct* lbl_1_bss_0;
 
-// data
+////// DATA //////
+// main.c
 extern Vec lbl_1_data_0;
 extern Vec lbl_1_data_C;
 extern f32 lbl_1_data_18;
@@ -116,9 +123,11 @@ extern Vec lbl_1_data_38[2];
 extern Vec lbl_1_data_50[2];
 extern f32 lbl_1_data_68[2];
 extern m446Func1 lbl_1_data_A0[5];
+// card.c
 extern m446Func4 lbl_1_data_150[3];
 
-// prototypes
+////// PROTOTYPES //////
+// main.c
 extern void ModuleProlog(void);
 extern void fn_1_13C(omObjData*);
 extern unkStruct* m446FlowCreate(void);
@@ -134,6 +143,7 @@ extern void fn_1_183C(unkStruct*);
 extern void fn_1_1874(unkStruct*);
 extern void fn_1_18B0(unkStruct*);
 extern void fn_1_19D4(void);
+// card.c
 extern unkStruct2* fn_1_1C64(s32);
 extern void fn_1_1CF8(unkStruct2*);
 extern s32 fn_1_1D30(unkStruct2*, unkStruct4*);
@@ -169,3 +179,13 @@ extern void fn_1_2D94(unkStruct4*);
 extern void fn_1_2DA8(unkStruct4*);
 extern void fn_1_2EC0(unkStruct4*, s32);
 extern void fn_1_2F64(unkStruct4*);
+// deck.c
+extern unkStruct5* fn_1_3064(void);
+extern void fn_1_3180(unkStruct2**);
+extern void fn_1_31D8(unkStruct2**, unkStruct4**, s32*, s32);
+extern void fn_1_34A0(unkStruct5*, unkStruct4**, s32, s32);
+extern s32 m446DeckPushCard(unkStruct5*, unkStruct4*, s32);
+extern s32 m446DeckPopCard(unkStruct2**, unkStruct4**);
+extern void fn_1_38B0(unkStruct2**);
+extern void fn_1_38E0(u32);
+extern s32 fn_1_38F0(void);
