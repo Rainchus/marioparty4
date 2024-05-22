@@ -56,6 +56,12 @@ parser.add_argument(
     help="base build directory (default: build)",
 )
 parser.add_argument(
+    "--binutils",
+    metavar="BINARY",
+    type=Path,
+    help="path to binutils (optional)",
+)
+parser.add_argument(
     "--compilers",
     dest="compilers",
     type=Path,
@@ -66,6 +72,11 @@ parser.add_argument(
     dest="map",
     action="store_true",
     help="generate map file(s)",
+)
+parser.add_argument(
+    "--no-asm",
+    action="store_true",
+    help="don't incorporate .s files from asm directory",
 )
 parser.add_argument(
     "--debug",
@@ -81,10 +92,10 @@ if not is_windows():
         help="path to wibo or wine (optional)",
     )
 parser.add_argument(
-    "--build-dtk",
-    dest="build_dtk",
+    "--dtk",
+    metavar="BINARY | DIR",
     type=Path,
-    help="path to decomp-toolkit source (optional)",
+    help="path to decomp-toolkit binary or source (optional)",
 )
 parser.add_argument(
     "--sjiswrap",
@@ -98,6 +109,12 @@ parser.add_argument(
     action="store_true",
     help="print verbose output",
 )
+parser.add_argument(
+    "--non-matching",
+    dest="non_matching",
+    action="store_true",
+    help="builds equivalent (but non-matching) or modded objects",
+)
 args = parser.parse_args()
 
 config = ProjectConfig()
@@ -108,13 +125,17 @@ version_num = VERSIONS.index(config.version)
 
 # Apply arguments
 config.build_dir = args.build_dir
-config.build_dtk_path = args.build_dtk
+config.dtk_path = args.dtk
+config.binutils_path = args.binutils
 config.compilers_path = args.compilers
 config.debug = args.debug
 config.generate_map = args.map
+config.non_matching = args.non_matching
 config.sjiswrap_path = args.sjiswrap
 if not is_windows():
     config.wrapper = args.wrapper
+if args.no_asm:
+    config.asm_dir = None
 
 # Tool versions
 config.binutils_tag = "2.42-1"
@@ -882,7 +903,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m410Dll/main.c"),
             Object(Matching, "REL/m410Dll/stage.c"),
-            Object(NonMatching, "REL/m410Dll/game.c"),
+            Object(Matching, "REL/m410Dll/game.c"),
             Object(Matching, "REL/m410Dll/player.c"),
         },
     ),
