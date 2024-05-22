@@ -205,7 +205,7 @@ void fn_1_28AC(s32 arg0);
 s32 fn_1_28DC(void);
 float fn_1_2FD4(float arg8, float arg9, float argA);
 float fn_1_30F0(float arg8, float arg9);
-s32 fn_1_76B8(void *arg0, Vec *arg1, u16 arg2);
+s32 fn_1_76B8(Vec arg0, Vec arg1, u16 arg2);
 void fn_1_77E8(void *arg0);
 void fn_1_77F8(u16 arg0, Vec *arg1);
 void fn_1_7840(u16 arg0, Vec *arg1);
