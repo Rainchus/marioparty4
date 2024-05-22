@@ -10,18 +10,13 @@
 #include "game/frand.h"
 #include "game/minigame_seq.h"
 
-// card.c
-extern s32 fn_1_2064(void);
-extern void fn_1_207C(void);
-extern void fn_1_20D4(void);
-extern void fn_1_2EC0(unkSubStruct2*, s32);
 // deck.c
 extern void fn_1_3180(s32);
 extern void fn_1_31D8(s32, s32*, s32*, s32);
 extern s32 fn_1_38E0(void);
 extern s32 fn_1_3064(void);
 extern void fn_1_34A0(s32, s32*, s32, s32);
-extern void fn_1_3700(s32, unkSubStruct2*, s32);
+extern void m446DeckPushCard(s32, unkSubStruct2*, s32);
 // table.c
 extern s32 fn_1_3924(void);
 extern void fn_1_393C(void);
@@ -280,7 +275,7 @@ void fn_1_53C(unkStruct* arg0) {
 
             for (var_r29 = 0; var_r29 < 2; var_r29++) {
                 for (var_r30 = 0; var_r30 < 3; var_r30++) {
-                    fn_1_3854(arg0->unk28, &arg0->unk34);
+                    m446DeckPopCard(arg0->unk28, &arg0->unk34);
                     fn_1_51B8(arg0->unk2C[var_r29], arg0->unk34, 1);
                     fn_1_2EC0(arg0->unk34, 0);
                 }
@@ -309,7 +304,7 @@ void fn_1_53C(unkStruct* arg0) {
             if (arg0->unk34->unk4 != 0) break;
             fn_1_46AC(arg0->unk20);
 
-            while (fn_1_3854(arg0->unk28, &arg0->unk34) != 0) {
+            while (m446DeckPopCard(arg0->unk28, &arg0->unk34) != 0) {
                 fn_1_3BF0(arg0->unk20, arg0->unk34, 1);
             }
             fn_1_46D0(arg0->unk20);
@@ -581,7 +576,7 @@ void fn_1_CA0(unkStruct* arg0) {
                     fn_1_3FD0(arg0->unk20, var_r29, &arg0->unk34);
                     if (arg0->unk34) {
                         fn_1_3EB4(arg0->unk20, arg0->unk34, 4);
-                        fn_1_3700(arg0->unk28, arg0->unk34, 2);
+                        m446DeckPushCard(arg0->unk28, arg0->unk34, 2);
                     }
                 }
                 arg0->unk10 = 18;
@@ -605,7 +600,7 @@ void fn_1_CA0(unkStruct* arg0) {
         case 20:
             if (arg0->unk14++ >= 120) {
                 for (var_r29 = 0; var_r29 < 3; var_r29++) {
-                    fn_1_3854(arg0->unk28, &arg0->unk34);
+                    m446DeckPopCard(arg0->unk28, &arg0->unk34);
                     fn_1_51B8(var_r30, arg0->unk34, 1);
                     fn_1_2EC0(arg0->unk34, 0);
                 }
@@ -627,7 +622,7 @@ void fn_1_CA0(unkStruct* arg0) {
             if (arg0->unk34->unk70 == 0 && arg0->unk34->unk78 == 0 && arg0->unk34->unk74 == 0 && arg0->unk34->unk4 == 0) {
                 fn_1_46AC(arg0->unk20);
 
-                while (fn_1_3854(arg0->unk28, &arg0->unk34)) {
+                while (m446DeckPopCard(arg0->unk28, &arg0->unk34)) {
                     fn_1_3BF0(arg0->unk20, arg0->unk34, 1);
                 }
                 fn_1_46D0(arg0->unk20);

@@ -33,7 +33,7 @@ void fn_1_1CF8(unkStruct2* arg0) {
     HuMemDirectFree(arg0);
 }
 
-s32 fn_1_1D30(unkStruct2* arg0, s32 arg1) {
+s32 fn_1_1D30(unkStruct2* arg0, unkStruct4* arg1) {
     if (arg0->unk4 <= arg0->unk8) {
         return 0;
     } else {
@@ -43,21 +43,21 @@ s32 fn_1_1D30(unkStruct2* arg0, s32 arg1) {
     }
 }
 
-s32 fn_1_1D6C(unkStruct2* arg0, s32* arg1) {
+s32 fn_1_1D6C(unkStruct2* arg0, unkStruct4** arg1) {
     if (arg0->unk8 <= 0) {
         return 0;
     } else {
         arg0->unk8--;
-        arg1[0] = arg0->unk0[arg0->unk8];
+        *arg1 = arg0->unk0[arg0->unk8];
         return 1;
     }
 }
 
-s32 fn_1_1DA8(unkStruct2* arg0, s32* arg1) {
+s32 fn_1_1DA8(unkStruct2* arg0, unkStruct4** arg1) {
     if (arg0->unk8 <= 0) {
         return 0;
     } else {
-        arg1[0] = *(&arg0->unk0[arg0->unk8] - 1);
+        *arg1 = *(&arg0->unk0[arg0->unk8] - 1);
         return 1;
     }
 }
@@ -246,7 +246,7 @@ void fn_1_20D4(void) {
     }
 }
 
-unkStruct4* fn_1_240C(s32 arg0) {
+unkStruct4* m446CardCreate(s32 arg0) {
     unkStruct4* temp_r31;
     unkStruct3* temp_r30;
 
