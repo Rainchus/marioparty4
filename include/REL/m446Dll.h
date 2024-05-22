@@ -45,7 +45,7 @@ typedef struct _unkStruct {
 } unkStruct;
 
 typedef struct _unkStruct2 {
-    s32 *unk0;
+    struct _unkStruct4 **unk0;
     s32 unk4;
     s32 unk8;
 } unkStruct2;
@@ -87,6 +87,11 @@ typedef struct _unkStruct4 {
     f32 unk90;
     f32 unk94;
 } unkStruct4;
+
+typedef struct _unkStruct5 {
+    unkStruct2* unk0;
+    Vec unk4;
+} unkStruct5;
 
 typedef void (*m446Func1)(unkStruct *);
 typedef void (*m446Func4)(unkStruct4 *);
@@ -131,9 +136,9 @@ extern void fn_1_18B0(unkStruct*);
 extern void fn_1_19D4(void);
 extern unkStruct2* fn_1_1C64(s32);
 extern void fn_1_1CF8(unkStruct2*);
-extern s32 fn_1_1D30(unkStruct2*, s32);
-extern s32 fn_1_1D6C(unkStruct2*, s32*);
-extern s32 fn_1_1DA8(unkStruct2*, s32*);
+extern s32 fn_1_1D30(unkStruct2*, unkStruct4*);
+extern s32 fn_1_1D6C(unkStruct2*, unkStruct4**);
+extern s32 fn_1_1DA8(unkStruct2*, unkStruct4**);
 extern BOOL fn_1_1DDC(unkStruct2*);
 extern s32 fn_1_1DEC(unkStruct2*);
 extern unkStruct3* fn_1_1DF4(unkStruct4*);
@@ -148,7 +153,7 @@ extern s32 fn_1_1FFC(s8*, s8*, s32);
 extern s32 fn_1_2064(void);
 extern void fn_1_207C(void);
 extern void fn_1_20D4(void);
-extern unkStruct4* fn_1_240C(s32);
+extern unkStruct4* m446CardCreate(s32);
 extern void fn_1_2688(unkStruct4*);
 extern void fn_1_272C(unkStruct4*);
 extern void fn_1_2794(unkStruct4*);
