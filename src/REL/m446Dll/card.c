@@ -72,7 +72,7 @@ s32 fn_1_1DEC(unkStruct2* arg0) {
 
 #pragma dont_inline on
 
-unkStruct3* fn_1_1DF4(unkStruct4* arg0) {
+unkStruct3* fn_1_1DF4(void* arg0) {
     unkStruct3* temp_r3;
 
     temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, 0xC, 0x10000000);
@@ -174,7 +174,7 @@ s32 fn_1_2064(void) {
 }
 
 void fn_1_207C(void) {
-    unkStruct4* var_r30;
+    void* var_r30;
     unkStruct3* var_r31;
 
     var_r31 = lbl_1_bss_18;
@@ -360,7 +360,7 @@ void fn_1_2928(unkStruct4* arg0, Vec* arg1, s32 arg2) {
     arg0->unk74 = 1;
 }
 
-void fn_1_29B4(unkStruct4* arg0, s32 arg1, f32 arg8) {
+void fn_1_29B4(unkStruct4* arg0, f32 arg8, s32 arg1) {
     arg0->unk60 = arg8;
     arg0->unk5C = arg0->unk58;
     arg0->unk90 = 0.0f;

@@ -15,15 +15,6 @@ typedef struct _unkSubStruct {
     char unk6C[0x4];
 } unkSubStruct;
 
-typedef struct _unkSubStruct2 {
-    s32 unk0;
-    s32 unk4;
-    char unk8[0x68];
-    s32 unk70;
-    s32 unk74;
-    s32 unk78;
-} unkSubStruct2;
-
 typedef struct _unkStruct {
     s32 unk0;
     s16 unk4;
@@ -34,12 +25,12 @@ typedef struct _unkStruct {
     s32 unk14;
     s32 unk18;
     s32 unk1C;
-    unkSubStruct *unk20;
+    struct _unkStruct6* unk20;
     s32 unk24;
-    s32 unk28;
-    unkSubStruct *unk2C[2];
-    unkSubStruct2 *unk34;
-    s32 unk38[23];
+    struct _unkStruct5* unk28;
+    unkSubStruct* unk2C[2];
+    struct _unkStruct4* unk34;
+    struct _unkStruct4* unk38[23];
     s32 unk94;
     Process *unk98;
 } unkStruct;
@@ -51,7 +42,7 @@ typedef struct _unkStruct2 {
 } unkStruct2;
 
 typedef struct _unkStruct3 {
-    struct _unkStruct4 *unk0;
+    void *unk0;
     struct _unkStruct3 *unk4;
     struct _unkStruct3 *unk8;
 } unkStruct3;
@@ -92,6 +83,29 @@ typedef struct _unkStruct5 {
     unkStruct2* unk0;
     Vec unk4;
 } unkStruct5;
+
+typedef struct _unkStruct6 {
+    struct _unkStruct7 *unk0;
+    s16 unk4;
+    s16 unk6;
+    unkStruct4 *unk8[21];
+    s32 unk5C;
+    s32 unk60;
+    s32 unk64;
+    s32 unk68;
+    s32 unk6C;
+} unkStruct6;
+
+typedef struct _unkStruct7 {
+    struct {
+        s8 field00_bit0 : 1;
+        s8 field00_bit1 : 1;
+        s8 field00_bit2 : 1;
+        s8 field00_bit3 : 1;
+    };
+    char unk1[0x1F];
+    Vec unk20;
+} unkStruct7;
 
 typedef void (*m446Func1)(unkStruct *);
 typedef void (*m446Func4)(unkStruct4 *);
@@ -151,7 +165,7 @@ extern s32 fn_1_1D6C(unkStruct2*, unkStruct4**);
 extern s32 fn_1_1DA8(unkStruct2*, unkStruct4**);
 extern BOOL fn_1_1DDC(unkStruct2*);
 extern s32 fn_1_1DEC(unkStruct2*);
-extern unkStruct3* fn_1_1DF4(unkStruct4*);
+extern unkStruct3* fn_1_1DF4(void*);
 extern void fn_1_1E5C(unkStruct3*);
 extern void fn_1_1E84(unkStruct3**);
 extern void fn_1_1EC8(unkStruct3*, unkStruct3*);
@@ -170,7 +184,7 @@ extern void fn_1_2794(unkStruct4*);
 extern void fn_1_27FC(unkStruct4*, Vec*, s32);
 extern void fn_1_2890(unkStruct4*, Vec*, s32, s32);
 extern void fn_1_2928(unkStruct4*, Vec*, s32);
-extern void fn_1_29B4(unkStruct4*, s32, f32);
+extern void fn_1_29B4(unkStruct4*, f32, s32);
 extern void fn_1_2A1C(unkStruct4*);
 extern void fn_1_2A58(unkStruct4*);
 extern void fn_1_2A94(unkStruct4*);
@@ -189,3 +203,18 @@ extern s32 m446DeckPopCard(unkStruct2**, unkStruct4**);
 extern void fn_1_38B0(unkStruct2**);
 extern void fn_1_38E0(u32);
 extern s32 fn_1_38F0(void);
+// table.c
+extern s32 fn_1_3924(void);
+extern void fn_1_393C(void);
+extern void fn_1_3994(void);
+extern unkStruct6* fn_1_39D0(void);
+extern void fn_1_3B4C(unkStruct6*);
+extern s32 fn_1_3BF0(unkStruct6*, unkStruct4*, s32);
+extern s32 fn_1_3EB4(unkStruct6*, unkStruct4*, s32);
+extern s32 fn_1_3FD0(unkStruct6*, s32, unkStruct4**);
+extern void fn_1_4000(unkStruct6*, s32);
+extern s32 fn_1_4088(unkStruct6*, u8, u8, s32, unkStruct4**, s32);
+extern void fn_1_46AC(unkStruct6*);
+extern void fn_1_46D0(unkStruct6*);
+extern s32 fn_1_4720(unkStruct6*, s32);
+extern void fn_1_4798(unkStruct6*);
