@@ -10,11 +10,6 @@ static const s32 lbl_1_rodata_D0[5][2] = {
     {1, 5}, {0, 5}, {2, 5}, {3, 5}, {4, 3}
 };
 
-unkStruct5* fn_1_3064(void);
-// ...
-s32 m446DeckPushCard(unkStruct5*, unkStruct4*, s32);
-s32 fn_1_38F0(void);
-
 unkStruct5* fn_1_3064(void) {
     unkStruct4* var_r27;
     s32 var_r28;

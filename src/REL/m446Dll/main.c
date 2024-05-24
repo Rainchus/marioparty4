@@ -10,33 +10,15 @@
 #include "game/frand.h"
 #include "game/minigame_seq.h"
 
-// deck.c
-extern void fn_1_3180(s32);
-extern void fn_1_31D8(s32, s32*, s32*, s32);
-extern s32 fn_1_38E0(void);
-extern s32 fn_1_3064(void);
-extern void fn_1_34A0(s32, s32*, s32, s32);
-extern void m446DeckPushCard(s32, unkSubStruct2*, s32);
-// table.c
-extern s32 fn_1_3924(void);
-extern void fn_1_393C(void);
-extern void fn_1_3994(void);
-extern unkSubStruct *fn_1_39D0(void);
-extern void fn_1_3B4C(unkSubStruct*);
-extern s32 fn_1_3BF0(unkSubStruct*, unkSubStruct2*, s32);
-extern s32 fn_1_3EB4(unkSubStruct*, unkSubStruct2*, s32);
-extern void fn_1_4000(unkSubStruct*, s32);
-extern s32 fn_1_4088(unkSubStruct*, u8, u8, s32, unkSubStruct2**, s32);
-extern void fn_1_46D0(unkSubStruct*);
 // player.c
 extern s32 fn_1_480C(void);
 extern void fn_1_4824(void);
 extern void fn_1_487C(void);
-extern unkSubStruct *fn_1_4B00(s32, unkSubStruct*);
+extern unkSubStruct *fn_1_4B00(s32, unkStruct6*);
 extern void fn_1_509C(unkSubStruct*);
-extern s32 fn_1_5504(unkSubStruct*, unkSubStruct2*, s32);
-extern unkSubStruct *fn_1_5648(unkSubStruct*, s32, unkSubStruct2**);
-extern s32 fn_1_5678(unkSubStruct*, unkSubStruct2**, s32);
+extern s32 fn_1_5504(unkSubStruct*, unkStruct4*, s32);
+extern unkSubStruct *fn_1_5648(unkSubStruct*, s32, unkStruct4**);
+extern s32 fn_1_5678(unkSubStruct*, unkStruct4**, s32);
 extern void fn_1_5B34(unkSubStruct*);
 extern void fn_1_5C10(unkSubStruct*);
 extern void fn_1_5CEC(unkSubStruct*);
@@ -101,7 +83,7 @@ void fn_1_13C(omObjData* arg0) {
             HuWinInit(1);
             Hu3DLighInit();
             frand();
-            fn_1_38E0();
+            fn_1_38E0(0);
             fn_1_6778();
             fn_1_7BF0();
             fn_1_2064();
@@ -195,7 +177,7 @@ void fn_1_3FC(unkStruct* arg0) {
         fn_1_509C(arg0->unk2C[var_r30]);
     }
     fn_1_3B4C(arg0->unk20);
-    fn_1_3180(arg0->unk28);
+    fn_1_3180(&arg0->unk28->unk0);
     fn_1_83F0(arg0->unk24);
     HuMemDirectFree(arg0);
 }
@@ -260,7 +242,7 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk10 = 6;
             break;
         case 6:
-            fn_1_31D8(arg0->unk28, &arg0->unk38[0], &arg0->unk94, 1);
+            fn_1_31D8(&arg0->unk28->unk0, &arg0->unk38[0], &arg0->unk94, 1);
             arg0->unk10 = 7;
             arg0->unk14 = 0;
             break;
@@ -275,7 +257,7 @@ void fn_1_53C(unkStruct* arg0) {
 
             for (var_r29 = 0; var_r29 < 2; var_r29++) {
                 for (var_r30 = 0; var_r30 < 3; var_r30++) {
-                    m446DeckPopCard(arg0->unk28, &arg0->unk34);
+                    m446DeckPopCard(&arg0->unk28->unk0, &arg0->unk34);
                     fn_1_51B8(arg0->unk2C[var_r29], arg0->unk34, 1);
                     fn_1_2EC0(arg0->unk34, 0);
                 }
@@ -304,7 +286,7 @@ void fn_1_53C(unkStruct* arg0) {
             if (arg0->unk34->unk4 != 0) break;
             fn_1_46AC(arg0->unk20);
 
-            while (m446DeckPopCard(arg0->unk28, &arg0->unk34) != 0) {
+            while (m446DeckPopCard(&arg0->unk28->unk0, &arg0->unk34) != 0) {
                 fn_1_3BF0(arg0->unk20, arg0->unk34, 1);
             }
             fn_1_46D0(arg0->unk20);
@@ -419,7 +401,7 @@ void fn_1_C0C(unkStruct* arg0) {
 
 void fn_1_CA0(unkStruct* arg0) {
     s32 var_r29;
-    unkSubStruct *var_r30;
+    unkStruct6 *var_r30;
 
     var_r30 = arg0->unk2C[arg0->unk1C];
     switch (arg0->unk10) {
