@@ -10,19 +10,6 @@
 #include "game/frand.h"
 #include "game/minigame_seq.h"
 
-// player.c
-extern s32 fn_1_480C(void);
-extern void fn_1_4824(void);
-extern void fn_1_487C(void);
-extern unkSubStruct *fn_1_4B00(s32, unkStruct6*);
-extern void fn_1_509C(unkSubStruct*);
-extern s32 fn_1_5504(unkSubStruct*, unkStruct4*, s32);
-extern unkSubStruct *fn_1_5648(unkSubStruct*, s32, unkStruct4**);
-extern s32 fn_1_5678(unkSubStruct*, unkStruct4**, s32);
-extern void fn_1_5B34(unkSubStruct*);
-extern void fn_1_5C10(unkSubStruct*);
-extern void fn_1_5CEC(unkSubStruct*);
-extern void fn_1_637C(unkSubStruct*, s32);
 // camera.c
 extern void fn_1_6778(void);
 extern void fn_1_68D8(void);
@@ -150,7 +137,7 @@ unkStruct* m446FlowCreate(void) {
     lbl_1_bss_10 = 0;
     
     for (var_r30 = 0; var_r30 < 2; var_r30++) {
-        temp_r3->unk2C[var_r30] = fn_1_4B00(var_r30, temp_r3->unk20);
+        temp_r3->unk2C[var_r30] = m446PlayerCreate(var_r30, temp_r3->unk20);
         if (temp_r3->unk2C[var_r30]->unk68 != 0) {
             lbl_1_bss_10 += 1;
         }
@@ -258,7 +245,7 @@ void fn_1_53C(unkStruct* arg0) {
             for (var_r29 = 0; var_r29 < 2; var_r29++) {
                 for (var_r30 = 0; var_r30 < 3; var_r30++) {
                     m446DeckPopCard(&arg0->unk28->unk0, &arg0->unk34);
-                    fn_1_51B8(arg0->unk2C[var_r29], arg0->unk34, 1);
+                    m446PlayerAppendCard(arg0->unk2C[var_r29], arg0->unk34, 1);
                     fn_1_2EC0(arg0->unk34, 0);
                 }
             }
@@ -436,7 +423,7 @@ void fn_1_CA0(unkStruct* arg0) {
         case 4:
             MGSeqParamSet(arg0->unk6, 2, -1);
             arg0->unk6 = -1;
-            fn_1_5504(var_r30, arg0->unk34, 3);
+            m446PlayerRemoveCard(var_r30, arg0->unk34, 3);
             arg0->unk10 = 5;
             break;
         case 5:
@@ -489,7 +476,7 @@ void fn_1_CA0(unkStruct* arg0) {
                 if (arg0->unk34->unk0 == 4) {
                     arg0->unk10 = 13;
                 } else {
-                    fn_1_51B8(var_r30, arg0->unk34, 4);
+                    m446PlayerAppendCard(var_r30, arg0->unk34, 4);
                     arg0->unk10 = 11;
                 }
             }
@@ -530,7 +517,7 @@ void fn_1_CA0(unkStruct* arg0) {
                 for (var_r29 = 0; var_r29 < 3; var_r29++) {
                     fn_1_5648(var_r30, var_r29, &arg0->unk34);
                     if (arg0->unk34) {
-                        fn_1_5504(var_r30, arg0->unk34, 4);
+                        m446PlayerRemoveCard(var_r30, arg0->unk34, 4);
                         fn_1_3BF0(arg0->unk20, arg0->unk34, 3);
                     }
                 }
@@ -583,7 +570,7 @@ void fn_1_CA0(unkStruct* arg0) {
             if (arg0->unk14++ >= 120) {
                 for (var_r29 = 0; var_r29 < 3; var_r29++) {
                     m446DeckPopCard(arg0->unk28, &arg0->unk34);
-                    fn_1_51B8(var_r30, arg0->unk34, 1);
+                    m446PlayerAppendCard(var_r30, arg0->unk34, 1);
                     fn_1_2EC0(arg0->unk34, 0);
                 }
                 HuAudFXPlay(0x767);

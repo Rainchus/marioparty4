@@ -84,23 +84,20 @@ void fn_1_3B4C(unkStruct6* arg0) {
     unkStruct3* var_r31;
 
     var_r31 = lbl_1_bss_28;
-loop_1:
-    if (arg0 == var_r31->unk0) {
-        if (var_r31 == lbl_1_bss_28) {
-            lbl_1_bss_28 = var_r31->unk8;
+    do {
+        if (arg0 == var_r31->unk0) {
+            if (var_r31 == lbl_1_bss_28) {
+                lbl_1_bss_28 = var_r31->unk8;
+            }
+            fn_1_1F04(var_r31);
+            fn_1_1E5C(var_r31);
+            Hu3DModelKill(arg0->unk4);
+            fn_1_76E8(arg0->unk0);
+            HuMemDirectFree(arg0);
+            return;
         }
-        fn_1_1F04(var_r31);
-        fn_1_1E5C(var_r31);
-        Hu3DModelKill(arg0->unk4);
-        fn_1_76E8(arg0->unk0);
-        HuMemDirectFree(arg0);
-        return;
-    }
-    var_r31 = var_r31->unk8;
-    if (!var_r31) {
-        return;
-    }
-    goto loop_1;
+        var_r31 = var_r31->unk8;
+    } while (var_r31);
 }
 
 s32 fn_1_3BF0(unkStruct6* arg0, unkStruct4* arg1, s32 arg2) {
