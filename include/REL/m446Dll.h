@@ -146,6 +146,19 @@ typedef void (*m446Func4)(unkStruct4*);
 typedef void (*m446Func8)(unkStruct8*);
 
 ////// BSS //////
+// cursor.c
+extern Vec lbl_1_bss_8C;
+extern Vec lbl_1_bss_80;
+extern f32 lbl_1_bss_7C;
+extern Vec lbl_1_bss_70;
+extern Vec lbl_1_bss_64;
+extern f32 lbl_1_bss_60;
+extern Vec lbl_1_bss_54;
+extern Vec lbl_1_bss_48;
+extern f32 lbl_1_bss_44;
+extern f32 lbl_1_bss_40;
+extern f32 lbl_1_bss_3C;
+extern s32 lbl_1_bss_38;
 // player.c
 extern unkStruct3* lbl_1_bss_30;
 // table.c
@@ -282,3 +295,13 @@ extern void fn_1_637C(unkStruct8*, s32);
 extern void fn_1_64BC(unkStruct8*, s32, s32);
 extern void fn_1_6578(unkStruct8*);
 extern void fn_1_6620(unkStruct8*);
+// camera.c
+extern s32 fn_1_6778(void);
+extern void fn_1_68D8(void);
+extern void fn_1_68DC(void);
+extern void fn_1_6EA0(Vec*);
+extern void fn_1_6EC4(Vec*);
+extern void fn_1_6EE8(f32);
+extern void fn_1_6EF8(Vec*, Vec*, f32*, s32);
+extern s32 fn_1_708C(void);
+extern void fn_1_709C(void);
