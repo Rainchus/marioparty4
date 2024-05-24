@@ -215,6 +215,7 @@ extern f32 lbl_1_data_34;
 extern Vec lbl_1_data_38[2];
 extern Vec lbl_1_data_50[2];
 extern f32 lbl_1_data_68[2];
+extern s32 lbl_1_data_70[2][2];
 extern m446Func1 lbl_1_data_A0[5];
 // card.c
 extern m446Func4 lbl_1_data_150[3];
