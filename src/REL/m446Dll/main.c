@@ -1,4 +1,4 @@
-#include "REL/m446Dll.h"
+#include "REL/m446dll.h"
 #include "rel_sqrt_consts.h"
 
 #include "game/gamework_data.h"
@@ -10,14 +10,6 @@
 #include "game/frand.h"
 #include "game/minigame_seq.h"
 
-// camera.c
-extern void fn_1_6778(void);
-extern void fn_1_68D8(void);
-extern void fn_1_68DC(void);
-extern void fn_1_6EA0(Vec*);
-extern void fn_1_6EC4(Vec*);
-extern void fn_1_6EE8(f32);
-extern void fn_1_6EF8(Vec*, Vec*, f32*, s32);
 // cursor.c
 extern s32 fn_1_72E0(void);
 extern void fn_1_72F8(void);
