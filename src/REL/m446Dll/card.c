@@ -33,7 +33,7 @@ void fn_1_1CF8(unkStruct2* arg0) {
     HuMemDirectFree(arg0);
 }
 
-s32 fn_1_1D30(unkStruct2* arg0, unkStruct4* arg1) {
+s32 fn_1_1D30(unkStruct2* arg0, void* arg1) {
     if (arg0->unk4 <= arg0->unk8) {
         return 0;
     } else {
@@ -43,7 +43,7 @@ s32 fn_1_1D30(unkStruct2* arg0, unkStruct4* arg1) {
     }
 }
 
-s32 fn_1_1D6C(unkStruct2* arg0, unkStruct4** arg1) {
+s32 fn_1_1D6C(unkStruct2* arg0, void** arg1) {
     if (arg0->unk8 <= 0) {
         return 0;
     } else {
@@ -53,7 +53,7 @@ s32 fn_1_1D6C(unkStruct2* arg0, unkStruct4** arg1) {
     }
 }
 
-s32 fn_1_1DA8(unkStruct2* arg0, unkStruct4** arg1) {
+s32 fn_1_1DA8(unkStruct2* arg0, void** arg1) {
     if (arg0->unk8 <= 0) {
         return 0;
     } else {
@@ -174,7 +174,7 @@ s32 fn_1_2064(void) {
 }
 
 void fn_1_207C(void) {
-    void* var_r30;
+    unkStruct9* var_r30;
     unkStruct3* var_r31;
 
     var_r31 = lbl_1_bss_18;
@@ -295,24 +295,22 @@ unkStruct4* m446CardCreate(s32 arg0) {
     return temp_r31;
 }
 
-void fn_1_2688(unkStruct4* arg0) {
+void fn_1_2688(unkStruct9* arg0) {
     unkStruct3* var_r31 = lbl_1_bss_18;
-loop_1:
-    if (arg0 == var_r31->unk0) {
-        if (var_r31 == lbl_1_bss_18) {
-            lbl_1_bss_18 = var_r31->unk8;
+    do {
+        if (arg0 == var_r31->unk0) {
+            if (var_r31 == lbl_1_bss_18) {
+                lbl_1_bss_18 = var_r31->unk8;
+            }
+            fn_1_1F04(var_r31);
+            fn_1_1E5C(var_r31);
+            Hu3DModelKill(arg0->unkA[0]);
+            Hu3DModelKill(arg0->unkA[1]);
+            HuMemDirectFree(arg0);
+            return;
         }
-        fn_1_1F04(var_r31);
-        fn_1_1E5C(var_r31);
-        Hu3DModelKill(arg0->unkA);
-        Hu3DModelKill(arg0->unkC);
-        HuMemDirectFree(arg0);
-        return;
-    }
-    var_r31 = var_r31->unk8;
-    if (var_r31) {
-        goto loop_1;
-    }
+        var_r31 = var_r31->unk8;
+    } while (var_r31);
 }
 
 void fn_1_272C(unkStruct4* arg0) {

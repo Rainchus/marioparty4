@@ -50,7 +50,7 @@ unkStruct6* fn_1_39D0(void) {
     Hu3DModelAmbSet(var_r31->unk4, 0.0f, 0.0f, 0.0f);
     Hu3DModelShadowMapSet(var_r31->unk4);
     Hu3DModelLayerSet(var_r31->unk4, 0);
-    var_r31->unk0 = fn_1_74F4(0);
+    var_r31->unk0 = m446CursorCreate(0);
     fn_1_7884(var_r31->unk0);
     var_r31->unk60 = 10;
     var_r31->unk5C = 0;

@@ -10,14 +10,6 @@
 #include "game/frand.h"
 #include "game/minigame_seq.h"
 
-// stage.c
-extern s32 fn_1_7BF0(void);
-extern void fn_1_7C08(void);
-extern void fn_1_7C60(void);
-extern s32 fn_1_80C0(void);
-extern void fn_1_83F0(s32);
-extern void fn_1_84AC(s32);
-
 // bss
 s32 lbl_1_bss_14;
 s32 lbl_1_bss_10;
@@ -120,7 +112,7 @@ unkStruct* m446FlowCreate(void) {
     for (var_r30 = 0; var_r30 < 23; var_r30++) {
         temp_r3->unk38[var_r30] = 0;
     }
-    temp_r3->unk24 = fn_1_80C0();
+    temp_r3->unk24 = m446StageCreate();
     temp_r3->unk20 = fn_1_39D0();
     lbl_1_bss_10 = 0;
     
