@@ -1195,7 +1195,7 @@ config.libs = [
             Object(Matching, "REL/m446Dll/player.c"),
             Object(Matching, "REL/m446Dll/camera.c"),
             Object(Matching, "REL/m446Dll/cursor.c"),
-            Object(NonMatching, "REL/m446Dll/stage.c"),
+            Object(Matching, "REL/m446Dll/stage.c"),
         },
     ),
     Rel(

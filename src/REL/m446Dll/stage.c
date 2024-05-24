@@ -51,7 +51,7 @@ void fn_1_7C08(void) {
     if (var_r31) {
         do {
             var_r30 = var_r31->unk0;
-            fn_1_2688(var_r30);
+            fn_1_2688((unkStruct4*)var_r30); // ???
             var_r31 = var_r31->unk8;
         } while (var_r31);
     }
