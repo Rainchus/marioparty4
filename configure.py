@@ -1192,7 +1192,7 @@ config.libs = [
             Object(Matching, "REL/m446dll/card.c"),
             Object(Matching, "REL/m446dll/deck.c"),
             Object(Matching, "REL/m446dll/table.c"),
-            Object(NonMatching, "REL/m446dll/player.c"),
+            Object(Matching, "REL/m446dll/player.c"),
             Object(NonMatching, "REL/m446dll/camera.c"),
             Object(NonMatching, "REL/m446dll/cursor.c"),
             Object(NonMatching, "REL/m446dll/stage.c"),

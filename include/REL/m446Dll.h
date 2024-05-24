@@ -3,18 +3,6 @@
 #include "game/process.h"
 #include "game/object.h"
 
-typedef struct _unkSubStruct {
-    s32 unk0;
-    char unk4[0x20];
-    s32 unk24;
-    char unk28[0x3C];
-    u8 unk64;
-    u8 unk65;
-    u8 unk66;
-    s32 unk68;
-    char unk6C[0x4];
-} unkSubStruct;
-
 typedef struct _unkStruct {
     s32 unk0;
     s16 unk4;
@@ -28,23 +16,23 @@ typedef struct _unkStruct {
     struct _unkStruct6* unk20;
     s32 unk24;
     struct _unkStruct5* unk28;
-    unkSubStruct* unk2C[2];
+    struct _unkStruct8* unk2C[2];
     struct _unkStruct4* unk34;
     struct _unkStruct4* unk38[23];
     s32 unk94;
-    Process *unk98;
+    Process* unk98;
 } unkStruct;
 
 typedef struct _unkStruct2 {
-    struct _unkStruct4 **unk0;
+    struct _unkStruct4* *unk0;
     s32 unk4;
     s32 unk8;
 } unkStruct2;
 
 typedef struct _unkStruct3 {
-    void *unk0;
-    struct _unkStruct3 *unk4;
-    struct _unkStruct3 *unk8;
+    void* unk0;
+    struct _unkStruct3* unk4;
+    struct _unkStruct3* unk8;
 } unkStruct3;
 
 typedef struct _unkStruct4 {
@@ -85,10 +73,10 @@ typedef struct _unkStruct5 {
 } unkStruct5;
 
 typedef struct _unkStruct6 {
-    struct _unkStruct7 *unk0;
+    struct _unkStruct7* unk0;
     s16 unk4;
     s16 unk6;
-    unkStruct4 *unk8[21];
+    unkStruct4* unk8[21];
     s32 unk5C;
     s32 unk60;
     s32 unk64;
@@ -105,23 +93,72 @@ typedef struct _unkStruct7 {
     };
     char unk1[0x1F];
     Vec unk20;
+    char unk24[0x18];
+    f32 unk44;
 } unkStruct7;
 
-typedef void (*m446Func1)(unkStruct *);
-typedef void (*m446Func4)(unkStruct4 *);
+typedef struct _unkStruct8 {
+    s32 unk0;
+    unkStruct6* unk4;
+    unkStruct7* unk8;
+    s32 unkC;
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
+    s32 unk28;
+    unkStruct4* unk2C[3];
+    s32 unk38;
+    s16 unk3C[2];
+    s16 unk40[4];
+    Vec unk48;
+    Vec unk54;
+    f32 unk60;
+    u8 unk64;
+    u8 unk65;
+    u8 unk66;
+    u8 unk67;
+    s32 unk68;
+    s32 unk6C;
+    s32 unk70;
+    s32 unk74;
+    char unk78[0x4];
+    s32 unk7C;
+    Vec unk80;
+    Vec unk8C;
+    s32 unk98;
+    Vec unk9C;
+    Vec unkA8;
+    s32 unkB4;
+    f32 unkB8;
+    f32 unkBC;
+    f32 unkC0;
+    f32 unkC4;
+    s32 unkC8;
+    char unkCC[0x4];
+} unkStruct8;
+
+typedef void (*m446Func)(s32);
+typedef void (*m446Func1)(unkStruct*);
+typedef void (*m446Func4)(unkStruct4*);
+typedef void (*m446Func8)(unkStruct8*);
 
 ////// BSS //////
+// player.c
+extern unkStruct3* lbl_1_bss_30;
 // table.c
 extern unkStruct3* lbl_1_bss_28;
 // deck.c
-extern u32 lbl_1_bss_20[2];
+extern u32 lbl_1_bss_20;
 // card.c
 extern unkStruct3* lbl_1_bss_18;
 // main.c
 extern s32 lbl_1_bss_14;
 extern s32 lbl_1_bss_10;
 extern Process* lbl_1_bss_C;
-extern omObjData *lbl_1_bss_8;
+extern omObjData* lbl_1_bss_8;
 extern s32 lbl_1_bss_4;
 extern unkStruct* lbl_1_bss_0;
 
@@ -139,6 +176,10 @@ extern f32 lbl_1_data_68[2];
 extern m446Func1 lbl_1_data_A0[5];
 // card.c
 extern m446Func4 lbl_1_data_150[3];
+// player.c
+extern s32 lbl_1_data_228[9];
+extern s32 lbl_1_data_24C[9][4];
+extern m446Func8 lbl_1_data_2DC[5];
 
 ////// PROTOTYPES //////
 // main.c
@@ -218,3 +259,27 @@ extern void fn_1_46AC(unkStruct6*);
 extern void fn_1_46D0(unkStruct6*);
 extern s32 fn_1_4720(unkStruct6*, s32);
 extern void fn_1_4798(unkStruct6*);
+// player.c
+extern s32 fn_1_480C(void);
+extern void fn_1_4824(void);
+extern void fn_1_487C(void);
+extern unkStruct8* m446PlayerCreate(s32, unkStruct6*);
+extern void fn_1_509C(unkStruct8*);
+extern s32 m446PlayerAppendCard(unkStruct8*, unkStruct4*, s32);
+extern s32 m446PlayerRemoveCard(unkStruct8*, unkStruct4*, s32);
+extern s32 fn_1_5648(unkStruct8*, s32, unkStruct4**);
+extern s32 fn_1_5678(unkStruct8*, unkStruct4**, s32);
+extern void fn_1_5B34(unkStruct8*);
+extern void fn_1_5B48(unkStruct8*);
+extern void fn_1_5C10(unkStruct8*);
+extern void fn_1_5C24(unkStruct8*);
+extern void fn_1_5CEC(unkStruct8*);
+extern void fn_1_5D00(unkStruct8*);
+extern void fn_1_5E54(unkStruct8*, s32);
+extern void fn_1_6074(unkStruct8*);
+extern void fn_1_6264(unkStruct8*, Vec*, s32);
+extern void fn_1_62F0(unkStruct8*, Vec*, s32);
+extern void fn_1_637C(unkStruct8*, s32);
+extern void fn_1_64BC(unkStruct8*, s32, s32);
+extern void fn_1_6578(unkStruct8*);
+extern void fn_1_6620(unkStruct8*);

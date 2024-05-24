@@ -3,7 +3,7 @@
 #include "math.h"
 
 // bss
-u32 lbl_1_bss_20[2];
+u32 lbl_1_bss_20;
 
 // data
 static const s32 lbl_1_rodata_D0[5][2] = {
@@ -178,9 +178,9 @@ void fn_1_38B0(unkStruct2** arg0) {
 }
 
 void fn_1_38E0(u32 arg0) {
-    lbl_1_bss_20[0] = arg0;
+    lbl_1_bss_20 = arg0;
 }
 
 s32 fn_1_38F0(void) {
-    return ((lbl_1_bss_20[0] = (lbl_1_bss_20[0] * 0x41C64E6D) + 0x3039) >> 16) % 32768;
+    return ((lbl_1_bss_20 = (lbl_1_bss_20 * 0x41C64E6D) + 0x3039) >> 16) % 32768;
 }
