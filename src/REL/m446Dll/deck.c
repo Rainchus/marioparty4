@@ -39,7 +39,7 @@ unkStruct5* fn_1_3064(void) {
     return temp_r3;
 }
 
-void fn_1_3180(unkStruct2** arg0) { // typing nightmare
+void fn_1_3180(unkStruct2** arg0) {
     unkStruct4* sp8;
 
     while (fn_1_1D6C(*arg0, &sp8) != 0) {

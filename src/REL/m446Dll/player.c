@@ -9,7 +9,7 @@
 #include "game/objsub.h"
 
 // cursor.c
-extern unkStruct7 *fn_1_74F4(s32);
+extern unkStruct7 *m446CursorCreate(s32);
 extern void fn_1_76E8(unkStruct7*);
 extern void fn_1_77C8(unkStruct7*, u8);
 
@@ -167,7 +167,7 @@ unkStruct8* m446PlayerCreate(s32 arg0, unkStruct6* arg1) {
     for (var_r30 = 0; var_r30 < 3; var_r30++) {
         var_r31->unk2C[var_r30] = NULL;
     }
-    var_r31->unk8 = fn_1_74F4(1);
+    var_r31->unk8 = m446CursorCreate(1);
     if (!var_r31->unk8) {
         HuMemDirectFree(var_r31);
         return NULL;

@@ -3,6 +3,7 @@
 #include "game/process.h"
 #include "game/object.h"
 
+////// TYPES //////
 typedef struct _unkStruct {
     s32 unk0;
     s16 unk4;
@@ -14,7 +15,7 @@ typedef struct _unkStruct {
     s32 unk18;
     s32 unk1C;
     struct _unkStruct6* unk20;
-    s32 unk24;
+    struct _unkStruct9* unk24;
     struct _unkStruct5* unk28;
     struct _unkStruct8* unk2C[2];
     struct _unkStruct4* unk34;
@@ -24,7 +25,7 @@ typedef struct _unkStruct {
 } unkStruct;
 
 typedef struct _unkStruct2 {
-    struct _unkStruct4* *unk0;
+    void** unk0;
     s32 unk4;
     s32 unk8;
 } unkStruct2;
@@ -40,8 +41,7 @@ typedef struct _unkStruct4 {
     s32 unk4;
     u8 unk8;
     u8 unk9;
-    s16 unkA;
-    s16 unkC;
+    s16 unkA[2];
     s16 unkE;
     Vec unk10;
     Vec unk1C;
@@ -145,12 +145,34 @@ typedef struct _unkStruct8 {
     s32 unkC8;
 } unkStruct8;
 
+typedef struct _unkStruct9 {
+    s16 unk0[5];
+    s16 unkA[2];
+    s16 unkE;
+    f32 unk10;
+    f32 unk14;
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
+    s32 unk28;
+    s32 unk2C;
+} unkStruct9;
+
+typedef struct _unkStruct10 {
+    Vec unk0;
+    Vec unkC;
+    GXColor unk18;
+} unkStruct10;
+
 typedef void (*m446Func)(s32);
 typedef void (*m446Func1)(unkStruct*);
 typedef void (*m446Func4)(unkStruct4*);
 typedef void (*m446Func8)(unkStruct8*);
 
 ////// BSS //////
+// stage.c
+extern unkStruct3* lbl_1_bss_A0;
 // cursor.c
 extern unkStruct3* lbl_1_bss_98;
 // camera.c
@@ -193,6 +215,7 @@ extern f32 lbl_1_data_34;
 extern Vec lbl_1_data_38[2];
 extern Vec lbl_1_data_50[2];
 extern f32 lbl_1_data_68[2];
+extern s32 lbl_1_data_70[2][2];
 extern m446Func1 lbl_1_data_A0[5];
 // card.c
 extern m446Func4 lbl_1_data_150[3];
@@ -204,6 +227,10 @@ extern m446Func8 lbl_1_data_2DC[5];
 extern Vec lbl_1_data_370;
 // cursor.c
 extern s32 lbl_1_data_3C8[9];
+// stage.c
+extern unkStruct10 lbl_1_data_460[3];
+extern Vec lbl_1_data_424[5];
+extern Vec lbl_1_data_4B4[3];
 
 ////// PROTOTYPES //////
 // main.c
@@ -225,9 +252,9 @@ extern void fn_1_19D4(void);
 // card.c
 extern unkStruct2* fn_1_1C64(s32);
 extern void fn_1_1CF8(unkStruct2*);
-extern s32 fn_1_1D30(unkStruct2*, unkStruct4*);
+extern s32 fn_1_1D30(unkStruct2*, void*);
 extern s32 fn_1_1D6C(unkStruct2*, unkStruct4**);
-extern s32 fn_1_1DA8(unkStruct2*, unkStruct4**);
+extern s32 fn_1_1DA8(unkStruct2*, void**);
 extern BOOL fn_1_1DDC(unkStruct2*);
 extern s32 fn_1_1DEC(unkStruct2*);
 extern unkStruct3* fn_1_1DF4(void*);
@@ -320,7 +347,7 @@ extern void fn_1_709C(void);
 extern s32 fn_1_72E0(void);
 extern void fn_1_72F8(void);
 extern void fn_1_7350(void);
-extern unkStruct7* fn_1_74F4(s32);
+extern unkStruct7* m446CursorCreate(s32);
 extern void fn_1_76E8(unkStruct7*);
 extern void fn_1_77C8(unkStruct7*, u8);
 extern void fn_1_7884(unkStruct7*);
@@ -328,3 +355,12 @@ extern void fn_1_7908(unkStruct7*, Vec*, s32);
 extern void fn_1_799C(unkStruct7*);
 extern void fn_1_7A38(unkStruct7*);
 extern void fn_1_7AB4(unkStruct7*);
+// stage.c
+extern s32 fn_1_7BF0(void);
+extern void fn_1_7C08(void);
+extern void fn_1_7C60(void);
+extern unkStruct9* m446StageCreate(void);
+extern void fn_1_83F0(unkStruct9*);
+extern void fn_1_84AC(unkStruct9*);
+extern void fn_1_852C(unkStruct9*);
+extern void fn_1_860C(unkStruct9*);

@@ -33,7 +33,7 @@ void fn_1_1CF8(unkStruct2* arg0) {
     HuMemDirectFree(arg0);
 }
 
-s32 fn_1_1D30(unkStruct2* arg0, unkStruct4* arg1) {
+s32 fn_1_1D30(unkStruct2* arg0, void* arg1) {
     if (arg0->unk4 <= arg0->unk8) {
         return 0;
     } else {
@@ -53,7 +53,7 @@ s32 fn_1_1D6C(unkStruct2* arg0, unkStruct4** arg1) {
     }
 }
 
-s32 fn_1_1DA8(unkStruct2* arg0, unkStruct4** arg1) {
+s32 fn_1_1DA8(unkStruct2* arg0, void** arg1) {
     if (arg0->unk8 <= 0) {
         return 0;
     } else {
@@ -174,7 +174,7 @@ s32 fn_1_2064(void) {
 }
 
 void fn_1_207C(void) {
-    void* var_r30;
+    unkStruct4* var_r30;
     unkStruct3* var_r31;
 
     var_r31 = lbl_1_bss_18;
@@ -271,14 +271,14 @@ unkStruct4* m446CardCreate(s32 arg0) {
     temp_r31->unk74 = 0;
     temp_r31->unk78 = 0;
     temp_r31->unk7C = 0;
-    temp_r31->unkA = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_rodata_58[arg0], 0x10000000, HEAP_DATA));
-    Hu3DModelAmbSet(temp_r31->unkA, 0.0f, 0.0f, 0.0f);
-    Hu3DModelShadowSet(temp_r31->unkA);
-    Hu3DModelLayerSet(temp_r31->unkA, 0);
-    temp_r31->unkC = Hu3DModelCreate(HuDataSelHeapReadNum(lbl_1_rodata_6C[arg0], 0x10000000, HEAP_DATA));
-    Hu3DModelAmbSet(temp_r31->unkC, 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(temp_r31->unkC, 0x40000001U);
-    Hu3DModelLayerSet(temp_r31->unkA, 0);
+    temp_r31->unkA[0] = Hu3DModelCreateFile(lbl_1_rodata_58[arg0]);
+    Hu3DModelAmbSet(temp_r31->unkA[0], 0.0f, 0.0f, 0.0f);
+    Hu3DModelShadowSet(temp_r31->unkA[0]);
+    Hu3DModelLayerSet(temp_r31->unkA[0], 0);
+    temp_r31->unkA[1] = Hu3DModelCreateFile(lbl_1_rodata_6C[arg0]);
+    Hu3DModelAmbSet(temp_r31->unkA[1], 1.0f, 1.0f, 1.0f);
+    Hu3DModelAttrSet(temp_r31->unkA[1], 0x40000001U);
+    Hu3DModelLayerSet(temp_r31->unkA[0], 0);
     fn_1_2A58(temp_r31);
     fn_1_2EC0(temp_r31, 1);
     temp_r30 = fn_1_1DF4(temp_r31);
@@ -297,22 +297,20 @@ unkStruct4* m446CardCreate(s32 arg0) {
 
 void fn_1_2688(unkStruct4* arg0) {
     unkStruct3* var_r31 = lbl_1_bss_18;
-loop_1:
-    if (arg0 == var_r31->unk0) {
-        if (var_r31 == lbl_1_bss_18) {
-            lbl_1_bss_18 = var_r31->unk8;
+    do {
+        if (arg0 == var_r31->unk0) {
+            if (var_r31 == lbl_1_bss_18) {
+                lbl_1_bss_18 = var_r31->unk8;
+            }
+            fn_1_1F04(var_r31);
+            fn_1_1E5C(var_r31);
+            Hu3DModelKill(arg0->unkA[0]);
+            Hu3DModelKill(arg0->unkA[1]);
+            HuMemDirectFree(arg0);
+            return;
         }
-        fn_1_1F04(var_r31);
-        fn_1_1E5C(var_r31);
-        Hu3DModelKill(arg0->unkA);
-        Hu3DModelKill(arg0->unkC);
-        HuMemDirectFree(arg0);
-        return;
-    }
-    var_r31 = var_r31->unk8;
-    if (var_r31) {
-        goto loop_1;
-    }
+        var_r31 = var_r31->unk8;
+    } while (var_r31);
 }
 
 void fn_1_272C(unkStruct4* arg0) {
@@ -369,12 +367,12 @@ void fn_1_29B4(unkStruct4* arg0, f32 arg8, s32 arg1) {
 }
 
 void fn_1_2A1C(unkStruct4* arg0) {
-    Hu3DModelAttrReset(arg0->unkC, 1);
+    Hu3DModelAttrReset(arg0->unkA[1], 1);
     arg0->unk6C = 1;
 }
 
 void fn_1_2A58(unkStruct4* arg0) {
-    Hu3DModelAttrSet(arg0->unkC, 1);
+    Hu3DModelAttrSet(arg0->unkA[1], 1);
     arg0->unk6C = 0;
 }
 
@@ -389,7 +387,7 @@ void fn_1_2AA8(unkStruct4* arg0) {
     switch (arg0->unk8) {
         case 0:
             arg0->unk8 = 1;
-            Hu3DModelAttrReset(arg0->unkC, 1);
+            Hu3DModelAttrReset(arg0->unkA[1], 1);
             arg0->unk6C = 1;
             arg0->unk8 = 1; // ?
         case 1:
@@ -457,7 +455,7 @@ void fn_1_2AA8(unkStruct4* arg0) {
             if (arg0->unk78 != 0) break;
             arg0->unk4 = 0;
             arg0->unk8 = 0;
-            Hu3DModelAttrSet(arg0->unkC, 1);
+            Hu3DModelAttrSet(arg0->unkA[1], 1);
             arg0->unk6C = 0;
             return;
     }
@@ -502,25 +500,25 @@ void fn_1_2DA8(unkStruct4* arg0) {
 
 void fn_1_2EC0(unkStruct4* arg0, s32 arg1) {
     if (arg1 != 0) {
-        Hu3DModelShadowDispOn(arg0->unkA);
-        Hu3DModelAmbSet(arg0->unkA, 0.0f, 0.0f, 0.0f);
+        Hu3DModelShadowDispOn(arg0->unkA[0]);
+        Hu3DModelAmbSet(arg0->unkA[0], 0.0f, 0.0f, 0.0f);
         return;
     }
-    Hu3DModelShadowDispOff(arg0->unkA);
-    Hu3DModelAmbSet(arg0->unkA, 1.0f, 1.0f, 1.0f);
+    Hu3DModelShadowDispOff(arg0->unkA[0]);
+    Hu3DModelAmbSet(arg0->unkA[0], 1.0f, 1.0f, 1.0f);
 }
 
 void fn_1_2F64(unkStruct4* arg0) {
     if ((arg0->unk58 > 1.0f) || (arg0->unk58 < 1.0f)) {
-        Hu3DModelLayerSet(arg0->unkA, 1);
-        Hu3DModelLayerSet(arg0->unkC, 1);
+        Hu3DModelLayerSet(arg0->unkA[0], 1);
+        Hu3DModelLayerSet(arg0->unkA[1], 1);
     } else {
-        Hu3DModelLayerSet(arg0->unkA, 0);
-        Hu3DModelLayerSet(arg0->unkC, 0);
+        Hu3DModelLayerSet(arg0->unkA[0], 0);
+        Hu3DModelLayerSet(arg0->unkA[1], 0);
     }
-    Hu3DModelPosSet(arg0->unkA, arg0->unk10.x, arg0->unk10.y, arg0->unk10.z);
-    Hu3DModelPosSet(arg0->unkC, arg0->unk10.x, 0.1f + arg0->unk10.y, arg0->unk10.z);
-    Hu3DModelScaleSet(arg0->unkA, arg0->unk58, arg0->unk58, arg0->unk58);
-    Hu3DModelScaleSet(arg0->unkC, arg0->unk58, arg0->unk58, arg0->unk58);
-    Hu3DModelRotSet(arg0->unkA, arg0->unk34.x, arg0->unk34.y, arg0->unk34.z);
+    Hu3DModelPosSet(arg0->unkA[0], arg0->unk10.x, arg0->unk10.y, arg0->unk10.z);
+    Hu3DModelPosSet(arg0->unkA[1], arg0->unk10.x, 0.1f + arg0->unk10.y, arg0->unk10.z);
+    Hu3DModelScaleSet(arg0->unkA[0], arg0->unk58, arg0->unk58, arg0->unk58);
+    Hu3DModelScaleSet(arg0->unkA[1], arg0->unk58, arg0->unk58, arg0->unk58);
+    Hu3DModelRotSet(arg0->unkA[0], arg0->unk34.x, arg0->unk34.y, arg0->unk34.z);
 }

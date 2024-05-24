@@ -65,7 +65,7 @@ void fn_1_7350(void) {
     }
 }
 
-unkStruct7* fn_1_74F4(s32 arg0) {
+unkStruct7* m446CursorCreate(s32 arg0) {
     s32 var_r30;
     unkStruct7* var_r31;
     unkStruct3* var_r29;
