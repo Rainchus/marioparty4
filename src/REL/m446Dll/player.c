@@ -518,7 +518,7 @@ void fn_1_5B34(unkStruct8* arg0) {
     arg0->unk1C = 0;
 }
 
-const s32 lbl_1_rodata_1C8[4] = {0, 1, 2, 3};
+static const s32 lbl_1_rodata_1C8[4] = {0, 1, 2, 3};
 
 void fn_1_5B48(unkStruct8* arg0) {
     switch (arg0->unk1C) {
