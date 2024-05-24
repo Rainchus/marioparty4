@@ -70,7 +70,7 @@ void fn_1_13C(omObjData* arg0) {
             HuWinInit(1);
             Hu3DLighInit();
             frand();
-            fn_1_38E0(0);
+            fn_1_38E0();
             fn_1_6778();
             fn_1_7BF0();
             fn_1_2064();
@@ -388,7 +388,7 @@ void fn_1_C0C(unkStruct* arg0) {
 
 void fn_1_CA0(unkStruct* arg0) {
     s32 var_r29;
-    unkStruct6 *var_r30;
+    unkStruct8 *var_r30;
 
     var_r30 = arg0->unk2C[arg0->unk1C];
     switch (arg0->unk10) {
@@ -512,7 +512,7 @@ void fn_1_CA0(unkStruct* arg0) {
             break;
         case 15:
             if (arg0->unk34->unk70 == 0 && arg0->unk34->unk78 == 0 && arg0->unk34->unk74 == 0 && arg0->unk34->unk4 == 0) {
-                fn_1_3EB4(var_r30, arg0->unk34, 4);
+                fn_1_3EB4((unkStruct6 *)var_r30, arg0->unk34, 4);
                 fn_1_2688(arg0->unk34);
                 for (var_r29 = 0; var_r29 < 3; var_r29++) {
                     fn_1_5648(var_r30, var_r29, &arg0->unk34);
@@ -554,7 +554,7 @@ void fn_1_CA0(unkStruct* arg0) {
             break;
         case 18:
             if (arg0->unk14++ >= 60) {
-                fn_1_31D8(arg0->unk28, &arg0->unk38[0], &arg0->unk94, 1);
+                fn_1_31D8((unkStruct2 **)arg0->unk28, &arg0->unk38[0], &arg0->unk94, 1);
                 arg0->unk10 = 19;
                 arg0->unk14 = 0;
             }
@@ -569,7 +569,7 @@ void fn_1_CA0(unkStruct* arg0) {
         case 20:
             if (arg0->unk14++ >= 120) {
                 for (var_r29 = 0; var_r29 < 3; var_r29++) {
-                    m446DeckPopCard(arg0->unk28, &arg0->unk34);
+                    m446DeckPopCard((unkStruct2 **)arg0->unk28, &arg0->unk34);
                     m446PlayerAppendCard(var_r30, arg0->unk34, 1);
                     fn_1_2EC0(arg0->unk34, 0);
                 }
@@ -591,7 +591,7 @@ void fn_1_CA0(unkStruct* arg0) {
             if (arg0->unk34->unk70 == 0 && arg0->unk34->unk78 == 0 && arg0->unk34->unk74 == 0 && arg0->unk34->unk4 == 0) {
                 fn_1_46AC(arg0->unk20);
 
-                while (m446DeckPopCard(arg0->unk28, &arg0->unk34)) {
+                while (m446DeckPopCard((unkStruct2 **)arg0->unk28, &arg0->unk34)) {
                     fn_1_3BF0(arg0->unk20, arg0->unk34, 1);
                 }
                 fn_1_46D0(arg0->unk20);
@@ -683,7 +683,7 @@ void fn_1_19D4(void) {
     }
     if (var_r30 == 0) {
         var_r29 = 0;
-        while (temp_r27 = lbl_1_rodata_18[var_r29++], temp_r27 != 0) {
+        while ((temp_r27 = lbl_1_rodata_18[var_r29++]) != 0) {
             HuWinMesColSet(temp_r3, 0);
             HuWinMesSet(temp_r3, temp_r27);
             fn_1_18EC(temp_r3, 0x3C);

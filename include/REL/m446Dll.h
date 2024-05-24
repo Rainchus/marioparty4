@@ -242,7 +242,6 @@ extern void fn_1_34A0(unkStruct5*, unkStruct4**, s32, s32);
 extern s32 m446DeckPushCard(unkStruct5*, unkStruct4*, s32);
 extern s32 m446DeckPopCard(unkStruct2**, unkStruct4**);
 extern void fn_1_38B0(unkStruct2**);
-extern void fn_1_38E0(u32);
 extern s32 fn_1_38F0(void);
 // table.c
 extern s32 fn_1_3924(void);
