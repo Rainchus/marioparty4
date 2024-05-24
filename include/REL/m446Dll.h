@@ -91,10 +91,16 @@ typedef struct _unkStruct7 {
         s8 field00_bit2 : 1;
         s8 field00_bit3 : 1;
     };
-    char unk1[0x1F];
+    s32 unk4;
+    s32 unk8;
+    s16 unkC[9];
     Vec unk20;
-    char unk24[0x18];
+    Vec unk2C;
+    Vec unk38;
     f32 unk44;
+    u8 unk48;
+    f32 unk4C;
+    f32 unk50;
 } unkStruct7;
 
 typedef struct _unkStruct8 {
@@ -137,7 +143,6 @@ typedef struct _unkStruct8 {
     f32 unkC0;
     f32 unkC4;
     s32 unkC8;
-    char unkCC[0x4];
 } unkStruct8;
 
 typedef void (*m446Func)(s32);
@@ -147,6 +152,8 @@ typedef void (*m446Func8)(unkStruct8*);
 
 ////// BSS //////
 // cursor.c
+extern unkStruct3* lbl_1_bss_98;
+// camera.c
 extern Vec lbl_1_bss_8C;
 extern Vec lbl_1_bss_80;
 extern f32 lbl_1_bss_7C;
@@ -193,6 +200,10 @@ extern m446Func4 lbl_1_data_150[3];
 extern s32 lbl_1_data_228[9];
 extern s32 lbl_1_data_24C[9][4];
 extern m446Func8 lbl_1_data_2DC[5];
+// camera.c
+extern Vec lbl_1_data_370;
+// cursor.c
+extern s32 lbl_1_data_3C8[9];
 
 ////// PROTOTYPES //////
 // main.c
@@ -305,3 +316,15 @@ extern void fn_1_6EE8(f32);
 extern void fn_1_6EF8(Vec*, Vec*, f32*, s32);
 extern s32 fn_1_708C(void);
 extern void fn_1_709C(void);
+// cursor.c
+extern s32 fn_1_72E0(void);
+extern void fn_1_72F8(void);
+extern void fn_1_7350(void);
+extern unkStruct7* fn_1_74F4(s32);
+extern void fn_1_76E8(unkStruct7*);
+extern void fn_1_77C8(unkStruct7*, u8);
+extern void fn_1_7884(unkStruct7*);
+extern void fn_1_7908(unkStruct7*, Vec*, s32);
+extern void fn_1_799C(unkStruct7*);
+extern void fn_1_7A38(unkStruct7*);
+extern void fn_1_7AB4(unkStruct7*);

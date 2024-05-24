@@ -5,12 +5,6 @@
 // bss
 unkStruct3* lbl_1_bss_28;
 
-// cursor.c
-extern unkStruct7 *fn_1_74F4(s32);
-extern void fn_1_76E8(unkStruct7*);
-extern void fn_1_77C8(void*, u8);
-extern void fn_1_7884(unkStruct7*);
-
 s32 fn_1_3924(void) {
     lbl_1_bss_28 = NULL;
     return 1;

@@ -10,10 +10,6 @@
 #include "game/frand.h"
 #include "game/minigame_seq.h"
 
-// cursor.c
-extern s32 fn_1_72E0(void);
-extern void fn_1_72F8(void);
-extern void fn_1_7350(void);
 // stage.c
 extern s32 fn_1_7BF0(void);
 extern void fn_1_7C08(void);
