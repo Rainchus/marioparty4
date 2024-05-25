@@ -11,6 +11,8 @@ typedef struct vec2f {
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))
 
+#define VECDistanceXYZ(a, b) sqrtf((((a)->x-(b)->x)*((a)->x-(b)->x))+(((a)->y-(b)->y)*((a)->y-(b)->y))+(((a)->z-(b)->z)*((a)->z-(b)->z)))
+
 #define VECDistanceXZ(a, b) sqrtf((((a)->x-(b)->x)*((a)->x-(b)->x))+(((a)->z-(b)->z)*((a)->z-(b)->z)))
 #define VECDistanceZY(a, b) sqrtf((((a)->z-(b)->z)*((a)->z-(b)->z))+(((a)->y-(b)->y)*((a)->y-(b)->y)))
 #define VECSumXZ(a, b) sqrtf((((a)->x+(b)->x)*((a)->x+(b)->x))+(((a)->z+(b)->z)*((a)->z+(b)->z)))
