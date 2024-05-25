@@ -1172,8 +1172,8 @@ config.libs = [
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m444dll/main.c"),
-            Object(NonMatching, "REL/m444dll/pinball.c"),
-            Object(NonMatching, "REL/m444dll/datalist.c"),
+            Object(Matching, "REL/m444dll/pinball.c"),
+            Object(Matching, "REL/m444dll/datalist.c"),
             Object(NonMatching, "REL/m444dll/shadow.c"),
         },
     ),
