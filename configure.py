@@ -932,7 +932,7 @@ config.libs = [
         "m414Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m414Dll/main.c"),
+            Object(Matching, "REL/m414Dll/main.c"),
         },
     ),
     Rel(
