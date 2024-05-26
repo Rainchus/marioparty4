@@ -8,6 +8,10 @@ extern float lbl_2_bss_12C;
 extern float lbl_2_bss_128;
 extern float lbl_2_bss_124;
 extern s16 lbl_2_bss_120;
+extern Vec lbl_2_bss_6C;
+extern Vec lbl_2_bss_60;
+extern float lbl_2_bss_50;
+extern omObjData **lbl_2_bss_118;
 
 typedef struct m401_work_player {
 	s16 unk0;
@@ -59,6 +63,10 @@ typedef struct unkwork_10A88 {
 	float unk1C;
 } UnkWork10A88;
 
+void fn_2_169C(s16 arg0);
+
+void fn_2_A8A4(omObjData *object, float x, float y, float z);
+
 void fn_2_10240(Vec *arg0, Vec *arg1);
 void fn_2_1041C(void);
 void fn_2_10710(void);
@@ -66,7 +74,7 @@ void fn_2_10710(void);
 void fn_2_1079C(void);
 omObjData *fn_2_10A88(Vec *arg0, s16 arg1);
 
-void fn_2_141B0(void);
+omObjData *fn_2_141B0(void);
 omObjData *fn_2_14640(Process *objman);
 
 #endif
