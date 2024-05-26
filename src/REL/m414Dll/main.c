@@ -90,6 +90,15 @@ typedef struct UnkM414Struct3 {
     float unk_08;
 } UnkM414Struct3; // size unknown
 
+typedef struct UnkM414Struct4 {
+    UnkM414BssF0Struct *unk_00;
+    s32 unk_04;
+    union {
+        s32 unk_08;
+        s32 *unk_08_ptr;
+    };
+} UnkM414Struct4; // size unknown
+
 s16 lbl_1_bss_A12;
 s16 lbl_1_bss_A10;
 s16 lbl_1_bss_990[16][4];
@@ -303,7 +312,9 @@ void fn_1_CD8(s32 arg0, s32 arg1, float arg8)
     var_r30->user_data = var_r31;
     var_r31->unk_00 = arg0;
     var_r31->unk_04 = arg1;
-    var_r31->unk_08 = arg8;
+	var_r31->unk_08 = arg8;
+	(void)var_r31;
+	(void)var_r31;
 }
 
 void fn_1_D54(ModelData *arg0, ParticleData *arg1, Mtx arg2, s32 arg3)
@@ -1266,7 +1277,6 @@ inline s32 fn_1_4C74_inline(UnkM414BssF0Struct *arg0)
     s32 var_r29;
     s32 var_r27;
     s32 var_r26;
-    s32 var_r25;
 
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         sp8[var_r31] = -1;
@@ -1285,20 +1295,17 @@ inline s32 fn_1_4C74_inline(UnkM414BssF0Struct *arg0)
         if (sp8[var_r31] == -1) {
             break;
         }
-        if (var_r29 - sp8[var_r31] >= 0) {
-            var_r25 = var_r29 - sp8[var_r31];
-        } else {
-            var_r25 = -(var_r29 - sp8[var_r31]);
-        }
-        var_r27 = var_r25;
+        var_r27 = ABS_INV(var_r29 - sp8[var_r31]);
         if (var_r30 > var_r27) {
             var_r30 = var_r27;
             var_r26 = var_r31;
         }
     }
+
     if (!var_r31) {
         return 0;
     }
+	
     return var_r29 - sp8[var_r26];
 }
 
@@ -1408,6 +1415,29 @@ s8 fn_1_5554(s32 arg0, s32 arg1) // identical to m411Dll/main.c::fn_1_5D58
     return var_r30;
 }
 
+
+static inline s8 fn_1_5554_inline(s32 arg0, s32 arg1) // identical to m411Dll/main.c::fn_1_5D58
+{
+    UnkM414BssF0Struct *var_r31;
+    s8 var_r30;
+    var_r31 = &lbl_1_bss_F0[arg0];
+    var_r30 = 0;
+    if (lbl_1_bss_98C < 4) {
+        if (!GWPlayerCfg[arg0].iscom) {
+            if (arg1) {
+                var_r30 = HuPadStkY[var_r31->unk_4C];
+            } else {
+                var_r30 = HuPadStkX[var_r31->unk_4C];
+            }
+        } else if (arg1) {
+            var_r30 = var_r31->unk_1FD;
+        } else {
+            var_r30 = var_r31->unk_1FC;
+        }
+    }
+    return var_r30;
+}
+
 u8 fn_1_5624(s32 arg0, s32 arg1)
 {
     UnkM414BssF0Struct *var_r31;
@@ -1434,6 +1464,29 @@ u8 fn_1_5624(s32 arg0, s32 arg1)
     return var_r30;
 }
 
+static inline u8 fn_1_5624_inline(s32 arg0, s32 arg1)
+{
+    UnkM414BssF0Struct *var_r31;
+    s8 var_r30;
+
+    var_r31 = &lbl_1_bss_F0[arg0];
+    var_r30 = 0;
+    if (lbl_1_bss_98C < 4) {
+        if (!GWPlayerCfg[arg0].iscom) {
+            if (arg1) {
+                var_r30 = HuPadTrigR[var_r31->unk_4C];
+            } else {
+                var_r30 = HuPadTrigL[var_r31->unk_4C];
+            }
+        } else if (arg1) {
+            var_r30 = var_r31->unk_1FE;
+        } else {
+			var_r30 = var_r31->unk_1FF;
+        }
+    }
+    return var_r30;
+}
+
 u16 fn_1_56FC(s32 arg0)
 {
     UnkM414BssF0Struct *var_r31;
@@ -1448,6 +1501,10 @@ u16 fn_1_56FC(s32 arg0)
             var_r30 = var_r31->unk_200;
         }
     }
+	(void)var_r31;
+	(void)var_r31;
+	(void)var_r31;
+	(void)var_r31;
     return var_r30;
 }
 
@@ -1524,7 +1581,7 @@ void fn_1_5A3C(void)
     float var_f27;
     float var_f26;
 
-    UnkM414Struct2 *var_r31;
+    UnkM414Struct4 *var_r31;
     s32 var_r30;
     s32 var_r29;
     s32 var_r28;
@@ -1552,7 +1609,7 @@ void fn_1_5A3C(void)
         Hu3DModelAttrSet(var_r31->unk_00->unk_00[var_r30], 0x40000002);
     }
     for (var_r30 = 0, var_f28 = 0.0f; var_r30 < 10; var_r30++, var_f28 += 9.0f) {
-        var_f27 = (var_f29 * 0.5f) * (1.0 - cosd(var_f28));
+        var_f27 = (var_f29/2) * (1.0 - cosd(var_f28));
         lbl_1_bss_920[var_r28] = var_f26 + var_f27;
         for (var_r29 = 0; var_r29 < 9; var_r29++) {
             if (!var_r31->unk_04) {
@@ -1566,7 +1623,7 @@ void fn_1_5A3C(void)
         HuPrcVSleep();
     }
     for (var_r30 = 0, var_f28 = 0.0f; var_r30 < 10; var_r30++, var_f28 += 9.0f) {
-        var_f27 = (var_f29 * 0.5f) + (var_f29 * 0.5f * sind(var_f28));
+        var_f27 = (var_f29/2) + ((var_f29/2) * sind(var_f28));
         lbl_1_bss_920[var_r28] = var_f26 + var_f27;
         for (var_r29 = 0; var_r29 < 9; var_r29++) {
             if (!var_r31->unk_04) {
@@ -1603,7 +1660,7 @@ void fn_1_5EE8(void)
     float var_f29;
     float var_f28;
 
-    UnkM414Struct2 *var_r31;
+    UnkM414Struct4 *var_r31;
     s32 var_r30;
     s32 var_r29;
 
@@ -1624,11 +1681,11 @@ void fn_1_5EE8(void)
         var_f31 += 360.0f;
     }
     for (var_r30 = 0, var_f30 = 0.0f; var_r30 < 15; var_r30++, var_f30 += 6.0f) {
-        var_r31->unk_00->unk_70 = var_f28 + ((var_f29 * 0.5f) * (1.0 - cosd(var_f30)));
+        var_r31->unk_00->unk_70 = var_f28 + ((var_f29/2) * (1.0 - cosd(var_f30)));
         HuPrcVSleep();
     }
     for (var_r30 = 0, var_f30 = 0.0f; var_r30 < 15; var_r30++, var_f30 += 6.0f) {
-        var_r31->unk_00->unk_70 = (var_f29 * 0.5f) + (var_f28 + (var_f29 * 0.5f * sind(var_f30)));
+        var_r31->unk_00->unk_70 = (var_f29/2) + (var_f28 + ((var_f29/2) * sind(var_f30)));
         HuPrcVSleep();
     }
     var_r31->unk_00->unk_70 = var_f31;
@@ -1681,6 +1738,8 @@ s32 fn_1_654C(s32 arg0, s32 arg1)
     if (var_r31 >= 16) {
         var_r31 = -1;
     }
+	(void)var_r31;
+	(void)var_r31;
     return var_r31;
 }
 
@@ -1697,7 +1756,7 @@ s32 fn_1_65DC(UnkM414BssF0Struct *arg0, s32 arg1)
 
 void fn_1_6644(void)
 {
-    UnkM414Struct2 sp9C;
+    UnkM414Struct4 sp9C;
     UnkM414Struct2 sp8C;
 
     UnkM414BssF0Struct *var_r31;
@@ -1753,7 +1812,7 @@ void fn_1_6644(void)
             Hu3DMotionTimeSet(var_r31->unk_20, Hu3DMotionMaxTimeGet(var_r31->unk_20));
             Hu3DMotionSpeedSet(var_r31->unk_20, 2.0f);
         }
-        if ((fn_1_56FC(var_r31->unk_44) & 256) && !var_r31->unk_58) {
+        if ((fn_1_56FC(var_r31->unk_44) & PAD_BUTTON_A) && !var_r31->unk_58) {
             if (fn_1_654C(var_r31->unk_44, 0) != -1) {
                 if (var_r31->unk_1F4 == 1) {
                     var_r29 = fn_1_654C(var_r31->unk_44, 0);
@@ -1771,23 +1830,18 @@ void fn_1_6644(void)
                         Hu3DMotionSpeedSet(var_r31->unk_20, 1.0f);
                         var_r30 = HuPrcChildCreate(fn_1_6134, 8192, 8192, 0, HuPrcCurrentGet());
                         var_r30->user_data = var_r31;
-                        if (lbl_1_bss_978 == lbl_1_bss_938[var_r29]) {
-                            if (fn_1_65DC(var_r31, var_r29)) {
-                                Hu3DModelAttrReset(var_r31->unk_D4[var_r29], 0x40000186);
-                                var_r30 = HuPrcChildCreate(fn_1_42AC, 8192, 8192, 0, HuPrcCurrentGet());
-                                var_r30->user_data = &sp8C;
-                                sp8C.unk_00 = var_r31;
-                                sp8C.unk_08 = 0;
-                                sp8C.unk_0C = 1;
-                                sp8C.unk_04 = fn_1_654C(var_r31->unk_44, sp8C.unk_0C);
-                                while (sp8C.unk_0C) {
-                                    HuPrcVSleep();
-                                }
-                            } else {
-                                goto block_62;
-                            }
+                        if (lbl_1_bss_978 == lbl_1_bss_938[var_r29] && fn_1_65DC(var_r31, var_r29)) {
+                            Hu3DModelAttrReset(var_r31->unk_D4[var_r29], 0x40000186);
+							var_r30 = HuPrcChildCreate(fn_1_42AC, 8192, 8192, 0, HuPrcCurrentGet());
+							var_r30->user_data = &sp8C;
+							sp8C.unk_00 = var_r31;
+							sp8C.unk_08 = 0;
+							sp8C.unk_0C = 1;
+							sp8C.unk_04 = fn_1_654C(var_r31->unk_44, sp8C.unk_08);
+							while (sp8C.unk_0C) {
+								HuPrcVSleep();
+							}
                         } else {
-                        block_62:
                             HuPrcSleep(10);
                             Hu3DModelAttrReset(var_r31->unk_D4[var_r29], 0x40000082);
                             Hu3DModelAttrSet(var_r31->unk_D4[var_r29], 0x40000104);
@@ -1819,27 +1873,22 @@ void fn_1_6644(void)
                         omVibrate(var_r31->unk_44, 12, 6, 6);
                         var_r31->unk_1F4 = 5;
                         var_r31->unk_1F8 = var_r29;
-                        Hu3DMotionSet(var_r31->unk_20, var_r31->unk_22[3]);
+                        Hu3DMotionSet(var_r31->unk_20, var_r31->unk_22[2]);
                         Hu3DMotionSpeedSet(var_r31->unk_20, 1.0f);
                         var_r30 = HuPrcChildCreate(fn_1_6134, 8192, 8192, 0, HuPrcCurrentGet());
                         var_r30->user_data = var_r31;
-                        if (lbl_1_bss_978 == lbl_1_bss_938[var_r29]) {
-                            if (fn_1_65DC(var_r31, var_r29)) {
-                                Hu3DModelAttrReset(var_r31->unk_D4[var_r29], 0x40000186);
-                                var_r30 = HuPrcChildCreate(fn_1_42AC, 8192, 8192, 0, HuPrcCurrentGet());
-                                var_r30->user_data = &sp8C;
-                                sp8C.unk_00 = var_r31;
-                                sp8C.unk_08 = 1;
-                                sp8C.unk_0C = 1;
-                                sp8C.unk_04 = fn_1_654C(var_r31->unk_44, sp8C.unk_08);
-                                while (sp8C.unk_0C) {
-                                    HuPrcVSleep();
-                                }
-                            } else {
-                                goto block_94;
-                            }
+                        if (lbl_1_bss_978 == lbl_1_bss_938[var_r29] && fn_1_65DC(var_r31, var_r29)) {
+                            Hu3DModelAttrReset(var_r31->unk_D4[var_r29], 0x40000186);
+							var_r30 = HuPrcChildCreate(fn_1_42AC, 8192, 8192, 0, HuPrcCurrentGet());
+							var_r30->user_data = &sp8C;
+							sp8C.unk_00 = var_r31;
+							sp8C.unk_08 = 1;
+							sp8C.unk_0C = 1;
+							sp8C.unk_04 = fn_1_654C(var_r31->unk_44, sp8C.unk_08);
+							while (sp8C.unk_0C) {
+								HuPrcVSleep();
+							}
                         } else {
-                        block_94:
                             HuPrcSleep(10);
                             Hu3DModelAttrReset(var_r31->unk_D4[var_r29], 0x40000082);
                             Hu3DModelAttrSet(var_r31->unk_D4[var_r29], 0x40000104);
@@ -1862,7 +1911,7 @@ void fn_1_6644(void)
                 }
             }
         }
-        if (fn_1_5554(var_r31->unk_44, 1) > 20 && (var_r31->unk_1F4 == 2 || var_r31->unk_1F4 == 0)) { // wrong
+        if (fn_1_5554_inline(var_r31->unk_44, 1) > 20 && (var_r31->unk_1F4 == 2 || var_r31->unk_1F4 == 0)) { // wrong
             Hu3DModelAttrReset(var_r31->unk_20, 0x40000002);
             Hu3DModelAttrSet(var_r31->unk_20, 0x40000004);
             var_r31->unk_1F4 = 3;
@@ -1870,7 +1919,7 @@ void fn_1_6644(void)
             Hu3DModelAttrSet(var_r31->unk_12, 0x40000004);
             Hu3DMotionSpeedSet(var_r31->unk_12, 2.0f);
         }
-        if (fn_1_5554(var_r31->unk_44, 1) < -20 && (var_r31->unk_1F4 == 1 || var_r31->unk_1F4 == 0)) { // wrong
+        if (fn_1_5554_inline(var_r31->unk_44, 1) < -20 && (var_r31->unk_1F4 == 1 || var_r31->unk_1F4 == 0)) { // wrong
             Hu3DModelAttrReset(var_r31->unk_20, 0x40000006);
             var_r31->unk_1F4 = 3;
             Hu3DModelAttrReset(var_r31->unk_12, 0x40000006);
@@ -1878,10 +1927,10 @@ void fn_1_6644(void)
         }
         if (!var_r31->unk_58) {
             var_r28 = -1;
-            if (fn_1_5624(var_r31->unk_44, 0) > 20 && var_r28 == -1) { // wrong
+            if (fn_1_5624_inline(var_r31->unk_44, 0) > 20 && var_r28 == -1) { // wrong
                 var_r28 = 1;
             }
-            if (fn_1_5624(var_r31->unk_44, 1) > 20 && var_r28 == -1) { // wrong
+            if (fn_1_5624_inline(var_r31->unk_44, 1) > 20 && var_r28 == -1) { // wrong
                 var_r28 = 0;
             }
             if (var_r28 != -1) {
@@ -1906,6 +1955,8 @@ void fn_1_6644(void)
                 var_r30->user_data = &sp9C;
                 sp9C.unk_00 = var_r31;
                 sp9C.unk_04 = var_r28;
+				(void)var_r28;
+				(void)var_r28;
             }
         }
         var_r31->unk_60 = 37.0 * sind(var_r31->unk_70);
@@ -1939,8 +1990,8 @@ void fn_1_76F4(void)
             var_f29 = Hu3DMotionMaxTimeGet(var_r31->unk_20);
             sp14.y = 220.0f + (350.0f * (1.0f - (Hu3DMotionTimeGet(var_r31->unk_20) / var_f29)));
             Hu3D3Dto2D(&sp14, 1 << var_r31->unk_48, &sp8);
-            var_f31 = (282.0f * (var_r31->unk_44 % 2)) + (sp8.x * 0.5f);
-            var_f30 = (225.0f * (var_r31->unk_44 / 2)) + (sp8.y * 0.5f);
+            var_f31 = (282.0f * (var_r31->unk_44 % 2)) + (sp8.x /2);
+            var_f30 = (225.0f * (var_r31->unk_44 / 2)) + (sp8.y /2);
             var_f31 += 3.0f;
             var_f30 -= 15.0f;
             HuSprGrpPosSet(var_r31->unk_2C, var_f31, var_f30);
