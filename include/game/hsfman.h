@@ -211,7 +211,6 @@ void Hu3DLLightStaticSet(s16, s16, s32);
 s32 Hu3DModelLightInfoSet(s16, s16);
 s16 Hu3DLightSet(ModelData*, Mtx*, Mtx*, f32);
 void lightSet(LightData* arg0, s16 arg1, Mtx *arg2, Mtx *arg3, f32 arg8);
-void Hu3DReflectMapSet(AnimData* arg0);
 void Hu3DReflectNoSet(s16 arg0);
 void Hu3DFogSet(f32, f32, u8, u8, u8);
 void Hu3DFogClear(void);
