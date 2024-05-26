@@ -634,7 +634,7 @@ s32 fn_1_1970(s16 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-const s32 lbl_1_rodata_18[12] = {
+static const s32 lbl_1_rodata_18[12] = {
     0x180003, 0x180004, 0x180005, 0x180006,
     0x180007, 0x180008, 0x180009, 0x18000A,
     0x18000B, 0x18000C, 0x18000D, 0
