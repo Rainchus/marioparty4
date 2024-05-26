@@ -10,6 +10,8 @@ typedef struct vec2f {
 } Vec2f;
 
 #define ABS(x) (((x) < 0) ? -(x) : (x))
+#define ABS_INV(x) (((x) >= 0) ? (x) : -(x))
+
 
 #define VECDistanceXYZ(a, b) sqrtf((((a)->x-(b)->x)*((a)->x-(b)->x))+(((a)->y-(b)->y)*((a)->y-(b)->y))+(((a)->z-(b)->z)*((a)->z-(b)->z)))
 
@@ -18,6 +20,8 @@ typedef struct vec2f {
 #define VECSumXZ(a, b) sqrtf((((a)->x+(b)->x)*((a)->x+(b)->x))+(((a)->z+(b)->z)*((a)->z+(b)->z)))
 
 #define VECMagXZ(a) sqrtf(((a)->x*(a)->x)+((a)->z*(a)->z))
+#define VECMagXY(a) sqrtf(((a)->x*(a)->x)+((a)->y*(a)->y))
+
 #define VECMag2Point(a) (((a)->x*(a)->x)+((a)->y*(a)->y)+((a)->z*(a)->z))
 #define VECMagPoint(x, y, z) sqrtf(((x)*(x))+((y)*(y))+((z)*(z)))
 
