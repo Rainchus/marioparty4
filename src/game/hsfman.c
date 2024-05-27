@@ -824,7 +824,7 @@ void Hu3DModelHiliteMapSet(s16 arg0, AnimData *arg1) {
             copy->flags |= 0x100;
             temp_r25 = copy->constData;
             temp_r25->flags |= 0x8000;
-            temp_r25->hilite_map = arg1;
+            temp_r25->hiliteMap = arg1;
         } 
     }
 }

@@ -2,6 +2,7 @@
 #include "game/audio.h"
 #include "game/frand.h"
 #include "game/hsfman.h"
+#include "game/hsfdraw.h"
 #include "game/hsfmotion.h"
 #include "game/memory.h"
 #include "game/object.h"
