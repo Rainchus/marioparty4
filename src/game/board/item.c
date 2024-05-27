@@ -1943,7 +1943,7 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
             var_r31->unk2C = 0.0f;
             var_r31->unk40.a = 0;
         }
-        particle->unk_04 = 0.0f;
+        particle->unk_04.x = 0.0f;
         particle->unk_00 = 0;
     }
     if (particle->unk_00 == 0) {
