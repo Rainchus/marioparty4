@@ -28,6 +28,23 @@ typedef struct {
     /* 0x40 */ char unk40[4];
 } HsfdrawStruct01; // Size 0x44
 
+typedef struct hsf_draw_data {
+    s32 dlOfs;
+    s32 dlSize;
+    u16 polyCnt;
+    u32 flags;
+} HsfDrawData;
+
+typedef struct hsf_const_data {
+    u32 flags;
+    s16 hook;
+    HsfDrawData *drawData;
+    void *dlBuf;
+    Mtx matrix;
+    AnimData *hiliteMap;
+} HsfConstData;
+
+
 void Hu3DDrawPreInit(void);
 void Hu3DDraw(ModelData *arg0, Mtx arg1, Vec *arg2);
 s32 ObjCullCheck(HsfData *arg0, HsfObject *arg1, Mtx arg2);
