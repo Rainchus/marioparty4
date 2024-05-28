@@ -33,6 +33,7 @@ typedef struct work_2FAC {
 	Vec unkB8;
 } Work2FAC;
 
+void fn_1_67C4(u16 arg0, u16 arg1);
 u32 fn_1_6878(void);
 float fn_1_6888(void);
 Work2FAC *fn_1_68A8(s32 arg0);
