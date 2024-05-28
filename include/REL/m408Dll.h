@@ -34,6 +34,7 @@ typedef struct work_2FAC {
 } Work2FAC;
 
 u32 fn_1_6878(void);
+float fn_1_6888(void);
 Work2FAC *fn_1_68A8(s32 arg0);
 void fn_1_817C(Vec *arg0, Vec *arg1);
 void fn_1_84C4(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
@@ -44,6 +45,7 @@ s32 fn_1_CE68(void);
 void fn_1_CEEC(void);
 void fn_1_8958(Process *objman);
 void fn_1_C44C(Process *objman);
+s32 fn_1_11670(void);
 void fn_1_118D0(Process *objman);
 s32 fn_1_162CC(Vec *arg0, Vec *arg1);
 

@@ -884,7 +884,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m408Dll/main.c"),
             Object(Matching, "REL/m408Dll/camera.c"),
-            Object(NonMatching, "REL/m408Dll/stage.c"),
+            Object(Matching, "REL/m408Dll/stage.c"),
             Object(NonMatching, "REL/m408Dll/object.c"),
         },
     ),
