@@ -33,7 +33,7 @@ typedef struct particle_data {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ Vec unk_04;
-    /* 0x10 */ char unk_10[0x0C];
+    /* 0x04 */ Vec unk_10;
     /* 0x1C */ void *unk_1C;
     /* 0x20 */ s16 unk_20;
     /* 0x22 */ s16 unk_22;
