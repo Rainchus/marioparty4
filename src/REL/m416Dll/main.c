@@ -41,7 +41,7 @@ typedef struct struct_bss_14 {
 	float unkC;
 } StructBss14;
 
-u32 lbl_1_bss_960;
+s32 lbl_1_bss_960;
 s16 lbl_1_bss_95C;
 omObjData *lbl_1_bss_958;
 omObjData *lbl_1_bss_954;
@@ -64,8 +64,7 @@ s32 lbl_1_bss_0;
 
 void fn_1_458(omObjData *object);
 void fn_1_4FC(omObjData *object);
-s32 fn_1_1240(void);
-void fn_1_1250(u32 arg0);
+
 void fn_1_1260(Process *objman);
 void fn_1_6E5C(omObjData *object);
 
@@ -370,7 +369,7 @@ s32 fn_1_1240(void)
 	return lbl_1_bss_960;
 }
 
-void fn_1_1250(u32 arg0)
+void fn_1_1250(s32 arg0)
 {
 	lbl_1_bss_960 = arg0;
 }
@@ -516,7 +515,7 @@ u32 lbl_1_data_10C[9][2] = {
 
 void fn_1_29DC(omObjData *object);
 
-void fn_1_613C(ModelData *model, ParticleData *particle, Mtx matrix);
+
 
 
 void fn_1_1964(omObjData *object)
