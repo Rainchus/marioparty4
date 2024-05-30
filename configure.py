@@ -1188,7 +1188,7 @@ config.libs = [
         "m446dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m446Dll/main.c"),
+            Object(Matching, "REL/m446Dll/main.c"),
             Object(Matching, "REL/m446Dll/card.c"),
             Object(Matching, "REL/m446Dll/deck.c"),
             Object(Matching, "REL/m446Dll/table.c"),
