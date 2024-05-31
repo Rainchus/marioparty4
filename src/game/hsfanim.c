@@ -827,7 +827,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
         GXSetArray(GX_VA_POS, temp_r31->unk_4C, 0xC);
         GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
-        GXSetArray(GX_VA_CLR0, (u8*) temp_r31->unk_48 + 0x40, 0x44);
+        GXSetArray(GX_VA_CLR0, &temp_r31->unk_48->unk40, 0x44);
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_RGBA6, 0);
         GXSetArray(GX_VA_TEX0, baseST, 8);
