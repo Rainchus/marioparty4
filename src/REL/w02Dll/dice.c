@@ -179,7 +179,7 @@ void fn_1_1574(unkW02Dice* arg0) {
     temp_r29->unk04 = 0;
     temp_r29->unk01 = 3;
     temp_r29->unk02 = 0;
-    temp_r3->unk10 = arg0;
+    temp_r3->unk10 = (u32) arg0;
     arg0->unk3C[temp_r28] = temp_r3;
     sp8 = arg0->unk0C;
     sp8.y += (lbl_1_rodata_48 * arg0->unk24);
