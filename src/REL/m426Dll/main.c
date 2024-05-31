@@ -397,7 +397,7 @@ void fn_1_330(omObjData *object)
                 }
                 break;
             case 1:
-                if (lbl_1_bss_58++ >= 15.0f) {
+                if (++lbl_1_bss_58 >= 15.0f) {
                     lbl_1_bss_54 = 2;
                     lbl_1_bss_58 = 0;
                     lbl_1_bss_38 = 1;
@@ -417,14 +417,14 @@ void fn_1_330(omObjData *object)
                 Center.y = sp10[4];
                 Center.z = sp10[5];
                 CZoom = sp10[6];
-                if (lbl_1_bss_58++ >= 138.0f) {
+                if (++lbl_1_bss_58 >= 138.0f) {
                     CRot.x = lbl_1_data_4C[0][0];
                     CRot.y = lbl_1_data_4C[0][1];
                     CRot.z = lbl_1_data_4C[0][2];
                     Center.x = lbl_1_data_4C[0][3];
                     Center.y = lbl_1_data_4C[0][4];
                     Center.z = lbl_1_data_4C[0][5];
-                    CZoom = lbl_1_data_4C[0][6];
+                    CZoom = lbl_1_data_4C[1][6];
                     lbl_1_bss_54 = 3;
                     lbl_1_bss_58 = 0;
                 }
@@ -523,7 +523,7 @@ void fn_1_330(omObjData *object)
                 }
                 break;
             case 7:
-                if (lbl_1_bss_58++ > 210.0f) {
+                if (++lbl_1_bss_58 > 210.0f) {
                     lbl_1_bss_50 = -1;
                     lbl_1_bss_54 = 8;
                     lbl_1_bss_58 = 0;
@@ -801,7 +801,7 @@ void fn_1_16F8(omObjData *object)
     s32 var_r24;
     s32 var_r23;
     s32 var_r22;
-    // s32 var_r21; // this is weird, used as a temporary
+    s32 var_r21; // this is weird, used as a temporary
 
     sp18 = 0;
     sp14 = 0;
@@ -815,12 +815,12 @@ void fn_1_16F8(omObjData *object)
     }
     if (var_r31->unk_14) {
         sp20 = sp1C = 0.0f;
-        sp10 = 0;
+        sp10 = var_r21 = 0;
         fn_1_2F5C(object, &sp20, &sp1C, &sp10);
     } else {
         sp20 = HuPadStkX[var_r31->unk_10];
         sp1C = HuPadStkY[var_r31->unk_10];
-        HuPadBtn[var_r31->unk_10];
+        var_r21 = HuPadBtn[var_r31->unk_10];
         sp10 = HuPadBtnDown[var_r31->unk_10];
     }
     var_f30 = var_f31 = 0.0f;
@@ -836,7 +836,8 @@ void fn_1_16F8(omObjData *object)
                 } else {
                     if (!lbl_1_bss_40) {
                         sp20 = sp1C = 0.0f;
-                        sp10 = 0;
+						
+                        sp10 = var_r21 = 0;
                     }
                     if (fabs(sp20) > 8.0) {
                         var_f30 = 0.25f * sp20;
@@ -853,7 +854,7 @@ void fn_1_16F8(omObjData *object)
                         var_f27 = 0.0f;
                     }
                     var_r31->unk_50[var_r31->unk_8C] = var_f27;
-                    if (var_r31->unk_8C++ >= 15) {
+                    if (++var_r31->unk_8C >= 15) {
                         var_r31->unk_8C = 0;
                     }
                     for (var_r29 = 0, var_f28 = 0.0f; var_r29 < 15; var_r29++) {
@@ -1094,7 +1095,7 @@ void fn_1_16F8(omObjData *object)
                 var_r31->unk_34 = var_r31->unk_34 ^ 1;
             }
         }
-        if ((var_r31->unk_24 == 0 || var_r31->unk_24 == 1 || var_r31->unk_24 == 2) && var_r31->unk_30) {
+        if (((var_r21 = var_r31->unk_24) == 0 || var_r31->unk_24 == 1 || var_r31->unk_24 == 2) && var_r31->unk_30) {
             if (var_r31->unk_30) {
                 var_r31->unk_30 = var_r31->unk_30 - 1;
             }
@@ -2546,7 +2547,7 @@ void fn_1_6A34(omObjData *object)
 
 void fn_1_6DC0(omObjData *object)
 {
-    s32 sp8[2];
+    s32 sp8[3];
 
     float var_f31;
     float var_f30;
@@ -2567,12 +2568,13 @@ void fn_1_6DC0(omObjData *object)
             var_r31->unk_0C = 20;
         }
         if (var_r31->unk_0C) {
-            var_f31 = 1.0 + (0.800000011920929 * sind((180.0f * (var_r31->unk_0C / 20.0f))));
+            var_f31 = 1.0 + (0.8f * sind((180.0f * (var_r31->unk_0C / 20.0f))));
             var_r31->unk_0C--;
         } else {
-            var_f31 = 5.263544247e-315;
+            var_f31 = 1.0f;
         }
-        if ((sp8[0] = lbl_1_bss_1C[var_r29] / 10) > 9) {
+		var_r28 = lbl_1_bss_1C[var_r29];
+        if ((sp8[0] = var_r28 / 10) > 9) {
             sp8[0] = 9;
         }
         var_r28 -= sp8[0] * 10;
@@ -2594,7 +2596,7 @@ void fn_1_6DC0(omObjData *object)
             var_f30 = var_r31->unk_00 + var_r31->unk_2C[var_r30][0];
             var_f29 = var_r31->unk_04 + var_r31->unk_2C[var_r30][1];
             espPosSet(var_r31->unk_14[var_r30], var_f30, var_f29);
-            espScaleSet(var_r31->unk_14[var_r30], 5.263544247e-315, 1.0f);
+            espScaleSet(var_r31->unk_14[var_r30], 1.0f, 1.0f);
         }
     }
 }
