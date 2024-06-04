@@ -13,7 +13,7 @@ typedef struct hu_snd_grp_data {
 } HuSndGrpData;
 
 void HuAudInit(void);
-s32 HuAudStreamPlay(void);
+s32 HuAudStreamPlay(char *name, s32 arg1);
 void HuAudStreamVolSet(s16 vol);
 void HuAudStreamPauseOn(void);
 void HuAudStreamPauseOff(void);
