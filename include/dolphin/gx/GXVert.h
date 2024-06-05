@@ -159,6 +159,10 @@ static inline void GXPosition1x16(u16 index) {
   GXWGFifo.u16 = index;
 }
 
+static inline void GXNormal1x16(u16 index) {
+  GXWGFifo.u16 = index;
+}
+
 static inline void GXColor1x16(u16 index) {
   GXWGFifo.u16 = index;
 }
