@@ -672,7 +672,7 @@ void fn_1_26E4(omObjData *object)
 	Hu3DParticleColSet(temp_r27, 255, 255, 255);
 	Hu3DParticleHookSet(temp_r27, fn_1_5AB4);
 	Hu3DModelPosSet(temp_r27, 0, 0, 0);
-	Hu3DData[temp_r27].unk_120->unk_00 = 0;
+	((ParticleData *)Hu3DData[temp_r27].unk_120)->unk_00 = 0;
 	temp_r31->unk74 = temp_r31->unk78 = 0;
 	temp_r31->unk7C[0] = temp_r31->unk7C[1] = 0;
 	temp_r31->unk8C = -1;
@@ -765,7 +765,7 @@ void fn_1_2FAC(omObjData *object)
 		object->trans.z = temp_r31->unk1C.z = temp_r31->unk94.z = lbl_1_data_104[temp_r31->unk0][1];
 		object->rot.y = temp_r31->unk58.x = atan2d(object->trans.x, object->trans.z)+180.0;
 		Hu3DModelAttrReset(object->model[1], 1);
-		Hu3DData[object->model[2]].unk_120->unk_00 = 0;
+		((ParticleData *)Hu3DData[object->model[2]].unk_120)->unk_00 = 0;
 		object->func = fn_1_3E80;
 	}
 }

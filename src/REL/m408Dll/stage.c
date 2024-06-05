@@ -142,7 +142,7 @@ void fn_1_C530(omObjData *object)
 	Hu3DModelLayerSet(temp_r31, 1);
 	Hu3DModelPosSet(temp_r31, 0, 5100, 0);
 	Hu3DParticleBlendModeSet(temp_r31, 1);
-	temp_r29 = Hu3DData[temp_r31].unk_120->unk_1C;
+	temp_r29 = ((ParticleData *)Hu3DData[temp_r31].unk_120)->unk_1C;
 	temp_r29[2] = 140;
 	object->model[14] = Hu3DModelCreateFile(0x270021);
 	object->model[15] = Hu3DModelCreateFile(0x270022);
@@ -161,7 +161,7 @@ void fn_1_C530(omObjData *object)
 	Hu3DModelLayerSet(temp_r31, 3);
 	Hu3DModelAttrReset(temp_r31, 1);
 	Hu3DParticleBlendModeSet(temp_r31, 1);
-	temp_r29 = Hu3DData[temp_r31].unk_120->unk_1C;
+	temp_r29 = ((ParticleData *)Hu3DData[temp_r31].unk_120)->unk_1C;
 	temp_r29[1] = 800;
 	object->func = fn_1_CD14;
 }
@@ -296,7 +296,7 @@ void fn_1_D004(omObjData *object)
 			temp_f29 = 1.0f-((temp_f30-5000)/15000);
 			Hu3DMotionTimeSet(object->model[12], 95.0f*temp_f29);
 			temp_r27 = object->model[6];
-			temp_r28 = Hu3DData[temp_r27].unk_120->unk_1C;
+			temp_r28 = ((ParticleData *)Hu3DData[temp_r27].unk_120)->unk_1C;
 			temp_r28[2] = 1.0f-((temp_f30-5000)/(temp_f28-5000));
 			if(temp_f30 <= 5400 && temp_r30[2] == 0) {
 				temp_r30[2] = 30;
@@ -343,7 +343,7 @@ void fn_1_D004(omObjData *object)
 			temp_r27 = object->model[6];
 			if(temp_r27 != 0) {
 				Hu3DModelPosSet(temp_r27, 0, 200+temp_f30, 0);
-				temp_r28 = Hu3DData[temp_r27].unk_120->unk_1C;
+				temp_r28 = ((ParticleData *)Hu3DData[temp_r27].unk_120)->unk_1C;
 				temp_r28[2] -= 0.025f;
 				if(temp_r28[2] <= 0) {
 					Hu3DModelAttrReset(temp_r27, 0x20);
@@ -757,7 +757,7 @@ WorkF4B0 *fn_1_F4B0(s16 arg0, s16 arg1)
 	ModelData *temp_r29;
 	temp_r29 = &Hu3DData[arg0];
 	temp_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(WorkF4B0), MEMORY_DEFAULT_NUM);
-	temp_r29->unk_120 = (void *)temp_r31;
+	temp_r29->unk_120 = temp_r31;
 	temp_r31->unk0 = arg0;
 	temp_r31->unk2 = arg1;
 	temp_r31->unk4 = NULL;
@@ -778,7 +778,7 @@ void fn_1_F564(s16 arg0)
 	ModelData *temp_r27;
 	temp_r27 = &Hu3DData[arg0];
 	temp_r29 = temp_r27->hsfData->root;
-	temp_r31 = (WorkF4B0 *)temp_r27->unk_120;
+	temp_r31 = temp_r27->unk_120;
 	if(temp_r31->unk8 == NULL) {
 		temp_r31->unk8 = HuMemDirectMallocNum(HEAP_SYSTEM, temp_r29->data.st->count*sizeof(HsfVector2f), MEMORY_DEFAULT_NUM);
 		temp_r31->unkC = HuMemDirectMallocNum(HEAP_SYSTEM, temp_r29->data.st->count, MEMORY_DEFAULT_NUM);
@@ -838,7 +838,7 @@ void fn_1_F8A0(ModelData *arg0, Mtx arg1)
 	Mtx sp40;
 	Mtx sp10;
 	s16 spC = 0;
-	temp_r31 = (void *)arg0->unk_120;
+	temp_r31 = arg0->unk_120;
 	spA0.unk0 = &Hu3DData[temp_r31->unk2];
 	spA0.unk4 = spA0.unk0->hsfData->root;
 	MTXCopy(arg1, spA0.unkC);
@@ -901,7 +901,7 @@ void fn_1_FB98(ModelData *arg0, Mtx arg1)
 	float sp50[2][8];
 	float sp10[2][8];
 	s16 spC = 0;
-	temp_r31 = (void *)arg0->unk_120;
+	temp_r31 = arg0->unk_120;
 	sp120.unk0 = &Hu3DData[temp_r31->unk2];
 	sp120.unk4 = sp120.unk0->hsfData->root;
 	MTXCopy(arg1, sp120.unkC);

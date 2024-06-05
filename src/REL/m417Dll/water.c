@@ -253,7 +253,7 @@ void fn_1_3BC4(omObjData *object)
     Hu3DParticleColSet(var_r30, 255, 255, 255);
     Hu3DParticleHookSet(var_r30, fn_1_6B94);
     Hu3DModelPosSet(var_r30, 0.0f, 0.0f, 0.0f);
-    Hu3DData[var_r30].unk_120->unk_00 = 0;
+    ((ParticleData *)Hu3DData[var_r30].unk_120)->unk_00 = 0;
     lbl_1_bss_58 = var_r30;
     fn_1_3D58(object);
     object->func = fn_1_3D54;
