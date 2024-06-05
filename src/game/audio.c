@@ -68,7 +68,7 @@ void HuAudInit(void) {
     musicOffF = 0;
 }
 
-s32 HuAudStreamPlay(void) {
+s32 HuAudStreamPlay(char *name, s32 arg1) {
     return 0;
 }
 

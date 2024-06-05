@@ -242,5 +242,6 @@ extern s32 shadowModelDrawF;
 extern s16 Hu3DCameraNo;
 extern s16 Hu3DCameraBit;
 extern s16 Hu3DPauseF;
+extern GXColor BGColor;
 
 #endif

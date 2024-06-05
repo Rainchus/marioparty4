@@ -383,7 +383,7 @@ void fn_1_CA0(unkStruct* arg0) {
             arg0->unk10 = 2;
         case 2:
             if (fn_1_5678(var_r30, &arg0->unk34, 0) == 0) {
-                if ((arg0->unkC-- % 60) == 0) {
+                if ((--arg0->unkC % 60) == 0) {
                     MGSeqParamSet(arg0->unk6, 1, arg0->unkC / 60);
                 }
                 if (arg0->unkC == 0) {
@@ -423,7 +423,7 @@ void fn_1_CA0(unkStruct* arg0) {
             } else break;
         case 7:
             if (fn_1_4088(arg0->unk20, var_r30->unk64, var_r30->unk66, arg0->unk1C == 1, &arg0->unk34, 0) == 0) {
-                if ((arg0->unkC-- % 60) == 0) {
+                if ((--arg0->unkC % 60) == 0) {
                     MGSeqParamSet(arg0->unk6, 1, arg0->unkC / 60);
                 }
                 if (arg0->unkC <= 0) {
