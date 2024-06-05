@@ -956,7 +956,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m417Dll/main.c"),
-            Object(NonMatching, "REL/m417Dll/water.c"),
+            Object(Matching, "REL/m417Dll/water.c"),
             Object(Matching, "REL/m417Dll/player.c"),
             Object(Matching, "REL/m417Dll/sequence.c"),
         },

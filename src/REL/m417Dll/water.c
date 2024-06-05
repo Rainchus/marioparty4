@@ -437,7 +437,6 @@ void fn_1_3D58(omObjData *object)
     fn_1_5E3C(object);
 }
 
-#pragma dont_inline on
 void fn_1_4BC8(float arg8, float arg9)
 {
     float var_f30;
@@ -475,8 +474,8 @@ void fn_1_4BC8(float arg8, float arg9)
             return;
         }
     }
+	(void)var_r31;
 }
-#pragma dont_inline reset
 
 void fn_1_4E64(omObjData *object)
 {
@@ -689,6 +688,8 @@ void fn_1_57B0(omObjData *object)
     DCStoreRangeNoSync(lbl_1_bss_178.unk_6CC[lbl_1_bss_178.unk_6B4], 1080 * sizeof(GXColor));
     DCStoreRangeNoSync(lbl_1_bss_178.unk_6D4[lbl_1_bss_178.unk_6B4], 30 * 36 * sizeof(Vec2f));
     PPCSync();
+	(void)var_r30;
+	(void)var_r30;
 }
 
 void fn_1_5E3C(omObjData *object)
