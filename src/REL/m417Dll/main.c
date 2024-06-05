@@ -102,7 +102,7 @@ void ModuleProlog(void)
     Hu3DCameraPerspectiveSet(1, -1.0f, 5.0f, 5000.0f, 1.2f);
     lbl_1_bss_18 = omAddObjEx(var_r31, 32730, 0, 0, -1, omOutView);
     lbl_1_bss_1C = omAddObjEx(var_r31, 10, 0, 0, -1, fn_1_4D8);
-    fn_1_7A34(var_r31);
+    fn_1_3274(var_r31);
     fn_1_7A34(var_r31);
 }
 
