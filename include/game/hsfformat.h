@@ -159,16 +159,6 @@ typedef struct hsf_face {
     float nbt[3];
 } HsfFace;
 
-typedef struct hsf_const_data {
-    u32 flags;
-    s16 hook;
-    u8 unk6[2];
-    void *unk08;
-    void *unk0C;
-    Mtx unk10;
-    AnimData *hilite_map;
-} HsfConstData;
-
 typedef struct hsf_transform {
     Vec pos;
     Vec rot;
@@ -312,10 +302,11 @@ typedef struct hsf_light {
     float ref_brightness;
     float cutoff;
 } HsfLight;
+
 typedef struct hsf_object {
     char *name;
     u32 type;
-    HsfConstData *constData;
+    void *constData;
     u32 flags;
     union {
         HsfObjectData data;

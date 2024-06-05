@@ -846,7 +846,7 @@ config.libs = [
         "m404Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m404Dll/main.c"),
+            Object(Matching, "REL/m404Dll/main.c"),
         },
     ),
     Rel(
@@ -882,10 +882,10 @@ config.libs = [
         "m408Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m408Dll/main.c"),
-            Object(NonMatching, "REL/m408Dll/camera.c"),
-            Object(NonMatching, "REL/m408Dll/stage.c"),
-            Object(NonMatching, "REL/m408Dll/object.c"),
+            Object(Matching, "REL/m408Dll/main.c"),
+            Object(Matching, "REL/m408Dll/camera.c"),
+            Object(Matching, "REL/m408Dll/stage.c"),
+            Object(Matching, "REL/m408Dll/object.c"),
         },
     ),
     Rel(
@@ -932,7 +932,7 @@ config.libs = [
         "m414Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m414Dll/main.c"),
+            Object(Matching, "REL/m414Dll/main.c"),
         },
     ),
     Rel(
@@ -947,8 +947,8 @@ config.libs = [
         "m416Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m416Dll/main.c"),
-            Object(NonMatching, "REL/m416Dll/map.c"),
+            Object(Matching, "REL/m416Dll/main.c"),
+            Object(Matching, "REL/m416Dll/map.c"),
         },
     ),
     Rel(
@@ -1188,7 +1188,7 @@ config.libs = [
         "m446dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m446Dll/main.c"),
+            Object(Matching, "REL/m446Dll/main.c"),
             Object(Matching, "REL/m446Dll/card.c"),
             Object(Matching, "REL/m446Dll/deck.c"),
             Object(Matching, "REL/m446Dll/table.c"),
@@ -1233,7 +1233,7 @@ config.libs = [
     Rel(
         "m451Dll",
         objects={
-            Object(NonMatching, "REL/m451Dll/m451.c"),
+            Object(Matching, "REL/m451Dll/m451.c"),
         },
     ),
     Rel(
@@ -1346,7 +1346,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/modeltestDll/main.c"),
             Object(Matching, "REL/modeltestDll/modeltest00.c"),
-            Object(NonMatching, "REL/modeltestDll/modeltest01.c"),
+            Object(Matching, "REL/modeltestDll/modeltest01.c"),
         },
     ),
     Rel(

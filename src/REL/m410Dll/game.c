@@ -1090,10 +1090,10 @@ void fn_1_7494(void)
 
 void fn_1_7520(Vec *arg0)
 {
-    ParticleData *var_r30; // no, custom struct
+    ParticleData *var_r30;
     HsfanimStruct01 *var_r31;
 
-    var_r30 = Hu3DData[lbl_1_bss_38].unk_120; // unk_120 is not ParticleData
+    var_r30 = Hu3DData[lbl_1_bss_38].unk_120;
     var_r31 = &var_r30->unk_48[var_r30->unk_02++];
     var_r31->unk2C = 100.0f;
     var_r31->unk34.x = arg0->x;

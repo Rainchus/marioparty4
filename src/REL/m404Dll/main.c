@@ -1309,10 +1309,7 @@ void fn_1_5E74(AnimData *arg0, u16 arg1, u16 arg2, u16 arg3)
         break;
     }
 
-    var_r28 = (arg0->bmp->sizeX / var_r30) * ((arg2 / var_r29) << 5);
-    var_r31 = ((u8 *)arg0->bmp->data) + (var_r28 + ((arg0->bmp->pixSize * ((arg2 % var_r29) * 8)) / 8));
-    var_r31 += (arg1 % 8 * arg0->bmp->pixSize) / 8;
-    var_r31 += (arg1 / var_r30) << 5;
+    var_r31 = (void *)(((arg1/var_r30)*32)+(((arg1%8)*arg0->bmp->pixSize)/8)+(((arg0->bmp->sizeX / var_r30) * ((arg2 / var_r29) << 5))+((u32)arg0->bmp->data)+((arg0->bmp->pixSize * ((arg2 % var_r29) * 8)) / 8)));
 
     switch (arg0->bmp->pixSize) {
     case 4:
@@ -1333,7 +1330,7 @@ void fn_1_5E74(AnimData *arg0, u16 arg1, u16 arg2, u16 arg3)
     }
 }
 
-u16 fn_1_607C(AnimData *anim, u16 arg1, u16 arg2)
+u16 fn_1_607C(AnimData *arg0, u16 arg1, u16 arg2)
 {
     u16 var_r31;
     u16 var_r30;
@@ -1343,8 +1340,8 @@ u16 fn_1_607C(AnimData *anim, u16 arg1, u16 arg2)
     u32 temp_r6;
     u8 temp_r0;
     u8 temp_r0_3;
-
-    switch (anim->bmp->pixSize) {
+	
+    switch (arg0->bmp->pixSize) {
     case 4:
         var_r31 = lbl_1_data_9F4[0];
         var_r30 = lbl_1_data_9F4[1];
@@ -1358,10 +1355,16 @@ u16 fn_1_607C(AnimData *anim, u16 arg1, u16 arg2)
         var_r30 = lbl_1_data_9F4[5];
         break;
     }
-    var_r29 = ((u8 *)anim->bmp->data) + ((arg1 / var_r31) << 5) + (arg1 % 8 * anim->bmp->pixSize) / 8
-        + (((anim->bmp->sizeX / var_r31) * ((arg2 / var_r30) << 5)) + ((anim->bmp->pixSize * ((arg2 % var_r30) * 8)) / 8));
-
-    switch (anim->bmp->pixSize) {
+	var_r29 = (void *)(((arg1/var_r31)*32)+(((arg1%8)*arg0->bmp->pixSize)/8)+(((arg0->bmp->sizeX / var_r31) * ((arg2 / var_r30) << 5))+((u32)arg0->bmp->data)+((arg0->bmp->pixSize * ((arg2 % var_r30) * 8)) / 8)));
+	
+	(void)var_r31;
+	(void)var_r31;
+	(void)var_r31;
+	(void)var_r30;
+	(void)var_r30;
+	(void)var_r30;
+	
+    switch (arg0->bmp->pixSize) {
     case 4:
         if ((arg1 & 1) == 0) {
             var_r28 = *var_r29 >> 4;
