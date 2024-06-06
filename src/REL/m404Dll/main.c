@@ -696,7 +696,7 @@ void fn_1_1344(omObjData *object)
     object->model[2] = Hu3DHookFuncCreate(fn_1_58E4);
     Hu3DModelPosSet(object->model[2], 0.0f, object->trans.y, object->trans.z);
     var_r22 = &Hu3DData[object->model[2]];
-    var_r22->unk_120 = (void *)object;
+    var_r22->unk_120 = object;
     var_r31->unk_4C = fn_1_5D64(960, 64, 1);
     var_r31->unk_48 = 4096;
     var_r31->unk_44 = HuMemDirectMallocNum(HEAP_SYSTEM, var_r31->unk_48, MEMORY_DEFAULT_NUM);
@@ -1220,7 +1220,7 @@ void fn_1_58E4(ModelData *modelData, Mtx arg1)
     omObjData *var_r30;
     s32 var_r29;
 
-    var_r30 = (omObjData *)modelData->unk_120; // TODO fix in modelData struct
+    var_r30 = modelData->unk_120;
     var_r31 = var_r30->data;
     {
         GXColor sp18 = { 255, 0, 0, 255 };
