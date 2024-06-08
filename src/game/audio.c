@@ -86,7 +86,7 @@ void HuAudStreamPauseOff(void) {
     AISetStreamPlayState(1);
 }
 
-void HuAudStreamFadeOut(void) {
+void HuAudStreamFadeOut(s32 arg0) {
 }
 
 void HuAudAllStop(void) {

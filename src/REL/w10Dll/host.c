@@ -50,7 +50,7 @@ void HostPosSet(s16 arg0) {
     hostPos = arg0;
 }
 
-void UpdateHost(void) {
+static void UpdateHost(void) {
     Mtx rot;
     Vec sp14;
     Vec sp8;
@@ -64,7 +64,7 @@ void UpdateHost(void) {
         Hu3D2Dto3D(&hostPosTbl[hostPos], 1, &sp14);
         BoardModelPosSetV(hostMdl, &sp14);
         BoardCameraRotGet(&sp8);
-        PSMTXRotRad(rot, 'y', 0.2617994f);
+        MTXRotDeg(rot, 'y', 15);
         BoardModelMtxSet(hostMdl, &rot);
         BoardModelRotSet(hostMdl, sp8.x, 0.0f, 0.0f);
         BoardModelScaleSet(hostMdl, 0.2f, 0.2f, 0.2f);
