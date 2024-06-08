@@ -958,9 +958,11 @@ Runtime.PPCEABI.H/NMWException.cp:
 	extab       start:0x80005650 end:0x80005670
 	extabindex  start:0x80005718 end:0x80005748
 	.text       start:0x800E2108 end:0x800E23CC
+	.sdata      start:0x801D39A8 end:0x801D39B0
+
+Runtime.PPCEABI.H/runtime.c:
 	.text       start:0x800E23CC end:0x800E2AA8
 	.rodata     start:0x8011E4F0 end:0x8011E508
-	.sdata      start:0x801D39A8 end:0x801D39B0
 
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x800E2AA8 end:0x800E2B24

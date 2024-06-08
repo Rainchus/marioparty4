@@ -602,6 +602,7 @@ config.libs = [
             Object(NonMatching, "Runtime.PPCEABI.H/New.cp"),
             Object(NonMatching, "Runtime.PPCEABI.H/NewMore.cp"),
             Object(NonMatching, "Runtime.PPCEABI.H/NMWException.cp"),
+            Object(NonMatching, "Runtime.PPCEABI.H/runtime.c"),
             Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
             Object(NonMatching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp"),
             Object(NonMatching, "Runtime.PPCEABI.H/GCN_mem_alloc.c"),
@@ -1093,7 +1094,7 @@ config.libs = [
         "m434Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m434Dll/main.c"),
+            Object(Matching, "REL/m434Dll/main.c"),
             Object(NonMatching, "REL/m434Dll/map.c"),
             Object(NonMatching, "REL/m434Dll/player.c"),
             Object(NonMatching, "REL/m434Dll/fish.c"),
