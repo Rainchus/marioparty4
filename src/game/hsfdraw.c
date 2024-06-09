@@ -2,6 +2,7 @@
 #include "game/hsfanim.h"
 #include "game/hsfformat.h"
 #include "game/hsfload.h"
+#include "game/sprite.h"
 
 #include "ext_math.h"
 #include "string.h"

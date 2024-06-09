@@ -41,7 +41,6 @@ typedef struct {
     float unk08;
 } DiceDigitWork;
 
-s32 BoardRollResizeCheck(void);
 
 static void RollMain(void);
 static void DiceCreate(s32 arg0);
@@ -129,7 +128,7 @@ s32 BoardRollExec(s32 arg0) {
     numDice = 1;
     diceSize = 0;
     maxRoll = 0xA;
-    switch (BoardRollTypeGet()) {
+    switch (BoardItemPrevGet()) {
         case 0:
             numDice = 1;
             break;
@@ -149,7 +148,7 @@ s32 BoardRollExec(s32 arg0) {
     } else if (BoardPlayerSizeGet(arg0) == 2) {
         diceSize = 2;
         maxRoll = 10;
-        if (BoardRollResizeCheck() != 0) {
+        if (BoardMegaDoubleDiceCheck() != 0) {
             numDice = 2;
         }
     }
@@ -226,7 +225,7 @@ static void RollMain(void) {
                 temp_r25 = BoardPlayerSameTeamFind(temp_r26);
                 var_r27 += BoardPlayerItemCount(temp_r25);
             }
-            if (BoardRollTypeGet() != -1 || var_r27 == 0 || _CheckFlag(0x10009) || BoardRollResizeCheck()) {
+            if (BoardItemPrevGet() != -1 || var_r27 == 0 || _CheckFlag(0x10009) || BoardMegaDoubleDiceCheck()) {
                 var_r29 = 0x90004;
             } else {
                 var_r29 = 0x90002;
@@ -296,7 +295,7 @@ static void RollMain(void) {
     }
     destMode = var_r30;
     GWPlayer[rollPlayer].roll = var_r30;
-    BoardDiceDigit2DInit(rollPlayer, 1);
+    BoardRollCreate(rollPlayer, 1);
     if (_CheckFlag(0x1000B)) {
         BoardTutorialHookExec(6, 0);
     }
@@ -389,7 +388,7 @@ static void DoInput(s32 arg0) {
                 var_r30 = BoardPlayerSameTeamFind(rollPlayer);
                 var_r31 += BoardPlayerItemCount(var_r30);
             }
-            if (var_r31 == 0 || BoardRollTypeGet() != -1 || BoardRollResizeCheck() || _CheckFlag(0x10009)) {
+            if (var_r31 == 0 || BoardItemPrevGet() != -1 || BoardMegaDoubleDiceCheck() || _CheckFlag(0x10009)) {
                 if (_CheckFlag(0x10009) && GWBoardGet() == 5 && *sp8 == 0x200 && var_r31 != 0) {
                     HuAudFXPlay(4);
                 }
@@ -910,7 +909,7 @@ static s32 GetBtnRoll(s32 arg0) {
         var_r31 = HuPadBtnDown[var_r29];
         return var_r31;
     }
-    if (_CheckFlag(0x10009) || BoardRollTypeGet() != -1) {
+    if (_CheckFlag(0x10009) || BoardItemPrevGet() != -1) {
         return 0x100;
     }
     var_r31 = GetComBtnRoll(arg0);
@@ -918,7 +917,7 @@ static s32 GetBtnRoll(s32 arg0) {
 }
 
 static s32 GetComBtnRoll(s32 arg0) {
-    if (BoardRollTypeGet() != -1 || BoardPlayerItemCount(arg0) == 0 || BoardRollResizeCheck() || _CheckFlag(0x10009)) {
+    if (BoardItemPrevGet() != -1 || BoardPlayerItemCount(arg0) == 0 || BoardMegaDoubleDiceCheck() || _CheckFlag(0x10009)) {
         return 0x100;
     }
     if (BoardComUseItemCheck(arg0)) {

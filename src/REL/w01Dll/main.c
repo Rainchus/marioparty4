@@ -1717,7 +1717,7 @@ static void fn_1_63F0(Bss18Work *arg0, omObjData *arg1) {
         if (GWPlayer[GWSystem.player_curr].bowser_suit) {
             BoardModelHookSet(arg0->unk04, lbl_1_data_604[lbl_1_bss_28], BoardBowserSuitModelGet());
         } else {
-            BoardModelHookSet(arg0->unk04, lbl_1_data_604[lbl_1_bss_28], BoardPlayerModelGetCurr());
+            BoardModelHookSet(arg0->unk04, lbl_1_data_604[lbl_1_bss_28], BoardPlayerModelGet(GWSystem.player_curr));
         }
         var_r24 = lbl_1_bss_6C4[lbl_1_data_5DC[lbl_1_bss_29][lbl_1_bss_28]];
         if (arg0->unk00_field3 != 0) {
