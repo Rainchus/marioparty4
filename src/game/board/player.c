@@ -30,8 +30,8 @@ static s32 ExecJunction(s32, s16*);
 static void PlayerPosLerpFunc(omObjData*);
 static void DiceJumpFunc(omObjData*);
 
-static void UpdateDiceDigitSprite(omObjData*);
-static void UpdateDiceDigit2D(omObjData*);
+static void UpdateRollSprite(omObjData*);
+static void UpdateRoll(omObjData*);
 static void MoveAwayObjFunc(omObjData*);
 
 static void MoveAwayObjFunc(omObjData*);
@@ -71,7 +71,7 @@ static s8 rollType;
 static s8 moveAwayPlayer[4];
 static s16 junctionArrowRot[4];
 static omObjData* moveAwayObj;
-static omObjData* diceDigit2DObj;
+static omObjData* rollObj;
 static omObjData* junctionObj;
 static s32 junctionMask;
 static omObjData* bowserSuitObj;
@@ -84,7 +84,7 @@ static s16 suitCurrMot = -1;
 static omObjData* diceJumpObj[4] = {0, 0, 0, 0};
 static omObjData* motDoneF[4] = {0, 0, 0, 0};
 static s16 bowserSuitMot[5] = {-1, -1, -1, -1, -1};
-char* lbl_8013993C[8][2] = {
+static char* eyeMatTbl[8][2] = {
     { "eye1", "eye2" },
     { "eye1", "eye2" },
     { "mat14", "mat16" },
@@ -141,9 +141,7 @@ static s32 boardSparkSfxTblAlt[] = {
     0x223, 0x263, 0x2A3, 0x2E3,
 };
 
-static omObjData *megaSquishObj[] = {
-    0, 0, 0, 0,
-};
+static omObjData *megaSquishObj[4] = {};
 
 static s32 megaSquishSfxTbl[] = {
     0x128, 0x168, 0x1A8, 0x1E8,
@@ -696,7 +694,7 @@ void BoardPlayerTurnExec(s32 arg0) {
     if (_CheckFlag(0x10006U) == 0) {
         BoardCameraViewSet(2);
         omVibrate((s16) arg0, 0xC, 4, 2);
-        rollType = -1;
+		BoardRollTypeSet(-1);
         BoardYourTurnExec(arg0);
         rollResized = 0;
         SetRollPlayerSize(arg0);
@@ -716,10 +714,6 @@ void BoardPlayerTurnExec(s32 arg0) {
     BoardPlayerTurnMoveExec(arg0);
 }
 
-static inline s32 PlayerItemUseExec(s32 arg0) {
-    return BoardItemUseExec(arg0);
-}
-
 void BoardPlayerTurnRollExec(s32 arg0) {
     s32 temp_r28;
     s32 temp_r30;
@@ -735,7 +729,7 @@ void BoardPlayerTurnRollExec(s32 arg0) {
             BoardRollKill();
             BoardCameraTargetPlayerSet(arg0);
             BoardCameraMotionWait();
-            rollType = PlayerItemUseExec(arg0);
+			BoardRollTypeSet(BoardItemUseExec(arg0));
             if (BoardRollTypeGet() == 0xC) {
                 _SetFlag(0x10016);
                 BoardSpaceLandExec(arg0, GWPlayer[arg0].space_curr);
@@ -830,7 +824,7 @@ block_14:
         if (--GWPlayer[arg0].roll == 0) break;
     } while (1);
     BoardPauseDisableSet(1);
-    BoardDiceDigit2DUpdateEnable(arg0);
+    BoardRollUpdateSet(arg0);
     BoardPlayerIdleSet(arg0);
     if (GWPlayer[arg0].bowser_suit != 0) {
         BoardCameraTargetPlayerSet(arg0);
@@ -843,7 +837,7 @@ block_14:
         while (BoardItemDoneCheck() == 0) {
             HuPrcVSleep();
         }
-        rollType = -1;
+		BoardRollTypeSet(-1);
     }
     BoardPlayerSizeRestore(arg0);
     rollResized = 0;
@@ -1762,6 +1756,8 @@ void BoardPlayerIdleSet(s32 arg0)
 	BoardPlayerMotionShiftSet(arg0, 1, 0.0f, 8.0f, 0x40000001);
 }
 
+static void ExecMotBlend(omObjData *arg0);
+
 void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
     s16 sp1C;
     f32 temp_f25;
@@ -1792,7 +1788,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
     }
     if (arg2 > 0) {
         var_r18 = GWPlayer[arg0].character;
-        temp_r3 = omAddObjEx(boardObjMan, 0x100, 0, 0, -1, &BoardPlayerMotBlendExec);
+        temp_r3 = omAddObjEx(boardObjMan, 0x100, 0, 0, -1, ExecMotBlend);
         temp_r26 = OM_GET_WORK_PTR(temp_r3, bitcopy2);
         temp_r26->field00_bit0 = 0;
         temp_r26->unk_02 = arg2;
@@ -1843,7 +1839,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void BoardPlayerMotBlendExec(omObjData* arg0) {
+static void ExecMotBlend(omObjData* arg0) {
     f32 sp48;
     f32 var_f27;
     bitcopy2* temp_r30;
@@ -1900,13 +1896,13 @@ typedef struct bitcopy3 {
     s16 unk_06[5];
 } bitcopy3;
 
-void BoardDiceDigit2DInit(s32 arg0, s32 arg1) {
+void BoardRollCreate(s32 arg0, s32 arg1) {
     omObjData* temp_r3;
     s32 var_r30;
     bitcopy3* temp_r31;
 
-    temp_r3 = omAddObjEx(boardObjMan, 0x105, 0, 0, -1, &UpdateDiceDigit2D);
-    temp_r31 = OM_GET_WORK_PTR(temp_r3, bitcopy3);;
+    temp_r3 = omAddObjEx(boardObjMan, 0x105, 0, 0, -1, &UpdateRoll);
+    temp_r31 = OM_GET_WORK_PTR(temp_r3, bitcopy3);
     temp_r31->field00_bit0 = 0;
     temp_r31->field00_bit1 = 1;
     temp_r31->unk_01 = 0;
@@ -1924,14 +1920,14 @@ void BoardDiceDigit2DInit(s32 arg0, s32 arg1) {
         HuSprPosSet(temp_r31->unk_04, var_r30, 288.0f, 240.0f);
         HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
     }
-    diceDigit2DObj = temp_r3;
+    rollObj = temp_r3;
 }
 
-void BoardDiceDigit2DUpdateEnable(s32 arg0) {
+void BoardRollUpdateSet(s32 arg0) {
     bitcopy3* temp_r31;
 
-    if (diceDigit2DObj != 0) {
-        temp_r31 = OM_GET_WORK_PTR(diceDigit2DObj, bitcopy3);
+    if (rollObj != 0) {
+        temp_r31 = OM_GET_WORK_PTR(rollObj, bitcopy3);
         temp_r31->field00_bit0 = 1;
     }
 }
@@ -1940,8 +1936,8 @@ void BoardDiceDigit2DShowSet(s32 arg0) {
     s32 var_r30;
     bitcopy3* temp_r31;
 
-    if (diceDigit2DObj != 0) {
-        temp_r31 = OM_GET_WORK_PTR(diceDigit2DObj, bitcopy3);
+    if (rollObj != 0) {
+        temp_r31 = OM_GET_WORK_PTR(rollObj, bitcopy3);
         
         for (var_r30 = 0; var_r30 < 2; var_r30++) {
             if (arg0 != 0) {
@@ -1956,11 +1952,11 @@ void BoardDiceDigit2DShowSet(s32 arg0) {
                 HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
             }
         }
-        UpdateDiceDigitSprite(diceDigit2DObj);
+        UpdateRollSprite(rollObj);
     }
 }
 
-static void UpdateDiceDigitSprite(omObjData* arg0) {
+static void UpdateRollSprite(omObjData* arg0) {
     Vec sp1C;
     s32 sp14[2];
     f32 spC[2] = { 320.0f, 256.0f };
@@ -1994,17 +1990,17 @@ static void UpdateDiceDigitSprite(omObjData* arg0) {
     }
 }
 
-static void UpdateDiceDigit2D(omObjData* arg0) {
+static void UpdateRoll(omObjData* arg0) {
     f32 var_f30;
     bitcopy3* temp_r30;
 
-    temp_r30 = OM_GET_WORK_PTR(diceDigit2DObj, bitcopy3);
+    temp_r30 = OM_GET_WORK_PTR(rollObj, bitcopy3);
     if ((temp_r30->field00_bit0 != 0) || (BoardIsKill() != 0)) {
         if (temp_r30->unk_04 != -1) {
             HuSprGrpKill(temp_r30->unk_04);
             temp_r30->unk_04 = -1;
         }
-        diceDigit2DObj = NULL;
+        rollObj = NULL;
         omDelObjEx(HuPrcCurrentGet(), arg0);
         return;
     }
@@ -2020,7 +2016,7 @@ static void UpdateDiceDigit2D(omObjData* arg0) {
             var_f30 -= 90.0f;
         }
     }
-    UpdateDiceDigitSprite(arg0);
+    UpdateRollSprite(arg0);
 }
 
 void BoardPlayerBtnDownWait(s32 arg0, u32 arg1) {
@@ -2231,7 +2227,7 @@ void BoardBowserSuitPlayerModelKill(void) {
     }
 }
 
-void UpdateBowserSuit(omObjData* arg0) {
+static void UpdateBowserSuit(omObjData* arg0) {
     s16 temp_r30;
     bitcopy3* temp_r31;
 
@@ -2359,7 +2355,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 		while(!BoardItemDoneCheck()) {
 			HuPrcVSleep();
 		}
-		rollType = -1;
+		BoardRollTypeSet(-1);
 	}
 	if(rollResized) {
 		BoardPlayerSizeRestore(player);
@@ -2850,7 +2846,7 @@ void BoardPlayerCopyEyeMat(s32 arg0, s32 arg1) {
     material = hsfData->material;
     var_r29 = playerMatCopy[arg0];
     if (arg1 != 0) {
-        temp_r28 = &lbl_8013993C[GWPlayer[arg0].character][0];
+        temp_r28 = &eyeMatTbl[GWPlayer[arg0].character][0];
         for (var_r25 = 0; var_r25 < hsfData->materialCnt; var_r25++, material++, var_r29++) {
             var_r24 = 1;
             

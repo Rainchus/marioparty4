@@ -296,7 +296,7 @@ static void RollMain(void) {
     }
     destMode = var_r30;
     GWPlayer[rollPlayer].roll = var_r30;
-    BoardDiceDigit2DInit(rollPlayer, 1);
+    BoardRollCreate(rollPlayer, 1);
     if (_CheckFlag(0x1000B)) {
         BoardTutorialHookExec(6, 0);
     }

@@ -918,8 +918,8 @@ void BoardPlayerPosLerpStart(void);
 void BoardPlayerMoveToAsync(void);
 void BoardPlayerDiceJumpStart(void);
 void BoardPlayerDiceJumpCheck(void);
-void BoardDiceDigit2DInit(void);
-void BoardDiceDigit2DUpdateEnable(void);
+void BoardRollCreate(void);
+void BoardRollUpdateSet(void);
 void BoardDiceDigit2DShowSet(void);
 void BoardPlayerBtnDownWait(void);
 void BoardPlayerAutoSizeSet(void);
@@ -1935,8 +1935,8 @@ extern void _kerjmp_BoardPlayerPosLerpStart(void);
 extern void _kerjmp_BoardPlayerMoveToAsync(void);
 extern void _kerjmp_BoardPlayerDiceJumpStart(void);
 extern void _kerjmp_BoardPlayerDiceJumpCheck(void);
-extern void _kerjmp_BoardDiceDigit2DInit(void);
-extern void _kerjmp_BoardDiceDigit2DUpdateEnable(void);
+extern void _kerjmp_BoardRollCreate(void);
+extern void _kerjmp_BoardRollUpdateSet(void);
 extern void _kerjmp_BoardDiceDigit2DShowSet(void);
 extern void _kerjmp_BoardPlayerBtnDownWait(void);
 extern void _kerjmp_BoardPlayerAutoSizeSet(void);
@@ -3875,10 +3875,10 @@ asm void _kerent(void) {
     b BoardPlayerDiceJumpStart
     entry _kerjmp_BoardPlayerDiceJumpCheck
     b BoardPlayerDiceJumpCheck
-    entry _kerjmp_BoardDiceDigit2DInit
-    b BoardDiceDigit2DInit
-    entry _kerjmp_BoardDiceDigit2DUpdateEnable
-    b BoardDiceDigit2DUpdateEnable
+    entry _kerjmp_BoardRollCreate
+    b BoardRollCreate
+    entry _kerjmp_BoardRollUpdateSet
+    b BoardRollUpdateSet
     entry _kerjmp_BoardDiceDigit2DShowSet
     b BoardDiceDigit2DShowSet
     entry _kerjmp_BoardPlayerBtnDownWait

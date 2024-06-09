@@ -20,31 +20,15 @@ static inline s32 BoardPlayerHandicapGet(s32 player)
 	return GWPlayer[player].handicap;
 }
 
-static inline s32 BoardPlayerGetCurrIdx()
-{
-	return GWSystem.player_curr;
-}
-
 static inline PlayerState *BoardPlayerGet(s32 player)
 {
 	return &GWPlayer[player];
-}
-
-static inline PlayerState *BoardPlayerGetCurr()
-{
-	return &GWPlayer[BoardPlayerGetCurrIdx()];
 }
 
 static inline s16 BoardPlayerModelGet(s32 player)
 {
 	PlayerState *player_ptr = BoardPlayerGet(player);
 	return boardPlayerMdl[player_ptr->player_idx];
-}
-
-static inline s16 BoardPlayerModelGetCurr()
-{
-	PlayerState *player = BoardPlayerGetCurr();
-	return boardPlayerMdl[player->player_idx];
 }
 
 s32 BoardRollTypeGet(void);
@@ -131,14 +115,13 @@ void BoardPlayerMoveAwayStartCurr(s32, s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitMotionSetJump(void);
 //...
-void BoardPlayerMotBlendExec(omObjData*);
 s32 BoardPlayerAutoSizeGet(s32);
 void BoardPlayerAutoSizeSet(s32, s32);
 void BoardPlayerCopyMat(s32);
 void BoardBowserSuitInit(s32);
 void BoardBowserSuitKill(s32);
-void BoardDiceDigit2DInit(s32, s32);
-void BoardDiceDigit2DUpdateEnable(s32);
+void BoardRollCreate(s32, s32);
+void BoardRollUpdateSet(s32);
 void BoardPlayerResizeAnimExec(s32 player, s32 size);
 s32 BoardPlayerAnimBlendCheck(s32);
 s16 BoardBowserSuitPlayerModelGet(void);

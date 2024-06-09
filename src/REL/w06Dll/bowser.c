@@ -172,7 +172,7 @@ void fn_1_91D8(void) {
 }
 
 void fn_1_9294(s32 arg0, s32 arg1) {
-    BoardDiceDigit2DInit(arg0, 0);
+    BoardRollCreate(arg0, 0);
     fn_1_92D8(arg0, arg1);
 }
 
@@ -575,7 +575,7 @@ static void fn_1_A408(s32 arg0) {
         GWSystem.mg_next = 0x39;
     }
     _SetFlag(FLAG_ID_MAKE(1, 6));
-    BoardDiceDigit2DUpdateEnable(arg0);
+    BoardRollUpdateSet(arg0);
     if (!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         GWPlayer->coin_win = 0;
     }
@@ -620,7 +620,7 @@ static void fn_1_A408(s32 arg0) {
         _ClearFlag(FLAG_ID_MAKE(1, 6));
         BoardCameraViewSet(1);
         BoardCameraMotionWait();
-        BoardDiceDigit2DInit(arg0, 0);
+        BoardRollCreate(arg0, 0);
     } else {
         BoardNextOvlSet(var_r29);
     }
