@@ -31,8 +31,8 @@ static inline s16 BoardPlayerModelGet(s32 player)
 	return boardPlayerMdl[player_ptr->player_idx];
 }
 
-s32 BoardRollTypeGet(void);
-void BoardRollTypeSet(s32 type);
+s32 BoardItemPrevGet(void);
+void BoardItemPrevSet(s32 type);
 s32 BoardPlayerGetCharMess(s32 player);
 char* BoardPlayerGetCharName(s32 player);
 s32 BoardPlayerIsAllCom(void);
@@ -122,6 +122,7 @@ void BoardBowserSuitInit(s32);
 void BoardBowserSuitKill(s32);
 void BoardRollCreate(s32, s32);
 void BoardRollUpdateSet(s32);
+s32 BoardMegaDoubleDiceCheck(void);
 void BoardPlayerResizeAnimExec(s32 player, s32 size);
 s32 BoardPlayerAnimBlendCheck(s32);
 s16 BoardBowserSuitPlayerModelGet(void);

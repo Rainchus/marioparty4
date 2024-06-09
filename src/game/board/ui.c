@@ -1096,7 +1096,7 @@ static void ItemUseProc(void) {
         BoardDataAsyncWait(var_r24);
     }
     HideItemWindow();
-    BoardRollTypeSet(itemUsed);
+    BoardItemPrevSet(itemUsed);
     if (itemUsed != -1) {
         switch (itemUsed) {
             case 13:

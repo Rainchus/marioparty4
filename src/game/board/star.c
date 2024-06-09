@@ -671,7 +671,7 @@ void BoardStarShowNext(s32 arg0) {
         HuPrcSleep(18);
     }
     BoardStatusItemSet(0);
-    if (GWBoardGet() == 5 && BoardRollTypeGet() != 9 && boardStarGiveHook) {
+    if (GWBoardGet() == 5 && BoardItemPrevGet() != 9 && boardStarGiveHook) {
         boardStarGiveHook();
     }
     BoardSpaceStarMove();
@@ -753,7 +753,7 @@ void BoardStarShowNext(s32 arg0) {
     BoardWinCreate(3, var_r30, -1);
     BoardWinWait();
     BoardWinKill();
-    if (GWBoardGet() == 5 && BoardRollTypeGet() != 9 && boardStarShowNextHook) {
+    if (GWBoardGet() == 5 && BoardItemPrevGet() != 9 && boardStarShowNextHook) {
         boardStarShowNextHook();
     }
     BoardAudSeqFadeOut(1, 1000);

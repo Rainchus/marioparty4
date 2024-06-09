@@ -903,8 +903,8 @@ void BoardPlayerIdleSet(void);
 void BoardPlayerMotBlendSet(void);
 void BoardPlayerMotBlendCheck(void);
 void BoardPlayerRankCalc(void);
-void BoardRollTypeGet(void);
-void BoardRollTypeSet(void);
+void BoardItemPrevGet(void);
+void BoardItemPrevSet(void);
 void BoardPlayerItemRemove(void);
 void BoardPlayerItemFind(void);
 void BoardPlayerItemAdd(void);
@@ -1920,8 +1920,8 @@ extern void _kerjmp_BoardPlayerIdleSet(void);
 extern void _kerjmp_BoardPlayerMotBlendSet(void);
 extern void _kerjmp_BoardPlayerMotBlendCheck(void);
 extern void _kerjmp_BoardPlayerRankCalc(void);
-extern void _kerjmp_BoardRollTypeGet(void);
-extern void _kerjmp_BoardRollTypeSet(void);
+extern void _kerjmp_BoardItemPrevGet(void);
+extern void _kerjmp_BoardItemPrevSet(void);
 extern void _kerjmp_BoardPlayerItemRemove(void);
 extern void _kerjmp_BoardPlayerItemFind(void);
 extern void _kerjmp_BoardPlayerItemAdd(void);
@@ -3845,10 +3845,10 @@ asm void _kerent(void) {
     b BoardPlayerMotBlendCheck
     entry _kerjmp_BoardPlayerRankCalc
     b BoardPlayerRankCalc
-    entry _kerjmp_BoardRollTypeGet
-    b BoardRollTypeGet
-    entry _kerjmp_BoardRollTypeSet
-    b BoardRollTypeSet
+    entry _kerjmp_BoardItemPrevGet
+    b BoardItemPrevGet
+    entry _kerjmp_BoardItemPrevSet
+    b BoardItemPrevSet
     entry _kerjmp_BoardPlayerItemRemove
     b BoardPlayerItemRemove
     entry _kerjmp_BoardPlayerItemFind

@@ -564,7 +564,7 @@ static void fn_1_A408(s32 arg0) {
     }
     HuAudFXAllStop();
     BoardAudSeqFadeOutAll();
-    lbl_1_bss_0->unk06 = BoardRollTypeGet() + 1;
+    lbl_1_bss_0->unk06 = BoardItemPrevGet() + 1;
     if (BoardRandMod(100) < 50) {
         var_r29 = OVL_M457;
         GWMGAvailSet(0x1C9);
@@ -651,7 +651,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
     }
     BoardStatusItemSet(1);
     BoardMusStart(1, 6, 0x7F, 0);
-    BoardRollTypeSet(lbl_1_bss_0->unk06 - 1);
+    BoardItemPrevSet(lbl_1_bss_0->unk06 - 1);
     lbl_1_bss_0->unk06 = 0;
     BoardSpacePosGet(0, arg1, &sp3C);
     BoardPlayerPosSetV(arg0, &sp3C);

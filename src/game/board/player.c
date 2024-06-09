@@ -42,7 +42,7 @@ static void MegaSquishFunc(omObjData *object);
 
 static s32 DoSparkSpace(s32 player, s32 pause_cam);
 static void RemoveSparkSpace(s32 player);
-static void SetRollPlayerSize(s32 player);
+static void SetPlayerSizeAuto(s32 player);
 static s32 MegaPlayerPassFunc(s32 player, s32 space);
 static s32 MegaExecJump(s32 player, s32 space);
 
@@ -67,7 +67,7 @@ static s32 (*preTurnHook[4])();
 
 s16 boardPlayerMdl[4];
 static s16 playerMot[4];
-static s8 rollType;
+static s8 itemPrev;
 static s8 moveAwayPlayer[4];
 static s16 junctionArrowRot[4];
 static omObjData* moveAwayObj;
@@ -75,7 +75,7 @@ static omObjData* rollObj;
 static omObjData* junctionObj;
 static s32 junctionMask;
 static omObjData* bowserSuitObj;
-static s32 rollResized;
+static s32 megaDoubleDiceF;
 
 static s16 suitMdl = -1;
 static s16 suitPlayerMdl = -1;
@@ -148,12 +148,12 @@ static s32 megaSquishSfxTbl[] = {
     0x228, 0x268, 0x2A8, 0x2E8,
 };
 
-s32 BoardRollTypeGet(void) {
-    return rollType;
+s32 BoardItemPrevGet(void) {
+    return itemPrev;
 }
 
-void BoardRollTypeSet(s32 type) {
-    rollType = type;
+void BoardItemPrevSet(s32 type) {
+    itemPrev = type;
 }
 
 s32 BoardPlayerGetCharMess(s32 player) {
@@ -694,10 +694,10 @@ void BoardPlayerTurnExec(s32 arg0) {
     if (_CheckFlag(0x10006U) == 0) {
         BoardCameraViewSet(2);
         omVibrate((s16) arg0, 0xC, 4, 2);
-		BoardRollTypeSet(-1);
+		BoardItemPrevSet(-1);
         BoardYourTurnExec(arg0);
-        rollResized = 0;
-        SetRollPlayerSize(arg0);
+        megaDoubleDiceF = 0;
+        SetPlayerSizeAuto(arg0);
         if (preTurnHook[arg0] != 0U) {
             if (preTurnHook[arg0]() != 0) {
                 preTurnHook[arg0] = 0;
@@ -729,8 +729,8 @@ void BoardPlayerTurnRollExec(s32 arg0) {
             BoardRollKill();
             BoardCameraTargetPlayerSet(arg0);
             BoardCameraMotionWait();
-			BoardRollTypeSet(BoardItemUseExec(arg0));
-            if (BoardRollTypeGet() == 0xC) {
+			BoardItemPrevSet(BoardItemUseExec(arg0));
+            if (BoardItemPrevGet() == 0xC) {
                 _SetFlag(0x10016);
                 BoardSpaceLandExec(arg0, GWPlayer[arg0].space_curr);
                 BoardCameraMoveSet(1);
@@ -832,15 +832,15 @@ block_14:
     if (_CheckFlag(0x1000BU) != 0) {
         BoardTutorialHookExec(7, 0);
     }
-    if (BoardRollTypeGet() != -1) {
-        BoardItemPlayerRestore(arg0, BoardRollTypeGet());
+    if (BoardItemPrevGet() != -1) {
+        BoardItemPlayerRestore(arg0, BoardItemPrevGet());
         while (BoardItemDoneCheck() == 0) {
             HuPrcVSleep();
         }
-		BoardRollTypeSet(-1);
+		BoardItemPrevSet(-1);
     }
     BoardPlayerSizeRestore(arg0);
-    rollResized = 0;
+    megaDoubleDiceF = 0;
     if (_CheckFlag(0x1000BU) != 0) {
         BoardTutorialHookExec(8, 0);
     }
@@ -2346,7 +2346,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 		BoardModelAlphaSet(sp2E, sp2C);
 		HuPrcVSleep();
 	}
-	temp_r17 = BoardRollTypeGet();
+	temp_r17 = BoardItemPrevGet();
 	if(temp_r17 == 0 || temp_r17 == 1 || temp_r17 == 2 || temp_r17 == 3 || temp_r17 == 10) {
 		BoardCameraTargetPlayerSet(player);
 		BoardPlayerIdleSet(player);
@@ -2355,11 +2355,11 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 		while(!BoardItemDoneCheck()) {
 			HuPrcVSleep();
 		}
-		BoardRollTypeSet(-1);
+		BoardItemPrevSet(-1);
 	}
-	if(rollResized) {
+	if(megaDoubleDiceF) {
 		BoardPlayerSizeRestore(player);
-		rollResized = 0;
+		megaDoubleDiceF = 0;
 	}
 	if(sp128 != -1) {
 		HuAudFXPlay(boardSparkSfxTbl[GWPlayer[sp128].character]);
@@ -2428,7 +2428,7 @@ static void RemoveSparkSpace(s32 player)
 	}
 }
 
-static void SetRollPlayerSize(s32 player)
+static void SetPlayerSizeAuto(s32 player)
 {
 	s32 auto_size = BoardPlayerAutoSizeGet(player);
 	if(auto_size != 0) {
@@ -2446,14 +2446,13 @@ static void SetRollPlayerSize(s32 player)
 		BoardPlayerResizeAnimExec(player, auto_size);
 		BoardPlayerSizeSet(player, auto_size);
 		HuPrcSleep(30);
-		rollResized = 1;
+		megaDoubleDiceF = 1;
 	}
-	
 }
 
-s32 BoardRollResizeCheck(void)
+s32 BoardMegaDoubleDiceCheck(void)
 {
-	return rollResized;
+	return megaDoubleDiceF;
 }
 
 void BoardPlayerResizeAnimExec(s32 player, s32 size)
