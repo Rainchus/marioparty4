@@ -180,7 +180,7 @@ static void fn_1_20EC(void) {
     }
     fn_1_5648();
     fn_1_2C10();
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     BoardPlayerMotBlendSet(temp_r30, 180, 15);
     BoardCameraViewSet(2);
     while (!BoardPlayerMotBlendCheck(temp_r30)) {
@@ -238,7 +238,7 @@ static void fn_1_20EC(void) {
     fn_1_28BC();
     fn_1_2B8C();
     BoardAudSeqPause(0, 0, 1000);
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
     BoardPlayerMotionKill(temp_r30, lbl_1_bss_52[temp_r30][0]);

@@ -105,7 +105,7 @@ void fn_1_BCFC(void) {
     s32 temp_r30;
     s32 temp_r29;
     
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     spaceLinkFlags = BoardSpaceLinkFlagSearch(0, (s32) GWPlayer[lbl_1_bss_388].space_curr, 2U);
     BoardPlayerMoveToAsync(lbl_1_bss_388, spaceLinkFlags);
     while (GWPlayer[lbl_1_bss_388].moving) {
@@ -129,7 +129,7 @@ void fn_1_BCFC(void) {
     BoardCameraViewSet(1);
     BoardStatusShowSetAll(1);
     BoardCameraMotionWait();
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
     HuPrcKill(NULL);
     while(TRUE) {
       HuPrcVSleep();  

@@ -141,7 +141,7 @@ void fn_1_9A9C(void) {
 }
 
 void fn_1_9AA0(void) {
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_180 = HuPrcChildCreate(fn_1_9C8C, 0x2003, 0x2000, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_180, fn_1_9B30);
 
@@ -149,7 +149,7 @@ void fn_1_9AA0(void) {
         HuPrcVSleep();
     }
 
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 void fn_1_9B30(void) {
