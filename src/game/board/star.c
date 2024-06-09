@@ -161,13 +161,13 @@ void BoardStarExec(s32 arg0, s32 arg1) {
         return;
     }
     if (BoardPlayerSizeGet(arg0) != 2) {
-        BoardDiceDigit2DShowSet(0);
+        BoardRollDispSet(0);
         starProc = HuPrcChildCreate(ExecStar, 0x2003, 0x3800, 0, boardMainProc);
         HuPrcDestructorSet2(starProc, DestroyStar);
         while (starProc != NULL) {
             HuPrcVSleep();
         }
-        BoardDiceDigit2DShowSet(1);
+        BoardRollDispSet(1);
     }
 }
 

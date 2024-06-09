@@ -920,7 +920,7 @@ void BoardPlayerDiceJumpStart(void);
 void BoardPlayerDiceJumpCheck(void);
 void BoardRollCreate(void);
 void BoardRollUpdateSet(void);
-void BoardDiceDigit2DShowSet(void);
+void BoardRollDispSet(void);
 void BoardPlayerBtnDownWait(void);
 void BoardPlayerAutoSizeSet(void);
 void BoardPlayerAutoSizeGet(void);
@@ -1937,7 +1937,7 @@ extern void _kerjmp_BoardPlayerDiceJumpStart(void);
 extern void _kerjmp_BoardPlayerDiceJumpCheck(void);
 extern void _kerjmp_BoardRollCreate(void);
 extern void _kerjmp_BoardRollUpdateSet(void);
-extern void _kerjmp_BoardDiceDigit2DShowSet(void);
+extern void _kerjmp_BoardRollDispSet(void);
 extern void _kerjmp_BoardPlayerBtnDownWait(void);
 extern void _kerjmp_BoardPlayerAutoSizeSet(void);
 extern void _kerjmp_BoardPlayerAutoSizeGet(void);
@@ -3879,8 +3879,8 @@ asm void _kerent(void) {
     b BoardRollCreate
     entry _kerjmp_BoardRollUpdateSet
     b BoardRollUpdateSet
-    entry _kerjmp_BoardDiceDigit2DShowSet
-    b BoardDiceDigit2DShowSet
+    entry _kerjmp_BoardRollDispSet
+    b BoardRollDispSet
     entry _kerjmp_BoardPlayerBtnDownWait
     b BoardPlayerBtnDownWait
     entry _kerjmp_BoardPlayerAutoSizeSet

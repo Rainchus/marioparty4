@@ -171,7 +171,7 @@ void fn_1_7FA4(void) {
 }
 
 void fn_1_8264(s32 arg0, s16 arg1) {
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_E6 = arg0;
     lbl_1_bss_E4 = arg1;
     lbl_1_bss_C8 = HuPrcChildCreate(fn_1_8320, 0x2003, 0x3800, 0, boardMainProc);
@@ -179,7 +179,7 @@ void fn_1_8264(s32 arg0, s16 arg1) {
     while (lbl_1_bss_C8) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void fn_1_8320(void) {

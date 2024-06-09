@@ -1241,12 +1241,12 @@ static s32 DoDebugMove(s32 arg0, s16* arg1) {
                 goto end;
             } else {
                 if (HuPadBtnDown[var_r20] == 0x10) {
-                    BoardDiceDigit2DShowSet(0);
+                    BoardRollDispSet(0);
                     BoardPlayerIdleSet(arg0);
                     StopJunctionPlayer(0);
                     BoardViewMapExec(arg0);
                     InitJunction(arg0, sp28->space_curr, -1.0f);
-                    BoardDiceDigit2DShowSet(1);
+                    BoardRollDispSet(1);
                     goto loop_21;
                 }
                 if ((0.0f != spA0.x) || (0.0f != spA0.z)) {
@@ -1438,7 +1438,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
             break;
         } else if (var_r20 == 0x20 || var_r20 == 0x10) {
             HuAudFXPlay(1);
-            BoardDiceDigit2DShowSet(0);
+            BoardRollDispSet(0);
             BoardPlayerIdleSet(arg0);
             StopJunctionPlayer(0);
             if (var_r20 == 0x10) {
@@ -1447,7 +1447,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
                 BoardViewOverheadExec(arg0);
             }
             InitJunction(arg0, sp30->space_curr, var_f28);
-            BoardDiceDigit2DShowSet(1);
+            BoardRollDispSet(1);
         } else {
             if ((0.0f != spC4.x) || (0.0f != spC4.z)) {
                 var_f29 = (90.0 + (180.0 * (atan2(spC4.z, spC4.x) / M_PI)));
@@ -1932,7 +1932,7 @@ void BoardRollUpdateSet(s32 arg0) {
     }
 }
 
-void BoardDiceDigit2DShowSet(s32 arg0) {
+void BoardRollDispSet(s32 arg0) {
     s32 var_r30;
     bitcopy3* temp_r31;
 
@@ -2292,7 +2292,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 	if(!sp138) {
 		return 0;
 	}
-	BoardDiceDigit2DShowSet(0);
+	BoardRollDispSet(0);
 	if(pause_cam) {
 		BoardCameraMoveSet(0);
 	} else {
@@ -2413,7 +2413,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 	BoardCameraTargetPlayerSet(sp30);
 	BoardCameraMotionWait();
 	BoardCameraMoveSet(1);
-	BoardDiceDigit2DShowSet(1);
+	BoardRollDispSet(1);
 	return 1;
 }
 

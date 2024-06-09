@@ -128,7 +128,7 @@ s32 BoardPlayerAnimBlendCheck(s32);
 s16 BoardBowserSuitPlayerModelGet(void);
 void BoardBowserSuitMotionSetWait(void);
 void BoardBowserSuitPlayerModelKill(void);
-void BoardDiceDigit2DShowSet(s32);
+void BoardRollDispSet(s32);
 s32 BoardPlayerMotBlendCheck(s32);
 void BoardBowserSuitMotionSetWalk(void);
 s16 BoardBowserSuitModelGet(void);

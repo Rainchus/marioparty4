@@ -404,7 +404,7 @@ s32 fn_1_1114(void) {
     s16 var_r30 = GWPlayer[GWSystem.player_curr].space_curr;
 
     temp_r31 = BoardSpaceFlagGet(0, var_r30) & 0x600000;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     if ((temp_r31 & 0x200000) != 0) {
         lbl_1_bss_4 = HuPrcChildCreate(fn_1_954, 0x2003, 0x3000, 0, boardMainProc);
         HuPrcDestructorSet2(lbl_1_bss_4, fn_1_D4C);
@@ -415,7 +415,7 @@ s32 fn_1_1114(void) {
     } else if ((temp_r31 & 0x400000) != 0) {
         fn_1_E40();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 s32 fn_1_1208(s16 arg0, f32 arg8, f32 arg9) {
