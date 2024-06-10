@@ -610,7 +610,7 @@ s32 fn_1_1D74(s32 arg0)
 	return lbl_1_bss_3A0[arg0];
 }
 
-s16 fn_1_1D8C(void)
+s32 fn_1_1D8C(void)
 {
 	return lbl_1_bss_3AA;
 }
