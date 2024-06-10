@@ -116,8 +116,8 @@ s32 fn_1_2490(void)
 		Hu3DModelPosSet(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], 0, -50, 0);
 	}
 	HuWinMesWait(lbl_1_bss_82);
-	temp_r26 = 0;
-	lbl_1_bss_80 = temp_r26;
+	
+	lbl_1_bss_80 = temp_r26 = 0;
 	espAttrReset(lbl_1_bss_152[10], HUSPR_ATTR_DISPOFF);
 	espBankSet(lbl_1_bss_152[10], 0);
 	for(temp_r31=0; temp_r31<=10; temp_r31++) {
