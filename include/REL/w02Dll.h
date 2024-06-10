@@ -12,7 +12,41 @@
 #include "game/board/window.h"
 #include "game/board/map_object.h"
 
+
+/* STRUCTS*/
+typedef struct m02_dice {
+    /* 0x00 */  s16 unk00;
+    /* 0x02 */  s16 unk02;
+    /* 0x04 */  s32 unk04;
+    /* 0x08 */  s32 *unk08;
+    /* 0x0C */  Vec unk0C;
+    /* 0x18 */  s16 unk18;
+    /* 0x1A */  s16 unk1A;
+    /* 0x1C */  u16 unk1C[3];
+    /* 0x22 */  s16 unk22;
+    /* 0x24 */  f32 unk24;
+    /* 0x28 */  s16 unk28;
+    /* 0x2A */  u8  unk2A[0x2];
+    /* 0x2C */  Process *unk2C;
+    /* 0x30 */  s16 unk30[3];
+    /* 0x36 */  s16 unk36[3];
+    /* 0x3C */  omObjData *unk3C[3];
+    /* 0x48 */  s16 unk48[3];
+    /* 0x4E */  u8  unk4E[0x2];
+    /* 0x50 */  omObjData *unk50[3];
+    /* 0x5C */  u8  unk5C[0x08];
+    /* 0x64 */  Vec unk64[2];
+    /* 0x7C */  Vec unk7C;
+    /* 0x88 */  s32 unk88[3];
+    /* 0x94 */  s16 unk94;
+    /* 0x96 */  s16 unk96;
+    /* 0x98 */  f32 unk98;
+    /* 0x9C */  s16 unk9C;
+} m02Dice;
+
+
 extern s16 lbl_1_bss_30[0x10]; // Model List
+extern s16 lbl_1_data_286;
 
 // main.c
 extern void fn_1_770();
@@ -22,6 +56,10 @@ extern s32 fn_1_800();
 extern void fn_1_92C();
 extern s32 fn_1_1128(); 
 extern void fn_1_121C(u32);
+
+void fn_1_1254(m02Dice* arg0);
+void fn_1_1518(m02Dice* arg0);
+s32 fn_1_17F4(m02Dice* arg0);
 
 // roulette.c
 extern void fn_1_D3AC();
