@@ -21,20 +21,20 @@ typedef struct {
 
 /* EXTERN FUNCTIONS */
 void fn_1_13D0(void);
-void fn_1_1574(m02Dice *arg0);
-void fn_1_1794(m02Dice *arg0);
+void fn_1_1574(m02GenDice *arg0);
+void fn_1_1794(m02GenDice *arg0);
 void fn_1_1850(omObjData *object);
-void fn_1_1F94(m02Dice* arg0, s32 arg1);
-void fn_1_2030(m02Dice *arg0);
-void fn_1_2100(m02Dice *arg0, s32 arg1);
-void fn_1_2220(m02Dice *arg0);
-s32 fn_1_233C(m02Dice *arg0);
-void fn_1_23FC(m02Dice *arg0, s32 arg1);
-void fn_1_23B4(m02Dice *arg0, s32 arg1);
-void fn_1_272C(m02Dice *arg0);
+void fn_1_1F94(m02GenDice* arg0, s32 arg1);
+void fn_1_2030(m02GenDice *arg0);
+void fn_1_2100(m02GenDice *arg0, s32 arg1);
+void fn_1_2220(m02GenDice *arg0);
+s32 fn_1_233C(m02GenDice *arg0);
+void fn_1_23FC(m02GenDice *arg0, s32 arg1);
+void fn_1_23B4(m02GenDice *arg0, s32 arg1);
+void fn_1_272C(m02GenDice *arg0);
 
 /* LOCAL FUNCTIONS */
-void fn_1_1254(m02Dice* arg0) {
+void fn_1_1254(m02GenDice* arg0) {
     Vec sp8;
     s32 i;
 
@@ -65,7 +65,7 @@ void fn_1_13D0(void) {
     s32 var_r29;
     s32 i;
     s32 var_r30_2;
-    m02Dice* temp_r31;
+    m02GenDice* temp_r31;
 
     temp_r31 = HuPrcCurrentGet()->user_data;
     temp_r31->unk36[0] = temp_r31->unk36[1] = temp_r31->unk36[2] = 0;
@@ -106,7 +106,7 @@ void fn_1_13D0(void) {
     }
 }
 
-void fn_1_1518(m02Dice* arg0) {
+void fn_1_1518(m02GenDice* arg0) {
     OSReport("m02GenDiceKill\n");
     if (arg0->unk2C) {
         HuPrcKill(arg0->unk2C);
@@ -115,7 +115,7 @@ void fn_1_1518(m02Dice* arg0) {
     fn_1_272C(arg0);
 }
 
-void fn_1_1574(m02Dice* arg0) {
+void fn_1_1574(m02GenDice* arg0) {
     Vec sp8;
     f32 temp_f0;
     omObjData* temp_r3;
@@ -153,7 +153,7 @@ void fn_1_1574(m02Dice* arg0) {
     HuAudFXPlay(0x302);
 }
 
-void fn_1_1794(m02Dice* arg0) {
+void fn_1_1794(m02GenDice* arg0) {
     WorkDice* temp_r30;
 
     temp_r30 = OM_GET_WORK_PTR(arg0->unk3C[arg0->unk96], WorkDice);
@@ -162,7 +162,7 @@ void fn_1_1794(m02Dice* arg0) {
     }
 }
 
-s32 fn_1_17F4(m02Dice* arg0)
+s32 fn_1_17F4(m02GenDice* arg0)
 {
     WorkDice* temp;
     if ( arg0->unk96 < 0) {
@@ -178,13 +178,13 @@ s32 fn_1_17F4(m02Dice* arg0)
 void fn_1_1850(omObjData *object)
 {
 	WorkDice *temp_r29;
-	m02Dice *temp_r27;
+	m02GenDice *temp_r27;
 	s16 temp_r26;
 	s16 temp_r25;
 	float temp_f29;
 	float temp_f28;
 	float temp_f27;
-	temp_r27 = (m02Dice *)object->unk10;
+	temp_r27 = (m02GenDice *)object->unk10;
 	temp_r29 = OM_GET_WORK_PTR(object, WorkDice);
 	if(temp_r29->unk7 || BoardIsKill()) {
 		fn_1_1F94(temp_r27, temp_r29->unk1);
@@ -291,7 +291,7 @@ void fn_1_1850(omObjData *object)
 	BoardModelScaleSet(temp_r27->unk30[temp_r29->unk1], object->scale.x, object->scale.y, object->scale.z);
 }
 
-void fn_1_1F94(m02Dice* arg0, s32 arg1) {
+void fn_1_1F94(m02GenDice* arg0, s32 arg1) {
     if (arg0->unk30[arg1] != -1) {
         BoardModelKill(arg0->unk30[arg1]);
         arg0->unk30[arg1] = -1;
@@ -303,7 +303,7 @@ void fn_1_1F94(m02Dice* arg0, s32 arg1) {
     }
 }
 
-void fn_1_2030(m02Dice *arg0)
+void fn_1_2030(m02GenDice *arg0)
 {
 	fn_1_1F94(arg0, 0);
 	fn_1_1F94(arg0, 1);
@@ -337,7 +337,7 @@ HsfanimStruct00 lbl_1_data_2D8 = {
     }
 };
 
-void fn_1_2100(m02Dice *arg0, s32 arg1)
+void fn_1_2100(m02GenDice *arg0, s32 arg1)
 {
 	s16 temp_r29;
 	AnimData *temp_r28;
@@ -353,7 +353,7 @@ void fn_1_2100(m02Dice *arg0, s32 arg1)
 	Hu3DParticleBlendModeSet(temp_r29, 0);
 }
 
-void fn_1_2220(m02Dice *arg0)
+void fn_1_2220(m02GenDice *arg0)
 {
 	s32 temp_r30;
 	WorkDice *temp_r29;
@@ -377,7 +377,7 @@ typedef struct {
 	float unk08;
 } WorkDiceNum;
 
-void fn_1_22BC(m02Dice *arg0)
+void fn_1_22BC(m02GenDice *arg0)
 {
 	s32 temp_r31;
 	WorkDiceNum *temp_r30;
@@ -391,7 +391,7 @@ void fn_1_22BC(m02Dice *arg0)
 	}
 }
 
-s32 fn_1_233C(m02Dice* arg0)
+s32 fn_1_233C(m02GenDice* arg0)
 {
 	s32 temp_r31;
 	WorkDiceNum *temp_r30;
@@ -407,7 +407,7 @@ s32 fn_1_233C(m02Dice* arg0)
 	return 1;
 }
 
-void fn_1_23B4(m02Dice *arg0, s32 arg1)
+void fn_1_23B4(m02GenDice *arg0, s32 arg1)
 {
 	WorkDiceNum *work;
 	if(!arg0->unk50[arg1]) {
@@ -419,7 +419,7 @@ void fn_1_23B4(m02Dice *arg0, s32 arg1)
 
 void fn_1_25D0(omObjData *object);
 
-void fn_1_23FC(m02Dice *arg0, s32 arg1)
+void fn_1_23FC(m02GenDice *arg0, s32 arg1)
 {
 	Vec spC;
 	s16 sp8[2];
@@ -459,14 +459,14 @@ void fn_1_23FC(m02Dice *arg0, s32 arg1)
 }
 
 void fn_1_2694(WorkDiceNum *arg0);
-void fn_1_2830(m02Dice *arg0, WorkDiceNum *arg1, s32 arg2);
-void fn_1_2BE4(m02Dice *arg0, WorkDiceNum *arg1, s32 arg2);
+void fn_1_2830(m02GenDice *arg0, WorkDiceNum *arg1, s32 arg2);
+void fn_1_2BE4(m02GenDice *arg0, WorkDiceNum *arg1, s32 arg2);
 
 void fn_1_25D0(omObjData *object)
 {
 	WorkDiceNum *temp_r31;
-	m02Dice *temp_r30;
-	temp_r30 = (m02Dice *)object->unk10;
+	m02GenDice *temp_r30;
+	temp_r30 = (m02GenDice *)object->unk10;
 	temp_r31 = OM_GET_WORK_PTR(object, WorkDiceNum);
 	if(temp_r31->field0_bit0 || BoardIsKill()) {
 		fn_1_2694(temp_r31);
@@ -495,7 +495,7 @@ void fn_1_2694(WorkDiceNum *arg0)
 	}
 }
 
-void fn_1_272C(m02Dice *arg0)
+void fn_1_272C(m02GenDice *arg0)
 {
 	s32 i;
 	WorkDiceNum *work;
@@ -519,7 +519,7 @@ void fn_1_272C(m02Dice *arg0)
 	
 }
 
-void fn_1_2830(m02Dice *arg0, WorkDiceNum *arg1, s32 arg2)
+void fn_1_2830(m02GenDice *arg0, WorkDiceNum *arg1, s32 arg2)
 {
 	float temp_f31;
 	s16 temp_r31;
@@ -588,7 +588,7 @@ void fn_1_2830(m02Dice *arg0, WorkDiceNum *arg1, s32 arg2)
 	}
 }
 
-void fn_1_2BE4(m02Dice *arg0, WorkDiceNum *arg1, s32 arg2)
+void fn_1_2BE4(m02GenDice *arg0, WorkDiceNum *arg1, s32 arg2)
 {
 	s32 temp_r29;
 	float temp_f30;

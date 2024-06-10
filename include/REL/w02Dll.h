@@ -42,7 +42,7 @@ typedef struct m02_dice {
     /* 0x96 */  s16 unk96;
     /* 0x98 */  f32 unk98;
     /* 0x9C */  s16 unk9C;
-} m02Dice;
+} m02GenDice;
 
 
 extern s16 lbl_1_bss_30[0x10]; // Model List
@@ -57,9 +57,9 @@ extern void fn_1_92C();
 extern s32 fn_1_1128(); 
 extern void fn_1_121C(u32);
 
-void fn_1_1254(m02Dice* arg0);
-void fn_1_1518(m02Dice* arg0);
-s32 fn_1_17F4(m02Dice* arg0);
+void fn_1_1254(m02GenDice* arg0);
+void fn_1_1518(m02GenDice* arg0);
+s32 fn_1_17F4(m02GenDice* arg0);
 
 // roulette.c
 extern void fn_1_D3AC();

@@ -14,8 +14,8 @@ void fn_1_2D04(void)
 	float temp_f30;
 	float temp_f29;
 	
-	m02Dice spEC;
-	m02Dice sp4C;
+	m02GenDice spEC;
+	m02GenDice sp4C;
 	s32 sp24[10] = {
 		0x0076001C,
 		0x0076001D,
