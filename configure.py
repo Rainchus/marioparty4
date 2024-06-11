@@ -1488,7 +1488,7 @@ config.libs = [
             Object(Matching, "REL/w02Dll/gamble.c"),
             Object(Matching, "REL/w02Dll/mg_coin.c"),
             Object(Matching, "REL/w02Dll/mg_item.c"),
-            Object(NonMatching, "REL/w02Dll/shuffleboard.c"),
+            Object(Matching, "REL/w02Dll/shuffleboard.c"),
             Object(Matching, "REL/w02Dll/roulette.c"),
         },
     ),
