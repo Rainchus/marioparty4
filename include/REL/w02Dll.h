@@ -80,6 +80,6 @@ extern void fn_1_BC1C();
 extern  s32 fn_1_BE88();
 extern  s32 fn_1_C108(s32);
 extern void fn_1_CD04(s32); 
-extern void fn_1_E41C();
+void fn_1_E41C(void);
 
 #endif   //W02DLL
