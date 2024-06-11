@@ -19,6 +19,7 @@
 #include "game/hsfmotion.h"
 #include "game/pad.h"
 #include "game/frand.h"
+#include "ext_math.h"
 
 typedef struct someBits {
     /* 0x00 */ struct {
@@ -939,7 +940,7 @@ void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
     HsfanimStruct01* var_r31;
     s32 i, j;
 
-    if (particle->unk_34 == 0U) {
+    if (particle->unk_34 == 0) {
         var_r31 = particle->unk_48;
         for (i = 0; i < particle->unk_30; i++, var_r31++) {
             var_r31->unk40.a = 0;
@@ -952,7 +953,7 @@ void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
     temp_f31 = sp8.x;
     BoardModelPosGet(particle->unk_02, &sp8);
 
-    for (i = 0; i < 0x16; i++) {
+    for (i = 0; i < 22; i++) {
         var_r31 = particle->unk_48;
         for (j = 0; j < particle->unk_30; j++, var_r31++) {
             if (0.0f == var_r31->unk2C) {
@@ -960,13 +961,13 @@ void fn_1_BE30(ModelData *model, ParticleData *particle, Mtx matrix) {
             }
         }
         if (j != particle->unk_30) {
-            temp_f30 = 360.0f * (0.003921569f * frand8());
-            temp_f29 = temp_f31 * (20.0f + (60.0f * (0.003921569f * frand8())));
-            var_r31->unk34.x = (sp8.x + (temp_f29 * sin((M_PI * temp_f30) / 180.0)));
-            var_r31->unk34.z = (sp8.z + (temp_f29 * cos((M_PI * temp_f30) / 180.0)));
-            var_r31->unk34.y = (sp8.y + (temp_f31 * (-30.0f + (40.0f * (0.003921569f * frand8())))));
-            var_r31->unk08.x = (0.5f + (3.0f * (0.003921569f * frand8())));
-            var_r31->unk08.y = (0.3f + (2.0f * (0.003921569f * frand8())));
+            temp_f30 = 360.0f * ((1.0f/255.0f) * frand8());
+            temp_f29 = temp_f31 * (20.0f + (60.0f * ((1.0f/255.0f) * frand8())));
+            var_r31->unk34.x = (sp8.x + (temp_f29 * sind(temp_f30)));
+            var_r31->unk34.z = (sp8.z + (temp_f29 * cosd(temp_f30)));
+            var_r31->unk34.y = (sp8.y + (temp_f31 * (-30.0f + (40.0f * ((1.0f/255.0f) * frand8())))));
+            var_r31->unk08.x = (0.5f + (3.0f * ((1.0f/255.0f) * frand8())));
+            var_r31->unk08.y = (0.3f + (2.0f * ((1.0f/255.0f) * frand8())));
             var_r31->unk40.a = 180;
             var_r31->unk2C = (15.0f * temp_f31);            
         }
