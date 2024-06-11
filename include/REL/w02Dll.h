@@ -45,6 +45,10 @@ typedef struct m02_dice {
 } m02GenDice;
 
 
+extern s16 lbl_1_bss_2E;
+extern s16 lbl_1_bss_2C;
+extern Vec lbl_1_bss_20;
+extern Vec lbl_1_bss_14;
 extern s16 lbl_1_bss_30[0x10]; // Model List
 extern s16 lbl_1_data_286;
 
@@ -72,10 +76,10 @@ extern void fn_1_39F4();
 extern void fn_1_5CF8();
 extern void fn_1_5D28();
 extern void fn_1_5F90(); 
-extern void fn_1_79BC(s16* itemList);
-extern void fn_1_8244(s32);
-extern void fn_1_9250();
-extern void fn_1_93C8(s32 spaceFlag);
+extern void fn_1_79BC(s16 *arg0);
+extern void fn_1_8244(u16 arg0);
+extern s32 fn_1_9250();
+extern void fn_1_93C8(u32 arg0);
 extern void fn_1_BC1C();
 extern  s32 fn_1_BE88();
 extern  s32 fn_1_C108(s32);
