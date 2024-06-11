@@ -860,7 +860,7 @@ config.libs = [
         "m406Dll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m406Dll/main.c"),
+            Object(Matching, "REL/m406Dll/main.c"),
             Object(NonMatching, "REL/m406Dll/map.c"),
             Object(NonMatching, "REL/m406Dll/player.c"),
         },

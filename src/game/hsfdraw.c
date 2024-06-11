@@ -117,11 +117,6 @@ static s16 oneceF = 1;
 static GXColor firstTev = { 0xFF, 0xFF, 0x00, 0x00 };
 static GXColor secondTev = { 0x00, 0x00, 0xFF, 0xFF };
 
-// TODO: move to GXVert
-static inline void GXUnknownu16(const u16 x) {
-  GXWGFifo.u16 = x;
-}
-
 void Hu3DDrawPreInit(void) {
     DrawObjIdx = 0;
 }
