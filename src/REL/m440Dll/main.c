@@ -12,7 +12,6 @@
 #include "game/sprite.h"
 
 // prototypes
-void fn_1_2D28(omObjData* object);
 void fn_1_33D4(omObjData* object);
 void fn_1_3DD8(omObjData* object);
 void fn_1_4660(omObjData* object);
@@ -655,6 +654,8 @@ void fn_1_2AB4(omObjData* object) {
 
 s16 lbl_1_data_E4[2] = {0, 0};
 s16 lbl_1_data_E8[2] = {0, 0};
+s16 lbl_1_data_EC[2] = {0, 0};
+s16 lbl_1_data_F0[2] = {0, 0};
 
 void fn_1_2B04(omObjData* object) {
     f32 temp_f31;
@@ -696,4 +697,100 @@ void fn_1_2CA8(omObjData* arg0) {
         case 5:
             fn_1_3DD8(arg0);
     }
+}
+
+void fn_1_2D28(omObjData* object) {
+    f32 var_f31;
+    unkStruct* temp_r31;
+
+    temp_r31 = (unkStruct*)object->data;
+    switch (lbl_1_data_EC[0]) {
+        case 0x0:
+            temp_r31->center.x = temp_r31->center.z = 0.0f;
+            temp_r31->center.y = 2000.0f;
+            temp_r31->rot.x = temp_r31->rot.y = temp_r31->rot.z = 0.0f;
+            Hu3DModelAttrReset(object->model[2], 1);
+            Hu3DModelAttrReset(object->model[3], 1);
+            Hu3DModelAttrSet(object->model[3], 0x40000002);
+            Hu3DMotionTimeSet(object->model[3], 0.0f);
+            lbl_1_data_EC[0] ++;
+            lbl_1_data_F0[0] = 0;
+            HuAudFXPlay(0x709);
+            HuAudFXPlay(0x711);
+            break;
+        case 0x1:
+            lbl_1_data_F0[0] ++;
+            var_f31 = lbl_1_data_F0[0] / 120.0f;
+            if (var_f31 > 1.0f) {
+                var_f31 = 1.0f;
+                lbl_1_data_F0[0] = 0;
+                lbl_1_data_F0[1] = 0xF;
+                lbl_1_data_EC[1] = (lbl_1_data_EC[0] + 1);
+                lbl_1_data_EC[0] = 0x63;
+            }
+            if (110.0f == lbl_1_data_F0[0]) {
+                HuAudFXPlay(0x70A);
+            }
+            var_f31 = sin((M_PI * (90.0f * var_f31)) / 180.0);
+            temp_r31->center.y = (2000.0f + (-1750.0f * var_f31));
+            break;
+        case 0x2:
+            if (lbl_1_data_F0[0] == 0) {
+                HuAudFXPlay(0x713);
+            }
+            lbl_1_data_F0[0] ++;
+            var_f31 = lbl_1_data_F0[0] / 60.0f;
+            if (var_f31 > 1.0f) {
+                var_f31 = 1.0f;
+                lbl_1_data_F0[0] = 0;
+                lbl_1_data_F0[1] = 0xF;
+                lbl_1_data_EC[1] = lbl_1_data_EC[0] + 1;
+                lbl_1_data_EC[0] = 0x63;
+                HuAudFXPlay(0x714);
+            }
+            temp_r31->rot.y = (360.0f * var_f31);
+            break;
+        case 0x3:
+            Hu3DModelAttrReset(object->model[3], 0x40000002);
+            Hu3DMotionSpeedSet(object->model[3], 2.0f);
+            if (lbl_1_data_F0[0] == 0) {
+                HuAudFXPlay(0x711);
+            }
+            if (++lbl_1_data_F0[0] > 12.0) {
+                if (fn_1_4EA8(0x40) != 0) {
+                    fn_1_4EEC(0x40, 0);
+                    fn_1_F228();
+                }
+                fn_1_4EEC(0x20, 0x20);
+                fn_1_4EEC(7, 2);
+                lbl_1_data_F0[0] = 0;
+                lbl_1_data_EC[0] = 0;
+            }
+            break;
+        case 0x4:
+            lbl_1_data_F0[0]++;
+            var_f31 = lbl_1_data_F0[0] / 360.0f;
+            if (var_f31 > 1.0f) {
+                var_f31 = 1.0f;
+                Hu3DModelAttrSet(object->model[3], 1);
+                lbl_1_data_F0[0] = 0;
+                lbl_1_data_EC[0] = 0;
+                fn_1_4EEC(7, 2);
+                return;
+            }
+            var_f31 = sin((M_PI * (90.0f * var_f31)) / 180.0);
+            temp_r31->center.y = (250.0f + (1750.0f * var_f31));
+            break;
+        case 0x63:
+            if (++lbl_1_data_F0[0] > lbl_1_data_F0[1]) {
+                lbl_1_data_F0[0] = 0;
+                lbl_1_data_EC[0] = lbl_1_data_EC[1];
+            }
+            break;
+    }
+    Hu3DModelPosSet(object->model[3], temp_r31->center.x, temp_r31->center.y, temp_r31->center.z);
+    Hu3DModelRotSet(object->model[3], temp_r31->rot.x, temp_r31->rot.y, temp_r31->rot.z);
+    Hu3DModelPosSet(object->model[2], temp_r31->center.x, temp_r31->center.y, temp_r31->center.z);
+    Hu3DModelRotSet(object->model[2], temp_r31->rot.x, temp_r31->rot.y, temp_r31->rot.z);
+    return;
 }

@@ -101,8 +101,10 @@ extern Vec lbl_1_data_54;
 extern Vec lbl_1_data_60;
 extern Vec lbl_1_data_6C;
 extern unkStruct lbl_1_data_78[3];
-// extern s32 lbl_1_data_E4;
-// extern s32 lbl_1_data_E8;
+extern s16 lbl_1_data_E4[2];
+extern s16 lbl_1_data_E8[2];
+extern s16 lbl_1_data_EC[2];
+extern s16 lbl_1_data_F0[2];
 
 ////// FUNCTIONS //////
 // main.c
@@ -134,5 +136,6 @@ extern void fn_1_2A74(omObjData* object);
 extern void fn_1_2AB4(omObjData* object);
 extern void fn_1_2B04(omObjData* object);
 extern void fn_1_2CA8(omObjData* object);
+extern void fn_1_2D28(omObjData* object);
 // ...
 extern f32 fn_1_93C0(f32, f32, f32);
