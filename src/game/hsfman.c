@@ -38,7 +38,7 @@ s32 shadowModelDrawF;
 s16 Hu3DProjectionNum;
 s16 Hu3DCameraNo;
 s16 Hu3DCameraBit;
-HsfData* Hu3DMallocNo;
+u32 Hu3DMallocNo;
 s16 Hu3DPauseF;
 u16 Hu3DCameraExistF;
 static u16 NoSyncF;
@@ -343,11 +343,11 @@ s16 Hu3DModelCreate(void *arg0) {
         return -1;
     }
     var_r31->hsfData = LoadHSF(arg0);
-    var_r31->unk_48 = Hu3DMallocNo = var_r31->hsfData;
+    var_r31->unk_48 = Hu3DMallocNo = (u32)var_r31->hsfData;
     var_r31->attr = 0;
     var_r31->motion_attr = 0;
     var_r31->unk_02 = 0;
-    MakeDisplayList(var_r30, (HsfData* ) var_r31->unk_48);
+    MakeDisplayList(var_r30, var_r31->unk_48);
     var_r31->unk_68 = 1.0f;
     for (i = 0; i < 4; i++) {
         var_r31->unk_10[i] = -1;
@@ -424,10 +424,10 @@ s16 Hu3DModelLink(s16 arg0) {
         return -1;
     }
     var_r31->unk_C8 = temp_r30->hsfData;
-    var_r31->hsfData = HuMemDirectMallocNum(HEAP_DATA, 0x80, (u32)var_r31->unk_4C);
-    var_r31->unk_4C = var_r31->hsfData;
+    var_r31->hsfData = HuMemDirectMallocNum(HEAP_DATA, 0x80, var_r31->unk_4C);
+    var_r31->unk_4C = (u32)var_r31->hsfData;
     *var_r31->hsfData = *temp_r30->hsfData;
-    temp_r3_2 = Hu3DObjDuplicate(var_r31->hsfData, (u32)var_r31->unk_4C);
+    temp_r3_2 = Hu3DObjDuplicate(var_r31->hsfData, var_r31->unk_4C);
     var_r31->hsfData->root = (HsfObject*)((u32)temp_r3_2 + ((u32)var_r31->hsfData->root - (u32)var_r31->hsfData->object));
     var_r31->hsfData->object = temp_r3_2;
     var_r31->unk_48 = temp_r30->unk_48;
@@ -487,7 +487,7 @@ s16 Hu3DHookFuncCreate(ModelHookFunc hook) {
         return -1;
     }
     var_r31->hook = hook;
-    var_r31->unk_48 = (HsfData *)(var_r29 + 10000);
+    var_r31->unk_48 = var_r29+10000;
     var_r31->attr = 0x10;
     var_r31->motion_attr = 0;
     var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = 0.0f;
@@ -536,7 +536,7 @@ void Hu3DModelKill(s16 arg0) {
         layerNum[temp_r31->layer] -= 1;
 
         if ((temp_r31->attr & 0x10) != 0) {
-            HuMemDirectFreeNum(HEAP_DATA, (u32) temp_r31->unk_48);
+            HuMemDirectFreeNum(HEAP_DATA, temp_r31->unk_48);
             if ((temp_r31->attr & 0x20) != 0) {
                 copy = temp_r31->unk_120;
                 HuSprAnimKill(copy->unk_44);
@@ -551,14 +551,14 @@ void Hu3DModelKill(s16 arg0) {
             if (temp_r31->unk_08 != -1) {
                 Hu3DMotionKill(temp_r31->unk_08);
             }
-            HuMemDirectFreeNum(HEAP_DATA, (u32) temp_r31->unk_48);
+            HuMemDirectFreeNum(HEAP_DATA, temp_r31->unk_48);
             temp_r31->hsfData = NULL;
             return;
         }
         Hu3DAnimModelKill(arg0);
         if (temp_r31->unk_24 != -1) {
             HuMemDirectFree(temp_r31->hsfData);
-            HuMemDirectFreeNum(HEAP_DATA, (u32) temp_r31->unk_4C);
+            HuMemDirectFreeNum(HEAP_DATA, temp_r31->unk_4C);
             var_r28 = temp_r31->unk_C8;
             temp_r31->hsfData = var_r28;
         }
@@ -586,7 +586,7 @@ void Hu3DModelKill(s16 arg0) {
         }
         if (temp_r31->unk_20 != -1 && Hu3DMotionKill(temp_r31->unk_20) == 0) {
             Hu3DMotion[temp_r31->unk_20].unk_02 = -1;
-            HuMemDirectFreeNum(HEAP_DATA, (u32) temp_r31->unk_48);
+            HuMemDirectFreeNum(HEAP_DATA, temp_r31->unk_48);
             temp_r31->hsfData = NULL;
             if (modelKillAllF == 0) {
                 HuMemDCFlush(HEAP_DATA);
@@ -594,7 +594,7 @@ void Hu3DModelKill(s16 arg0) {
             return;
         }
         HuMemDirectFree(temp_r31->hsfData);
-        HuMemDirectFreeNum(HEAP_DATA, (u32) temp_r31->unk_48);
+        HuMemDirectFreeNum(HEAP_DATA, temp_r31->unk_48);
         for (i = 0; i < temp_r31->unk_26; i++) {
             Hu3DGLightKill(temp_r31->unk_28[i]);
         }
@@ -2103,7 +2103,7 @@ void Hu3DMipMapSet(char* arg0, s16 arg1, s32 arg2, f32 arg8) {
     for ( i = 0, var_r24 = i; i < temp_r3->bmpNum; i++, var_r30++) {
         var_r24 += var_r30->dataSize;
     }
-    var_r23 = HuMemDirectMallocNum(HEAP_DATA, var_r24, (u32)temp_r25->unk_48);
+    var_r23 = HuMemDirectMallocNum(HEAP_DATA, var_r24, temp_r25->unk_48);
     temp_r22 = var_r23;
     var_r30 = temp_r3->bmp;
     temp_r31->data = temp_r22;

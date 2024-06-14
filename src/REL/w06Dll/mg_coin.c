@@ -138,13 +138,13 @@ void fn_1_4A10(void) {
 
 void fn_1_4A60(void) {
     lbl_1_bss_8C = 0;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_48 = HuPrcChildCreate(fn_1_4BA0, 0x2003, 0x3800, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_48, fn_1_4B00);
     while (lbl_1_bss_48) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void fn_1_4B00(void) {

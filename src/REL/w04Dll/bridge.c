@@ -101,7 +101,7 @@ void fn_1_1618(void) {
 
     temp_r31 = GWSystem.player_curr;
     temp_r30 = BoardPlayerMotionCreate(temp_r31, lbl_1_data_2AC[GWPlayer[temp_r31].character]);
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     BoardPlayerMotBlendSet(temp_r31, 180, 15);
     BoardCameraViewSet(2);
     while (!BoardPlayerMotBlendCheck(temp_r31)) {
@@ -125,7 +125,7 @@ void fn_1_1618(void) {
     BoardPlayerMotionShiftSet(temp_r31, 1, 0.0f, 10.0f, 0x40000001);
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
     BoardPlayerMotionKill(temp_r31, temp_r30);
     HuPrcKill(NULL);
     while (TRUE) {

@@ -2,6 +2,7 @@
 #include "game/hsfanim.h"
 #include "game/hsfformat.h"
 #include "game/hsfload.h"
+#include "game/sprite.h"
 
 #include "ext_math.h"
 #include "string.h"
@@ -115,11 +116,6 @@ u8 texMtxTbl[] = {
 static s16 oneceF = 1;
 static GXColor firstTev = { 0xFF, 0xFF, 0x00, 0x00 };
 static GXColor secondTev = { 0x00, 0x00, 0xFF, 0xFF };
-
-// TODO: move to GXVert
-static inline void GXUnknownu16(const u16 x) {
-  GXWGFifo.u16 = x;
-}
 
 void Hu3DDrawPreInit(void) {
     DrawObjIdx = 0;
@@ -2379,14 +2375,14 @@ static void ObjDraw(HsfDrawObject *arg0) {
     }
 }
 
-void MakeDisplayList(s16 arg0, HsfData *arg1) {
+void MakeDisplayList(s16 arg0, u32 arg1) {
     HsfData *temp_r31;
     ModelData *var_r30;
 
     temp_r31 = Hu3DData[arg0].hsfData;
     var_r30 = &Hu3DData[arg0];
     curModelID = arg0;
-    mallocNo = (u32) arg1;
+    mallocNo = arg1;
     faceNumBuf = HuMemDirectMallocNum(HEAP_DATA, 0x800 * sizeof(u16), mallocNo);
     MDObjCall(temp_r31, temp_r31->root);
     HuMemDirectFree(faceNumBuf);

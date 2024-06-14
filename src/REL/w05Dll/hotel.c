@@ -69,7 +69,7 @@ void fn_1_155C(void) {
     u32 var_r31;
 
     lbl_1_bss_28 = GWSystem.player_curr;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     temp_r28 = BoardModelMotionCreate(lbl_1_bss_14[4], lbl_1_data_180);
     temp_f30 = BoardPlayerRotYGet(lbl_1_bss_28);
     BoardPlayerPosGet(lbl_1_bss_28, &sp58);
@@ -195,7 +195,7 @@ void fn_1_155C(void) {
     }
     BoardCameraMotionWait();
     BoardModelMotionKill(lbl_1_bss_14[4], temp_r28);
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 s32 lbl_1_data_188[4] = { 0x79000C, 0x79000E, 0x79000F, 0x790010 };
@@ -229,7 +229,7 @@ void fn_1_1E44(void) {
     s32 var_r30;
 
     lbl_1_bss_28 = GWSystem.player_curr;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         sp8[var_r31] = BoardModelMotionCreate(lbl_1_bss_14[4], lbl_1_data_188[var_r31]);

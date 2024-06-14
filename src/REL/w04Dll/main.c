@@ -208,12 +208,12 @@ static s32 fn_1_7FC(void) {
         if (lbl_1_bss_0->unk00 & 1) {
             fn_1_55B4();
         } else {
-            BoardDiceDigit2DShowSet(0);
+            BoardRollDispSet(0);
             BoardPlayerIdleSet(temp_r31);
             BoardWinCreate(0, MAKE_MESSID(32, 25), -1);
             BoardWinWait();
             BoardWinKill();
-            BoardDiceDigit2DShowSet(1);
+            BoardRollDispSet(1);
         }
         return 1;
     }
@@ -389,7 +389,7 @@ static s32 fn_1_103C(void) {
 
     var_r30 = GWPlayer[GWSystem.player_curr].space_curr;
     temp_r31 = BoardSpaceFlagGet(0, var_r30) & 0x600000;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     if (temp_r31 & 0x200000) {
         lbl_1_bss_4 = HuPrcChildCreate(fn_1_958, 0x2003, 0x2000, 0, boardMainProc);
         HuPrcDestructorSet2(lbl_1_bss_4, fn_1_CF8);
@@ -399,7 +399,7 @@ static s32 fn_1_103C(void) {
     } else if (temp_r31 & 0x400000) {
         fn_1_DB0();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 s32 fn_1_1130(s16 arg0, float arg1, float arg2) {

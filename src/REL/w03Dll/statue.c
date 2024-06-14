@@ -53,7 +53,7 @@ s8 lbl_1_bss_2C;
 Process* lbl_1_bss_28;
 
 void fn_1_12C8(void) {
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_28 = HuPrcChildCreate(&fn_1_1358, 0x2003, 0x2000, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_28, &fn_1_152C);
 
@@ -61,7 +61,7 @@ void fn_1_12C8(void) {
         HuPrcVSleep();
     }
 
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 void fn_1_1358(void) {

@@ -650,13 +650,13 @@ static s32 fn_1_157C(void) {
 
     temp_curr = GWPlayer[GWSystem.player_curr].space_curr;
     temp_r31 = BoardSpaceFlagGet(0, temp_curr) & 0x600000;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     if (temp_r31 == 0x200000) {
         fn_1_130C();
     } else if (temp_r31 == 0x400000) {
         fn_1_128C();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void fn_1_1670(void) {
@@ -1355,7 +1355,7 @@ static void fn_1_4FA8(void) {
 
 static void fn_1_4FD8(void) {
     lbl_1_bss_6B4 = GWSystem.player_curr;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     if (BoardPlayerSizeGet(lbl_1_bss_6B4) == 2 || GWPlayer[lbl_1_bss_6B4].bowser_suit) {
         return;
     }
@@ -1364,7 +1364,7 @@ static void fn_1_4FD8(void) {
     while (lbl_1_bss_8) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void fn_1_50D4(void) {
@@ -1518,13 +1518,13 @@ static void fn_1_5694(s32 arg0) {
 static void fn_1_586C(s32 arg0, s32 arg1) {
     lbl_1_bss_29 = arg0;
     lbl_1_bss_26 = arg1;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_14 = HuPrcChildCreate(fn_1_592C, 0x2003, 0x2000, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_14, fn_1_5B2C);
     while (lbl_1_bss_14) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void fn_1_592C(void) {
@@ -1717,7 +1717,7 @@ static void fn_1_63F0(Bss18Work *arg0, omObjData *arg1) {
         if (GWPlayer[GWSystem.player_curr].bowser_suit) {
             BoardModelHookSet(arg0->unk04, lbl_1_data_604[lbl_1_bss_28], BoardBowserSuitModelGet());
         } else {
-            BoardModelHookSet(arg0->unk04, lbl_1_data_604[lbl_1_bss_28], BoardPlayerModelGetCurr());
+            BoardModelHookSet(arg0->unk04, lbl_1_data_604[lbl_1_bss_28], BoardPlayerModelGet(GWSystem.player_curr));
         }
         var_r24 = lbl_1_bss_6C4[lbl_1_data_5DC[lbl_1_bss_29][lbl_1_bss_28]];
         if (arg0->unk00_field3 != 0) {

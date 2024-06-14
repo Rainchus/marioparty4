@@ -120,13 +120,13 @@ void BoardBooHouseKill(void) {
 void BoardBooHouseExec(s32 arg0) {
     currPlayer = arg0;
     if (BoardPlayerSizeGet(currPlayer) != 2) {
-        BoardDiceDigit2DShowSet(0);
+        BoardRollDispSet(0);
         houseProc = HuPrcChildCreate(&ExecBooHouse, 0x2003, 0x3800, 0, boardMainProc);
         HuPrcDestructorSet2(houseProc, &DestroyBooHouse);
         while (houseProc != 0U) {
             HuPrcVSleep();
         }
-        BoardDiceDigit2DShowSet(1);
+        BoardRollDispSet(1);
     }
 }
 
@@ -181,7 +181,7 @@ static void ExecBooHouse(void) {
         }
     }
     BoardWinKill();
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     BoardAudSeqPause(0, 1, 0x3E8);
     BoardDataAsyncWait(var_r28);
     temp_r29 = BoardSpaceLinkFlagSearch(0, var_r30, 0x02000000);

@@ -194,13 +194,13 @@ void BoardShopExec(s32 player, s32 space) {
         return;
     }
     shopPlayer = player;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     shopProc = HuPrcChildCreate(ExecShop, 0x2003, 0x3800, 0, boardMainProc);
     HuPrcDestructorSet2(shopProc, DestroyShop);
     while (shopProc) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void ExecShop(void) {

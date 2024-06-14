@@ -23,8 +23,8 @@
 s16 lbl_1_bss_30[0x10]; // Model List
 s16 lbl_1_bss_2E;
 s16 lbl_1_bss_2C;
-Point3d lbl_1_bss_20;
-Point3d lbl_1_bss_14;
+Vec lbl_1_bss_20;
+Vec lbl_1_bss_14;
 s32* lbl_1_bss_10;
 s16 lbl_1_bss_8[4]; // Item List
 Process* lbl_1_bss_4;
@@ -432,7 +432,7 @@ s32 fn_1_1128(void) {
     s16 currSpace;
     currSpace = GWPlayer[GWSystem.player_curr].space_curr;
     spaceFlags = BoardSpaceFlagGet(0, currSpace) & 0x600000;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
 
     if (spaceFlags & 0x200000) {
         fn_1_990();
@@ -444,7 +444,7 @@ s32 fn_1_1128(void) {
         }
     }
 
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 void fn_1_121C(u32 mesg) {
