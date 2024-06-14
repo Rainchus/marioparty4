@@ -94,13 +94,13 @@ void fn_1_7B58(void) {
 }
 
 void fn_1_7BA8(void) {
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_140 = HuPrcChildCreate(&fn_1_7C98, 0x2003, 0x2000, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_140, &fn_1_7C38);
     while (lbl_1_bss_140) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 void fn_1_7C38(void) {

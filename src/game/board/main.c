@@ -794,7 +794,7 @@ void BoardCameraViewSet(s32 type)
 	} else {
 		size = 1.0f;
 	}
-	BoardCameraTargetModelSet(BoardPlayerModelGetCurr());
+	BoardCameraTargetModelSet(BoardPlayerModelGet(GWSystem.player_curr));
 	BoardPlayerPosGet(GWSystem.player_curr, &focus->target_end);
 	BoardCameraOffsetSet(0.0f, 100.0f*size, 0.0f);
 	focus->target_end.y += 100.0f*size;

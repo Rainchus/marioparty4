@@ -62,7 +62,7 @@ void fn_1_2C7C(s32 arg0) {
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         lbl_1_bss_30[var_r31] = BoardPlayerMotionCreate(lbl_1_bss_4C, lbl_1_data_1CC[var_r31] | lbl_1_data_124[GWPlayer[lbl_1_bss_4C].character]);
     }
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     BoardPlayerIdleSet(lbl_1_bss_4C);
     spC.y = 100.0f;
     spC.z = 0.0f;
@@ -83,7 +83,7 @@ void fn_1_2C7C(s32 arg0) {
     BoardPlayerIdleSet(lbl_1_bss_4C);
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
     
     for (var_r31 = 0; var_r31 < 2; var_r31++) {
         BoardModelKill(lbl_1_bss_44[var_r31]);

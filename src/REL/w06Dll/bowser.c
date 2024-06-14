@@ -172,7 +172,7 @@ void fn_1_91D8(void) {
 }
 
 void fn_1_9294(s32 arg0, s32 arg1) {
-    BoardDiceDigit2DInit(arg0, 0);
+    BoardRollCreate(arg0, 0);
     fn_1_92D8(arg0, arg1);
 }
 
@@ -182,13 +182,13 @@ s32 fn_1_92D8(s32 arg0, s32 arg1) {
         return lbl_1_bss_F0;
     }
     lbl_1_bss_F4 = arg0;
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_E8 = HuPrcChildCreate(fn_1_93C8, 0x2003, 0x3800, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_E8, fn_1_94D4);
     while (lbl_1_bss_E8) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
     return lbl_1_bss_F0;
 }
 
@@ -564,7 +564,7 @@ static void fn_1_A408(s32 arg0) {
     }
     HuAudFXAllStop();
     BoardAudSeqFadeOutAll();
-    lbl_1_bss_0->unk06 = BoardRollTypeGet() + 1;
+    lbl_1_bss_0->unk06 = BoardItemPrevGet() + 1;
     if (BoardRandMod(100) < 50) {
         var_r29 = OVL_M457;
         GWMGAvailSet(0x1C9);
@@ -575,7 +575,7 @@ static void fn_1_A408(s32 arg0) {
         GWSystem.mg_next = 0x39;
     }
     _SetFlag(FLAG_ID_MAKE(1, 6));
-    BoardDiceDigit2DUpdateEnable(arg0);
+    BoardRollUpdateSet(arg0);
     if (!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         GWPlayer->coin_win = 0;
     }
@@ -620,7 +620,7 @@ static void fn_1_A408(s32 arg0) {
         _ClearFlag(FLAG_ID_MAKE(1, 6));
         BoardCameraViewSet(1);
         BoardCameraMotionWait();
-        BoardDiceDigit2DInit(arg0, 0);
+        BoardRollCreate(arg0, 0);
     } else {
         BoardNextOvlSet(var_r29);
     }
@@ -651,7 +651,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
     }
     BoardStatusItemSet(1);
     BoardMusStart(1, 6, 0x7F, 0);
-    BoardRollTypeSet(lbl_1_bss_0->unk06 - 1);
+    BoardItemPrevSet(lbl_1_bss_0->unk06 - 1);
     lbl_1_bss_0->unk06 = 0;
     BoardSpacePosGet(0, arg1, &sp3C);
     BoardPlayerPosSetV(arg0, &sp3C);

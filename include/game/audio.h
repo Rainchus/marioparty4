@@ -17,7 +17,7 @@ s32 HuAudStreamPlay(char *name, s32 arg1);
 void HuAudStreamVolSet(s16 vol);
 void HuAudStreamPauseOn(void);
 void HuAudStreamPauseOff(void);
-void HuAudStreamFadeOut(void);
+void HuAudStreamFadeOut(s32 arg0);
 void HuAudAllStop(void);
 void HuAudFadeOut(s32 arg0);
 s32 HuAudFXPlay(s32 arg0);

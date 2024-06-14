@@ -1562,7 +1562,7 @@ void fn_1_3714(omObjData *object)
     for (var_r29 = 0; var_r29 < 2; var_r29++) {
         var_r27 = Hu3DHookFuncCreate(fn_1_88B4);
         var_r26 = &Hu3DData[var_r27];
-        var_r26->unk_120 = (ParticleData *)lbl_1_bss_24; // TODO fix this?
+        var_r26->unk_120 = lbl_1_bss_24;
         Hu3DModelPosSetV(var_r27, &lbl_1_data_200[var_r29]);
         Hu3DModelScaleSet(var_r27, 4.0f, 4.0f, 4.0f);
         Hu3DModelLayerSet(var_r27, 4);
@@ -2200,7 +2200,7 @@ void fn_1_5EBC(omObjData *object)
         }
         Hu3DModelLayerSet(var_r31->unk_04, 5);
         var_r26 = &Hu3DData[var_r31->unk_04];
-        var_r27 = (UnkModelDataUnk120Struct *)var_r26->unk_120; // TODO fix
+        var_r27 = var_r26->unk_120;
         var_r27->unk_20 = 0;
         Hu3DModelAttrSet(var_r31->unk_04, 1);
         var_r31->unk_00 = var_r30;
@@ -2233,7 +2233,7 @@ void fn_1_6008(omObjData *object)
             } else {
                 Hu3DModelAttrReset(var_r30->unk_04, 1);
                 var_r26 = &Hu3DData[var_r30->unk_04];
-                var_r29 = (UnkModelDataUnk120Struct *)var_r26->unk_120;
+                var_r29 = var_r26->unk_120;
                 var_r31 = var_r29->unk_3C;
                 for (var_r27 = var_r25 = 0; var_r27 < var_r29->unk_24; var_r27++, var_r31++) {
                     if (var_r31->unk_28 <= 0.0f) {
@@ -2341,7 +2341,7 @@ s32 fn_1_63B8(s32 arg0, Vec *arg1, Vec *arg2, float arg8, GXColor arg3)
         return -1;
     }
     var_r27 = &Hu3DData[var_r30->unk_04];
-    var_r29 = (UnkModelDataUnk120Struct *)var_r27->unk_120;
+    var_r29 = var_r27->unk_120;
     var_r31 = var_r29->unk_3C;
 
     for (var_r28 = 0; var_r28 < var_r29->unk_24; var_r28++, var_r31++) {
@@ -2759,7 +2759,7 @@ s16 fn_1_795C(AnimData *arg0, s16 arg1)
     var_r23 = Hu3DHookFuncCreate(fn_1_80DC);
     var_r27 = &Hu3DData[var_r23];
     var_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(UnkModelDataUnk120Struct), (u32)var_r27->unk_48);
-    var_r27->unk_120 = (ParticleData *)var_r31;
+    var_r27->unk_120 = var_r31;
     var_r31->unk_38 = arg0;
     var_r31->unk_24 = arg1;
     var_r31->unk_20 = 0;
@@ -2845,11 +2845,11 @@ s16 fn_1_7DC8(s16 arg0)
     s16 var_r22;
 
     var_r23 = &Hu3DData[arg0];
-    var_r26 = (UnkModelDataUnk120Struct *)var_r23->unk_120;
+    var_r26 = var_r23->unk_120;
     var_r22 = Hu3DHookFuncCreate(var_r23->hook);
     var_r27 = &Hu3DData[var_r22];
     var_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(UnkModelDataUnk120Struct), (u32)var_r27->unk_48); // TODO fix
-    var_r27->unk_120 = (ParticleData *)var_r31;
+    var_r27->unk_120 = var_r31;
     var_r31->unk_38 = var_r26->unk_38;
     var_r31->unk_24 = var_r26->unk_24;
     var_r24 = var_r31->unk_24;
@@ -2923,7 +2923,7 @@ void fn_1_80DC(ModelData *arg0, Mtx arg1)
     s16 var_r19;
     UnkModelDataUnk120Hook var_r18;
 
-    var_r31 = (UnkModelDataUnk120Struct *)arg0->unk_120;
+    var_r31 = arg0->unk_120;
     if ((var_r31->unk_2C != GlobalCounter) || shadowModelDrawF) {
         if ((var_r31->unk_50) && (var_r31->unk_50 != arg0)) {
             fn_1_80DC(var_r31->unk_50, arg1);
@@ -3071,7 +3071,7 @@ void fn_1_88B4(ModelData *arg0, Mtx arg1)
     var_f26 = sqrtf((var_f31 * var_f31) + (var_f30 * var_f30));
     arg0->rot.x = (atan2d(var_f26, var_f27)) - 90.0;
     arg0->rot.y = atan2d(var_f31, var_f30);
-    var_r29 = (AnimData *)arg0->unk_120; // AnimData ?!
+    var_r29 = arg0->unk_120;
     GXLoadPosMtxImm(arg1, 0);
     GXSetNumTevStages(1);
     GXSetNumTexGens(1);

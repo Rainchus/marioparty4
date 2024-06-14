@@ -154,7 +154,7 @@ void BoardPauseStart(void) {
 static void PauseExit(void) {
     if (pauseQuitF == 0) {
         BoardRollWinDispSet(1);
-        BoardDiceDigit2DShowSet(1);
+        BoardRollDispSet(1);
         BoardStatusItemSet(1);
         BoardRollUPauseSet(1);
         BoardLast5GfxShowSet(1);
@@ -200,7 +200,7 @@ static void PauseProcess(void) {
     BoardFilterFadeInit(30, 0xA0);
     temp_r31 = BoardDataDirReadAsync(DATADIR_BPAUSE);
     BoardRollWinDispSet(0);
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     BoardStatusItemSet(0);
     BoardRollUPauseSet(0);
     BoardLast5GfxShowSet(0);

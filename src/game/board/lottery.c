@@ -210,13 +210,13 @@ void BoardLotteryExec(void) {
     if (BoardPlayerSizeGet(GWSystem.player_curr) == 2) {
         return;
     }
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lotteryProc = HuPrcChildCreate(ExecLottery, 0x2003, 0x3800, 0, boardMainProc);
     HuPrcDestructorSet2(lotteryProc, DestroyLottery);
     while (lotteryProc) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 void BoardLotteryInit(void) {

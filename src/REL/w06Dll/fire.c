@@ -67,13 +67,13 @@ static s32 lbl_1_data_230[] = {
 };
 
 void fn_1_6EF0(void) {
-    BoardDiceDigit2DShowSet(0);
+    BoardRollDispSet(0);
     lbl_1_bss_90 = HuPrcChildCreate(fn_1_6F80, 0x2003, 0x3800, 0, boardMainProc);
     HuPrcDestructorSet2(lbl_1_bss_90, fn_1_7210);
     while (lbl_1_bss_90) {
         HuPrcVSleep();
     }
-    BoardDiceDigit2DShowSet(1);
+    BoardRollDispSet(1);
 }
 
 static void fn_1_6F80(void) {
