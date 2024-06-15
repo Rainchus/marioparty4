@@ -377,7 +377,7 @@ void fn_1_1168(omObjData *object)
     }
 }
 
-u32 fn_1_122C(void)
+s32 fn_1_122C(void)
 {
     return lbl_1_bss_1C;
 }
