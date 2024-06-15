@@ -2112,7 +2112,7 @@ void fn_1_8244(s32 arg0, s32 arg1, float arg8, float arg9)
 
 void fn_1_82C8(Mtx arg0, s32 arg1, float arg8)
 {
-    Mtx sp8C[1];
+    Mtx sp8C;
     Vec sp80;
     Vec sp74;
     Vec sp68;
@@ -2131,12 +2131,12 @@ void fn_1_82C8(Mtx arg0, s32 arg1, float arg8)
     sp80.z = arg0[2][3];
     sp74.x = sp74.z = 0.0f;
     sp74.y = atan2d(arg0[0][0], arg0[2][0]);
-    PSMTXCopy(arg0, sp8C[0]);
-    sp8C[0][0][3] = sp8C[0][1][3] = sp8C[0][2][3] = sp8C[1][0][3] = 0.0f;
+    PSMTXCopy(arg0, sp8C);
+    sp8C[0][3] = sp8C[1][3] = sp8C[2][3] = sp8C[3][3] = 0.0f;
     sp68.x = -25.0f;
     sp68.z = -50.0f;
     sp68.y = 0.0f;
-    fn_1_D518(sp8C[0], &sp68);
+    fn_1_D518(sp8C, &sp68);
     sp68.x += sp80.x;
     sp68.y += sp80.y;
     sp68.z += sp80.z;
@@ -2144,14 +2144,14 @@ void fn_1_82C8(Mtx arg0, s32 arg1, float arg8)
     sp5C.x = -25.0f;
     sp5C.z = 50.0f;
     sp5C.y = 0.0f;
-    fn_1_D518(sp8C[0], &sp5C);
+    fn_1_D518(sp8C, &sp5C);
     sp5C.x += sp80.x;
     sp5C.y += sp80.y;
     sp5C.z += sp80.z;
-    mtxRotCat(sp8C[0], 0.0f, 180.0f + (90.0f - (45.0f * (0.007874016f * (frand() & 0x7F)))), 0.0f);
+    mtxRotCat(sp8C, 0.0f, 180.0f + (90.0f - (45.0f * (0.007874016f * (frand() & 0x7F)))), 0.0f);
     lbl_1_data_89B.a = arg8;
-    var_f30 = sp8C[0][0][2];
-    var_f29 = sp8C[0][2][2];
+    var_f30 = sp8C[0][2];
+    var_f29 = sp8C[2][2];
     for (var_r28 = 0; var_r28 < (arg1 >> 1); var_r28++) {
         fn_1_D488(0.007874016f * (frand() & 0x7F), &sp68, &sp5C, &sp50);
         sp50.x += 100.0f * (0.1f * ((0.007874016f * (frand() & 0x7F)) - 0.5f));
@@ -2168,14 +2168,14 @@ void fn_1_82C8(Mtx arg0, s32 arg1, float arg8)
     sp68.x = -25.0f;
     sp68.z = -50.0f;
     sp68.y = 0.0f;
-    fn_1_D518(sp8C[0], &sp68);
+    fn_1_D518(sp8C, &sp68);
     sp68.x += sp80.x;
     sp68.y += sp80.y;
     sp68.z = sp68.z + sp80.z;
     sp5C.x = -25.0f;
     sp5C.z = 50.0f;
     sp5C.y = 0.0f;
-    fn_1_D518(sp8C[0], &sp5C);
+    fn_1_D518(sp8C, &sp5C);
     sp5C.x += sp80.x;
     sp5C.y += sp80.y;
     sp5C.z += sp80.z;
