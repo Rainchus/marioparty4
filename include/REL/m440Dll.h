@@ -57,6 +57,9 @@ typedef struct _unkStruct5 { // could be unkStruct3
     GXColor* unk24; // ?
 } unkStruct5;
 
+typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
+typedef void (*m440Func6)(struct _unkStruct6*);
+
 typedef struct _unkStruct6 {
     s16 unk0;
     s16 unk2;
@@ -65,11 +68,15 @@ typedef struct _unkStruct6 {
     char unk8[0x18];
     s32 unk20;
     char unk24[0x14];
-    void (*unk38)(s32);
-    char unk3C[0x4];
-} unkStruct6; // 0x40
+    m440Func6 unk38;
+    s16 unk3C;
+} unkStruct6; // sizeof 0x40
 
-typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
+typedef struct _unkStruct7 {
+    GXColor unk0;
+    Vec unk4;
+} unkStruct7;
+
 
 ////// BSS //////
 // object.c
@@ -96,7 +103,7 @@ extern s8 lbl_1_bss_0;
 extern f32 lbl_1_data_0[5];
 extern Vec lbl_1_data_2C;
 extern Vec lbl_1_data_38;
-extern GXColor lbl_1_data_44;
+extern unkStruct7 lbl_1_data_44;
 extern Vec lbl_1_data_54;
 extern Vec lbl_1_data_60;
 extern Vec lbl_1_data_6C;
@@ -105,6 +112,9 @@ extern s16 lbl_1_data_E4[2];
 extern s16 lbl_1_data_E8[2];
 extern s16 lbl_1_data_EC[2];
 extern s16 lbl_1_data_F0[2];
+extern s32 lbl_1_data_F4[4];
+// object.c
+extern s16 lbl_1_data_1D8;
 
 ////// FUNCTIONS //////
 // main.c
@@ -137,5 +147,13 @@ extern void fn_1_2AB4(omObjData* object);
 extern void fn_1_2B04(omObjData* object);
 extern void fn_1_2CA8(omObjData* object);
 extern void fn_1_2D28(omObjData* object);
+extern void fn_1_33D4(omObjData* object);
+extern void fn_1_3DD8(omObjData* object);
+extern void fn_1_4558(omObjData* object);
+extern void fn_1_45BC(omObjData* object);
+extern void fn_1_4660(omObjData* object);
+extern void fn_1_46E0(omObjData* object);
+extern void fn_1_4A20(omObjData* object);
+extern void fn_1_4B44(omObjData* object);
 // ...
 extern f32 fn_1_93C0(f32, f32, f32);
