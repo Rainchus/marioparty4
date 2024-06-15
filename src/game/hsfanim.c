@@ -496,7 +496,7 @@ s16 Hu3DParticleCreate(AnimData *arg0, s16 arg1) {
     temp_r25 = Hu3DHookFuncCreate((void*) &_Hu3DParticleAttrReset);
     temp_r28 = &Hu3DData[temp_r25];
     Hu3DModelAttrSet(temp_r25, 0x20);
-    temp_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(ParticleData), (u32) temp_r28->unk_48);
+    temp_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(ParticleData), temp_r28->unk_48);
     temp_r28->unk_120 = temp_r31;
     temp_r31->unk_44 = arg0;
     arg0->useNum++;
@@ -507,7 +507,7 @@ s16 Hu3DParticleCreate(AnimData *arg0, s16 arg1) {
     temp_r31->unk_2D = 0;
     temp_r31->unk_3C = 0;
     temp_r31->unk_00 = temp_r31->unk_02 = 0;
-    var_r30 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(HsfanimStruct01), (u32) temp_r28->unk_48);
+    var_r30 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(HsfanimStruct01), temp_r28->unk_48);
     temp_r31->unk_48 = var_r30;
     temp_r31->unk_38 = -1;
     for (i = 0; i < arg1; i++, var_r30++) {
@@ -520,12 +520,12 @@ s16 Hu3DParticleCreate(AnimData *arg0, s16 arg1) {
         var_r30->unk34.z = ((s32) (frand() & 0x7F) - 0x40) * 0x14;
         var_r30->unk40.r = var_r30->unk40.g = var_r30->unk40.b = var_r30->unk40.a = 0xFF;
     }
-    var_r27 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(Vec) * 4, (u32) temp_r28->unk_48);
+    var_r27 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(Vec) * 4, temp_r28->unk_48);
     temp_r31->unk_4C = var_r27;
     for (i = 0; i < arg1 * 4; i++, var_r27++) {
         var_r27->x = var_r27->y = var_r27->z = 0.0f;
     }
-    temp_r24 = HuMemDirectMallocNum(HEAP_DATA, arg1 * 0x60 + 0x80, (u32) temp_r28->unk_48);
+    temp_r24 = HuMemDirectMallocNum(HEAP_DATA, arg1 * 0x60 + 0x80, temp_r28->unk_48);
     temp_r31->unk_50 = temp_r24;
     DCInvalidateRange(temp_r24, arg1 * 0x60 + 0x80);
     GXBeginDisplayList(temp_r24, 0x20000);
