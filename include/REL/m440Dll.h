@@ -19,6 +19,12 @@ typedef struct _unkStruct2 {
     s32 unkC;
     char unk10[0xC];
     s16 unk1C;
+    char unk20[0x4];
+    f32 unk24;
+    char unk28[0x4];
+    s16 unk2C;
+    s16 unk2E;
+    f32 unk30;
 } unkStruct2;
 
 typedef struct _unkStruct3 {
@@ -60,16 +66,29 @@ typedef struct _unkStruct5 { // could be unkStruct3
 typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
 typedef void (*m440Func6)(struct _unkStruct6*);
 
+typedef struct _unkStruct8 {
+    char unk0[0x7C];
+    Vec unk7C;
+    char unk88[0xC];
+    Vec unk94;
+    Vec unkA0;
+    Vec unkAC;
+    Vec unkB8;
+    Vec unkC4;
+} unkStruct8;
+
 typedef struct _unkStruct6 {
     s16 unk0;
-    s16 unk2;
+    u16 unk2;
     s16 unk4;
     s16 unk6;
     char unk8[0x18];
     s32 unk20;
-    char unk24[0x14];
+    unkStruct8* unk24;
+    char unk28[0x10];
     m440Func6 unk38;
     s16 unk3C;
+    s16 unk3E;
 } unkStruct6; // sizeof 0x40
 
 typedef struct _unkStruct7 {
@@ -101,6 +120,7 @@ extern s8 lbl_1_bss_0;
 ////// DATA //////
 // main.c
 extern f32 lbl_1_data_0[5];
+extern s16 lbl_1_data_14[6];
 extern Vec lbl_1_data_2C;
 extern Vec lbl_1_data_38;
 extern unkStruct7 lbl_1_data_44;
@@ -113,6 +133,8 @@ extern s16 lbl_1_data_E8[2];
 extern s16 lbl_1_data_EC[2];
 extern s16 lbl_1_data_F0[2];
 extern s32 lbl_1_data_F4[4];
+extern s16 lbl_1_data_104[2];
+extern s16 lbl_1_data_108[2];
 // object.c
 extern s16 lbl_1_data_1D8;
 
@@ -155,5 +177,12 @@ extern void fn_1_4660(omObjData* object);
 extern void fn_1_46E0(omObjData* object);
 extern void fn_1_4A20(omObjData* object);
 extern void fn_1_4B44(omObjData* object);
+extern void fn_1_4E00(s16, f32);
+extern s16 fn_1_4E2C(void);
+extern s16 fn_1_4E54(s16);
+extern u16 fn_1_4EA8(u16);
+extern void fn_1_4EEC(u16, u16);
+extern void fn_1_4F34(unkStruct6*);
+extern void fn_1_5010(unkStruct6*, Vec*, f32);
 // ...
 extern f32 fn_1_93C0(f32, f32, f32);
