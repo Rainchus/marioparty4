@@ -13,7 +13,6 @@
 #include "game/sprite.h"
 
 // prototypes
-void fn_1_5010(unkStruct6*, Vec*, f32);
 void fn_1_57B4(unkStruct6*);
 void fn_1_5C2C(s16, HsfObject*, unkStruct6*, s32);
 f32 fn_1_93C0(f32, f32, f32);
@@ -1188,3 +1187,83 @@ void fn_1_5010(unkStruct6* arg0, Vec* arg1, f32 arg8) {
         }
     }
 }
+
+void fn_1_57B4(unkStruct6* arg0) {
+    Mtx sp14;
+    Vec sp8;
+    s16 var_r29;
+    Vec* temp_r26;
+    s32 var_r27;
+    s32 var_r28;
+    unkStruct8* var_r31;
+
+    var_r31 = arg0->unk24;
+    temp_r26 = arg0->unk10;
+    
+    for (var_r27 = 0; var_r27 < arg0->unk20; var_r27++, var_r31++) {
+        var_r31->unkAC.y = (var_r31->unkAC.y - var_r31->unkC4.y);
+        var_r31->unk94.x = (var_r31->unk94.x + var_r31->unkAC.x);
+        var_r31->unk94.y = (var_r31->unk94.y + var_r31->unkAC.y);
+        var_r31->unk94.z = (var_r31->unk94.z + var_r31->unkAC.z);
+        var_r31->unkA0.x = (var_r31->unkA0.x + var_r31->unkB8.x);
+        var_r31->unkA0.y = (var_r31->unkA0.y + var_r31->unkB8.y);
+        var_r31->unkA0.z = (var_r31->unkA0.z + var_r31->unkB8.z);
+        if ((var_r31->unk94.x < -500.0f) || (var_r31->unk94.x > 500.0f)) {
+            var_r31->unkAC.x = (0.5f * -var_r31->unkAC.x);
+            var_r31->unkB8.x = (0.5f * -var_r31->unkB8.x);
+        }
+        if (var_r31->unk94.z < -500.0f) {
+            var_r31->unkAC.z = (0.5f * -var_r31->unkAC.z);
+            var_r31->unkB8.z = (0.5f * -var_r31->unkB8.z);
+        }
+        if ((var_r31->unk7C.y + var_r31->unk94.y) < -250.0f) {
+            if (var_r31->unkAC.y > -2.0f) {
+                var_r31->unk94.y = (-250.0f - var_r31->unk7C.y);
+                var_r31->unkAC.x = 0.0f;
+                var_r31->unkAC.y = 0.0f;
+                var_r31->unkAC.z = 0.0f;
+                var_r31->unkB8.x = 0.0f;
+                var_r31->unkB8.z = 0.0f;
+            } else {
+                var_r31->unkAC.x *= 0.5f;
+                var_r31->unkAC.y = -(0.3f * var_r31->unkAC.y);
+                var_r31->unkAC.z *= 0.5f;
+                var_r31->unkB8.x *= 0.5f;
+                var_r31->unkB8.z *= 0.5f;
+            }
+        }
+        PSMTXScale(sp14, var_r31->unk88.x, var_r31->unk88.y, var_r31->unk88.z);
+        mtxTransCat(sp14, -var_r31->unk7C.x, -var_r31->unk7C.y, -var_r31->unk7C.z);
+        mtxRotCat(sp14, var_r31->unkA0.x, var_r31->unkA0.y, var_r31->unkA0.z);
+        mtxTransCat(sp14, var_r31->unk94.x + var_r31->unk7C.x, var_r31->unk94.y + var_r31->unk7C.y, var_r31->unk94.z + var_r31->unk7C.z);
+        
+        for (var_r28 = 0; var_r28 < 3; var_r28++) {
+            if ((arg0->unk2 & 1) != 0) {
+                var_r29 = var_r31->unk0[var_r28][0];
+            } else {
+                var_r29 = var_r31->unk18[var_r28];
+            }
+            PSMTXMultVec(sp14, &temp_r26[var_r29], &sp8);
+            arg0->unkC[var_r29].x = sp8.x;
+            arg0->unkC[var_r29].y = sp8.y;
+            arg0->unkC[var_r29].z = sp8.z;
+        }
+        if ((arg0->unk2 & 2) != 0) {
+            var_r29 = var_r31->unk1E;
+            PSMTXMultVec(sp14, &temp_r26[var_r29], &sp8);
+            arg0->unkC[var_r29].x = sp8.x;
+            arg0->unkC[var_r29].y = sp8.y;
+            arg0->unkC[var_r29].z = sp8.z;
+        }
+    }
+    if ((arg0->unk2 & 4) != 0) {
+        if (++arg0->unk3E > 0x50) {
+            arg0->unk3C = ((arg0->unk3C - 10) < 0) ? 0 : arg0->unk3C - 10;
+        }
+    }
+    DCFlushRangeNoSync(arg0->unkC, arg0->unk8 * 0xC);
+}
+
+static const GXColor lbl_1_rodata_148 = {
+    0xFF, 0xFF, 0xFF, 0xFF
+};

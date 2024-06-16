@@ -67,9 +67,12 @@ typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
 typedef void (*m440Func6)(struct _unkStruct6*);
 
 typedef struct _unkStruct8 {
-    char unk0[0x7C];
+    s16 unk0[3][4];
+    s16 unk18[3];
+    s16 unk1E;
+    char unk20[0x5C];
     Vec unk7C;
-    char unk88[0xC];
+    Vec unk88;
     Vec unk94;
     Vec unkA0;
     Vec unkAC;
@@ -82,7 +85,10 @@ typedef struct _unkStruct6 {
     u16 unk2;
     s16 unk4;
     s16 unk6;
-    char unk8[0x18];
+    u32 unk8;
+    Vec* unkC;
+    Vec* unk10;
+    char unk14[0xC];
     s32 unk20;
     unkStruct8* unk24;
     char unk28[0x10];
@@ -184,5 +190,6 @@ extern u16 fn_1_4EA8(u16);
 extern void fn_1_4EEC(u16, u16);
 extern void fn_1_4F34(unkStruct6*);
 extern void fn_1_5010(unkStruct6*, Vec*, f32);
+extern void fn_1_57B4(unkStruct6*);
 // ...
 extern f32 fn_1_93C0(f32, f32, f32);
