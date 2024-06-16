@@ -18,7 +18,6 @@
 
 #include "rel_sqrt_consts.h"
 
-#define rand16() ((rand8() << 8)|(rand8()))
 
 typedef struct bss_5C_struct {
 	s16 unk0[6];
@@ -267,42 +266,6 @@ s32 fn_1_7B0(void)
 	return temp_r29;
 }
 
-typedef void (*unkHook72B4Data18)(struct unk_72B4_data_18 *);
-typedef void (*unkHook72B4)(ModelData *, struct work_72B4 *, Mtx);
-
-typedef struct unk_72B4_data_18 {
-	Vec unk0;
-	Vec unkC;
-	char unk18[16];
-	s16 unk28;
-	s16 unk2A;
-	s16 unk2C;
-	unkHook72B4Data18 unk30;
-	s16 unk34;
-	float unk38;
-	Vec unk3C;
-	Vec unk48;
-	s16 unk54;
-	s8 unk56;
-} Unk72B4Data18;
-
-typedef struct work_72B4 {
-	s16 unk0;
-	u32 unk4;
-	u8 unk8;
-	unkHook72B4 unkC;
-	AnimData *unk10;
-	s16 unk14;
-	Unk72B4Data18 *unk18;
-	Vec *unk1C;
-	HsfVector2f *unk20;
-	GXColor *unk24;
-	void *unk28;
-	Vec unk2C[4];
-	HsfVector2f *unk5C;
-	float unk60;
-	float unk64;
-} Work72B4;
 
 void fn_1_6030(ModelData *arg0, Work72B4 *arg1, Mtx arg2);
 s16 fn_1_6C74(AnimData *arg0, s16 arg1, float arg2, s16 arg3, s16 arg4);
@@ -400,9 +363,7 @@ void fn_1_A44(omObjData *object)
 void fn_1_140C(omObjData *object);
 u8 fn_1_1634(omObjData *object);
 u8 fn_1_1A40(omObjData *object);
-void fn_1_2000(s16 arg0);
-void fn_1_2050(u16 arg0, u16 arg1);
-u16 fn_1_2090(u16 arg0);
+
 void fn_1_5480(void);
 
 void fn_1_10A4(omObjData *object)
@@ -1174,7 +1135,6 @@ void fn_1_3540(Work2110 *arg0)
 
 void fn_1_3FD0(Unk72B4Data18 *arg0);
 
-void fn_1_5B70(float arg0, float arg1, float arg2, s16 arg3, unkHook72B4Data18 arg4, s16 arg5);
 
 void fn_1_3D7C(Work2110 *arg0)
 {
