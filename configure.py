@@ -1055,7 +1055,7 @@ config.libs = [
     Rel(
         "m429Dll",
         objects={
-            Object(NonMatching, "REL/m429Dll/main.c"),
+            Object(Matching, "REL/m429Dll/main.c"),
         },
     ),
     Rel(
