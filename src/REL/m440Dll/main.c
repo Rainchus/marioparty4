@@ -3,8 +3,9 @@
 #include "rel_sqrt_consts.h"
 #include "math.h"
 #include "ext_math.h"
+#include "string.h"
 #include "game/frand.h"
-#include "game/hsfman.h"
+#include "game/hsfdraw.h"
 #include "game/hsfmotion.h"
 #include "game/wipe.h"
 #include "game/audio.h"
@@ -13,8 +14,12 @@
 #include "game/sprite.h"
 
 // prototypes
-void fn_1_57B4(unkStruct6*);
-void fn_1_5C2C(s16, HsfObject*, unkStruct6*, s32);
+void fn_1_6554(unkStruct6*, HsfObject*);
+void fn_1_6B58(unkStruct6*, HsfObject*);
+void fn_1_71FC(unkStruct6*, Vec*, s16, Vec);
+void fn_1_7934(unkStruct6*, unkStruct8*, Vec*);
+void fn_1_806C(ModelData*, f32[3][4]);
+void fn_1_91A4(Vec*, Vec*, Vec*, f32*);
 f32 fn_1_93C0(f32, f32, f32);
 unkStruct4* fn_1_942C(s16, Vec*, Vec*, f32, GXColor*);
 s16 fn_1_956C(AnimData*, s32, f32, s32, s32);
@@ -1267,3 +1272,155 @@ void fn_1_57B4(unkStruct6* arg0) {
 static const GXColor lbl_1_rodata_148 = {
     0xFF, 0xFF, 0xFF, 0xFF
 };
+
+void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
+    Mtx sp68;
+    Vec sp44[3];
+    Vec sp38;
+    Vec sp2C;
+    ModelData* sp1C;
+    GXColor sp18;
+    Vec* var_r21;
+    Vec* var_r19;
+    s16 var_r20;
+    unkStruct9* var_r22;
+    s16 var_r24;
+    s16 var_r23;
+    HsfTransform* var_r25;
+    s16 var_r27;
+    ModelData* var_r29;
+    s16 var_r28;
+    s16 var_r30;
+
+    sp18 = lbl_1_rodata_148;
+    sp1C = &Hu3DData[arg0];
+    arg2->unk20 = 0;
+    if (arg1->type == 2) {
+        var_r30 = Hu3DHookFuncCreate(&fn_1_806C);
+        arg2->unk0 = var_r30;
+        Hu3DModelLayerSet(var_r30, 1);
+        var_r29 = &Hu3DData[var_r30];
+        var_r29->unk_120 = (ParticleData* ) arg2;
+        var_r29->unk_58.x = var_r29->unk_58.z = var_r29->unk_58.y = 1.0f;
+        arg2->unk2 = arg3;
+        arg2->unk28 = &arg1->data.material[((s16*)(arg1->data.face->data))[1] & 0xFFF];
+        arg2->unk2C = arg1->data.attribute;
+        arg2->unk38 = NULL;
+        arg2->unk3C = 0xFF;
+        arg2->unk3E = 0;
+        arg2->unk18 = HuMemDirectMallocNum(HEAP_DATA, arg1->data.vertex->count * 0xC, var_r29->unk_48);
+        fn_1_6554(arg2, arg1);
+        fn_1_6B58(arg2, arg1);
+        arg2->unkC = HuMemDirectMallocNum(HEAP_DATA, arg2->unk8 * 0xC, var_r29->unk_48);
+        arg2->unk10 = HuMemDirectMallocNum(HEAP_DATA, arg2->unk8 * 0xC, var_r29->unk_48);
+        arg2->unk14 = HuMemDirectMallocNum(HEAP_DATA, arg2->unk8 * 0xC, var_r29->unk_48);
+        if (arg2->unk28->numAttrs != 0) {
+            arg2->unk1C = HuMemDirectMallocNum(HEAP_DATA, arg1->data.st->count * 8, var_r29->unk_48);
+            var_r22 = arg1->data.st->data;
+        } else {
+            arg2->unk1C = NULL;
+            var_r22 = NULL;
+        }
+        var_r25 = &arg1->data.base;
+        PSMTXScale(sp68, var_r25->scale.x, var_r25->scale.y, var_r25->scale.z);
+        mtxRotCat(sp68, var_r25->rot.x, var_r25->rot.y, var_r25->rot.z);
+        mtxTransCat(sp68, var_r25->pos.x, var_r25->pos.y, var_r25->pos.z);
+
+        for (var_r30 = 0; var_r30 < arg2->unk20; var_r30++) {
+            sp2C.x = sp2C.y = sp2C.z = 0.0f;
+            
+            for (var_r28 = 0; var_r28 < 3; var_r28++) {
+                if ((arg2->unk2 & 1) != 0) {
+                    var_r23 = arg2->unk24[var_r30].unk0[var_r28][0];
+                    var_r27 = var_r23;
+                } else {
+                    var_r27 = arg2->unk24[var_r30].unk18[var_r28];
+                    var_r23 = arg2->unk24[var_r30].unk0[var_r28][0];
+                }
+                PSMTXMultVec(sp68, &((Vec*)(arg1->data.vertex->data))[var_r23], &sp38);
+                arg2->unkC[var_r27] = sp38;
+                sp44[var_r28] = arg2->unkC[var_r27];
+                arg2->unk14[var_r27] = arg2->unk18[var_r23];
+                sp2C.x += sp38.x;
+                sp2C.y += sp38.y;
+                sp2C.z += sp38.z;
+                if (arg2->unk28->numAttrs != 0) {
+                    var_r23 = arg2->unk24[var_r30].unk0[var_r28][3];
+                    var_r27 = var_r23;
+                    arg2->unk1C[var_r27].unk0 = var_r22[var_r23].unk0;
+                    arg2->unk1C[var_r27].unk4 = var_r22[var_r23].unk4;
+                }
+            }
+            fn_1_91A4(&sp44[0], &sp44[1], &sp44[2], &arg2->unk24[var_r30].unk68);
+            if ((arg2->unk2 & 2) != 0) {
+                var_r27 = arg2->unk24[var_r30].unk1E;
+                fn_1_71FC(arg2, &arg2->unkC[var_r27], var_r30, sp2C);
+                sp2C.x += arg2->unkC[var_r27].x;
+                sp2C.y += arg2->unkC[var_r27].y;
+                sp2C.z += arg2->unkC[var_r27].z;
+            }
+            fn_1_7934(arg2, &arg2->unk24[var_r30], &sp2C);
+        }
+        memcpy(arg2->unk10, arg2->unkC, arg2->unk8 * 0xC);
+        DCFlushRangeNoSync(arg2->unkC, arg2->unk8 * 0xC);
+        DCFlushRangeNoSync(arg2->unk14, arg2->unk8 * 0xC);
+        if (arg2->unk28->numAttrs != 0) {
+            DCFlushRangeNoSync(arg2->unk1C, arg1->data.st->count * 8);
+        }
+        var_r20 = 0;
+        var_r19 = var_r21 = HuMemDirectMallocNum(HEAP_DATA, 0x20000, var_r29->unk_48);
+        GXBeginDisplayList(var_r19, 0x20000);
+        if ((arg2->unk2 & 2) != 0) {
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, (arg2->unk20 * 0xC));
+            
+            for (var_r30 = 0; var_r30 < arg2->unk20; var_r30++) {
+                
+                for (var_r28 = 0; var_r28 < 3; var_r28++) {
+                    if ((arg2->unk2 & 1) != 0) {
+                        var_r27 = arg2->unk24[var_r30].unk0[var_r28][0];
+                    } else {
+                        var_r27 = arg2->unk24[var_r30].unk18[var_r28];
+                    }
+                    GXPosition1x16(var_r27);
+                    GXNormal1x16(var_r27);
+                    if (arg2->unk28->numAttrs != 0) {
+                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r28][3]);
+                    }
+                }
+                
+                for (var_r24 = 0; var_r24 < 9; var_r24++) {
+                    if (var_r20 < arg2->unk24[var_r30].unk0[var_r24][16]) {
+                        var_r20 = arg2->unk24[var_r30].unk0[var_r24][16];
+                    }
+                    GXPosition1x16(arg2->unk24[var_r30].unk0[var_r24][16]);
+                    GXNormal1x16(arg2->unk24[var_r30].unk0[var_r24][16]);
+                    if (arg2->unk28->numAttrs != 0) {
+                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r24][19]);
+                    }
+                }
+            }
+        } else {
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, (arg2->unk20 * 3));
+            for (var_r30 = 0; var_r30 < arg2->unk20; var_r30++) {
+                for (var_r28 = 0; var_r28 < 3; var_r28++) {
+                    if ((arg2->unk2 & 1) != 0) {
+                        var_r27 = arg2->unk24[var_r30].unk0[var_r28][0];
+                    } else {
+                        var_r27 = arg2->unk24[var_r30].unk18[var_r28];
+                    }
+                    GXPosition1x16(var_r27);
+                    GXNormal1x16(var_r27);
+                    if (arg2->unk28->numAttrs != 0) {
+                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r28][3]);
+                    }
+                }
+            }
+        }
+        arg2->unk34 = GXEndDisplayList();
+        DCFlushRangeNoSync(var_r21, arg2->unk34);
+        arg2->unk30 = HuMemDirectMallocNum(HEAP_DATA, arg2->unk34, var_r29->unk_48);
+        memcpy(arg2->unk30, var_r21, arg2->unk34);
+        DCFlushRangeNoSync(arg2->unk30, arg2->unk34);
+        HuMemDirectFree(var_r21);
+    }
+}

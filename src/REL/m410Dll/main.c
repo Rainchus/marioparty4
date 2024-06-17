@@ -214,7 +214,7 @@ void fn_1_DEC(omObjData *object)
 {
     fn_1_5A8(object);
     if (!WipeStatGet()) {
-        ();
+        fn_1_806C();
         fn_1_3484();
         fn_1_31F8();
         MGSeqKillAll();
