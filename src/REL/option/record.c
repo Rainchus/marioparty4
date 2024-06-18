@@ -11,328 +11,366 @@
 #include "dolphin.h"
 #include "math.h"
 
-typedef struct {
-    /* 0x00 */ s32 unk00;
-    /* 0x04 */ s32 unk04[8];
-    /* 0x24 */ s32 unk24;
-    /* 0x28 */ s32 unk28;
-} UnkRecordDataStruct00; // Size 0x2C
+#define RECORD_TYPE_BOARD 0
+#define RECORD_TYPE_MG 1
+
+#define NUM_CHARACTERS 8
+#define NUM_BOARDS 6
+
+#define PLAY_COUNT_NUM_DIGITS 4
+#define WIN_COUNT_NUM_DIGITS 3
+#define MAX_COINS_NUM_DIGITS 4
+#define MAX_STARS_NUM_DIGITS 4
+#define MG_DECIMAL_NUM_DIGITS 8
+#define MG_TIME_NUM_DIGITS 8
+
+#define DISPLAY_TYPE_TIME 0
+#define DISPLAY_TYPE_DECIMAL 1
 
 typedef struct {
-    /* 0x000 */ omObjData *unk00;
-    /* 0x004 */ omObjData *unk04;
-    /* 0x008 */ UnkWindowDataStruct *unk08[10];
-    /* 0x030 */ s32 unk30;
-    /* 0x034 */ s16 unk34[153];
+    /* 0x00 */ s32 playCount;
+    /* 0x04 */ s32 winCounts[8];
+    /* 0x24 */ s32 maxCoins;
+    /* 0x28 */ s32 maxStars;
+} BoardRecordData; // Size 0x2C
+
+typedef struct {
+    /* 0x000 */ omObjData *system;
+    /* 0x004 */ omObjData *hand;
+    /* 0x008 */ WindowWork *window[10];
+    /* 0x030 */ s32 mode;
+    /* 0x034 */ s16 sprList[153];
     /* 0x166 */ char unk166[6];
-    /* 0x16C */ s32 unk16C;
-    /* 0x170 */ s32 unk170;
-    /* 0x174 */ s32 unk174;
-    /* 0x178 */ UnkRecordDataStruct00 unk178[6];
-    /* 0x280 */ s32 unk280[6];
-    /* 0x298 */ s32 unk298;
-    /* 0x29C */ s32 unk29C;
-} UnkRecordDataStruct01; // Size 0x2A0
+    /* 0x16C */ s32 recordType;
+    /* 0x170 */ s32 board;
+    /* 0x174 */ s32 mgPage;
+    /* 0x178 */ BoardRecordData boardRecords[6];
+    /* 0x280 */ s32 mgRecords[6];
+    /* 0x298 */ s32 cameraDoneF;
+    /* 0x29C */ s32 changeTimer;
+} RecordWork; // Size 0x2A0
 
-static void fn_1_8310(omObjData *arg0);
-static omObjData *fn_1_8A88(void);
-static void fn_1_8B58(omObjData *arg0);
-static void fn_1_8BAC(omObjData *arg0, s32 arg1);
-static omObjData *fn_1_8C84(void);
-static void fn_1_8D80(omObjData *arg0);
-static void fn_1_8DD4(omObjData *arg0);
-static void fn_1_8E98(omObjData *arg0);
-static s32 fn_1_8EF8(s32 arg0, s32 arg1);
-static void fn_1_8F38(omObjData *arg0, s32 arg1);
-static void fn_1_96B4(omObjData *arg0);
-static void fn_1_9750(omObjData *arg0);
-static void fn_1_9A94(omObjData *arg0);
-static void fn_1_9B10(omObjData *arg0, s32 arg1);
-static void fn_1_A3B0(omObjData *arg0);
+typedef struct {
+    /* 0x00 */ s32 id;
+    /* 0x04 */ s32 mess;
+    /* 0x08 */ s32 displayType;
+} MGTable; // Size 0x0C
+
+#define MODE_DISABLED 0
+#define MODE_HANDLE_RECORD 1
+
+static void HandleRecord(omObjData *object);
+static omObjData *CreateSystem(void);
+static void KillSystem(omObjData *system);
+static void StartSystemMotion(omObjData *system, s32 type);
+static omObjData *CreateHand(void);
+static void KillHand(omObjData *hand);
+static void CreateSpr(omObjData *object);
+static void KillSpr(omObjData *object);
+static s32 GetDigitSprAt(s32 n, s32 offsetFromRight);
+static void DisplayBoardRecord(omObjData *object, s32 board);
+static void HideBoardRecordSpr(omObjData *object);
+static void DisplayTotalResults(omObjData *object);
+static void HideTotalResultsSpr(omObjData *object);
+static void ShowMGRecord(omObjData *object, s32 page);
+static void HideMGRecordSpr(omObjData *object);
 
 omObjData *lbl_1_bss_40;
 
-static const s32 lbl_1_rodata_13C0[] = { 0, 1, 2, 3, 5, 10 };
+static const s32 mgRecordIdxTbl[] = { 0, 1, 2, 3, 5, 10 };
 
-static omObjFunc lbl_1_data_210[] = {
-    NULL,
-    fn_1_8310
-};
+static omObjFunc modes[] = { NULL, HandleRecord };
 
-omObjData *fn_1_80E4(void) {
-    omObjData *temp_r29;
-    UnkRecordDataStruct01 *temp_r3;
+omObjData *fn_1_80E4(void)
+{
+    omObjData *object;
+    RecordWork *work;
     s32 i;
-    s32 j;
+    s32 character;
 
-    temp_r29 = omAddObjEx(lbl_1_bss_8, 1003, 0, 0, 1, NULL);
-    temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkRecordDataStruct01), MEMORY_DEFAULT_NUM);
-    temp_r29->data = temp_r3;
-    for (i = 0; i < 6; i++) {
-        temp_r3->unk178[i].unk00 = GWBoardPlayCountGet(i);
-        temp_r3->unk178[i].unk28 = GWBoardMaxStarsGet(i);
-        temp_r3->unk178[i].unk24 = GWBoardMaxCoinsGet(i);
-        for (j = 0; j < 8; j++) {
-            temp_r3->unk178[i].unk04[j] = GWBoardWinCountGet(j, i);
+    object = omAddObjEx(lbl_1_bss_8, 1003, 0, 0, 1, NULL);
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(RecordWork), MEMORY_DEFAULT_NUM);
+    object->data = work;
+    for (i = 0; i < NUM_BOARDS; i++) {
+        work->boardRecords[i].playCount = GWBoardPlayCountGet(i);
+        work->boardRecords[i].maxStars = GWBoardMaxStarsGet(i);
+        work->boardRecords[i].maxCoins = GWBoardMaxCoinsGet(i);
+        for (character = 0; character < NUM_CHARACTERS; character++) {
+            work->boardRecords[i].winCounts[character] = GWBoardWinCountGet(character, i);
         }
     }
     for (i = 0; i < 6; i++) {
-        temp_r3->unk280[i] = GWMGRecordGet(lbl_1_rodata_13C0[i]);
+        work->mgRecords[i] = GWMGRecordGet(mgRecordIdxTbl[i]);
     }
-    temp_r3->unk170 = 0;
-    temp_r3->unk174 = 0;
-    temp_r3->unk16C = 0;
-    temp_r3->unk00 = fn_1_8A88();
-    temp_r3->unk04 = fn_1_8C84();
-    fn_1_8DD4(temp_r29);
-    fn_1_82B0(temp_r29, 0);
-    return temp_r29;
+    work->board = 0;
+    work->mgPage = 0;
+    work->recordType = RECORD_TYPE_BOARD;
+    work->system = CreateSystem();
+    work->hand = CreateHand();
+    CreateSpr(object);
+    fn_1_82B0(object, MODE_DISABLED);
+    return object;
 }
 
-void fn_1_825C(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+void fn_1_825C(omObjData *object)
+{
+    RecordWork *work = object->data;
 
-    fn_1_8B58(temp_r31->unk00);
-    fn_1_8D80(temp_r31->unk04);
-    fn_1_8E98(arg0);
-    HuMemDirectFree(temp_r31);
+    KillSystem(work->system);
+    KillHand(work->hand);
+    KillSpr(object);
+    HuMemDirectFree(work);
 }
 
-void fn_1_82B0(omObjData *arg0, s32 arg1) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+void fn_1_82B0(omObjData *object, s32 mode)
+{
+    RecordWork *work = object->data;
 
-    temp_r31->unk30 = arg1;
-    arg0->func = lbl_1_data_210[arg1];
-    arg0->unk10 = 0;
-    arg0->unk10 = 0;
+    work->mode = mode;
+    object->func = modes[mode];
+    object->unk10 = 0;
+    object->unk10 = 0;
 }
 
-s32 fn_1_82F4(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+s32 fn_1_82F4(omObjData *object)
+{
+    RecordWork *work = object->data;
 
-    return temp_r31->unk30;
+    return work->mode;
 }
 
-static void fn_1_8310(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+static void HandleRecord(omObjData *object)
+{
+    RecordWork *work = object->data;
     Vec sp8;
     s32 i;
 
-    switch (arg0->unk10) {
+    switch (object->unk10) {
         case 0:
-            temp_r31->unk08[0] = fn_1_A44C(0);
-            temp_r31->unk08[1] = fn_1_A44C(1);
+            work->window[0] = fn_1_A44C(0);
+            work->window[1] = fn_1_A44C(1);
             for (i = 0; i < 8; i++) {
-                temp_r31->unk08[i + 2] = fn_1_A44C(3);
+                work->window[i + 2] = fn_1_A44C(3);
             }
             fn_1_AF0(lbl_1_bss_10, 519.0f, 125.0f, 300.0f, 0x28);
             fn_1_A6C(lbl_1_bss_10, 308.98f, 125.0f, 178.74f, 0x28);
-            temp_r31->unk170 = 0;
-            temp_r31->unk174 = 0;
-            temp_r31->unk298 = 0;
-            arg0->unk10 = 1;
+            work->board = 0;
+            work->mgPage = 0;
+            work->cameraDoneF = 0;
+            object->unk10 = 1;
             /* fallthrough */
         case 1:
             if (fn_1_CB8(lbl_1_bss_10) != 0) {
                 break;
             }
             fn_1_3D54(lbl_1_bss_30);
-            espBankSet(temp_r31->unk34[47], 0);
-            espBankSet(temp_r31->unk34[48], 2);
-            espPosSet(temp_r31->unk34[47], 46.0f, 240.0f);
-            espPosSet(temp_r31->unk34[48], 494.0f, 240.0f);
-            if (temp_r31->unk16C == 0) {
-                fn_1_160(temp_r31->unk34[47], 1, 10);
-                fn_1_160(temp_r31->unk34[48], 1, 10);
-                temp_r31->unk29C = 0;
+            espBankSet(work->sprList[47], 0);
+            espBankSet(work->sprList[48], 2);
+            espPosSet(work->sprList[47], 46.0f, 240.0f);
+            espPosSet(work->sprList[48], 494.0f, 240.0f);
+            if (work->recordType == RECORD_TYPE_BOARD) {
+                fn_1_160(work->sprList[47], 1, 10);
+                fn_1_160(work->sprList[48], 1, 10);
+                work->changeTimer = 0;
             }
-            arg0->unk10 = 2;
+            object->unk10 = 2;
             /* fallthrough */
         case 2:
-            fn_1_96B4(arg0);
-            fn_1_A3B0(arg0);
-            fn_1_9A94(arg0);
-            switch (temp_r31->unk16C) {
-                case 0:
-                    if (temp_r31->unk170 < 6) {
-                        fn_1_8F38(arg0, temp_r31->unk170);
-                    } else {
-                        fn_1_9750(arg0);
+            HideBoardRecordSpr(object);
+            HideMGRecordSpr(object);
+            HideTotalResultsSpr(object);
+            switch (work->recordType) {
+                case RECORD_TYPE_BOARD:
+                    if (work->board < 6) {
+                        DisplayBoardRecord(object, work->board);
                     }
-                    fn_1_A6EC(temp_r31->unk08[0]);
-                    fn_1_A71C(temp_r31->unk08[0], MAKE_MESSID(47, 5));
+                    else {
+                        DisplayTotalResults(object);
+                    }
+                    fn_1_A6EC(work->window[0]);
+                    fn_1_A71C(work->window[0], MAKE_MESSID(47, 5));
                     break;
-                case 1:
-                    fn_1_9B10(arg0, temp_r31->unk174);
-                    fn_1_A6EC(temp_r31->unk08[0]);
-                    fn_1_A71C(temp_r31->unk08[0], MAKE_MESSID(47, 6));
+                case RECORD_TYPE_MG:
+                    ShowMGRecord(object, work->mgPage);
+                    fn_1_A6EC(work->window[0]);
+                    fn_1_A71C(work->window[0], MAKE_MESSID(47, 6));
                     break;
             }
-            fn_1_A6EC(temp_r31->unk08[1]);
-            fn_1_A71C(temp_r31->unk08[1], MAKE_MESSID(47, 169));
-            if (temp_r31->unk298 == 0) {
-                Hu3DModelAttrReset(temp_r31->unk04->model[0], 1);
-                temp_r31->unk298 = 1;
+            fn_1_A6EC(work->window[1]);
+            fn_1_A71C(work->window[1], MAKE_MESSID(47, 169));
+            if (!work->cameraDoneF) {
+                Hu3DModelAttrReset(work->hand->model[0], 1);
+                work->cameraDoneF = TRUE;
             }
             sp8.x = 505.0 * -sin(305 * M_PI / 180.0);
             sp8.z = 505.0 * cos(305 * M_PI / 180.0);
-            sp8.y = 144.0f - 14.0f * temp_r31->unk16C;
-            omSetTra(temp_r31->unk04, sp8.x, sp8.y, sp8.z);
-            arg0->unk10 = 3;
+            sp8.y = 144.0f - 14.0f * work->recordType;
+            omSetTra(work->hand, sp8.x, sp8.y, sp8.z);
+            object->unk10 = 3;
             /* fallthrough */
         case 3:
-            if (temp_r31->unk29C > 0) {
-                temp_r31->unk29C--;
+            if (work->changeTimer > 0) {
+                work->changeTimer--;
                 break;
             }
-            espBankSet(temp_r31->unk34[47], 0);
-            espBankSet(temp_r31->unk34[48], 2);
-            arg0->unk10 = 4;
+            espBankSet(work->sprList[47], 0);
+            espBankSet(work->sprList[48], 2);
+            object->unk10 = 4;
             /* fallthrough */
         case 4:
-            if (temp_r31->unk08[1]->unk20 != 0) {
+            if (work->window[1]->state != 0) {
                 break;
             }
-            if (fn_1_550(0x200) != 0) {
+            if (fn_1_550(PAD_BUTTON_B)) {
                 HuAudFXPlay(3);
-                arg0->unk10 = 5;
-            } else if (fn_1_584(8) != 0 && temp_r31->unk16C == 1) {
-                temp_r31->unk16C = 0;
-                temp_r31->unk170 = 0;
-                fn_1_8BAC(temp_r31->unk00, temp_r31->unk16C);
-                fn_1_160(temp_r31->unk34[47], 1, 5);
-                fn_1_160(temp_r31->unk34[48], 1, 5);
-                temp_r31->unk29C = 5;
+                object->unk10 = 5;
+            }
+            else if (fn_1_584(8) != 0 && work->recordType == RECORD_TYPE_MG) {
+                work->recordType = RECORD_TYPE_BOARD;
+                work->board = 0;
+                StartSystemMotion(work->system, work->recordType);
+                fn_1_160(work->sprList[47], 1, 5);
+                fn_1_160(work->sprList[48], 1, 5);
+                work->changeTimer = 5;
                 HuAudFXPlay(0x83F);
-                arg0->unk10 = 2;
-            } else if (fn_1_584(4) != 0 && temp_r31->unk16C == 0) {
-                temp_r31->unk16C = 1;
-                temp_r31->unk174 = 0;
-                fn_1_8BAC(temp_r31->unk00, temp_r31->unk16C);
-                fn_1_160(temp_r31->unk34[47], 0, 5);
-                fn_1_160(temp_r31->unk34[48], 0, 5);
-                temp_r31->unk29C = 5;
+                object->unk10 = 2;
+            }
+            else if (fn_1_584(4) != 0 && work->recordType == RECORD_TYPE_BOARD) {
+                work->recordType = RECORD_TYPE_MG;
+                work->mgPage = 0;
+                StartSystemMotion(work->system, work->recordType);
+                fn_1_160(work->sprList[47], 0, 5);
+                fn_1_160(work->sprList[48], 0, 5);
+                work->changeTimer = 5;
                 HuAudFXPlay(0x83F);
-                arg0->unk10 = 2;
-            } else {
-                switch (temp_r31->unk16C) {
-                    case 0:
-                        if (fn_1_550(0x40) != 0) {
-                            if (--temp_r31->unk170 < 0) {
-                                temp_r31->unk170 = 6;
+                object->unk10 = 2;
+            }
+            else {
+                switch (work->recordType) {
+                    case RECORD_TYPE_BOARD:
+                        if (fn_1_550(PAD_TRIGGER_L)) {
+                            if (--work->board < 0) {
+                                work->board = 6;
                             }
-                            if (GWGameStat.open_w06 == 0 && temp_r31->unk170 == 5) {
-                                temp_r31->unk170--;
+                            if (GWGameStat.open_w06 == 0 && work->board == 5) {
+                                work->board--;
                             }
                             HuAudFXPlay(0x840);
-                            espBankSet(temp_r31->unk34[47], 1);
-                            temp_r31->unk29C = 0xA;
-                            arg0->unk10 = 2;
+                            espBankSet(work->sprList[47], 1);
+                            work->changeTimer = 10;
+                            object->unk10 = 2;
                             return;
                         }
-                        if (fn_1_550(0x20) != 0) {
-                            if (++temp_r31->unk170 >= 7) {
-                                temp_r31->unk170 = 0;
+                        if (fn_1_550(PAD_TRIGGER_R)) {
+                            if (++work->board >= 7) {
+                                work->board = 0;
                             }
-                            if (GWGameStat.open_w06 == 0 && temp_r31->unk170 == 5) {
-                                temp_r31->unk170++;
+                            if (GWGameStat.open_w06 == 0 && work->board == 5) {
+                                work->board++;
                             }
                             HuAudFXPlay(0x840);
-                            espBankSet(temp_r31->unk34[48], 3);
-                            temp_r31->unk29C = 0xA;
-                            arg0->unk10 = 2;
+                            espBankSet(work->sprList[48], 3);
+                            work->changeTimer = 10;
+                            object->unk10 = 2;
                         }
                         break;
-                    case 1:
+                    case RECORD_TYPE_MG:
                         break;
                 }
             }
             break;
         case 5:
             fn_1_3E1C(lbl_1_bss_30);
-            if (temp_r31->unk16C == 0) {
-                fn_1_160(temp_r31->unk34[47], 0, 10);
-                fn_1_160(temp_r31->unk34[48], 0, 10);
+            if (work->recordType == RECORD_TYPE_BOARD) {
+                fn_1_160(work->sprList[47], 0, 10);
+                fn_1_160(work->sprList[48], 0, 10);
             }
-            fn_1_A704(temp_r31->unk08[0]);
-            fn_1_A704(temp_r31->unk08[1]);
-            Hu3DModelAttrSet(temp_r31->unk04->model[0], 1);
-            arg0->unk10 = 6;
+            fn_1_A704(work->window[0]);
+            fn_1_A704(work->window[1]);
+            Hu3DModelAttrSet(work->hand->model[0], 1);
+            object->unk10 = 6;
             /* fallthrough */
         case 6:
-            if (temp_r31->unk08[1]->unk20 == 0 && fn_1_3ED0(lbl_1_bss_30) == 0) {
+            if (work->window[1]->state == 0 && fn_1_3ED0(lbl_1_bss_30) == 0) {
                 for (i = 0; i < 10; i++) {
-                    fn_1_A6AC(temp_r31->unk08[i]);
+                    fn_1_A6AC(work->window[i]);
                 }
-                fn_1_96B4(arg0);
-                fn_1_A3B0(arg0);
-                fn_1_9A94(arg0);
-                fn_1_AF0(lbl_1_bss_10, 519.62f, 120.0f, 300.0f, 0x28);
+                HideBoardRecordSpr(object);
+                HideMGRecordSpr(object);
+                HideTotalResultsSpr(object);
+                fn_1_AF0(lbl_1_bss_10, 519.62f, 120.0f, 300.0f, 40);
                 fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, 0.0f, 0x28);
-                fn_1_82B0(arg0, 0);
+                fn_1_82B0(object, MODE_DISABLED);
             }
             break;
     }
 }
 
-static omObjData *fn_1_8A88(void) {
-    omObjData *temp_r31;
+static omObjData *CreateSystem(void)
+{
+    omObjData *system;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 1));
-    Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
-    Hu3DModelLayerSet(temp_r31->model[0], 0);
-    Hu3DMotionStartEndSet(temp_r31->model[0], 0.0f, 6.0f);
-    Hu3DMotionTimeSet(temp_r31->model[0], 6.0f);
-    return temp_r31;
+    system = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
+    system->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 1));
+    Hu3DModelAttrSet(system->model[0], 0x40000002);
+    Hu3DModelLayerSet(system->model[0], 0);
+    Hu3DMotionStartEndSet(system->model[0], 0.0f, 6.0f);
+    Hu3DMotionTimeSet(system->model[0], 6.0f);
+    return system;
 }
 
-static void fn_1_8B58(omObjData *arg0) {
+static void KillSystem(omObjData *system)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(system->model[i]);
     }
 }
 
-static void fn_1_8BAC(omObjData *arg0, s32 arg1) {
-    s16 temp_r31 = arg0->model[0];
+static void StartSystemMotion(omObjData *system, s32 type)
+{
+    s16 model = system->model[0];
 
-    switch (arg1) {
-        case 0:
-            Hu3DMotionStartEndSet(temp_r31, 0.0f, 6.0f);
-            Hu3DMotionTimeSet(temp_r31, 0.0f);
+    switch (type) {
+        case RECORD_TYPE_BOARD:
+            Hu3DMotionStartEndSet(model, 0.0f, 6.0f);
+            Hu3DMotionTimeSet(model, 0.0f);
             break;
-        case 1:
-            Hu3DMotionStartEndSet(temp_r31, 6.0f, 12.0f);
-            Hu3DMotionTimeSet(temp_r31, 6.0f);
+        case RECORD_TYPE_MG:
+            Hu3DMotionStartEndSet(model, 6.0f, 12.0f);
+            Hu3DMotionTimeSet(model, 6.0f);
             break;
     }
-    Hu3DModelAttrReset(arg0->model[0], 0x40000002);
+    Hu3DModelAttrReset(system->model[0], 0x40000002);
 }
 
-static omObjData *fn_1_8C84(void) {
-    omObjData *temp_r31;
+static omObjData *CreateHand(void)
+{
+    omObjData *hand;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
-    Hu3DModelLayerSet(temp_r31->model[0], 2);
-    Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
-    omSetRot(temp_r31, 30.0f, 190.0f, 0.0f);
-    omSetSca(temp_r31, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(temp_r31->model[0], 1);
-    return temp_r31;
+    hand = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
+    hand->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
+    Hu3DModelLayerSet(hand->model[0], 2);
+    Hu3DModelAttrSet(hand->model[0], 0x40000001);
+    omSetRot(hand, 30.0f, 190.0f, 0.0f);
+    omSetSca(hand, 0.6f, 0.6f, 0.6f);
+    Hu3DModelAttrSet(hand->model[0], 1);
+    return hand;
 }
 
-static void fn_1_8D80(omObjData *arg0) {
+static void KillHand(omObjData *hand)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(hand->model[i]);
     }
 }
 
-static const s32 lbl_1_rodata_143C[153] = {
+#define SPR_TBL_SIZE 153
+
+static const s32 sprTbl[SPR_TBL_SIZE] = {
     DATA_MAKE_NUM(DATADIR_OPTION, 55),
     DATA_MAKE_NUM(DATADIR_OPTION, 56),
     DATA_MAKE_NUM(DATADIR_OPTION, 57),
@@ -485,310 +523,314 @@ static const s32 lbl_1_rodata_143C[153] = {
     DATA_MAKE_NUM(DATADIR_OPTION, 54),
     DATA_MAKE_NUM(DATADIR_OPTION, 54),
     DATA_MAKE_NUM(DATADIR_OPTION, 54),
-    DATA_MAKE_NUM(DATADIR_OPTION, 54)
+    DATA_MAKE_NUM(DATADIR_OPTION, 54),
 };
 
-static void fn_1_8DD4(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+static void CreateSpr(omObjData *object)
+{
+    RecordWork *work = object->data;
     s32 i;
 
-    for (i = 0; i < 153; i++) {
-        temp_r31->unk34[i] = espEntry(lbl_1_rodata_143C[i], 0, 0);
-        espDrawNoSet(temp_r31->unk34[i], 0x40);
-        espDispOff(temp_r31->unk34[i]);
+    for (i = 0; i < SPR_TBL_SIZE; i++) {
+        work->sprList[i] = espEntry(sprTbl[i], 0, 0);
+        espDrawNoSet(work->sprList[i], 0x40);
+        espDispOff(work->sprList[i]);
     }
-    espBankSet(temp_r31->unk34[47], 0);
-    espBankSet(temp_r31->unk34[48], 2);
+    espBankSet(work->sprList[47], 0);
+    espBankSet(work->sprList[48], 2);
     HuSprExecLayerSet(0x40, 1);
 }
 
-static void fn_1_8E98(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+static void KillSpr(omObjData *object)
+{
+    RecordWork *work = object->data;
     s32 i;
 
-    for (i = 0; i < 153; i++) {
-        espKill(temp_r31->unk34[i]);
+    for (i = 0; i < SPR_TBL_SIZE; i++) {
+        espKill(work->sprList[i]);
     }
 }
 
-static s32 fn_1_8EF8(s32 arg0, s32 arg1) {
-    s32 var_r31;
-
-    var_r31 = 1;
-    while (arg1-- != 0) {
-        var_r31 *= 10;
-    }
-    return (arg0 % (var_r31 * 10)) / var_r31;
-}
-
-static void fn_1_8F38(omObjData *arg0, s32 arg1) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
-    s32 temp_r28;
-    s32 i;
-    s32 j;
-
-    espPosSet(temp_r31->unk34[arg1], 275.0f, 72.0f);
-    temp_r28 = temp_r31->unk178[temp_r31->unk170].unk00;
-    for (i = 0; i < 4; i++) {
-        espPosSet(temp_r31->unk34[i + 11], 323.0f + 20.0f * i, 116.0f);
-        if (temp_r28 > 999) {
-            espBankSet(temp_r31->unk34[i + 11], i + 10);
-        } else {
-            espBankSet(temp_r31->unk34[i + 11], fn_1_8EF8(temp_r28, 3 - i));
-        }
-    }
-    espPosSet(temp_r31->unk34[8], 416.0f, 120.0f);
-    temp_r28 = temp_r31->unk178[temp_r31->unk170].unk24;
-    for (i = 0; i < 4; i++) {
-        espPosSet(temp_r31->unk34[i + 15], 364.0f + 20.0f * i, 268.0f);
-        if (temp_r28 > 999) {
-            espBankSet(temp_r31->unk34[i + 15], i + 10);
-        } else {
-            espBankSet(temp_r31->unk34[i + 15], fn_1_8EF8(temp_r28, 3 - i));
-        }
-    }
-    espPosSet(temp_r31->unk34[9], 456.0f, 268.0f);
-    temp_r28 = temp_r31->unk178[temp_r31->unk170].unk28;
-    for (i = 0; i < 4; i++) {
-        espPosSet(temp_r31->unk34[i + 19], 364.0f + 20.0f * i, 312.0f);
-        if (temp_r28 > 999) {
-            espBankSet(temp_r31->unk34[i + 19], i + 10);
-        } else {
-            espBankSet(temp_r31->unk34[i + 19], fn_1_8EF8(temp_r28, 3 - i));
-        }
-    }
-    espPosSet(temp_r31->unk34[10], 456.0f, 312.0f);
-    for (i = 0; i < 8; i++) {
-        espPosSet(temp_r31->unk34[i + 49], 92.0f + 50.0f * i, 200.0f);
-        for (j = 0; j < 3; j++) {
-            espPosSet(temp_r31->unk34[i * 3 + 23 + j], 80.0f + 50.0f * i + 12.0f * j, 230.0f);
-            espBankSet(temp_r31->unk34[i * 3 + 23 + j], fn_1_8EF8(temp_r31->unk178[temp_r31->unk170].unk04[i], 2 - j));
-        }
-    }
-    espPosSet(temp_r31->unk34[47], 48.0f, 240.0f);
-    espPosSet(temp_r31->unk34[48], 492.0f, 240.0f);
-    espDispOn(temp_r31->unk34[arg1]);
-    for (i = 0; i < 4; i++) {
-        espDispOn(temp_r31->unk34[i + 11]);
-    }
-    espDispOn(temp_r31->unk34[8]);
-    for (i = 0; i < 4; i++) {
-        espDispOn(temp_r31->unk34[i + 15]);
-    }
-    espDispOn(temp_r31->unk34[9]);
-    for (i = 0; i < 4; i++) {
-        espDispOn(temp_r31->unk34[i + 19]);
-    }
-    espDispOn(temp_r31->unk34[10]);
-    for (i = 0; i < 8; i++) {
-        espDispOn(temp_r31->unk34[i + 49]);
-        for (j = 0; j < 3; j++) {
-            espDispOn(temp_r31->unk34[i * 3 + 23 + j]);
-        }
-    }
-    for (i = 0; i < 4; i++) {
-        fn_1_A7F0(temp_r31->unk08[i + 2]);
-    }
-    fn_1_A7B0(temp_r31->unk08[2], 64.0f, 96.0f);
-    fn_1_A71C(temp_r31->unk08[2], MAKE_MESSID(47, 19));
-    fn_1_A7B0(temp_r31->unk08[3], 64.0f, 140.0f);
-    fn_1_A71C(temp_r31->unk08[3], MAKE_MESSID(47, 20));
-    fn_1_A7B0(temp_r31->unk08[4], 64.0f, 248.0f);
-    fn_1_A71C(temp_r31->unk08[4], MAKE_MESSID(47, 21));
-    fn_1_A7B0(temp_r31->unk08[5], 64.0f, 292.0f);
-    fn_1_A71C(temp_r31->unk08[5], MAKE_MESSID(47, 22));
-}
-
-static const s32 lbl_1_rodata_16F8[53] = {
-     0,  1,  2,  3,  4,  5, 49, 50, 51, 52,
-    53, 54, 55, 56,  8,  9, 10, 11, 12, 13,
-    14, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    32, 33, 34, 38, 39, 40, 35, 36, 37, 41,
-    42, 43, 44, 45, 46, 15, 16, 17, 18, 19,
-    20, 21, 22
-};
-
-static void fn_1_96B4(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+static s32 GetDigitSprAt(s32 n, s32 offsetFromRight)
+{
     s32 i;
 
-    for (i = 0; i < 53; i++) {
-        espDispOff(temp_r31->unk34[lbl_1_rodata_16F8[i]]);
+    i = 1;
+    while (offsetFromRight-- != 0) {
+        i *= 10;
     }
-    for (i = 0; i < 4; i++) {
-        fn_1_A828(temp_r31->unk08[i + 2]);
-    }
+    return (n % (i * 10)) / i;
 }
 
-static void fn_1_9750(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
-    s32 var_r27;
+static void DisplayBoardRecord(omObjData *object, s32 board)
+{
+    RecordWork *work = object->data;
+    s32 value;
     s32 i;
     s32 j;
 
-    espPosSet(temp_r31->unk34[6], 275.0f, 72.0f);
-    for (i = 0; i < 8; i++) {
-        espPosSet(temp_r31->unk34[i + 57], 148.0f + 80.0f * (i % 4), 172.0f + 104.0f * (i / 4));
-        for (j = 0, var_r27 = 0; j < 6; j++) {
-            var_r27 += temp_r31->unk178[j].unk04[i];
+    espPosSet(work->sprList[board], 275.0f, 72.0f);
+    value = work->boardRecords[work->board].playCount;
+    for (i = 0; i < PLAY_COUNT_NUM_DIGITS; i++) {
+        espPosSet(work->sprList[i + 11], 323.0f + 20.0f * i, 116.0f);
+        if (value > 999) {
+            espBankSet(work->sprList[i + 11], i + 10);
         }
-        for (j = 0; j < 3; j++) {
-            espPosSet(temp_r31->unk34[i * 3 + 65 + j], 132.0f + 80.0f * (i % 4) + 16.0f * j, 218.0f + 104.0f * (i / 4));
-            espBankSet(temp_r31->unk34[i * 3 + 65 + j], fn_1_8EF8(var_r27, 2 - j));
-        }
-    }
-    espDispOn(temp_r31->unk34[6]);
-    for (i = 0; i < 8; i++) {
-        espDispOn(temp_r31->unk34[i + 57]);
-        for (j = 0; j < 3; j++) {
-            espDispOn(temp_r31->unk34[i * 3 + 65 + j]);
+        else {
+            espBankSet(work->sprList[i + 11], GetDigitSprAt(value, 3 - i));
         }
     }
-    fn_1_A7B0(temp_r31->unk08[2], 136.0f, 96.0f);
-    fn_1_A71C(temp_r31->unk08[2], MAKE_MESSID(47, 23));
-    fn_1_A7F0(temp_r31->unk08[2]);
+    espPosSet(work->sprList[8], 416.0f, 120.0f);
+    value = work->boardRecords[work->board].maxCoins;
+    for (i = 0; i < MAX_COINS_NUM_DIGITS; i++) {
+        espPosSet(work->sprList[i + 15], 364.0f + 20.0f * i, 268.0f);
+        if (value > 999) {
+            espBankSet(work->sprList[i + 15], i + 10);
+        }
+        else {
+            espBankSet(work->sprList[i + 15], GetDigitSprAt(value, 3 - i));
+        }
+    }
+    espPosSet(work->sprList[9], 456.0f, 268.0f);
+    value = work->boardRecords[work->board].maxStars;
+    for (i = 0; i < MAX_STARS_NUM_DIGITS; i++) {
+        espPosSet(work->sprList[i + 19], 364.0f + 20.0f * i, 312.0f);
+        if (value > 999) {
+            espBankSet(work->sprList[i + 19], i + 10);
+        }
+        else {
+            espBankSet(work->sprList[i + 19], GetDigitSprAt(value, 3 - i));
+        }
+    }
+    espPosSet(work->sprList[10], 456.0f, 312.0f);
+    for (i = 0; i < NUM_CHARACTERS; i++) {
+        espPosSet(work->sprList[i + 49], 92.0f + 50.0f * i, 200.0f);
+        for (j = 0; j < WIN_COUNT_NUM_DIGITS; j++) {
+            espPosSet(work->sprList[i * 3 + 23 + j], 80.0f + 50.0f * i + 12.0f * j, 230.0f);
+            espBankSet(work->sprList[i * 3 + 23 + j], GetDigitSprAt(work->boardRecords[work->board].winCounts[i], 2 - j));
+        }
+    }
+    espPosSet(work->sprList[47], 48.0f, 240.0f);
+    espPosSet(work->sprList[48], 492.0f, 240.0f);
+    espDispOn(work->sprList[board]);
+    for (i = 0; i < PLAY_COUNT_NUM_DIGITS; i++) {
+        espDispOn(work->sprList[i + 11]);
+    }
+    espDispOn(work->sprList[8]);
+    for (i = 0; i < MAX_COINS_NUM_DIGITS; i++) {
+        espDispOn(work->sprList[i + 15]);
+    }
+    espDispOn(work->sprList[9]);
+    for (i = 0; i < MAX_STARS_NUM_DIGITS; i++) {
+        espDispOn(work->sprList[i + 19]);
+    }
+    espDispOn(work->sprList[10]);
+    for (i = 0; i < NUM_CHARACTERS; i++) {
+        espDispOn(work->sprList[i + 49]);
+        for (j = 0; j < WIN_COUNT_NUM_DIGITS; j++) {
+            espDispOn(work->sprList[i * 3 + 23 + j]);
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        fn_1_A7F0(work->window[i + 2]);
+    }
+    fn_1_A7B0(work->window[2], 64.0f, 96.0f);
+    fn_1_A71C(work->window[2], MAKE_MESSID(47, 19));
+    fn_1_A7B0(work->window[3], 64.0f, 140.0f);
+    fn_1_A71C(work->window[3], MAKE_MESSID(47, 20));
+    fn_1_A7B0(work->window[4], 64.0f, 248.0f);
+    fn_1_A71C(work->window[4], MAKE_MESSID(47, 21));
+    fn_1_A7B0(work->window[5], 64.0f, 292.0f);
+    fn_1_A71C(work->window[5], MAKE_MESSID(47, 22));
 }
 
-static const s32 lbl_1_rodata_17E8[33] = {
-     6, 57, 58, 59, 60, 61, 62, 63, 64, 65,
-    66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-    76, 77, 78, 79, 80, 81, 82, 83, 84, 85,
-    86, 87, 88
-};
+#define BOARD_RECORD_SPR_IDX_TBL_SIZE 53
 
-static void fn_1_9A94(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
+static const s32 boardRecordSprIdxTbl[BOARD_RECORD_SPR_IDX_TBL_SIZE] = { 0, 1, 2, 3, 4, 5, 49, 50, 51, 52, 53, 54, 55, 56, 8, 9, 10, 11, 12, 13, 14,
+    23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 38, 39, 40, 35, 36, 37, 41, 42, 43, 44, 45, 46, 15, 16, 17, 18, 19, 20, 21, 22 };
+
+static void HideBoardRecordSpr(omObjData *object)
+{
+    RecordWork *work = object->data;
     s32 i;
 
-    for (i = 0; i < 33; i++) {
-        espDispOff(temp_r31->unk34[lbl_1_rodata_17E8[i]]);
+    for (i = 0; i < BOARD_RECORD_SPR_IDX_TBL_SIZE; i++) {
+        espDispOff(work->sprList[boardRecordSprIdxTbl[i]]);
     }
-    fn_1_A828(temp_r31->unk08[2]);
+    for (i = 0; i < 4; i++) {
+        fn_1_A828(work->window[i + 2]);
+    }
 }
 
-static const s32 lbl_1_rodata_186C[6][3] = {
-    { 0x00000195, MAKE_MESSID(23,  5), 0 },
-    { 0x00000197, MAKE_MESSID(23,  7), 1 },
-    { 0x000001AB, MAKE_MESSID(23, 27), 0 },
-    { 0x000001B0, MAKE_MESSID(23, 32), 0 },
-    { 0x000001BB, MAKE_MESSID(23, 43), 0 },
-    { 0x000001C8, MAKE_MESSID(23, 54), 0 }
+static void DisplayTotalResults(omObjData *object)
+{
+    RecordWork *work = object->data;
+    s32 winCount;
+    s32 i;
+    s32 j;
+
+    espPosSet(work->sprList[6], 275.0f, 72.0f);
+    for (i = 0; i < NUM_CHARACTERS; i++) {
+        espPosSet(work->sprList[i + 57], 148.0f + 80.0f * (i % 4), 172.0f + 104.0f * (i / 4));
+        for (j = 0, winCount = 0; j < NUM_BOARDS; j++) {
+            winCount += work->boardRecords[j].winCounts[i];
+        }
+        for (j = 0; j < WIN_COUNT_NUM_DIGITS; j++) {
+            espPosSet(work->sprList[i * 3 + 65 + j], 132.0f + 80.0f * (i % 4) + 16.0f * j, 218.0f + 104.0f * (i / 4));
+            espBankSet(work->sprList[i * 3 + 65 + j], GetDigitSprAt(winCount, 2 - j));
+        }
+    }
+    espDispOn(work->sprList[6]);
+    for (i = 0; i < NUM_CHARACTERS; i++) {
+        espDispOn(work->sprList[i + 57]);
+        for (j = 0; j < 3; j++) {
+            espDispOn(work->sprList[i * 3 + 65 + j]);
+        }
+    }
+    fn_1_A7B0(work->window[2], 136.0f, 96.0f);
+    fn_1_A71C(work->window[2], MAKE_MESSID(47, 23));
+    fn_1_A7F0(work->window[2]);
+}
+
+#define TOTAL_RESULTS_SPR_IDX_TBL_SIZE 33
+
+static const s32 totalResultsSprIdxTbl[TOTAL_RESULTS_SPR_IDX_TBL_SIZE]
+    = { 6, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 };
+
+static void HideTotalResultsSpr(omObjData *object)
+{
+    RecordWork *work = object->data;
+    s32 i;
+
+    for (i = 0; i < TOTAL_RESULTS_SPR_IDX_TBL_SIZE; i++) {
+        espDispOff(work->sprList[totalResultsSprIdxTbl[i]]);
+    }
+    fn_1_A828(work->window[2]);
+}
+
+static const MGTable mgTbl[6] = {
+    { 405, MAKE_MESSID(23, 5), DISPLAY_TYPE_TIME },
+    { 407, MAKE_MESSID(23, 7), DISPLAY_TYPE_DECIMAL },
+    { 427, MAKE_MESSID(23, 27), DISPLAY_TYPE_TIME },
+    { 432, MAKE_MESSID(23, 32), DISPLAY_TYPE_TIME },
+    { 443, MAKE_MESSID(23, 43), DISPLAY_TYPE_TIME },
+    { 456, MAKE_MESSID(23, 54), DISPLAY_TYPE_TIME },
 };
 
-static void fn_1_9B10(omObjData *arg0, s32 arg1) {
-    UnkRecordDataStruct01 *temp_r31 = arg0->data;
-    s32 temp_r25;
-    s32 temp_r27;
-    s32 var_r28;
+static void ShowMGRecord(omObjData *object, s32 page)
+{
+    RecordWork *work = object->data;
+    s32 value;
+    s32 mg;
+    s32 digit;
     s32 var_r26;
     s32 var_r17;
     s32 sp5C;
     s32 sp58;
-    s32 sp54;
-    s32 sp50;
-    s32 sp4C;
+    s32 mgAvail;
+    BOOL digitDrawnF;
+    s32 nameMess;
     s32 i;
     s32 j;
 
-    espPosSet(temp_r31->unk34[7], 275.0f, 72.0f);
-    espPosSet(temp_r31->unk34[47], 48.0f, 240.0f);
-    espPosSet(temp_r31->unk34[48], 492.0f, 240.0f);
-    espDispOn(temp_r31->unk34[7]);
+    espPosSet(work->sprList[7], 275.0f, 72.0f);
+    espPosSet(work->sprList[47], 48.0f, 240.0f);
+    espPosSet(work->sprList[48], 492.0f, 240.0f);
+    espDispOn(work->sprList[7]);
     for (i = 0; i < 8; i++) {
-        sp50 = 0;
-        temp_r27 = i + arg1 * 8;
-        if (temp_r27 >= 6) {
+        digitDrawnF = FALSE;
+        mg = i + page * 8;
+        if (mg >= 6) {
             break;
         }
-        sp54 = GWMGAvailGet(lbl_1_rodata_186C[temp_r27][0]);
-        temp_r25 = temp_r31->unk280[temp_r27];
-        if (sp54 != 0) {
-            switch (lbl_1_rodata_186C[temp_r27][2]) {
-                case 1:
-                    for (j = 0; j < 8; j++) {
-                        var_r17 = fn_1_8EF8(temp_r25, 7 - j);
-                        if (var_r17 != 0 || sp50 != 0 || j >= 7) {
-                            espPosSet(temp_r31->unk34[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
-                            espBankSet(temp_r31->unk34[i * 8 + 89 + j], var_r17);
-                            espDispOn(temp_r31->unk34[i * 8 + 89 + j]);
-                            sp50 = 1;
+        mgAvail = GWMGAvailGet(mgTbl[mg].id);
+        value = work->mgRecords[mg];
+        if (mgAvail) {
+            switch (mgTbl[mg].displayType) {
+                case DISPLAY_TYPE_DECIMAL:
+                    for (j = 0; j < MG_DECIMAL_NUM_DIGITS; j++) {
+                        var_r17 = GetDigitSprAt(value, 7 - j);
+                        if (var_r17 != 0 || digitDrawnF || j >= 7) {
+                            espPosSet(work->sprList[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
+                            espBankSet(work->sprList[i * 8 + 89 + j], var_r17);
+                            espDispOn(work->sprList[i * 8 + 89 + j]);
+                            digitDrawnF = TRUE;
                         }
                     }
                     break;
-                case 0:
-                    sp5C = temp_r25 / 3600;
-                    sp58 = (temp_r25 % 3600) / 60;
-                    var_r26 = (temp_r25 % 3600) % 60;
-                    if (lbl_1_rodata_186C[temp_r27][0] == 0x195 || lbl_1_rodata_186C[temp_r27][0] == 0x1B0) {
+                case DISPLAY_TYPE_TIME:
+                    sp5C = value / 3600;
+                    sp58 = (value % 3600) / 60;
+                    var_r26 = (value % 3600) % 60;
+                    if (mgTbl[mg].id == 405 || mgTbl[mg].id == 432) {
                         var_r26 *= 1.6916667f;
-                    } else {
+                    }
+                    else {
                         var_r26 *= 1.6666666f;
                     }
-                    for (j = 1; j < 8; j++) {
-                        espPosSet(temp_r31->unk34[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
+                    for (j = 1; j < MG_TIME_NUM_DIGITS; j++) {
+                        espPosSet(work->sprList[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
                         switch (j) {
                             case 0:
-                                var_r28 = fn_1_8EF8(sp5C, 1);
+                                digit = GetDigitSprAt(sp5C, 1);
                                 break;
                             case 1:
-                                var_r28 = fn_1_8EF8(sp5C, 0);
+                                digit = GetDigitSprAt(sp5C, 0);
                                 break;
                             case 3:
-                                var_r28 = fn_1_8EF8(sp58, 1);
+                                digit = GetDigitSprAt(sp58, 1);
                                 break;
                             case 4:
-                                var_r28 = fn_1_8EF8(sp58, 0);
+                                digit = GetDigitSprAt(sp58, 0);
                                 break;
                             case 6:
-                                var_r28 = fn_1_8EF8(var_r26, 1);
+                                digit = GetDigitSprAt(var_r26, 1);
                                 break;
                             case 7:
-                                var_r28 = fn_1_8EF8(var_r26, 0);
+                                digit = GetDigitSprAt(var_r26, 0);
                                 break;
                             case 2:
-                                var_r28 = 11;
+                                digit = 11;
                                 break;
                             case 5:
-                                var_r28 = 12;
+                                digit = 12;
                                 break;
                         }
-                        espBankSet(temp_r31->unk34[i * 8 + 89 + j], var_r28);
-                        espDispOn(temp_r31->unk34[i * 8 + 89 + j]);
+                        espBankSet(work->sprList[i * 8 + 89 + j], digit);
+                        espDispOn(work->sprList[i * 8 + 89 + j]);
                     }
                     break;
             }
-        } else {
-            for (j = 0; j < 8; j++) {
-                espPosSet(temp_r31->unk34[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
-                espBankSet(temp_r31->unk34[i * 8 + 89 + j], 0);
-                espDispOn(temp_r31->unk34[i * 8 + 89 + j]);
+        }
+        else {
+            for (j = 0; j < MG_DECIMAL_NUM_DIGITS; j++) {
+                espPosSet(work->sprList[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
+                espBankSet(work->sprList[i * 8 + 89 + j], 0);
+                espDispOn(work->sprList[i * 8 + 89 + j]);
             }
         }
-        fn_1_A7B0(temp_r31->unk08[i + 2], 60.0f, 96.0f + 40.0f * i);
-        sp4C = (sp54 != 0) ? lbl_1_rodata_186C[temp_r27][1] : MAKE_MESSID(35, 0);
-        fn_1_A71C(temp_r31->unk08[i + 2], sp4C);
-        fn_1_A7F0(temp_r31->unk08[i + 2]);
+        fn_1_A7B0(work->window[i + 2], 60.0f, 96.0f + 40.0f * i);
+        nameMess = mgAvail ? mgTbl[mg].mess : MAKE_MESSID(35, 0);
+        fn_1_A71C(work->window[i + 2], nameMess);
+        fn_1_A7F0(work->window[i + 2]);
     }
 }
 
-static const s32 lbl_1_rodata_18C8[65] = {
-      7,  89,  90,  91,  92,  93,  94,  95,  96,  97,
-     98,  99, 100, 101, 102, 103, 104, 105, 106, 107,
-    108, 109, 110, 111, 112, 113, 114, 115, 116, 117,
-    118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
-    128, 129, 130, 131, 132, 133, 134, 135, 136, 137,
-    138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
-    148, 149, 150, 151, 152
-};
+#define MG_RECORD_SPR_IDX_TBL_SIZE 65
 
-static void fn_1_A3B0(omObjData *arg0) {
-    UnkRecordDataStruct01 *temp_r30 = arg0->data;
+static const s32 mgRecordSprIdxTbl[65] = { 7, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+    112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140,
+    141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152 };
+
+static void HideMGRecordSpr(omObjData *object)
+{
+    RecordWork *temp_r30 = object->data;
     s32 i;
 
-    for (i = 0; i < 65; i++) {
-        espDispOff(temp_r30->unk34[lbl_1_rodata_18C8[i]]);
+    for (i = 0; i < MG_RECORD_SPR_IDX_TBL_SIZE; i++) {
+        espDispOff(temp_r30->sprList[mgRecordSprIdxTbl[i]]);
     }
     for (i = 0; i < 8; i++) {
-        fn_1_A828(temp_r30->unk08[i + 2]);
+        fn_1_A828(temp_r30->window[i + 2]);
     }
 }

@@ -6,35 +6,34 @@
 #include "game/memory.h"
 
 #include "dolphin.h"
-#include "math.h"
+#include "ext_math.h"
 
 typedef struct {
-    /* 0x00 */ s32 unk00;
-    /* 0x04 */ s16 unk04;
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ s16 motionIdx;
     /* 0x06 */ char unk06[2];
-    /* 0x08 */ Vec unk08;
-    /* 0x14 */ Vec unk14;
-    /* 0x20 */ float unk20;
-    /* 0x24 */ float unk24;
-    /* 0x28 */ float unk28;
-    /* 0x2C */ float unk2C;
-    /* 0x30 */ float unk30;
-    /* 0x34 */ float unk34;
-    /* 0x38 */ float unk38;
-    /* 0x3C */ float unk3C;
-    /* 0x40 */ float unk40;
-    /* 0x44 */ float unk44;
+    /* 0x08 */ Vec pos;
+    /* 0x14 */ Vec newPos;
+    /* 0x20 */ Vec rot;
+    /* 0x2C */ Vec posChange;
+    /* 0x38 */ float distanceToMove;
+    /* 0x3C */ float unkAngle;
+    /* 0x40 */ float posToMoveTo;
+    /* 0x44 */ float distFromCam;
     /* 0x48 */ char unk48[0xC];
-    /* 0x54 */ float unk54;
-    /* 0x58 */ float unk58;
+    /* 0x54 */ float velocity;
+    /* 0x58 */ float speed;
     /* 0x5C */ s32 unk5C;
     /* 0x60 */ s32 unk60;
-} UnkGuideDataStruct; // Size 0x64
+} GuideWork; // Size 0x64
 
-static void fn_1_24A8(omObjData *arg0, s32 arg1);
-static s32 fn_1_24EC(omObjData *arg0);
-static void fn_1_25AC(omObjData *arg0);
-static void fn_1_2A18(omObjData *arg0);
+#define MODE_DISABLED 0
+#define MODE_HANDLE_GUIDE 1
+
+static void ChangeMode(omObjData *object, s32 mode);
+static s32 GetMode(omObjData *object);
+static void HandleGuide(omObjData *object);
+static void UpdateGuide(omObjData *object);
 static float fn_1_2D00(float arg0, float arg1, float arg2);
 
 omObjData *lbl_1_bss_20;
@@ -42,176 +41,184 @@ omObjData *lbl_1_bss_20;
 static const s32 lbl_1_rodata_E0[] = {
     DATA_MAKE_NUM(DATADIR_OPTION, 16),
     DATA_MAKE_NUM(DATADIR_OPTION, 17),
-    DATA_MAKE_NUM(DATADIR_OPTION, 18)
+    DATA_MAKE_NUM(DATADIR_OPTION, 18),
 };
 
-static omObjFunc lbl_1_data_98[] = {
-    NULL,
-    fn_1_25AC
-};
+static omObjFunc modes[] = { NULL, HandleGuide };
 
-omObjData *fn_1_21F8(void) {
-    omObjData *var_r31;
-    UnkGuideDataStruct *temp_r30;
+omObjData *fn_1_21F8(void)
+{
+    omObjData *object;
+    GuideWork *work;
     s32 i;
 
-    var_r31 = omAddObjEx(lbl_1_bss_8, 1002, 1, 3, 2, NULL);
-    temp_r30 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkGuideDataStruct), MEMORY_DEFAULT_NUM);
-    var_r31->data = temp_r30;
-    temp_r30->unk08.x = -298.59f;
-    temp_r30->unk08.z = 298.21f;
-    temp_r30->unk08.y = 0.0f;
-    temp_r30->unk20 = 0.0f;
-    temp_r30->unk24 = 134.42f;
-    temp_r30->unk28 = 0.0f;
-    temp_r30->unk2C = 0.0f;
-    temp_r30->unk34 = 0.0f;
-    temp_r30->unk30 = 0.0f;
-    var_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 12));
-    Hu3DModelLayerSet(var_r31->model[0], 1);
+    object = omAddObjEx(lbl_1_bss_8, 1002, 1, 3, 2, NULL);
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(GuideWork), MEMORY_DEFAULT_NUM);
+    object->data = work;
+    work->pos.x = -298.59f;
+    work->pos.z = 298.21f;
+    work->pos.y = 0.0f;
+
+    work->rot.x = 0.0f;
+    work->rot.y = 134.42f;
+    work->rot.z = 0.0f;
+
+    work->posChange.x = 0.0f;
+    work->posChange.z = 0.0f;
+    work->posChange.y = 0.0f;
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 12));
+    Hu3DModelLayerSet(object->model[0], 1);
     for (i = 0; i < 3; i++) {
-        var_r31->motion[i] = Hu3DJointMotion(var_r31->model[0], HuDataSelHeapReadNum(lbl_1_rodata_E0[i], MEMORY_DEFAULT_NUM, HEAP_DATA));
+        object->motion[i] = Hu3DJointMotion(object->model[0], HuDataSelHeapReadNum(lbl_1_rodata_E0[i], MEMORY_DEFAULT_NUM, HEAP_DATA));
     }
-    temp_r30->unk5C = CharModelEffectNpcInit(var_r31->model[0], var_r31->motion[2], 1, 0xC);
-    temp_r30->unk60 = CharModelEffectNpcInit(var_r31->model[0], var_r31->motion[1], 0, 0xC);
+    work->unk5C = CharModelEffectNpcInit(object->model[0], object->motion[2], 1, 0xC);
+    work->unk60 = CharModelEffectNpcInit(object->model[0], object->motion[1], 0, 0xC);
     CharModelLayerSetAll(1);
-    Hu3DModelShadowSet(var_r31->model[0]);
-    Hu3DMotionShiftSet(var_r31->model[0], var_r31->motion[0], 0.0f, 8.0f, 0x40000001);
-    fn_1_24A8(var_r31, 0);
-    fn_1_2A18(var_r31);
-    return var_r31;
+    Hu3DModelShadowSet(object->model[0]);
+    Hu3DMotionShiftSet(object->model[0], object->motion[0], 0.0f, 8.0f, 0x40000001);
+    ChangeMode(object, MODE_DISABLED);
+    UpdateGuide(object);
+    return object;
 }
 
-void fn_1_241C(omObjData *arg0) {
-    UnkGuideDataStruct *temp_r29 = arg0->data;
+void fn_1_241C(omObjData *object)
+{
+    GuideWork *work = object->data;
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
     for (i = 0; i < 3; i++) {
-        Hu3DMotionKill(arg0->motion[i]);
+        Hu3DMotionKill(object->motion[i]);
     }
-    HuMemDirectFree(temp_r29);
+    HuMemDirectFree(work);
 }
 
-static void fn_1_24A8(omObjData *arg0, s32 arg1) {
-    UnkGuideDataStruct *temp_r31 = arg0->data;
+static void ChangeMode(omObjData *object, s32 mode)
+{
+    GuideWork *work = object->data;
 
-    temp_r31->unk00 = arg1;
-    arg0->func = lbl_1_data_98[arg1];
-    arg0->unk10 = 0;
-    arg0->unk10 = 0;
+    work->mode = mode;
+    object->func = modes[mode];
+    object->unk10 = 0;
+    object->unk10 = 0;
 }
 
-static s32 fn_1_24EC(omObjData *arg0) {
-    UnkGuideDataStruct *temp_r31 = arg0->data;
+static s32 GetMode(omObjData *object)
+{
+    GuideWork *work = object->data;
 
-    return temp_r31->unk00;
+    return work->mode;
 }
 
-void fn_1_2508(omObjData *arg0, float arg1, float arg2, s32 arg3) {
-    UnkGuideDataStruct *temp_r31 = arg0->data;
+void fn_1_2508(omObjData *object, float destPos, float distFromCam, s32 walkDuration)
+{
+    GuideWork *work = object->data;
 
-    temp_r31->unk40 = arg1;
-    temp_r31->unk44 = arg2;
-    temp_r31->unk54 = 0.0f;
-    temp_r31->unk58 = 1.0f / arg3;
-    temp_r31->unk04 = 0;
-    fn_1_24A8(arg0, 1);
+    work->posToMoveTo = destPos;
+    work->distFromCam = distFromCam;
+    work->velocity = 0.0f;
+    work->speed = 1.0f / walkDuration;
+    work->motionIdx = 0;
+    ChangeMode(object, MODE_HANDLE_GUIDE);
 }
 
-static void fn_1_25AC(omObjData *arg0) {
-    UnkGuideDataStruct *temp_r31 = arg0->data;
+static void HandleGuide(omObjData *object)
+{
+    GuideWork *work = object->data;
     float var_f31;
     float var_f30;
 
-    switch (arg0->unk10) {
+    switch (object->unk10) {
         case 0:
-            temp_r31->unk3C = fmod(-(180.0 * (atan2(temp_r31->unk08.x, temp_r31->unk08.z) / M_PI)), 360.0);
-            if (temp_r31->unk3C < 0.0f) {
-                temp_r31->unk3C += 360.0f;
+            work->unkAngle = fmod(-atan2d(work->pos.x, work->pos.z), 360.0);
+            if (work->unkAngle < 0.0f) {
+                work->unkAngle += 360.0f;
             }
-            arg0->unk10 = 1;
+            object->unk10 = 1;
             /* fallthrough */
         case 1:
-            var_f30 = sin(90.0f * temp_r31->unk54 * M_PI / 180.0);
-            var_f31 = temp_r31->unk3C + var_f30 * (temp_r31->unk40 - temp_r31->unk3C);
-            temp_r31->unk14.x = temp_r31->unk44 * -sin(var_f31 * M_PI / 180.0);
-            temp_r31->unk14.z = temp_r31->unk44 * cos(var_f31 * M_PI / 180.0);
-            temp_r31->unk14.y = 0.0f;
-            temp_r31->unk2C = temp_r31->unk14.x - temp_r31->unk08.x;
-            temp_r31->unk34 = temp_r31->unk14.z - temp_r31->unk08.z;
-            if (temp_r31->unk54 <= 0.0f) {
-                temp_r31->unk2C = 0.0f;
-                temp_r31->unk34 = 0.0f;
-                temp_r31->unk08 = temp_r31->unk14;
+            var_f30 = sind(90.0f * work->velocity);
+            var_f31 = work->unkAngle + var_f30 * (work->posToMoveTo - work->unkAngle);
+            work->newPos.x = work->distFromCam * -sind(var_f31);
+            work->newPos.z = work->distFromCam * cosd(var_f31);
+            work->newPos.y = 0.0f;
+            work->posChange.x = work->newPos.x - work->pos.x;
+            work->posChange.z = work->newPos.z - work->pos.z;
+            if (work->velocity <= 0.0f) {
+                work->posChange.x = 0.0f;
+                work->posChange.z = 0.0f;
+                work->pos = work->newPos;
             }
-            if ((temp_r31->unk54 += temp_r31->unk58) < 1.0f) {
+            if ((work->velocity += work->speed) < 1.0f) {
                 break;
             }
-            var_f31 = fmod(-(180.0 * (atan2(temp_r31->unk08.x, temp_r31->unk08.z) / M_PI)), 360.0);
+            var_f31 = fmod(-atan2d(work->pos.x, work->pos.z), 360.0);
             if (var_f31 < 0.0f) {
                 var_f31 += 360.0f;
             }
-            temp_r31->unk14.x = 422.0 * -sin(var_f31 * M_PI / 180.0);
-            temp_r31->unk14.z = 422.0 * cos(var_f31 * M_PI / 180.0);
-            temp_r31->unk2C = (temp_r31->unk14.x - temp_r31->unk08.x) / 10.0f;
-            temp_r31->unk34 = (temp_r31->unk14.z - temp_r31->unk08.z) / 10.0f;
-            temp_r31->unk58 = 0.1f;
-            temp_r31->unk54 = 0.0f;
-            arg0->unk10 = 2;
+            work->newPos.x = 422.0 * -sind(var_f31);
+            work->newPos.z = 422.0 * cosd(var_f31);
+            work->posChange.x = (work->newPos.x - work->pos.x) / 10.0f;
+            work->posChange.z = (work->newPos.z - work->pos.z) / 10.0f;
+            work->speed = 0.1f;
+            work->velocity = 0.0f;
+            object->unk10 = 2;
             /* fallthrough */
         case 2:
-            if ((temp_r31->unk54 += temp_r31->unk58) < 1.0f) {
+            if ((work->velocity += work->speed) < 1.0f) {
                 break;
             }
-            arg0->unk10 = 3;
+            object->unk10 = 3;
             /* fallthrough */
         case 3:
-            temp_r31->unk08 = temp_r31->unk14;
-            temp_r31->unk2C = 0.0f;
-            temp_r31->unk30 = 0.0f;
-            temp_r31->unk34 = 0.0f;
-            fn_1_2A18(arg0);
-            fn_1_24A8(arg0, 0);
+            work->pos = work->newPos;
+            work->posChange.x = 0.0f;
+            work->posChange.y = 0.0f;
+            work->posChange.z = 0.0f;
+            UpdateGuide(object);
+            ChangeMode(object, MODE_DISABLED);
             break;
     }
-    fn_1_2A18(arg0);
+    UpdateGuide(object);
 }
 
-static void fn_1_2A18(omObjData *arg0) {
-    UnkGuideDataStruct *temp_r31 = arg0->data;
+static void UpdateGuide(omObjData *object)
+{
+    GuideWork *work = object->data;
     s16 var_r29;
 
     var_r29 = 0;
-    temp_r31->unk38 = sqrtf(temp_r31->unk2C * temp_r31->unk2C + temp_r31->unk34 * temp_r31->unk34);
-    if (0.001f <= temp_r31->unk38) {
-        if (14.0f <= temp_r31->unk38) {
-            temp_r31->unk2C /= temp_r31->unk38;
-            temp_r31->unk34 /= temp_r31->unk38;
-            temp_r31->unk38 = 14.0f;
-            temp_r31->unk2C = 14.0f * temp_r31->unk2C;
-            temp_r31->unk34 = 14.0f * temp_r31->unk34;
+    work->distanceToMove = sqrtf(work->posChange.x * work->posChange.x + work->posChange.z * work->posChange.z);
+    if (0.001f <= work->distanceToMove) {
+        if (14.0f <= work->distanceToMove) {
+            work->posChange.x /= work->distanceToMove;
+            work->posChange.z /= work->distanceToMove;
+            work->distanceToMove = 14.0f;
+            work->posChange.x = 14.0f * work->posChange.x;
+            work->posChange.z = 14.0f * work->posChange.z;
         }
-        temp_r31->unk24 = fn_1_2D00(temp_r31->unk24, 180.0 * (atan2(temp_r31->unk2C, temp_r31->unk34) / M_PI), 0.4f);
-        if (8.0f <= temp_r31->unk38) {
+        work->rot.y = fn_1_2D00(work->rot.y, atan2d(work->posChange.x, work->posChange.z), 0.4f);
+        if (8.0f <= work->distanceToMove) {
             var_r29 = 2;
-        } else {
+        }
+        else {
             var_r29 = 1;
         }
     }
-    temp_r31->unk08.x += temp_r31->unk2C;
-    temp_r31->unk08.z += temp_r31->unk34;
-    if (temp_r31->unk04 != var_r29) {
-        Hu3DMotionShiftSet(*arg0->model, arg0->motion[var_r29], 0.0f, 8.0f, 0x40000001);
-        temp_r31->unk04 = var_r29;
+    work->pos.x += work->posChange.x;
+    work->pos.z += work->posChange.z;
+    if (work->motionIdx != var_r29) {
+        Hu3DMotionShiftSet(*object->model, object->motion[var_r29], 0.0f, 8.0f, 0x40000001);
+        work->motionIdx = var_r29;
     }
-    omSetTra(arg0, temp_r31->unk08.x, temp_r31->unk08.y, temp_r31->unk08.z);
-    omSetRot(arg0, temp_r31->unk20, temp_r31->unk24, temp_r31->unk28);
+    omSetTra(object, work->pos.x, work->pos.y, work->pos.z);
+    omSetRot(object, work->rot.x, work->rot.y, work->rot.z);
 }
 
-static float fn_1_2D00(float arg0, float arg1, float arg2) {
+static float fn_1_2D00(float arg0, float arg1, float arg2)
+{
     float var_f30;
     float var_f31;
 
