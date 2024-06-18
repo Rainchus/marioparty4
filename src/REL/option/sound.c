@@ -14,38 +14,36 @@
 #include "math.h"
 
 typedef struct {
-    /* 0x000 */ omObjData *objects[26];
-    /* 0x068 */ WindowWork *window[13];
-    /* 0x09C */ s32 mode;
-    /* 0x0A0 */ s16 sprList[19];
-    /* 0x0C6 */ char unkC6[2];
+    /* 0x000 */ omObjData *object[26];
+    /* 0x068 */ OptionWindow *window[13];
+    /* 0x09C */ s32 execMode;
+    /* 0x0A0 */ s16 sprite[19];
     /* 0x0C8 */ s32 changeTimer;
     /* 0x0CC */ s32 selectedOption;
     /* 0x0D0 */ s32 soundMode;
     /* 0x0D4 */ s32 page;
-    /* 0x0D8 */ s32 lSelection; // list selection
-    /* 0x0DC */ s32 prevLSelection;
+    /* 0x0D8 */ s32 cursorPos;
+    /* 0x0DC */ s32 prevCursorPos;
     /* 0x0E0 */ s16 sndGrpSet;
-    /* 0x0E2 */ char unkE2[2];
     /* 0x0E4 */ BOOL optionSelected;
-    /* 0x0E8 */ BOOL unkE8;
+    /* 0x0E8 */ BOOL doneF;
     /* 0x0EC */ BOOL cameraDoneF;
     /* 0x0F0 */ s16 bgMusicStat;
-    /* 0x0F2 */ s16 audSeqStat;
-    /* 0x0F4 */ s16 audSStreamStat;
-    /* 0x0F6 */ s16 audFxStat;
-    /* 0x0F8 */ s32 selectionChangeTimer;
-    /* 0x0FC */ s32 pageChange;
-    /* 0x100 */ s32 lSelectionChange;
-    /* 0x104 */ float lSelectionPos;
-    /* 0x108 */ float lSelectionChangeSpeed;
-    /* 0x10C */ Process *speakerNoteProcess;
+    /* 0x0F2 */ s16 seqStat;
+    /* 0x0F4 */ s16 streamStat;
+    /* 0x0F6 */ s16 fxStat;
+    /* 0x0F8 */ s32 cursorDelay;
+    /* 0x0FC */ s32 pageDelta;
+    /* 0x100 */ s32 cursorDelta;
+    /* 0x104 */ float cursorTime;
+    /* 0x108 */ float cursorSpeed;
+    /* 0x10C */ Process *noteSpawner;
 } SoundWork; // Size 0x110
 
 typedef struct {
     /* 0x00 */ BOOL enabled;
-    /* 0x04 */ s32 noteType;
-    /* 0x08 */ s32 speakerId;
+    /* 0x04 */ s32 type;
+    /* 0x08 */ s32 side;
     /* 0x0C */ float pos;
     /* 0x10 */ float speed;
 } NoteWork; // Size 0x14
@@ -53,9 +51,9 @@ typedef struct {
 typedef struct {
     /* 0x00 */ BOOL enabled;
     /* 0x04 */ s32 nameMess;
-    /* 0x08 */ s16 audType;
+    /* 0x08 */ s16 type;
     /* 0x0A */ s16 sndGrpSet;
-    /* 0x0C */ s32 fxId;
+    /* 0x0C */ s32 id;
 } SndSelData; // Size 0x10
 
 #define NUM_NOTES 16
@@ -75,47 +73,47 @@ typedef struct {
 #define NOTE_TYPE_QUAVER 0
 #define NOTE_TYPE_QUARTER 1
 
-#define SPEAKER_LEFT 0
-#define SPEAKER_RIGHT 1
+#define NOTE_SIDE_LEFT 0
+#define NOTE_SIDE_RIGHT 1
 
-static void HandleInitialScreen(omObjData *object);
-static void HandleOptionSel(omObjData *object);
-static void HandleSoundSettings(omObjData *object);
-static void HandleMusic(omObjData *object);
-static void HandleVoice(omObjData *object);
-static void TurnOnIndicator(omObjData *object, s32 id);
-static void TurnOffIndicators(omObjData *object);
-static omObjData *CreateOptionHand(void);
-static void KillOptionHand(omObjData *optionHand);
-static omObjData *CreateSoundSettingsHand(void);
-static void KillSoundSettingsHand(omObjData *soundSettingsHand);
+static void ExecZoom(omObjData *object);
+static void ExecOptionSel(omObjData *object);
+static void ExecOutputMode(omObjData *object);
+static void ExecMusic(omObjData *object);
+static void ExecVoice(omObjData *object);
+static void LightSetCurr(omObjData *object, s32 id);
+static void LightSetNone(omObjData *object);
+static omObjData *CreateHand(void);
+static void KillHand(omObjData *object);
+static omObjData *CreateOutputModeHand(void);
+static void KillOutputModeHand(omObjData *object);
 static omObjData *CreateSystem(void);
 static void KillSystem(omObjData *system);
-static omObjData *CreateIndicator(s32 id, BOOL off);
-static void KillIndicator(omObjData *indicator);
-static void HideIndicator(omObjData *object);
-static void ShowIndicator(omObjData *object);
+static omObjData *CreateLightObj(s32 id, BOOL off);
+static void KillLightObj(omObjData *indicator);
+static void LightDispOff(omObjData *object);
+static void LightDispOn(omObjData *object);
 static void CreateSpr(omObjData *object);
 static void KillSpr(omObjData *object);
-static void DisplayOptionSel(omObjData *object);
-static void HideOptionSel(omObjData *object);
-static void DisplaySoundSettings(omObjData *object);
-static void HideSoundSettings(omObjData *object);
-static void DisplayMusicTitle(omObjData *object, s32 page);
-static void HideMusicTitle(omObjData *object);
-static void DisplayVoice(omObjData *object, s32 character);
-static void HideVoiceTitle(omObjData *object);
-static omObjData *CreateNote(s32 noteType);
+static void OptionSelDisp(omObjData *object);
+static void OptionSelHide(omObjData *object);
+static void OutputModeDisp(omObjData *object);
+static void OutputModeHide(omObjData *object);
+static void MusicPageDisp(omObjData *object, s32 page);
+static void MusicPageHide(omObjData *object);
+static void VoicePageDisp(omObjData *object, s32 character);
+static void VoicePageHide(omObjData *object);
+static omObjData *CreateNoteObj(s32 type);
 static void KillNote(omObjData *note);
 static void HandleNote(omObjData *note);
-static void SpawnNote(omObjData *object, s32 noteType, s32 speakerId, s32 color);
-static void CreateNoteProcess(omObjData *object);
-static void KillNoteProcess(omObjData *object);
-static void HandleNoteProcess(void);
+static void CreateNote(omObjData *object, s32 type, s32 side, s32 color);
+static void CreateNoteSpawner(omObjData *object);
+static void KillNoteSpawner(omObjData *object);
+static void ExecNoteSpawner(void);
 static void PlaySound(omObjData *object);
-static void FadeOutCurrSound(omObjData *object);
+static void FadeSound(omObjData *object);
 
-omObjData *lbl_1_bss_38;
+omObjData *optionSound;
 
 static const s32 musicPageNameTbl[] = {
     MAKE_MESSID(47, 70),
@@ -467,29 +465,29 @@ static const SndSelData voiceTbl[12][10] = {
     },
 };
 
-static BOOL musicPageEnabledTbl[14] = { TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE };
+static BOOL musicPageOn[14] = { TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE };
 
-static omObjFunc modes[] = { NULL, HandleInitialScreen, HandleOptionSel, HandleSoundSettings, HandleMusic, HandleVoice };
+static omObjFunc execModeTbl[] = { NULL, ExecZoom, ExecOptionSel, ExecOutputMode, ExecMusic, ExecVoice };
 
-static s32 optionTextTbl[] = { MAKE_MESSID(47, 8), MAKE_MESSID(47, 10), MAKE_MESSID(47, 9) };
+static s32 choiceMess[] = { MAKE_MESSID(47, 8), MAKE_MESSID(47, 10), MAKE_MESSID(47, 9) };
 
-omObjData *fn_1_4028(void)
+omObjData *OptionSoundCreate(void)
 {
     omObjData *object;
     SoundWork *work;
     s32 i;
 
-    object = omAddObjEx(lbl_1_bss_8, 1003, 0, 0, 1, NULL);
+    object = omAddObjEx(optionObjMan, 1003, 0, 0, 1, NULL);
     work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(SoundWork), MEMORY_DEFAULT_NUM);
     object->data = work;
     work->selectedOption = 0;
-    work->unkE8 = FALSE;
+    work->doneF = FALSE;
     work->optionSelected = FALSE;
     work->bgMusicStat = -2;
-    work->audSeqStat = -1;
-    work->audSStreamStat = -1;
-    work->audFxStat = -1;
-    work->speakerNoteProcess = NULL;
+    work->seqStat = -1;
+    work->streamStat = -1;
+    work->fxStat = -1;
+    work->noteSpawner = NULL;
     switch (GWGameStat.sound_mode) {
         case 0:
             work->soundMode = SOUND_MODE_MONO;
@@ -500,79 +498,79 @@ omObjData *fn_1_4028(void)
             break;
     }
 
-    work->objects[0] = CreateSystem();
+    work->object[0] = CreateSystem();
     for (i = 0; i < 6; i++) {
-        work->objects[i + 1] = CreateIndicator(i % 3, (i / 3) > 0);
+        work->object[i + 1] = CreateLightObj(i % 3, (i / 3) > 0);
     }
-    TurnOffIndicators(object);
-    work->objects[7] = CreateOptionHand();
-    work->objects[8] = CreateSoundSettingsHand();
+    LightSetNone(object);
+    work->object[7] = CreateHand();
+    work->object[8] = CreateOutputModeHand();
     for (i = 0; i < NUM_NOTES; i++) {
-        work->objects[i + 10] = CreateNote((i / 8) == 0 ? NOTE_TYPE_QUAVER : NOTE_TYPE_QUARTER);
+        work->object[i + 10] = CreateNoteObj((i / 8) == 0 ? NOTE_TYPE_QUAVER : NOTE_TYPE_QUARTER);
     }
     CreateSpr(object);
-    fn_1_4388(object, MODE_DISABLED);
+    OptionSoundExecModeSet(object, MODE_DISABLED);
     for (i = 0; i < NUM_BOARDS; i++) {
-        musicPageEnabledTbl[i + 3] = (GWGameStat.board_play_count[i] != 0) ? TRUE : FALSE;
+        musicPageOn[i + 3] = (GWGameStat.board_play_count[i] != 0) ? TRUE : FALSE;
     }
-    musicPageEnabledTbl[11] = (GWGameStat.field10E_bit6 != 0) ? TRUE : FALSE;
-    musicPageEnabledTbl[12] = (GWGameStat.field10E_bit6 != 0) ? TRUE : FALSE;
-    musicPageEnabledTbl[13] = (GWGameStat.field10E_bit6 != 0) ? TRUE : FALSE;
+    musicPageOn[11] = (GWGameStat.field10E_bit6 != 0) ? TRUE : FALSE;
+    musicPageOn[12] = (GWGameStat.field10E_bit6 != 0) ? TRUE : FALSE;
+    musicPageOn[13] = (GWGameStat.field10E_bit6 != 0) ? TRUE : FALSE;
     return object;
 }
 
-void fn_1_42DC(omObjData *object)
+void OptionSoundKill(omObjData *object)
 {
     SoundWork *work = object->data;
     s32 i;
 
-    KillOptionHand(work->objects[7]);
-    KillSoundSettingsHand(work->objects[8]);
-    KillSystem(work->objects[0]);
+    KillHand(work->object[7]);
+    KillOutputModeHand(work->object[8]);
+    KillSystem(work->object[0]);
     for (i = 0; i < 6; i++) {
-        KillIndicator(work->objects[i + 1]);
+        KillLightObj(work->object[i + 1]);
     }
     for (i = 0; i < 16; i++) {
-        KillNote(work->objects[i + 10]);
+        KillNote(work->object[i + 10]);
     }
     KillSpr(object);
     HuMemDirectFree(work);
 }
 
-void fn_1_4388(omObjData *object, s32 mode)
+void OptionSoundExecModeSet(omObjData *object, s32 execMode)
 {
     SoundWork *work = object->data;
 
-    work->mode = mode;
-    object->func = modes[mode];
+    work->execMode = execMode;
+    object->func = execModeTbl[execMode];
     object->unk10 = 0;
     object->unk10 = 0;
 }
 
-s32 fn_1_43CC(omObjData *object)
+s32 OptionSoundExecModeGet(omObjData *object)
 {
     SoundWork *work = object->data;
 
-    return work->mode;
+    return work->execMode;
 }
 
-static void HandleInitialScreen(omObjData *object)
+static void ExecZoom(omObjData *object)
 {
     SoundWork *work = object->data;
     s32 i;
 
     switch (object->unk10) {
         case 0:
-            if (!work->unkE8) {
-                work->window[0] = fn_1_A44C(0);
-                work->window[1] = fn_1_A44C(1);
-                work->window[2] = fn_1_A44C(2);
+            if (!work->doneF) {
+                work->window[0] = OptionWinCreate(0);
+                work->window[1] = OptionWinCreate(1);
+                work->window[2] = OptionWinCreate(2);
                 for (i = 0; i < 10; i++) {
-                    work->window[i + 3] = fn_1_A44C(3);
+                    work->window[i + 3] = OptionWinCreate(3);
                 }
-                fn_1_AF0(lbl_1_bss_10, 0.0f, 120.0f, -600.0f, 0x28);
-                fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, -350.0f, 0x28);
-                work->unkE8 = TRUE;
+                OptionCameraFocusSet(optionCamera, 0.0f, 120.0f, -600.0f, 0x28);
+                OptionCameraTargetSet(optionCamera, 0.0f, 120.0f, -350.0f, 0x28);
+                work->doneF = TRUE;
                 work->selectedOption = 0;
                 work->optionSelected = FALSE;
                 object->unk10 = 1;
@@ -582,108 +580,108 @@ static void HandleInitialScreen(omObjData *object)
             }
             break;
         case 1:
-            if (fn_1_CB8(lbl_1_bss_10) == 0) {
-                fn_1_4388(object, MODE_HANDLE_OPTION_SEL);
+            if (OptionCameraDoneCheck(optionCamera) == 0) {
+                OptionSoundExecModeSet(object, MODE_HANDLE_OPTION_SEL);
             }
             break;
         case 2:
             for (i = 0; i < 13; i++) {
-                fn_1_A6AC(work->window[i]);
+                OptionWinKill(work->window[i]);
             }
-            fn_1_AF0(lbl_1_bss_10, 0.0f, 120.0f, -600.0f, 0x28);
-            fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, 0.0f, 0x28);
-            work->unkE8 = FALSE;
+            OptionCameraFocusSet(optionCamera, 0.0f, 120.0f, -600.0f, 0x28);
+            OptionCameraTargetSet(optionCamera, 0.0f, 120.0f, 0.0f, 0x28);
+            work->doneF = FALSE;
             work->optionSelected = FALSE;
-            fn_1_4388(object, MODE_DISABLED);
+            OptionSoundExecModeSet(object, MODE_DISABLED);
             break;
     }
 }
 
-static void HandleOptionSel(omObjData *object)
+static void ExecOptionSel(omObjData *object)
 {
     SoundWork *work = object->data;
 
     switch (object->unk10) {
         case 0:
-            TurnOffIndicators(object);
-            work->lSelection = work->selectedOption;
+            LightSetNone(object);
+            work->cursorPos = work->selectedOption;
             if (!work->optionSelected) {
-                fn_1_3D54(lbl_1_bss_30);
+                OptionRumbleMotionShowStart(optionRumble);
             }
             else {
-                HideSoundSettings(object);
-                HideMusicTitle(object);
-                HideVoiceTitle(object);
+                OutputModeHide(object);
+                MusicPageHide(object);
+                VoicePageHide(object);
             }
             work->optionSelected = FALSE;
             work->cameraDoneF = FALSE;
             object->unk10 = 1;
             /* fallthrough */
         case 1:
-            DisplayOptionSel(object);
-            fn_1_A6EC(work->window[1]);
-            fn_1_A71C(work->window[1], MAKE_MESSID(47, 168));
-            fn_1_A6EC(work->window[0]);
-            fn_1_A71C(work->window[0], optionTextTbl[work->lSelection]);
+            OptionSelDisp(object);
+            OptionWinAnimIn(work->window[1]);
+            OptionWinMesSet(work->window[1], MAKE_MESSID(47, 168));
+            OptionWinAnimIn(work->window[0]);
+            OptionWinMesSet(work->window[0], choiceMess[work->cursorPos]);
             if (!work->cameraDoneF) {
-                Hu3DModelAttrReset(work->objects[7]->model[0], 1);
+                Hu3DModelAttrReset(work->object[7]->model[0], 1);
                 work->cameraDoneF = TRUE;
             }
-            omSetTra(work->objects[7], -34.0f + 40.0f * work->lSelection, 120.0f, -500.0f);
+            omSetTra(work->object[7], -34.0f + 40.0f * work->cursorPos, 120.0f, -500.0f);
             object->unk10 = 2;
             /* fallthrough */
         case 2:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
-                if (fn_1_550(PAD_BUTTON_A)) {
-                    work->selectedOption = work->lSelection;
+                if (OptionPadCheck(PAD_BUTTON_A)) {
+                    work->selectedOption = work->cursorPos;
                     work->optionSelected = TRUE;
-                    TurnOnIndicator(object, work->selectedOption);
+                    LightSetCurr(object, work->selectedOption);
                     HuAudFXPlay(2);
                     object->unk10 = 3;
                 }
-                else if (fn_1_550(PAD_BUTTON_B)) {
+                else if (OptionPadCheck(PAD_BUTTON_B)) {
                     HuAudFXPlay(3);
                     object->unk10 = 3;
                 }
-                else if (fn_1_584(1) && work->lSelection > 0) {
-                    work->lSelection--;
+                else if (OptionPadDStkRepCheck(1) && work->cursorPos > 0) {
+                    work->cursorPos--;
                     HuAudFXPlay(0);
                     object->unk10 = 1;
                 }
-                else if (fn_1_584(2) && work->lSelection < 2) {
-                    work->lSelection++;
+                else if (OptionPadDStkRepCheck(2) && work->cursorPos < 2) {
+                    work->cursorPos++;
                     HuAudFXPlay(0);
                     object->unk10 = 1;
                 }
             }
             break;
         case 3:
-            fn_1_A704(work->window[1]);
-            fn_1_A704(work->window[0]);
+            OptionWinAnimOut(work->window[1]);
+            OptionWinAnimOut(work->window[0]);
             if (!work->optionSelected) {
-                fn_1_3E1C(lbl_1_bss_30);
+                OptionRumbleMotionHideStart(optionRumble);
             }
-            Hu3DModelAttrSet(work->objects[7]->model[0], 1);
+            Hu3DModelAttrSet(work->object[7]->model[0], 1);
             object->unk10 = 4;
             /* fallthrough */
         case 4:
-            if ((work->optionSelected || !fn_1_3ED0(lbl_1_bss_30)) && work->window[0]->state == 0 && work->window[1]->state == 0) {
+            if ((work->optionSelected || !OptionRumbleMotionCheck(optionRumble)) && work->window[0]->state == 0 && work->window[1]->state == 0) {
                 if (work->optionSelected) {
                     switch (work->selectedOption) {
                         case 0:
-                            fn_1_4388(object, MODE_HANDLE_SOUND);
+                            OptionSoundExecModeSet(object, MODE_HANDLE_SOUND);
                             break;
                         case 1:
-                            fn_1_4388(object, MODE_HANDLE_MUSIC);
+                            OptionSoundExecModeSet(object, MODE_HANDLE_MUSIC);
                             break;
                         case 2:
-                            fn_1_4388(object, MODE_HANDLE_VOICE);
+                            OptionSoundExecModeSet(object, MODE_HANDLE_VOICE);
                             break;
                     }
                 }
                 else {
-                    HideOptionSel(object);
-                    fn_1_4388(object, MODE_HANDLE_INITIAL_SCREEN);
+                    OptionSelHide(object);
+                    OptionSoundExecModeSet(object, MODE_HANDLE_INITIAL_SCREEN);
                 }
             }
             break;
@@ -695,66 +693,66 @@ static const s32 soundModeTbl[] = { 1, 0 };
 
 static const s32 soundModeNameTbl[] = { MAKE_MESSID(47, 11), MAKE_MESSID(47, 12) };
 
-static void HandleSoundSettings(omObjData *object)
+static void ExecOutputMode(omObjData *object)
 {
     SoundWork *work = object->data;
-    Vec sp8;
+    Vec pos;
 
     switch (object->unk10) {
         case 0:
-            HideOptionSel(object);
+            OptionSelHide(object);
             work->optionSelected = FALSE;
-            work->lSelection = work->soundMode;
+            work->cursorPos = work->soundMode;
             work->cameraDoneF = FALSE;
             work->optionSelected = FALSE;
-            CreateNoteProcess(object);
+            CreateNoteSpawner(object);
             object->unk10 = 1;
             /* fallthrough */
         case 1:
-            DisplaySoundSettings(object);
-            fn_1_A6EC(work->window[1]);
-            fn_1_A71C(work->window[1], MAKE_MESSID(47, 168));
-            fn_1_A6EC(work->window[0]);
-            fn_1_A71C(work->window[0], soundModeNameTbl[work->soundMode]);
+            OutputModeDisp(object);
+            OptionWinAnimIn(work->window[1]);
+            OptionWinMesSet(work->window[1], MAKE_MESSID(47, 168));
+            OptionWinAnimIn(work->window[0]);
+            OptionWinMesSet(work->window[0], soundModeNameTbl[work->soundMode]);
             if (!work->cameraDoneF) {
-                Hu3DModelAttrReset(work->objects[8]->model[0], 1);
+                Hu3DModelAttrReset(work->object[8]->model[0], 1);
                 work->cameraDoneF = TRUE;
             }
-            sp8.x = -38.0f;
-            sp8.y = 140.0f - 15.0f * work->lSelection;
-            sp8.z = -500.0f;
-            omSetTra(work->objects[8], sp8.x, sp8.y, sp8.z);
+            pos.x = -38.0f;
+            pos.y = 140.0f - 15.0f * work->cursorPos;
+            pos.z = -500.0f;
+            omSetTra(work->object[8], pos.x, pos.y, pos.z);
             object->unk10 = 2;
             /* fallthrough */
         case 2:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
-                if (fn_1_550(PAD_BUTTON_A)) {
-                    work->soundMode = work->lSelection;
+                if (OptionPadCheck(PAD_BUTTON_A)) {
+                    work->soundMode = work->cursorPos;
                     if (work->soundMode == SOUND_MODE_STEREO) {
                         HuAudFXPlay(0x841);
                     }
                     else {
                         HuAudFXPlay(0x842);
                     }
-                    GWGameStat.sound_mode = outputModeTbl[work->lSelection];
-                    msmSysSetOutputMode(outputModeTbl[work->lSelection]);
-                    OSSetSoundMode(soundModeTbl[work->lSelection]);
+                    GWGameStat.sound_mode = outputModeTbl[work->cursorPos];
+                    msmSysSetOutputMode(outputModeTbl[work->cursorPos]);
+                    OSSetSoundMode(soundModeTbl[work->cursorPos]);
                     work->optionSelected = TRUE;
-                    DisplaySoundSettings(object);
+                    OutputModeDisp(object);
                     work->changeTimer = 0;
                     object->unk10 = 3;
                 }
-                else if (fn_1_550(PAD_BUTTON_B)) {
+                else if (OptionPadCheck(PAD_BUTTON_B)) {
                     HuAudFXPlay(3);
                     object->unk10 = 4;
                 }
-                else if (fn_1_584(8) != 0 && work->lSelection > 0) {
-                    work->lSelection--;
+                else if (OptionPadDStkRepCheck(8) != 0 && work->cursorPos > 0) {
+                    work->cursorPos--;
                     HuAudFXPlay(0);
                     object->unk10 = 1;
                 }
-                else if (fn_1_584(4) != 0 && work->lSelection < 1) {
-                    work->lSelection++;
+                else if (OptionPadDStkRepCheck(4) != 0 && work->cursorPos < 1) {
+                    work->cursorPos++;
                     HuAudFXPlay(0);
                     object->unk10 = 1;
                 }
@@ -767,121 +765,121 @@ static void HandleSoundSettings(omObjData *object)
             }
             break;
         case 4:
-            KillNoteProcess(object);
-            fn_1_A704(work->window[1]);
-            fn_1_A704(work->window[0]);
-            Hu3DModelAttrSet(work->objects[8]->model[0], 1);
+            KillNoteSpawner(object);
+            OptionWinAnimOut(work->window[1]);
+            OptionWinAnimOut(work->window[0]);
+            Hu3DModelAttrSet(work->object[8]->model[0], 1);
             object->unk10 = 5;
             /* fallthrough */
         case 5:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
                 work->optionSelected = FALSE;
-                DisplaySoundSettings(object);
+                OutputModeDisp(object);
                 work->optionSelected = TRUE;
-                fn_1_4388(object, MODE_HANDLE_OPTION_SEL);
+                OptionSoundExecModeSet(object, MODE_HANDLE_OPTION_SEL);
             }
             break;
     }
 }
 
-static void HandleMusic(omObjData *object)
+static void ExecMusic(omObjData *object)
 {
     SoundWork *work = object->data;
-    float temp_f31;
-    float temp_f30;
-    float temp_f29;
-    float temp_f28;
-    float temp_f27;
-    float temp_f26;
+    float oldX;
+    float oldY;
+    float x;
+    float y;
+    float newX;
+    float newY;
     s32 i;
-    s32 newSelection;
-    s32 sp8;
+    s32 cursorPosNew;
+    s32 cursorPosOld;
 
-    sp8 = work->lSelection;
+    cursorPosOld = work->cursorPos;
     switch (object->unk10) {
         case 0:
-            HideOptionSel(object);
+            OptionSelHide(object);
             work->page = 0;
-            work->lSelectionChange = 0;
-            work->pageChange = 0;
-            espBankSet(work->sprList[14], 0);
-            espBankSet(work->sprList[15], 2);
-            espPosSet(work->sprList[14], 36.0f, 222.0f);
-            espPosSet(work->sprList[15], 544.0f, 222.0f);
-            fn_1_160(work->sprList[14], 1, 5);
-            fn_1_160(work->sprList[15], 1, 5);
-            work->selectionChangeTimer = 0;
+            work->cursorDelta = 0;
+            work->pageDelta = 0;
+            espBankSet(work->sprite[14], 0);
+            espBankSet(work->sprite[15], 2);
+            espPosSet(work->sprite[14], 36.0f, 222.0f);
+            espPosSet(work->sprite[15], 544.0f, 222.0f);
+            OptionFadeSprite(work->sprite[14], 1, 5);
+            OptionFadeSprite(work->sprite[15], 1, 5);
+            work->cursorDelay = 0;
             object->unk10 = 1;
             /* fallthrough */
         case 1:
-            work->lSelection = 0;
-            work->prevLSelection = 0;
-            if (work->pageChange != 0) {
+            work->cursorPos = 0;
+            work->prevCursorPos = 0;
+            if (work->pageDelta != 0) {
                 do {
-                    work->page += work->pageChange;
+                    work->page += work->pageDelta;
                     if (work->page >= 14) {
                         work->page = 0;
                     }
                     else if (work->page < 0) {
                         work->page = 13;
                     }
-                } while (!musicPageEnabledTbl[work->page]);
+                } while (!musicPageOn[work->page]);
                 HuAudFXPlay(0x840);
-                if (work->pageChange > 0) {
-                    espBankSet(work->sprList[15], 3);
+                if (work->pageDelta > 0) {
+                    espBankSet(work->sprite[15], 3);
                 }
                 else {
-                    espBankSet(work->sprList[14], 1);
+                    espBankSet(work->sprite[14], 1);
                 }
-                work->selectionChangeTimer = 5;
-                work->pageChange = 0;
+                work->cursorDelay = 5;
+                work->pageDelta = 0;
             }
             object->unk10 = 2;
             /* fallthrough */
         case 2:
-            if (work->lSelectionChange != 0) {
-                newSelection = work->lSelection + work->lSelectionChange;
-                if (newSelection > 9) {
-                    newSelection = 9;
+            if (work->cursorDelta != 0) {
+                cursorPosNew = work->cursorPos + work->cursorDelta;
+                if (cursorPosNew > 9) {
+                    cursorPosNew = 9;
                 }
-                else if (newSelection < 0) {
-                    newSelection = 0;
+                else if (cursorPosNew < 0) {
+                    cursorPosNew = 0;
                 }
-                if (!musicTbl[work->page][newSelection].enabled) {
-                    if (work->lSelection < 5) {
-                        for (i = newSelection; i >= 5; i--) {
+                if (!musicTbl[work->page][cursorPosNew].enabled) {
+                    if (work->cursorPos < 5) {
+                        for (i = cursorPosNew; i >= 5; i--) {
                             if (musicTbl[work->page][i].enabled) {
-                                newSelection = i;
+                                cursorPosNew = i;
                                 break;
                             }
                         }
                         if (i < 5) {
-                            newSelection = work->lSelection;
+                            cursorPosNew = work->cursorPos;
                         }
                     }
                     else {
-                        newSelection = work->lSelection;
+                        cursorPosNew = work->cursorPos;
                     }
                 }
-                work->prevLSelection = work->lSelection;
-                if (work->lSelection != newSelection) {
-                    work->lSelection = newSelection;
+                work->prevCursorPos = work->cursorPos;
+                if (work->cursorPos != cursorPosNew) {
+                    work->cursorPos = cursorPosNew;
                     HuAudFXPlay(0x840);
                 }
-                work->lSelectionChange = 0;
+                work->cursorDelta = 0;
             }
             object->unk10 = 3;
             /* fallthrough */
         case 3:
-            DisplayMusicTitle(object, work->page);
-            fn_1_A6EC(work->window[0]);
-            fn_1_A71C(work->window[0], MAKE_MESSID(47, 10));
-            fn_1_A6EC(work->window[1]);
-            fn_1_A71C(work->window[1], MAKE_MESSID(47, 18));
-            espDispOn(work->sprList[18]);
-            work->lSelectionPos = 0.0f;
-            work->lSelectionChangeSpeed = 0.0625f;
-            if (work->selectionChangeTimer > 0) {
+            MusicPageDisp(object, work->page);
+            OptionWinAnimIn(work->window[0]);
+            OptionWinMesSet(work->window[0], MAKE_MESSID(47, 10));
+            OptionWinAnimIn(work->window[1]);
+            OptionWinMesSet(work->window[1], MAKE_MESSID(47, 18));
+            espDispOn(work->sprite[18]);
+            work->cursorTime = 0.0f;
+            work->cursorSpeed = 0.0625f;
+            if (work->cursorDelay > 0) {
                 object->unk10 = 5;
             }
             else {
@@ -889,31 +887,31 @@ static void HandleMusic(omObjData *object)
             }
             /* fallthrough */
         case 4:
-            temp_f31 = 166.0f + 244.0f * (work->prevLSelection / 5);
-            temp_f30 = 144.0f + 29.0f * (work->prevLSelection % 5);
-            temp_f27 = 166.0f + 244.0f * (work->lSelection / 5);
-            temp_f26 = 144.0f + 29.0f * (work->lSelection % 5);
-            temp_f29 = temp_f31 + work->lSelectionPos * (temp_f27 - temp_f31);
-            temp_f28 = temp_f30 + work->lSelectionPos * (temp_f26 - temp_f30);
-            espPosSet(work->sprList[18], temp_f29, temp_f28);
-            if ((work->lSelectionPos += work->lSelectionChangeSpeed) < 1.0f) {
+            oldX = 166.0f + 244.0f * (work->prevCursorPos / 5);
+            oldY = 144.0f + 29.0f * (work->prevCursorPos % 5);
+            newX = 166.0f + 244.0f * (work->cursorPos / 5);
+            newY = 144.0f + 29.0f * (work->cursorPos % 5);
+            x = oldX + work->cursorTime * (newX - oldX);
+            y = oldY + work->cursorTime * (newY - oldY);
+            espPosSet(work->sprite[18], x, y);
+            if ((work->cursorTime += work->cursorSpeed) < 1.0f) {
                 break;
             }
-            espPosSet(work->sprList[18], 166.0f + 244.0f * (work->lSelection / 5), 144.0f + 29.0f * (work->lSelection % 5));
+            espPosSet(work->sprite[18], 166.0f + 244.0f * (work->cursorPos / 5), 144.0f + 29.0f * (work->cursorPos % 5));
             object->unk10 = 6;
             break;
         case 5:
-            if (work->selectionChangeTimer > 0) {
-                work->selectionChangeTimer--;
+            if (work->cursorDelay > 0) {
+                work->cursorDelay--;
                 break;
             }
-            espBankSet(work->sprList[14], 0);
-            espBankSet(work->sprList[15], 2);
+            espBankSet(work->sprite[14], 0);
+            espBankSet(work->sprite[15], 2);
             object->unk10 = 6;
             /* fallthrough */
         case 6:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
-                if (fn_1_550(PAD_BUTTON_A)) {
+                if (OptionPadCheck(PAD_BUTTON_A)) {
                     if (work->bgMusicStat == -2) {
                         HuAudFadeOut(0x64);
                         work->bgMusicStat = -1;
@@ -924,91 +922,91 @@ static void HandleMusic(omObjData *object)
                     }
                     PlaySound(object);
                 }
-                else if (fn_1_550(PAD_BUTTON_B)) {
+                else if (OptionPadCheck(PAD_BUTTON_B)) {
                     HuAudFXPlay(3);
                     work->changeTimer = 0;
                     object->unk10 = 7;
                 }
                 else {
-                    if (fn_1_5B8(1) != 0 && work->lSelection >= 5) {
-                        work->lSelectionChange -= 5;
+                    if (OptionPadDStkCheck(1) != 0 && work->cursorPos >= 5) {
+                        work->cursorDelta -= 5;
                     }
-                    else if (fn_1_5B8(2) != 0 && work->lSelection < 5) {
-                        work->lSelectionChange += 5;
+                    else if (OptionPadDStkCheck(2) != 0 && work->cursorPos < 5) {
+                        work->cursorDelta += 5;
                     }
-                    if (fn_1_5B8(8) != 0 && work->lSelection % 5 > 0) {
-                        work->lSelectionChange--;
+                    if (OptionPadDStkCheck(8) != 0 && work->cursorPos % 5 > 0) {
+                        work->cursorDelta--;
                     }
-                    else if (fn_1_5B8(4) != 0 && work->lSelection % 5 < 4) {
-                        work->lSelectionChange++;
+                    else if (OptionPadDStkCheck(4) != 0 && work->cursorPos % 5 < 4) {
+                        work->cursorDelta++;
                     }
-                    if (work->lSelectionChange != 0) {
+                    if (work->cursorDelta != 0) {
                         object->unk10 = 2;
                     }
-                    else if (fn_1_550(PAD_TRIGGER_L)) {
-                        work->pageChange = -1;
+                    else if (OptionPadCheck(PAD_TRIGGER_L)) {
+                        work->pageDelta = -1;
                     }
-                    else if (fn_1_550(PAD_TRIGGER_R)) {
-                        work->pageChange = 1;
+                    else if (OptionPadCheck(PAD_TRIGGER_R)) {
+                        work->pageDelta = 1;
                     }
-                    if (work->pageChange != 0) {
+                    if (work->pageDelta != 0) {
                         object->unk10 = 1;
                     }
                 }
             }
             break;
         case 7:
-            fn_1_A704(work->window[1]);
-            fn_1_A704(work->window[0]);
-            FadeOutCurrSound(object);
-            fn_1_160(work->sprList[14], 0, 5);
-            fn_1_160(work->sprList[15], 0, 5);
+            OptionWinAnimOut(work->window[1]);
+            OptionWinAnimOut(work->window[0]);
+            FadeSound(object);
+            OptionFadeSprite(work->sprite[14], 0, 5);
+            OptionFadeSprite(work->sprite[15], 0, 5);
             object->unk10 = 8;
             /* fallthrough */
         case 8:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
-                espDispOff(work->sprList[18]);
+                espDispOff(work->sprite[18]);
                 if (work->bgMusicStat == -1) {
                     work->bgMusicStat = HuAudSeqPlay(0x2D);
                 }
-                fn_1_4388(object, MODE_HANDLE_OPTION_SEL);
+                OptionSoundExecModeSet(object, MODE_HANDLE_OPTION_SEL);
             }
             break;
     }
 }
 
-static void HandleVoice(omObjData *object)
+static void ExecVoice(omObjData *object)
 {
     SoundWork *work = object->data;
-    float temp_f31;
-    float temp_f30;
-    float temp_f29;
-    float temp_f28;
-    float temp_f27;
-    float temp_f26;
-    s32 var_r28;
-    s32 newSelection;
+    float oldX;
+    float oldY;
+    float x;
+    float y;
+    float newX;
+    float newY;
+    s32 i;
+    s32 cursorPosNew;
 
     switch (object->unk10) {
         case 0:
-            HideOptionSel(object);
+            OptionSelHide(object);
             work->page = 0;
-            work->lSelectionChange = 0;
-            work->pageChange = 0;
-            espBankSet(work->sprList[14], 0);
-            espBankSet(work->sprList[15], 2);
-            espPosSet(work->sprList[14], 36.0f, 222.0f);
-            espPosSet(work->sprList[15], 544.0f, 222.0f);
-            fn_1_160(work->sprList[14], 1, 5);
-            fn_1_160(work->sprList[15], 1, 5);
-            work->selectionChangeTimer = 0;
+            work->cursorDelta = 0;
+            work->pageDelta = 0;
+            espBankSet(work->sprite[14], 0);
+            espBankSet(work->sprite[15], 2);
+            espPosSet(work->sprite[14], 36.0f, 222.0f);
+            espPosSet(work->sprite[15], 544.0f, 222.0f);
+            OptionFadeSprite(work->sprite[14], 1, 5);
+            OptionFadeSprite(work->sprite[15], 1, 5);
+            work->cursorDelay = 0;
             object->unk10 = 3;
             /* fallthrough */
         case 1:
-            work->lSelection = 0;
-            work->prevLSelection = 0;
-            if (work->pageChange != 0) {
-                work->page += work->pageChange;
+            work->cursorPos = 0;
+            work->prevCursorPos = 0;
+            if (work->pageDelta != 0) {
+                work->page += work->pageDelta;
                 if (work->page > 11) {
                     work->page = 0;
                 }
@@ -1016,61 +1014,61 @@ static void HandleVoice(omObjData *object)
                     work->page = 11;
                 }
                 HuAudFXPlay(0x840);
-                if (work->pageChange > 0) {
-                    espBankSet(work->sprList[15], 3);
+                if (work->pageDelta > 0) {
+                    espBankSet(work->sprite[15], 3);
                 }
                 else {
-                    espBankSet(work->sprList[14], 1);
+                    espBankSet(work->sprite[14], 1);
                 }
-                work->selectionChangeTimer = 5;
-                work->pageChange = 0;
+                work->cursorDelay = 5;
+                work->pageDelta = 0;
             }
             object->unk10 = 2;
             /* fallthrough */
         case 2:
-            if (work->lSelectionChange != 0) {
-                newSelection = work->lSelection + work->lSelectionChange;
-                if (newSelection > 9) {
-                    newSelection = 9;
+            if (work->cursorDelta != 0) {
+                cursorPosNew = work->cursorPos + work->cursorDelta;
+                if (cursorPosNew > 9) {
+                    cursorPosNew = 9;
                 }
-                else if (newSelection < 0) {
-                    newSelection = 0;
+                else if (cursorPosNew < 0) {
+                    cursorPosNew = 0;
                 }
-                if (!voiceTbl[work->page][newSelection].enabled) {
-                    if (work->lSelection < 5) {
-                        for (var_r28 = newSelection; var_r28 >= 5; var_r28--) {
-                            if (voiceTbl[work->page][var_r28].enabled) {
-                                newSelection = var_r28;
+                if (!voiceTbl[work->page][cursorPosNew].enabled) {
+                    if (work->cursorPos < 5) {
+                        for (i = cursorPosNew; i >= 5; i--) {
+                            if (voiceTbl[work->page][i].enabled) {
+                                cursorPosNew = i;
                                 break;
                             }
                         }
-                        if (var_r28 < 5) {
-                            newSelection = work->lSelection;
+                        if (i < 5) {
+                            cursorPosNew = work->cursorPos;
                         }
                     }
                     else {
-                        newSelection = work->lSelection;
+                        cursorPosNew = work->cursorPos;
                     }
                 }
-                work->prevLSelection = work->lSelection;
-                if (work->lSelection != newSelection) {
-                    work->lSelection = newSelection;
+                work->prevCursorPos = work->cursorPos;
+                if (work->cursorPos != cursorPosNew) {
+                    work->cursorPos = cursorPosNew;
                     HuAudFXPlay(0x840);
                 }
-                work->lSelectionChange = 0;
+                work->cursorDelta = 0;
             }
             object->unk10 = 3;
             /* fallthrough */
         case 3:
-            DisplayVoice(object, work->page);
-            fn_1_A6EC(work->window[0]);
-            fn_1_A71C(work->window[0], MAKE_MESSID(47, 9));
-            fn_1_A6EC(work->window[1]);
-            fn_1_A71C(work->window[1], MAKE_MESSID(47, 18));
-            espDispOn(work->sprList[18]);
-            work->lSelectionPos = 0.0f;
-            work->lSelectionChangeSpeed = 0.0625f;
-            if (work->selectionChangeTimer > 0) {
+            VoicePageDisp(object, work->page);
+            OptionWinAnimIn(work->window[0]);
+            OptionWinMesSet(work->window[0], MAKE_MESSID(47, 9));
+            OptionWinAnimIn(work->window[1]);
+            OptionWinMesSet(work->window[1], MAKE_MESSID(47, 18));
+            espDispOn(work->sprite[18]);
+            work->cursorTime = 0.0f;
+            work->cursorSpeed = 0.0625f;
+            if (work->cursorDelay > 0) {
                 object->unk10 = 5;
             }
             else {
@@ -1078,170 +1076,170 @@ static void HandleVoice(omObjData *object)
             }
             /* fallthrough */
         case 4:
-            temp_f31 = 166.0f + 244.0f * (work->prevLSelection / 5);
-            temp_f30 = 144.0f + 29.0f * (work->prevLSelection % 5);
-            temp_f27 = 166.0f + 244.0f * (work->lSelection / 5);
-            temp_f26 = 144.0f + 29.0f * (work->lSelection % 5);
-            temp_f29 = temp_f31 + work->lSelectionPos * (temp_f27 - temp_f31);
-            temp_f28 = temp_f30 + work->lSelectionPos * (temp_f26 - temp_f30);
-            espPosSet(work->sprList[18], temp_f29, temp_f28);
-            if ((work->lSelectionPos += work->lSelectionChangeSpeed) < 1.0f) {
+            oldX = 166.0f + 244.0f * (work->prevCursorPos / 5);
+            oldY = 144.0f + 29.0f * (work->prevCursorPos % 5);
+            newX = 166.0f + 244.0f * (work->cursorPos / 5);
+            newY = 144.0f + 29.0f * (work->cursorPos % 5);
+            x = oldX + work->cursorTime * (newX - oldX);
+            y = oldY + work->cursorTime * (newY - oldY);
+            espPosSet(work->sprite[18], x, y);
+            if ((work->cursorTime += work->cursorSpeed) < 1.0f) {
                 break;
             }
-            espPosSet(work->sprList[18], 166.0f + 244.0f * (work->lSelection / 5), 144.0f + 29.0f * (work->lSelection % 5));
+            espPosSet(work->sprite[18], 166.0f + 244.0f * (work->cursorPos / 5), 144.0f + 29.0f * (work->cursorPos % 5));
             object->unk10 = 6;
             break;
         case 5:
-            if (work->selectionChangeTimer > 0) {
-                work->selectionChangeTimer--;
+            if (work->cursorDelay > 0) {
+                work->cursorDelay--;
                 break;
             }
-            espBankSet(work->sprList[14], 0);
-            espBankSet(work->sprList[15], 2);
+            espBankSet(work->sprite[14], 0);
+            espBankSet(work->sprite[15], 2);
             object->unk10 = 6;
             /* fallthrough */
         case 6:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
-                if (fn_1_550(PAD_BUTTON_A)) {
+                if (OptionPadCheck(PAD_BUTTON_A)) {
                     PlaySound(object);
                 }
-                else if (fn_1_550(PAD_BUTTON_B)) {
+                else if (OptionPadCheck(PAD_BUTTON_B)) {
                     HuAudFXPlay(3);
                     work->changeTimer = 0;
                     object->unk10 = 7;
                 }
                 else {
-                    if (fn_1_5B8(1) != 0 && work->lSelection >= 5) {
-                        work->lSelectionChange -= 5;
+                    if (OptionPadDStkCheck(1) != 0 && work->cursorPos >= 5) {
+                        work->cursorDelta -= 5;
                     }
-                    else if (fn_1_5B8(2) != 0 && work->lSelection < 5) {
-                        work->lSelectionChange += 5;
+                    else if (OptionPadDStkCheck(2) != 0 && work->cursorPos < 5) {
+                        work->cursorDelta += 5;
                     }
-                    if (fn_1_5B8(8) != 0 && work->lSelection % 5 > 0) {
-                        work->lSelectionChange--;
+                    if (OptionPadDStkCheck(8) != 0 && work->cursorPos % 5 > 0) {
+                        work->cursorDelta--;
                     }
-                    else if (fn_1_5B8(4) != 0 && work->lSelection % 5 < 4) {
-                        work->lSelectionChange++;
+                    else if (OptionPadDStkCheck(4) != 0 && work->cursorPos % 5 < 4) {
+                        work->cursorDelta++;
                     }
-                    if (work->lSelectionChange != 0) {
+                    if (work->cursorDelta != 0) {
                         object->unk10 = 2;
                     }
-                    else if (fn_1_550(PAD_TRIGGER_L)) {
-                        work->pageChange = -1;
+                    else if (OptionPadCheck(PAD_TRIGGER_L)) {
+                        work->pageDelta = -1;
                     }
-                    else if (fn_1_550(PAD_TRIGGER_R)) {
-                        work->pageChange = 1;
+                    else if (OptionPadCheck(PAD_TRIGGER_R)) {
+                        work->pageDelta = 1;
                     }
-                    if (work->pageChange != 0) {
+                    if (work->pageDelta != 0) {
                         object->unk10 = 1;
                     }
                 }
             }
             break;
         case 7:
-            fn_1_A704(work->window[1]);
-            fn_1_A704(work->window[0]);
-            FadeOutCurrSound(object);
-            fn_1_160(work->sprList[14], 0, 5);
-            fn_1_160(work->sprList[15], 0, 5);
+            OptionWinAnimOut(work->window[1]);
+            OptionWinAnimOut(work->window[0]);
+            FadeSound(object);
+            OptionFadeSprite(work->sprite[14], 0, 5);
+            OptionFadeSprite(work->sprite[15], 0, 5);
             object->unk10 = 8;
             /* fallthrough */
         case 8:
             if (work->window[0]->state == 0 && work->window[1]->state == 0) {
-                espDispOff(work->sprList[18]);
-                fn_1_4388(object, MODE_HANDLE_OPTION_SEL);
+                espDispOff(work->sprite[18]);
+                OptionSoundExecModeSet(object, MODE_HANDLE_OPTION_SEL);
             }
             break;
     }
 }
 
-static void TurnOnIndicator(omObjData *object, s32 id)
+static void LightSetCurr(omObjData *object, s32 id)
 {
     SoundWork *work = object->data;
 
     switch (id) {
         case 0:
-            HideIndicator(work->objects[1]);
-            HideIndicator(work->objects[5]);
-            HideIndicator(work->objects[6]);
-            ShowIndicator(work->objects[4]);
-            ShowIndicator(work->objects[2]);
-            ShowIndicator(work->objects[3]);
+            LightDispOff(work->object[1]);
+            LightDispOff(work->object[5]);
+            LightDispOff(work->object[6]);
+            LightDispOn(work->object[4]);
+            LightDispOn(work->object[2]);
+            LightDispOn(work->object[3]);
             break;
         case 1:
-            HideIndicator(work->objects[4]);
-            HideIndicator(work->objects[2]);
-            HideIndicator(work->objects[6]);
-            ShowIndicator(work->objects[1]);
-            ShowIndicator(work->objects[5]);
-            ShowIndicator(work->objects[3]);
+            LightDispOff(work->object[4]);
+            LightDispOff(work->object[2]);
+            LightDispOff(work->object[6]);
+            LightDispOn(work->object[1]);
+            LightDispOn(work->object[5]);
+            LightDispOn(work->object[3]);
             break;
         case 2:
-            HideIndicator(work->objects[4]);
-            HideIndicator(work->objects[5]);
-            HideIndicator(work->objects[3]);
-            ShowIndicator(work->objects[1]);
-            ShowIndicator(work->objects[2]);
-            ShowIndicator(work->objects[6]);
+            LightDispOff(work->object[4]);
+            LightDispOff(work->object[5]);
+            LightDispOff(work->object[3]);
+            LightDispOn(work->object[1]);
+            LightDispOn(work->object[2]);
+            LightDispOn(work->object[6]);
             break;
     }
 }
 
-static void TurnOffIndicators(omObjData *object)
+static void LightSetNone(omObjData *object)
 {
     SoundWork *work = object->data;
 
-    HideIndicator(work->objects[4]);
-    HideIndicator(work->objects[5]);
-    HideIndicator(work->objects[6]);
-    ShowIndicator(work->objects[1]);
-    ShowIndicator(work->objects[2]);
-    ShowIndicator(work->objects[3]);
+    LightDispOff(work->object[4]);
+    LightDispOff(work->object[5]);
+    LightDispOff(work->object[6]);
+    LightDispOn(work->object[1]);
+    LightDispOn(work->object[2]);
+    LightDispOn(work->object[3]);
 }
 
-static omObjData *CreateOptionHand(void)
+static omObjData *CreateHand(void)
 {
-    omObjData *optionHand;
+    omObjData *object;
 
-    optionHand = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    optionHand->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 13));
-    Hu3DModelLayerSet(optionHand->model[0], 2);
-    Hu3DModelAttrSet(optionHand->model[0], 0x40000001);
-    omSetRot(optionHand, -80.0f, 45.0f, 0.0f);
-    omSetSca(optionHand, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(optionHand->model[0], 1);
-    return optionHand;
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 13));
+    Hu3DModelLayerSet(object->model[0], 2);
+    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    omSetRot(object, -80.0f, 45.0f, 0.0f);
+    omSetSca(object, 0.6f, 0.6f, 0.6f);
+    Hu3DModelAttrSet(object->model[0], 1);
+    return object;
 }
 
-static void KillOptionHand(omObjData *optionHand)
+static void KillHand(omObjData *object)
 {
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(optionHand->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }
 
-static omObjData *CreateSoundSettingsHand(void)
+static omObjData *CreateOutputModeHand(void)
 {
-    omObjData *soundSettingsHand;
+    omObjData *object;
 
-    soundSettingsHand = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    soundSettingsHand->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
-    Hu3DModelLayerSet(soundSettingsHand->model[0], 2);
-    Hu3DModelAttrSet(soundSettingsHand->model[0], 0x40000001);
-    omSetRot(soundSettingsHand, 0.0f, -90.0f, 0.0f);
-    omSetSca(soundSettingsHand, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(soundSettingsHand->model[0], 1);
-    return soundSettingsHand;
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
+    Hu3DModelLayerSet(object->model[0], 2);
+    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    omSetRot(object, 0.0f, -90.0f, 0.0f);
+    omSetSca(object, 0.6f, 0.6f, 0.6f);
+    Hu3DModelAttrSet(object->model[0], 1);
+    return object;
 }
 
-static void KillSoundSettingsHand(omObjData *settingsHand)
+static void KillOutputModeHand(omObjData *object)
 {
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(settingsHand->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }
 
@@ -1249,7 +1247,7 @@ static omObjData *CreateSystem(void)
 {
     omObjData *system;
 
-    system = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
+    system = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     system->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 3));
     Hu3DModelAttrSet(system->model[0], 0x40000001);
     Hu3DModelLayerSet(system->model[0], 0);
@@ -1265,45 +1263,45 @@ static void KillSystem(omObjData *system)
     }
 }
 
-static const Vec indicatorPosTbl[3] = { { -40.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 40.0f, 0.0f, 0.0f } };
+static const Vec lightPosTbl[3] = { { -40.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 40.0f, 0.0f, 0.0f } };
 
-static omObjData *CreateIndicator(s32 id, BOOL off)
+static omObjData *CreateLightObj(s32 id, BOOL off)
 {
-    omObjData *indicator;
+    omObjData *object;
 
-    indicator = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     if (off) {
-        indicator->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 5));
+        object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 5));
     }
     else {
-        indicator->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 4));
+        object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 4));
     }
-    Hu3DModelAttrSet(indicator->model[0], 0x40000001);
-    Hu3DModelLayerSet(indicator->model[0], 0);
-    omSetTra(indicator, indicatorPosTbl[id].x, indicatorPosTbl[id].y, indicatorPosTbl[id].z);
-    return indicator;
+    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelLayerSet(object->model[0], 0);
+    omSetTra(object, lightPosTbl[id].x, lightPosTbl[id].y, lightPosTbl[id].z);
+    return object;
 }
 
-static void KillIndicator(omObjData *indicator)
+static void KillLightObj(omObjData *object)
 {
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(indicator->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }
 
-static void HideIndicator(omObjData *indicator)
+static void LightDispOff(omObjData *indicator)
 {
     Hu3DModelAttrReset(indicator->model[0], 1);
 }
 
-static void ShowIndicator(omObjData *indicator)
+static void LightDispOn(omObjData *indicator)
 {
     Hu3DModelAttrSet(indicator->model[0], 1);
 }
 
-static s32 sprTbl[] = {
+static s32 spriteDataTbl[] = {
     DATA_MAKE_NUM(DATADIR_OPTION, 38),
     DATA_MAKE_NUM(DATADIR_OPTION, 39),
     DATA_MAKE_NUM(DATADIR_OPTION, 40),
@@ -1331,12 +1329,12 @@ static void CreateSpr(omObjData *object)
     s32 i;
 
     for (i = 0; i < 19; i++) {
-        work->sprList[i] = espEntry(sprTbl[i], 0, 0);
-        espDrawNoSet(work->sprList[i], 0x40);
-        espDispOff(work->sprList[i]);
+        work->sprite[i] = espEntry(spriteDataTbl[i], 0, 0);
+        espDrawNoSet(work->sprite[i], 0x40);
+        espDispOff(work->sprite[i]);
     }
-    espBankSet(work->sprList[14], 0);
-    espBankSet(work->sprList[15], 2);
+    espBankSet(work->sprite[14], 0);
+    espBankSet(work->sprite[15], 2);
     HuSprExecLayerSet(0x40, 1);
 }
 
@@ -1346,199 +1344,200 @@ static void KillSpr(omObjData *object)
     s32 i;
 
     for (i = 0; i < 19; i++) {
-        espKill(work->sprList[i]);
+        espKill(work->sprite[i]);
     }
 }
 
-static void DisplayOptionSel(omObjData *object)
+static void OptionSelDisp(omObjData *object)
 {
     SoundWork *work = object->data;
-    float temp_f31 = 288.0f;
-    float temp_f30 = 188.0f;
+    float x = 288.0f;
+    float y = 188.0f;
 
-    espPosSet(work->sprList[12], 288.0f, 72.0f);
-    espPosSet(work->sprList[0], temp_f31 + -112.0f, temp_f30);
-    espPosSet(work->sprList[3], temp_f31 + -112.0f, temp_f30);
-    espPosSet(work->sprList[1], temp_f31, temp_f30);
-    espPosSet(work->sprList[4], temp_f31, temp_f30);
-    espPosSet(work->sprList[2], temp_f31 + 112.0f, temp_f30);
-    espPosSet(work->sprList[5], temp_f31 + 112.0f, temp_f30);
-    espDispOn(work->sprList[12]);
-    switch (work->lSelection) {
+    espPosSet(work->sprite[12], 288.0f, 72.0f);
+    espPosSet(work->sprite[0], x + -112.0f, y);
+    espPosSet(work->sprite[3], x + -112.0f, y);
+    espPosSet(work->sprite[1], x, y);
+    espPosSet(work->sprite[4], x, y);
+    espPosSet(work->sprite[2], x + 112.0f, y);
+    espPosSet(work->sprite[5], x + 112.0f, y);
+    espDispOn(work->sprite[12]);
+    switch (work->cursorPos) {
         case 0:
-            espDispOn(work->sprList[3]);
-            espDispOn(work->sprList[1]);
-            espDispOn(work->sprList[2]);
-            espDispOff(work->sprList[0]);
-            espDispOff(work->sprList[4]);
-            espDispOff(work->sprList[5]);
+            espDispOn(work->sprite[3]);
+            espDispOn(work->sprite[1]);
+            espDispOn(work->sprite[2]);
+            espDispOff(work->sprite[0]);
+            espDispOff(work->sprite[4]);
+            espDispOff(work->sprite[5]);
             break;
         case 1:
-            espDispOn(work->sprList[0]);
-            espDispOn(work->sprList[4]);
-            espDispOn(work->sprList[2]);
-            espDispOff(work->sprList[3]);
-            espDispOff(work->sprList[1]);
-            espDispOff(work->sprList[5]);
+            espDispOn(work->sprite[0]);
+            espDispOn(work->sprite[4]);
+            espDispOn(work->sprite[2]);
+            espDispOff(work->sprite[3]);
+            espDispOff(work->sprite[1]);
+            espDispOff(work->sprite[5]);
             break;
         case 2:
-            espDispOn(work->sprList[0]);
-            espDispOn(work->sprList[1]);
-            espDispOn(work->sprList[5]);
-            espDispOff(work->sprList[3]);
-            espDispOff(work->sprList[4]);
-            espDispOff(work->sprList[2]);
+            espDispOn(work->sprite[0]);
+            espDispOn(work->sprite[1]);
+            espDispOn(work->sprite[5]);
+            espDispOff(work->sprite[3]);
+            espDispOff(work->sprite[4]);
+            espDispOff(work->sprite[2]);
             break;
     }
 }
 
-static const s32 optionSelSprIdxTbl[] = { 12, 0, 1, 2, 3, 4, 5 };
-
-static void HideOptionSel(omObjData *object)
+static void OptionSelHide(omObjData *object)
 {
+	static const s32 sprHideTbl[] = { 12, 0, 1, 2, 3, 4, 5 };
     SoundWork *work = object->data;
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        espDispOff(work->sprList[optionSelSprIdxTbl[i]]);
+        espDispOff(work->sprite[sprHideTbl[i]]);
     }
 }
 
-static void DisplaySoundSettings(omObjData *object)
+static void OutputModeDisp(omObjData *object)
 {
     SoundWork *work = object->data;
-    float temp_f31 = 290.0f;
-    float temp_f30 = 192.0f;
+    float x = 290.0f;
+    float y = 192.0f;
 
-    espPosSet(work->sprList[13], 288.0f, 72.0f);
-    espPosSet(work->sprList[6], temp_f31, temp_f30 - 32.0f);
-    espPosSet(work->sprList[7], temp_f31, temp_f30 - 32.0f);
-    espPosSet(work->sprList[8], temp_f31, temp_f30 + 32.0f);
-    espPosSet(work->sprList[9], temp_f31, temp_f30 + 32.0f);
-    switch (work->lSelection) {
+    espPosSet(work->sprite[13], 288.0f, 72.0f);
+    espPosSet(work->sprite[6], x, y - 32.0f);
+    espPosSet(work->sprite[7], x, y - 32.0f);
+    espPosSet(work->sprite[8], x, y + 32.0f);
+    espPosSet(work->sprite[9], x, y + 32.0f);
+    switch (work->cursorPos) {
         case 0:
-            espPosSet(work->sprList[17], temp_f31, temp_f30 - 32.0f);
+            espPosSet(work->sprite[17], x, y - 32.0f);
             break;
         case 1:
-            espPosSet(work->sprList[17], temp_f31, temp_f30 + 32.0f);
+            espPosSet(work->sprite[17], x, y + 32.0f);
             break;
     }
-    espDispOn(work->sprList[13]);
-    switch (work->lSelection) {
+    espDispOn(work->sprite[13]);
+    switch (work->cursorPos) {
         case 0:
-            espDispOn(work->sprList[6]);
-            espDispOn(work->sprList[9]);
-            espDispOff(work->sprList[7]);
-            espDispOff(work->sprList[8]);
+            espDispOn(work->sprite[6]);
+            espDispOn(work->sprite[9]);
+            espDispOff(work->sprite[7]);
+            espDispOff(work->sprite[8]);
             break;
         case 1:
-            espDispOn(work->sprList[7]);
-            espDispOn(work->sprList[8]);
-            espDispOff(work->sprList[6]);
-            espDispOff(work->sprList[9]);
+            espDispOn(work->sprite[7]);
+            espDispOn(work->sprite[8]);
+            espDispOff(work->sprite[6]);
+            espDispOff(work->sprite[9]);
             break;
     }
     if (work->optionSelected) {
-        espDispOn(work->sprList[17]);
+        espDispOn(work->sprite[17]);
     }
     else {
-        espDispOff(work->sprList[17]);
+        espDispOff(work->sprite[17]);
     }
 }
 
-static const s32 soundSettingsSprTbl[] = { 13, 6, 7, 8, 9 };
 
-static void HideSoundSettings(omObjData *object)
+
+static void OutputModeHide(omObjData *object)
 {
+	static const s32 sprHideTbl[] = { 13, 6, 7, 8, 9 };
     SoundWork *work = object->data;
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        espDispOff(work->sprList[soundSettingsSprTbl[i]]);
+        espDispOff(work->sprite[sprHideTbl[i]]);
     }
 }
 
-static void DisplayMusicTitle(omObjData *object, s32 page)
+static void MusicPageDisp(omObjData *object, s32 page)
 {
     SoundWork *work = object->data;
     s32 i;
 
-    espPosSet(work->sprList[10], 288.0f, 72.0f);
-    espDispOn(work->sprList[10]);
-    fn_1_A7F0(work->window[2]);
+    espPosSet(work->sprite[10], 288.0f, 72.0f);
+    espDispOn(work->sprite[10]);
+    OptionWinDispOn(work->window[2]);
     for (i = 0; i < 10; i++) {
-        fn_1_A7F0(work->window[i + 3]);
-        fn_1_A7B0(work->window[i + 3], 52.0f + 244.0f * (i / 5), 124.0f + 29.0f * (i % 5));
+        OptionWinDispOn(work->window[i + 3]);
+        OptionWinPosSet(work->window[i + 3], 52.0f + 244.0f * (i / 5), 124.0f + 29.0f * (i % 5));
     }
-    fn_1_A71C(work->window[2], musicPageNameTbl[page]);
+    OptionWinMesSet(work->window[2], musicPageNameTbl[page]);
     for (i = 0; i < 10; i++) {
-        fn_1_A71C(work->window[i + 3], musicTbl[page][i].nameMess);
+        OptionWinMesSet(work->window[i + 3], musicTbl[page][i].nameMess);
     }
 }
 
-static const s32 musicTitleSprIdxTbl[] = { 10 };
 
-static void HideMusicTitle(omObjData *object)
+static void MusicPageHide(omObjData *object)
 {
-    SoundWork *work = object->data;
-    s32 i;
-
-    for (i = 0; i < 1; i++) {
-        espDispOff(work->sprList[musicTitleSprIdxTbl[i]]);
-    }
-    fn_1_A828(work->window[2]);
-    for (i = 0; i < 10; i++) {
-        fn_1_A828(work->window[i + 3]);
-    }
-}
-
-static void DisplayVoice(omObjData *object, s32 character)
-{
-    SoundWork *work = object->data;
-    s32 i;
-
-    espPosSet(work->sprList[11], 288.0f, 72.0f);
-    espDispOn(work->sprList[11]);
-    fn_1_A7F0(work->window[2]);
-    for (i = 0; i < 10; i++) {
-        fn_1_A7F0(work->window[i + 3]);
-        fn_1_A7B0(work->window[i + 3], 52.0f + 244.0f * (i / 5), 124.0f + 29.0f * (i % 5));
-    }
-    fn_1_A71C(work->window[2], voiceCharNameTbl[character]);
-    for (i = 0; i < 10; i++) {
-        fn_1_A71C(work->window[i + 3], voiceTbl[character][i].nameMess);
-    }
-}
-
-static const s32 voiceTitleSprIdxTbl[] = { 11, 0 };
-
-static void HideVoiceTitle(omObjData *object)
-{
+	static const s32 sprHideTbl[] = { 10 };
     SoundWork *work = object->data;
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        espDispOff(work->sprList[voiceTitleSprIdxTbl[i]]);
+        espDispOff(work->sprite[sprHideTbl[i]]);
     }
-    fn_1_A828(work->window[2]);
+    OptionWinDispOff(work->window[2]);
     for (i = 0; i < 10; i++) {
-        fn_1_A828(work->window[i + 3]);
+        OptionWinDispOff(work->window[i + 3]);
     }
 }
 
-static s32 noteSprTbl[] = { DATA_MAKE_NUM(DATADIR_OPTION, 7), DATA_MAKE_NUM(DATADIR_OPTION, 8) };
+static void VoicePageDisp(omObjData *object, s32 character)
+{
+    SoundWork *work = object->data;
+    s32 i;
 
-static omObjData *CreateNote(s32 noteType)
+    espPosSet(work->sprite[11], 288.0f, 72.0f);
+    espDispOn(work->sprite[11]);
+    OptionWinDispOn(work->window[2]);
+    for (i = 0; i < 10; i++) {
+        OptionWinDispOn(work->window[i + 3]);
+        OptionWinPosSet(work->window[i + 3], 52.0f + 244.0f * (i / 5), 124.0f + 29.0f * (i % 5));
+    }
+    OptionWinMesSet(work->window[2], voiceCharNameTbl[character]);
+    for (i = 0; i < 10; i++) {
+        OptionWinMesSet(work->window[i + 3], voiceTbl[character][i].nameMess);
+    }
+}
+
+
+
+static void VoicePageHide(omObjData *object)
+{
+	static const s32 sprHideTbl[] = { 11, 0 };
+    SoundWork *work = object->data;
+    s32 i;
+
+    for (i = 0; i < 1; i++) {
+        espDispOff(work->sprite[sprHideTbl[i]]);
+    }
+    OptionWinDispOff(work->window[2]);
+    for (i = 0; i < 10; i++) {
+        OptionWinDispOff(work->window[i + 3]);
+    }
+}
+
+static s32 noteMdlTbl[] = { DATA_MAKE_NUM(DATADIR_OPTION, 7), DATA_MAKE_NUM(DATADIR_OPTION, 8) };
+
+static omObjData *CreateNoteObj(s32 type)
 {
     omObjData *note;
     NoteWork *noteWork;
 
-    note = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
+    note = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     noteWork = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(NoteWork), MEMORY_DEFAULT_NUM);
     note->data = noteWork;
     noteWork->enabled = FALSE;
-    noteWork->noteType = noteType;
-    note->model[0] = Hu3DModelCreateFile(noteSprTbl[noteType]);
+    noteWork->type = type;
+    note->model[0] = Hu3DModelCreateFile(noteMdlTbl[type]);
     Hu3DModelAttrSet(note->model[0], 0x40000001);
     Hu3DModelLayerSet(note->model[0], 2);
     Hu3DModelAttrReset(note->model[0], 2);
@@ -1559,39 +1558,39 @@ static void KillNote(omObjData *note)
 static void HandleNote(omObjData *note)
 {
     NoteWork *noteWork = note->data;
-    float temp_f31;
+    float time;
     float scale;
-    float var_f29;
-    float rot;
-    float temp_f27;
+    float angle;
+    float zRot;
+    float radius;
     float x;
     float z;
     float y;
-    float temp_f23;
+    float tplvl;
 
     Hu3DModelAttrReset(note->model[0], 1);
-    temp_f31 = sind(45.0f * noteWork->pos);
-    temp_f31 = temp_f31 * temp_f31;
-    switch (noteWork->speakerId) {
-        case SPEAKER_LEFT:
-            var_f29 = 174.5f + 7.0f * temp_f31;
-            rot = -15.0 + 30.0 * sind(1440.0f * temp_f31);
+    time = sind(45.0f * noteWork->pos);
+    time = time * time;
+    switch (noteWork->side) {
+        case NOTE_SIDE_LEFT:
+            angle = 174.5f + 7.0f * time;
+            zRot = -15.0 + 30.0 * sind(1440.0f * time);
             break;
-        case SPEAKER_RIGHT:
-            var_f29 = 185.5f - (7.0f * temp_f31);
-            rot = 15.0 - 30.0 * sind(1440.0f * temp_f31);
+        case NOTE_SIDE_RIGHT:
+            angle = 185.5f - (7.0f * time);
+            zRot = 15.0 - 30.0 * sind(1440.0f * time);
             break;
     }
-    temp_f23 = sind(180.0f * noteWork->pos);
-    temp_f27 = 500.0f - 25.0f * temp_f31;
-    x = temp_f27 * -sind(var_f29);
-    z = temp_f27 * cosd(var_f29);
+    tplvl = sind(180.0f * noteWork->pos);
+    radius = 500.0f - 25.0f * time;
+    x = radius * -sind(angle);
+    z = radius * cosd(angle);
     y = 160.0f - 15.0f * noteWork->pos;
-    scale = 0.5 + 2.0 * sind(90.0f * temp_f31);
+    scale = 0.5 + 2.0 * sind(90.0f * time);
     omSetTra(note, x, y, z);
-    Hu3DModelTPLvlSet(note->model[0], temp_f23);
+    Hu3DModelTPLvlSet(note->model[0], tplvl);
     omSetSca(note, scale, scale, scale);
-    omSetRot(note, 0.0f, 0.0f, rot);
+    omSetRot(note, 0.0f, 0.0f, zRot);
     if ((noteWork->pos += noteWork->speed) < 1.0f) {
         return;
     }
@@ -1601,70 +1600,70 @@ static void HandleNote(omObjData *note)
     note->unk10 = 0;
 }
 
-static void SpawnNote(omObjData *object, s32 noteType, s32 speakerId, s32 color)
+static void CreateNote(omObjData *object, s32 type, s32 side, s32 color)
 {
-    omObjData *note;
-    NoteWork *var_r31;
+    omObjData *noteObj;
+    NoteWork *note;
     s32 i;
 
     for (i = 0; i < NUM_NOTES; i++) {
-        note = ((SoundWork *)object->data)->objects[i + 10];
-        var_r31 = note->data;
-        if (!var_r31->enabled && var_r31->noteType == noteType) {
+        noteObj = ((SoundWork *)object->data)->object[i + 10];
+        note = noteObj->data;
+        if (!note->enabled && note->type == type) {
             break;
         }
     }
     if (i != NUM_NOTES) {
-        Hu3DMotionTimeSet(note->model[0], 2.0f * color);
-        Hu3DMotionStartEndSet(note->model[0], 2.0f * color, 2.0f * color + 1.0f);
-        var_r31->enabled = TRUE;
-        var_r31->speakerId = speakerId;
-        var_r31->pos = 0.0f;
-        var_r31->speed = 0.011111111f;
-        note->func = HandleNote;
-        note->unk10 = 0;
+        Hu3DMotionTimeSet(noteObj->model[0], 2.0f * color);
+        Hu3DMotionStartEndSet(noteObj->model[0], 2.0f * color, 2.0f * color + 1.0f);
+        note->enabled = TRUE;
+        note->side = side;
+        note->pos = 0.0f;
+        note->speed = 0.011111111f;
+        noteObj->func = HandleNote;
+        noteObj->unk10 = 0;
     }
 }
 
-static void CreateNoteProcess(omObjData *object)
+static void CreateNoteSpawner(omObjData *object)
 {
     SoundWork *work = object->data;
 
-    work->speakerNoteProcess = HuPrcChildCreate(HandleNoteProcess, 0x64, 0x2000, 0, HuPrcCurrentGet());
-    work->speakerNoteProcess->user_data = object;
+    work->noteSpawner = HuPrcChildCreate(ExecNoteSpawner, 0x64, 0x2000, 0, HuPrcCurrentGet());
+    work->noteSpawner->user_data = object;
 }
 
-static void KillNoteProcess(omObjData *object)
+static void KillNoteSpawner(omObjData *object)
 {
     SoundWork *work = object->data;
 
-    HuPrcKill(work->speakerNoteProcess);
+    HuPrcKill(work->noteSpawner);
 }
 
-static void HandleNoteProcess(void)
+static void ExecNoteSpawner(void)
 {
     omObjData *object;
     SoundWork *work;
-    s32 noteType;
+    s32 type;
     s32 color;
 
     object = HuPrcCurrentGet()->user_data;
     work = object->data;
     while (TRUE) {
-        switch (work->lSelection) {
+        switch (work->cursorPos) {
             case 0:
-                noteType = NOTE_TYPE_QUARTER;
+                type = NOTE_TYPE_QUARTER;
                 color = frandmod(7);
-                SpawnNote(object, noteType, SPEAKER_LEFT, color);
-                noteType = NOTE_TYPE_QUAVER;
+                CreateNote(object, type, NOTE_SIDE_LEFT, color);
+                type = NOTE_TYPE_QUAVER;
                 color = frandmod(7);
-                SpawnNote(object, noteType, SPEAKER_RIGHT, color);
+                CreateNote(object, type, NOTE_SIDE_RIGHT, color);
                 break;
             case 1:
-                noteType = NOTE_TYPE_QUAVER;
+                type = NOTE_TYPE_QUAVER;
                 color = frandmod(7);
-                SpawnNote(object, noteType, SPEAKER_LEFT, color);
-                SpawnNote(object, noteType, SPEAKER_RIGHT, color);
+                CreateNote(object, type, NOTE_SIDE_LEFT, color);
+                CreateNote(object, type, NOTE_SIDE_RIGHT, color);
                 break;
         }
         HuPrcSleep(24);
@@ -1677,28 +1676,28 @@ static void PlaySound(omObjData *object)
     SndSelData *sndSelData;
 
     if (work->selectedOption == 1) {
-        sndSelData = (SndSelData *)&musicTbl[work->page][work->lSelection];
+        sndSelData = (SndSelData *)&musicTbl[work->page][work->cursorPos];
     }
     else {
-        sndSelData = (SndSelData *)&voiceTbl[work->page][work->lSelection];
+        sndSelData = (SndSelData *)&voiceTbl[work->page][work->cursorPos];
     }
     if (sndSelData->enabled) {
-        FadeOutCurrSound(object);
-        switch (sndSelData->audType) {
+        FadeSound(object);
+        switch (sndSelData->type) {
             case 1:
-                work->audSStreamStat = HuAudSStreamPlay(sndSelData->fxId);
+                work->streamStat = HuAudSStreamPlay(sndSelData->id);
                 break;
             case 28:
                 if (sndSelData->sndGrpSet != work->sndGrpSet) {
                     HuAudSndGrpSetSet(sndSelData->sndGrpSet);
                 }
-                work->audFxStat = HuAudFXPlay(sndSelData->fxId);
+                work->fxStat = HuAudFXPlay(sndSelData->id);
                 break;
             default:
                 if (sndSelData->sndGrpSet != work->sndGrpSet && sndSelData->sndGrpSet != 2) {
                     HuAudSndGrpSetSet(sndSelData->sndGrpSet);
                 }
-                work->audSeqStat = HuAudSeqPlay(sndSelData->fxId);
+                work->seqStat = HuAudSeqPlay(sndSelData->id);
                 break;
         }
         work->sndGrpSet = sndSelData->sndGrpSet;
@@ -1706,21 +1705,21 @@ static void PlaySound(omObjData *object)
     }
 }
 
-static void FadeOutCurrSound(omObjData *object)
+static void FadeSound(omObjData *object)
 {
     SoundWork *work = object->data;
 
-    if (work->audSeqStat != -1) {
-        HuAudSeqFadeOut(work->audSeqStat, 0x64);
-        work->audSeqStat = -1;
+    if (work->seqStat != -1) {
+        HuAudSeqFadeOut(work->seqStat, 0x64);
+        work->seqStat = -1;
     }
-    if (work->audSStreamStat != -1) {
-        HuAudSStreamFadeOut(work->audSStreamStat, 0x64);
-        work->audSStreamStat = -1;
+    if (work->streamStat != -1) {
+        HuAudSStreamFadeOut(work->streamStat, 0x64);
+        work->streamStat = -1;
     }
-    if (work->audFxStat != -1) {
-        HuAudFXFadeOut(work->audFxStat, 0x64);
-        work->audFxStat = -1;
+    if (work->fxStat != -1) {
+        HuAudFXFadeOut(work->fxStat, 0x64);
+        work->fxStat = -1;
     }
     HuPrcSleep(20);
 }
