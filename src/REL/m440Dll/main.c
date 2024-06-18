@@ -14,12 +14,9 @@
 #include "game/sprite.h"
 
 // prototypes
-void fn_1_6554(unkStruct6*, HsfObject*);
-void fn_1_6B58(unkStruct6*, HsfObject*);
-void fn_1_71FC(unkStruct6*, Vec*, s16, Vec);
 void fn_1_7934(unkStruct6*, unkStruct8*, Vec*);
 void fn_1_806C(ModelData*, f32[3][4]);
-void fn_1_91A4(Vec*, Vec*, Vec*, f32*);
+void fn_1_91A4(Vec*, Vec*, Vec*, f32[5]);
 f32 fn_1_93C0(f32, f32, f32);
 unkStruct4* fn_1_942C(s16, Vec*, Vec*, f32, GXColor*);
 s16 fn_1_956C(AnimData*, s32, f32, s32, s32);
@@ -1244,7 +1241,7 @@ void fn_1_57B4(unkStruct6* arg0) {
         
         for (var_r28 = 0; var_r28 < 3; var_r28++) {
             if ((arg0->unk2 & 1) != 0) {
-                var_r29 = var_r31->unk0[var_r28][0];
+                var_r29 = var_r31->unk0[var_r28].unk0;
             } else {
                 var_r29 = var_r31->unk18[var_r28];
             }
@@ -1269,17 +1266,13 @@ void fn_1_57B4(unkStruct6* arg0) {
     DCFlushRangeNoSync(arg0->unkC, arg0->unk8 * 0xC);
 }
 
-static const GXColor lbl_1_rodata_148 = {
-    0xFF, 0xFF, 0xFF, 0xFF
-};
-
 void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
     Mtx sp68;
     Vec sp44[3];
     Vec sp38;
     Vec sp2C;
     ModelData* sp1C;
-    GXColor sp18;
+    GXColor sp18 = { 0xFF, 0xFF, 0xFF, 0xFF };
     Vec* var_r21;
     Vec* var_r19;
     s16 var_r20;
@@ -1292,7 +1285,6 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
     s16 var_r28;
     s16 var_r30;
 
-    sp18 = lbl_1_rodata_148;
     sp1C = &Hu3DData[arg0];
     arg2->unk20 = 0;
     if (arg1->type == 2) {
@@ -1331,11 +1323,11 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
             
             for (var_r28 = 0; var_r28 < 3; var_r28++) {
                 if ((arg2->unk2 & 1) != 0) {
-                    var_r23 = arg2->unk24[var_r30].unk0[var_r28][0];
+                    var_r23 = arg2->unk24[var_r30].unk0[var_r28].unk0;
                     var_r27 = var_r23;
                 } else {
                     var_r27 = arg2->unk24[var_r30].unk18[var_r28];
-                    var_r23 = arg2->unk24[var_r30].unk0[var_r28][0];
+                    var_r23 = arg2->unk24[var_r30].unk0[var_r28].unk0;
                 }
                 PSMTXMultVec(sp68, &((Vec*)(arg1->data.vertex->data))[var_r23], &sp38);
                 arg2->unkC[var_r27] = sp38;
@@ -1345,13 +1337,13 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
                 sp2C.y += sp38.y;
                 sp2C.z += sp38.z;
                 if (arg2->unk28->numAttrs != 0) {
-                    var_r23 = arg2->unk24[var_r30].unk0[var_r28][3];
+                    var_r23 = arg2->unk24[var_r30].unk0[var_r28].unk6;
                     var_r27 = var_r23;
                     arg2->unk1C[var_r27].unk0 = var_r22[var_r23].unk0;
                     arg2->unk1C[var_r27].unk4 = var_r22[var_r23].unk4;
                 }
             }
-            fn_1_91A4(&sp44[0], &sp44[1], &sp44[2], &arg2->unk24[var_r30].unk68);
+            fn_1_91A4(&sp44[0], &sp44[1], &sp44[2], arg2->unk24[var_r30].unk68);
             if ((arg2->unk2 & 2) != 0) {
                 var_r27 = arg2->unk24[var_r30].unk1E;
                 fn_1_71FC(arg2, &arg2->unkC[var_r27], var_r30, sp2C);
@@ -1377,25 +1369,25 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
                 
                 for (var_r28 = 0; var_r28 < 3; var_r28++) {
                     if ((arg2->unk2 & 1) != 0) {
-                        var_r27 = arg2->unk24[var_r30].unk0[var_r28][0];
+                        var_r27 = arg2->unk24[var_r30].unk0[var_r28].unk0;
                     } else {
                         var_r27 = arg2->unk24[var_r30].unk18[var_r28];
                     }
                     GXPosition1x16(var_r27);
                     GXNormal1x16(var_r27);
                     if (arg2->unk28->numAttrs != 0) {
-                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r28][3]);
+                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r28].unk6);
                     }
                 }
                 
                 for (var_r24 = 0; var_r24 < 9; var_r24++) {
-                    if (var_r20 < arg2->unk24[var_r30].unk0[var_r24][16]) {
-                        var_r20 = arg2->unk24[var_r30].unk0[var_r24][16];
+                    if (var_r20 < arg2->unk24[var_r30].unk20[var_r24].unk0) {
+                        var_r20 = arg2->unk24[var_r30].unk20[var_r24].unk0;
                     }
-                    GXPosition1x16(arg2->unk24[var_r30].unk0[var_r24][16]);
-                    GXNormal1x16(arg2->unk24[var_r30].unk0[var_r24][16]);
+                    GXPosition1x16(arg2->unk24[var_r30].unk20[var_r24].unk0);
+                    GXNormal1x16(arg2->unk24[var_r30].unk20[var_r24].unk0);
                     if (arg2->unk28->numAttrs != 0) {
-                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r24][19]);
+                        GXTexCoord1x16(arg2->unk24[var_r30].unk20[var_r24].unk6);
                     }
                 }
             }
@@ -1404,14 +1396,14 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
             for (var_r30 = 0; var_r30 < arg2->unk20; var_r30++) {
                 for (var_r28 = 0; var_r28 < 3; var_r28++) {
                     if ((arg2->unk2 & 1) != 0) {
-                        var_r27 = arg2->unk24[var_r30].unk0[var_r28][0];
+                        var_r27 = arg2->unk24[var_r30].unk0[var_r28].unk0;
                     } else {
                         var_r27 = arg2->unk24[var_r30].unk18[var_r28];
                     }
                     GXPosition1x16(var_r27);
                     GXNormal1x16(var_r27);
                     if (arg2->unk28->numAttrs != 0) {
-                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r28][3]);
+                        GXTexCoord1x16(arg2->unk24[var_r30].unk0[var_r28].unk6);
                     }
                 }
             }
@@ -1423,4 +1415,248 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
         DCFlushRangeNoSync(arg2->unk30, arg2->unk34);
         HuMemDirectFree(var_r21);
     }
+}
+
+void fn_1_6554(unkStruct6* arg0, HsfObject* arg1) {
+    Vec sp20[3];
+    f32 spC[5];
+    f32 var_f28;
+    HsfBuffer* temp_r26;
+    s16 var_r28;
+    s16 var_r29;
+    unkStruct10* var_r30;
+
+    temp_r26 = arg1->data.face;
+    
+    for (var_r28 = 0; var_r28 < arg1->data.vertex->count; var_r28++) {
+        arg0->unk18[var_r28].x = 0.0f;
+        arg0->unk18[var_r28].y = 0.0f;
+        arg0->unk18[var_r28].z = 0.0f;
+    }
+    var_r30 = (unkStruct10*)temp_r26->data;
+    
+    for (var_r28 = 0; var_r28 < temp_r26->count; var_r28++, var_r30++) {
+        sp20[0] = ((Vec*)(arg1->data.vertex->data))[var_r30->unk4[0].unk0];
+        sp20[1] = ((Vec*)(arg1->data.vertex->data))[var_r30->unk4[1].unk0];
+        sp20[2] = ((Vec*)(arg1->data.vertex->data))[var_r30->unk4[2].unk0];
+        fn_1_91A4(&sp20[0], &sp20[1], &sp20[2], spC);
+        spC[0] = -spC[0];
+        spC[1] = -spC[1];
+        spC[2] = -spC[2];
+        switch (var_r30->unk0 & 7) {
+            case 2:
+                for (var_r29 = 0; var_r29 < 3; var_r29++) {
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].x += spC[0];
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].y += spC[1];
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].z += spC[2];
+                }
+                break;
+            case 3:
+                for (var_r29 = 0; var_r29 < 4; var_r29++) {
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].x += spC[0];
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].y += spC[1];
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].z += spC[2];
+                }
+                break;
+            case 4:
+                for (var_r29 = 0; var_r29 < 3; var_r29++) {
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].x += spC[0];
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].y += spC[1];
+                    arg0->unk18[var_r30->unk4[var_r29].unk0].z += spC[2];
+                }
+                for (var_r29 = 0; var_r29 < var_r30->unk1C; var_r29++) {
+                    arg0->unk18[var_r30->unk20[var_r29].unk0].x += spC[0];
+                    arg0->unk18[var_r30->unk20[var_r29].unk0].y += spC[1];
+                    arg0->unk18[var_r30->unk20[var_r29].unk0].z += spC[2];
+                }
+                break;
+        }
+    }
+    
+    for (var_r28 = 0; var_r28 < arg1->data.vertex->count; var_r28++) {
+        sp20[0].x = arg0->unk18[var_r28].x;
+        sp20[0].y = arg0->unk18[var_r28].y;
+        sp20[0].z = arg0->unk18[var_r28].z;
+        var_f28 = sqrtf((sp20[0].z * sp20[0].z) + ((sp20[0].x * sp20[0].x) + (sp20[0].y * sp20[0].y)));
+        arg0->unk18[var_r28].x /= var_f28;
+        arg0->unk18[var_r28].y /= var_f28;
+        arg0->unk18[var_r28].z /= var_f28;
+    }
+}
+
+void fn_1_6B58(unkStruct6* arg0, HsfObject* arg1) {
+    HsfBuffer* temp_r25;
+    s32 var_r28;
+    s32 var_r30;
+    u8 var_r24;
+    ModelData* var_r22;
+    unkStruct8* var_r31;
+    unkStruct11 *temp_r26;
+    unkStruct10* var_r29;
+
+    var_r22 = &Hu3DData[arg0->unk0];
+    temp_r25 = arg1->data.face;
+    var_r24 = ((arg0->unk2 & 1) != 0) ? 1 : 0;
+    arg0->unk20 = 0;
+    
+    var_r28 = 0;
+    var_r29 = (unkStruct10*)temp_r25->data;
+    for (;var_r28 < temp_r25->count;var_r28++, var_r29++) {
+        switch (var_r29->unk0 & 7) {
+            case 2:
+                arg0->unk20 += 1;
+                break;
+            case 3:
+                arg0->unk20 += 2;
+                break;
+            case 4:
+                arg0->unk20 += var_r29->unk1C + 1;
+                break;
+        }
+    }
+    arg0->unk24 = HuMemDirectMallocNum(HEAP_DATA, arg0->unk20 * 0xD0, var_r22->unk_48);
+    var_r31 = arg0->unk24;
+    if (var_r24 != 0) {
+        var_r30 = arg1->data.vertex->count;
+    } else {
+        var_r30 = 0;
+    }
+    
+    var_r28 = 0;
+    var_r29 = (unkStruct10*)temp_r25->data;\
+    for (;var_r28 < temp_r25->count; var_r28++, var_r29++) {
+        switch (var_r29->unk0 & 7) {
+            case 2:
+                var_r31->unk0[0] = var_r29->unk4[0];
+                var_r31->unk0[1] = var_r29->unk4[2];
+                var_r31->unk0[2] = var_r29->unk4[1];
+                if (var_r24 == 0) {
+                    var_r31->unk18[0] = var_r30++;
+                    var_r31->unk18[1] = var_r30++;
+                    var_r31->unk18[2] = var_r30++;
+                }
+                var_r31->unk1E = var_r30++;
+                var_r31++;
+                break;
+            case 3:
+                var_r31->unk0[0] = var_r29->unk4[0];
+                var_r31->unk0[1] = var_r29->unk4[2];
+                var_r31->unk0[2] = var_r29->unk4[1];
+                if (var_r24 == 0) {
+                    var_r31->unk18[0] = var_r30++;
+                    var_r31->unk18[1] = var_r30++;
+                    var_r31->unk18[2] = var_r30++;
+                }
+                var_r31->unk1E = var_r30++;
+                var_r31++;
+                var_r31->unk0[0] = var_r29->unk4[1];
+                var_r31->unk0[1] = var_r29->unk4[2];
+                var_r31->unk0[2] = var_r29->unk4[3];
+                if (var_r24 == 0) {
+                    var_r31->unk18[0] = var_r30++;
+                    var_r31->unk18[1] = var_r30++;
+                    var_r31->unk18[2] = var_r30++;
+                }
+                var_r31->unk1E = var_r30++;
+                var_r31++;
+                break;
+            case 4:
+                var_r31->unk0[0] = var_r29->unk4[0];
+                var_r31->unk0[1] = var_r29->unk4[2];
+                var_r31->unk0[2] = var_r29->unk4[1];
+                if (var_r24 == 0) {
+                    var_r31->unk18[0] = var_r30++;
+                    var_r31->unk18[1] = var_r30++;
+                    var_r31->unk18[2] = var_r30++;
+                }
+                var_r31->unk1E = var_r30++;
+                var_r31++;
+                var_r28 = 0;
+                temp_r26 = var_r29->unk4;
+                for (;var_r28 < var_r29->unk1C; var_r28++) {
+                    if (var_r28 == 0) {
+                        var_r31->unk0[0] = var_r31->unk0[1];
+                        var_r31->unk0[1] = var_r31->unk0[2];
+                        var_r31->unk0[2] = temp_r26[0];
+                    } else if (var_r28 == 1) {
+                        var_r31->unk0[0] = var_r31->unk0[2];
+                        var_r31->unk0[1] = temp_r26[1];
+                        var_r31->unk0[2] = temp_r26[0];
+                    } else {
+                        if ((var_r28 % 2) != 0) {
+                            var_r31->unk0[0] = temp_r26[var_r28 - 2];
+                            var_r31->unk0[1] = temp_r26[var_r28 - 0];
+                            var_r31->unk0[2] = temp_r26[var_r28 - 1];
+                        } else {
+                            var_r31->unk0[0] = temp_r26[var_r28 - 2];
+                            var_r31->unk0[1] = temp_r26[var_r28 - 1];
+                            var_r31->unk0[2] = temp_r26[var_r28 - 0];
+                        }
+                    }
+                    if (var_r24 == 0) {
+                        var_r31->unk18[0] = var_r30++;
+                        var_r31->unk18[1] = var_r30++;
+                        var_r31->unk18[2] = var_r30++;
+                    }
+                    var_r31->unk1E = var_r30++;
+                    var_r31++;
+                }
+                break;
+        }
+    }
+    arg0->unk8 = var_r30;
+}
+
+void fn_1_71FC(unkStruct6* arg0, Vec* arg1, s16 arg2, Vec arg3) {
+    Vec sp40;
+    Vec sp34;
+    Vec sp28[3];
+    Vec sp1C;
+    unkStruct8* temp_r30 = &arg0->unk24[arg2];
+    s16 sp10[3][2] = { { 0, 1 }, { 0, 2 }, { 1, 2 } };
+    f32 var_f31;
+    f32 var_f30;
+    f32 var_f29;
+    f32 var_f27;
+    s16 var_r31;
+    
+    if ((arg0->unk2 & 1) != 0) {
+        sp28[0] = arg0->unkC[temp_r30->unk0[0].unk0];
+        sp28[1] = arg0->unkC[temp_r30->unk0[1].unk0];
+        sp28[2] = arg0->unkC[temp_r30->unk0[2].unk0];
+    } else {
+        sp28[0] = arg0->unkC[temp_r30->unk18[0]];
+        sp28[1] = arg0->unkC[temp_r30->unk18[1]];
+        sp28[2] = arg0->unkC[temp_r30->unk18[2]];
+    }
+    sp1C.x = temp_r30->unk68[0];
+    sp1C.y = temp_r30->unk68[1];
+    sp1C.z = temp_r30->unk68[2];
+    PSVECNormalize(&sp1C, &sp1C);
+    var_f31 = var_f30 = var_f29 = 0.0f;
+    
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        var_f31 += (sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x < 0.0f)
+            ?  -(sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x)
+            : (sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x);
+        
+        
+        var_f30 += (sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y < 0.0f)
+            ?  -(sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y)
+            : (sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y);
+
+        var_f29 += (sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z < 0.0f)
+            ?  -(sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z)
+            : (sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z);
+    }
+    var_f31 *= 0.3333f;
+    var_f30 *= 0.3333f;
+    var_f29 *= 0.3333f;
+    var_f27 = 0.5f * sqrtf((var_f29 * var_f29) + ((var_f31 * var_f31) + (var_f30 * var_f30)));
+    sp28[0].x = 0.3333f * arg3.x;
+    sp28[0].y = 0.3333f * arg3.y;
+    sp28[0].z = 0.3333f * arg3.z;
+    arg1->x = (sp28[0].x - (sp1C.x * var_f27));
+    arg1->y = (sp28[0].y - (sp1C.y * var_f27));
+    arg1->z = (sp28[0].z - (sp1C.z * var_f27));
 }

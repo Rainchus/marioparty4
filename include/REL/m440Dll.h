@@ -67,32 +67,6 @@ typedef struct _unkStruct5 { // could be unkStruct3
 typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
 typedef void (*m440Func6)(struct _unkStruct6*);
 
-typedef struct _unkStruct8 {
-    s16 unk0[3][4];
-    s16 unk18[3];
-    s16 unk1E;
-    char unk20[0x48];
-    f32 unk68;
-    char unk6C[0x10];
-    Vec unk7C;
-    Vec unk88;
-    Vec unk94;
-    Vec unkA0;
-    Vec unkAC;
-    Vec unkB8;
-    Vec unkC4;
-} unkStruct8;
-
-typedef struct _unkStruct7 {
-    GXColor unk0;
-    Vec unk4;
-} unkStruct7;
-
-typedef struct _unkStruct9 {
-    f32 unk0;
-    f32 unk4;
-} unkStruct9;
-
 typedef struct _unkStruct6 {
     s16 unk0;
     u16 unk2;
@@ -103,9 +77,9 @@ typedef struct _unkStruct6 {
     Vec* unk10;
     Vec* unk14;
     Vec* unk18;
-    unkStruct9* unk1C;
+    struct _unkStruct9* unk1C;
     s32 unk20;
-    unkStruct8* unk24;
+    struct _unkStruct8* unk24;
     HsfMaterial* unk28;
     HsfAttribute* unk2C;
     void* unk30;
@@ -114,6 +88,48 @@ typedef struct _unkStruct6 {
     s16 unk3C;
     s16 unk3E;
 } unkStruct6; // sizeof 0x40
+
+typedef struct _unkStruct7 {
+    GXColor unk0;
+    Vec unk4;
+} unkStruct7; // sizeof 0x10
+
+typedef struct _unkStruct11 {
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+} unkStruct11;
+
+typedef struct _unkStruct8 {
+    unkStruct11 unk0[3];
+    s16 unk18[3];
+    s16 unk1E;
+    unkStruct11 unk20[3];
+    char unk38[0x30];
+    f32 unk68[5];
+    Vec unk7C;
+    Vec unk88;
+    Vec unk94;
+    Vec unkA0;
+    Vec unkAC;
+    Vec unkB8;
+    Vec unkC4;
+} unkStruct8; // sizeof 0xD0
+
+typedef struct _unkStruct9 {
+    f32 unk0;
+    f32 unk4;
+} unkStruct9; // sizeof 0x8
+
+typedef struct _unkStruct10 {
+    s16 unk0;
+    s16 unk2;
+    unkStruct11 unk4[3];
+    u32 unk1C;
+    unkStruct11* unk20;
+    char unk24[0xC];
+} unkStruct10; // sizeof 0x30
 
 
 ////// BSS //////
@@ -205,5 +221,8 @@ extern void fn_1_4F34(unkStruct6*);
 extern void fn_1_5010(unkStruct6*, Vec*, f32);
 extern void fn_1_57B4(unkStruct6*);
 extern void fn_1_5C2C(s16, HsfObject*, unkStruct6*, u16);
+extern void fn_1_6554(unkStruct6*, HsfObject*);
+extern void fn_1_6B58(unkStruct6*, HsfObject*);
+extern void fn_1_71FC(unkStruct6*, Vec*, s16, Vec);
 // ...
 extern f32 fn_1_93C0(f32, f32, f32);
