@@ -7,7 +7,7 @@
 #include "dolphin.h"
 
 typedef struct {
-    /* 0x00 */ WindowWork *window;
+    /* 0x00 */ OptionWindow *window;
     /* 0x04 */ s32 quitTimer;
     /* 0x08 */ s16 light;
 } StateWork; // Size 0xC
@@ -18,9 +18,9 @@ typedef struct {
     GXColor color;
 } UnkLightDataStruct; // Size 0x1C TODO same as m446Dll::unkStruct10 and present::UnkPresentStruct3
 
-static void HandleState(omObjData *object);
+static void ExecState(omObjData *object);
 
-omObjData *lbl_1_bss_28;
+omObjData *optionState;
 
 static UnkLightDataStruct lightTbl = {
     { 0.0f, 300.0f, 0.0f },
@@ -34,18 +34,18 @@ static Vec shadowPosTbl[3] = {
     { 0.0f, 0.0f, 0.0f },
 };
 
-omObjData *fn_1_2E04(void)
+omObjData *OptionStateCreate(void)
 {
     omObjData *object;
     StateWork *work;
     LightData *lightData;
 
-    object = omAddObjEx(lbl_1_bss_8, 1000, 0, 0, 4, HandleState);
+    object = omAddObjEx(optionObjMan, 1000, 0, 0, 4, ExecState);
     work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(StateWork), MEMORY_DEFAULT_NUM);
     object->data = work;
-    lbl_1_bss_10 = fn_1_7F8();
-    lbl_1_bss_18 = fn_1_15A4();
-    work->window = fn_1_A44C(0);
+    optionCamera = OptionCameraCreate();
+    optionRoom = OptionRoomCreate();
+    work->window = OptionWinCreate(0);
     Hu3DLighInit();
     work->light = Hu3DGLightCreateV(&lightTbl.src, &lightTbl.dest, &lightTbl.color);
     Hu3DGLightInfinitytSet(work->light);
@@ -56,17 +56,17 @@ omObjData *fn_1_2E04(void)
     return object;
 }
 
-void fn_1_2F4C(omObjData *object)
+void OptionStateKill(omObjData *object)
 {
     StateWork *work = object->data;
 
-    fn_1_A3C(lbl_1_bss_10);
-    fn_1_1798(lbl_1_bss_18);
-    fn_1_A6AC(work->window);
+    OptionCameraKill(optionCamera);
+    OptionRoomKill(optionRoom);
+    OptionWinKill(work->window);
     HuMemDirectFree(work);
 }
 
-static void HandleState(omObjData *object)
+static void ExecState(omObjData *object)
 {
     StateWork *work = object->data;
 
@@ -82,32 +82,32 @@ static void HandleState(omObjData *object)
             if (WipeStatGet() != 0 || work->window->state != 0) {
                 break;
             }
-            fn_1_1A2C(lbl_1_bss_18, 1);
+            OptionRoomExecModeSet(optionRoom, 1);
             object->unk10 = 3;
             /* fallthrough */
         case 3:
-            if (fn_1_1A70(lbl_1_bss_18) != 0) {
+            if (OptionRoomExecModeGet(optionRoom) != 0) {
                 break;
             }
             object->unk10 = 4;
             /* fallthrough */
         case 4:
-            fn_1_A6EC(work->window);
-            fn_1_A71C(work->window, MAKE_MESSID(47, 167)); // Would you like to leave?
+            OptionWinAnimIn(work->window);
+            OptionWinMesSet(work->window, MAKE_MESSID(47, 167)); // Would you like to leave?
             object->unk10 = 5;
             /* fallthrough */
         case 5:
             if (work->window->state != 0) {
                 break;
             }
-            fn_1_A880(work->window, 1);
+            OptionWinChoiceSet(work->window, 1);
             object->unk10 = 6;
             /* fallthrough */
         case 6:
             if (work->window->state != 0) {
                 break;
             }
-            fn_1_A704(work->window);
+            OptionWinAnimOut(work->window);
             if (work->window->choice == 0) {
                 work->quitTimer = 0;
                 object->unk10 = 7;

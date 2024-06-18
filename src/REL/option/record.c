@@ -21,15 +21,15 @@
 #define WIN_COUNT_NUM_DIGITS 3
 #define MAX_COINS_NUM_DIGITS 4
 #define MAX_STARS_NUM_DIGITS 4
-#define MG_DECIMAL_NUM_DIGITS 8
+#define MG_SCORE_NUM_DIGITS 8
 #define MG_TIME_NUM_DIGITS 8
 
 #define DISPLAY_TYPE_TIME 0
-#define DISPLAY_TYPE_DECIMAL 1
+#define DISPLAY_TYPE_SCORE 1
 
 typedef struct {
     /* 0x00 */ s32 playCount;
-    /* 0x04 */ s32 winCounts[8];
+    /* 0x04 */ s32 winCount[8];
     /* 0x24 */ s32 maxCoins;
     /* 0x28 */ s32 maxStars;
 } BoardRecordData; // Size 0x2C
@@ -37,15 +37,15 @@ typedef struct {
 typedef struct {
     /* 0x000 */ omObjData *system;
     /* 0x004 */ omObjData *hand;
-    /* 0x008 */ WindowWork *window[10];
-    /* 0x030 */ s32 mode;
+    /* 0x008 */ OptionWindow *window[10];
+    /* 0x030 */ s32 execMode;
     /* 0x034 */ s16 sprList[153];
-    /* 0x166 */ char unk166[6];
+	/* 0x166 */ s16 unk166[3];
     /* 0x16C */ s32 recordType;
     /* 0x170 */ s32 board;
     /* 0x174 */ s32 mgPage;
-    /* 0x178 */ BoardRecordData boardRecords[6];
-    /* 0x280 */ s32 mgRecords[6];
+    /* 0x178 */ BoardRecordData boardRecord[6];
+    /* 0x280 */ s32 mgRecord[6];
     /* 0x298 */ s32 cameraDoneF;
     /* 0x29C */ s32 changeTimer;
 } RecordWork; // Size 0x2A0
@@ -59,48 +59,48 @@ typedef struct {
 #define MODE_DISABLED 0
 #define MODE_HANDLE_RECORD 1
 
-static void HandleRecord(omObjData *object);
+static void ExecRecord(omObjData *object);
 static omObjData *CreateSystem(void);
-static void KillSystem(omObjData *system);
-static void StartSystemMotion(omObjData *system, s32 type);
+static void KillSystem(omObjData *object);
+static void StartSystemMotion(omObjData *object, s32 type);
 static omObjData *CreateHand(void);
-static void KillHand(omObjData *hand);
+static void KillHand(omObjData *object);
 static void CreateSpr(omObjData *object);
 static void KillSpr(omObjData *object);
-static s32 GetDigitSprAt(s32 n, s32 offsetFromRight);
-static void DisplayBoardRecord(omObjData *object, s32 board);
-static void HideBoardRecordSpr(omObjData *object);
-static void DisplayTotalResults(omObjData *object);
-static void HideTotalResultsSpr(omObjData *object);
-static void ShowMGRecord(omObjData *object, s32 page);
-static void HideMGRecordSpr(omObjData *object);
+static s32 GetDigit(s32 value, s32 place);
+static void ShowBoard(omObjData *object, s32 board);
+static void HideBoard(omObjData *object);
+static void ShowTotal(omObjData *object);
+static void HideTotal(omObjData *object);
+static void ShowMG(omObjData *object, s32 page);
+static void HideMG(omObjData *object);
 
-omObjData *lbl_1_bss_40;
+omObjData *optionRecord;
 
 static const s32 mgRecordIdxTbl[] = { 0, 1, 2, 3, 5, 10 };
 
-static omObjFunc modes[] = { NULL, HandleRecord };
+static omObjFunc execModeTbl[] = { NULL, ExecRecord };
 
-omObjData *fn_1_80E4(void)
+omObjData *OptionRecordCreate(void)
 {
     omObjData *object;
     RecordWork *work;
     s32 i;
     s32 character;
 
-    object = omAddObjEx(lbl_1_bss_8, 1003, 0, 0, 1, NULL);
+    object = omAddObjEx(optionObjMan, 1003, 0, 0, 1, NULL);
     work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(RecordWork), MEMORY_DEFAULT_NUM);
     object->data = work;
     for (i = 0; i < NUM_BOARDS; i++) {
-        work->boardRecords[i].playCount = GWBoardPlayCountGet(i);
-        work->boardRecords[i].maxStars = GWBoardMaxStarsGet(i);
-        work->boardRecords[i].maxCoins = GWBoardMaxCoinsGet(i);
+        work->boardRecord[i].playCount = GWBoardPlayCountGet(i);
+        work->boardRecord[i].maxStars = GWBoardMaxStarsGet(i);
+        work->boardRecord[i].maxCoins = GWBoardMaxCoinsGet(i);
         for (character = 0; character < NUM_CHARACTERS; character++) {
-            work->boardRecords[i].winCounts[character] = GWBoardWinCountGet(character, i);
+            work->boardRecord[i].winCount[character] = GWBoardWinCountGet(character, i);
         }
     }
     for (i = 0; i < 6; i++) {
-        work->mgRecords[i] = GWMGRecordGet(mgRecordIdxTbl[i]);
+        work->mgRecord[i] = GWMGRecordGet(mgRecordIdxTbl[i]);
     }
     work->board = 0;
     work->mgPage = 0;
@@ -108,11 +108,11 @@ omObjData *fn_1_80E4(void)
     work->system = CreateSystem();
     work->hand = CreateHand();
     CreateSpr(object);
-    fn_1_82B0(object, MODE_DISABLED);
+    OptionRecordExecModeSet(object, MODE_DISABLED);
     return object;
 }
 
-void fn_1_825C(omObjData *object)
+void OptionRecordKill(omObjData *object)
 {
     RecordWork *work = object->data;
 
@@ -122,90 +122,90 @@ void fn_1_825C(omObjData *object)
     HuMemDirectFree(work);
 }
 
-void fn_1_82B0(omObjData *object, s32 mode)
+void OptionRecordExecModeSet(omObjData *object, s32 execMode)
 {
     RecordWork *work = object->data;
 
-    work->mode = mode;
-    object->func = modes[mode];
+    work->execMode = execMode;
+    object->func = execModeTbl[execMode];
     object->unk10 = 0;
     object->unk10 = 0;
 }
 
-s32 fn_1_82F4(omObjData *object)
+s32 OptionRecordExecModeGet(omObjData *object)
 {
     RecordWork *work = object->data;
 
-    return work->mode;
+    return work->execMode;
 }
 
-static void HandleRecord(omObjData *object)
+static void ExecRecord(omObjData *object)
 {
     RecordWork *work = object->data;
-    Vec sp8;
+    Vec pos;
     s32 i;
 
     switch (object->unk10) {
         case 0:
-            work->window[0] = fn_1_A44C(0);
-            work->window[1] = fn_1_A44C(1);
+            work->window[0] = OptionWinCreate(0);
+            work->window[1] = OptionWinCreate(1);
             for (i = 0; i < 8; i++) {
-                work->window[i + 2] = fn_1_A44C(3);
+                work->window[i + 2] = OptionWinCreate(3);
             }
-            fn_1_AF0(lbl_1_bss_10, 519.0f, 125.0f, 300.0f, 0x28);
-            fn_1_A6C(lbl_1_bss_10, 308.98f, 125.0f, 178.74f, 0x28);
+            OptionCameraFocusSet(optionCamera, 519.0f, 125.0f, 300.0f, 0x28);
+            OptionCameraTargetSet(optionCamera, 308.98f, 125.0f, 178.74f, 0x28);
             work->board = 0;
             work->mgPage = 0;
             work->cameraDoneF = 0;
             object->unk10 = 1;
             /* fallthrough */
         case 1:
-            if (fn_1_CB8(lbl_1_bss_10) != 0) {
+            if (OptionCameraDoneCheck(optionCamera) != 0) {
                 break;
             }
-            fn_1_3D54(lbl_1_bss_30);
+            OptionRumbleMotionShowStart(optionRumble);
             espBankSet(work->sprList[47], 0);
             espBankSet(work->sprList[48], 2);
             espPosSet(work->sprList[47], 46.0f, 240.0f);
             espPosSet(work->sprList[48], 494.0f, 240.0f);
             if (work->recordType == RECORD_TYPE_BOARD) {
-                fn_1_160(work->sprList[47], 1, 10);
-                fn_1_160(work->sprList[48], 1, 10);
+                OptionFadeSprite(work->sprList[47], 1, 10);
+                OptionFadeSprite(work->sprList[48], 1, 10);
                 work->changeTimer = 0;
             }
             object->unk10 = 2;
             /* fallthrough */
         case 2:
-            HideBoardRecordSpr(object);
-            HideMGRecordSpr(object);
-            HideTotalResultsSpr(object);
+            HideBoard(object);
+            HideMG(object);
+            HideTotal(object);
             switch (work->recordType) {
                 case RECORD_TYPE_BOARD:
                     if (work->board < 6) {
-                        DisplayBoardRecord(object, work->board);
+                        ShowBoard(object, work->board);
                     }
                     else {
-                        DisplayTotalResults(object);
+                        ShowTotal(object);
                     }
-                    fn_1_A6EC(work->window[0]);
-                    fn_1_A71C(work->window[0], MAKE_MESSID(47, 5));
+                    OptionWinAnimIn(work->window[0]);
+                    OptionWinMesSet(work->window[0], MAKE_MESSID(47, 5));
                     break;
                 case RECORD_TYPE_MG:
-                    ShowMGRecord(object, work->mgPage);
-                    fn_1_A6EC(work->window[0]);
-                    fn_1_A71C(work->window[0], MAKE_MESSID(47, 6));
+                    ShowMG(object, work->mgPage);
+                    OptionWinAnimIn(work->window[0]);
+                    OptionWinMesSet(work->window[0], MAKE_MESSID(47, 6));
                     break;
             }
-            fn_1_A6EC(work->window[1]);
-            fn_1_A71C(work->window[1], MAKE_MESSID(47, 169));
+            OptionWinAnimIn(work->window[1]);
+            OptionWinMesSet(work->window[1], MAKE_MESSID(47, 169));
             if (!work->cameraDoneF) {
                 Hu3DModelAttrReset(work->hand->model[0], 1);
                 work->cameraDoneF = TRUE;
             }
-            sp8.x = 505.0 * -sin(305 * M_PI / 180.0);
-            sp8.z = 505.0 * cos(305 * M_PI / 180.0);
-            sp8.y = 144.0f - 14.0f * work->recordType;
-            omSetTra(work->hand, sp8.x, sp8.y, sp8.z);
+            pos.x = 505.0 * -sin(305 * M_PI / 180.0);
+            pos.z = 505.0 * cos(305 * M_PI / 180.0);
+            pos.y = 144.0f - 14.0f * work->recordType;
+            omSetTra(work->hand, pos.x, pos.y, pos.z);
             object->unk10 = 3;
             /* fallthrough */
         case 3:
@@ -221,26 +221,26 @@ static void HandleRecord(omObjData *object)
             if (work->window[1]->state != 0) {
                 break;
             }
-            if (fn_1_550(PAD_BUTTON_B)) {
+            if (OptionPadCheck(PAD_BUTTON_B)) {
                 HuAudFXPlay(3);
                 object->unk10 = 5;
             }
-            else if (fn_1_584(8) != 0 && work->recordType == RECORD_TYPE_MG) {
+            else if (OptionPadDStkRepCheck(8) != 0 && work->recordType == RECORD_TYPE_MG) {
                 work->recordType = RECORD_TYPE_BOARD;
                 work->board = 0;
                 StartSystemMotion(work->system, work->recordType);
-                fn_1_160(work->sprList[47], 1, 5);
-                fn_1_160(work->sprList[48], 1, 5);
+                OptionFadeSprite(work->sprList[47], 1, 5);
+                OptionFadeSprite(work->sprList[48], 1, 5);
                 work->changeTimer = 5;
                 HuAudFXPlay(0x83F);
                 object->unk10 = 2;
             }
-            else if (fn_1_584(4) != 0 && work->recordType == RECORD_TYPE_BOARD) {
+            else if (OptionPadDStkRepCheck(4) != 0 && work->recordType == RECORD_TYPE_BOARD) {
                 work->recordType = RECORD_TYPE_MG;
                 work->mgPage = 0;
                 StartSystemMotion(work->system, work->recordType);
-                fn_1_160(work->sprList[47], 0, 5);
-                fn_1_160(work->sprList[48], 0, 5);
+                OptionFadeSprite(work->sprList[47], 0, 5);
+                OptionFadeSprite(work->sprList[48], 0, 5);
                 work->changeTimer = 5;
                 HuAudFXPlay(0x83F);
                 object->unk10 = 2;
@@ -248,7 +248,7 @@ static void HandleRecord(omObjData *object)
             else {
                 switch (work->recordType) {
                     case RECORD_TYPE_BOARD:
-                        if (fn_1_550(PAD_TRIGGER_L)) {
+                        if (OptionPadCheck(PAD_TRIGGER_L)) {
                             if (--work->board < 0) {
                                 work->board = 6;
                             }
@@ -261,7 +261,7 @@ static void HandleRecord(omObjData *object)
                             object->unk10 = 2;
                             return;
                         }
-                        if (fn_1_550(PAD_TRIGGER_R)) {
+                        if (OptionPadCheck(PAD_TRIGGER_R)) {
                             if (++work->board >= 7) {
                                 work->board = 0;
                             }
@@ -280,27 +280,27 @@ static void HandleRecord(omObjData *object)
             }
             break;
         case 5:
-            fn_1_3E1C(lbl_1_bss_30);
+            OptionRumbleMotionHideStart(optionRumble);
             if (work->recordType == RECORD_TYPE_BOARD) {
-                fn_1_160(work->sprList[47], 0, 10);
-                fn_1_160(work->sprList[48], 0, 10);
+                OptionFadeSprite(work->sprList[47], 0, 10);
+                OptionFadeSprite(work->sprList[48], 0, 10);
             }
-            fn_1_A704(work->window[0]);
-            fn_1_A704(work->window[1]);
+            OptionWinAnimOut(work->window[0]);
+            OptionWinAnimOut(work->window[1]);
             Hu3DModelAttrSet(work->hand->model[0], 1);
             object->unk10 = 6;
             /* fallthrough */
         case 6:
-            if (work->window[1]->state == 0 && fn_1_3ED0(lbl_1_bss_30) == 0) {
+            if (work->window[1]->state == 0 && OptionRumbleMotionCheck(optionRumble) == 0) {
                 for (i = 0; i < 10; i++) {
-                    fn_1_A6AC(work->window[i]);
+                    OptionWinKill(work->window[i]);
                 }
-                HideBoardRecordSpr(object);
-                HideMGRecordSpr(object);
-                HideTotalResultsSpr(object);
-                fn_1_AF0(lbl_1_bss_10, 519.62f, 120.0f, 300.0f, 40);
-                fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, 0.0f, 0x28);
-                fn_1_82B0(object, MODE_DISABLED);
+                HideBoard(object);
+                HideMG(object);
+                HideTotal(object);
+                OptionCameraFocusSet(optionCamera, 519.62f, 120.0f, 300.0f, 40);
+                OptionCameraTargetSet(optionCamera, 0.0f, 120.0f, 0.0f, 0x28);
+                OptionRecordExecModeSet(object, MODE_DISABLED);
             }
             break;
     }
@@ -308,29 +308,29 @@ static void HandleRecord(omObjData *object)
 
 static omObjData *CreateSystem(void)
 {
-    omObjData *system;
+    omObjData *object;
 
-    system = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    system->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 1));
-    Hu3DModelAttrSet(system->model[0], 0x40000002);
-    Hu3DModelLayerSet(system->model[0], 0);
-    Hu3DMotionStartEndSet(system->model[0], 0.0f, 6.0f);
-    Hu3DMotionTimeSet(system->model[0], 6.0f);
-    return system;
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 1));
+    Hu3DModelAttrSet(object->model[0], 0x40000002);
+    Hu3DModelLayerSet(object->model[0], 0);
+    Hu3DMotionStartEndSet(object->model[0], 0.0f, 6.0f);
+    Hu3DMotionTimeSet(object->model[0], 6.0f);
+    return object;
 }
 
-static void KillSystem(omObjData *system)
+static void KillSystem(omObjData *object)
 {
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(system->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }
 
-static void StartSystemMotion(omObjData *system, s32 type)
+static void StartSystemMotion(omObjData *object, s32 type)
 {
-    s16 model = system->model[0];
+    s16 model = object->model[0];
 
     switch (type) {
         case RECORD_TYPE_BOARD:
@@ -342,29 +342,29 @@ static void StartSystemMotion(omObjData *system, s32 type)
             Hu3DMotionTimeSet(model, 6.0f);
             break;
     }
-    Hu3DModelAttrReset(system->model[0], 0x40000002);
+    Hu3DModelAttrReset(object->model[0], 0x40000002);
 }
 
 static omObjData *CreateHand(void)
 {
-    omObjData *hand;
+    omObjData *object;
 
-    hand = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    hand->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
-    Hu3DModelLayerSet(hand->model[0], 2);
-    Hu3DModelAttrSet(hand->model[0], 0x40000001);
-    omSetRot(hand, 30.0f, 190.0f, 0.0f);
-    omSetSca(hand, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(hand->model[0], 1);
-    return hand;
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
+    Hu3DModelLayerSet(object->model[0], 2);
+    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    omSetRot(object, 30.0f, 190.0f, 0.0f);
+    omSetSca(object, 0.6f, 0.6f, 0.6f);
+    Hu3DModelAttrSet(object->model[0], 1);
+    return object;
 }
 
-static void KillHand(omObjData *hand)
+static void KillHand(omObjData *object)
 {
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(hand->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }
 
@@ -551,18 +551,18 @@ static void KillSpr(omObjData *object)
     }
 }
 
-static s32 GetDigitSprAt(s32 n, s32 offsetFromRight)
+static s32 GetDigit(s32 value, s32 place)
 {
     s32 i;
 
     i = 1;
-    while (offsetFromRight-- != 0) {
+    while (place-- != 0) {
         i *= 10;
     }
-    return (n % (i * 10)) / i;
+    return (value % (i * 10)) / i;
 }
 
-static void DisplayBoardRecord(omObjData *object, s32 board)
+static void ShowBoard(omObjData *object, s32 board)
 {
     RecordWork *work = object->data;
     s32 value;
@@ -570,36 +570,36 @@ static void DisplayBoardRecord(omObjData *object, s32 board)
     s32 j;
 
     espPosSet(work->sprList[board], 275.0f, 72.0f);
-    value = work->boardRecords[work->board].playCount;
+    value = work->boardRecord[work->board].playCount;
     for (i = 0; i < PLAY_COUNT_NUM_DIGITS; i++) {
         espPosSet(work->sprList[i + 11], 323.0f + 20.0f * i, 116.0f);
         if (value > 999) {
             espBankSet(work->sprList[i + 11], i + 10);
         }
         else {
-            espBankSet(work->sprList[i + 11], GetDigitSprAt(value, 3 - i));
+            espBankSet(work->sprList[i + 11], GetDigit(value, 3 - i));
         }
     }
     espPosSet(work->sprList[8], 416.0f, 120.0f);
-    value = work->boardRecords[work->board].maxCoins;
+    value = work->boardRecord[work->board].maxCoins;
     for (i = 0; i < MAX_COINS_NUM_DIGITS; i++) {
         espPosSet(work->sprList[i + 15], 364.0f + 20.0f * i, 268.0f);
         if (value > 999) {
             espBankSet(work->sprList[i + 15], i + 10);
         }
         else {
-            espBankSet(work->sprList[i + 15], GetDigitSprAt(value, 3 - i));
+            espBankSet(work->sprList[i + 15], GetDigit(value, 3 - i));
         }
     }
     espPosSet(work->sprList[9], 456.0f, 268.0f);
-    value = work->boardRecords[work->board].maxStars;
+    value = work->boardRecord[work->board].maxStars;
     for (i = 0; i < MAX_STARS_NUM_DIGITS; i++) {
         espPosSet(work->sprList[i + 19], 364.0f + 20.0f * i, 312.0f);
         if (value > 999) {
             espBankSet(work->sprList[i + 19], i + 10);
         }
         else {
-            espBankSet(work->sprList[i + 19], GetDigitSprAt(value, 3 - i));
+            espBankSet(work->sprList[i + 19], GetDigit(value, 3 - i));
         }
     }
     espPosSet(work->sprList[10], 456.0f, 312.0f);
@@ -607,7 +607,7 @@ static void DisplayBoardRecord(omObjData *object, s32 board)
         espPosSet(work->sprList[i + 49], 92.0f + 50.0f * i, 200.0f);
         for (j = 0; j < WIN_COUNT_NUM_DIGITS; j++) {
             espPosSet(work->sprList[i * 3 + 23 + j], 80.0f + 50.0f * i + 12.0f * j, 230.0f);
-            espBankSet(work->sprList[i * 3 + 23 + j], GetDigitSprAt(work->boardRecords[work->board].winCounts[i], 2 - j));
+            espBankSet(work->sprList[i * 3 + 23 + j], GetDigit(work->boardRecord[work->board].winCount[i], 2 - j));
         }
     }
     espPosSet(work->sprList[47], 48.0f, 240.0f);
@@ -632,37 +632,52 @@ static void DisplayBoardRecord(omObjData *object, s32 board)
         }
     }
     for (i = 0; i < 4; i++) {
-        fn_1_A7F0(work->window[i + 2]);
+        OptionWinDispOn(work->window[i + 2]);
     }
-    fn_1_A7B0(work->window[2], 64.0f, 96.0f);
-    fn_1_A71C(work->window[2], MAKE_MESSID(47, 19));
-    fn_1_A7B0(work->window[3], 64.0f, 140.0f);
-    fn_1_A71C(work->window[3], MAKE_MESSID(47, 20));
-    fn_1_A7B0(work->window[4], 64.0f, 248.0f);
-    fn_1_A71C(work->window[4], MAKE_MESSID(47, 21));
-    fn_1_A7B0(work->window[5], 64.0f, 292.0f);
-    fn_1_A71C(work->window[5], MAKE_MESSID(47, 22));
+    OptionWinPosSet(work->window[2], 64.0f, 96.0f);
+    OptionWinMesSet(work->window[2], MAKE_MESSID(47, 19));
+    OptionWinPosSet(work->window[3], 64.0f, 140.0f);
+    OptionWinMesSet(work->window[3], MAKE_MESSID(47, 20));
+    OptionWinPosSet(work->window[4], 64.0f, 248.0f);
+    OptionWinMesSet(work->window[4], MAKE_MESSID(47, 21));
+    OptionWinPosSet(work->window[5], 64.0f, 292.0f);
+    OptionWinMesSet(work->window[5], MAKE_MESSID(47, 22));
 }
 
-#define BOARD_RECORD_SPR_IDX_TBL_SIZE 53
+#define BOARD_SPR_HIDE_COUNT 53
 
-static const s32 boardRecordSprIdxTbl[BOARD_RECORD_SPR_IDX_TBL_SIZE] = { 0, 1, 2, 3, 4, 5, 49, 50, 51, 52, 53, 54, 55, 56, 8, 9, 10, 11, 12, 13, 14,
-    23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 38, 39, 40, 35, 36, 37, 41, 42, 43, 44, 45, 46, 15, 16, 17, 18, 19, 20, 21, 22 };
+static const s32 boardSprHideTbl[BOARD_SPR_HIDE_COUNT] = 
+{ 
+	0, 1, 2, 3, 4, 5,
+	49, 50, 51, 52, 53, 54, 55, 56, 
+	8, 9, 10, 
+	11, 12, 13, 14,
+    23, 24, 25, 
+	26, 27, 28, 
+	29, 30, 31, 
+	32, 33, 34, 
+	38, 39, 40, 
+	35, 36, 37, 
+	41, 42, 43, 
+	44, 45, 46, 
+	15, 16, 17, 18, 
+	19, 20, 21, 22
+};
 
-static void HideBoardRecordSpr(omObjData *object)
+static void HideBoard(omObjData *object)
 {
     RecordWork *work = object->data;
     s32 i;
 
-    for (i = 0; i < BOARD_RECORD_SPR_IDX_TBL_SIZE; i++) {
-        espDispOff(work->sprList[boardRecordSprIdxTbl[i]]);
+    for (i = 0; i < BOARD_SPR_HIDE_COUNT; i++) {
+        espDispOff(work->sprList[boardSprHideTbl[i]]);
     }
     for (i = 0; i < 4; i++) {
-        fn_1_A828(work->window[i + 2]);
+        OptionWinDispOff(work->window[i + 2]);
     }
 }
 
-static void DisplayTotalResults(omObjData *object)
+static void ShowTotal(omObjData *object)
 {
     RecordWork *work = object->data;
     s32 winCount;
@@ -673,11 +688,11 @@ static void DisplayTotalResults(omObjData *object)
     for (i = 0; i < NUM_CHARACTERS; i++) {
         espPosSet(work->sprList[i + 57], 148.0f + 80.0f * (i % 4), 172.0f + 104.0f * (i / 4));
         for (j = 0, winCount = 0; j < NUM_BOARDS; j++) {
-            winCount += work->boardRecords[j].winCounts[i];
+            winCount += work->boardRecord[j].winCount[i];
         }
         for (j = 0; j < WIN_COUNT_NUM_DIGITS; j++) {
             espPosSet(work->sprList[i * 3 + 65 + j], 132.0f + 80.0f * (i % 4) + 16.0f * j, 218.0f + 104.0f * (i / 4));
-            espBankSet(work->sprList[i * 3 + 65 + j], GetDigitSprAt(winCount, 2 - j));
+            espBankSet(work->sprList[i * 3 + 65 + j], GetDigit(winCount, 2 - j));
         }
     }
     espDispOn(work->sprList[6]);
@@ -687,48 +702,59 @@ static void DisplayTotalResults(omObjData *object)
             espDispOn(work->sprList[i * 3 + 65 + j]);
         }
     }
-    fn_1_A7B0(work->window[2], 136.0f, 96.0f);
-    fn_1_A71C(work->window[2], MAKE_MESSID(47, 23));
-    fn_1_A7F0(work->window[2]);
+    OptionWinPosSet(work->window[2], 136.0f, 96.0f);
+    OptionWinMesSet(work->window[2], MAKE_MESSID(47, 23));
+    OptionWinDispOn(work->window[2]);
 }
 
-#define TOTAL_RESULTS_SPR_IDX_TBL_SIZE 33
+#define TOTAL_SPR_HIDE_COUNT 33
 
-static const s32 totalResultsSprIdxTbl[TOTAL_RESULTS_SPR_IDX_TBL_SIZE]
-    = { 6, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 };
+static const s32 totalSprHideTbl[TOTAL_SPR_HIDE_COUNT] = 
+{ 
+	6, 
+	57, 58, 59, 60, 61, 62, 63, 64, 
+	65, 66, 67, 
+	68, 69, 70, 
+	71, 72, 73, 
+	74, 75, 76, 
+	77, 78, 79, 
+	80, 81, 82, 
+	83, 84, 85, 
+	86, 87, 88 
+};
 
-static void HideTotalResultsSpr(omObjData *object)
+static void HideTotal(omObjData *object)
 {
     RecordWork *work = object->data;
     s32 i;
 
-    for (i = 0; i < TOTAL_RESULTS_SPR_IDX_TBL_SIZE; i++) {
-        espDispOff(work->sprList[totalResultsSprIdxTbl[i]]);
+    for (i = 0; i < TOTAL_SPR_HIDE_COUNT; i++) {
+        espDispOff(work->sprList[totalSprHideTbl[i]]);
     }
-    fn_1_A828(work->window[2]);
+    OptionWinDispOff(work->window[2]);
 }
 
 static const MGTable mgTbl[6] = {
     { 405, MAKE_MESSID(23, 5), DISPLAY_TYPE_TIME },
-    { 407, MAKE_MESSID(23, 7), DISPLAY_TYPE_DECIMAL },
+    { 407, MAKE_MESSID(23, 7), DISPLAY_TYPE_SCORE },
     { 427, MAKE_MESSID(23, 27), DISPLAY_TYPE_TIME },
     { 432, MAKE_MESSID(23, 32), DISPLAY_TYPE_TIME },
     { 443, MAKE_MESSID(23, 43), DISPLAY_TYPE_TIME },
     { 456, MAKE_MESSID(23, 54), DISPLAY_TYPE_TIME },
 };
 
-static void ShowMGRecord(omObjData *object, s32 page)
+static void ShowMG(omObjData *object, s32 page)
 {
     RecordWork *work = object->data;
     s32 value;
     s32 mg;
-    s32 digit;
-    s32 var_r26;
-    s32 var_r17;
-    s32 sp5C;
-    s32 sp58;
+    s32 timeDigit;
+    s32 timeCenti;
+    s32 scoreDigit;
+    s32 timeMin;
+    s32 timeSec;
     s32 mgAvail;
-    BOOL digitDrawnF;
+    BOOL dispZeroF;
     s32 nameMess;
     s32 i;
     s32 j;
@@ -738,99 +764,108 @@ static void ShowMGRecord(omObjData *object, s32 page)
     espPosSet(work->sprList[48], 492.0f, 240.0f);
     espDispOn(work->sprList[7]);
     for (i = 0; i < 8; i++) {
-        digitDrawnF = FALSE;
+        dispZeroF = FALSE;
         mg = i + page * 8;
         if (mg >= 6) {
             break;
         }
         mgAvail = GWMGAvailGet(mgTbl[mg].id);
-        value = work->mgRecords[mg];
+        value = work->mgRecord[mg];
         if (mgAvail) {
             switch (mgTbl[mg].displayType) {
-                case DISPLAY_TYPE_DECIMAL:
-                    for (j = 0; j < MG_DECIMAL_NUM_DIGITS; j++) {
-                        var_r17 = GetDigitSprAt(value, 7 - j);
-                        if (var_r17 != 0 || digitDrawnF || j >= 7) {
+                case DISPLAY_TYPE_SCORE:
+                    for (j = 0; j < MG_SCORE_NUM_DIGITS; j++) {
+                        scoreDigit = GetDigit(value, 7 - j);
+                        if (scoreDigit != 0 || dispZeroF || j >= 7) {
                             espPosSet(work->sprList[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
-                            espBankSet(work->sprList[i * 8 + 89 + j], var_r17);
+                            espBankSet(work->sprList[i * 8 + 89 + j], scoreDigit);
                             espDispOn(work->sprList[i * 8 + 89 + j]);
-                            digitDrawnF = TRUE;
+                            dispZeroF = TRUE;
                         }
                     }
                     break;
                 case DISPLAY_TYPE_TIME:
-                    sp5C = value / 3600;
-                    sp58 = (value % 3600) / 60;
-                    var_r26 = (value % 3600) % 60;
+                    timeMin = value / 3600;
+                    timeSec = (value % 3600) / 60;
+                    timeCenti = (value % 3600) % 60;
                     if (mgTbl[mg].id == 405 || mgTbl[mg].id == 432) {
-                        var_r26 *= 1.6916667f;
+                        timeCenti *= 1.6916667f;
                     }
                     else {
-                        var_r26 *= 1.6666666f;
+                        timeCenti *= 1.6666666f;
                     }
                     for (j = 1; j < MG_TIME_NUM_DIGITS; j++) {
                         espPosSet(work->sprList[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
                         switch (j) {
                             case 0:
-                                digit = GetDigitSprAt(sp5C, 1);
+                                timeDigit = GetDigit(timeMin, 1);
                                 break;
                             case 1:
-                                digit = GetDigitSprAt(sp5C, 0);
+                                timeDigit = GetDigit(timeMin, 0);
                                 break;
                             case 3:
-                                digit = GetDigitSprAt(sp58, 1);
+                                timeDigit = GetDigit(timeSec, 1);
                                 break;
                             case 4:
-                                digit = GetDigitSprAt(sp58, 0);
+                                timeDigit = GetDigit(timeSec, 0);
                                 break;
                             case 6:
-                                digit = GetDigitSprAt(var_r26, 1);
+                                timeDigit = GetDigit(timeCenti, 1);
                                 break;
                             case 7:
-                                digit = GetDigitSprAt(var_r26, 0);
+                                timeDigit = GetDigit(timeCenti, 0);
                                 break;
                             case 2:
-                                digit = 11;
+                                timeDigit = 11;
                                 break;
                             case 5:
-                                digit = 12;
+                                timeDigit = 12;
                                 break;
                         }
-                        espBankSet(work->sprList[i * 8 + 89 + j], digit);
+                        espBankSet(work->sprList[i * 8 + 89 + j], timeDigit);
                         espDispOn(work->sprList[i * 8 + 89 + j]);
                     }
                     break;
             }
         }
         else {
-            for (j = 0; j < MG_DECIMAL_NUM_DIGITS; j++) {
+            for (j = 0; j < MG_SCORE_NUM_DIGITS; j++) {
                 espPosSet(work->sprList[i * 8 + 89 + j], 336.0f + 16.0f * j, 116.0f + 40.0f * i);
                 espBankSet(work->sprList[i * 8 + 89 + j], 0);
                 espDispOn(work->sprList[i * 8 + 89 + j]);
             }
         }
-        fn_1_A7B0(work->window[i + 2], 60.0f, 96.0f + 40.0f * i);
+        OptionWinPosSet(work->window[i + 2], 60.0f, 96.0f + 40.0f * i);
         nameMess = mgAvail ? mgTbl[mg].mess : MAKE_MESSID(35, 0);
-        fn_1_A71C(work->window[i + 2], nameMess);
-        fn_1_A7F0(work->window[i + 2]);
+        OptionWinMesSet(work->window[i + 2], nameMess);
+        OptionWinDispOn(work->window[i + 2]);
     }
 }
 
-#define MG_RECORD_SPR_IDX_TBL_SIZE 65
+#define MG_SPR_HIDE_COUNT 65
 
-static const s32 mgRecordSprIdxTbl[65] = { 7, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
-    112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140,
-    141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152 };
+static const s32 mgSprHideTbl[65] = 
+{ 
+	7, 
+	89, 90, 91, 92, 93, 94, 95, 96,
+	97, 98, 99, 100, 101, 102, 103, 104,
+	105, 106, 107, 108, 109, 110, 111, 112,
+	113, 114, 115, 116, 117, 118, 119, 120, 
+	121, 122, 123, 124, 125, 126, 127, 128, 
+	129, 130, 131, 132, 133, 134, 135, 136, 
+	137, 138, 139, 140, 141, 142, 143, 144, 
+	145, 146, 147, 148, 149, 150, 151, 152
+};
 
-static void HideMGRecordSpr(omObjData *object)
+static void HideMG(omObjData *object)
 {
     RecordWork *temp_r30 = object->data;
     s32 i;
 
-    for (i = 0; i < MG_RECORD_SPR_IDX_TBL_SIZE; i++) {
-        espDispOff(temp_r30->sprList[mgRecordSprIdxTbl[i]]);
+    for (i = 0; i < MG_SPR_HIDE_COUNT; i++) {
+        espDispOff(temp_r30->sprList[mgSprHideTbl[i]]);
     }
     for (i = 0; i < 8; i++) {
-        fn_1_A828(temp_r30->window[i + 2]);
+        OptionWinDispOff(temp_r30->window[i + 2]);
     }
 }

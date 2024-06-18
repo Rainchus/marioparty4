@@ -5,18 +5,18 @@
 #include "game/process.h"
 #include "game/sprite.h"
 
-static void HandleWindow(void);
+static void ExecWindow(void);
 
-WindowWork *fn_1_A44C(s32 id)
+OptionWindow *OptionWinCreate(s32 id)
 {
-    WindowWork *work;
+    OptionWindow *work;
 
-    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(WindowWork), MEMORY_DEFAULT_NUM);
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(OptionWindow), MEMORY_DEFAULT_NUM);
     work->messToBeSet = 0;
     work->messWaitSignal = 0;
     work->choiceSignal = 0;
     work->state = 0;
-    work->process = HuPrcChildCreate(HandleWindow, 0x2000, 0x2000, 0, lbl_1_bss_8);
+    work->process = HuPrcChildCreate(ExecWindow, 0x2000, 0x2000, 0, optionObjMan);
     work->process->user_data = work;
     work->id = id;
     switch (work->id) {
@@ -45,33 +45,33 @@ WindowWork *fn_1_A44C(s32 id)
             break;
     }
     HuWinDrawNoSet(work->window, 0x3F);
-    fn_1_A828(work);
+    OptionWinDispOff(work);
     HuSprExecLayerSet(0x3F, 2);
     return work;
 }
 
-void fn_1_A6AC(WindowWork *work)
+void OptionWinKill(OptionWindow *work)
 {
     HuWinExCleanup(work->window);
     HuPrcKill(work->process);
     HuMemDirectFree(work);
 }
 
-void fn_1_A6EC(WindowWork *work)
+void OptionWinAnimIn(OptionWindow *work)
 {
     if (!work->visible) {
         work->state = 1;
     }
 }
 
-void fn_1_A704(WindowWork *work)
+void OptionWinAnimOut(OptionWindow *work)
 {
     if (work->visible) {
         work->state = 2;
     }
 }
 
-void fn_1_A71C(WindowWork *work, s32 mess)
+void OptionWinMesSet(OptionWindow *work, s32 mess)
 {
     if (work->state == 0) {
         HuWinMesSet(work->window, mess);
@@ -81,32 +81,29 @@ void fn_1_A71C(WindowWork *work, s32 mess)
     }
 }
 
-static void fn_1_A770(WindowWork *work, s32 mess, s16 index)
+void OptionWinInsertMesSet(OptionWindow *work, s32 mess, s16 index)
 {
     HuWinInsertMesSet(work->window, mess, index);
 }
 
-// SetWindowPosition
-void fn_1_A7B0(WindowWork *work, float x, float y)
+void OptionWinPosSet(OptionWindow *work, float x, float y)
 {
     HuWinPosSet(work->window, x, y);
 }
 
-// DisplayWindow
-void fn_1_A7F0(WindowWork *work)
+void OptionWinDispOn(OptionWindow *work)
 {
     HuWinDispOn(work->window);
     work->visible = TRUE;
 }
 
-// HideWindow
-void fn_1_A828(WindowWork *work)
+void OptionWinDispOff(OptionWindow *work)
 {
     HuWinDispOff(work->window);
     work->visible = FALSE;
 }
 
-static void fn_1_A860(WindowWork *work)
+void OptionWinMesWait(OptionWindow *work)
 {
     if (work->state == 0) {
         work->state = 3;
@@ -114,7 +111,7 @@ static void fn_1_A860(WindowWork *work)
     work->messWaitSignal = TRUE;
 }
 
-void fn_1_A880(WindowWork *work, s32 choice)
+void OptionWinChoiceSet(OptionWindow *work, s32 choice)
 {
     if (work->state == 0) {
         work->state = 4;
@@ -123,19 +120,19 @@ void fn_1_A880(WindowWork *work, s32 choice)
     work->choice = choice;
 }
 
-static void HandleWindow(void)
+static void ExecWindow(void)
 {
-    WindowWork *work = HuPrcCurrentGet()->user_data;
+    OptionWindow *work = HuPrcCurrentGet()->user_data;
 
     while (TRUE) {
         switch (work->state) {
             case 1:
-                fn_1_A7F0(work);
+                OptionWinDispOn(work);
                 HuWinExAnimIn(work->window);
                 break;
             case 2:
                 HuWinExAnimOut(work->window);
-                fn_1_A828(work);
+                OptionWinDispOff(work);
                 break;
             case 3:
                 HuWinMesWait(work->window);
