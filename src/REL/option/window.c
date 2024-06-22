@@ -1,147 +1,158 @@
+#include "game/window.h"
 #include "REL/option.h"
 #include "game/esprite.h"
 #include "game/memory.h"
 #include "game/process.h"
 #include "game/sprite.h"
-#include "game/window.h"
 
-static void fn_1_A770(UnkWindowDataStruct *arg0, s32 arg1, s16 arg2);
-static void fn_1_A860(UnkWindowDataStruct *arg0);
-static void fn_1_A8A4(void);
+static void ExecWindow(void);
 
-UnkWindowDataStruct *fn_1_A44C(s32 arg0) {
-    UnkWindowDataStruct *temp_r31;
+OptionWindow *OptionWinCreate(s32 id)
+{
+    OptionWindow *work;
 
-    temp_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkWindowDataStruct), MEMORY_DEFAULT_NUM);
-    temp_r31->unk18 = 0;
-    temp_r31->unk10 = 0;
-    temp_r31->unk14 = 0;
-    temp_r31->unk20 = 0;
-    temp_r31->unk00 = HuPrcChildCreate(fn_1_A8A4, 0x2000, 0x2000, 0, lbl_1_bss_8);
-    temp_r31->unk00->user_data = temp_r31;
-    temp_r31->unk08 = arg0;
-    switch (temp_r31->unk08) {
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(OptionWindow), MEMORY_DEFAULT_NUM);
+    work->messToBeSet = 0;
+    work->messWaitSignal = 0;
+    work->choiceSignal = 0;
+    work->state = 0;
+    work->process = HuPrcChildCreate(ExecWindow, 0x2000, 0x2000, 0, optionObjMan);
+    work->process->user_data = work;
+    work->id = id;
+    switch (work->id) {
         case 0:
-            temp_r31->unk04 = HuWinExCreateStyled(-10000.0f, 360.0f, 480, 80, -1, 1);
-            HuWinBGTPLvlSet(temp_r31->unk04, 0.8f);
-            HuWinMesSpeedSet(temp_r31->unk04, 0);
-            HuWinMesPalSet(temp_r31->unk04, 7, 0, 0, 0);
+            work->window = HuWinExCreateStyled(-10000.0f, 360.0f, 480, 80, -1, 1);
+            HuWinBGTPLvlSet(work->window, 0.8f);
+            HuWinMesSpeedSet(work->window, 0);
+            HuWinMesPalSet(work->window, 7, 0, 0, 0);
             break;
         case 1:
-            temp_r31->unk04 = HuWinExCreateStyled(-10000.0f, 326.0f, 480, 40, -1, 0);
-            HuWinAttrSet(temp_r31->unk04, 0x800);
-            HuWinBGTPLvlSet(temp_r31->unk04, 0.0f);
-            HuWinMesSpeedSet(temp_r31->unk04, 0);
+            work->window = HuWinExCreateStyled(-10000.0f, 326.0f, 480, 40, -1, 0);
+            HuWinAttrSet(work->window, 0x800);
+            HuWinBGTPLvlSet(work->window, 0.0f);
+            HuWinMesSpeedSet(work->window, 0);
             break;
         case 2:
-            temp_r31->unk04 = HuWinExCreateStyled(-10000.0f, 88.0f, 224, 34, -1, 0);
-            HuWinAttrSet(temp_r31->unk04, 0x800);
-            HuWinBGTPLvlSet(temp_r31->unk04, 0.0f);
-            HuWinMesSpeedSet(temp_r31->unk04, 0);
+            work->window = HuWinExCreateStyled(-10000.0f, 88.0f, 224, 34, -1, 0);
+            HuWinAttrSet(work->window, 0x800);
+            HuWinBGTPLvlSet(work->window, 0.0f);
+            HuWinMesSpeedSet(work->window, 0);
             break;
         case 3:
-            temp_r31->unk04 = HuWinExCreateStyled(175.0f, 100.0f, 300, 34, -1, 0);
-            HuWinBGTPLvlSet(temp_r31->unk04, 0.0f);
-            HuWinMesSpeedSet(temp_r31->unk04, 0);
+            work->window = HuWinExCreateStyled(175.0f, 100.0f, 300, 34, -1, 0);
+            HuWinBGTPLvlSet(work->window, 0.0f);
+            HuWinMesSpeedSet(work->window, 0);
             break;
     }
-    HuWinDrawNoSet(temp_r31->unk04, 0x3F);
-    fn_1_A828(temp_r31);
+    HuWinDrawNoSet(work->window, 0x3F);
+    OptionWinDispOff(work);
     HuSprExecLayerSet(0x3F, 2);
-    return temp_r31;
+    return work;
 }
 
-void fn_1_A6AC(UnkWindowDataStruct *arg0) {
-    HuWinExCleanup(arg0->unk04);
-    HuPrcKill(arg0->unk00);
-    HuMemDirectFree(arg0);
+void OptionWinKill(OptionWindow *work)
+{
+    HuWinExCleanup(work->window);
+    HuPrcKill(work->process);
+    HuMemDirectFree(work);
 }
 
-void fn_1_A6EC(UnkWindowDataStruct *arg0) {
-    if (arg0->unk0C == 0) {
-        arg0->unk20 = 1;
+void OptionWinAnimIn(OptionWindow *work)
+{
+    if (!work->visible) {
+        work->state = 1;
     }
 }
 
-void fn_1_A704(UnkWindowDataStruct *arg0) {
-    if (arg0->unk0C != 0) {
-        arg0->unk20 = 2;
+void OptionWinAnimOut(OptionWindow *work)
+{
+    if (work->visible) {
+        work->state = 2;
     }
 }
 
-void fn_1_A71C(UnkWindowDataStruct *arg0, s32 arg1) {
-    if (arg0->unk20 == 0) {
-        HuWinMesSet(arg0->unk04, arg1);
-    } else {
-        arg0->unk18 = arg1;
+void OptionWinMesSet(OptionWindow *work, s32 mess)
+{
+    if (work->state == 0) {
+        HuWinMesSet(work->window, mess);
+    }
+    else {
+        work->messToBeSet = mess;
     }
 }
 
-static void fn_1_A770(UnkWindowDataStruct *arg0, s32 arg1, s16 arg2) {
-    HuWinInsertMesSet(arg0->unk04, arg1, arg2);
+void OptionWinInsertMesSet(OptionWindow *work, s32 mess, s16 index)
+{
+    HuWinInsertMesSet(work->window, mess, index);
 }
 
-void fn_1_A7B0(UnkWindowDataStruct *arg0, float arg1, float arg2) {
-    HuWinPosSet(arg0->unk04, arg1, arg2);
+void OptionWinPosSet(OptionWindow *work, float x, float y)
+{
+    HuWinPosSet(work->window, x, y);
 }
 
-void fn_1_A7F0(UnkWindowDataStruct *arg0) {
-    HuWinDispOn(arg0->unk04);
-    arg0->unk0C = 1;
+void OptionWinDispOn(OptionWindow *work)
+{
+    HuWinDispOn(work->window);
+    work->visible = TRUE;
 }
 
-void fn_1_A828(UnkWindowDataStruct *arg0) {
-    HuWinDispOff(arg0->unk04);
-    arg0->unk0C = 0;
+void OptionWinDispOff(OptionWindow *work)
+{
+    HuWinDispOff(work->window);
+    work->visible = FALSE;
 }
 
-static void fn_1_A860(UnkWindowDataStruct *arg0) {
-    if (arg0->unk20 == 0) {
-        arg0->unk20 = 3;
+void OptionWinMesWait(OptionWindow *work)
+{
+    if (work->state == 0) {
+        work->state = 3;
     }
-    arg0->unk10 = 1;
+    work->messWaitSignal = TRUE;
 }
 
-void fn_1_A880(UnkWindowDataStruct *arg0, s32 arg1) {
-    if (arg0->unk20 == 0) {
-        arg0->unk20 = 4;
+void OptionWinChoiceSet(OptionWindow *work, s32 choice)
+{
+    if (work->state == 0) {
+        work->state = 4;
     }
-    arg0->unk14 = 1;
-    arg0->unk1C = arg1;
+    work->choiceSignal = TRUE;
+    work->choice = choice;
 }
 
-static void fn_1_A8A4(void) {
-    UnkWindowDataStruct *temp_r31 = HuPrcCurrentGet()->user_data;
+static void ExecWindow(void)
+{
+    OptionWindow *work = HuPrcCurrentGet()->user_data;
 
-    while (1) {
-        switch (temp_r31->unk20) {
+    while (TRUE) {
+        switch (work->state) {
             case 1:
-                fn_1_A7F0(temp_r31);
-                HuWinExAnimIn(temp_r31->unk04);
+                OptionWinDispOn(work);
+                HuWinExAnimIn(work->window);
                 break;
             case 2:
-                HuWinExAnimOut(temp_r31->unk04);
-                fn_1_A828(temp_r31);
+                HuWinExAnimOut(work->window);
+                OptionWinDispOff(work);
                 break;
             case 3:
-                HuWinMesWait(temp_r31->unk04);
-                temp_r31->unk10 = 0;
+                HuWinMesWait(work->window);
+                work->messWaitSignal = FALSE;
                 break;
             case 4:
-                temp_r31->unk1C = HuWinChoiceGet(temp_r31->unk04, temp_r31->unk1C);
-                temp_r31->unk14 = 0;
+                work->choice = HuWinChoiceGet(work->window, work->choice);
+                work->choiceSignal = FALSE;
                 break;
         }
-        if (temp_r31->unk18 != 0) {
-            HuWinMesSet(temp_r31->unk04, temp_r31->unk18);
-            temp_r31->unk18 = 0;
+        if (work->messToBeSet != 0) {
+            HuWinMesSet(work->window, work->messToBeSet);
+            work->messToBeSet = 0;
         }
-        temp_r31->unk20 = 0;
-        if (temp_r31->unk10 != 0) {
-            temp_r31->unk20 = 3;
+        work->state = 0;
+        if (work->messWaitSignal) {
+            work->state = 3;
         }
-        if (temp_r31->unk14 != 0) {
-            temp_r31->unk20 = 4;
+        if (work->choiceSignal) {
+            work->state = 4;
         }
         HuPrcVSleep();
     }

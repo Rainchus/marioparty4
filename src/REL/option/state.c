@@ -7,118 +7,121 @@
 #include "dolphin.h"
 
 typedef struct {
-    /* 0x00 */ UnkWindowDataStruct *unk00;
-    /* 0x04 */ s32 unk04;
-    /* 0x08 */ s16 unk08;
-    /* 0x0A */ char unk0A[2];
-} UnkStateDataStruct; // Size 0xC
+    /* 0x00 */ OptionWindow *window;
+    /* 0x04 */ s32 quitTimer;
+    /* 0x08 */ s16 light;
+} StateWork; // Size 0xC
 
 typedef struct {
-    Vec unk00;
-    Vec unk0C;
-    GXColor unk18;
-} UnkLightDataStruct; // Size 0x1C
+    Vec src;
+    Vec dest;
+    GXColor color;
+} UnkLightDataStruct; // Size 0x1C TODO same as m446Dll::unkStruct10 and present::UnkPresentStruct3
 
-static void fn_1_2FB0(omObjData *arg0);
+static void ExecState(omObjData *object);
 
-omObjData *lbl_1_bss_28;
+omObjData *optionState;
 
-static UnkLightDataStruct lbl_1_data_A0 = {
-    { 0.0f,  300.0f,    0.0f },
+static UnkLightDataStruct lightTbl = {
+    { 0.0f, 300.0f, 0.0f },
     { 0.0f, -300.0f, -600.0f },
-    { 0xFF, 0xFF, 0xFF, 0xFF }
+    { 0xFF, 0xFF, 0xFF, 0xFF },
 };
 
-static Vec lbl_1_data_BC[3] = {
+static Vec shadowPosTbl[3] = {
     { 0.0f, 3000.0f, 1.0f },
-    { 0.0f,    1.0f, 0.0f },
-    { 0.0f,    0.0f, 0.0f }
+    { 0.0f, 1.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
 };
 
-omObjData *fn_1_2E04(void) {
-    omObjData *var_r30;
-    UnkStateDataStruct *temp_r3;
-    LightData *sp8;
+omObjData *OptionStateCreate(void)
+{
+    omObjData *object;
+    StateWork *work;
+    LightData *lightData;
 
-    var_r30 = omAddObjEx(lbl_1_bss_8, 1000, 0, 0, 4, fn_1_2FB0);
-    temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkStateDataStruct), MEMORY_DEFAULT_NUM);
-    var_r30->data = temp_r3;
-    lbl_1_bss_10 = fn_1_7F8();
-    lbl_1_bss_18 = fn_1_15A4();
-    temp_r3->unk00 = fn_1_A44C(0);
+    object = omAddObjEx(optionObjMan, 1000, 0, 0, 4, ExecState);
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(StateWork), MEMORY_DEFAULT_NUM);
+    object->data = work;
+    optionCamera = OptionCameraCreate();
+    optionRoom = OptionRoomCreate();
+    work->window = OptionWinCreate(0);
     Hu3DLighInit();
-    temp_r3->unk08 = Hu3DGLightCreateV(&lbl_1_data_A0.unk00, &lbl_1_data_A0.unk0C, &lbl_1_data_A0.unk18);
-    Hu3DGLightInfinitytSet(temp_r3->unk08);
-    sp8 = &Hu3DGlobalLight[temp_r3->unk08];
+    work->light = Hu3DGLightCreateV(&lightTbl.src, &lightTbl.dest, &lightTbl.color);
+    Hu3DGLightInfinitytSet(work->light);
+    lightData = &Hu3DGlobalLight[work->light];
     Hu3DShadowCreate(30.0f, 20.0f, 5000.0f);
     Hu3DShadowTPLvlSet(0.45f);
-    Hu3DShadowPosSet(&lbl_1_data_BC[0], &lbl_1_data_BC[1], &lbl_1_data_BC[2]);
-    return var_r30;
+    Hu3DShadowPosSet(&shadowPosTbl[0], &shadowPosTbl[1], &shadowPosTbl[2]);
+    return object;
 }
 
-void fn_1_2F4C(omObjData *arg0) {
-    UnkStateDataStruct *temp_r31 = arg0->data;
+void OptionStateKill(omObjData *object)
+{
+    StateWork *work = object->data;
 
-    fn_1_A3C(lbl_1_bss_10);
-    fn_1_1798(lbl_1_bss_18);
-    fn_1_A6AC(temp_r31->unk00);
-    HuMemDirectFree(temp_r31);
+    OptionCameraKill(optionCamera);
+    OptionRoomKill(optionRoom);
+    OptionWinKill(work->window);
+    HuMemDirectFree(work);
 }
 
-static void fn_1_2FB0(omObjData *arg0) {
-    UnkStateDataStruct *temp_r31 = arg0->data;
+static void ExecState(omObjData *object)
+{
+    StateWork *work = object->data;
 
-    switch (arg0->unk10) {
+    switch (object->unk10) {
         case 0:
-            arg0->unk10 = 1;
+            object->unk10 = 1;
             /* fallthrough */
         case 1:
             WipeCreate(WIPE_MODE_IN, -1, 60);
-            arg0->unk10 = 2;
+            object->unk10 = 2;
             break;
         case 2:
-            if (WipeStatGet() != 0 || temp_r31->unk00->unk20 != 0) {
+            if (WipeStatGet() != 0 || work->window->state != 0) {
                 break;
             }
-            fn_1_1A2C(lbl_1_bss_18, 1);
-            arg0->unk10 = 3;
+            OptionRoomExecModeSet(optionRoom, 1);
+            object->unk10 = 3;
             /* fallthrough */
         case 3:
-            if (fn_1_1A70(lbl_1_bss_18) != 0) {
+            if (OptionRoomExecModeGet(optionRoom) != 0) {
                 break;
             }
-            arg0->unk10 = 4;
+            object->unk10 = 4;
             /* fallthrough */
         case 4:
-            fn_1_A6EC(temp_r31->unk00);
-            fn_1_A71C(temp_r31->unk00, MAKE_MESSID(47, 167));
-            arg0->unk10 = 5;
+            OptionWinAnimIn(work->window);
+            OptionWinMesSet(work->window, MAKE_MESSID(47, 167)); // Would you like to leave?
+            object->unk10 = 5;
             /* fallthrough */
         case 5:
-            if (temp_r31->unk00->unk20 != 0) {
+            if (work->window->state != 0) {
                 break;
             }
-            fn_1_A880(temp_r31->unk00, 1);
-            arg0->unk10 = 6;
+            OptionWinChoiceSet(work->window, 1);
+            object->unk10 = 6;
             /* fallthrough */
         case 6:
-            if (temp_r31->unk00->unk20 != 0) {
+            if (work->window->state != 0) {
                 break;
             }
-            fn_1_A704(temp_r31->unk00);
-            if (temp_r31->unk00->unk1C == 0) {
-                temp_r31->unk04 = 0;
-                arg0->unk10 = 7;
-            } else {
-                arg0->unk10 = 2;
+            OptionWinAnimOut(work->window);
+            if (work->window->choice == 0) {
+                work->quitTimer = 0;
+                object->unk10 = 7;
+            }
+            else {
+                object->unk10 = 2;
             }
             break;
         case 7:
-            arg0->unk10 = 8;
-            temp_r31->unk04 = 0;
+            object->unk10 = 8;
+            work->quitTimer = 0;
             /* fallthrough */
         case 8:
-            if (temp_r31->unk00->unk20 == 0 && temp_r31->unk04++ >= 60) {
+            if (work->window->state == 0 && work->quitTimer++ >= 60) {
                 omSysExitReq = 1;
             }
             break;

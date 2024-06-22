@@ -6,80 +6,85 @@
 #include "dolphin/types.h"
 
 typedef struct {
-    /* 0x00 */ Process *unk00;
-    /* 0x04 */ s16 unk04;
-    /* 0x06 */ char unk06[2];
-    /* 0x08 */ s32 unk08;
-    /* 0x0C */ s32 unk0C;
-    /* 0x10 */ s32 unk10;
-    /* 0x14 */ s32 unk14;
-    /* 0x18 */ u32 unk18;
-    /* 0x1C */ s32 unk1C;
-    /* 0x20 */ s32 unk20;
-} UnkWindowDataStruct; // Size 0x24
+    /* 0x00 */ Process *process;
+    /* 0x04 */ s16 window;
+    /* 0x08 */ s32 id;
+    /* 0x0C */ s32 visible;
+    /* 0x10 */ BOOL messWaitSignal;
+    /* 0x14 */ BOOL choiceSignal;
+    /* 0x18 */ u32 messToBeSet;
+    /* 0x1C */ s32 choice;
+    /* 0x20 */ s32 state; // TODO add defines
+} OptionWindow; // Size 0x24
 
-void fn_1_160(s16 arg0, s32 arg1, s32 arg2);
-s32 fn_1_550(u16 arg0);
-s32 fn_1_584(u16 arg0);
-s32 fn_1_5B8(u16 arg0);
+void OptionFadeSprite(s16 sprite, BOOL inF, s32 duration);
+void OptionFadeModel(s16 model, BOOL inF, s32 duration);
 
-omObjData *fn_1_7F8(void);
-void fn_1_A3C(omObjData *arg0);
-void fn_1_A6C(omObjData *arg0, float arg1, float arg2, float arg3, s32 arg4);
-void fn_1_AF0(omObjData *arg0, float arg1, float arg2, float arg3, s32 arg4);
-void fn_1_B74(omObjData *arg0, float arg1, float arg2, float arg3, s32 arg4);
-float fn_1_BF8(omObjData *arg0);
-float fn_1_C28(omObjData *arg0);
-void fn_1_C88(omObjData *arg0, float *arg1, float *arg2, float *arg3);
-s32 fn_1_CB8(omObjData *arg0);
+BOOL OptionPadCheck(u16 btn);
+BOOL OptionPadDStkRepCheck(u16 arg0);
+BOOL OptionPadDStkCheck(u16 arg0);
 
-omObjData *fn_1_15A4(void);
-void fn_1_1798(omObjData *arg0);
-void fn_1_1A2C(omObjData *arg0, s32 arg1);
-s32 fn_1_1A70(omObjData *arg0);
+omObjData *OptionCameraCreate(void);
+void OptionCameraKill(omObjData *object);
+void OptionCameraTargetSet(omObjData *object, float x, float y, float z, s32 duration);
+void OptionCameraFocusSet(omObjData *object, float x, float y, float z, s32 duration);
+void OptionCameraViewSet(omObjData *object, float zoom, float rot, float y, s32 duration);
+float OptionCameraZoomGet(omObjData *object);
+float OptionCameraRotGet(omObjData *object);
+void OptionCameraPosGet(omObjData *object, float *x, float *y, float *z);
 
-omObjData *fn_1_21F8(void);
-void fn_1_241C(omObjData *arg0);
-void fn_1_2508(omObjData *arg0, float arg1, float arg2, s32 arg3);
+void OptionCameraTargetGet(omObjData *object, float *x, float *y, float *z);
+s32 OptionCameraDoneCheck(omObjData *object);
 
-omObjData *fn_1_2E04(void);
-void fn_1_2F4C(omObjData *arg0);
+omObjData *OptionRoomCreate(void);
+void OptionRoomKill(omObjData *object);
+void OptionRoomExecModeSet(omObjData *object, s32 execMode);
+s32 OptionRoomExecModeGet(omObjData *object);
 
-omObjData *fn_1_3158(void);
-void fn_1_322C(omObjData *arg0);
-void fn_1_3290(omObjData *arg0, s32 arg1);
-s32 fn_1_32D4(omObjData *arg0);
-void fn_1_3D54(omObjData *arg0);
-void fn_1_3E1C(omObjData *arg0);
-s32 fn_1_3ED0(omObjData *arg0);
+omObjData *OptionGuideCreate(void);
+void OptionGuideKill(omObjData *object);
+void OptionGuideWalkExec(omObjData *object, float angleEnd, float camDist, s32 duration);
 
-omObjData *fn_1_4028(void);
-void fn_1_42DC(omObjData *arg0);
-void fn_1_4388(omObjData *arg0, s32 arg1);
-s32 fn_1_43CC(omObjData *arg0);
+omObjData *OptionStateCreate(void);
+void OptionStateKill(omObjData *object);
 
-omObjData *fn_1_80E4(void);
-void fn_1_825C(omObjData *arg0);
-void fn_1_82B0(omObjData *arg0, s32 arg1);
-s32 fn_1_82F4(omObjData *arg0);
+omObjData *OptionRumbleCreate(void);
+void OptionRumbleKill(omObjData *object);
+void OptionRumbleExecModeSet(omObjData *object, s32 execMode);
+s32 OptionRumbleExecModeGet(omObjData *object);
+void OptionRumbleMotionShowStart(omObjData *object);
+void OptionRumbleMotionHideStart(omObjData *object);
+BOOL OptionRumbleMotionCheck(omObjData *object);
 
-UnkWindowDataStruct *fn_1_A44C(s32 arg0);
-void fn_1_A6AC(UnkWindowDataStruct *arg0);
-void fn_1_A6EC(UnkWindowDataStruct *arg0);
-void fn_1_A704(UnkWindowDataStruct *arg0);
-void fn_1_A71C(UnkWindowDataStruct *arg0, s32 arg1);
-void fn_1_A7B0(UnkWindowDataStruct *arg0, float arg1, float arg2);
-void fn_1_A7F0(UnkWindowDataStruct *arg0);
-void fn_1_A828(UnkWindowDataStruct *arg0);
-void fn_1_A880(UnkWindowDataStruct *arg0, s32 arg1);
+omObjData *OptionSoundCreate(void);
+void OptionSoundKill(omObjData *object);
+void OptionSoundExecModeSet(omObjData *object, s32 execMode);
+s32 OptionSoundExecModeGet(omObjData *object);
 
-extern Process *lbl_1_bss_8;
-extern omObjData *lbl_1_bss_10;
-extern omObjData *lbl_1_bss_18;
-extern omObjData *lbl_1_bss_20;
-extern omObjData *lbl_1_bss_28;
-extern omObjData *lbl_1_bss_30;
-extern omObjData *lbl_1_bss_38;
-extern omObjData *lbl_1_bss_40;
+omObjData *OptionRecordCreate(void);
+void OptionRecordKill(omObjData *object);
+void OptionRecordExecModeSet(omObjData *object, s32 execMode);
+s32 OptionRecordExecModeGet(omObjData *object);
+
+OptionWindow *OptionWinCreate(s32 id);
+void OptionWinKill(OptionWindow *work);
+void OptionWinAnimIn(OptionWindow *work);
+void OptionWinAnimOut(OptionWindow *work);
+void OptionWinMesSet(OptionWindow *work, s32 mess);
+void OptionWinInsertMesSet(OptionWindow *work, s32 mess, s16 index);
+void OptionWinPosSet(OptionWindow *work, float x, float y);
+void OptionWinDispOn(OptionWindow *work);
+void OptionWinDispOff(OptionWindow *work);
+void fn_1_A860(OptionWindow *work);
+void fn_1_A880(OptionWindow *work, s32 choice);
+
+extern Process *optionObjMan;
+extern omObjData *optionCamera;
+extern omObjData *optionRoom;
+extern omObjData *optionGuide;
+extern omObjData *optionState;
+extern omObjData *optionRumble;
+extern omObjData *optionSound;
+extern omObjData *optionRecord;
 
 #endif
