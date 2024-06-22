@@ -2171,10 +2171,7 @@ void Hu3DDrawPost(void) {
                             PSMTXIdentity(spC0);
                         } else {
                             PSVECCrossProduct(&sp3C, &sp54, &sp48);
-                            temp_f27 = PSVECDotProduct(&sp54, &sp3C);
-                            temp_f26 = acos(temp_f27);
-                            temp_f25 = temp_f26;
-                            temp_f28 = temp_f25;
+                            temp_f28 = acosf(PSVECDotProduct(&sp54, &sp3C));
                             PSMTXRotAxisRad(spC0, &sp48, temp_f28);
                         }
                         PSMTXConcat(spC0, sp90, sp60);
@@ -2313,10 +2310,7 @@ static void ObjDraw(HsfDrawObject *arg0) {
                 PSMTXIdentity(spB0);
             } else {
                 PSVECCrossProduct(&sp2C, &sp44, &sp38);
-                temp_f28 = PSVECDotProduct(&sp44, &sp2C);
-                temp_f27 = acos(temp_f28);
-                temp_f26 = temp_f27;
-                temp_f29 = temp_f26;
+                temp_f29 = acosf(PSVECDotProduct(&sp44, &sp2C));
                 PSMTXRotAxisRad(spB0, &sp38, temp_f29);
             }
             PSMTXConcat(spB0, sp80, sp50);
