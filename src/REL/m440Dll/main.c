@@ -14,8 +14,8 @@
 #include "game/sprite.h"
 
 // prototypes
-void fn_1_7934(unkStruct6*, unkStruct8*, Vec*);
-void fn_1_806C(ModelData*, f32[3][4]);
+void fn_1_8470(unkStruct12*, unkStruct13*);
+void fn_1_8AC4(Mtx);
 void fn_1_91A4(Vec*, Vec*, Vec*, f32[5]);
 f32 fn_1_93C0(f32, f32, f32);
 unkStruct4* fn_1_942C(s16, Vec*, Vec*, f32, GXColor*);
@@ -36,6 +36,8 @@ omObjData* lbl_1_bss_6C;
 omObjData* lbl_1_bss_68;
 unkStruct6* lbl_1_bss_64;
 s16 lbl_1_bss_60;
+Mtx lbl_1_bss_30;
+s16 lbl_1_bss_2C;
 s16 lbl_1_bss_10[10];
 s16 lbl_1_bss_E;
 u8 lbl_1_bss_C;
@@ -667,6 +669,7 @@ s16 lbl_1_data_F0[2] = {0, 0};
 s32 lbl_1_data_F4[4] = { 20, 60, 100, 140 };
 s16 lbl_1_data_104[2] = {0, 0};
 s16 lbl_1_data_108[2] = {0, 0};
+s16 lbl_1_data_10C[9] = { 0, 3, 1, 0, 2, 3, 1, 3, 2 };
 
 void fn_1_2B04(omObjData* object) {
     f32 temp_f31;
@@ -1276,7 +1279,7 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
     Vec* var_r21;
     Vec* var_r19;
     s16 var_r20;
-    unkStruct9* var_r22;
+    HsfVector2f* var_r22;
     s16 var_r24;
     s16 var_r23;
     HsfTransform* var_r25;
@@ -1339,8 +1342,8 @@ void fn_1_5C2C(s16 arg0, HsfObject* arg1, unkStruct6* arg2, u16 arg3) {
                 if (arg2->unk28->numAttrs != 0) {
                     var_r23 = arg2->unk24[var_r30].unk0[var_r28].unk6;
                     var_r27 = var_r23;
-                    arg2->unk1C[var_r27].unk0 = var_r22[var_r23].unk0;
-                    arg2->unk1C[var_r27].unk4 = var_r22[var_r23].unk4;
+                    arg2->unk1C[var_r27].x = var_r22[var_r23].y;
+                    arg2->unk1C[var_r27].x = var_r22[var_r23].y;
                 }
             }
             fn_1_91A4(&sp44[0], &sp44[1], &sp44[2], arg2->unk24[var_r30].unk68);
@@ -1637,17 +1640,17 @@ void fn_1_71FC(unkStruct6* arg0, Vec* arg1, s16 arg2, Vec arg3) {
     
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         var_f31 += (sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x < 0.0f)
-            ?  -(sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x)
-            : (sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x);
+               ?  -(sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x)
+               :   (sp28[sp10[var_r31][0]].x - sp28[sp10[var_r31][1]].x);
         
         
         var_f30 += (sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y < 0.0f)
-            ?  -(sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y)
-            : (sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y);
+               ?  -(sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y)
+               :   (sp28[sp10[var_r31][0]].y - sp28[sp10[var_r31][1]].y);
 
         var_f29 += (sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z < 0.0f)
-            ?  -(sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z)
-            : (sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z);
+               ?  -(sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z)
+               :   (sp28[sp10[var_r31][0]].z - sp28[sp10[var_r31][1]].z);
     }
     var_f31 *= 0.3333f;
     var_f30 *= 0.3333f;
@@ -1659,4 +1662,306 @@ void fn_1_71FC(unkStruct6* arg0, Vec* arg1, s16 arg2, Vec arg3) {
     arg1->x = (sp28[0].x - (sp1C.x * var_f27));
     arg1->y = (sp28[0].y - (sp1C.y * var_f27));
     arg1->z = (sp28[0].z - (sp1C.z * var_f27));
+}
+
+void fn_1_7934(unkStruct6* arg0, unkStruct8* arg1, Vec* arg2) {
+    Vec sp2C[3];
+    f32 sp18[5];
+    s16 sp10[4];
+    s16 sp8[4];
+    s16 var_r28;
+    Vec* temp_r30;
+    Vec* temp_r4;
+    Vec* temp_r4_2;
+    Vec* temp_r4_3;
+
+    arg1->unk88.x = arg1->unk88.y = arg1->unk88.z = 1.0f;
+    arg1->unk94.x = arg1->unk94.y = arg1->unk94.z = 0.0f;
+    arg1->unkA0.x = arg1->unkA0.y = arg1->unkA0.z = 0.0f;
+    arg1->unkAC.x = arg1->unkAC.y = arg1->unkAC.z = 0.0f;
+    arg1->unkB8.x = arg1->unkB8.y = arg1->unkB8.z = 0.0f;
+    arg1->unkC4.x = arg1->unkC4.y = arg1->unkC4.z = 0.0f;
+    
+    if ((arg0->unk2 & 2) != 0) {
+        arg2->x *= 0.25f;
+        arg2->y *= 0.25f;
+        arg2->z *= 0.25f;
+    } else {
+        arg2->x /= 3.0f;
+        arg2->y /= 3.0f;
+        arg2->z /= 3.0f;
+    }
+    arg1->unk7C.x = arg2->x;
+    arg1->unk7C.y = arg2->y;
+    arg1->unk7C.z = arg2->z;
+    if ((arg0->unk2 & 2) != 0) {
+        if ((arg0->unk2 & 1) != 0) {
+            sp10[0] = arg1->unk0[0].unk0;
+            sp10[1] = arg1->unk0[1].unk0;
+            sp10[2] = arg1->unk0[2].unk0;
+        } else {
+            sp10[0] = arg1->unk18[0];
+            sp10[1] = arg1->unk18[1];
+            sp10[2] = arg1->unk18[2];
+        }
+        sp10[3] = arg1->unk1E;
+        sp8[0] = arg1->unk0[0].unk6;
+        sp8[1] = arg1->unk0[1].unk6;
+        sp8[2] = arg1->unk0[2].unk6;
+        sp8[3] = arg1->unk0[0].unk6;
+        
+        for (var_r28 = 0; var_r28 < 9; var_r28++) {
+            arg1->unk20[var_r28].unk0 = sp10[lbl_1_data_10C[var_r28]];
+            arg1->unk20[var_r28].unk6 = sp8[lbl_1_data_10C[var_r28]];
+        }
+        temp_r30 = &arg0->unk14[arg1->unk1E];
+        temp_r30->x = temp_r30->y = temp_r30->z = 0.0f;
+        
+        for (var_r28 = 0; var_r28 < 3; var_r28++) {
+            sp2C[0] = arg0->unkC[sp10[lbl_1_data_10C[var_r28]]];
+            sp2C[1] = arg0->unkC[sp10[lbl_1_data_10C[var_r28 + 1]]];
+            sp2C[2] = arg0->unkC[sp10[lbl_1_data_10C[var_r28 + 2]]];
+            fn_1_91A4(&sp2C[0], &sp2C[1], &sp2C[2], sp18);
+            temp_r30->x += sp18[0];
+            temp_r30->y += sp18[1];
+            temp_r30->z += sp18[2];
+        }
+        temp_r30->x *= 0.3333f;
+        temp_r30->y *= 0.3333f;
+        temp_r30->z *= 0.3333f;
+    }
+}
+
+void fn_1_7D60(unkStruct15* arg0, unkStruct13* arg1, s16 arg2) {
+    GXTexObj sp1C;
+    GXTlutObj sp10;
+    s32 sp8;
+    s16 temp_r29;
+    s16 temp_r28;
+    s16 var_r27;
+    s16 var_r26;
+
+    if (!arg0) {
+        OSReport("Error: No Texture\n");
+        return;
+    }
+    temp_r29 = arg0->unkA;
+    temp_r28 = arg0->unkC;
+    var_r27 = (arg1->unk64 == 1) ? 1 : 0;
+    var_r26 = (arg1->unk68 == 1) ? 1 : 0;
+    switch (arg0->unk8) {
+        case 6:
+            GXInitTexObj(&sp1C, arg0->unk1C, temp_r29, temp_r28, 6, var_r27, var_r26, 0);
+            break;
+        case 4:
+            GXInitTexObj(&sp1C, arg0->unk1C, temp_r29, temp_r28, 4, var_r27, var_r26, 0);
+            break;
+        case 5:
+            GXInitTexObj(&sp1C, arg0->unk1C, temp_r29, temp_r28, 5, var_r27, var_r26, 0);
+            break;
+        case 9:
+            if (arg0->unk9 < 8) {
+                GXInitTlutObj(&sp10, arg0->unk14, GX_TL_RGB565, arg0->unkE);
+                GXLoadTlut(&sp10, arg2);
+                GXInitTexObjCI(&sp1C, arg0->unk1C, temp_r29, temp_r28, GX_TF_C4, var_r27, var_r26, 0, arg2);
+            } else {
+                GXInitTlutObj(&sp10, arg0->unk14, GX_TL_RGB565, arg0->unkE);
+                GXLoadTlut(&sp10, arg2);
+                GXInitTexObjCI(&sp1C, arg0->unk1C, temp_r29, temp_r28, GX_TF_C8, var_r27, var_r26, 0, arg2);
+            }
+            break;
+        case 10:
+            if (arg0->unk9 < 8) {
+                GXInitTlutObj(&sp10, arg0->unk14, GX_TL_RGB5A3, arg0->unkE);
+                GXLoadTlut(&sp10, arg2);
+                GXInitTexObjCI(&sp1C, arg0->unk1C, temp_r29, temp_r28, GX_TF_C4, var_r27, var_r26, 0, arg2);
+            } else {
+                GXInitTlutObj(&sp10, arg0->unk14, GX_TL_RGB5A3, arg0->unkE);
+                GXLoadTlut(&sp10, arg2);
+                GXInitTexObjCI(&sp1C, arg0->unk1C, temp_r29, temp_r28, GX_TF_C8, var_r27, var_r26, 0, arg2);
+            }
+            break;
+        default:
+            OSReport("Error: Texture format\n");
+            return;
+    }
+    GXInitTexObjLOD(&sp1C, GX_LINEAR, GX_LINEAR, 0.0f, 0.0f, 0.0f, 0, 0, GX_ANISO_1);
+    GXLoadTexObj(&sp1C, arg2);
+    return;
+}
+
+void fn_1_806C(ModelData* arg0, Mtx arg1) {
+    Mtx sp14;
+    GXColor sp10;
+    unkStruct13* temp_r29;
+    unkStruct14* temp_r31;
+    m440Func14 temp_r27;
+
+    temp_r31 = (unkStruct14*)arg0->unk_120;
+    if (((u8)omPauseChk() == 0) && (temp_r31->unk38)) {
+        temp_r27 = temp_r31->unk38;
+        temp_r27(temp_r31);
+    }
+    GXLoadPosMtxImm(arg1, 0);
+    PSMTXInvXpose(arg1, sp14);
+    GXLoadNrmMtxImm(sp14, 0);
+    fn_1_8AC4(arg1);
+    sp10.r = (temp_r31->unk28->unkB[0] * arg0->unk_58.x);
+    sp10.g = (temp_r31->unk28->unkB[1] * arg0->unk_58.z);
+    sp10.b = (temp_r31->unk28->unkB[2] * arg0->unk_58.y);
+    sp10.a = 0xFF;
+    GXSetChanAmbColor(GX_COLOR0A0, sp10);
+    sp10.r = temp_r31->unk28->unkE[0];
+    sp10.g = temp_r31->unk28->unkE[1];
+    sp10.b = temp_r31->unk28->unkE[2];
+    sp10.a = 0xFF;
+    GXSetChanMatColor(GX_COLOR0A0, sp10);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA6, 0);
+    GXSetArray(GX_VA_POS, temp_r31->unkC, 0xCU);
+    GXSetVtxDesc(GX_VA_NRM, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_NRM, GX_TEX_S, GX_RGBA6, 0);
+    GXSetArray(GX_VA_NRM, temp_r31->unk14, 0xCU);
+    lbl_1_bss_C = temp_r31->unk3C;
+    if (temp_r31->unk28->unk34 == 0) {
+        GXSetNumTevStages(1);
+        GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR_NULL);
+        GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ONE, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+        GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+        GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_KONST, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
+        GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+        GXSetNumTexGens(0);
+        GXSetNumChans(0);
+    } else {
+        GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_RGBA6, 0);
+        GXSetArray(GX_VA_TEX0, temp_r31->unk1C, 8);
+        temp_r29 = &temp_r31->unk2C[temp_r31->unk28->unk38[0]];
+        fn_1_7D60(temp_r29->unk80, temp_r29, 0);
+        lbl_1_bss_2C = 1;
+        HuSprTexLoad(*hiliteAnim, 0, lbl_1_bss_2C, GX_CLAMP, GX_CLAMP, GX_LINEAR);
+        fn_1_8470(temp_r31->unk28, temp_r29);
+    }
+    GXSetZMode(1, GX_LEQUAL, 1);
+    GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+    GXSetZCompLoc(0);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXCallDisplayList(temp_r31->unk30, temp_r31->unk34);
+}
+
+void fn_1_8470(unkStruct12* arg0, unkStruct13* arg1) {
+    ModelData sp40;
+    Mtx sp10;
+    GXColor spC;
+    GXColor sp8;
+    f32 var_f30;
+    f32 var_f31;
+    s16 temp_r29;
+    u16 var_r31;
+    u32 temp_r24;
+    u16 var_r28;
+    u16 var_r27;
+    s32 var_r25;
+
+    sp40.attr = 0x20000;
+    temp_r24 = arg0->unk30;
+    if ((arg0->unkA == 2) || (arg0->unkA == 3)) {
+        var_r27 = 1;
+    } else {
+        var_r27 = 0;
+        if ((arg0->unkA == 0) || (arg0->unkA == 5)) {
+            var_r25 = 0;
+        } else {
+            var_r25 = 1;
+        }
+    }
+    var_r28 = var_r31 = 1;
+    GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, 0x3C, 0, 0x7D);
+    if (1.0f == arg1->unk20) {
+        if (arg1->unkA == 0) {
+            GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+            GXSetTevOrder(var_r31, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+            GXSetTevColorIn(var_r31, GX_CC_CPREV, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+            GXSetTevColorOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+            GXSetTevAlphaIn(var_r31, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+            GXSetTevAlphaOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+            var_r31++;
+        } else {
+            GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+            GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
+            GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+            GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA, GX_CA_ZERO);
+            GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+        }
+    } else {
+        GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+    }
+    if (var_r27 != 0) {
+        if (((sp40.attr & 0x20000) != 0) || ((temp_r24 & 0x100) != 0)) {
+            spC.a = lbl_1_bss_C;
+            GXSetTevColor(GX_TEVREG0, spC);
+            GXSetTexCoordGen2(var_r28, GX_TG_MTX2x4, GX_TG_NRM, 0x24, 0, 0x7D);
+            GXSetTevOrder(var_r31, var_r28, lbl_1_bss_2C, GX_COLOR0A0);
+            GXSetTevColorIn(var_r31, GX_CC_ZERO, GX_CC_TEXC, GX_CC_ONE, GX_CC_CPREV);
+            GXSetTevColorOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+            GXSetTevAlphaIn(var_r31, GX_CA_ZERO, GX_CA_APREV, GX_CA_A0, GX_CA_ZERO);
+            GXSetTevAlphaOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 0, GX_TEVPREV);
+            var_f31 = 6.0f * (arg0->unk14 / 300.0f);
+            if (var_f31 < 0.1) {
+                var_f31 = 0.1f;
+            }
+            PSMTXCopy(lbl_1_bss_30, sp10);
+            mtxScaleCat(sp10, var_f31, var_f31, var_f31);
+            GXLoadTexMtxImm(sp10, 0x24, GX_MTX2x4);
+            var_r31++;
+            var_r28++;
+            var_r27 = 0;
+            var_r25 = 1;
+        } else {
+            if (1.0f == arg1->unk20) {
+                GXSetTevOrder(var_r31, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR1A1);
+                GXSetTevColorIn(var_r31, GX_CC_CPREV, GX_CC_ONE, GX_CC_RASC, GX_CC_ZERO);
+            } else {
+                GXSetTevOrder(var_r31, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR1A1);
+                GXSetTevColorIn(var_r31, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_CPREV);
+            }
+            GXSetTevColorOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+            GXSetTevAlphaIn(var_r31, GX_CA_ZERO, GX_CA_APREV, GX_CA_A0, GX_CA_ZERO);
+            GXSetTevAlphaOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+            var_r31++;
+        }
+    } else if (0.0f != arg0->unk1C) {
+        GXSetTevOrder(var_r31, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+        GXSetTevColorIn(var_r31, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_CPREV);
+        GXSetTevColorOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+        GXSetTevAlphaIn(var_r31, GX_CA_ZERO, GX_CA_APREV, GX_CA_A0, GX_CA_ZERO);
+        GXSetTevAlphaOp(var_r31, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+        var_r31++;
+    }
+    GXSetNumTexGens(var_r28);
+    GXSetNumTevStages(var_r31);
+    if (var_r27 != 0) {
+        var_f30 = arg0->unk14;
+    } else {
+        var_f30 = 0.0f;
+    }
+    temp_r29 = Hu3DLightSet(&sp40, (f32 (*)[3][4]) Hu3DCameraMtx, (f32 (*)[3][4]) Hu3DCameraMtxXPose, var_f30);
+    if (var_r27 != 0) {
+        GXSetNumChans(2U);
+        if (arg0->unkA == 5) {
+            GXSetChanCtrl(GX_COLOR0A0, 1U, GX_SRC_REG, GX_SRC_VTX, temp_r29, GX_DF_CLAMP, GX_AF_NONE);
+            GXSetChanCtrl(GX_COLOR1A1, 1U, GX_SRC_REG, GX_SRC_VTX, temp_r29, GX_DF_NONE, GX_AF_SPEC);
+            return;
+        }
+        GXSetChanCtrl(GX_COLOR0A0, 1U, GX_SRC_REG, GX_SRC_REG, temp_r29, GX_DF_CLAMP, GX_AF_NONE);
+        GXSetChanCtrl(GX_COLOR1A1, 1U, GX_SRC_REG, GX_SRC_REG, temp_r29, GX_DF_NONE, GX_AF_SPEC);
+        return;
+    }
+    GXSetNumChans(1U);
+    if (arg0->unkA == 5) {
+        GXSetChanCtrl(GX_COLOR0A0, var_r25, GX_SRC_REG, GX_SRC_REG, temp_r29, GX_DF_CLAMP, GX_AF_SPOT);
+        return;
+    }
+    GXSetChanCtrl(GX_COLOR0A0, var_r25, GX_SRC_REG, GX_SRC_REG, temp_r29, GX_DF_CLAMP, GX_AF_SPOT);
 }

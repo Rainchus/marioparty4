@@ -66,6 +66,7 @@ typedef struct _unkStruct5 { // could be unkStruct3
 
 typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
 typedef void (*m440Func6)(struct _unkStruct6*);
+typedef void (*m440Func14)(struct _unkStruct14*);
 
 typedef struct _unkStruct6 {
     s16 unk0;
@@ -77,7 +78,7 @@ typedef struct _unkStruct6 {
     Vec* unk10;
     Vec* unk14;
     Vec* unk18;
-    struct _unkStruct9* unk1C;
+    HsfVector2f* unk1C;
     s32 unk20;
     struct _unkStruct8* unk24;
     HsfMaterial* unk28;
@@ -117,11 +118,6 @@ typedef struct _unkStruct8 {
     Vec unkC4;
 } unkStruct8; // sizeof 0xD0
 
-typedef struct _unkStruct9 {
-    f32 unk0;
-    f32 unk4;
-} unkStruct9; // sizeof 0x8
-
 typedef struct _unkStruct10 {
     s16 unk0;
     s16 unk2;
@@ -130,6 +126,62 @@ typedef struct _unkStruct10 {
     unkStruct11* unk20;
     char unk24[0xC];
 } unkStruct10; // sizeof 0x30
+
+typedef struct _unkStruct12 {
+    char unk0[0xA];
+    u8 unkA;
+    u8 unkB[3];
+    u8 unkE[3];
+    char unk12[0x2];
+    f32 unk14;
+    char unk18[0x4];
+    f32 unk1C;
+    char unk20[0x10];
+    u32 unk30;
+    u32 unk34;
+    s32* unk38;
+} unkStruct12;
+
+typedef struct _unkStruct13 {
+    char unk0[0xA];
+    u8 unkA;
+    char unkB[0x15];
+    f32 unk20;
+    char unk24[0x40];
+    u32 unk64;
+    u32 unk68;
+    char unk6C[0x14];
+    struct _unkStruct15* unk80;
+} unkStruct13; // sizeof 0x84
+
+typedef struct _unkStruct14 {
+    char unk0[0xC];
+    void* unkC;
+    char unk10[0x4];
+    void* unk14;
+    char unk18[0x4];
+    void* unk1C;
+    char unk20[0x8];
+    unkStruct12* unk28;
+    unkStruct13* unk2C;
+    void* unk30;
+    u32 unk34;
+    m440Func14 unk38;
+    s16 unk3C;
+} unkStruct14;
+
+typedef struct _unkStruct15 {
+    char unk0[0x8];
+    u8 unk8;
+    u8 unk9;
+    s16 unkA;
+    s16 unkC;
+    s16 unkE;
+    char unk10[0x4];
+    void* unk14;
+    char unk18[0x4];
+    void* unk1C;
+} unkStruct15;
 
 
 ////// BSS //////
@@ -140,6 +192,8 @@ extern omObjData* lbl_1_bss_6C;
 extern omObjData* lbl_1_bss_68;
 extern unkStruct6* lbl_1_bss_64;
 extern s16 lbl_1_bss_60;
+extern Mtx lbl_1_bss_30;
+extern s16 lbl_1_bss_2C;
 extern s16 lbl_1_bss_10[10];
 extern s16 lbl_1_bss_E;
 extern u8 lbl_1_bss_C;
@@ -224,5 +278,9 @@ extern void fn_1_5C2C(s16, HsfObject*, unkStruct6*, u16);
 extern void fn_1_6554(unkStruct6*, HsfObject*);
 extern void fn_1_6B58(unkStruct6*, HsfObject*);
 extern void fn_1_71FC(unkStruct6*, Vec*, s16, Vec);
+extern void fn_1_7934(unkStruct6*, unkStruct8*, Vec*);
+extern void fn_1_7D60(unkStruct15*, unkStruct13*, s16);
+extern void fn_1_806C(ModelData* arg0, Mtx arg1);
 // ...
+extern void fn_1_91A4(Vec*, Vec*, Vec*, f32[5]);
 extern f32 fn_1_93C0(f32, f32, f32);
