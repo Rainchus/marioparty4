@@ -6,241 +6,254 @@
 #include "game/window.h"
 
 typedef struct {
-    /* 0x00 */ omObjData *unk00;
-    /* 0x04 */ omObjData *unk04;
-    /* 0x08 */ omObjData *unk08;
-    /* 0x0C */ omObjData *unk0C;
-    /* 0x10 */ UnkWindowDataStruct *unk10;
-    /* 0x14 */ UnkWindowDataStruct *unk14;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ s32 unk1C;
+    /* 0x00 */ omObjData *background;
+    /* 0x04 */ omObjData *rumbleArrow;
+    /* 0x08 */ omObjData *soundArrow;
+    /* 0x0C */ omObjData *recordArrow;
+    /* 0x10 */ OptionWindow *optionDescWindow;
+    /* 0x14 */ OptionWindow *btnLegendWindow;
+    /* 0x18 */ s32 optionIdx;
+    /* 0x1C */ s32 execMode;
     /* 0x20 */ s16 unk20;
     /* 0x22 */ char unk22[6];
-    /* 0x28 */ s32 unk28;
-} UnkRoomDataStruct; // Size 0x2C
+    /* 0x28 */ BOOL cameraDoneF;
+} RoomWork; // Size 0x2C
 
-static void fn_1_1844(omObjData *arg0, s32 arg1);
-static void fn_1_1A8C(omObjData *arg0);
-static omObjData *fn_1_2088(void);
-static void fn_1_2110(omObjData *arg0);
-static omObjData *fn_1_2144(void);
-static void fn_1_21C4(omObjData *arg0);
+#define MODE_DISABLED 0
+#define MODE_HANDLE_ROOM 1
 
-omObjData *lbl_1_bss_18;
 
-static omObjFunc lbl_1_data_68[] = {
-    NULL,
-    fn_1_1A8C
-};
+static void MoveOption(omObjData *object, BOOL rightF);
+static void ExecRoom(omObjData *object);
+static omObjData *CreateRoomBG(void);
+static void KillRoomBG(omObjData *background);
+static omObjData *CreateArrow(void);
+static void KillArrow(omObjData *arrow);
 
-omObjData *fn_1_15A4(void) {
-    omObjData *var_r30;
-    UnkRoomDataStruct *temp_r31;
+omObjData *optionRoom;
 
-    var_r30 = omAddObjEx(lbl_1_bss_8, 1003, 0, 0, 1, NULL);
-    temp_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkRoomDataStruct), MEMORY_DEFAULT_NUM);
-    var_r30->data = temp_r31;
-    temp_r31->unk18 = 0;
-    temp_r31->unk20 = -1;
-    temp_r31->unk28 = 0;
-    fn_1_B74(lbl_1_bss_10, 600.0f, 60.0f, 120.0f, 1);
-    fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, 0.0f, 1);
-    temp_r31->unk00 = fn_1_2088();
-    lbl_1_bss_38 = fn_1_4028();
-    lbl_1_bss_40 = fn_1_80E4();
-    lbl_1_bss_30 = fn_1_3158();
-    lbl_1_bss_20 = fn_1_21F8();
-    temp_r31->unk04 = fn_1_2144();
-    temp_r31->unk08 = fn_1_2144();
-    temp_r31->unk0C = fn_1_2144();
-    omSetRot(temp_r31->unk04, 0.0f, 0.0f, 0.0f);
-    omSetRot(temp_r31->unk08, 0.0f, 120.0f, 0.0f);
-    omSetRot(temp_r31->unk0C, 0.0f, 240.0f, 0.0f);
-    temp_r31->unk10 = fn_1_A44C(0);
-    temp_r31->unk14 = fn_1_A44C(1);
-    return var_r30;
+static omObjFunc execModeTbl[] = { NULL, ExecRoom };
+
+omObjData *OptionRoomCreate(void)
+{
+    omObjData *object;
+    RoomWork *work;
+
+    object = omAddObjEx(optionObjMan, 1003, 0, 0, 1, NULL);
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(RoomWork), MEMORY_DEFAULT_NUM);
+    object->data = work;
+    work->optionIdx = 0;
+    work->unk20 = -1;
+    work->cameraDoneF = 0;
+    OptionCameraViewSet(optionCamera, 600.0f, 60.0f, 120.0f, 1);
+    OptionCameraTargetSet(optionCamera, 0.0f, 120.0f, 0.0f, 1);
+    work->background = CreateRoomBG();
+    optionSound = OptionSoundCreate();
+    optionRecord = OptionRecordCreate();
+    optionRumble = OptionRumbleCreate();
+    optionGuide = OptionGuideCreate();
+    work->rumbleArrow = CreateArrow();
+    work->soundArrow = CreateArrow();
+    work->recordArrow = CreateArrow();
+    omSetRot(work->rumbleArrow, 0.0f, 0.0f, 0.0f);
+    omSetRot(work->soundArrow, 0.0f, 120.0f, 0.0f);
+    omSetRot(work->recordArrow, 0.0f, 240.0f, 0.0f);
+    work->optionDescWindow = OptionWinCreate(0);
+    work->btnLegendWindow = OptionWinCreate(1);
+    return object;
 }
 
-void fn_1_1798(omObjData *arg0) {
-    UnkRoomDataStruct *temp_r31 = arg0->data;
+void OptionRoomKill(omObjData *object)
+{
+    RoomWork *work = object->data;
 
-    fn_1_2110(temp_r31->unk00);
-    fn_1_42DC(lbl_1_bss_38);
-    fn_1_322C(lbl_1_bss_30);
-    fn_1_825C(lbl_1_bss_40);
-    fn_1_241C(lbl_1_bss_20);
-    fn_1_21C4(temp_r31->unk04);
-    fn_1_21C4(temp_r31->unk08);
-    fn_1_21C4(temp_r31->unk0C);
-    fn_1_A6AC(temp_r31->unk10);
-    fn_1_A6AC(temp_r31->unk14);
-    HuMemDirectFree(temp_r31);
+    KillRoomBG(work->background);
+    OptionSoundKill(optionSound);
+    OptionRumbleKill(optionRumble);
+    OptionRecordKill(optionRecord);
+    OptionGuideKill(optionGuide);
+    KillArrow(work->rumbleArrow);
+    KillArrow(work->soundArrow);
+    KillArrow(work->recordArrow);
+    OptionWinKill(work->optionDescWindow);
+    OptionWinKill(work->btnLegendWindow);
+    HuMemDirectFree(work);
 }
 
-static const float lbl_1_rodata_BC[3] = { 45.0f, 165.0f, 285.0f };
+static const float guideAngleTbl[3] = { 45.0f, 165.0f, 285.0f };
 
-static void fn_1_1844(omObjData *arg0, s32 arg1) {
-    UnkRoomDataStruct *temp_r31 = arg0->data;
-    float sp10;
-    float spC;
-    float sp8;
-    float var_f31;
+static void MoveOption(omObjData *object, BOOL rightF)
+{
+    RoomWork *work = object->data;
+    float x;
+    float y;
+    float z;
+    float guideAngle;
 
-    temp_r31->unk18 += (arg1 == 0) ? -1 : 1;
-    if (temp_r31->unk18 < 0) {
-        temp_r31->unk18 = 2;
-    } else if (temp_r31->unk18 >= 3) {
-        temp_r31->unk18 = 0;
+    work->optionIdx += (rightF == FALSE) ? -1 : 1;
+    if (work->optionIdx < 0) {
+        work->optionIdx = 2;
     }
-    fn_1_C88(lbl_1_bss_10, &sp10, &spC, &sp8);
-    fn_1_B74(lbl_1_bss_10, fn_1_BF8(lbl_1_bss_10), fn_1_C28(lbl_1_bss_10) + (arg1 == 0 ? -120.0f : 120.0f), spC, 0x60);
-    if (temp_r31->unk18 == 2 && arg1 == 0) {
-        var_f31 = lbl_1_rodata_BC[2] - 360.0f;
-    } else if (temp_r31->unk18 == 0 && arg1 == 1) {
-        var_f31 = 360.0f + lbl_1_rodata_BC[0];
-    } else {
-        var_f31 = lbl_1_rodata_BC[temp_r31->unk18];
+    else if (work->optionIdx >= 3) {
+        work->optionIdx = 0;
     }
-    fn_1_2508(lbl_1_bss_20, var_f31, 430.0f, 0x60);
+    OptionCameraTargetGet(optionCamera, &x, &y, &z);
+    OptionCameraViewSet(optionCamera, OptionCameraZoomGet(optionCamera), OptionCameraRotGet(optionCamera) + (rightF == FALSE ? -120.0f : 120.0f), y, 96);
+    if (work->optionIdx == 2 && rightF == FALSE) {
+        guideAngle = guideAngleTbl[2] - 360.0f;
+    }
+    else if (work->optionIdx == 0 && rightF == TRUE) {
+        guideAngle = 360.0f + guideAngleTbl[0];
+    }
+    else {
+        guideAngle = guideAngleTbl[work->optionIdx];
+    }
+    OptionGuideWalkExec(optionGuide, guideAngle, 430.0f, 96);
 }
 
-void fn_1_1A2C(omObjData *arg0, s32 arg1) {
-    UnkRoomDataStruct *temp_r31 = arg0->data;
+void OptionRoomExecModeSet(omObjData *object, s32 execMode)
+{
+    RoomWork *work = object->data;
 
-    temp_r31->unk1C = arg1;
-    arg0->func = lbl_1_data_68[arg1];
-    arg0->unk10 = 0;
-    arg0->unk10 = 0;
+    work->execMode = execMode;
+    object->func = execModeTbl[execMode];
+    object->unk10 = 0;
+    object->unk10 = 0;
 }
 
-s32 fn_1_1A70(omObjData *arg0) {
-    UnkRoomDataStruct *temp_r31 = arg0->data;
+s32 OptionRoomExecModeGet(omObjData *object)
+{
+    RoomWork *work = object->data;
 
-    return temp_r31->unk1C;
+    return work->execMode;
 }
 
-static const s32 lbl_1_rodata_D4[] = {
-    MAKE_MESSID(47, 1),
-    MAKE_MESSID(47, 7),
-    MAKE_MESSID(47, 4)
-};
+static const s32 optionDescTbl[] = { MAKE_MESSID(47, 1), MAKE_MESSID(47, 7), MAKE_MESSID(47, 4) };
 
-static void fn_1_1A8C(omObjData *arg0) {
-    UnkRoomDataStruct *temp_r31 = arg0->data;
+static void ExecRoom(omObjData *object)
+{
+    RoomWork *work = object->data;
 
-    switch (arg0->unk10) {
+    switch (object->unk10) {
         case 0:
-            if (temp_r31->unk28 == 0) {
-                fn_1_B74(lbl_1_bss_10, 600.0f, 60.0f, 120.0f, 1);
-                fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, 0.0f, 1);
-                temp_r31->unk28 = 1;
+            if (!work->cameraDoneF) {
+                OptionCameraViewSet(optionCamera, 600.0f, 60.0f, 120.0f, 1);
+                OptionCameraTargetSet(optionCamera, 0.0f, 120.0f, 0.0f, 1);
+                work->cameraDoneF = TRUE;
             }
-            arg0->unk10 = 1;
+            object->unk10 = 1;
             /* fallthrough */
         case 1:
-            if (fn_1_CB8(lbl_1_bss_10) != 0) {
+            if (OptionCameraDoneCheck(optionCamera) != 0) {
                 break;
             }
-            fn_1_A6EC(temp_r31->unk10);
-            fn_1_A71C(temp_r31->unk10, lbl_1_rodata_D4[temp_r31->unk18]);
-            fn_1_A6EC(temp_r31->unk14);
-            fn_1_A71C(temp_r31->unk14, MAKE_MESSID(47, 14));
-            arg0->unk10 = 2;
+            OptionWinAnimIn(work->optionDescWindow);
+            OptionWinMesSet(work->optionDescWindow, optionDescTbl[work->optionIdx]);
+            OptionWinAnimIn(work->btnLegendWindow);
+            OptionWinMesSet(work->btnLegendWindow, MAKE_MESSID(47, 14));
+            object->unk10 = 2;
             /* fallthrough */
         case 2:
-            if (temp_r31->unk10->unk20 == 0 && temp_r31->unk14->unk20 == 0) {
-                if (fn_1_550(0x200) != 0) {
+            if (work->optionDescWindow->state == 0 && work->btnLegendWindow->state == 0) {
+                if (OptionPadCheck(PAD_BUTTON_B)) {
                     HuAudFXPlay(3);
-                    arg0->unk10 = 7;
-                } else if (fn_1_584(1) != 0) {
-                    fn_1_1844(arg0, 0);
-                    fn_1_A704(temp_r31->unk10);
-                    fn_1_A704(temp_r31->unk14);
+                    object->unk10 = 7;
+                }
+                else if (OptionPadDStkRepCheck(1)) {
+                    MoveOption(object, FALSE);
+                    OptionWinAnimOut(work->optionDescWindow);
+                    OptionWinAnimOut(work->btnLegendWindow);
                     HuAudFXPlay(0);
-                    arg0->unk10 = 1;
-                } else if (fn_1_584(2) != 0) {
-                    fn_1_1844(arg0, 1);
-                    fn_1_A704(temp_r31->unk10);
-                    fn_1_A704(temp_r31->unk14);
+                    object->unk10 = 1;
+                }
+                else if (OptionPadDStkRepCheck(2)) {
+                    MoveOption(object, TRUE);
+                    OptionWinAnimOut(work->optionDescWindow);
+                    OptionWinAnimOut(work->btnLegendWindow);
                     HuAudFXPlay(0);
-                    arg0->unk10 = 1;
-                } else if (fn_1_550(0x100) != 0) {
-                    fn_1_A704(temp_r31->unk10);
-                    fn_1_A704(temp_r31->unk14);
+                    object->unk10 = 1;
+                }
+                else if (OptionPadCheck(PAD_BUTTON_A)) {
+                    OptionWinAnimOut(work->optionDescWindow);
+                    OptionWinAnimOut(work->btnLegendWindow);
                     HuAudFXPlay(2);
-                    arg0->unk10 = 3;
+                    object->unk10 = 3;
                 }
             }
             break;
         case 3:
-            if (temp_r31->unk10->unk20 == 0 && temp_r31->unk14->unk20 == 0) {
-                switch (temp_r31->unk18) {
+            if (work->optionDescWindow->state == 0 && work->btnLegendWindow->state == 0) {
+                switch (work->optionIdx) {
                     case 0:
-                        fn_1_3290(lbl_1_bss_30, 1);
-                        arg0->unk10 = 4;
+                        OptionRumbleExecModeSet(optionRumble, 1);
+                        object->unk10 = 4;
                         break;
                     case 1:
-                        fn_1_4388(lbl_1_bss_38, 1);
-                        arg0->unk10 = 5;
+                        OptionSoundExecModeSet(optionSound, 1);
+                        object->unk10 = 5;
                         break;
                     case 2:
-                        fn_1_82B0(lbl_1_bss_40, 1);
-                        arg0->unk10 = 6;
+                        OptionRecordExecModeSet(optionRecord, 1);
+                        object->unk10 = 6;
                         break;
                 }
             }
             break;
         case 4:
-            if (fn_1_32D4(lbl_1_bss_30) == 0) {
-                arg0->unk10 = 1;
+            if (OptionRumbleExecModeGet(optionRumble) == 0) {
+                object->unk10 = 1;
             }
             break;
         case 5:
-            if (fn_1_43CC(lbl_1_bss_38) == 0) {
-                arg0->unk10 = 1;
+            if (OptionSoundExecModeGet(optionSound) == 0) {
+                object->unk10 = 1;
             }
             break;
         case 6:
-            if (fn_1_82F4(lbl_1_bss_40) == 0) {
-                arg0->unk10 = 1;
+            if (OptionRecordExecModeGet(optionRecord) == 0) {
+                object->unk10 = 1;
             }
             break;
         case 7:
-            fn_1_A704(temp_r31->unk10);
-            fn_1_A704(temp_r31->unk14);
-            arg0->unk10 = 8;
+            OptionWinAnimOut(work->optionDescWindow);
+            OptionWinAnimOut(work->btnLegendWindow);
+            object->unk10 = 8;
             /* fallthrough */
         case 8:
-            if (temp_r31->unk10->unk20 == 0 && temp_r31->unk14->unk20 == 0) {
-                fn_1_1A2C(arg0, 0);
+            if (work->optionDescWindow->state == 0 && work->btnLegendWindow->state == 0) {
+                OptionRoomExecModeSet(object, MODE_DISABLED);
             }
             break;
     }
 }
 
-static omObjData *fn_1_2088(void) {
-    omObjData *temp_r31;
+static omObjData *CreateRoomBG(void)
+{
+    omObjData *object;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 0));
-    Hu3DModelLayerSet(temp_r31->model[0], 0);
-    Hu3DModelShadowMapSet(temp_r31->model[0]);
-    return temp_r31;
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 0));
+    Hu3DModelLayerSet(object->model[0], 0);
+    Hu3DModelShadowMapSet(object->model[0]);
+    return object;
 }
 
-static void fn_1_2110(omObjData *arg0) {
-    Hu3DModelKill(arg0->model[0]);
+static void KillRoomBG(omObjData *object)
+{
+    Hu3DModelKill(object->model[0]);
 }
 
-static omObjData *fn_1_2144(void) {
-    omObjData *temp_r31;
+static omObjData *CreateArrow(void)
+{
+    omObjData *arrow;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    Hu3DModelLayerSet(temp_r31->model[0], 0);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 6));
-    return temp_r31;
+    arrow = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    Hu3DModelLayerSet(arrow->model[0], 0);
+    arrow->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 6));
+    return arrow;
 }
 
-static void fn_1_21C4(omObjData *arg0) {
-    Hu3DModelKill(arg0->model[0]);
+static void KillArrow(omObjData *arrow)
+{
+    Hu3DModelKill(arrow->model[0]);
 }

@@ -8,328 +8,360 @@
 #include "game/window.h"
 
 typedef struct {
-    /* 0x00 */ omObjData *unk00;
-    /* 0x04 */ omObjData *unk04;
-    /* 0x08 */ omObjData *unk08;
-    /* 0x0C */ omObjData *unk0C;
-    /* 0x10 */ omObjData *unk10;
-    /* 0x14 */ UnkWindowDataStruct *unk14[2];
-    /* 0x20 */ s32 unk1C;
-    /* 0x20 */ s32 unk20;
-    /* 0x24 */ s32 unk24;
-    /* 0x28 */ s32 unk28;
-} UnkRumbleDataStruct; // Size 0x2C
+    /* 0x00 */ omObjData *system;
+    /* 0x04 */ omObjData *pad;
+    /* 0x08 */ omObjData *padFilter;
+    /* 0x0C */ omObjData *hand;
+    /* 0x10 */ omObjData *hiliteOn;
+    /* 0x14 */ OptionWindow *window[2];
+    /* 0x20 */ s32 execMode;
+    /* 0x20 */ BOOL rumbleF;
+    /* 0x24 */ BOOL cameraDoneF;
+    /* 0x28 */ s32 changeTimer;
+} RumbleWork; // Size 0x2C
 
-static void fn_1_32F0(omObjData *arg0);
-static omObjData *fn_1_37AC(void);
-static void fn_1_3868(omObjData *arg0);
-static omObjData *fn_1_38BC(void);
-static void fn_1_398C(omObjData *arg0);
-static void fn_1_39E0(omObjData *arg0, s32 arg1, s32 arg2);
-static omObjData *fn_1_3B08(void);
-static void fn_1_3B8C(omObjData *arg0);
-static void fn_1_3BE0(omObjData *arg0, s32 arg1);
-static omObjData *fn_1_3C6C(void);
-static void fn_1_3D00(omObjData *arg0);
-static omObjData *fn_1_3F28(void);
-static void fn_1_3FD4(omObjData *arg0);
+#define MODE_DISABLED 0
+#define MODE_HANDLE_RUMBLE 1 // TODO room.c should have access to this
 
-omObjData *lbl_1_bss_30;
+static void ExecRumble(omObjData *object);
+static omObjData *CreateHand(void);
+static void KillHand(omObjData *hand);
+static omObjData *CreateSystem(void);
+static void KillSystem(omObjData *system);
+static void StartSystemMotion(omObjData *system, s32 rumbleF, BOOL slowF);
+static omObjData *CreatePad(void);
+static void KillPad(omObjData *pad);
+static void ShakePad(omObjData *pad, BOOL on);
+static omObjData *CreatePadFilter(void);
+static void KillPadFilter(omObjData *object);
+static omObjData *CreateHiliteOn(void);
+static void KillHiliteOn(omObjData *object);
 
-static omObjFunc lbl_1_data_108[] = {
-    NULL,
-    fn_1_32F0
-};
+omObjData *optionRumble;
 
-omObjData *fn_1_3158(void) {
-    omObjData *temp_r30;
-    UnkRumbleDataStruct *temp_r3;
+static omObjFunc execModeTbl[] = { NULL, ExecRumble };
 
-    temp_r30 = omAddObjEx(lbl_1_bss_8, 1003, 0, 0, 1, NULL);
-    temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkRumbleDataStruct), MEMORY_DEFAULT_NUM);
-    temp_r30->data = temp_r3;
-    temp_r3->unk20 = GWGameStat.rumble;
-    temp_r3->unk00 = fn_1_38BC();
-    fn_1_39E0(temp_r3->unk00, temp_r3->unk20, 0);
-    temp_r3->unk04 = fn_1_3B08();
-    fn_1_3BE0(temp_r3->unk04, temp_r3->unk20);
-    temp_r3->unk08 = fn_1_3C6C();
-    temp_r3->unk10 = fn_1_3F28();
-    temp_r3->unk0C = fn_1_37AC();
-    fn_1_3290(temp_r30, 0);
-    return temp_r30;
+omObjData *OptionRumbleCreate(void)
+{
+    omObjData *object;
+    RumbleWork *work;
+
+    object = omAddObjEx(optionObjMan, 1003, 0, 0, 1, NULL);
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(RumbleWork), MEMORY_DEFAULT_NUM);
+    object->data = work;
+    work->rumbleF = GWGameStat.rumble;
+    work->system = CreateSystem();
+    StartSystemMotion(work->system, work->rumbleF, 0);
+    work->pad = CreatePad();
+    ShakePad(work->pad, work->rumbleF);
+    work->padFilter = CreatePadFilter();
+    work->hiliteOn = CreateHiliteOn();
+    work->hand = CreateHand();
+    OptionRumbleExecModeSet(object, MODE_DISABLED);
+
+    return object;
 }
 
-void fn_1_322C(omObjData *arg0) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
+void OptionRumbleKill(omObjData *object)
+{
+    RumbleWork *work = object->data;
 
-    fn_1_3868(temp_r31->unk0C);
-    fn_1_398C(temp_r31->unk00);
-    fn_1_3B8C(temp_r31->unk04);
-    fn_1_3FD4(temp_r31->unk10);
-    fn_1_3D00(temp_r31->unk08);
-    HuMemDirectFree(temp_r31);
+    KillHand(work->hand);
+    KillSystem(work->system);
+    KillPad(work->pad);
+    KillHiliteOn(work->hiliteOn);
+    KillPadFilter(work->padFilter);
+    HuMemDirectFree(work);
 }
 
-void fn_1_3290(omObjData *arg0, s32 arg1) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
+void OptionRumbleExecModeSet(omObjData *object, s32 execMode)
+{
+    RumbleWork *work = object->data;
 
-    temp_r31->unk1C = arg1;
-    arg0->func = lbl_1_data_108[arg1];
-    arg0->unk10 = 0;
-    arg0->unk10 = 0;
+    work->execMode = execMode;
+    object->func = execModeTbl[execMode];
+    object->unk10 = 0;
+    object->unk10 = 0;
 }
 
-s32 fn_1_32D4(omObjData *arg0) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
+s32 OptionRumbleExecModeGet(omObjData *object)
+{
+    RumbleWork *work = object->data;
 
-    return temp_r31->unk1C;
+    return work->execMode;
 }
 
-static void fn_1_32F0(omObjData *arg0) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
+static void ExecRumble(omObjData *object)
+{
+    RumbleWork *work = object->data;
     s32 i;
 
-    switch (arg0->unk10) {
+    switch (object->unk10) {
         case 0:
-            temp_r31->unk14[0] = fn_1_A44C(0);
-            temp_r31->unk14[1] = fn_1_A44C(1);
-            fn_1_AF0(lbl_1_bss_10, -519.62f, 135.0f, 300.0f, 0x28);
-            fn_1_A6C(lbl_1_bss_10, -315.64f, 135.0f, 182.25f, 0x28);
-            fn_1_3D54(arg0);
-            Hu3DModelLayerSet(temp_r31->unk08->model[0], 1);
-            temp_r31->unk24 = 0;
-            arg0->unk10 = 1;
+            work->window[0] = OptionWinCreate(0);
+            work->window[1] = OptionWinCreate(1);
+            OptionCameraFocusSet(optionCamera, -519.62f, 135.0f, 300.0f, 0x28);
+            OptionCameraTargetSet(optionCamera, -315.64f, 135.0f, 182.25f, 0x28);
+            OptionRumbleMotionShowStart(object);
+            Hu3DModelLayerSet(work->padFilter->model[0], 1);
+            work->cameraDoneF = FALSE;
+            object->unk10 = 1;
             /* fallthrough */
         case 1:
-            if (fn_1_CB8(lbl_1_bss_10) != 0) {
+            if (OptionCameraDoneCheck(optionCamera) != 0) {
                 break;
             }
-            if (temp_r31->unk24 == 0) {
-                Hu3DModelAttrReset(temp_r31->unk0C->model[0], 1);
-                temp_r31->unk24 = 1;
-                Hu3DModelHookSet(temp_r31->unk00->model[0], "target", temp_r31->unk0C->model[0]);
+            if (!work->cameraDoneF) {
+                Hu3DModelAttrReset(work->hand->model[0], 1);
+                work->cameraDoneF = TRUE;
+                Hu3DModelHookSet(work->system->model[0], "target", work->hand->model[0]);
             }
-            fn_1_A6EC(temp_r31->unk14[1]);
-            fn_1_A71C(temp_r31->unk14[1], MAKE_MESSID(47, 15));
-            fn_1_A6EC(temp_r31->unk14[0]);
-            if (temp_r31->unk20 != 0) {
-                fn_1_A71C(temp_r31->unk14[0], MAKE_MESSID(47, 2));
-            } else {
-                fn_1_A71C(temp_r31->unk14[0], MAKE_MESSID(47, 3));
+            OptionWinAnimIn(work->window[1]);
+            OptionWinMesSet(work->window[1], MAKE_MESSID(47, 15));
+            OptionWinAnimIn(work->window[0]);
+            if (work->rumbleF) {
+                OptionWinMesSet(work->window[0], MAKE_MESSID(47, 2));
             }
-            arg0->unk10 = 2;
+            else {
+                OptionWinMesSet(work->window[0], MAKE_MESSID(47, 3));
+            }
+            object->unk10 = 2;
             /* fallthrough */
         case 2:
-            if (temp_r31->unk14[0]->unk20 == 0 && temp_r31->unk14[1]->unk20 == 0) {
-                if (fn_1_550(0x200) != 0) {
+            if (work->window[0]->state == 0 && work->window[1]->state == 0) {
+                if (OptionPadCheck(PAD_BUTTON_B)) {
                     HuAudFXPlay(3);
-                    arg0->unk10 = 4;
-                } else if (fn_1_584(8) != 0 && temp_r31->unk20 == 0) {
-                    fn_1_39E0(temp_r31->unk00, 1, 1);
-                    temp_r31->unk20 = 1;
-                    temp_r31->unk28 = 0;
+                    object->unk10 = 4;
+                }
+                else if (OptionPadDStkRepCheck(8) && !work->rumbleF) {
+                    StartSystemMotion(work->system, 1, TRUE);
+                    work->rumbleF = TRUE;
+                    work->changeTimer = 0;
                     GWRumbleSet(1);
-                    arg0->unk10 = 3;
-                } else if (fn_1_584(4) != 0 && temp_r31->unk20 != 0) {
-                    fn_1_39E0(temp_r31->unk00, 0, 1);
-                    temp_r31->unk20 = 0;
-                    temp_r31->unk28 = 0;
+                    object->unk10 = 3;
+                }
+                else if (OptionPadDStkRepCheck(4) && work->rumbleF) {
+                    StartSystemMotion(work->system, 0, TRUE);
+                    work->rumbleF = FALSE;
+                    work->changeTimer = 0;
                     GWRumbleSet(0);
-                    arg0->unk10 = 3;
+                    object->unk10 = 3;
                 }
             }
             break;
         case 3:
-            if (temp_r31->unk28++ >= 60) {
+            if (work->changeTimer++ >= 60) {
                 HuAudFXPlay(0x83C);
-                fn_1_3BE0(temp_r31->unk04, temp_r31->unk20);
-                if (temp_r31->unk20 != 0) {
-                    HuPadRumbleSet(0, 0x3C, 0xA, 5);
-                    Hu3DMotionTimeSet(temp_r31->unk10->model[0], 0.0f);
-                    Hu3DModelAttrReset(temp_r31->unk10->model[0], 1);
-                } else {
-                    Hu3DModelAttrSet(temp_r31->unk10->model[0], 1);
+                ShakePad(work->pad, work->rumbleF);
+                if (work->rumbleF) {
+                    HuPadRumbleSet(0, 60, 10, 5);
+                    Hu3DMotionTimeSet(work->hiliteOn->model[0], 0.0f);
+                    Hu3DModelAttrReset(work->hiliteOn->model[0], 1);
                 }
-                arg0->unk10 = 1;
+                else {
+                    Hu3DModelAttrSet(work->hiliteOn->model[0], 1);
+                }
+                object->unk10 = 1;
             }
             break;
         case 4:
-            fn_1_A704(temp_r31->unk14[1]);
-            fn_1_A704(temp_r31->unk14[0]);
-            Hu3DModelAttrSet(temp_r31->unk0C->model[0], 1);
-            fn_1_3E1C(arg0);
-            arg0->unk10 = 5;
+            OptionWinAnimOut(work->window[1]);
+            OptionWinAnimOut(work->window[0]);
+            Hu3DModelAttrSet(work->hand->model[0], 1);
+            OptionRumbleMotionHideStart(object);
+            object->unk10 = 5;
             /* fallthrough */
         case 5:
-            if (temp_r31->unk14[1]->unk20 == 0 && temp_r31->unk14[0]->unk20 == 0 && fn_1_3ED0(lbl_1_bss_30) == 0) {
+            if (work->window[1]->state == 0 && work->window[0]->state == 0 && !OptionRumbleMotionCheck(optionRumble)) {
                 for (i = 0; i < 2; i++) {
-                    fn_1_A6AC(temp_r31->unk14[i]);
+                    OptionWinKill(work->window[i]);
                 }
-                Hu3DModelHookReset(temp_r31->unk00->model[0]);
-                fn_1_AF0(lbl_1_bss_10, -519.62f, 120.0f, 300.0f, 0x28);
-                fn_1_A6C(lbl_1_bss_10, 0.0f, 120.0f, 0.0f, 0x28);
-                fn_1_3290(arg0, 0);
+                Hu3DModelHookReset(work->system->model[0]);
+                OptionCameraFocusSet(optionCamera, -519.62f, 120.0f, 300.0f, 0x28);
+                OptionCameraTargetSet(optionCamera, 0.0f, 120.0f, 0.0f, 0x28);
+                OptionRumbleExecModeSet(object, MODE_DISABLED);
             }
             break;
     }
 }
 
-static omObjData *fn_1_37AC(void) {
-    omObjData *temp_r31;
+static omObjData *CreateHand(void)
+{
+    omObjData *hand;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 15));
-    Hu3DModelLayerSet(temp_r31->model[0], 3);
-    omSetRot(temp_r31, 0.0f, 180.0f, 0.0f);
-    Hu3DModelAttrSet(temp_r31->model[0], 1);
-    return temp_r31;
+    hand = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    hand->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 15));
+    Hu3DModelLayerSet(hand->model[0], 3);
+    omSetRot(hand, 0.0f, 180.0f, 0.0f);
+    Hu3DModelAttrSet(hand->model[0], 1);
+    return hand;
 }
 
-static void fn_1_3868(omObjData *arg0) {
+static void KillHand(omObjData *hand)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(hand->model[i]);
     }
 }
 
-static omObjData *fn_1_38BC(void) {
-    omObjData *temp_r31;
+static omObjData *CreateSystem(void)
+{
+    omObjData *system;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 2));
-    Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
+    system = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    system->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 2));
+    Hu3DModelAttrSet(system->model[0], 0x40000002);
     if (GWRumbleGet()) {
-        Hu3DMotionTimeSet(temp_r31->model[0], 60.0f);
-    } else {
-        Hu3DMotionTimeSet(temp_r31->model[0], 0.0f);
+        Hu3DMotionTimeSet(system->model[0], 60.0f);
     }
-    return temp_r31;
+    else {
+        Hu3DMotionTimeSet(system->model[0], 0.0f);
+    }
+    return system;
 }
 
-static void fn_1_398C(omObjData *arg0) {
+static void KillSystem(omObjData *system)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(system->model[i]);
     }
 }
 
-static void fn_1_39E0(omObjData *arg0, s32 arg1, s32 arg2) {
-    s16 temp_r31 = arg0->model[0];
+static void StartSystemMotion(omObjData *system, s32 rumbleF, BOOL slowF)
+{
+    s16 model = system->model[0];
 
-    Hu3DModelAttrReset(arg0->model[0], 0x40000002);
-    Hu3DModelAttrReset(arg0->model[0], 0x40000001);
-    if (arg1 != 0) {
-        Hu3DMotionStartEndSet(temp_r31, 60.0f, 120.0f);
-        if (arg2 != 0) {
-            Hu3DMotionTimeSet(temp_r31, 60.0f);
-        } else {
-            Hu3DMotionTimeSet(temp_r31, 119.0f);
+    Hu3DModelAttrReset(system->model[0], 0x40000002);
+    Hu3DModelAttrReset(system->model[0], 0x40000001);
+    if (rumbleF) {
+        Hu3DMotionStartEndSet(model, 60.0f, 120.0f);
+        if (slowF) {
+            Hu3DMotionTimeSet(model, 60.0f);
         }
-    } else {
-        Hu3DMotionStartEndSet(temp_r31, 0.0f, 60.0f);
-        if (arg2 != 0) {
-            Hu3DMotionTimeSet(temp_r31, 0.0f);
-        } else {
-            Hu3DMotionTimeSet(temp_r31, 59.0f);
+        else {
+            Hu3DMotionTimeSet(model, 119.0f);
         }
     }
+    else {
+        Hu3DMotionStartEndSet(model, 0.0f, 60.0f);
+        if (slowF) {
+            Hu3DMotionTimeSet(model, 0.0f);
+        }
+        else {
+            Hu3DMotionTimeSet(model, 59.0f);
+        }
+    }
 }
 
-static omObjData *fn_1_3B08(void) {
-    omObjData *temp_r31;
+static omObjData *CreatePad(void)
+{
+    omObjData *pad;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 9));
-    Hu3DModelAttrSet(temp_r31->model[0], 0x40000001);
-    return temp_r31;
+    pad = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    pad->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 9));
+    Hu3DModelAttrSet(pad->model[0], 0x40000001);
+    return pad;
 }
 
-static void fn_1_3B8C(omObjData *arg0) {
+static void KillPad(omObjData *pad)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(pad->model[i]);
     }
 }
 
-static void fn_1_3BE0(omObjData *arg0, s32 arg1) {
-    if (arg1 != 0) {
-        Hu3DModelAttrReset(arg0->model[0], 0x40000002);
-        Hu3DModelAttrSet(arg0->model[0], 0x40000001);
-    } else {
-        Hu3DModelAttrSet(arg0->model[0], 0x40000002);
-        Hu3DModelAttrReset(arg0->model[0], 0x40000001);
+static void ShakePad(omObjData *pad, BOOL on)
+{
+    if (on) {
+        Hu3DModelAttrReset(pad->model[0], 0x40000002);
+        Hu3DModelAttrSet(pad->model[0], 0x40000001);
+    }
+    else {
+        Hu3DModelAttrSet(pad->model[0], 0x40000002);
+        Hu3DModelAttrReset(pad->model[0], 0x40000001);
     }
 }
 
-static omObjData *fn_1_3C6C(void) {
-    omObjData *temp_r31;
+static omObjData *CreatePadFilter(void)
+{
+    omObjData *object;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 10));
-    Hu3DModelAttrSet(temp_r31->model[0], 0x40000002);
-    Hu3DModelLayerSet(temp_r31->model[0], 2);
-    return temp_r31;
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 10));
+    Hu3DModelAttrSet(object->model[0], 0x40000002);
+    Hu3DModelLayerSet(object->model[0], 2);
+
+    return object;
 }
 
-static void fn_1_3D00(omObjData *arg0) {
+static void KillPadFilter(omObjData *object)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }
 
-void fn_1_3D54(omObjData *arg0) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
-    s16 temp_r30 = temp_r31->unk08->model[0];
+void OptionRumbleMotionShowStart(omObjData *object)
+{
+    RumbleWork *work = object->data;
+    s16 model = work->padFilter->model[0];
 
-    Hu3DMotionStartEndSet(temp_r30, 0.0f, 40.0f);
-    Hu3DMotionTimeSet(temp_r30, 0.0f);
-    Hu3DModelAttrReset(temp_r31->unk08->model[0], 0x40000002);
-    Hu3DModelAttrReset(temp_r31->unk08->model[0], 0x40000001);
-    Hu3DModelLayerSet(temp_r31->unk08->model[0], 2);
+    Hu3DMotionStartEndSet(model, 0.0f, 40.0f);
+    Hu3DMotionTimeSet(model, 0.0f);
+    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000002);
+    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000001);
+    Hu3DModelLayerSet(work->padFilter->model[0], 2);
     HuAudFXPlay(0x83D);
 }
 
-void fn_1_3E1C(omObjData *arg0) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
-    s16 temp_r30 = temp_r31->unk08->model[0];
+void OptionRumbleMotionHideStart(omObjData *object)
+{
+    RumbleWork *work = object->data;
+    s16 model = work->padFilter->model[0];
 
-    Hu3DMotionStartEndSet(temp_r30, 40.0f, 80.0f);
-    Hu3DMotionTimeSet(temp_r30, 40.0f);
-    Hu3DModelAttrReset(temp_r31->unk08->model[0], 0x40000002);
-    Hu3DModelAttrReset(temp_r31->unk08->model[0], 0x40000001);
+    Hu3DMotionStartEndSet(model, 40.0f, 80.0f);
+    Hu3DMotionTimeSet(model, 40.0f);
+    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000002);
+    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000001);
     HuAudFXPlay(0x83E);
 }
 
-s32 fn_1_3ED0(omObjData *arg0) {
-    UnkRumbleDataStruct *temp_r31 = arg0->data;
-    s16 temp_r30 = temp_r31->unk08->model[0];
+BOOL OptionRumbleMotionCheck(omObjData *object)
+{
+    RumbleWork *work = object->data;
+    s16 padFilterModel = work->padFilter->model[0];
 
-    return !Hu3DMotionEndCheck(temp_r30);
+    return !Hu3DMotionEndCheck(padFilterModel);
 }
 
-static omObjData *fn_1_3F28(void) {
-    omObjData *temp_r31;
+static omObjData *CreateHiliteOn(void)
+{
+    omObjData *object;
 
-    temp_r31 = omAddObjEx(lbl_1_bss_8, 1003, 1, 0, 1, NULL);
-    temp_r31->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 11));
+    object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
+    object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 11));
     if (GWRumbleGet()) {
-        Hu3DModelAttrReset(temp_r31->model[0], 1);
-    } else {
-        Hu3DModelAttrSet(temp_r31->model[0], 1);
+        Hu3DModelAttrReset(object->model[0], 1);
     }
-    return temp_r31;
+    else {
+        Hu3DModelAttrSet(object->model[0], 1);
+    }
+    return object;
 }
 
-static void fn_1_3FD4(omObjData *arg0) {
+static void KillHiliteOn(omObjData *object)
+{
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        Hu3DModelKill(arg0->model[i]);
+        Hu3DModelKill(object->model[i]);
     }
 }

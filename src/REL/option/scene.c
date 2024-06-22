@@ -1,5 +1,5 @@
-#include "REL/option.h"
 #include "REL/executor.h"
+#include "REL/option.h"
 #include "game/audio.h"
 #include "game/esprite.h"
 #include "game/gamework_data.h"
@@ -15,160 +15,169 @@
 #include "rel_sqrt_consts.h"
 
 typedef struct {
-    /* 0x00 */ s16 unk00;
-    /* 0x02 */ char unk02[2];
-    /* 0x04 */ float unk04;
-    /* 0x08 */ float unk08;
-} UnkSceneDataStruct; // Size 0xC
+    /* 0x00 */ s16 id;
+    /* 0x04 */ float tplvl;
+    /* 0x08 */ float speed;
+} FaderWork; // Size 0xC
 
-static void fn_1_270(void);
+static void FadeSprite(void);
 static void fn_1_354(s16 arg0, s32 arg1, s32 arg2);
-static void fn_1_468(void);
-static void fn_1_5EC(omObjData *arg0);
-static void fn_1_6E8(void);
+static void FadeModel(void);
+static void SceneMain(omObjData *arg0);
+static void KillScene(void);
 
-Process *lbl_1_bss_8;
-static omObjData *lbl_1_bss_4;
-static s32 lbl_1_bss_0;
+Process *optionObjMan;
+static omObjData *scene;
+static s32 rumbleF;
 
-void ModuleProlog(void) {
-    lbl_1_bss_8 = omInitObjMan(0x40, 0x2000);
-    omGameSysInit(lbl_1_bss_8);
+void ModuleProlog(void)
+{
+    optionObjMan = omInitObjMan(0x40, 0x2000);
+    omGameSysInit(optionObjMan);
     HuWinInit(1);
-    lbl_1_bss_0 = GWGameStat.rumble;
-    lbl_1_bss_4 = omAddObjEx(lbl_1_bss_8, 1000, 0, 0, 0, fn_1_5EC);
-    lbl_1_bss_4->unk10 = 0;
-    lbl_1_bss_28 = fn_1_2E04();
+    rumbleF = GWGameStat.rumble;
+    scene = omAddObjEx(optionObjMan, 1000, 0, 0, 0, SceneMain);
+    scene->unk10 = 0;
+    optionState = OptionStateCreate();
 }
 
-void fn_1_160(s16 arg0, s32 arg1, s32 arg2) {
-    UnkSceneDataStruct *temp_r31;
-    Process *temp_r30;
+void OptionFadeSprite(s16 sprite, BOOL inF, s32 duration)
+{
+    FaderWork *work;
+    Process *process;
 
-    temp_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkSceneDataStruct), MEMORY_DEFAULT_NUM);
-    temp_r31->unk00 = arg0;
-    temp_r31->unk08 = 1.0f / arg2;
-    if (arg1 != 0) {
-        temp_r31->unk08 = temp_r31->unk08;
-        temp_r31->unk04 = 0.0f;
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(FaderWork), MEMORY_DEFAULT_NUM);
+    work->id = sprite;
+    work->speed = 1.0f / duration;
+    if (inF) {
+        work->speed = work->speed;
+        work->tplvl = 0.0f;
     } else {
-        temp_r31->unk08 = -temp_r31->unk08;
-        temp_r31->unk04 = 1.0f;
+        work->speed = -work->speed;
+        work->tplvl = 1.0f;
     }
-    espDispOn(temp_r31->unk00);
-    espTPLvlSet(temp_r31->unk00, temp_r31->unk04);
-    temp_r30 = HuPrcChildCreate(fn_1_270, 0x3000, 0x1500, 0, HuPrcCurrentGet());
-    temp_r30->user_data = temp_r31;
+    espDispOn(work->id);
+    espTPLvlSet(work->id, work->tplvl);
+    process = HuPrcChildCreate(FadeSprite, 0x3000, 0x1500, 0, HuPrcCurrentGet());
+    process->user_data = work;
 }
 
-static void fn_1_270(void) {
-    UnkSceneDataStruct *temp_r31 = HuPrcCurrentGet()->user_data;
+static void FadeSprite(void)
+{
+    FaderWork *work = HuPrcCurrentGet()->user_data;
 
-    while (1) {
-        temp_r31->unk04 += temp_r31->unk08;
-        if (temp_r31->unk04 > 1.0f) {
-            temp_r31->unk04 = 1.0f;
+    while (TRUE) {
+        work->tplvl += work->speed;
+        if (work->tplvl > 1.0f) {
+            work->tplvl = 1.0f;
             break;
         }
-        if (temp_r31->unk04 < 0.0f) {
-            temp_r31->unk04 = 0.0f;
+        if (work->tplvl < 0.0f) {
+            work->tplvl = 0.0f;
             break;
         }
-        espTPLvlSet(temp_r31->unk00, temp_r31->unk04);
+        espTPLvlSet(work->id, work->tplvl);
         HuPrcVSleep();
     }
-    espTPLvlSet(temp_r31->unk00, temp_r31->unk04);
-    if (temp_r31->unk04 <= 0.0f) {
-        espDispOff(temp_r31->unk00);
+    espTPLvlSet(work->id, work->tplvl);
+    if (work->tplvl <= 0.0f) {
+        espDispOff(work->id);
     }
-    HuMemDirectFree(temp_r31);
+    HuMemDirectFree(work);
     HuPrcEnd();
 }
 
-static void fn_1_354(s16 arg0, s32 arg1, s32 arg2) {
-    UnkSceneDataStruct *temp_r31;
-    Process *temp_r30;
+void OptionFadeModel(s16 model, BOOL inF, s32 duration)
+{
+    FaderWork *work;
+    Process *process;
 
-    temp_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkSceneDataStruct), MEMORY_DEFAULT_NUM);
-    temp_r31->unk00 = arg0;
-    temp_r31->unk08 = 1.0f / arg2;
-    if (arg1 != 0) {
-        temp_r31->unk08 = temp_r31->unk08;
-        temp_r31->unk04 = 0.0f;
-    } else {
-        temp_r31->unk08 = -temp_r31->unk08;
-        temp_r31->unk04 = 1.0f;
+    work = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(FaderWork), MEMORY_DEFAULT_NUM);
+    work->id = model;
+    work->speed = 1.0f / duration;
+    if (inF) {
+        work->speed = work->speed;
+        work->tplvl = 0.0f;
     }
-    Hu3DModelAttrReset(temp_r31->unk00, 1);
-    Hu3DModelTPLvlSet(temp_r31->unk00, temp_r31->unk04);
-    temp_r30 = HuPrcChildCreate(fn_1_468, 0x3000, 0x1500, 0, HuPrcCurrentGet());
-    temp_r30->user_data = temp_r31;
+    else {
+        work->speed = -work->speed;
+        work->tplvl = 1.0f;
+    }
+    Hu3DModelAttrReset(work->id, 1);
+    Hu3DModelTPLvlSet(work->id, work->tplvl);
+    process = HuPrcChildCreate(FadeModel, 0x3000, 0x1500, 0, HuPrcCurrentGet());
+    process->user_data = work;
 }
 
-static void fn_1_468(void) {
-    UnkSceneDataStruct *temp_r31 = HuPrcCurrentGet()->user_data;
+static void FadeModel(void)
+{
+    FaderWork *work = HuPrcCurrentGet()->user_data;
 
-    while (1) {
-        temp_r31->unk04 += temp_r31->unk08;
-        if (temp_r31->unk04 > 1.0f) {
-            temp_r31->unk04 = 1.0f;
+    while (TRUE) {
+        work->tplvl += work->speed;
+        if (work->tplvl > 1.0f) {
+            work->tplvl = 1.0f;
             break;
         }
-        if (temp_r31->unk04 < 0.0f) {
-            temp_r31->unk04 = 0.0f;
+        if (work->tplvl < 0.0f) {
+            work->tplvl = 0.0f;
             break;
         }
-        Hu3DModelTPLvlSet(temp_r31->unk00, temp_r31->unk04);
+        Hu3DModelTPLvlSet(work->id, work->tplvl);
         HuPrcVSleep();
     }
-    Hu3DModelTPLvlSet(temp_r31->unk00, temp_r31->unk04);
-    if (temp_r31->unk04 <= 0.0f) {
-        Hu3DModelAttrSet(temp_r31->unk00, 1);
+    Hu3DModelTPLvlSet(work->id, work->tplvl);
+    if (work->tplvl <= 0.0f) {
+        Hu3DModelAttrSet(work->id, 1);
     }
-    HuMemDirectFree(temp_r31);
+    HuMemDirectFree(work);
     HuPrcEnd();
 }
 
-s32 fn_1_550(u16 arg0) {
-    u32 temp_r31 = HuPadBtnDown[0] & arg0;
+BOOL OptionPadCheck(u16 btn)
+{
+    u32 temp_r31 = HuPadBtnDown[0] & btn;
 
     return (temp_r31 != 0);
 }
 
-s32 fn_1_584(u16 arg0) {
-    u32 temp_r31 = HuPadDStkRep[0] & arg0;
+BOOL OptionPadDStkRepCheck(u16 dir)
+{
+    u32 temp_r31 = HuPadDStkRep[0] & dir;
 
     return (temp_r31 != 0);
 }
 
-s32 fn_1_5B8(u16 arg0) {
-    u32 temp_r31 = HuPadDStk[0] & arg0;
+BOOL OptionPadDStkCheck(u16 dir)
+{
+    u32 temp_r31 = HuPadDStk[0] & dir;
 
     return (temp_r31 != 0);
 }
 
-static void fn_1_5EC(omObjData *arg0) {
-    switch (arg0->unk10) {
+static void SceneMain(omObjData *object)
+{
+    switch (object->unk10) {
         case 0:
-            arg0->unk10 = 1;
+            object->unk10 = 1;
             /* fallthrough */
         case 1:
-            if (omSysExitReq == 0) {
+            if (!omSysExitReq) {
                 break;
             }
-            arg0->unk10 = 2;
+            object->unk10 = 2;
             /* fallthrough */
         case 2:
             WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
             HuAudFadeOut(1000);
-            arg0->unk10 = 3;
+            object->unk10 = 3;
             /* fallthrough */
         case 3:
             if (WipeStatGet() == 0) {
-                fn_1_2F4C(lbl_1_bss_28);
-                if (lbl_1_bss_0 != GWGameStat.rumble) {
+                OptionStateKill(optionState);
+                if (rumbleF != GWGameStat.rumble) {
                     omSysExitReq = 0;
-                    fn_1_6E8();
+                    KillScene();
                 }
                 omOvlReturnEx(1, 1);
             }
@@ -176,8 +185,9 @@ static void fn_1_5EC(omObjData *arg0) {
     }
 }
 
-static void fn_1_6E8(void) {
-    s16 temp_r31;
+static void KillScene(void)
+{
+    s16 sprite;
 
     if (SLSaveFlagGet() == 0) {
         return;
@@ -187,9 +197,9 @@ static void fn_1_6E8(void) {
     HuSprInit();
     espInit();
     HuPrcVSleep();
-    temp_r31 = espEntry(0x860020, 0x1388, 0);
-    espPosSet(temp_r31, 288.0f, 240.0f);
-    espAttrReset(temp_r31, 4);
+    sprite = espEntry(0x860020, 0x1388, 0);
+    espPosSet(sprite, 288.0f, 240.0f);
+    espAttrReset(sprite, 4);
     Hu3DBGColorSet(0, 0, 0);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
     while (WipeStatGet() != 0) {
