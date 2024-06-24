@@ -5,6 +5,10 @@
 extern s32 rand8(void);
 
 ////// TYPES //////
+typedef void (*m440Func5)(ModelData*, struct _unkStruct5*, Mtx);
+typedef void (*m440Func6)(struct _unkStruct6*);
+typedef void (*m440Func14)(struct _unkStruct14*);
+
 typedef struct _unkStruct {
     f32 zoom;
     Vec center;
@@ -47,26 +51,38 @@ typedef struct _unkStruct4 {
     f32 unk30;
     s16 unk34;
     s16 unk36;
-    char unk38[0x10];
+    char unk38[0x4];
+    s32 unk3C;
+    s16 unk40;
+    s16 unk42;
+    f32 unk44;
     Vec unk48;
     Vec unk54;
     s16 unk60;
     s8 unk62;
 } unkStruct4; // sizeof 0x64
 
-typedef struct _unkStruct5 { // could be unkStruct3
+typedef struct _unkStruct5 {
     s16 unk0;
     s16 unk2;
-    char unk4[0x10];
+    u32 unk4;
+    u8 unk8;
+    m440Func5 unkC;
+    AnimData* unk10;
     s16 unk14;
-    unkStruct4 *unk18;
-    char unk1C[0x8];
-    GXColor* unk24; // ?
+    unkStruct4* unk18;
+    Vec* unk1C;
+    HsfVector2f* unk20;
+    GXColor* unk24;
+    void* unk28;
+    Vec unk2C;
+    Vec unk38;
+    Vec unk44;
+    Vec unk50;
+    HsfVector2f* unk5C;
+    f32 unk60;
+    f32 unk64;
 } unkStruct5;
-
-typedef void (*m440Func5)(omObjData*, unkStruct5*, Mtx*);
-typedef void (*m440Func6)(struct _unkStruct6*);
-typedef void (*m440Func14)(struct _unkStruct14*);
 
 typedef struct _unkStruct6 {
     s16 unk0;
@@ -155,13 +171,16 @@ typedef struct _unkStruct13 {
 } unkStruct13; // sizeof 0x84
 
 typedef struct _unkStruct14 {
-    char unk0[0xC];
+    s16 unk0;
+    s16 unk2;
+    char unk4[0x8];
     void* unkC;
     char unk10[0x4];
     void* unk14;
-    char unk18[0x4];
+    unkStruct4* unk18;
     void* unk1C;
-    char unk20[0x8];
+    char unk20[0x4];
+    GXColor* unk24;
     unkStruct12* unk28;
     unkStruct13* unk2C;
     void* unk30;
@@ -194,6 +213,8 @@ extern unkStruct6* lbl_1_bss_64;
 extern s16 lbl_1_bss_60;
 extern Mtx lbl_1_bss_30;
 extern s16 lbl_1_bss_2C;
+extern void* lbl_1_bss_28;
+extern u32 lbl_1_bss_24;
 extern s16 lbl_1_bss_10[10];
 extern s16 lbl_1_bss_E;
 extern u8 lbl_1_bss_C;
@@ -210,6 +231,7 @@ extern s8 lbl_1_bss_0;
 // main.c
 extern f32 lbl_1_data_0[5];
 extern s16 lbl_1_data_14[6];
+extern Vec lbl_1_data_20;
 extern Vec lbl_1_data_2C;
 extern Vec lbl_1_data_38;
 extern unkStruct7 lbl_1_data_44;
@@ -236,8 +258,8 @@ extern s32 fn_1_4A4(void);
 extern s32 fn_1_6C8(void);
 extern void fn_1_8F0(omObjData* object);
 extern void fn_1_AE0(omObjData* object);
-extern s32 fn_1_E14(omObjData* object);
-extern s32 fn_1_1138(omObjData* object);
+extern u8 fn_1_E14(omObjData* object);
+extern u8 fn_1_1138(omObjData* object);
 extern void fn_1_16D8(void);
 extern void fn_1_1708(void);
 extern void fn_1_1768(void);
@@ -249,7 +271,7 @@ extern void fn_1_18E0(void);
 extern s32 fn_1_1954(void);
 extern void fn_1_19B0(void);
 extern void fn_1_1CAC(void);
-extern void fn_1_2240(omObjData* object, unkStruct5*, Mtx*);
+extern void fn_1_2240(ModelData* data, unkStruct5*, Mtx);
 extern u16 fn_1_23E4(u16);
 extern void fn_1_2428(u16, u16);
 extern void fn_1_2470(omObjData* object);
@@ -280,7 +302,33 @@ extern void fn_1_6B58(unkStruct6*, HsfObject*);
 extern void fn_1_71FC(unkStruct6*, Vec*, s16, Vec);
 extern void fn_1_7934(unkStruct6*, unkStruct8*, Vec*);
 extern void fn_1_7D60(unkStruct15*, unkStruct13*, s16);
-extern void fn_1_806C(ModelData* arg0, Mtx arg1);
-// ...
+extern void fn_1_806C(ModelData*, Mtx);
+extern void fn_1_8470(unkStruct12*, unkStruct13*);
+extern void fn_1_8AC4(Mtx);
+extern void fn_1_8D1C(void);
 extern void fn_1_91A4(Vec*, Vec*, Vec*, f32[5]);
+extern f32 fn_1_927C(f32, f32, f32);
+extern void fn_1_9344(Mtx, Mtx);
 extern f32 fn_1_93C0(f32, f32, f32);
+extern f32 fn_1_93D0(f32, f32, f32, f32);
+extern unkStruct4* fn_1_942C(s16, Vec*, Vec*, f32, GXColor*);
+extern s16 fn_1_956C(AnimData*, s16, f32, s16, s16);
+extern void fn_1_9AB0(s16);
+extern unkStruct5* fn_1_9B10(s16);
+extern unkStruct4* fn_1_9B3C(s16, s16);
+extern void fn_1_9B94(s16, m440Func5);
+extern void fn_1_9BCC(s16, u8);
+extern void fn_1_9C04(ModelData*, Mtx);
+extern void fn_1_A1B8(HsfVector2f*, s16, s16, f32, f32);
+extern void fn_1_A284(HsfVector2f*, HsfVector2f*, s16, f32, f32);
+extern void fn_1_A328(Vec*, Vec*, Vec*, s16);
+void fn_1_A390(ModelData*, Mtx);
+extern void fn_1_AA94(void);
+// object.c
+extern void fn_1_AE08(Process*);
+extern void fn_1_EE78(void);
+extern void fn_1_EF50(void);
+extern s16 fn_1_F0FC(void);
+extern void fn_1_F168(void);
+extern void fn_1_F228(void);
+extern s32 fn_1_F4FC(s32);
