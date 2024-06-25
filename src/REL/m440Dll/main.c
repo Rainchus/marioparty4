@@ -430,7 +430,7 @@ void fn_1_18E0(void) {
     HuAudSeqFadeOut(temp_r31->unkC, 0x64);
 }
 
-s32 fn_1_1954(void) {
+u8 fn_1_1954(void) {
     unkStruct2* sp8;
 
     sp8 = (unkStruct2*)lbl_1_bss_6C->data;

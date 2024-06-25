@@ -1142,7 +1142,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m440Dll/main.c"),
-            Object(NonMatching, "REL/m440Dll/object.c"),
+            Object(Matching, "REL/m440Dll/object.c"),
         },
     ),
     Rel(

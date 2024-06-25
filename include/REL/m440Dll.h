@@ -202,10 +202,52 @@ typedef struct _unkStruct15 {
     void* unk1C;
 } unkStruct15;
 
+// object.c
+typedef struct _unkObjStruct {
+    s32 unk0;
+    s16 unk4;
+    s16 unk6;
+    s16 unk8;
+    s16 unkA;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+    s16 unk14;
+    s16 unk16;
+    Vec unk18;
+    Vec unk24;
+    Vec unk30;
+    Vec unk3C;
+    u8 unk48;
+    s16 unk4A;
+    f32 unk4C;
+    s16 unk50;
+    s16 unk52;
+    s16 unk54;
+    s16 unk56;
+    s16 unk58;
+    s16 unk5A;
+    f32 unk5C;
+    s16 unk60;
+    s16 unk62;
+    char unk64[0x4];
+    f32 unk68;
+    f32 unk6C;
+    f32 unk70;
+} unkObjStruct;
+
 
 ////// BSS //////
 // object.c
 extern omObjData* lbl_1_bss_C0[4];
+extern s16 lbl_1_bss_B8[4];
+extern Vec lbl_1_bss_88[4];
+extern f32 lbl_1_bss_84;
+extern Vec lbl_1_bss_78;
+extern s16 lbl_1_bss_74;
+extern u8 lbl_1_bss_72;
+extern s16 lbl_1_bss_70;
 // main.c
 extern omObjData* lbl_1_bss_6C;
 extern omObjData* lbl_1_bss_68;
@@ -248,6 +290,10 @@ extern s16 lbl_1_data_104[2];
 extern s16 lbl_1_data_108[2];
 // object.c
 extern s16 lbl_1_data_1D8;
+extern s16 lbl_1_data_1DA;
+extern u32 lbl_1_data_1DC[8][2];
+extern f32 lbl_1_data_21C[4];
+extern f32 lbl_1_data_250;
 
 ////// FUNCTIONS //////
 // main.c
@@ -268,7 +314,7 @@ extern s16 fn_1_17F4(void);
 extern void fn_1_181C(void);
 extern u8 fn_1_1890(void);
 extern void fn_1_18E0(void);
-extern s32 fn_1_1954(void);
+extern u8 fn_1_1954(void);
 extern void fn_1_19B0(void);
 extern void fn_1_1CAC(void);
 extern void fn_1_2240(ModelData* data, unkStruct5*, Mtx);
@@ -326,9 +372,25 @@ void fn_1_A390(ModelData*, Mtx);
 extern void fn_1_AA94(void);
 // object.c
 extern void fn_1_AE08(Process*);
+extern void fn_1_AEE4(omObjData*);
+extern void fn_1_B17C(omObjData*);
+extern void fn_1_B180(omObjData*);
+extern void fn_1_B3A4(omObjData*);
+extern void fn_1_B884(omObjData*, unkObjStruct*);
+extern void fn_1_C1D4(omObjData*, unkObjStruct*);
+extern void fn_1_C944(omObjData*, unkObjStruct*);
+extern s16 fn_1_CFAC(unkObjStruct*, u8);
+extern void fn_1_D24C(unkObjStruct*, f32, f32);
+extern void fn_1_D34C(omObjData*, unkObjStruct*);
+extern void fn_1_D7F8(omObjData*, unkObjStruct*);
+extern void fn_1_E034(omObjData*, unkObjStruct*);
+extern u8 fn_1_E8AC(omObjData*, unkObjStruct*);
+extern s32 fn_1_ED88(omObjData*, s16, u32);
 extern void fn_1_EE78(void);
 extern void fn_1_EF50(void);
 extern s16 fn_1_F0FC(void);
 extern void fn_1_F168(void);
 extern void fn_1_F228(void);
+extern u16 fn_1_F4C0(unkObjStruct*, u16);
+extern void fn_1_F4D4(unkObjStruct*, u16, u16);
 extern s32 fn_1_F4FC(s32);
