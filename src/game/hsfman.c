@@ -1465,13 +1465,13 @@ inline void Hu3DLightSpotSet(LightData *light, u16 arg1, f32 arg8) {
     light->unk_02 = arg1;
 }
 
-void Hu3DGLightSpotSet(s16 arg0, u16 arg1, f32 arg8) {
+void Hu3DGLightSpotSet(s16 arg0, f32 arg8, u16 arg1) {
     LightData *light = &Hu3DGlobalLight[arg0];
     
     Hu3DLightSpotSet(light, arg1, arg8);
 }
 
-void Hu3DLLightSpotSet(s16 arg0, s16 arg1, u16 arg2, f32 arg8) {
+void Hu3DLLightSpotSet(s16 arg0, s16 arg1, f32 arg8, u16 arg2) {
     ModelData* data;
     LightData* light;
 
@@ -1752,7 +1752,7 @@ s32 Hu3DModelLightInfoSet(s16 arg0, s16 arg1) {
         Hu3DGLightStaticSet(sp12, arg1);
         switch (var_r18->light.type) {
             case 0:
-                Hu3DGLightSpotSet(sp12, 2, var_r18->light.cutoff);
+                Hu3DGLightSpotSet(sp12, var_r18->light.cutoff, 2);
                 break;
             case 1:
                 Hu3DGLightPointSet(sp12, var_r18->data.base.scale.x - var_r18->data.base.rot.z, 1.0f, 2);
