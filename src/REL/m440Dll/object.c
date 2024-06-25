@@ -14,6 +14,7 @@ omObjData* lbl_1_bss_C0[4];
 s16 lbl_1_bss_B8[4];
 Vec lbl_1_bss_88[4];
 f32 lbl_1_bss_84;
+Vec lbl_1_bss_78;
 s16 lbl_1_bss_74;
 u8 lbl_1_bss_72;
 s16 lbl_1_bss_70;
@@ -329,7 +330,7 @@ void fn_1_B884(omObjData* arg0, unkObjStruct* arg1) {
             arg1->unk30.y = fn_1_927C(arg1->unk6C, var_f30, var_f31);
             return;
         case 4:
-            if (++arg1->unkC > 0xF) {
+            if (++arg1->unkC > 15) {
                 lbl_1_bss_74++;
             }
             break;
@@ -353,7 +354,7 @@ void fn_1_B884(omObjData* arg0, unkObjStruct* arg1) {
                 arg1->unk6C = 0.0f;
                 arg1->unk60 = 0;
                 fn_1_D24C(arg1, arg1->unk30.y, arg1->unk30.y);
-                fn_1_F4D4(arg1, 0xF, 3);
+                fn_1_F4D4(arg1, 15, 3);
                 fn_1_1768();
             }
             break;
@@ -681,7 +682,7 @@ void fn_1_D34C(omObjData* arg0, unkObjStruct* arg1) {
                 if (fn_1_17CC() < 270.0f) {
                     fn_1_1708();
                 }
-                fn_1_F4D4(arg1, 0xF, 4);
+                fn_1_F4D4(arg1, 15, 4);
             }
             if (temp_r30->unk_0C == -1) {
                 temp_r30->unk_68 = 0.0f;
@@ -809,9 +810,9 @@ void fn_1_D7F8(omObjData* arg0, unkObjStruct* arg1) {
             if (fn_1_4EA8(0x100U) != 0) {
                 fn_1_4EEC(0x100U, 0U);
                 if (fn_1_4E54(arg1->unk4A) == 0) {
-                    fn_1_F4D4(arg1, 0xF, 5);
+                    fn_1_F4D4(arg1, 15, 5);
                 } else {
-                    fn_1_F4D4(arg1, 0xF, 6);
+                    fn_1_F4D4(arg1, 15, 6);
                 }
                 arg1->unkC = arg1->unkE = 0;
                 arg1->unk60 = arg1->unk62 = 0;
@@ -928,7 +929,7 @@ void fn_1_E034(omObjData* arg0, unkObjStruct* arg1) {
                 arg1->unkE = (3 - lbl_1_data_1D8) * 0x1E;
                 arg1->unk14 = 0;
                 arg1->unk3C.y = 90.0f;
-                fn_1_F4D4(arg1, 0xF, 1);
+                fn_1_F4D4(arg1, 15, 1);
             }
             arg1->unk24 = arg1->unk18;
             arg1->unk18.x = (700.0 * cos((M_PI * lbl_1_bss_84) / 180.0));
@@ -947,4 +948,201 @@ void fn_1_E034(omObjData* arg0, unkObjStruct* arg1) {
             arg1->unk30.y = fn_1_927C(arg1->unk68, var_f30, var_f31);
             break;
     }
+}
+
+u8 fn_1_E8AC(omObjData* arg0, unkObjStruct* arg1) {
+    ModelData* temp_r29;
+    f32 var_f31;
+    s32 temp_r28;
+    s16 temp_r27;
+
+    temp_r29 = &Hu3DData[arg0->model[0]];
+    switch (arg1->unk60) {
+        case 0:
+            lbl_1_bss_70 = 0;
+            Hu3DMotionShiftSet(arg0->model[0], arg0->motion[6], 0.0f, 7.0f, 0);
+            HuAudCharVoicePlay(arg1->unk8, 0x12E);
+            arg1->unk60++;
+            break;
+        case 1:
+            if (fn_1_4EA8(7U) == 5) {
+                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[0], 0.0f, 7.0f, 0x40000001);
+                arg1->unkC = 0;
+                arg1->unk68 = arg1->unk30.y;
+                var_f31 = lbl_1_data_0[arg1->unk4A];
+                lbl_1_bss_78 = arg1->unk18;
+                if ((arg1->unk4A == 4) || (arg1->unk4A == 3)) {
+                    arg1->unk24.x = (840.0000610351563 * cos((M_PI * var_f31) / 180.0));
+                    arg1->unk24.y = 0.0f;
+                    arg1->unk24.z = (840.0000610351563 * sin((M_PI * var_f31) / 180.0));
+                } else {
+                    arg1->unk24.x = (1050.0 * cos((M_PI * var_f31) / 180.0));
+                    arg1->unk24.y = 0.0f;
+                    arg1->unk24.z = (1050.0 * sin((M_PI * var_f31) / 180.0));
+                }
+                arg1->unk30.y = 0.0f;
+                PSMTXRotRad(temp_r29->unk_F0, 0x59, 0.017453292f * arg1->unk68);
+                arg1->unk60++;
+                if (lbl_1_data_1D8 == 0) {
+                    fn_1_18E0();
+                }
+            }
+            break;
+        case 2:
+            arg1->unkC++;
+            arg1->unk68 += 40.0f;
+            var_f31 = arg1->unkC / 90.0f;
+            if (var_f31 >= 1.0f) {
+                var_f31 = 1.0f;
+                arg1->unk60++;
+            }
+            arg1->unk18.x = lbl_1_bss_78.x + (var_f31 * (arg1->unk24.x - lbl_1_bss_78.x));
+            arg1->unk18.y = fn_1_93D0(lbl_1_bss_78.y, 1400.0f + lbl_1_bss_78.y, 0.0f, var_f31);
+            arg1->unk18.z = lbl_1_bss_78.z + (var_f31 * (arg1->unk24.z - lbl_1_bss_78.x));
+            arg1->unk30.x = 180.0f * var_f31;
+            PSMTXRotRad(temp_r29->unk_F0, 0x59, 0.017453292f * arg1->unk68);
+            break;
+        case 3:
+            fn_1_F4D4(arg1, 15, 8);
+            Hu3DModelAttrSet(arg0->model[0], 1);
+            temp_r27 = lbl_1_data_1D8 + 1;
+            temp_r28 = arg1->unk4;
+            GWPlayerCoinWinSet(temp_r28, temp_r27);
+            lbl_1_data_1D8 -= 1;
+            return 1;
+    }
+    return 0;
+}
+
+s32 fn_1_ED88(omObjData* arg0, s16 arg1, u32 arg2) {
+    s16 var_r28;
+    s16 var_r29;
+
+    var_r28 = Hu3DData[arg0->model[0]].unk_08;
+    var_r29 = Hu3DData[arg0->model[0]].unk_0C;
+    if ((var_r29 != arg0->motion[arg1]) && (var_r28 != arg0->motion[arg1])) {
+        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[arg1], 0.0f, 7.0f, arg2);
+    }
+}
+
+void fn_1_EE78(void) {
+    s16 var_r31;
+    unkObjStruct* var_r30;
+    
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        var_r30 = (unkObjStruct*)lbl_1_bss_C0[var_r31]->data;
+        if (fn_1_F4C0(var_r30, 15) == 8) {
+            Hu3DMotionShiftSet(lbl_1_bss_C0[var_r31]->model[0], lbl_1_bss_C0[var_r31]->motion[6], 0.0f, 7.0f, 0);
+        }
+    }
+}
+
+void fn_1_EF50(void) {
+    unkObjStruct* var_r30;
+    s16 var_r28;
+    s16 var_r29;
+    s16 var_r31;
+    
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        var_r30 = (unkObjStruct*)lbl_1_bss_C0[var_r31]->data;
+        if (fn_1_F4C0(var_r30, 15) == 8) {
+            var_r28 = Hu3DData[lbl_1_bss_C0[var_r31]->model[0]].unk_08;
+            var_r29 = Hu3DData[lbl_1_bss_C0[var_r31]->model[0]].unk_0C;
+            if ((var_r29 != lbl_1_bss_C0[var_r31]->motion[0]) && (var_r28 != lbl_1_bss_C0[var_r31]->motion[0])) {
+                Hu3DMotionShiftSet(lbl_1_bss_C0[var_r31]->model[0], lbl_1_bss_C0[var_r31]->motion[0], 0.0f, 7.0f, 0x40000001);
+            }
+        }
+    }
+}
+
+s16 fn_1_F0FC(void) {
+    s16 var_r31;
+    
+    for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        if (lbl_1_bss_B8[var_r31] != -1) {
+            return lbl_1_bss_B8[var_r31];
+        }
+    }
+    return 0;
+}
+
+void fn_1_F168(void) {
+    omObjData* temp_r31;
+    s16 var_r30;
+    unkObjStruct* var_r29;
+    
+    for (var_r30 = 0; var_r30 < 4; var_r30++) {
+        temp_r31 = lbl_1_bss_C0[lbl_1_bss_B8[var_r30]];
+        var_r29 = (unkObjStruct*)temp_r31->data;
+        fn_1_F4D4(var_r29, 15, 1);
+        Hu3DMotionShiftSet(temp_r31->model[0], temp_r31->motion[2], 0.0f, 7.0f, 0x40000001);
+    }
+}
+
+void fn_1_F228(void) {
+    omObjData* temp_r30;
+    s16 temp_r0;
+    s16 var_r29;
+    s32 temp_r27;
+    s32 temp_r27_2;
+    s32 var_r28;
+    u32 temp_r0_2;
+    u32 temp_r3;
+    u32 temp_r3_2;
+    unkObjStruct* temp_r31;
+    
+    for (var_r29 = 0; var_r29 < 4; var_r29++) {
+        if (lbl_1_bss_B8[var_r29] != -1) {
+            temp_r30 = lbl_1_bss_C0[lbl_1_bss_B8[var_r29]];
+            temp_r31 = (unkObjStruct*)temp_r30->data;
+            if (temp_r31->unkA == 0) {
+                switch (GWPlayerCfg[temp_r31->unk4].diff) {
+                    case 0:
+                        var_r28 = 3;
+                        break;
+                    case 1:
+                        var_r28 = 2;
+                        break;
+                    case 2:
+                        var_r28 = 1;
+                        break;
+                    case 3:
+                        var_r28 = 0;
+                        break;
+                }
+                temp_r31->unk4C = ((((rand8() << 8) | rand8()) % 256) / 255.0f);
+                temp_r31->unk54 = (((rand8() << 8) | rand8()) % (s16)(var_r28 + 1));
+                temp_r31->unk50 = -1;
+                temp_r31->unk56 = temp_r31->unk5A = 0;
+                temp_r31->unkA = -1;
+                temp_r31->unkC = temp_r31->unkE = 0;
+                fn_1_F4D4(temp_r31, 15, 2);
+            } else if (temp_r31->unkA == -1) {
+                temp_r31->unkA = lbl_1_data_1D8;
+            } else {
+                temp_r31->unkA--;
+                temp_r31->unk24 = temp_r31->unk18;
+                temp_r31->unkC = 0;
+                temp_r31->unkE = 0x1E;
+                temp_r31->unk14 = 0;
+                fn_1_F4D4(temp_r31, 15, 1);
+            }
+            if (temp_r30->motion[2] != Hu3DData[temp_r30->model[0]].unk_08) {
+                Hu3DMotionShiftSet(temp_r30->model[0], temp_r30->motion[2], 0.0f, 7.0f, 0x40000001U);
+            }
+        }
+    }
+}
+
+u16 fn_1_F4C0(unkObjStruct* arg0, u16 arg1) {
+    return arg0->unk0 & arg1;
+}
+
+void fn_1_F4D4(unkObjStruct* arg0, u16 arg1, u16 arg2) {
+    arg0->unk0 &= ~arg1;
+    arg0->unk0 |= arg2;
+}
+
+s32 fn_1_F4FC(s32 arg0) {
+    return lbl_1_bss_B8[arg0];
 }
