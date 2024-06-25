@@ -1433,6 +1433,7 @@ void fn_1_8AC8(StructBss2A6C *arg0, StructSp14C8 *arg1)
 	}
 }
 
+//decomp.me link is https://decomp.me/scratch/PbkiW
 void fn_1_8C10(omObjData *object)
 {
 	s32 temp_r31;
