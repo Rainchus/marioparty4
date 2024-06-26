@@ -156,7 +156,7 @@ typedef struct hsf_face {
         } strip;
         s16 indices[4][4];
     };
-    float nbt[3];
+    Vec nbt;
 } HsfFace;
 
 typedef struct hsf_transform {
