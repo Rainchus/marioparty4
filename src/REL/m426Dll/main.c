@@ -322,7 +322,7 @@ u8 lbl_1_bss_18[4];
 Vec lbl_1_bss_C;
 Vec lbl_1_bss_0;
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Process *var_r31;
     LightData *var_r30;
@@ -2848,7 +2848,7 @@ s16 fn_1_7DC8(s16 arg0)
     var_r26 = var_r23->unk_120;
     var_r22 = Hu3DHookFuncCreate(var_r23->hook);
     var_r27 = &Hu3DData[var_r22];
-    var_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(UnkModelDataUnk120Struct), var_r27->unk_48); // TODO fix
+    var_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(UnkModelDataUnk120Struct), var_r27->unk_48);
     var_r27->unk_120 = var_r31;
     var_r31->unk_38 = var_r26->unk_38;
     var_r31->unk_24 = var_r26->unk_24;

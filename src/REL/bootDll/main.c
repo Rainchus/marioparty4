@@ -48,7 +48,7 @@ static BOOL TitleProc(void);
 
 void *logoReadNintendo(void);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	omOvlHisData *history;
 	OSReport("******* Boot ObjectSetup *********\n");
@@ -549,4 +549,3 @@ static BOOL TitleProc(void)
 	HuSprAttrSet(titleGroup, 3, HUSPR_ATTR_DISPOFF);
 	return 0;
 }
-

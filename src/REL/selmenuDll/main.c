@@ -158,14 +158,14 @@ static u16 keyDStkAllPrev[4] = {};
 static void SMInit(omObjData *object);
 static void SMRand8Tick(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	static char *funcId = "SMOBJECTSETUP\n";
 	s32 i;
 	Process *objman;
 	Vec pos, dir;
 	
-	OSReport("ObjectSetup:%08x\n", ModuleProlog);
+	OSReport("ObjectSetup:%08x\n", ObjectSetup);
 	OSReport("\n\n\n******* SMObjectSetup *********\n");
 	OSReport(funcId);
 	objman = omInitObjMan(50, 8192);

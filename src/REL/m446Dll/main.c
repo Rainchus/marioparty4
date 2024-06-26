@@ -36,7 +36,7 @@ Vec lbl_1_data_50[2] = {
 f32 lbl_1_data_68[2] = { 600.0f, 600.0f };
 s32 lbl_1_data_70[2][2] = { { 0x46, 0x1A4 }, { 0x1F4, 0x3C } };
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     lbl_1_bss_C = omInitObjMan(5, 0x2000);
     omGameSysInit(lbl_1_bss_C);
     lbl_1_bss_8 = omAddObjEx(lbl_1_bss_C, 0x3E8, 0x32U, 0x32U, 0, fn_1_13C);

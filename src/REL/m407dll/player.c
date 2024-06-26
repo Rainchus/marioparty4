@@ -112,7 +112,7 @@ inline void SetDominationDataStuff(omObjData* arg0, s32 val0, s32 val1) {
     temp_r29->unk_20 = val1;
 }
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     lbl_1_bss_0[0] = omInitObjMan(0x2F8, 0x2000);
     omGameSysInit(lbl_1_bss_0[0]);
     fn_1_4980(lbl_1_bss_0[0]);

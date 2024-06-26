@@ -68,7 +68,7 @@ void fn_1_4FC(omObjData *object);
 void fn_1_1260(Process *objman);
 void fn_1_6E5C(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	Process *objman;
 	Vec pos;

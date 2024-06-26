@@ -18,17 +18,17 @@ typedef struct hsf_draw_object {
 static void objCall(ModelData *arg0, HsfObject *arg1);
 static void objMesh(ModelData *arg0, HsfObject *arg1);
 static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1);
-static void SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1);
+static s32 SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1);
 static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1);
 static GXTevKColorSel SetKColor(GXTevStageID arg0, u8 arg1);
 static GXTevKColorSel SetKColorRGB(GXTevStageID arg0, GXColor *arg1);
 static void FlushKColor(void);
 static void SetReflect(HsfDrawObject *arg0, s16 arg1, s16 arg2, u8 arg3);
 static void SetProjection(HsfDrawObject *arg0, s16 arg1, s16 arg2, s16 arg3, GXTexMapID arg4, u32 arg5);
-static void SetShadowTex(void);
+static s32 SetShadowTex(void);
 static void SetShadow(HsfDrawObject *arg0, s16 arg1, s16 arg2);
 static void FaceDrawShadow(HsfDrawObject *arg0, HsfFace *arg1);
-static void LoadTexture(ModelData *arg0, HsfBitmap *arg1, HsfAttribute *arg2, s16 arg3);
+static s32 LoadTexture(ModelData *arg0, HsfBitmap *arg1, HsfAttribute *arg2, s16 arg3);
 static void objNull(ModelData *arg0, HsfObject *arg1);
 static void objRoot(ModelData *arg0, HsfObject *arg1);
 static void objJoint(ModelData *arg0, HsfObject *arg1);
@@ -410,21 +410,20 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
     GXColor sp2C;
     void *sp28;
     Hu3DTexAnimDataStruct *sp24;
+	s16 var_r31;
+	HsfMaterial *temp_r30;
+	ModelData *temp_r29;
+	HsfObject *temp_r28;
+	HsfBitmap *temp_r27;
     HsfAttribute *temp_r26;
-    HsfBitmap *temp_r27;
-    s16 var_r22;
-    s16 var_r18;
-    s16 var_r21;
     s16 var_r24;
-    s16 var_r31;
-    s16 var_r17;
-    s16 var_r6;
+	HsfdrawStruct01 *temp_r23;
+    s16 var_r22;
+	s16 var_r21;
+	HsfConstData *temp_r20;
+    s16 var_r18;
     u32 temp_r19;
-    HsfConstData *temp_r20;
-    HsfMaterial *temp_r30;
-    HsfObject *temp_r28;
-    ModelData *temp_r29;
-    HsfdrawStruct01 *temp_r23;
+    s16 var_r17;
 
     temp_r28 = arg0->object;
     temp_r29 = arg0->model;
@@ -717,7 +716,7 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
     drawCnt++;
 }
 
-static void SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
+static s32 SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
     GXColor sp1C;
     ModelData *temp_r28;
     HsfObject *var_r21;
@@ -1607,7 +1606,7 @@ static void SetProjection(HsfDrawObject *arg0, s16 arg1, s16 arg2, s16 arg3, GXT
     GXSetTevAlphaOp(arg1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_FALSE, GX_TEVPREV);
 }
 
-static void SetShadowTex(void) {
+static s32 SetShadowTex(void) {
     GXTexObj sp8;
 
     GXInitTexObj(&sp8, Hu3DShadowData.unk_04, Hu3DShadowData.unk_02, Hu3DShadowData.unk_02, GX_TF_I8, GX_CLAMP, GX_CLAMP, GX_FALSE);
@@ -1733,7 +1732,7 @@ static void FaceDrawShadow(HsfDrawObject *arg0, HsfFace *arg1) {
     drawCnt++;
 }
 
-static void LoadTexture(ModelData *arg0, HsfBitmap *arg1, HsfAttribute *arg2, s16 arg3) {
+static s32 LoadTexture(ModelData *arg0, HsfBitmap *arg1, HsfAttribute *arg2, s16 arg3) {
     GXTexObj sp1C;
     GXTlutObj sp10;
     s16 var_r27;

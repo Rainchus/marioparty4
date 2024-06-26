@@ -40,7 +40,7 @@ void fn_1_B8C(omObjData *object);
 void fn_1_F40(omObjData *object);
 void fn_1_1B6C(void);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 light;
 	OSReport("******* MS ObjectSetup *********\n");

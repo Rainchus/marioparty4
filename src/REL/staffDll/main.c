@@ -9,8 +9,16 @@
 #include "game/window.h"
 #include "game/wipe.h"
 
-#include "REL/staffDll.h"
 #include "rel_sqrt_consts.h"
+
+typedef struct StaffData {
+    /* 0x00 */ u32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ float unk_08;
+    /* 0x0C */ u32 unk_0C;
+    /* 0x10 */ s32 logoGroupIdx;
+    /* 0x14 */ s32 unk_14;
+} StaffData;
 
 static s16 imgGroup[26];
 static s16 staffLogoGroup[3];
@@ -20,7 +28,7 @@ static s32 staffSide;
 static s32 currImg;
 static omObjData *multiViewObj;
 
-static UnkStaffDllStruct staffData[] = {
+static StaffData staffData[] = {
     { 0x00340001, 0, 0.0f, 0, 0, 0 },
     { 0x00350000, 2, 0.0f, 0, 0, 0 },
     { -3, 0, 72.0f, 0, 0, 0 },
@@ -207,25 +215,25 @@ static UnkStaffDllStruct staffData[] = {
     { -2, 0, 0.0f, 0, 0, 0 },
     { -1, 0, 0.0f, 0, 0, 0 },
 };
+
 static float staffLogoPosTbl[] = { 460.0f, 293.0f, 293.0f };
 
 static void MainProc(void);
 static void CreateStaff(void);
 static void ShowPicture(void);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
-    Process *var_r31;
-    s32 var_lr;
+    Process *process;
 
-    var_r31 = omInitObjMan(0x32, 0x2000);
-    omGameSysInit(var_r31);
+    process = omInitObjMan(0x32, 0x2000);
+    omGameSysInit(process);
     HuWinInit(1);
     Hu3DCameraCreate(1);
     Hu3DCameraPerspectiveSet(1, 20.0f, 20.0f, 10000.0f, 1.2f);
     Hu3DCameraViewportSet(1, 0.0f, 0.0f, 640.0f, 480.0f, 0.0f, 1.0f);
     Hu3DCameraScissorSet(1, 0, 0, 640, 480);
-    multiViewObj = omAddObjEx(var_r31, 0x7FDA, 0, 0, -1, omOutViewMulti);
+    multiViewObj = omAddObjEx(process, 0x7FDA, 0, 0, -1, omOutViewMulti);
     multiViewObj->work[0] = 1;
     CRotM[0].x = -35.0f;
     CRotM[0].y = 0.0f;
@@ -282,14 +290,15 @@ static void CreateStaff(void)
     currImg = 0;
 
     for (var_r31 = 0; var_r31 < 26; var_r31++) {
-        var_r29 = HuDataSelHeapReadNum(var_r31 + 0x730000, MEMORY_DEFAULT_NUM, HEAP_DATA);
+        var_r29 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_STAFF, var_r31), MEMORY_DEFAULT_NUM, HEAP_DATA);
         var_r28 = HuSprAnimRead(var_r29);
         var_r30 = HuSprCreate(var_r28, 16386, 0);
         imgGroup[var_r31] = HuSprGrpCreate(1);
         HuSprGrpMemberSet(imgGroup[var_r31], 0, var_r30);
         if (staffSide != 0) {
             HuSprGrpPosSet(imgGroup[var_r31], 380.0f, 240.0f);
-        } else {
+        }
+        else {
             HuSprGrpPosSet(imgGroup[var_r31], 200.0f, 240.0f);
         }
         HuSprAttrSet(imgGroup[var_r31], 0, HUSPR_ATTR_DISPOFF);
@@ -325,66 +334,65 @@ static void CreateStaff(void)
 static void MoveStaff(void)
 {
     float sp8[2];
-    Process *temp_ret;
     float var_f30;
     float var_f31;
     s16 var_r30;
     u32 var_r29;
-    UnkStaffDllStruct *var_r31;
+    StaffData *var_r31;
 
     var_r31 = HuPrcCurrentGet()->user_data;
     var_r31->unk_14 = 0;
     switch (var_r31->unk_00) {
-    case -2:
-        HuSprAttrReset(staffLogoGroup[var_r31->unk_10], 0, HUSPR_ATTR_DISPOFF);
-        var_f31 = staffLogoPosTbl[var_r31->unk_10];
-        var_f30 = 576.0f;
-        break;
-    default:
-        HuWinMesMaxSizeGet(1, sp8, var_r31->unk_00);
-        var_r29 = 0;
-        switch (var_r31->unk_04) {
-			case 3:
-				var_f31 = 320.0f - (0.75f * sp8[0]) / 2;
-				break;
-			case 0:
-				var_f31 = 10.0f;
-				if (!staffSide) {
-					var_f31 += 240.0f;
-				}
-				break;
-			case 1:
-				var_f31 = 30.0f;
-				if (!staffSide) {
-					var_f31 += 240.0f;
-				}
-				break;
-			case 2:
-				var_f31 = 550.0f - (0.75f * sp8[0]);
-				if (staffSide) {
-					var_f31 -= 240.0f;
-				}
-				var_r29 = 0x1000;
-				break;
-        }
-        var_f30 = 476.0f;
-        var_r30 = HuWinCreate(var_f31, var_f30, sp8[0], sp8[1], 1);
-        HuWinAttrSet(var_r30, var_r29);
-        HuWinPriSet(var_r30, 256);
-        HuWinBGTPLvlSet(var_r30, 0.0f);
-        HuWinMesSpeedSet(var_r30, 0);
-        HuWinMesSet(var_r30, var_r31->unk_00);
-        HuWinScaleSet(var_r30, 0.75f, 0.75f);
-        switch (var_r31->unk_04) {
-			case 0:
-			case 1:
-				HuWinMesPalSet(var_r30, 7, 96, 240, 255);
-				break;
-			default:
-				HuWinMesPalSet(var_r30, 7, 255, 255, 255);
-				break;
-        }
-        break;
+        case -2:
+            HuSprAttrReset(staffLogoGroup[var_r31->logoGroupIdx], 0, HUSPR_ATTR_DISPOFF);
+            var_f31 = staffLogoPosTbl[var_r31->logoGroupIdx];
+            var_f30 = 576.0f;
+            break;
+        default:
+            HuWinMesMaxSizeGet(1, sp8, var_r31->unk_00);
+            var_r29 = 0;
+            switch (var_r31->unk_04) {
+                case 3:
+                    var_f31 = 320.0f - (0.75f * sp8[0]) / 2;
+                    break;
+                case 0:
+                    var_f31 = 10.0f;
+                    if (staffSide == 0) {
+                        var_f31 += 240.0f;
+                    }
+                    break;
+                case 1:
+                    var_f31 = 30.0f;
+                    if (staffSide == 0) {
+                        var_f31 += 240.0f;
+                    }
+                    break;
+                case 2:
+                    var_f31 = 550.0f - (0.75f * sp8[0]);
+                    if (staffSide != 0) {
+                        var_f31 -= 240.0f;
+                    }
+                    var_r29 = 0x1000;
+                    break;
+            }
+            var_f30 = 476.0f;
+            var_r30 = HuWinCreate(var_f31, var_f30, sp8[0], sp8[1], 1);
+            HuWinAttrSet(var_r30, var_r29);
+            HuWinPriSet(var_r30, 256);
+            HuWinBGTPLvlSet(var_r30, 0.0f);
+            HuWinMesSpeedSet(var_r30, 0);
+            HuWinMesSet(var_r30, var_r31->unk_00);
+            HuWinScaleSet(var_r30, 0.75f, 0.75f);
+            switch (var_r31->unk_04) {
+                case 0:
+                case 1:
+                    HuWinMesPalSet(var_r30, 7, 96, 240, 255);
+                    break;
+                default:
+                    HuWinMesPalSet(var_r30, 7, 255, 255, 255);
+                    break;
+            }
+            break;
     }
     while (TRUE) {
         var_f30 -= 0.4f;
@@ -392,20 +400,23 @@ static void MoveStaff(void)
             if (var_f30 < -114.0f) {
                 break;
             }
-        } else if (var_f30 < -24.0f) {
+        }
+        else if (var_f30 < -24.0f) {
             break;
         }
         if (var_r31->unk_00 == -2) {
-            HuSprGrpPosSet(staffLogoGroup[var_r31->unk_10], var_f31, var_f30);
-        } else {
+            HuSprGrpPosSet(staffLogoGroup[var_r31->logoGroupIdx], var_f31, var_f30);
+        }
+        else {
             HuWinPosSet(var_r30, var_f31, var_f30);
         }
         HuPrcVSleep();
     }
     var_r31->unk_14 = 1;
     if (var_r31->unk_00 == -2) {
-        HuSprAttrSet(staffLogoGroup[var_r31->unk_10], 0, HUSPR_ATTR_DISPOFF);
-    } else {
+        HuSprAttrSet(staffLogoGroup[var_r31->logoGroupIdx], 0, HUSPR_ATTR_DISPOFF);
+    }
+    else {
         HuWinKill(var_r30);
     }
     HuPrcVSleep();
@@ -423,7 +434,8 @@ static void HidePicture(void)
     currImg++;
     if (staffSide != 0) {
         HuSprGrpPosSet(imgGroup[currImg], 380.0f, 240.0f);
-    } else {
+    }
+    else {
         HuSprGrpPosSet(imgGroup[currImg], 200.0f, 240.0f);
     }
     HuSprAttrSet(imgGroup[prevImg], 0, HUSPR_ATTR_DISPOFF);
@@ -452,7 +464,8 @@ static void ShowPicture(void)
     while (TRUE) {
         if (currImg >= 24) {
             HuPrcSleep(430);
-        } else {
+        }
+        else {
             HuPrcSleep(550);
         }
         if (currImg >= 25) {
@@ -476,7 +489,7 @@ static void ShowPicture(void)
 static void MainProc(void)
 {
     s32 var_r31;
-    UnkStaffDllStruct *var_r30;
+    StaffData *var_r30;
     s32 var_r29;
     Process *var_r28;
     s32 var_r27;
@@ -494,20 +507,21 @@ static void MainProc(void)
         }
 
         switch (var_r30->unk_00) {
-        case -3:
-            HuPrcSleep(var_r30->unk_08 / 0.4f);
-            break;
-        default:
-            var_r28 = HuPrcChildCreate(MoveStaff, 0x1000, 0x2000, 0, HuPrcCurrentGet());
-            var_r28->user_data = var_r30;
-            if (var_r30->unk_0C == 1) {
-                staffSide++;
-                staffSide &= 1;
-                HuPrcChildCreate(HidePicture, 0x1000, 0x2000, 0, HuPrcCurrentGet());
-            } else {
-                HuPrcSleep(60);
-            }
-            break;
+            case -3:
+                HuPrcSleep(var_r30->unk_08 / 0.4f);
+                break;
+            default:
+                var_r28 = HuPrcChildCreate(MoveStaff, 0x1000, 0x2000, 0, HuPrcCurrentGet());
+                var_r28->user_data = var_r30;
+                if (var_r30->unk_0C == 1) {
+                    staffSide++;
+                    staffSide &= 1;
+                    HuPrcChildCreate(HidePicture, 0x1000, 0x2000, 0, HuPrcCurrentGet());
+                }
+                else {
+                    HuPrcSleep(60);
+                }
+                break;
         }
     }
     var_r30 = &staffData[var_r31 - 1];

@@ -55,7 +55,7 @@ unkStruct lbl_1_data_78[3] = {
     { 1040.0f, { 200.0f, 21.0f, 0.0f }, { -6.0f, 0.0f, 0.0f } },
 };
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     Vec sp8;
     LightData* var_r30;
     Process* var_r31;

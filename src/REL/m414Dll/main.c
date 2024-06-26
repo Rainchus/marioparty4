@@ -172,7 +172,7 @@ s32 lbl_1_data_C4[][3] = {
     { 0, 0, 0 },
 };
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     s32 var_r31;
     s32 var_r30;

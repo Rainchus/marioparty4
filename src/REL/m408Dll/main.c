@@ -79,7 +79,7 @@ void fn_1_9F0(omObjData *object);
 
 void fn_1_25D4(Process *objman);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 temp_r31;
 	Process *temp_r30;

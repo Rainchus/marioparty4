@@ -27,7 +27,7 @@ static u8 lbl_1_bss_4_pad[4];
 static s16 lbl_1_bss_2;
 static s16 lbl_1_bss_0;
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     OSReport("******* SAFObjectSetup *********\n");
     lbl_1_bss_34 = omInitObjMan(0x32, 0x2000);
     CRot.x = -20.0f;

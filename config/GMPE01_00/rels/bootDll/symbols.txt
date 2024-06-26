@@ -1,6 +1,6 @@
 _prolog = .text:0x00000000; // type:function size:0x54 scope:global
 _epilog = .text:0x00000054; // type:function size:0x4C scope:global
-ModuleProlog = .text:0x000000A0; // type:function size:0x1CC
+ObjectSetup = .text:0x000000A0; // type:function size:0x1CC
 BootProc = .text:0x0000026C; // type:function size:0x78C scope:local
 UpdateDemoMess = .text:0x000009F8; // type:function size:0xC8 scope:local
 ProgressiveProc = .text:0x00000AC0; // type:function size:0x6B8 scope:local
