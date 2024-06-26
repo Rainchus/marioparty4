@@ -862,7 +862,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m406Dll/main.c"),
             Object(Matching, "REL/m406Dll/map.c"),
-            Object(NonMatching, "REL/m406Dll/player.c"),
+            Object(Matching, "REL/m406Dll/player.c"),
         },
     ),
     Rel(
