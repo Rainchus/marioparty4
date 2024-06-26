@@ -105,7 +105,7 @@ void fn_1_A44(omObjData *object);
 void fn_1_2110(omObjData *object);
 
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	Vec sp2C;
 	Vec sp20;

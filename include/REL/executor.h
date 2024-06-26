@@ -14,7 +14,7 @@ typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
 
-extern void ModuleProlog(void);
+extern void ObjectSetup(void);
 extern void ModuleEpilog(void);
 
 #ifdef __cplusplus

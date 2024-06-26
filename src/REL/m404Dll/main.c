@@ -233,7 +233,7 @@ void fn_1_6440(omObjData *object);
 void fn_1_648C(s32 arg0, s32 arg1, float arg8);
 void fn_1_66DC(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     CameraData *var_r30;
     Process *var_r31;

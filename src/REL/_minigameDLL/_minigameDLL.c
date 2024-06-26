@@ -2,7 +2,7 @@
 #include "dolphin/os.h"
 #include "rel_sqrt_consts.h"
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     OSReport("minigame dll setup\n");
 }
 

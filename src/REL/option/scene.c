@@ -30,7 +30,7 @@ Process *optionObjMan;
 static omObjData *scene;
 static s32 rumbleF;
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     optionObjMan = omInitObjMan(0x40, 0x2000);
     omGameSysInit(optionObjMan);

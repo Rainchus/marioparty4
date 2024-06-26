@@ -59,7 +59,7 @@ void fn_1_1104(Process *objman);
 void fn_1_1684(void);
 void fn_1_16B4(void);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 i;
 	Process *objman;

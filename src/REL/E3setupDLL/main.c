@@ -100,7 +100,7 @@ static s32 charSfxTbl[] = {
 	743
 };
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	e3EvtNo = omovlevtno;
 	HuAudSndGrpSetSet(0);

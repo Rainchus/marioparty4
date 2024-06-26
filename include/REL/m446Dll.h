@@ -234,7 +234,7 @@ extern Vec lbl_1_data_4B4[3];
 
 ////// PROTOTYPES //////
 // main.c
-extern void ModuleProlog(void);
+extern void ObjectSetup(void);
 extern void fn_1_13C(omObjData*);
 extern unkStruct* m446FlowCreate(void);
 extern void fn_1_3FC(unkStruct*);

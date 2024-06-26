@@ -222,7 +222,7 @@ static void MainProc(void);
 static void CreateStaff(void);
 static void ShowPicture(void);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Process *process;
 

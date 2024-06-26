@@ -35,7 +35,7 @@ omObjData * lbl_1_bss_9A0;
 
 // -------------------------------------------------------------------------- //
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Process * prc;
     OSReport("******* MODELTESTObjectSetup *********\n");

@@ -165,7 +165,7 @@ static Vec lbl_1_data_20_unused = { 0.0f, 4000.0f, -2000.0f };
 static Vec lbl_1_data_2C_unused = { 0.0f, 1.0f, 0.0f };
 static u8 lbl_1_data_38_unused[0xC] = { 0 };
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     LightData *var_r28;
     Process *temp_r31;
     omObjData *var_r29;

@@ -100,7 +100,7 @@ void fn_1_6E3C(void);
 void fn_1_6EDC(omObjData *object);
 void fn_1_7290(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 light;
 	OSReport("******* M444 ObjectSetup *********\n");

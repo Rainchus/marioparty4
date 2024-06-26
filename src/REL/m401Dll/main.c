@@ -120,7 +120,7 @@ void fn_2_D088(omObjData *object);
 
 void fn_2_DBCC(s16 arg0);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 i;
 	omObjData *object;

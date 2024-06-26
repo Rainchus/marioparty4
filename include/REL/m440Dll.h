@@ -297,7 +297,7 @@ extern f32 lbl_1_data_250;
 
 ////// FUNCTIONS //////
 // main.c
-extern void ModuleProlog(void);
+extern void ObjectSetup(void);
 extern void fn_1_3C4(omObjData* object);
 extern void fn_1_434(omObjData* object);
 extern s32 fn_1_4A4(void);

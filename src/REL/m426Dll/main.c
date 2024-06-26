@@ -322,7 +322,7 @@ u8 lbl_1_bss_18[4];
 Vec lbl_1_bss_C;
 Vec lbl_1_bss_0;
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Process *var_r31;
     LightData *var_r30;

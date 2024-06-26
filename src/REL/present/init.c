@@ -20,7 +20,7 @@ void fn_1_254(void);
 void fn_1_45C(void);
 void fn_1_5EC(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     lbl_1_bss_4 = omInitObjMan(150, 8192);
     omGameSysInit(lbl_1_bss_4);

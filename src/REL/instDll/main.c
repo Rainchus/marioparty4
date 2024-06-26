@@ -50,7 +50,7 @@ static void fn_1_2FA0(void);
 static void fn_1_4174(omObjData *object);
 static void fn_1_4528(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 i;
 	omOvlHisData *his;

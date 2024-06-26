@@ -1852,7 +1852,7 @@ static void fn_1_9058(omObjData *arg0) {
     arg0->func = fn_1_8218;
 }
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     Vec sp20;
     omObjData *temp_r30;
     s32 i;
