@@ -2380,7 +2380,7 @@ void fn_1_AD10(omObjData *arg0) {
     arg0->func = fn_1_9288;
 }
 
-void ModuleProlog(void) {
+void ObjectSetup(void) {
     Vec sp8;
     s32 temp_r29;
     s32 i;

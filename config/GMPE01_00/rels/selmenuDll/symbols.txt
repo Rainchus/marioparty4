@@ -1,6 +1,6 @@
 _prolog = .text:0x00000000; // type:function size:0x54 scope:global
 _epilog = .text:0x00000054; // type:function size:0x4C scope:global
-ModuleProlog = .text:0x000000A0; // type:function size:0x4B8
+ObjectSetup = .text:0x000000A0; // type:function size:0x4B8
 CopyPlayerCfg = .text:0x00000558; // type:function size:0x60 scope:local
 CalcBtns = .text:0x000005B8; // type:function size:0x324 scope:local
 DrawPage = .text:0x000008DC; // type:function size:0x170 scope:local

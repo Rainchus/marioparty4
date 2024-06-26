@@ -54,7 +54,7 @@ s16 lbl_1_bss_8[4];
 s32 lbl_1_bss_4;
 s32 lbl_1_bss_0;
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Mtx sp38;
     Vec sp2C = { 0.0f, 0.0f, 0.0f };

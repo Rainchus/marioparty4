@@ -6,7 +6,7 @@ s32 _prolog(void) {
         (**ctors)();
         ctors++;
     }
-    ModuleProlog();
+    ObjectSetup();
     return 0;
 }
 

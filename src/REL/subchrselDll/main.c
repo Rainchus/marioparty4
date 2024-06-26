@@ -39,7 +39,7 @@ static char *extCharNameTbl[7] = {
     "MKOOPA"
 };
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Process *sp8 = omInitObjMan(0x32, 0x2000);
     Hu3DBGColorSet(0, 0, 0);

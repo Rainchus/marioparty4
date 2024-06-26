@@ -1,6 +1,6 @@
 _prolog = .text:0x00000000; // type:function size:0x54 scope:global
 _epilog = .text:0x00000054; // type:function size:0x4C scope:global
-ModuleProlog = .text:0x000000A0; // type:function size:0x66C
+ObjectSetup = .text:0x000000A0; // type:function size:0x66C
 fn_2_70C = .text:0x0000070C; // type:function size:0x304
 fn_2_A10 = .text:0x00000A10; // type:function size:0x88
 fn_2_A98 = .text:0x00000A98; // type:function size:0x54

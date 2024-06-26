@@ -244,7 +244,7 @@ void fn_1_7BC(void);
 void fn_1_B2C(void);
 void fn_1_48C4(void);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	Vec pos;
 	Vec up;

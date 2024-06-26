@@ -2760,7 +2760,7 @@ void fn_1_D5E8(omObjData *object)
 	object->func = fn_1_B8E0;
 }
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 temp_r31;
 	omObjData *temp_r28;

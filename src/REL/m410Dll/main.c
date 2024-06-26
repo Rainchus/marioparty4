@@ -59,7 +59,7 @@ void fn_1_1A7C(omObjData *object);
 omObjFunc fn_1_216C(Process *objman, omObjData *object);
 void fn_1_2188(omObjData *object);
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Mtx sp20;
     Vec sp14;

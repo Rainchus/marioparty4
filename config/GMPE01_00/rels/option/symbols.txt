@@ -1,6 +1,6 @@
 _prolog = .text:0x00000000; // type:function size:0x54 scope:global
 _epilog = .text:0x00000054; // type:function size:0x4C scope:global
-ModuleProlog = .text:0x000000A0; // type:function size:0xC0
+ObjectSetup = .text:0x000000A0; // type:function size:0xC0
 OptionFadeSprite = .text:0x00000160; // type:function size:0x110
 FadeSprite = .text:0x00000270; // type:function size:0xE4 scope:local
 OptionFadeModel = .text:0x00000354; // type:function size:0x114 scope:local

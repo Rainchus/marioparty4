@@ -89,7 +89,7 @@ void fn_1_461C(void);
 void fn_1_47FC(void);
 
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 i;
 	s32 light;

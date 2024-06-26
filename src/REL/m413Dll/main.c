@@ -2146,7 +2146,7 @@ void fn_1_D340(omObjData *object)
 	object->func = fn_1_A53C;
 }
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
 	s32 i;
 	OSReport("******* M413 ObjectSetup *********\n");

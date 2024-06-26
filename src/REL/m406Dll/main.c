@@ -108,7 +108,7 @@ s32 lbl_1_bss_8;
 omObjData *lbl_1_bss_4;
 s32 lbl_1_bss_0;
 
-void ModuleProlog(void)
+void ObjectSetup(void)
 {
     Vec sp14;
     Vec sp8;
