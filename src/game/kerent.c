@@ -652,7 +652,7 @@ void BoardDiceValueSet(void);
 void BoardDiceStop(void);
 void BoardDicePauseAll(void);
 void BoardDiceDoneCheck(void);
-void BoardCommonInit(void);
+void BoardObjectSetup(void);
 void BoardStoryConfigSet(void);
 void BoardPartyConfigSet(void);
 void BoardSaveInit(void);
@@ -1669,7 +1669,7 @@ extern void _kerjmp_BoardDiceValueSet(void);
 extern void _kerjmp_BoardDiceStop(void);
 extern void _kerjmp_BoardDicePauseAll(void);
 extern void _kerjmp_BoardDiceDoneCheck(void);
-extern void _kerjmp_BoardCommonInit(void);
+extern void _kerjmp_BoardObjectSetup(void);
 extern void _kerjmp_BoardStoryConfigSet(void);
 extern void _kerjmp_BoardPartyConfigSet(void);
 extern void _kerjmp_BoardSaveInit(void);
@@ -3343,8 +3343,8 @@ asm void _kerent(void) {
     b BoardDicePauseAll
     entry _kerjmp_BoardDiceDoneCheck
     b BoardDiceDoneCheck
-    entry _kerjmp_BoardCommonInit
-    b BoardCommonInit
+    entry _kerjmp_BoardObjectSetup
+    b BoardObjectSetup
     entry _kerjmp_BoardStoryConfigSet
     b BoardStoryConfigSet
     entry _kerjmp_BoardPartyConfigSet

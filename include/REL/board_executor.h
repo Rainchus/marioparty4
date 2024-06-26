@@ -14,7 +14,7 @@ typedef void (*VoidFunc)(void);
 extern const VoidFunc _ctors[];
 extern const VoidFunc _dtors[];
 
-extern void BoardCommonInit(VoidFunc create, VoidFunc destroy);
+extern void BoardObjectSetup(VoidFunc create, VoidFunc destroy);
 
 extern void BoardCreate(void);
 extern void BoardDestroy(void);

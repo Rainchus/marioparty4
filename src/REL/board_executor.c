@@ -1,8 +1,8 @@
 #include "REL/board_executor.h"
 #include "rel_sqrt_consts.h"
 
-static void InitBoard(void) {
-    BoardCommonInit(BoardCreate, BoardDestroy);
+static void ObjectSetup(void) {
+    BoardObjectSetup(BoardCreate, BoardDestroy);
 }
 
 s32 _prolog(void) {
@@ -11,7 +11,7 @@ s32 _prolog(void) {
         (**ctors)();
         ctors++;
     }
-	InitBoard();
+	ObjectSetup();
     return 0;
 }
 
