@@ -21,13 +21,6 @@ typedef struct UnkM406Struct {
     /* 0x2C */ float unk_2C;
 } UnkM406Struct; /* size = 0x30 */
 
-typedef struct UnkM406Struct2 {
-    /* 0x00 */ float unk_00;
-    /* 0x04 */ float unk_04;
-    /* 0x08 */ Vec unk_08;
-    /* 0x14 */ Vec unk_14;
-} UnkM406Struct2; /* size = 0x20 */
-
 typedef struct UnkM406Struct3 {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ float unk_04;
@@ -492,7 +485,8 @@ omObjData *fn_1_2308(Process *arg0)
         if (var_r31 < 6) {
             var_r30 = Hu3DModelCreateFile(lbl_1_data_7C4[var_r31]);
             lbl_1_bss_CC->model[var_r31 + 7] = var_r30;
-        } else {
+        }
+        else {
             var_r30 = -1;
             lbl_1_bss_CC->model[var_r31 + 7] = var_r30;
         }
@@ -519,7 +513,8 @@ omObjData *fn_1_2308(Process *arg0)
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         if (var_r31 == 0) {
             lbl_1_bss_C4->model[var_r31] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M406, 34));
-        } else {
+        }
+        else {
             lbl_1_bss_C4->model[var_r31] = Hu3DModelLink(*lbl_1_bss_C4->model);
         }
         Hu3DModelShadowSet(lbl_1_bss_C4->model[var_r31]);
@@ -599,7 +594,8 @@ void fn_1_2C24(omObjData *object)
                 if (object->model[var_r29] != -1) {
                     Hu3DModelAttrSet(object->model[var_r29], 1);
                 }
-            } else {
+            }
+            else {
                 if (object->model[var_r30] != -1) {
                     Hu3DModelAttrReset(object->model[var_r30], 1);
                 }
@@ -614,7 +610,8 @@ void fn_1_2C24(omObjData *object)
             var_f31 = 25000.0f;
             if (fabs(Center.z - var_f31) < 15000.0) {
                 Hu3DModelAttrSet(object->model[var_r29], 1);
-            } else {
+            }
+            else {
                 Hu3DModelAttrReset(object->model[var_r29], 1);
             }
         }
@@ -625,7 +622,8 @@ void fn_1_2C24(omObjData *object)
         for (var_r30 = 0; var_r30 < 3; var_r30++) {
             if (fabs(Center.z - lbl_1_data_780[var_r30].z) > 10000.0) {
                 Hu3DModelAttrSet(lbl_1_bss_C4->model[var_r30], 1);
-            } else {
+            }
+            else {
                 Hu3DModelAttrReset(lbl_1_bss_C4->model[var_r30], 1);
             }
         }
@@ -749,7 +747,8 @@ void fn_1_3158(void)
         }
         if (var_r29 == 1 || var_r29 == 103) {
             var_r27->unk_14 = 0.6f;
-        } else {
+        }
+        else {
             var_r27->unk_14 = 1.0f;
         }
         var_r27->unk_18.x = var_r27->unk_18.y = var_r27->unk_18.z = 0.0f;
@@ -842,22 +841,26 @@ void fn_1_3158(void)
                 var_r30->unk_01 = 1;
                 if (var_r29 < 6) {
                     var_r30->unk_08 = (6 - var_r29) / 6.0f;
-                } else {
+                }
+                else {
                     var_r30->unk_08 = 1.0f;
                 }
-            } else {
+            }
+            else {
                 var_r30->unk_01 = 0;
                 var_r30->unk_08 = 0.0f;
             }
             if (!var_r25 || var_r25 == 34 || !var_r29) {
                 var_r30->unk_00 = 0;
                 var_r30->unk_04 = 0.0f;
-            } else {
+            }
+            else {
                 var_r30->unk_00 = 1;
                 if (var_r29 < 3) {
                     var_r30->unk_04 = 0.5f + (0.5f * (var_r29 / 3.0f));
                     var_r30->unk_04 = sind(90.0f * var_r30->unk_04);
-                } else {
+                }
+                else {
                     var_r30->unk_04 = 1.0f;
                 }
             }
@@ -870,7 +873,8 @@ void fn_1_3158(void)
                 var_f31 = var_r25 / 6.0f;
                 var_r30->unk_04 = var_r30->unk_04 * sind(90.0f * var_f31);
                 var_r30->unk_0C = var_r30->unk_0C * sind(90.0f * var_f31);
-            } else if (var_r25 > 28) {
+            }
+            else if (var_r25 > 28) {
                 var_f31 = (var_r25 - 28) / 6.0f;
                 var_r30->unk_04 = var_r30->unk_04 * cosd(90.0f * var_f31);
                 var_r30->unk_0C = var_r30->unk_0C * cosd(90.0f * var_f31);
@@ -996,13 +1000,15 @@ void fn_1_4084(void)
             sp28.y = 0.5f * (var_r31->unk_34.y + var_r31->unk_40.y);
             sp28.z = 0.5f * (var_r31->unk_34.z + var_r31->unk_40.z);
             var_r31->unk_20 = HuAudFXEmiterPlay(1337, &sp28);
-        } else if (var_r31->unk_20 != -1) {
+        }
+        else if (var_r31->unk_20 != -1) {
             sp28.x = 0.5f * (var_r31->unk_34.x + var_r31->unk_40.x);
             sp28.y = 0.5f * (var_r31->unk_34.y + var_r31->unk_40.y);
             sp28.z = 0.5f * (var_r31->unk_34.z + var_r31->unk_40.z);
             HuAudFXEmiterUpDate(var_r31->unk_20, &sp28);
         }
-    } else if (var_r31->unk_20 != -1) {
+    }
+    else if (var_r31->unk_20 != -1) {
         HuAudFXStop(var_r31->unk_20);
         var_r31->unk_20 = -1;
     }
@@ -1010,7 +1016,8 @@ void fn_1_4084(void)
     if (var_r31->unk_0C > var_r31->unk_18) {
         var_r31->unk_1C = var_r31->unk_0C - var_r31->unk_18;
         var_r31->unk_0C = var_r31->unk_18;
-    } else {
+    }
+    else {
         var_r31->unk_1C = 0.0f;
     }
     var_r28 = var_r31->unk_84;
@@ -1025,10 +1032,12 @@ void fn_1_4084(void)
             var_r30 = 0;
             sp1C = lbl_1_data_F0[var_r30];
             sp10 = lbl_1_data_438[var_r30];
-        } else if (var_r30 < (lbl_1_bss_B4 - 1)) {
+        }
+        else if (var_r30 < (lbl_1_bss_B4 - 1)) {
             fn_1_D488(sp8, &lbl_1_data_F0[var_r30], &lbl_1_data_F0[var_r30 + 1], &sp1C);
             fn_1_D488(sp8, &lbl_1_data_438[var_r30], &lbl_1_data_438[var_r30 + 1], &sp10);
-        } else {
+        }
+        else {
             var_r30 = lbl_1_bss_B4 - 1;
             sp1C = lbl_1_data_F0[var_r30];
             sp10 = lbl_1_data_438[var_r30];
@@ -1151,11 +1160,11 @@ void fn_1_4964(ModelData *arg0)
     GXColor *var_r19;
 
     var_r30 = arg0->unk_120;
-	(void)var_f31;
-	(void)var_f31;
-	(void)var_f31;
-	(void)var_f31;
-	
+    (void)var_f31;
+    (void)var_f31;
+    (void)var_f31;
+    (void)var_f31;
+
     if (var_r30->unk_28) {
         if (!omPauseChk()) {
             fn_1_67CC(arg0);
@@ -1241,12 +1250,13 @@ void fn_1_4964(ModelData *arg0)
         fn_1_71C4(spC4, spA0, 100.0f + (50.0f * (0.007874016f * (frand() & 0x7F))), -0.1f, sp3C);
     }
     var_r29 = var_r30->unk_2C;
-	memset(lbl_1_bss_48, 0, sizeof(UnkM406Struct5));
+    memset(lbl_1_bss_48, 0, sizeof(UnkM406Struct5));
     for (var_r27 = 0; var_r27 < 105; var_r27++, var_r29++) {
         fn_1_D488(var_r29->unk_04, &var_r30->unk_84[var_r29->unk_00], &var_r30->unk_84[var_r29->unk_00 + 1], &var_r29->unk_18);
         if (var_r29->unk_08 >= 0) {
             var_r29->unk_08--;
-        } else {
+        }
+        else {
             var_r29->unk_24 = fn_1_7B2C(var_r29->unk_0C);
             if (var_r29->unk_24 == NULL) {
                 var_r29->unk_24 = &lbl_1_bss_48;
@@ -1261,12 +1271,14 @@ void fn_1_4964(ModelData *arg0)
                 sp3C.a = 0xFF;
                 if (frand() & 1) {
                     var_f31 = 0.05f;
-                } else {
+                }
+                else {
                     var_f31 = -0.05f;
                 }
                 var_r29->unk_10 = 0.01f * (100.0f * (0.007874016f * (frand() & 0x7F)));
                 var_r29->unk_0C = fn_1_79F8(spC4, spA0, 75.0f + (var_r29->unk_14 * (75.0f * (0.007874016f * (frand() & 0x7F)))), var_f31, sp3C);
-            } else {
+            }
+            else {
                 var_r29->unk_18.y += var_r29->unk_10;
                 var_r29->unk_24->unk_30 = var_r29->unk_18;
             }
@@ -1277,13 +1289,15 @@ void fn_1_4964(ModelData *arg0)
     if ((frand() & 3) == 0) {
         var_f31 = 45.0f + (30.0f * (0.007874016f * (frand() & 0x7F)));
         var_f29 = 0.75f + (0.75f * (0.007874016f * (frand() & 0x7F)));
-    } else {
+    }
+    else {
         var_f31 = -(15.0f * (0.007874016f * (frand() & 0x7F)));
         var_f29 = 1.75f + (0.75f * (0.007874016f * (frand() & 0x7F)));
     }
     if (var_r30->unk_10 != 0.0f) {
         var_f30 = 15.000001f / var_r30->unk_10;
-    } else {
+    }
+    else {
         var_f30 = 1.0f;
     }
     spA0.y = var_f30 * ((7.5000005f * var_f29) * sind(var_f31));
@@ -1324,49 +1338,52 @@ void fn_1_4964(ModelData *arg0)
                     default:
                         break;
                 }
-            } else {
+            }
+            else {
                 Hu3DModelAttrSet(var_r31->unk_00, 1);
                 var_r31->unk_08 = -1;
                 var_r31->unk_0C--;
             }
-        } else if (var_r31->unk_08 >= 0) {
+        }
+        else if (var_r31->unk_08 >= 0) {
             var_r24 = fn_1_66F4(var_r30->unk_0C + var_r31->unk_18, &sp38);
             if (var_r24 >= 0 && var_r24 < (lbl_1_bss_B4 - 1)) {
-                fn_1_D488(sp38, &lbl_1_data_F0[var_r24], &lbl_1_data_F0[var_r24+1], &spB8);
+                fn_1_D488(sp38, &lbl_1_data_F0[var_r24], &lbl_1_data_F0[var_r24 + 1], &spB8);
                 fn_1_D488(sp38, &lbl_1_data_438[var_r24], &lbl_1_data_438[var_r24 + 1], &spAC);
                 fn_1_D488(var_r31->unk_10, &spB8, &spAC, &var_r31->unk_3C);
                 Hu3DModelAttrReset(var_r31->unk_00, 1);
-            } else {
+            }
+            else {
                 Hu3DModelAttrSet(var_r31->unk_00, 1);
                 var_r31->unk_08 = -1;
-				continue;
+                continue;
             }
-			
-			switch (var_r31->unk_04) {
-				case 0:
-					var_r31->unk_18 = var_r31->unk_1C * sind(5.0f * var_r31->unk_08);
-					var_r31->unk_20 = var_r31->unk_20 - var_r31->unk_2C;
-					Hu3DModelPosSet(var_r31->unk_00, var_r31->unk_3C.x, var_r31->unk_3C.y, var_r31->unk_3C.z);
-					Hu3DModelRotSet(var_r31->unk_00, var_r31->unk_20, var_r31->unk_24, 0.0f);
-					break;
-				case 1:
-					var_r31->unk_18 = var_r31->unk_1C * sind((float)var_r31->unk_08);
-					var_r31->unk_20 = var_r31->unk_20 - var_r31->unk_2C;
-					var_r31->unk_14 = var_r31->unk_14 + var_r31->unk_28;
-					if (var_r31->unk_14 < 0.0f) {
-						var_f30 = 0.65 + (0.15 * (0.007874016f * (frand() & 0x7F)));
-						var_f30 = var_f30;
-						var_r31->unk_14 = 0.0f;
-						var_r31->unk_28 = var_r31->unk_28 * -var_f30;
-					}
-					var_r31->unk_28 = var_r31->unk_28 - 0.32666668f;
-					var_r31->unk_3C.y += var_r31->unk_14;
-					Hu3DModelPosSet(var_r31->unk_00, var_r31->unk_3C.x, var_r31->unk_3C.y, var_r31->unk_3C.z);
-					Hu3DModelRotSet(var_r31->unk_00, var_r31->unk_20, var_r31->unk_24, 0.0f);
-					break;
-				default:
-					break;
-			}
+
+            switch (var_r31->unk_04) {
+                case 0:
+                    var_r31->unk_18 = var_r31->unk_1C * sind(5.0f * var_r31->unk_08);
+                    var_r31->unk_20 = var_r31->unk_20 - var_r31->unk_2C;
+                    Hu3DModelPosSet(var_r31->unk_00, var_r31->unk_3C.x, var_r31->unk_3C.y, var_r31->unk_3C.z);
+                    Hu3DModelRotSet(var_r31->unk_00, var_r31->unk_20, var_r31->unk_24, 0.0f);
+                    break;
+                case 1:
+                    var_r31->unk_18 = var_r31->unk_1C * sind((float)var_r31->unk_08);
+                    var_r31->unk_20 = var_r31->unk_20 - var_r31->unk_2C;
+                    var_r31->unk_14 = var_r31->unk_14 + var_r31->unk_28;
+                    if (var_r31->unk_14 < 0.0f) {
+                        var_f30 = 0.65 + (0.15 * (0.007874016f * (frand() & 0x7F)));
+                        var_f30 = var_f30;
+                        var_r31->unk_14 = 0.0f;
+                        var_r31->unk_28 = var_r31->unk_28 * -var_f30;
+                    }
+                    var_r31->unk_28 = var_r31->unk_28 - 0.32666668f;
+                    var_r31->unk_3C.y += var_r31->unk_14;
+                    Hu3DModelPosSet(var_r31->unk_00, var_r31->unk_3C.x, var_r31->unk_3C.y, var_r31->unk_3C.z);
+                    Hu3DModelRotSet(var_r31->unk_00, var_r31->unk_20, var_r31->unk_24, 0.0f);
+                    break;
+                default:
+                    break;
+            }
         }
         if (var_r31->unk_18 < (-0.1f * var_r31->unk_1C)) {
             var_r31->unk_08 = -1;
@@ -1444,7 +1461,8 @@ void fn_1_64F8(UnkM406Struct2 *arg0)
             PSVECSubtract(&var_r28->unk_14, &var_r31->unk_14, &var_r31->unk_08);
             var_r31->unk_00 = PSVECMag(&var_r31->unk_08);
             PSVECNormalize(&var_r31->unk_08, &var_r31->unk_08);
-        } else {
+        }
+        else {
             var_r31->unk_00 = 100000.0f;
             var_r31->unk_08.x = 0.0f;
             var_r31->unk_08.y = 0.0f;
@@ -1490,7 +1508,8 @@ void fn_1_67CC(ModelData *arg0)
         if (var_r31->unk_04 != 3 || var_r31->unk_0C > 0) {
             Hu3DModelAttrSet(var_r31->unk_00, 1);
             var_r31->unk_0C--;
-        } else {
+        }
+        else {
             var_r31->unk_20 = var_r31->unk_20 - var_r31->unk_2C;
             var_r31->unk_3C.x += var_r31->unk_30.x;
             var_r31->unk_3C.y += var_r31->unk_30.y;
@@ -1533,7 +1552,7 @@ void fn_1_69C0(Vec *arg0)
     }
 }
 
-s32 fn_1_6A44(Vec *arg0)
+s32 fn_1_6A44(Vec arg0)
 {
     Vec sp20;
     Vec sp14;
@@ -1553,7 +1572,7 @@ s32 fn_1_6A44(Vec *arg0)
     PSVECScale(&sp8, &sp8, 0.5f);
     PSVECSubtract(&var_r31->unk_34, &sp8, &sp20);
     PSVECSubtract(&var_r31->unk_40, &sp8, &sp14);
-    var_f31 = fn_1_D5CC(&sp20, &sp14, arg0->x - sp8.x, arg0->z - sp8.z);
+    var_f31 = fn_1_D5CC(&sp20, &sp14, arg0.x - sp8.x, arg0.z - sp8.z);
     if (var_f31 <= 0.0f) {
         return 0;
     }
@@ -1795,7 +1814,8 @@ void fn_1_77F0(void)
     var_r31 = var_r29->unk_3C;
     if (fn_1_122C() < 3) {
         var_r29->unk_22 |= 1;
-    } else {
+    }
+    else {
         var_r29->unk_22 &= 0xFFFFFFFE;
     }
     for (var_r28 = 0; var_r28 < var_r29->unk_26; var_r28++, var_r31++) {
@@ -2039,24 +2059,23 @@ void fn_1_7F80(void)
 
 void fn_1_8100(void) { }
 
-
 s32 fn_1_8104(Vec arg0, Vec arg1, float arg8, GXColor arg2)
 {
     UnkM406Struct5 *var_r31;
     UnkM406Unk120Struct2 *var_r30;
-	UnkM406Struct6 *var_r28;
+    UnkM406Struct6 *var_r28;
     s32 var_r29;
-    
+
     ModelData *var_r27;
-	
-	var_r28 = lbl_1_bss_A4;
-	
+
+    var_r28 = lbl_1_bss_A4;
+
     var_r27 = &Hu3DData[var_r28->unk_00];
     var_r30 = var_r27->unk_120;
     var_r31 = var_r30->unk_3C;
     for (var_r29 = 0; var_r29 < var_r30->unk_26; var_r29++, var_r31++) {
         if (var_r31->unk_28 <= 0.0f) {
-			
+
             break;
         }
     }
@@ -2089,7 +2108,6 @@ s32 fn_1_8104(Vec arg0, Vec arg1, float arg8, GXColor arg2)
     var_r28->unk_04++;
     return var_r29;
 }
-
 
 void fn_1_8244(s32 arg0, s32 arg1, float arg8, float arg9)
 {
@@ -2212,7 +2230,8 @@ void fn_1_8F98(void)
         PSMTXIdentity(var_r31->unk_1C);
         if (var_r30 == 0) {
             var_r31->unk_04 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M406, 59));
-        } else {
+        }
+        else {
             var_r31->unk_04 = Hu3DModelLink(lbl_1_bss_A0->unk_04);
         }
         Hu3DModelLayerSet(var_r31->unk_04, 3);
@@ -2230,7 +2249,8 @@ void fn_1_8F98(void)
         PSMTXIdentity(var_r31->unk_1C);
         if (var_r30 == 0) {
             var_r31->unk_04 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M406, 60));
-        } else {
+        }
+        else {
             var_r31->unk_04 = Hu3DModelLink(lbl_1_bss_A0[64].unk_04);
         }
         Hu3DModelLayerSet(var_r31->unk_04, 3);
@@ -2338,7 +2358,8 @@ s32 fn_1_94C0(Mtx arg0, s32 arg1, s32 arg2)
         sp40.y += sp64.y;
         sp40.z += sp64.z;
         mtxRotCat(spA0, 0.0f, 180.0f + (45.0f * (0.007874016f * (frand() & 0x7F))), 0.0f);
-    } else {
+    }
+    else {
         sp4C = sp64;
         sp4C.x = -25.0f;
         sp4C.z = -50.0f;
@@ -2380,7 +2401,8 @@ s32 fn_1_94C0(Mtx arg0, s32 arg1, s32 arg2)
         if (var_r28 >= 64) {
             return -1;
         }
-    } else {
+    }
+    else {
         for (var_r28 = 0, var_r31 = &lbl_1_bss_A0[64]; var_r28 < 64; var_r28++, var_r31++) {
             if (!var_r31->unk_00) {
                 break;
@@ -2533,15 +2555,17 @@ void fn_1_A2C8(ModelData *arg0, UnkM406Unk120Struct2 *arg1, Mtx arg2)
                     var_r31->unk_30.y = -27000.0f + (var_f26 * sp18.y);
                     var_r31->unk_30.z = -63000.0f + (var_f26 * sp18.z);
                     var_r31->unk_28 = (0.3f + (0.7f * (var_f25 * var_f25)))
-                        * (lbl_1_data_8A4[var_r29->unk_02] * (0.699999988079071 + (0.30000001192092896 * (1.52587890625e-05 * (float)(frand() & 0xFFFF)))));
+                        * (lbl_1_data_8A4[var_r29->unk_02]
+                            * (0.699999988079071 + (0.30000001192092896 * (1.52587890625e-05 * (float)(frand() & 0xFFFF)))));
                     var_r31->unk_3C.r = (s32)(160.0 * (1.52587890625e-05 * (float)(frand() & 0xFFFF))) + 0x20;
                     var_r31->unk_3C.g = (s32)(96.0 * (1.52587890625e-05 * (float)(frand() & 0xFFFF))) + 0x20;
                     var_r31->unk_3C.b = (s32)(128.0 * (1.52587890625e-05 * (float)(frand() & 0xFFFF))) + 0x20;
-                    var_r31->unk_3C.a
-                        = ((1.0 - (0.4 * var_f25)) * (255.0f * lbl_1_data_8B4[var_r29->unk_02])) - (int)(16.0 * (1.52587890625e-05 * (float)(frand() & 0xFFFF)));
+                    var_r31->unk_3C.a = ((1.0 - (0.4 * var_f25)) * (255.0f * lbl_1_data_8B4[var_r29->unk_02]))
+                        - (int)(16.0 * (1.52587890625e-05 * (float)(frand() & 0xFFFF)));
                 }
                 var_r29->unk_04++;
-            } else {
+            }
+            else {
                 var_r31->unk_30.x = 0.0f;
                 var_r31->unk_30.y = -27000.0f;
                 var_r31->unk_30.z = -63000.0f;
@@ -2881,18 +2905,22 @@ void fn_1_BC18(ModelData *arg0, float (*arg1)[4])
         if (shadowModelDrawF) {
             GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ONE, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
             GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
-        } else {
+        }
+        else {
             var_r21 = var_r31->unk_38->bmp->dataFmt & 0xF;
             if (var_r21 == 7 || var_r21 == 8) {
                 GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ONE, GX_CC_RASC, GX_CC_ZERO);
-            } else {
+            }
+            else {
                 GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
             }
             if (var_r31->unk_22 & 1) {
                 GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
-            } else if (arg0->attr & 2) {
+            }
+            else if (arg0->attr & 2) {
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
-            } else {
+            }
+            else {
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
             }
         }
@@ -2947,7 +2975,8 @@ void fn_1_BC18(ModelData *arg0, float (*arg1)[4])
                 var_r30++;
                 var_r30->x = var_r30->y = var_r30->z = 0.0f;
                 var_r30++;
-            } else if (!var_r29->unk_2C) {
+            }
+            else if (!var_r29->unk_2C) {
                 var_r27 = &sp98[0];
                 var_r24 = &sp38[0];
                 PSVECScale(var_r24++, var_r27, var_r29->unk_28);
@@ -2958,7 +2987,8 @@ void fn_1_BC18(ModelData *arg0, float (*arg1)[4])
                 PSVECAdd(var_r27++, &var_r29->unk_30, var_r30++);
                 PSVECScale(var_r24++, var_r27, var_r29->unk_28);
                 PSVECAdd(var_r27++, &var_r29->unk_30, var_r30++);
-            } else {
+            }
+            else {
                 PSVECScale(lbl_1_data_8E0, &sp98[0], var_r29->unk_28);
                 PSVECScale(&lbl_1_data_8E0[1], &sp98[1], var_r29->unk_28);
                 PSVECScale(&lbl_1_data_8E0[2], &sp98[2], var_r29->unk_28);
@@ -2983,7 +3013,8 @@ void fn_1_BC18(ModelData *arg0, float (*arg1)[4])
                     var_r28->y = (0.25f * var_r19) + lbl_1_data_910[var_r25].y;
                 }
             }
-        } else {
+        }
+        else {
             for (var_r26 = 0; var_r26 < var_r31->unk_26; var_r26++, var_r29++) {
                 for (var_r25 = 0; var_r25 < 4; var_r25++, var_r28++) {
                     var_r28->x = 4.0f * lbl_1_data_910[var_r25].x;
@@ -3113,7 +3144,8 @@ void fn_1_C86C(ModelData *arg0, Mtx arg1)
         GXSetZCompLoc(GX_FALSE);
         if (arg0->attr & 2) {
             GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
-        } else {
+        }
+        else {
             GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
         }
         switch (var_r31->unk_20) {
@@ -3156,7 +3188,8 @@ void fn_1_C86C(ModelData *arg0, Mtx arg1)
                 var_r30++;
                 var_r30->x = var_r30->y = var_r30->z = 0.0f;
                 var_r30++;
-            } else {
+            }
+            else {
                 var_r28 = (Vec *)&sp6C;
                 var_r27 = (Vec *)&sp3C;
                 PSVECScale(var_r27++, var_r28, var_r29->unk_28);
@@ -3332,13 +3365,15 @@ void fn_1_D13C(LightData *arg0, s16 arg1, Mtx arg2, Mtx arg3, float arg8)
         PSMTXMultVec(arg2, &arg0->unk_28, &sp24);
         PSMTXMultVec(arg3, &arg0->unk_1C, &sp18);
         GXInitLightPos(&sp30, sp18.x, sp18.y, sp18.z);
-    } else {
+    }
+    else {
         GXInitLightPos(&sp30, arg0->unk_1C.x, arg0->unk_1C.y, arg0->unk_1C.z);
         sp24 = arg0->unk_28;
     }
     if (arg8 == 0.0f) {
         GXInitLightDir(&sp30, sp24.x, sp24.y, sp24.z);
-    } else {
+    }
+    else {
         GXInitSpecularDir(&sp30, sp24.x, sp24.y, sp24.z);
         GXInitLightAttn(&sp30, 0.0f, 0.0f, 1.0f, arg8 / 2, 0.0f, 1.0f - (arg8 / 2));
     }
