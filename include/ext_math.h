@@ -24,6 +24,7 @@ typedef struct vec2f {
 
 #define VECMag2Point(a) (((a)->x*(a)->x)+((a)->y*(a)->y)+((a)->z*(a)->z))
 #define VECMagPoint(x, y, z) sqrtf(((x)*(x))+((y)*(y))+((z)*(z)))
+// #define sqrtDist3D(x, y, z) sqrtf(x * x + y * y + z * z)
 
 #define sind(x) sin(M_PI*(x)/180.0)
 #define cosd(x) cos(M_PI*(x)/180.0)
