@@ -80,7 +80,7 @@ static s32 ExecTurnStart(void);
 static void CreateBoard(void);
 static void DestroyBoard(void);
 
-void BoardCommonInit(BoardFunc create, BoardFunc destroy)
+void BoardObjectSetup(BoardFunc create, BoardFunc destroy)
 {
 	omSysPauseEnable(FALSE);
 	if(!_CheckFlag(FLAG_ID_MAKE(1, 0))) {
