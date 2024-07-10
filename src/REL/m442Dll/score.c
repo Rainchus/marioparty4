@@ -13,8 +13,8 @@ typedef void (*M442ScoreFunc)(void);
 
 M442ScoreFunc lbl_1_data_268[3] = { fn_1_970C, fn_1_9784, fn_1_980C };
 
-omObjData *lbl_1_bss_11F48;
 Process *lbl_1_bss_11F4C;
+omObjData *lbl_1_bss_11F48;
 
 typedef struct M442ScoreWork {
     /* 0x00 */ s32 unk_00;
@@ -103,25 +103,23 @@ s32 fn_1_9520(s32 arg0)
 
 void fn_1_9550(omObjData *arg0)
 {
-    s16 var_r31;
-    M442ScoreWork *var_r30;
+    s16 temp_r31;
+    M442ScoreWork* temp_r30;
 
-    var_r30 = lbl_1_bss_11F48->data;
-    lbl_1_data_268[var_r30->unk_00]();
-
-    var_r31 = var_r30->unk_08;
-    espBankSet(var_r30->unk_0C[0], var_r31 / 100);
-    var_r31 %= 100;
-    espBankSet(var_r30->unk_0C[1], var_r31 / 10);
-    var_r31 %= 10;
-    espBankSet(var_r30->unk_0C[2], var_r31);
-
-    var_r31 = var_r30->unk_0A;
-    espBankSet(var_r30->unk_0C[3], var_r31 / 100);
-    var_r31 %= 100;
-    espBankSet(var_r30->unk_0C[4], var_r31 / 10);
-    var_r31 %= 10;
-    espBankSet(var_r30->unk_0C[5], var_r31);
+    temp_r30 = lbl_1_bss_11F48->data;
+    lbl_1_data_268[temp_r30->unk_00]();
+    temp_r31 = temp_r30->unk_08;
+    espBankSet(temp_r30->unk_0C[0], temp_r31 / 100);
+    temp_r31 = (temp_r31 - ((temp_r31 / 100) * 100));
+    espBankSet(temp_r30->unk_0C[1], (temp_r31 / 10));
+    temp_r31 =  (temp_r31 - ((temp_r31 / 10) * 10));
+    espBankSet(temp_r30->unk_0C[2], temp_r31);
+    temp_r31 = temp_r30->unk_0A;
+    espBankSet(temp_r30->unk_0C[3], (temp_r31 / 100));
+    temp_r31 = (temp_r31 - ((temp_r31 / 100) * 100));
+    espBankSet(temp_r30->unk_0C[4],  (temp_r31 / 10));
+    temp_r31 = (temp_r31 - ((temp_r31 / 10) * 10));
+    espBankSet(temp_r30->unk_0C[5], temp_r31);
 }
 
 void fn_1_970C(void)
