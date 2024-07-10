@@ -1,4 +1,4 @@
-
+#define HUSPR_USE_OLD_DEFS
 #include "ext_math.h"
 #include "game/audio.h"
 #include "game/chrman.h"
@@ -190,8 +190,8 @@ omObjData *lbl_1_bss_11F3C;
 omObjData *lbl_1_bss_11F38;
 s32 lbl_1_bss_11F34;
 u32 lbl_1_bss_11F30;
-s32 lbl_1_bss_11F2C[4]; // TODO overlap
-s32 lbl_1_bss_11F28[4]; // TODO overlap
+s32 lbl_1_bss_11F2C[1];
+s32 lbl_1_bss_11F28[1];
 s32 lbl_1_bss_11F24;
 s32 lbl_1_bss_11F20;
 s16 lbl_1_bss_11F1C;
@@ -1544,7 +1544,7 @@ void fn_1_485C(ModelData *model, Mtx mtx)
         }
     }
     GXDrawDone();
-    fn_1_8520(&lbl_1_bss_C05C[0], 1); // TODO
+    fn_1_8520(&lbl_1_bss_C05C[0], 1);
 }
 
 GXColor lbl_1_data_1F0 = { 0xFF, 0xFF, 0xFF, 0x40 };

@@ -127,7 +127,9 @@ void AnimDebug(AnimData *anim);
 
 void HuSprDispInit(void);
 void HuSprDisp(HuSprite *sprite);
+#ifndef HUSPR_USE_OLD_DEFS
 void HuSprTexLoad(AnimData *anim, s16 bmp, s16 slot, GXTexWrapMode wrap_s, GXTexWrapMode wrap_t, GXTexFilter filter);
+#endif
 void HuSprExecLayerSet(s16 draw_no, s16 layer);
 
 #endif
