@@ -21,7 +21,7 @@ typedef struct UnkM406PlayerStruct2 {
     /* 0x00 */ Vec *unk_00;
     /* 0x04 */ HsfFace *unk_04;
     /* 0x08 */ s16 unk_08;
-} UnkM406PlayerStruct2; /* size = 0x084C */
+} UnkM406PlayerStruct2; /* size = 0x0C */
 
 typedef struct M406PlayerWork {
     /* 0x00 */ union {
@@ -35,38 +35,38 @@ typedef struct M406PlayerWork {
         };
         s16 unk_00;
     };
-    s16 unk_02;
-    s16 unk_04;
-    s8 unk_06;
-    s8 unk_07;
-    u16 unk_08;
-    u16 unk_0A;
-    s16 unk_0C;
-    s16 unk_0E;
-    s16 unk_10;
-    s16 unk_12;
-    Vec unk_14;
-    char unk20[0xC];
-    Vec unk_2C;
-    s32 unk_38;
-    u32 unk_3C;
-    float unk_40;
-    UnkM406PlayerStruct2 unk_44;
-    float unk_50;
-    float unk_54;
-    s16 unk_58;
-    s16 unk_5A;
-    s16 unk_5C;
-    s16 unk_5E;
-    s16 unk_60;
-    s16 unk_62;
-    s16 unk_64;
-    float unk_68;
-    float unk_6C;
-    float unk_70;
-    float unk_74;
-    float unk_78;
-    s32 unk_7C[2];
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s8 unk_06;
+    /* 0x07 */ s8 unk_07;
+    /* 0x08 */ u16 unk_08;
+    /* 0x0A */ u16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ s16 unk_10;
+    /* 0x12 */ s16 unk_12;
+    /* 0x14 */ Vec unk_14;
+    /* 0x20 */ char unk20[0xC];
+    /* 0x2C */ Vec unk_2C;
+    /* 0x38 */ s32 unk_38;
+    /* 0x3C */ u32 unk_3C;
+    /* 0x40 */ float unk_40;
+    /* 0x44 */ UnkM406PlayerStruct2 unk_44;
+    /* 0x50 */ float unk_50;
+    /* 0x54 */ float unk_54;
+    /* 0x58 */ s16 unk_58;
+    /* 0x5A */ s16 unk_5A;
+    /* 0x5C */ s16 unk_5C;
+    /* 0x5E */ s16 unk_5E;
+    /* 0x60 */ s16 unk_60;
+    /* 0x62 */ s16 unk_62;
+    /* 0x64 */ s16 unk_64;
+    /* 0x68 */ float unk_68;
+    /* 0x6C */ float unk_6C;
+    /* 0x70 */ float unk_70;
+    /* 0x74 */ float unk_74;
+    /* 0x78 */ float unk_78;
+    /* 0x7C */ s32 unk_7C[2];
 } M406PlayerWork; /* size = 0x84 */
 
 void fn_1_1065C(omObjData *object);
@@ -82,7 +82,7 @@ s32 fn_1_129E4(omObjData *object);
 void fn_1_12AB8(omObjData *object);
 void fn_1_12B00(omObjData *object);
 void fn_1_12B38(Vec *arg0);
-void fn_1_12BC4(omObjData *);
+void fn_1_12BC4(omObjData *object);
 void fn_1_13A88(s16 arg0, char *arg1, Mtx arg2);
 float fn_1_13AF4(float arg8, float arg9, float argA);
 s32 fn_1_13C10(Vec *arg0, Vec *arg1);
@@ -264,25 +264,25 @@ s32 lbl_1_data_1078[10] = {
 };
 
 s32 lbl_1_data_10A0[8][4] = {
-    { 0x250000, 0x250001, 0x250010, 0x250011 },
-    { 0x250002, 0x250003, 0x250012, 0x250013 },
-    { 0x250004, 0x250005, 0x250014, 0x250015 },
-    { 0x250006, 0x250007, 0x250016, 0x250017 },
-    { 0x250008, 0x250009, 0x250018, 0x250019 },
-    { 0x25000A, 0x25000B, 0x25001A, 0x25001B },
-    { 0x25000C, 0x25000D, 0x25001C, 0x25001D },
-    { 0x25000E, 0x25000F, 0x25001E, 0x25001F },
+    { DATA_MAKE_NUM(DATADIR_M406, 0), DATA_MAKE_NUM(DATADIR_M406, 1), DATA_MAKE_NUM(DATADIR_M406, 16), DATA_MAKE_NUM(DATADIR_M406, 17) },
+    { DATA_MAKE_NUM(DATADIR_M406, 2), DATA_MAKE_NUM(DATADIR_M406, 3), DATA_MAKE_NUM(DATADIR_M406, 18), DATA_MAKE_NUM(DATADIR_M406, 19) },
+    { DATA_MAKE_NUM(DATADIR_M406, 4), DATA_MAKE_NUM(DATADIR_M406, 5), DATA_MAKE_NUM(DATADIR_M406, 20), DATA_MAKE_NUM(DATADIR_M406, 21) },
+    { DATA_MAKE_NUM(DATADIR_M406, 6), DATA_MAKE_NUM(DATADIR_M406, 7), DATA_MAKE_NUM(DATADIR_M406, 22), DATA_MAKE_NUM(DATADIR_M406, 23) },
+    { DATA_MAKE_NUM(DATADIR_M406, 8), DATA_MAKE_NUM(DATADIR_M406, 9), DATA_MAKE_NUM(DATADIR_M406, 24), DATA_MAKE_NUM(DATADIR_M406, 25) },
+    { DATA_MAKE_NUM(DATADIR_M406, 10), DATA_MAKE_NUM(DATADIR_M406, 11), DATA_MAKE_NUM(DATADIR_M406, 26), DATA_MAKE_NUM(DATADIR_M406, 27) },
+    { DATA_MAKE_NUM(DATADIR_M406, 12), DATA_MAKE_NUM(DATADIR_M406, 13), DATA_MAKE_NUM(DATADIR_M406, 28), DATA_MAKE_NUM(DATADIR_M406, 29) },
+    { DATA_MAKE_NUM(DATADIR_M406, 14), DATA_MAKE_NUM(DATADIR_M406, 15), DATA_MAKE_NUM(DATADIR_M406, 30), DATA_MAKE_NUM(DATADIR_M406, 31) },
 };
 
 s32 lbl_1_data_1120[8] = {
-    0x250045,
-    0x250046,
-    0x250047,
-    0x250048,
-    0x250049,
-    0x25004A,
-    0x25004B,
-    0x25004C,
+    DATA_MAKE_NUM(DATADIR_M406, 69),
+    DATA_MAKE_NUM(DATADIR_M406, 70),
+    DATA_MAKE_NUM(DATADIR_M406, 71),
+    DATA_MAKE_NUM(DATADIR_M406, 72),
+    DATA_MAKE_NUM(DATADIR_M406, 73),
+    DATA_MAKE_NUM(DATADIR_M406, 74),
+    DATA_MAKE_NUM(DATADIR_M406, 75),
+    DATA_MAKE_NUM(DATADIR_M406, 76),
 };
 
 s16 lbl_1_data_1140[4] = { 0, 40, 20, 90 };
@@ -389,7 +389,7 @@ void fn_1_D90C(omObjData *object)
     Hu3DModelAttrSet(object->model[6], 1);
     object->model[7] = Hu3DModelCreateFile(lbl_1_data_1120[var_r31->unk_0C]);
     Hu3DModelAttrSet(object->model[7], 1);
-    for (var_r29 = 0; (u32)var_r29 < 10; var_r29++) {
+    for (var_r29 = 0; var_r29 < 10U; var_r29++) {
         object->motion[var_r29] = CharModelMotionCreate(var_r31->unk_0C, lbl_1_data_1078[var_r29]);
     }
     var_r31->unk_38 = -1;
