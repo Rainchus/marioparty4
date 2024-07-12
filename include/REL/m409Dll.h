@@ -7,7 +7,7 @@ extern s32 rand8(void);
 
 // types
 typedef void (*m409Func6)(ModelData*, struct _unkStruct6*, Mtx);
-typedef void (*m409PlayerFuncUnk)(void);
+typedef void (*m409PlayerFunc8)(struct _unkStruct8*);
 
 typedef struct _unkStruct {
     f32 zoom;
@@ -135,19 +135,33 @@ typedef struct _unkStruct7 {
 } unkStruct7; // sizeof 0x74
 
 typedef struct _unkStruct8Sub {
-    char unk0[0x58];
+    Vec unk0;
+    char unkC[0xC];
+    f32 unk18;
+    f32 unk1C;
+    f32 unk20;
+    char unk24[0x10];
+    u32 unk34;
+    char unk38[0x20];
     Vec unk58;
-    char unk64[0xC];
-    u16 unk70;
+    Vec unk64;
+    s16 unk70;
     s16 unk72;
-    s16 unk74;
-    s16 unk76;
-    char unk78[0x18];
+    union {
+        struct {
+            s16 unk74;
+            s16 unk76;
+        };
+        f32 unk74f;
+    };
+    f32 unk78;
+    f32 unk7C;
+    char unk80[0x10];
 } unkStruct8Sub; // sizeof 0x90
 
 typedef struct _unkStruct8 {
     char unk0[0x30];
-    m409PlayerFuncUnk unk30;
+    m409PlayerFunc8 unk30;
     char unk34[0x8];
     unkStruct8Sub* unk3C;
     char unk40[0x60];
@@ -163,13 +177,19 @@ typedef struct _unkStruct9 {
 } unkStruct9;
 
 typedef struct _unkStruct10 {
-    char unk0[0x2];
+    u8 unk0;
+    u8 unk1;
     u8 unk2;
     u8 unk3;
     char unk4[0x8];
     Vec unkC;
-    char unk18[0x38];
-} unkStruct10; // sizeof 0x10
+    Vec unk18;
+    Vec unk24;
+    Vec unk30;
+    Vec unk3C;
+    s8 unk48;
+    char unk49[0x7];
+} unkStruct10; // sizeof 0x50
 
 // bss
 // player.c
@@ -243,9 +263,9 @@ extern f32 fn_1_4120(f32, f32, f32, f32);
 extern void fn_1_417C(void);
 extern void fn_1_44F0(s16, f32, f32, f32, s8, s16);
 extern void fn_1_4FFC(s16, f32, f32, f32, s16);
-extern void fn_1_5408(ModelData*, struct _unkStruct6*, Mtx);
-extern void fn_1_55E0(ModelData*, struct _unkStruct6*, Mtx);
-extern void fn_1_57DC(ModelData*, struct _unkStruct6*, Mtx);
+extern void fn_1_5408(ModelData*, unkStruct6*, Mtx);
+extern void fn_1_55E0(ModelData*, unkStruct6*, Mtx);
+extern void fn_1_57DC(ModelData*, unkStruct6*, Mtx);
 extern unkStruct5* fn_1_58E0(s16, Vec*, Vec*, f32, GXColor*);
 extern s16 fn_1_5A18(AnimData*, s16, f32, s16, s16);
 extern void fn_1_5F5C(s16);
@@ -261,18 +281,22 @@ extern void fn_1_6900(void);
 extern void fn_1_6928(omObjData*);
 extern void fn_1_7344(omObjData*);
 extern void fn_1_7FE8(omObjData*);
-// ...
-extern void fn_1_8838(void);
+extern void fn_1_8838(unkStruct8*);
 extern s8 fn_1_8D08(u8);
-extern void fn_1_8D6C(void);
+extern void fn_1_8D6C(unkStruct8*);
 extern void fn_1_91C0(omObjData*);
+extern void fn_1_962C(omObjData*);
+// ...
+extern s8 fn_1_A9C0(Vec*, f32*);
 extern s32 fn_1_ABB4(void);
 extern f32 fn_1_AD40(f32, f32, f32);
 extern void fn_1_B378(Vec*);
+extern f32 fn_1_B6A4(Vec*, unkStruct8Sub*, Vec*);
+extern f32 fn_1_B9E0(Vec*, unkStruct8Sub*, Vec*, Vec*, Vec*);
 extern f32 fn_1_BF38(s16);
 extern void fn_1_BF88(s32, s32);
 extern void fn_1_C0C0(void);
-extern Vec* fn_1_CCCC(s16, s16);
+extern unkStruct8Sub* fn_1_CCCC(s16, s16);
 extern s16 fn_1_DA48(s32, s32);
 extern void fn_1_DEF4(s16, s32, s32);
 extern void fn_1_DF20(s32, s32, s32);
