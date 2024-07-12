@@ -1149,33 +1149,33 @@ s16 fn_1_5A18(AnimData* arg0, s16 arg1, f32 arg8, s16 arg2, s16 arg3) {
     
     var_r21 = Hu3DHookFuncCreate(fn_1_602C);
     temp_r28 = &Hu3DData[var_r21];
-    var_r31 = HuMemDirectMallocNum(HEAP_DATA, 0x68, temp_r28->unk_48);
+    var_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(unkStruct6), temp_r28->unk_48);
     temp_r28->unk_120 = var_r31;
     arg0->useNum++;
     var_r31->unk10 = arg0;
     var_r31->unk0 = arg1;
     var_r31->unk8 = 0;
     var_r31->unkC = NULL;
-    var_r24 = HuMemDirectMallocNum(HEAP_DATA, arg1 * 0x50, temp_r28->unk_48);
+    var_r24 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(unkStruct5), temp_r28->unk_48);
     var_r31->unk18 = var_r24;
     
     for (var_r30 = 0; var_r30 < arg1; var_r30++, var_r24++) {
         var_r24->unk4C = -1;
         var_r24->unk4E = 0;
     }
-    var_r25 = HuMemDirectMallocNum(HEAP_DATA, arg1 * 0xC * 4, temp_r28->unk_48);
+    var_r25 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(Vec) * 4, temp_r28->unk_48);
     var_r31->unk1C = var_r25;
     
     for (var_r30 = 0; var_r30 < (arg1 * 4); var_r30++, var_r25++) {
         var_r25->x = var_r25->y = var_r25->z = 0.0f;
     }
-    var_r27 = HuMemDirectMallocNum(HEAP_DATA, arg1 * 4, temp_r28->unk_48);
+    var_r27 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(GXColor), temp_r28->unk_48);
     var_r31->unk24 = var_r27;
     
     for (var_r30 = 0; var_r30 < arg1; var_r30++, var_r27++) {
         var_r27->r = var_r27->g = var_r27->b = var_r27->a = 0xFF;
     }
-    var_r29 = HuMemDirectMallocNum(HEAP_DATA, arg1 * 8 * 4, temp_r28->unk_48);
+    var_r29 = HuMemDirectMallocNum(HEAP_DATA, arg1 * sizeof(HsfVector2f) * 4, temp_r28->unk_48);
     var_r31->unk20 = var_r29;
     
     for (var_r30 = 0; var_r30 < arg1; var_r30++) {
@@ -1204,7 +1204,7 @@ s16 fn_1_5A18(AnimData* arg0, s16 arg1, f32 arg8, s16 arg2, s16 arg3) {
         var_r31->unk60 = 1.0f;
         var_r31->unk64 = 1.0f;
     }
-    var_r31->unk5C = HuMemDirectMallocNum(HEAP_DATA, var_r31->unk14 * 8, temp_r28->unk_48);
+    var_r31->unk5C = HuMemDirectMallocNum(HEAP_DATA, var_r31->unk14 * sizeof(HsfVector2f), temp_r28->unk_48);
     fn_1_6608(var_r31->unk5C, var_r31->unk14, var_r22, var_r31->unk60, var_r31->unk64);
     var_r31->unk2C.x = var_r31->unk50.x = var_r31->unk44.y = var_r31->unk50.y = -arg8;
     var_r31->unk38.x = var_r31->unk44.x = var_r31->unk2C.y = var_r31->unk38.y = arg8;
