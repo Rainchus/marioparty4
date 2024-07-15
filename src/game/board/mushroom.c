@@ -385,7 +385,7 @@ static void InitBox(s32 arg0) {
         var_r27 = 1;
     }
     var_r29 = var_r27;
-    if (GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA2) {
         itemResult = 0;
     }
     if (_CheckFlag(0x1000BU) != 0) {

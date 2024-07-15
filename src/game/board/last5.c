@@ -1658,7 +1658,7 @@ static void UpdateLast5Roulette(omObjData *object)
 				work->switch_vel += work->switch_accel;
 				work->switch_accel++;
 				if(work->switch_vel > 60 || (work->switch_vel > 40 && BoardRandMod(100) > 80)) {
-					if((GWBoardGet() == 0 || GWBoardGet() == 2) && work->choices[work->choice] == 2) {
+					if((GWBoardGet() == BOARD_ID_MAIN1 || GWBoardGet() == BOARD_ID_MAIN3) && work->choices[work->choice] == 2) {
 						work->switch_timer++;
 						return;
 					} else {

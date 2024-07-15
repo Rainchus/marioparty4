@@ -99,7 +99,7 @@ void BoardBooHouseCreate(void) {
     Vec sp14;
     Vec sp8;
 
-    if ((GWBoardGet() == 7) || (GWBoardGet() == 8)) {
+    if ((GWBoardGet() == BOARD_ID_EXTRA1) || (GWBoardGet() == BOARD_ID_EXTRA2)) {
         return;
     }
     BoardSpaceLinkTransformGet(0x08000000, &sp14, &sp8, 0);
@@ -335,7 +335,7 @@ static void OpenBooHouse(void) {
     BoardModelHookSet(houseMdl[0], "yoko05", houseMdl[4]);
     BoardModelHookSet(houseMdl[0], "yoko9", houseMdl[5]);
     BoardModelHookSet(houseMdl[0], "yoko06", temp_r31);
-    if (GWBoardGet() == 5) {
+    if (GWBoardGet() == BOARD_ID_MAIN6) {
         BoardModelPosSet(temp_r31, 0.0f, 0.0f, -25.0f);
     } else {
         BoardModelPosSet(temp_r31, 0.0f, 0.0f, 0.0f);

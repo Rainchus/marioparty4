@@ -347,7 +347,7 @@ s32 BoardSpaceStarGetNext(void)
 	s16 star_pos;
 	star_total = GWSystem.star_total;
 	star_pos = GWSystem.star_pos;
-	if(GWBoardGet() == 5) {
+	if(GWBoardGet() == BOARD_ID_MAIN6) {
 		s16 i;
 		s32 count;
 		s32 last_free;
@@ -371,7 +371,7 @@ s32 BoardSpaceStarGetNext(void)
 		goto begin;
 	}
 	switch(GWSystem.board) {
-		case 0:
+		case BOARD_ID_MAIN1:
 			if(star_total >= 2) {
 				break;
 			}
@@ -380,7 +380,7 @@ s32 BoardSpaceStarGetNext(void)
 			}
 			goto begin;
 			
-		case 1:
+		case BOARD_ID_MAIN2:
 			if(star_total >= 2) {
 				break;
 			}
@@ -389,7 +389,7 @@ s32 BoardSpaceStarGetNext(void)
 			}
 			goto begin;
 		
-		case 2:
+		case BOARD_ID_MAIN3:
 			if(star_total == 1) {
 				if(random_pos < 3 || random_pos > 5) {
 					break;
@@ -405,7 +405,7 @@ s32 BoardSpaceStarGetNext(void)
 				goto begin;
 			}
 			
-		case 3:
+		case BOARD_ID_MAIN4:
 			if(star_total == 1) {
 				if(random_pos < 5 || random_pos > 7) {
 					break;
@@ -421,7 +421,7 @@ s32 BoardSpaceStarGetNext(void)
 				break;
 			}
 			
-		case 4:
+		case BOARD_ID_MAIN5:
 			if(star_total == 1) {
 				if(random_pos <= 1 || random_pos >= 4) {
 					goto begin;
@@ -429,7 +429,7 @@ s32 BoardSpaceStarGetNext(void)
 			}
 			break;
 			
-		case 5:
+		case BOARD_ID_MAIN6:
 			if(star_total == 1) {
 				if(random_pos == 1 || random_pos == 4 || random_pos == 5) {
 					goto begin;
@@ -504,7 +504,7 @@ s32 BoardSpaceStarCheck(s32 index)
 	s32 ret;
 	BoardSpace *space = BoardSpaceGet(0, index);
 	BoardSpace *star_space;
-	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+	if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 		ret = 0;
 		goto end;
 	}
@@ -623,7 +623,7 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 		return 0;
 	}
 	space_ptr = BoardSpaceGet(0, space);
-	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+	if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 		is_star = 0;
 	} else {
 		star_space = BoardSpaceGet(0, boardSpaceStarTbl[GWSystem.star_pos]);
@@ -680,7 +680,7 @@ s32 BoardSpaceBlockExec(s32 player, s32 space)
 	if(!GWBonusStarGet() && GWPartyGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		event_exec = 0;
 	}
-	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+	if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 		event_exec = 0;
 	}
 	if(event_exec) {
@@ -1059,7 +1059,7 @@ void BoardSpaceInit(s32 data_num)
 		GWSystem.star_total = 0;
 		GWSystem.star_flag = 0;
 	}
-	if(GWBoardGet() != 7 && GWBoardGet() != 8) {
+	if(GWBoardGet() != BOARD_ID_EXTRA1 && GWBoardGet() != BOARD_ID_EXTRA2) {
 		starPlatMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 6), NULL, 0);
 		BoardModelMotionStart(starPlatMdl, 0, 0x40000001);
 		BoardModelVisibilitySet(starPlatMdl, 0);

@@ -139,7 +139,7 @@ static void ExecStart(void) {
     BoardCameraNearFarSet(100.0f, 23000.0f);
     GWSystem.player_curr = -1;
     startSpace = BoardSpaceFlagPosGet(0, 0x80000000, &spacePos);
-    if ((GWBoardGet() == 2 || GWBoardGet() == 5) && boardLightResetHook) {
+    if ((GWBoardGet() == BOARD_ID_MAIN3 || GWBoardGet() == BOARD_ID_MAIN6) && boardLightResetHook) {
         boardLightResetHook();
     }
     for (i = 0; i < 4; i++) {
@@ -157,7 +157,7 @@ static void ExecStart(void) {
         streamStatus = HuAudSStreamPlay(5);
         ShowLogo();
         FocusStart();
-        if ((GWBoardGet() == 2 || GWBoardGet() == 5) && boardLightSetHook) {
+        if ((GWBoardGet() == BOARD_ID_MAIN3 || GWBoardGet() == BOARD_ID_MAIN6) && boardLightSetHook) {
             boardLightSetHook();
         }
         BoardCameraMotionWait();
@@ -195,7 +195,7 @@ static void ExecStart(void) {
         HuPrcEnd();
     }
     BoardCameraNearFarSet(100.0f, 13000.0f);
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         WipeColorSet(0, 0, 0);
         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
         while (WipeStatGet() != 0) {
@@ -719,7 +719,7 @@ static void ExecStartRoll(void) {
         BoardWinCreate(2, var_r29, BoardWinPortraitGetStar());
         BoardWinWait();
         HuPrcSleep(30);
-        if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+        if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
             var_r22 = 100;
             var_r23 = 1;
         } else {
@@ -763,26 +763,26 @@ static void InitCamera(void) {
     camStartFocusPos.y = 100.0f;
     camStartFocusPos.z = 500.0f;
     switch (GWBoardGet()) {
-        case 0:
+        case BOARD_ID_MAIN1:
             camStartFocusPos.z -= 200.0f;
             camStartFocusPos.x -= 150.0f;
             break;
-        case 3:
+        case BOARD_ID_MAIN4:
             camStartFocusPos.z -= 250.0f;
             camStartFocusPos.x -= 150.0f;
             break;
-        case 4:
+        case BOARD_ID_MAIN5:
             camStartFocusPos.z -= 400.0f;
             camStartFocusPos.x -= 150.0f;
             break;
-        case 5:
+        case BOARD_ID_MAIN6:
             camStartFocusPos.z -= 500.0f;
             break;
-        case 7:
+        case BOARD_ID_EXTRA1:
             camStartFocusPos.z -= 520.0f;
             camStartFocusPos.x -= 150.0f;
             break;
-        case 8:
+        case BOARD_ID_EXTRA2:
             camStartFocusPos.z -= 250.0f;
             camStartFocusPos.x -= 150.0f;
             break;

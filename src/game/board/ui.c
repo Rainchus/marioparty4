@@ -573,7 +573,7 @@ static void CreateBoardStatusSprite(s32 arg0, UnkUiStatusStruct *arg1) {
     }
     arg1->unk00_bit6 = 0;
     HuSprTPLvlSet(arg1->unk02, 0, 0.7f);
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         HuSprAttrSet(arg1->unk02, 7, 4);
         HuSprAttrSet(arg1->unk02, 8, 4);
         HuSprAttrSet(arg1->unk02, 9, 4);

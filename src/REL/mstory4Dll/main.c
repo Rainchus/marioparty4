@@ -10,6 +10,7 @@
 #include "game/chrman.h"
 #include "rel_sqrt_consts.h"
 #include "REL/executor.h"
+#include "game/board/main.h"
 
 typedef struct struct_data0 {
 	s32 unk0;
@@ -359,7 +360,7 @@ void fn_1_EC(void)
 	} else {
 		_ClearFlag(7);
 	}
-	if(GWSystem.board == 5) {
+	if(GWSystem.board == BOARD_ID_MAIN6) {
 		_SetFlag(2);
 		_SetFlag(3);
 		_SetFlag(4);
@@ -592,7 +593,7 @@ void fn_1_13A0(void)
 		CharARAMOpen(GWPlayerCfg[2].character);
 		CharARAMOpen(GWPlayerCfg[3].character);
 		GWSystem.board = itemno%6;
-		if(GWSystem.board != 5) {
+		if(GWSystem.board != BOARD_ID_MAIN6) {
 			GWPlayerCoinWinSet(0, 10);
 			omOvlGotoEx(OVL_MSTORY, 1, 2, 9999);
 		} else {

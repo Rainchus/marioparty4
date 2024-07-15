@@ -389,7 +389,7 @@ static void DoInput(s32 arg0) {
                 var_r31 += BoardPlayerItemCount(var_r30);
             }
             if (var_r31 == 0 || BoardItemPrevGet() != -1 || BoardMegaDoubleDiceCheck() || _CheckFlag(0x10009)) {
-                if (_CheckFlag(0x10009) && GWBoardGet() == 5 && *sp8 == 0x200 && var_r31 != 0) {
+                if (_CheckFlag(0x10009) && GWBoardGet() == BOARD_ID_MAIN6 && *sp8 == 0x200 && var_r31 != 0) {
                     HuAudFXPlay(4);
                 }
             } else if (*sp8 == 0x200) {

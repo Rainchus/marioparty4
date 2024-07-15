@@ -144,7 +144,7 @@ static HsfanimStruct00 starEffParam = {
 
 void BoardStarHostSet(s16 arg0) {
     hostMdl = arg0;
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         return;
     }
     if (_CheckFlag(0x10001)) {
@@ -157,7 +157,7 @@ s16 BoardStarHostMdlGet(void) {
 }
 
 void BoardStarExec(s32 arg0, s32 arg1) {
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         return;
     }
     if (BoardPlayerSizeGet(arg0) != 2) {
@@ -587,7 +587,7 @@ void BoardStarGive(s32 arg0, Vec *arg1) {
     s32 temp_r25;
     GiveStarWork *temp_r31;
 
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         return;
     }
     starCharPos = *arg1;
@@ -656,7 +656,7 @@ void BoardStarShowNext(s32 arg0) {
     s16 var_r29;
 
     var_r28 = 0;
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         return;
     }
     _SetFlag(0x1001C);
@@ -671,7 +671,7 @@ void BoardStarShowNext(s32 arg0) {
         HuPrcSleep(18);
     }
     BoardStatusItemSet(0);
-    if (GWBoardGet() == 5 && BoardItemPrevGet() != 9 && boardStarGiveHook) {
+    if (GWBoardGet() == BOARD_ID_MAIN6 && BoardItemPrevGet() != 9 && boardStarGiveHook) {
         boardStarGiveHook();
     }
     BoardSpaceStarMove();
@@ -753,7 +753,7 @@ void BoardStarShowNext(s32 arg0) {
     BoardWinCreate(3, var_r30, -1);
     BoardWinWait();
     BoardWinKill();
-    if (GWBoardGet() == 5 && BoardItemPrevGet() != 9 && boardStarShowNextHook) {
+    if (GWBoardGet() == BOARD_ID_MAIN6 && BoardItemPrevGet() != 9 && boardStarShowNextHook) {
         boardStarShowNextHook();
     }
     BoardAudSeqFadeOut(1, 1000);

@@ -155,7 +155,7 @@ static void ExecBowser(void)
 	if(!_CheckFlag(0x10003)) {
 		HuAudFXPlay(841);
 		omVibrate(eventPlayer, 12, 4, 2);
-		if(GWBoardGet() == 5 && boardBowserHook) {
+		if(GWBoardGet() == BOARD_ID_MAIN6 && boardBowserHook) {
 			boardBowserHook(1);
 		}
 		BoardAudSeqPause(0, 1, 1000);
@@ -197,7 +197,7 @@ static void ExecBowser(void)
 		BoardPlayerIdleSet(i);
 	}
 	BoardCameraMotionWait();
-	if(GWBoardGet() == 5 && boardBowserHook) {
+	if(GWBoardGet() == BOARD_ID_MAIN6 && boardBowserHook) {
 		boardBowserHook(0);
 	} else {
 		HuPrcSleep(30);

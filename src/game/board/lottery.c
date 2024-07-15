@@ -235,7 +235,7 @@ void BoardLotteryInit(void) {
     }
     turnMot = -1;
     loseMot = -1;
-    if (GWBoardGet() != 8) {
+    if (GWBoardGet() != BOARD_ID_EXTRA2) {
         BoardModelVisibilitySet(BoardLotteryHostGet(), 0);
         BoardSpaceLinkTransformGet(0x10000000, &sp14, &sp8, NULL);
         lotteryMdl[0] = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BKUJIYA, 0), NULL, 0);
@@ -436,31 +436,31 @@ static void ExecLottery(void) {
     s32 temp_r29;
 
     switch (GWBoardGet()) {
-        case 0:
+        case BOARD_ID_MAIN1:
             lotteryMessBase = MAKE_MESSID(6, 2);
             break;
-        case 1:
+        case BOARD_ID_MAIN2:
             lotteryMessBase = MAKE_MESSID(6, 15);
             break;
-        case 2:
+        case BOARD_ID_MAIN3:
             lotteryMessBase = MAKE_MESSID(6, 28);
             break;
-        case 3:
+        case BOARD_ID_MAIN4:
             lotteryMessBase = MAKE_MESSID(6, 41);
             break;
-        case 4:
+        case BOARD_ID_MAIN5:
             lotteryMessBase = MAKE_MESSID(6, 54);
             break;
-        case 5:
+        case BOARD_ID_MAIN6:
             lotteryMessBase = MAKE_MESSID(6, 67);
             break;
-        case 6:
+        case BOARD_ID_TUTORIAL:
             lotteryMessBase = MAKE_MESSID(6, 2);
             break;
-        case 7:
+        case BOARD_ID_EXTRA1:
             lotteryMessBase = MAKE_MESSID(6, 82);
             break;
-        case 8:
+        case BOARD_ID_EXTRA2:
             lotteryMessBase = MAKE_MESSID(6, 82);
             break;
     }
@@ -504,7 +504,7 @@ static void ExecLottery(void) {
     BoardSpacePosGet(0, temp_r28, &sp38);
     BoardSpacePosGet(0, lotterySpace, &sp2C);
     PSVECSubtract(&sp2C, &sp38, &sp20);
-    if (GWBoardGet() == 2 || GWBoardGet() == 3) {
+    if (GWBoardGet() == BOARD_ID_MAIN3 || GWBoardGet() == BOARD_ID_MAIN4) {
         PSVECScale(&sp20, &sp20, 0.95f);
         PSVECAdd(&sp20, &sp38, &sp2C);
     }
@@ -564,7 +564,7 @@ static void ExecLottery(void) {
     } else {
         var_r27 = 0;
     }
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         var_r27 = 0;
     }
     PayEnterFee(var_r27);
@@ -731,7 +731,7 @@ static void ShowTicket(void) {
         DATA_MAKE_NUM(DATADIR_BKUJIYA, 28)
     };
 
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         return;
     }
     sp8 = GWPlayer[GWSystem.player_curr].ticket_player;

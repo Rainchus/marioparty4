@@ -123,39 +123,39 @@ void BoardObjectSetup(BoardFunc create, BoardFunc destroy)
 	boardMainObj = omAddObjEx(boardObjMan, 0, 0, 0, -1, InitBoardFunc);
 	switch(omcurovl) {
 		case OVL_W01:
-			GWSystem.board = 0;
+			GWSystem.board = BOARD_ID_MAIN1;
 			break;
 			
 		case OVL_W02:
-			GWSystem.board = 1;
+			GWSystem.board = BOARD_ID_MAIN2;
 			break;
 			
 		case OVL_W03:
-			GWSystem.board = 2;
+			GWSystem.board = BOARD_ID_MAIN3;
 			break;
 			
 		case OVL_W04:
-			GWSystem.board = 3;
+			GWSystem.board = BOARD_ID_MAIN4;
 			break;
 			
 		case OVL_W05:
-			GWSystem.board = 4;
+			GWSystem.board = BOARD_ID_MAIN5;
 			break;
 			
 		case OVL_W06:
-			GWSystem.board = 5;
+			GWSystem.board = BOARD_ID_MAIN6;
 			break;
 			
 		case OVL_W10:
-			GWSystem.board = 6;
+			GWSystem.board = BOARD_ID_TUTORIAL;
 			break;
 			
 		case OVL_W20:
-			GWSystem.board = 7;
+			GWSystem.board = BOARD_ID_EXTRA1;
 			break;
 			
 		case OVL_W21:
-			GWSystem.board = 8;
+			GWSystem.board = BOARD_ID_EXTRA2;
 			break;
 	}
 }
@@ -294,7 +294,7 @@ void BoardSaveInit(s32 board)
 	GWMGTypeSet(0);
 	GWSystem.unk_38 = 0;
 	GWSystem.block_pos = 0;
-	memset(GWSystem.board_data, 0, 32);
+	memset(GWSystem.board_data, 0, sizeof(GWSystem.board_data));
 	for(i=0; i<4; i++) {
 		s32 party_flag;
 		BoardPlayerAutoSizeSet(i, 0);
@@ -434,14 +434,14 @@ static void MainFunc(void)
 	_ClearFlag(FLAG_ID_MAKE(1, 28));
 	do {
 		BoardStatusShowSetAll(1);
-		if(GWBoardGet() == 5 && GWSystem.player_curr == 0 && !turn_cont && boardTurnFunc) {
+		if(GWBoardGet() == BOARD_ID_MAIN6 && GWSystem.player_curr == 0 && !turn_cont && boardTurnFunc) {
 			GWSystem.player_curr = -1;
 			boardTurnFunc();
 			GWSystem.player_curr = 0;
 		}
 		BoardMusStartBoard();
 		for(i=GWSystem.player_curr; i<4; i++) {
-			if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+			if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 				if(CHECK_LAST5_TURN() && i == 0 && !turn_cont) {
 					BoardLast5GfxInit();
 					_SetFlag(FLAG_ID_MAKE(0, 8));
@@ -495,7 +495,7 @@ static void MainFunc(void)
 				BoardPlayerMoveAwayStartCurr(GWPlayer[i].space_curr, 1);
 				fade_type = 0;
 			} else {
-				if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+				if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 					if(GWSystem.turn != GWSystem.max_turn) {
 						WipeColorSet(255, 255, 255);
 						WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSS, 1);
@@ -515,7 +515,7 @@ static void MainFunc(void)
 			}
 			BoardPlayerPostTurnHookExec(i);
 		}
-		if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+		if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 			GWSystem.player_curr = 0;
 			if(BoardTurnNext()) {
 				BoardAudSeqFadeOut(0, 500);

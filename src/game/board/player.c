@@ -221,7 +221,7 @@ void BoardPlayerModelInit(void) {
     memset(&boardPlayerMdl, 0, 8);
     suitMdl = -1;
     suitPlayerMdl = -1;
-    if ((_CheckFlag(0x10005U) != 0) || (_CheckFlag(0x10006U) && (GWBoardGet() == 5))) {
+    if ((_CheckFlag(0x10005U) != 0) || (_CheckFlag(0x10006U) && (GWBoardGet() == BOARD_ID_MAIN6))) {
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             temp_r25 = GWPlayer[var_r31].team_backup;
             GWPlayer[var_r31].team = temp_r25;

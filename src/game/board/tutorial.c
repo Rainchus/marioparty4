@@ -69,7 +69,7 @@ void BoardTutorialPlayerInit(void) {
         GWPlayer[i].com = 1;
         GWPlayerCfg[i].iscom = 1;
     }
-    GWSystem.board = 6;
+    GWSystem.board = BOARD_ID_TUTORIAL;
 }
 
 void BoardTutorialWorkSave(void) {

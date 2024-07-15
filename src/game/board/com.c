@@ -295,13 +295,13 @@ static BOOL CheckMiniUse(s32 player, s32 item) {
     if ((diff == 0 || diff == 1) && character == 1) {
         chance = 7;
     }
-    if (GWBoardGet() != 7 && GWBoardGet() != 8) {
+    if (GWBoardGet() != BOARD_ID_EXTRA1 && GWBoardGet() != BOARD_ID_EXTRA2) {
         star_dist_pipe = BoardComPathShortcutLenGet(space, 8, 0);
         star_dist_no_pipe = BoardComPathShortcutLenGet(space, 8, 1);
     } else {
-        star_dist_pipe = 0x3E7;
+        star_dist_pipe = 999;
         star_dist_no_pipe = BoardComPathBestGetFlag(space, 0x10000000, 10);
-        if ((GWBoardGet() == 8 || GWBoardGet() == 7) && BoardRandMod(0x64) < 0x3C) {
+        if ((GWBoardGet() == BOARD_ID_EXTRA2 || GWBoardGet() == BOARD_ID_EXTRA1) && BoardRandMod(100) < 60) {
             force_use_mini = 1;
         }
     }
@@ -319,7 +319,7 @@ static BOOL CheckMiniUse(s32 player, s32 item) {
             max_dist = 10;
             break;
     }
-    if ((star_dist_no_pipe < max_dist || star_dist_pipe < max_dist || force_use_mini != 0) && BoardRandMod(0x64) >= chance) {
+    if ((star_dist_no_pipe < max_dist || star_dist_pipe < max_dist || force_use_mini != 0) && BoardRandMod(100) >= chance) {
         return TRUE;
     }
     return FALSE;
@@ -355,7 +355,7 @@ static BOOL CheckMegaUse(s32 player, s32 item) {
     if (((diff == 0 || diff == 1) && character == 0) || ((diff == 0 || diff == 1) && character == 5)) {
         max_len = 8;
     }
-    if (GWBoardGet() != 7 || BoardRandMod(0x64) >= 60) {
+    if (GWBoardGet() != BOARD_ID_EXTRA1 || BoardRandMod(100) >= 60) {
         space = GWPlayer[player].space_curr;
         short_len = BoardComPathShortcutLenGet(space, 8, 0);
         space_search = GWPlayer[player].space_curr;
@@ -368,7 +368,7 @@ static BOOL CheckMegaUse(s32 player, s32 item) {
                 }
             }
         }
-        if (GWBoardGet() != 7 && GWBoardGet() != 8 && short_len < 10 && short_len > 0) {
+        if (GWBoardGet() != BOARD_ID_EXTRA1 && GWBoardGet() != BOARD_ID_EXTRA2 && short_len < 10 && short_len > 0) {
             return FALSE;
         }
     }
@@ -458,13 +458,13 @@ static BOOL CheckBoardChangeUse(s32 player, s32 item) {
         search_space = GWPlayer[i].space_curr;
         if (!GWTeamGet() || i != BoardPlayerSameTeamFind(player)) {
             space = GWPlayer[i].space_curr;
-            if (GWBoardGet() == 7) {
+            if (GWBoardGet() == BOARD_ID_EXTRA1) {
                 if (BoardComPathBestGetFlag(search_space, 0x10000000, 10) != -1) {
                     length = 10;
                 } else {
                     length = 0;
                 }
-            } else if (GWBoardGet() == 8) {
+            } else if (GWBoardGet() == BOARD_ID_EXTRA2) {
                 if (BoardComPathBestGetFlag(search_space, 0x200000, 10) != -1 || BoardComPathBestGetFlag(search_space, 0x400000, 10) != -1) {
                     length = 10;
                 } else {
