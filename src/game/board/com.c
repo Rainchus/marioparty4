@@ -8,6 +8,7 @@
 #include "game/board/tutorial.h"
 #include "game/board/window.h"
 #include "game/board/boo.h"
+#include "game/chrman.h"
 
 #include "ext_math.h"
 
@@ -29,15 +30,135 @@ static BOOL CheckLampUse(s32 player, s32 item);
 
 static s8 itemUse = -1;
 
-static s8 comItemPreferTbl[8][12] = {
-    { 0x0C, 0x0B, 0x05, 0x03, 0x01, 0x02, 0x06, 0x04, 0x00, 0x07, 0x09, 0x0A },
-    { 0x0C, 0x0B, 0x05, 0x0A, 0x03, 0x01, 0x02, 0x00, 0x06, 0x04, 0x07, 0x09 },
-    { 0x0C, 0x0B, 0x05, 0x06, 0x03, 0x01, 0x02, 0x0A, 0x07, 0x09, 0x00, 0x04 },
-    { 0x0C, 0x05, 0x0B, 0x09, 0x03, 0x01, 0x02, 0x06, 0x00, 0x04, 0x0A, 0x07 },
-    { 0x0C, 0x0B, 0x04, 0x09, 0x0A, 0x03, 0x01, 0x05, 0x02, 0x06, 0x00, 0x07 },
-    { 0x0C, 0x0B, 0x05, 0x03, 0x01, 0x0A, 0x06, 0x02, 0x00, 0x04, 0x09, 0x07 },
-    { 0x0C, 0x05, 0x0B, 0x04, 0x07, 0x09, 0x03, 0x01, 0x0A, 0x06, 0x02, 0x00 },
-    { 0x0C, 0x05, 0x07, 0x0B, 0x0A, 0x09, 0x04, 0x06, 0x03, 0x01, 0x02, 0x00 }
+#define MINI_MUSHROOM 0
+#define MEGA_MUSHROOM 1
+#define SUPER_MINI_MUSHROOM 2
+#define SUPER_MEGA_MUSHROOM 3
+#define MINI_MEGA_HAMMER 4
+#define WARP_PIPE 5
+#define SWAP_CARD 6
+#define SPARKY_STICKER 7
+#define GADDLIGHT 8
+#define CHOMP_CALL 9
+#define BOWSER_SUIT 10
+#define BOOS_CRYSTAL_BALL 11
+#define MAGIC_LAMP 12
+#define SHOP_ITEMS_END MAGIC_LAMP
+#define ITEM_BAG 13
+
+static s8 comItemPreferTbl[GW_CHARACTER_MAX][SHOP_ITEMS_END] = {
+    { //Mario
+        MAGIC_LAMP,
+        BOOS_CRYSTAL_BALL,
+        WARP_PIPE,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        SUPER_MINI_MUSHROOM,
+        SWAP_CARD,
+        MINI_MEGA_HAMMER,
+        MINI_MUSHROOM,
+        SPARKY_STICKER,
+        CHOMP_CALL,
+        BOWSER_SUIT
+    },
+    {   //Luigi
+        MAGIC_LAMP,
+        BOOS_CRYSTAL_BALL,
+        WARP_PIPE,
+        BOWSER_SUIT,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        SUPER_MINI_MUSHROOM,
+        MINI_MUSHROOM,
+        SWAP_CARD,
+        MINI_MEGA_HAMMER,
+        SPARKY_STICKER,
+        CHOMP_CALL
+    },   
+    {   //Peach
+        MAGIC_LAMP,
+        BOOS_CRYSTAL_BALL,
+        WARP_PIPE,
+        SWAP_CARD,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        SUPER_MINI_MUSHROOM,
+        BOWSER_SUIT,
+        SPARKY_STICKER,
+        CHOMP_CALL,
+        MINI_MUSHROOM,
+        MINI_MEGA_HAMMER
+    },   
+    {   //Yoshi
+        MAGIC_LAMP,
+        WARP_PIPE,
+        BOOS_CRYSTAL_BALL,
+        CHOMP_CALL,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        SUPER_MINI_MUSHROOM,
+        SWAP_CARD,
+        MINI_MUSHROOM,
+        MINI_MEGA_HAMMER,
+        BOWSER_SUIT,
+        SPARKY_STICKER
+    },    
+    {   //Wario
+        MAGIC_LAMP,
+        BOOS_CRYSTAL_BALL,
+        MINI_MEGA_HAMMER,
+        CHOMP_CALL,
+        BOWSER_SUIT,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        WARP_PIPE,
+        SUPER_MINI_MUSHROOM,
+        SWAP_CARD,
+        MINI_MUSHROOM,
+        SPARKY_STICKER
+    },   
+    {   //DK
+        MAGIC_LAMP,
+        BOOS_CRYSTAL_BALL,
+        WARP_PIPE,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        BOWSER_SUIT,
+        SWAP_CARD,
+        SUPER_MINI_MUSHROOM,
+        MINI_MUSHROOM,
+        MINI_MEGA_HAMMER,
+        CHOMP_CALL,
+        SPARKY_STICKER
+    },   
+    {   //Daisy
+        MAGIC_LAMP,
+        WARP_PIPE,
+        BOOS_CRYSTAL_BALL,
+        MINI_MEGA_HAMMER,
+        SPARKY_STICKER,
+        CHOMP_CALL,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        BOWSER_SUIT,
+        SWAP_CARD,
+        SUPER_MINI_MUSHROOM,
+        MINI_MUSHROOM
+    },   
+    {   //Waluigi
+        MAGIC_LAMP,
+        WARP_PIPE,
+        SPARKY_STICKER,
+        BOOS_CRYSTAL_BALL,
+        BOWSER_SUIT,
+        CHOMP_CALL,
+        MINI_MEGA_HAMMER,
+        SWAP_CARD,
+        SUPER_MEGA_MUSHROOM,
+        MEGA_MUSHROOM,
+        SUPER_MINI_MUSHROOM,
+        MINI_MUSHROOM
+    }
 };
 
 static UseCheckFunc comItemUseCheckFuncTbl[] = {
