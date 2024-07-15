@@ -401,36 +401,37 @@ void fn_1_AB24(void) {
     var_f31 = -1.0f;
     var_r29 = 0;
     
-loop_10:
-    for (var_r31 = 0; var_r31 < lbl_1_bss_C6; var_r31++) {
-        if (var_r31 >= var_r29) {
-            sp124[var_r31].y += var_f31;
-            BoardModelPosSetV(lbl_1_bss_D6[var_r31], &sp124[var_r31]);
-            sp34[var_r31].y += 45.0f;
-            if (sp34[var_r31].y >= 360.0f) {
-                sp34[var_r31].y -= 360.0f;
-            }
-            BoardModelRotSetV(lbl_1_bss_D6[var_r31], &sp34[var_r31]);
-            if (sp124[var_r31].y <= (80.0f + sp28.y)) {
-                sp10 = sp124[var_r31];
-                CharModelCoinEffectCreate(1, &sp10);
-                BoardModelVisibilitySet(lbl_1_bss_D6[var_r31], 0);
-                var_r29++;
-                BoardPlayerCoinsAdd(lbl_1_bss_C0, 1);
-                HuAudFXPlay(7);
-                omVibrate(lbl_1_bss_C0, 0xC, 6, 6);
+    while (1) {
+        for (var_r31 = 0; var_r31 < lbl_1_bss_C6; var_r31++) {
+            if (var_r31 >= var_r29) {
+                sp124[var_r31].y += var_f31;
+                BoardModelPosSetV(lbl_1_bss_D6[var_r31], &sp124[var_r31]);
+                sp34[var_r31].y += 45.0f;
+                if (sp34[var_r31].y >= 360.0f) {
+                    sp34[var_r31].y -= 360.0f;
+                }
+                BoardModelRotSetV(lbl_1_bss_D6[var_r31], &sp34[var_r31]);
+                if (sp124[var_r31].y <= (80.0f + sp28.y)) {
+                    sp10 = sp124[var_r31];
+                    CharModelCoinEffectCreate(1, &sp10);
+                    BoardModelVisibilitySet(lbl_1_bss_D6[var_r31], 0);
+                    var_r29++;
+                    BoardPlayerCoinsAdd(lbl_1_bss_C0, 1);
+                    HuAudFXPlay(7);
+                    omVibrate(lbl_1_bss_C0, 0xC, 6, 6);
+                }
             }
         }
-    }
-    var_f31 *= 1.05f;
-    if (var_f31 < -20.0f) {
-        var_f31 = -20.0f;
-    }
-    if (var_r29 == lbl_1_bss_C6) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_C0, 7, 0.0f, 10.0f, 0);
-    } else {
-        HuPrcVSleep();
-        goto loop_10;
+        var_f31 *= 1.05f;
+        if (var_f31 < -20.0f) {
+            var_f31 = -20.0f;
+        }
+        if (var_r29 == lbl_1_bss_C6) {
+            BoardPlayerMotionShiftSet(lbl_1_bss_C0, 7, 0.0f, 10.0f, 0);
+            break;
+        } else {
+            HuPrcVSleep();
+        }
     }
     
     while (BoardPlayerMotionEndCheck(lbl_1_bss_C0) == 0) {
