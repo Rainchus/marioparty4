@@ -483,7 +483,7 @@ void fn_1_12E8(void)
 	}
 }
 
-char *lbl_1_data_640[] = {
+char *charNameTbl[] = {
 	"Mario",
 	"Luigi",
 	"Peach",
@@ -524,7 +524,7 @@ void fn_1_13A0(void)
 		}
 		print8(x, y+(row_h*5), scale, "Chara Name :");
 		fontcolor = 13;
-		print8(x, y+(row_h*5), scale, "             %s", lbl_1_data_640[itemno/6]);
+		print8(x, y+(row_h*5), scale, "             %s", charNameTbl[itemno/6]);
 		fontcolor = 15;
 		print8(x, y+(row_h*6), scale, "Item  Name :");
 		if(lbl_1_data_0[itemno].unk10 == 1) {
@@ -578,7 +578,7 @@ void fn_1_13A0(void)
 		s32 character;
 		for(i=1; i<4; i++) {
 			GWPlayerCfg[i].character = GWPlayerCfg[i-1].character+1;
-			if(GWPlayerCfg[i].character > 8) {
+			if(GWPlayerCfg[i].character > GW_CHARACTER_MAX) {
 				GWPlayerCfg[i].character = 0;
 			}				
 		}

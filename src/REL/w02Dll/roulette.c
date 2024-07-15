@@ -107,7 +107,7 @@ s32 fn_1_BE88(void) {
     fn_1_121C(0x130002);
 
     do {
-        BoardWinCreateChoice(2, 0x13001DU, 4, 0);
+        BoardWinCreateChoice(2, MAKE_MESSID(19, 29), 4, 0);
         /* COM has 50% to bribe goomba */
         if (GWPlayer[lbl_1_bss_388].com) {
             if (frandBool()) {
@@ -121,7 +121,7 @@ s32 fn_1_BE88(void) {
         rouletteChoice = BoardWinChoiceGet();
         // If chose to play roulette
         if (rouletteChoice == 0) {
-            BoardWinCreateChoice(1, 0x130003U, 4, 0);
+            BoardWinCreateChoice(1, MAKE_MESSID(19, 3), 4, 0);
             playerCoinRegion = 3;
             if (coinAmount < 0x14) {
                 BoardWinChoiceDisable(0);

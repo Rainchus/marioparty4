@@ -70,7 +70,7 @@ void fn_1_2C7C(s32 arg0) {
     BoardCameraRotSet(-33.0f, 0.0f);
     BoardCameraMotionWait();
     HuAudFXPlay(0x48A);
-    BoardWinCreate(0, 0x270018, -1);
+    BoardWinCreate(0, MAKE_MESSID(39, 24), -1);
     BoardWinWait();
     BoardWinKill();
     fn_1_3044();
@@ -167,8 +167,8 @@ void fn_1_3430(void) {
 }
 
 void fn_1_3514(void) {
-    Vec sp2C;                                   /* compiler-managed */
-    Vec sp20;                                   /* compiler-managed */
+    Vec sp2C;
+    Vec sp20;
     Vec sp14;
     Vec sp8;
     f32 var_f29;
@@ -308,7 +308,7 @@ void fn_1_3D88(void) {
     HuAudFXPlay(0x48B);
     HuPrcChildCreate(fn_1_3E8C, 0x2001U, 0x1000U, 0, boardMainProc);
     BoardPlayerIdleSet(lbl_1_bss_4C);
-    BoardWinCreate(0, 0x270019, -1);
+    BoardWinCreate(0, MAKE_MESSID(39, 25), -1);
     BoardWinWait();
     BoardWinKill();
 }

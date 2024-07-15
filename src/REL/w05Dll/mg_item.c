@@ -306,7 +306,7 @@ void fn_1_799C(void) {
     while (fn_1_1208(lbl_1_bss_14[6], 90.0f, 6.0f) == 0) {
         HuPrcVSleep();
     }
-    BoardWinCreate(2, 0x27000C, 7);
+    BoardWinCreate(2, MAKE_MESSID(39, 12), 7);
     BoardWinInsertMesSet(lbl_1_bss_B0[temp_r31] + 0x80000, 0);
     BoardWinWait();
     BoardWinKill();
@@ -349,7 +349,7 @@ void fn_1_799C(void) {
         HuPrcVSleep();
     }
     BoardAudSeqPause(0, 0, 0x3E8);
-    BoardWinCreate(2, 0x27000D, 7);
+    BoardWinCreate(2, MAKE_MESSID(39, 13), 7);
     BoardWinWait();
     BoardWinKill();
     temp_r30->func = &fn_1_7E4C;
@@ -372,8 +372,7 @@ void fn_1_7E94(dataCopy* arg0) {
 }
 
 void fn_1_7F04(omObjData* arg0) {
-    f32 spC;
-    f32 sp8;
+    f32 sp8[2];
     s32 var_r30;
     s32 var_r28;
     dataCopy* temp_r31;
@@ -382,8 +381,8 @@ void fn_1_7F04(omObjData* arg0) {
     temp_r31->unk_00 = 5;
     temp_r31->unk_02 = 0x3C;
     temp_r31->unk_04 = MGSeqCreate(1, temp_r31->unk_00, 0x120, 0x40);
-    HuWinMesMaxSizeGet(1, &sp8, 0x27000E);
-    temp_r31->unk_06 = HuWinCreate(-10000.0f, 344.0f, sp8, spC, 0);
+    HuWinMesMaxSizeGet(1, sp8, 0x27000E);
+    temp_r31->unk_06 = HuWinCreate(-10000.0f, 344.0f, sp8[0], sp8[1], 0);
     HuWinMesSet(temp_r31->unk_06, 0x27000E);
     HuWinBGTPLvlSet(temp_r31->unk_06, 0.0f);
     HuWinMesSpeedSet(temp_r31->unk_06, 0);
@@ -616,31 +615,33 @@ void fn_1_896C(void) {
     sp8 = 0.0f;
     var_f31 = 12.0f;
     
-loop_20:
-    for (var_r28 = 0, var_r31 = 0; var_r31 < 3; var_r31++) {
-        var_r29 = (1 << var_r31);
-        if ((temp_r30 & var_r29) != 0) {
-            var_r28++;
-            sp8 += 0.1f;
-            if (sp8 > 1.0f) {
-                sp8 = 1.0f;
-            }
+    while (1) {
+        for (var_r28 = 0, var_r31 = 0; var_r31 < 3; var_r31++) {
+            var_r29 = (1 << var_r31);
+            if ((temp_r30 & var_r29) != 0) {
+                var_r28++;
+                sp8 += 0.1f;
+                if (sp8 > 1.0f) {
+                    sp8 = 1.0f;
+                }
 
-            spC.x = spC.y = spC.z = sp8;
-            BoardModelScaleSetV(lbl_1_bss_A4[var_r31], (Vec* ) &sp8); //!
-            BoardModelPosGet(lbl_1_bss_A4[var_r31], &sp18);
-            sp18.y += var_f31;
-            if (sp18.y >= temp_f29) {
-                sp18.y = temp_f29;
-                var_r28 -= 1;
+                spC.x = spC.y = spC.z = sp8;
+                BoardModelScaleSetV(lbl_1_bss_A4[var_r31], (Vec* ) &sp8); //!
+                BoardModelPosGet(lbl_1_bss_A4[var_r31], &sp18);
+                sp18.y += var_f31;
+                if (sp18.y >= temp_f29) {
+                    sp18.y = temp_f29;
+                    var_r28 -= 1;
+                }
+                BoardModelPosSetV(lbl_1_bss_A4[var_r31], &sp18);
             }
-            BoardModelPosSetV(lbl_1_bss_A4[var_r31], &sp18);
         }
-    }
-    var_f31 *= 0.95f;
-    if (var_r28 > 0) {
-        HuPrcVSleep();
-        goto loop_20;
+        var_f31 *= 0.95f;
+        if (var_r28 > 0) {
+            HuPrcVSleep();
+        } else {
+            break;
+        }
     }
     spC.x = spC.y = spC.z = 1.0f;
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
@@ -653,56 +654,59 @@ loop_20:
     HuPrcCurrentGet()->user_data = (void*)temp_r30;
     var_f30 = 0.0f;
 
-loop_37:
-    temp_r30 = (u32) HuPrcCurrentGet()->user_data;
-    if ((temp_r30 & 8) == 0) {
-        for (var_r31 = 0; var_r31 < 3; var_r31++) {
-            var_r29 = (1 << var_r31);
-            if ((temp_r30 & var_r29) != 0) {
-                BoardModelPosGet(lbl_1_bss_A4[var_r31], &sp18);
-                sp18.y = (sp18.y + (0.25 * sin((M_PI * var_f30) / 180.0)));
-                BoardModelPosSetV(lbl_1_bss_A4[var_r31], &sp18);
+    while (1) {
+        temp_r30 = (u32) HuPrcCurrentGet()->user_data;
+        if ((temp_r30 & 8) == 0) {
+            for (var_r31 = 0; var_r31 < 3; var_r31++) {
+                var_r29 = (1 << var_r31);
+                if ((temp_r30 & var_r29) != 0) {
+                    BoardModelPosGet(lbl_1_bss_A4[var_r31], &sp18);
+                    sp18.y = (sp18.y + (0.25 * sin((M_PI * var_f30) / 180.0)));
+                    BoardModelPosSetV(lbl_1_bss_A4[var_r31], &sp18);
+                }
             }
+            var_f30 += 5.0f;
+            if (var_f30 >= 360.0f) {
+                var_f30 -= 360.0f;
+            }
+            HuPrcVSleep();
+        } else {
+            break;
         }
-        var_f30 += 5.0f;
-        if (var_f30 >= 360.0f) {
-            var_f30 -= 360.0f;
-        }
-        HuPrcVSleep();
-        goto loop_37;
     }
-    
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         BoardModelMotionStartEndSet(lbl_1_bss_AA[var_r31], 0x28, 0x46);
     }
-    HuPrcSleep(0xD);
+    HuPrcSleep(13);
     var_f31 = -8.0f;
-loop_50:
-    for (var_r28 = 0, var_r31 = 0; var_r31 < 3; var_r31++) {
-        var_r29 = (1 << var_r31);
-        if ((temp_r30 & var_r29) != 0) {
-            var_r28++;
-            sp8 -= 0.02f;
-            if (sp8 < 0.0f) {
-                sp8 = 0.0f;
+    while (1) {
+        for (var_r28 = 0, var_r31 = 0; var_r31 < 3; var_r31++) {
+            var_r29 = (1 << var_r31);
+            if ((temp_r30 & var_r29) != 0) {
+                var_r28++;
+                sp8 -= 0.02f;
+                if (sp8 < 0.0f) {
+                    sp8 = 0.0f;
+                }
+                spC.x = spC.y = spC.z = sp8;
+                BoardModelScaleSetV(lbl_1_bss_A4[var_r31], (Vec* ) &sp8); //!
+                BoardModelPosGet(lbl_1_bss_A4[var_r31], &sp18);
+                sp18.y += var_f31;
+                if (sp18.y <= (temp_f29 - 150.0f)) {
+                    sp18.y = temp_f29 - 150.0f;
+                }
+                if (BoardModelMotionTimeGet(lbl_1_bss_AA[var_r31]) >= 70.0f) {
+                    var_r28--;
+                }
+                BoardModelPosSetV(lbl_1_bss_A4[var_r31], &sp18);
             }
-            spC.x = spC.y = spC.z = sp8;
-            BoardModelScaleSetV(lbl_1_bss_A4[var_r31], (Vec* ) &sp8); //!
-            BoardModelPosGet(lbl_1_bss_A4[var_r31], &sp18);
-            sp18.y += var_f31;
-            if (sp18.y <= (temp_f29 - 150.0f)) {
-                sp18.y = temp_f29 - 150.0f;
-            }
-            if (BoardModelMotionTimeGet(lbl_1_bss_AA[var_r31]) >= 70.0f) {
-                var_r28--;
-            }
-            BoardModelPosSetV(lbl_1_bss_A4[var_r31], &sp18);
         }
-    }
-    var_f31 *= 0.98f;
-    if (var_r28 > 0) {
-        HuPrcVSleep();
-        goto loop_50;
+        var_f31 *= 0.98f;
+        if (var_r28 > 0) {
+            HuPrcVSleep();
+        } else {
+            break;
+        }
     }
     
     for (var_r31 = 0; var_r31 < 3; var_r31++) {

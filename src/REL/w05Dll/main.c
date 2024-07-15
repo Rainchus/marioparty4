@@ -233,7 +233,7 @@ void fn_1_954(void) {
 
     temp_r30 = GWSystem.player_curr;
     if (BoardPlayerItemCount(temp_r30) == 3) {
-        BoardWinCreate(2, 0x270009, 7);
+        BoardWinCreate(2, MAKE_MESSID(39, 9), 7);
         BoardWinWait();
         BoardWinKill();
         HuPrcEnd();
@@ -256,7 +256,7 @@ void fn_1_954(void) {
         var_r31++;
     }
     fn_1_74D0(lbl_1_bss_8);
-    BoardWinCreateChoice(2, 0x27000A, 7, 0);
+    BoardWinCreateChoice(2, MAKE_MESSID(39, 10), 7, 0);
     if (GWPlayer[temp_r30].com != 0) {
         if (BoardComPreferItemCheck(temp_r30, lbl_1_bss_8[0], lbl_1_bss_8[1], lbl_1_bss_8[2]) != -1) {
             BoardComKeySetLeft();
@@ -271,7 +271,7 @@ void fn_1_954(void) {
         while (((u32)fn_1_8884() & 0x10) == 0) {
             HuPrcVSleep();
         }
-        BoardWinCreate(2, 0x27000B, 7);
+        BoardWinCreate(2, MAKE_MESSID(39, 11), 7);
         BoardWinWait();
         BoardWinKill();
         BoardMGExit();
@@ -346,7 +346,7 @@ void fn_1_E40(void) {
 
     temp_r31 = GWSystem.player_curr;
     fn_1_96B4();
-    BoardWinCreateChoice(2, 0x27000F, 7, 0);
+    BoardWinCreateChoice(2, MAKE_MESSID(39, 15), 7, 0);
     if (GWPlayer[temp_r31].com != 0) {
         if (frandBool() != 0) {
             BoardComKeySetLeft();
@@ -359,7 +359,7 @@ void fn_1_E40(void) {
     temp_r30 = BoardWinChoiceGet();
     if ((temp_r30 == 1) || (temp_r30 == -1)) {
         fn_1_9760();
-        BoardWinCreate(2, 0x270010, 7);
+        BoardWinCreate(2, MAKE_MESSID(39, 16), 7);
         BoardWinWait();
         BoardWinKill();
         BoardMGExit();

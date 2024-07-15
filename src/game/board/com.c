@@ -30,134 +30,135 @@ static BOOL CheckLampUse(s32 player, s32 item);
 
 static s8 itemUse = -1;
 
-#define MINI_MUSHROOM 0
-#define MEGA_MUSHROOM 1
-#define SUPER_MINI_MUSHROOM 2
-#define SUPER_MEGA_MUSHROOM 3
-#define MINI_MEGA_HAMMER 4
-#define WARP_PIPE 5
-#define SWAP_CARD 6
-#define SPARKY_STICKER 7
-#define GADDLIGHT 8
-#define CHOMP_CALL 9
-#define BOWSER_SUIT 10
-#define BOOS_CRYSTAL_BALL 11
-#define MAGIC_LAMP 12
-#define SHOP_ITEMS_END MAGIC_LAMP
-#define ITEM_BAG 13
+#define BOARD_ITEM_MINI_MUSHROOM 0
+#define BOARD_ITEM_MEGA_MUSHROOM 1
+#define BOARD_ITEM_SUPER_MINI_MUSHROOM 2
+#define BOARD_ITEM_SUPER_MEGA_MUSHROOM 3
+#define BOARD_ITEM_MINI_MEGA_HAMMER 4
+#define BOARD_ITEM_WARP_PIPE 5
+#define BOARD_ITEM_SWAP_CARD 6
+#define BOARD_ITEM_SPARKY_STICKER 7
+#define BOARD_ITEM_GADDLIGHT 8
+#define BOARD_ITEM_CHOMP_CALL 9
+#define BOARD_ITEM_BOWSER_SUIT 10
+#define BOARD_ITEM_BOOS_CRYSTAL_BALL 11
+#define BOARD_ITEM_MAGIC_LAMP 12
+#define SHOP_ITEMS_END BOARD_ITEM_MAGIC_LAMP
+#define BOARD_ITEM_ITEM_BAG 13
+#define BOARD_ITEMS_END BOARD_ITEM_ITEM_BAG
 
 static s8 comItemPreferTbl[GW_CHARACTER_MAX][SHOP_ITEMS_END] = {
-    { //Mario
-        MAGIC_LAMP,
-        BOOS_CRYSTAL_BALL,
-        WARP_PIPE,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        SUPER_MINI_MUSHROOM,
-        SWAP_CARD,
-        MINI_MEGA_HAMMER,
-        MINI_MUSHROOM,
-        SPARKY_STICKER,
-        CHOMP_CALL,
-        BOWSER_SUIT
+    {   //Mario
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_BOWSER_SUIT
     },
     {   //Luigi
-        MAGIC_LAMP,
-        BOOS_CRYSTAL_BALL,
-        WARP_PIPE,
-        BOWSER_SUIT,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        SUPER_MINI_MUSHROOM,
-        MINI_MUSHROOM,
-        SWAP_CARD,
-        MINI_MEGA_HAMMER,
-        SPARKY_STICKER,
-        CHOMP_CALL
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL
     },   
     {   //Peach
-        MAGIC_LAMP,
-        BOOS_CRYSTAL_BALL,
-        WARP_PIPE,
-        SWAP_CARD,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        SUPER_MINI_MUSHROOM,
-        BOWSER_SUIT,
-        SPARKY_STICKER,
-        CHOMP_CALL,
-        MINI_MUSHROOM,
-        MINI_MEGA_HAMMER
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MEGA_HAMMER
     },   
     {   //Yoshi
-        MAGIC_LAMP,
-        WARP_PIPE,
-        BOOS_CRYSTAL_BALL,
-        CHOMP_CALL,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        SUPER_MINI_MUSHROOM,
-        SWAP_CARD,
-        MINI_MUSHROOM,
-        MINI_MEGA_HAMMER,
-        BOWSER_SUIT,
-        SPARKY_STICKER
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SPARKY_STICKER
     },    
     {   //Wario
-        MAGIC_LAMP,
-        BOOS_CRYSTAL_BALL,
-        MINI_MEGA_HAMMER,
-        CHOMP_CALL,
-        BOWSER_SUIT,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        WARP_PIPE,
-        SUPER_MINI_MUSHROOM,
-        SWAP_CARD,
-        MINI_MUSHROOM,
-        SPARKY_STICKER
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_SPARKY_STICKER
     },   
     {   //DK
-        MAGIC_LAMP,
-        BOOS_CRYSTAL_BALL,
-        WARP_PIPE,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        BOWSER_SUIT,
-        SWAP_CARD,
-        SUPER_MINI_MUSHROOM,
-        MINI_MUSHROOM,
-        MINI_MEGA_HAMMER,
-        CHOMP_CALL,
-        SPARKY_STICKER
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_SPARKY_STICKER
     },   
     {   //Daisy
-        MAGIC_LAMP,
-        WARP_PIPE,
-        BOOS_CRYSTAL_BALL,
-        MINI_MEGA_HAMMER,
-        SPARKY_STICKER,
-        CHOMP_CALL,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        BOWSER_SUIT,
-        SWAP_CARD,
-        SUPER_MINI_MUSHROOM,
-        MINI_MUSHROOM
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM
     },   
     {   //Waluigi
-        MAGIC_LAMP,
-        WARP_PIPE,
-        SPARKY_STICKER,
-        BOOS_CRYSTAL_BALL,
-        BOWSER_SUIT,
-        CHOMP_CALL,
-        MINI_MEGA_HAMMER,
-        SWAP_CARD,
-        SUPER_MEGA_MUSHROOM,
-        MEGA_MUSHROOM,
-        SUPER_MINI_MUSHROOM,
-        MINI_MUSHROOM
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM
     }
 };
 
@@ -252,9 +253,9 @@ s8 BoardComPreferItemGet(s32 player, s8 *items, s8 num_items) {
     weight = 100;
     for (i = 0; i < num_items; i++) {
         item = items[i];
-        for (j = 0; j < 12; j++) {
+        for (j = 0; j < SHOP_ITEMS_END; j++) {
             if (item == comItemPreferTbl[character][j]) {
-                if (j < weight && (BoardPlayerItemFind(player, item) == -1 || item == 0xC || item == 0xB)) {
+                if (j < weight && (BoardPlayerItemFind(player, item) == -1 || item == BOARD_ITEM_MAGIC_LAMP || item == BOARD_ITEM_BOOS_CRYSTAL_BALL)) {
                     weight = j;
                     prefer = i;
                 }
@@ -283,7 +284,7 @@ s32 BoardComItemWeightGet(s32 player, s32 item) {
     s32 weight;
     s32 i;
 
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < SHOP_ITEMS_END; i++) {
         if (item == comItemPreferTbl[GWPlayer[player].character][i]) {
             break;
         }
@@ -351,7 +352,7 @@ static s32 ChooseUseItem(s32 player) {
 
     useItem = -1;
     character = GWPlayer[player].character;
-    weight = 0x64;
+    weight = 100;
     for (i = 0; i < 3; i++) {
         item = GWPlayer[player].items[i];
         if (item == -1) {
@@ -363,7 +364,7 @@ static s32 ChooseUseItem(s32 player) {
         }
         result = func(player, item);
         if (result) {
-            for (j = 0; j < 0xC; j++) {
+            for (j = 0; j < SHOP_ITEMS_END; j++) {
                 if (item == comItemPreferTbl[character][j]) {
                     if (j < weight) {
                         weight = j;
@@ -373,7 +374,7 @@ static s32 ChooseUseItem(s32 player) {
             }
         }
     }
-    if (weight == 0x64) {
+    if (weight == 100) {
         return -1;
     }
     useItem = comItemPreferTbl[character][weight];

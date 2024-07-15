@@ -149,7 +149,7 @@ void fn_1_4034(s32 arg0) {
     BoardCameraViewSet(2);
     BoardCameraMotionWait();
     HuAudFXPlay(0x480);
-    BoardWinCreate(2, 0x270007, 0xA);
+    BoardWinCreate(2, MAKE_MESSID(39, 7), 0xA);
     BoardWinWait();
     BoardWinKill();
     if (arg0 >= 4) {

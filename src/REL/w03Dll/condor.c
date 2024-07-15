@@ -230,12 +230,12 @@ s32 fn_1_3478(s32 arg0) {
     
     BoardModelMotionShiftSet(lbl_1_data_310, 1, 0.0f, 5.0f, 0x40000001);
     temp_r26 = BoardPlayerGetCharMess(arg0);
-    BoardWinCreate(2, 0x160010, 8);
+    BoardWinCreate(2, MAKE_MESSID(22, 16), 8);
     BoardWinInsertMesSet(temp_r26, 3);
     BoardWinWait();
 
     if (BoardPlayerCoinsGet(arg0) < 5) {
-        BoardWinCreate(2, 0x160013, 8);
+        BoardWinCreate(2, MAKE_MESSID(22, 19), 8);
         BoardWinWait();
         BoardWinKill();
         return 0;
@@ -243,7 +243,7 @@ s32 fn_1_3478(s32 arg0) {
 
     var_r29 = 0;
     while (var_r29 == 0) {
-        BoardWinCreateChoice(2, 0x160011, 8, 0);
+        BoardWinCreateChoice(2, MAKE_MESSID(22, 17), 8, 0);
         BoardWinAttrSet(0x10);
         
         if (GWPlayer[arg0].com != 0) {
@@ -261,7 +261,7 @@ s32 fn_1_3478(s32 arg0) {
             break;
         default:
         case 1:
-            BoardWinCreate(2, 0x160014, 8);
+            BoardWinCreate(2, MAKE_MESSID(22, 20), 8);
             BoardWinWait();
             BoardWinKill();
             return 0;
@@ -501,7 +501,7 @@ void fn_1_3F5C(s32 arg0) {
         HuPrcVSleep();
     }
 
-    BoardWinCreate(2, 0x16000F, 8);
+    BoardWinCreate(2, MAKE_MESSID(22, 15), 8);
     BoardWinWait();
     BoardWinKill();
 }

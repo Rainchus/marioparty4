@@ -871,7 +871,7 @@ static void SameRollExec(void) {
         HuPrcVSleep();
     }
     BoardAudSeqPause(0, 0, 0x3E8);
-    BoardWinCreate(0, 0x90000, -1);
+    BoardWinCreate(0, MAKE_MESSID(9, 0), -1);
     BoardWinInsertMesSet(sameRollCoinStr, 0);
     BoardWinWait();
     BoardWinKill();

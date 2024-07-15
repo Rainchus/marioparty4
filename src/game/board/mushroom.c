@@ -98,11 +98,11 @@ static void MushroomMain(void) {
     }
     
     if ((GWSystem.max_turn - GWSystem.turn) == 0) {
-        BoardWinCreate(0, 0x50003U, -1);
+        BoardWinCreate(0, MAKE_MESSID(5, 3), -1);
         BoardWinWait();
         BoardWinKill();
     } else if (BoardPlayerItemCount(curPlayer) == 3) {
-        BoardWinCreate(0, 0x50000U, -1);
+        BoardWinCreate(0, MAKE_MESSID(5, 0), -1);
         BoardWinWait();
         BoardWinKill();
     } else {

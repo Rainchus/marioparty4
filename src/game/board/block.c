@@ -156,7 +156,7 @@ static void BlockProc(void) {
         SetBlockStop();
     }
     
-    BoardWinCreate(0, work->contains_star != 0 ? 0x10001 : 0x10002, -1);
+    BoardWinCreate(0, work->contains_star != 0 ? MAKE_MESSID(1, 1) : MAKE_MESSID(1, 2), -1);
     BoardWinWait();
     BoardWinKill();
     KillCoinMdl();

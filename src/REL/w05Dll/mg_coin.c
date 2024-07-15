@@ -137,8 +137,7 @@ void fn_1_9C98(dataCopy2* arg0) {
 void fn_1_9D0C(omObjData* arg0) {
     Vec sp1C;
     Vec sp10;
-    f32 spC;
-    f32 sp8;
+    f32 sp8[2];
     s32 var_r30;
     dataCopy2* temp_r31;
 
@@ -147,8 +146,8 @@ void fn_1_9D0C(omObjData* arg0) {
     temp_r31->unk_02 = 5;
     temp_r31->unk_04 = 0x3C;
     temp_r31->unk_00 = MGSeqCreate(1, temp_r31->unk_02, 0x120, 0x40);
-    HuWinMesMaxSizeGet(1, &sp8, 0x27000E);
-    temp_r31->unk_06 = HuWinCreate(-10000.0f, 368.0f, sp8, spC, 0);
+    HuWinMesMaxSizeGet(1, sp8, 0x27000E);
+    temp_r31->unk_06 = HuWinCreate(-10000.0f, 368.0f, sp8[0], sp8[1], 0);
     HuWinMesSet(temp_r31->unk_06, 0x27000E);
     HuWinBGTPLvlSet(temp_r31->unk_06, 0.0f);
     HuWinMesSpeedSet(temp_r31->unk_06, 0);
@@ -374,9 +373,9 @@ void fn_1_AB24(void) {
     }
     HuPrcSleep(0x1E);
     lbl_1_bss_C6 = lbl_1_data_4B2[lbl_1_bss_C2];
-    BoardAudSeqPause(0, 0, 0x3E8);
+    BoardAudSeqPause(0, 0, 1000);
     sprintf(&sp8, "%d", lbl_1_bss_C6);
-    BoardWinCreate(2, 0x270011, 7);
+    BoardWinCreate(2, MAKE_MESSID(39, 17), 7);
     BoardWinInsertMesSet((u32)&sp8, 0);
     BoardWinInsertMesSet(lbl_1_data_4B8[lbl_1_bss_C2], 1);
     BoardWinWait();
@@ -437,7 +436,7 @@ loop_10:
     while (BoardPlayerMotionEndCheck(lbl_1_bss_C0) == 0) {
         HuPrcVSleep();
     }
-    BoardWinCreate(2, 0x270012, 7);
+    BoardWinCreate(2, MAKE_MESSID(39, 18), 7);
     BoardWinWait();
     BoardWinKill();
     temp_r30->func = fn_1_B214;

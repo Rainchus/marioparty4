@@ -424,7 +424,7 @@ void fn_1_6EA8(void)
 	s32 temp_r28;
 	
 	temp_r31 = lbl_1_bss_108->work[0];
-	BoardWinCreate(2, 0x130018, 4);
+	BoardWinCreate(2, MAKE_MESSID(19, 24), 4);
 	BoardWinInsertMesSet(lbl_1_bss_190[temp_r31]+0x80000, 1);
 	BoardWinWait();
 	BoardWinKill();

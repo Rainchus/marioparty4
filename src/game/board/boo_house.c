@@ -149,13 +149,13 @@ static void ExecBooHouse(void) {
     var_r30 = GWPlayer[currPlayer].space_curr;
     BoardPlayerIdleSet(currPlayer);
     if (BoardPlayerCoinsGet(currPlayer) < 5) {
-        BoardWinCreate(0, 0x70001, -1);
+        BoardWinCreate(0, MAKE_MESSID(7, 1), -1);
         BoardWinWait();
         BoardWinKill();
         BoardDataAsyncWait(var_r28);
         HuPrcEnd();
     }
-    BoardWinCreateChoice(0, 0x70000, -1, 0);
+    BoardWinCreateChoice(0, MAKE_MESSID(7, 0), -1, 0);
     if (GWPlayer[currPlayer].com != 0) {
         if (BoardBooComUseCheck(currPlayer) != 0) {
             BoardComKeySetLeft();
@@ -645,7 +645,7 @@ void ApplyStarSteal(void) {
     s32 temp_r31;
 
     HuAudFXPlay(0x4C);
-    BoardWinCreate(2, 0x7000A, 3);
+    BoardWinCreate(2, MAKE_MESSID(7, 10), 3);
     BoardWinWait();
     BoardWinKill();
     BoardStatusShowSetForce(currPlayer);
@@ -670,7 +670,7 @@ void ApplyStarSteal(void) {
 }
 
 void ApplyBooLight(void) {
-    BoardWinCreate(2, 0x7000B, 3);
+    BoardWinCreate(2, MAKE_MESSID(7, 11), 3);
     BoardWinWait();
     BoardWinKill();
     BoardPlayerMotionShiftSet(currPlayer, 8, 0.0f, 8.0f, 0);

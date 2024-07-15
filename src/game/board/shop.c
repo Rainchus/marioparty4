@@ -248,7 +248,7 @@ static void ExecShop(void) {
         BoardWinKill();
         HuPrcEnd();
     }
-    BoardWinCreateChoice(0, 0xF0000, -1, 0);
+    BoardWinCreateChoice(0, MAKE_MESSID(15, 0), -1, 0);
     DecideComEnter(shopPlayer);
     BoardWinWait();
     if (BoardWinChoiceGet() != 0) {

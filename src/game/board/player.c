@@ -2420,7 +2420,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 static void RemoveSparkSpace(s32 player)
 {
 	if(GWPlayer[player].spark) {
-		BoardWinCreate(0, 0x12001C, -1);
+		BoardWinCreate(0, MAKE_MESSID(18, 28), -1);
 		BoardWinWait();
 		BoardWinKill();
 		GWPlayer[player].spark = 0;
