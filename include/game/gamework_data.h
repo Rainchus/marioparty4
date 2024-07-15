@@ -311,7 +311,7 @@ static inline s16 GWPlayerCoinWinGet(s32 player)
 
 static inline void GWPlayerCoinWinSet(s32 player, s16 value)
 {
-	if (_CheckFlag(0x1000C) == 0) {
+	if (_CheckFlag(FLAG_ID_MAKE(1, 12)) == 0) {
 		GWPlayer[player].coin_win = value;
 	}
 }

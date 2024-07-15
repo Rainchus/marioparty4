@@ -405,14 +405,14 @@ void fn_1_DEC(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        if ((WipeStatGet() != 0) || (_CheckFlag(0x1001CU) != 0)) {
+        if ((WipeStatGet() != 0) || (_CheckFlag(FLAG_ID_MAKE(1, 28)) != 0)) {
             HuAudFXVolSet(lbl_1_data_21C[i], 0);
         } else {
             HuAudFXVolSet(lbl_1_data_21C[i], 0x7F);
         }        
     }
 
-    if (_CheckFlag(0x10010) == 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 16)) == 0) {
         if (lbl_1_bss_8 == 0) {
             HuAudFXPauseAll(1);
             lbl_1_bss_8 = 1;

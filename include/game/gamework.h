@@ -3,6 +3,8 @@
 
 #include "dolphin.h"
 
+#define GW_PLAYER_MAX 4
+
 void GWInit(void);
 void GWGameStatReset(void);
 s32 GWMessSpeedGet(void);

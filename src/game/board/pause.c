@@ -172,9 +172,9 @@ static void PauseExit(void) {
     pausePad = -1;
     omSysPauseCtrl(0);
     if (GWMGExplainGet()) {
-        _SetFlag(0xB);
+        _SetFlag(FLAG_ID_MAKE(0, 11));
     } else {
-        _ClearFlag(0xB);
+        _ClearFlag(FLAG_ID_MAKE(0, 11));
     }
     if (GWPartyGet() == 0) {
         GWGameStat.story_pause.explain_mg = GWMGExplainGet();

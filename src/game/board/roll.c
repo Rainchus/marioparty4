@@ -219,13 +219,13 @@ static void RollMain(void) {
     BoardCameraTargetModelSet(-1);
     for (i = 0; i < numDice; i++) {
         temp_r26 = rollPlayer;
-        if (!_CheckFlag(0x1000B)) {
+        if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
             var_r27 = BoardPlayerItemCount(temp_r26);
             if (GWTeamGet()) {
                 temp_r25 = BoardPlayerSameTeamFind(temp_r26);
                 var_r27 += BoardPlayerItemCount(temp_r25);
             }
-            if (BoardItemPrevGet() != -1 || var_r27 == 0 || _CheckFlag(0x10009) || BoardMegaDoubleDiceCheck()) {
+            if (BoardItemPrevGet() != -1 || var_r27 == 0 || _CheckFlag(FLAG_ID_MAKE(1, 9)) || BoardMegaDoubleDiceCheck()) {
                 var_r29 = 0x90004;
             } else {
                 var_r29 = 0x90002;
@@ -296,7 +296,7 @@ static void RollMain(void) {
     destMode = var_r30;
     GWPlayer[rollPlayer].roll = var_r30;
     BoardRollCreate(rollPlayer, 1);
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardTutorialHookExec(6, 0);
     }
     if (tutorialRollF != 0) {
@@ -388,8 +388,8 @@ static void DoInput(s32 arg0) {
                 var_r30 = BoardPlayerSameTeamFind(rollPlayer);
                 var_r31 += BoardPlayerItemCount(var_r30);
             }
-            if (var_r31 == 0 || BoardItemPrevGet() != -1 || BoardMegaDoubleDiceCheck() || _CheckFlag(0x10009)) {
-                if (_CheckFlag(0x10009) && GWBoardGet() == BOARD_ID_MAIN6 && *sp8 == 0x200 && var_r31 != 0) {
+            if (var_r31 == 0 || BoardItemPrevGet() != -1 || BoardMegaDoubleDiceCheck() || _CheckFlag(FLAG_ID_MAKE(1, 9))) {
+                if (_CheckFlag(FLAG_ID_MAKE(1, 9)) && GWBoardGet() == BOARD_ID_MAIN6 && *sp8 == 0x200 && var_r31 != 0) {
                     HuAudFXPlay(4);
                 }
             } else if (*sp8 == 0x200) {
@@ -900,7 +900,7 @@ static s32 GetBtnRoll(s32 arg0) {
         var_r31 = 0x200;
         return var_r31;
     }
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         var_r31 = 0x100;
         return var_r31;
     }
@@ -909,7 +909,7 @@ static s32 GetBtnRoll(s32 arg0) {
         var_r31 = HuPadBtnDown[var_r29];
         return var_r31;
     }
-    if (_CheckFlag(0x10009) || BoardItemPrevGet() != -1) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 9)) || BoardItemPrevGet() != -1) {
         return 0x100;
     }
     var_r31 = GetComBtnRoll(arg0);
@@ -917,7 +917,7 @@ static s32 GetBtnRoll(s32 arg0) {
 }
 
 static s32 GetComBtnRoll(s32 arg0) {
-    if (BoardItemPrevGet() != -1 || BoardPlayerItemCount(arg0) == 0 || BoardMegaDoubleDiceCheck() || _CheckFlag(0x10009)) {
+    if (BoardItemPrevGet() != -1 || BoardPlayerItemCount(arg0) == 0 || BoardMegaDoubleDiceCheck() || _CheckFlag(FLAG_ID_MAKE(1, 9))) {
         return 0x100;
     }
     if (BoardComUseItemCheck(arg0)) {

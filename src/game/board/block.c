@@ -127,12 +127,12 @@ static void BlockProc(void) {
     if (work->contains_star != 0) {
         SetBlockStop();
         BoardModelPosGet(starMdl, &sp8);
-        if (_CheckFlag(0x1000B) == 0) {
-            BoardAudSeqPause(0, 1, 0x3E8);
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11)) == 0) {
+            BoardAudSeqPause(0, 1, 1000);
         }
         BoardStarGive(player, &sp8);
-        if (_CheckFlag(0x1000B) == 0) {
-            BoardAudSeqPause(0, 0, 0x3E8);
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11)) == 0) {
+            BoardAudSeqPause(0, 0, 1000);
         }
     } else {
         for (i = 0; i < 0x14; i++) {
@@ -165,7 +165,7 @@ static void BlockProc(void) {
     BoardPlayerIdleSet((s32) player);
     HuPrcVSleep();
     
-    if ((_CheckFlag(0x1000B) != 0) && work->contains_star == 0) {
+    if ((_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) && work->contains_star == 0) {
         BoardTutorialHookExec(0x16, 0);
     }
     

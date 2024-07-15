@@ -259,21 +259,21 @@ static void ExecMGSetup(void) {
     HuDataDirClose(0x20000);
     HuDataDirClose(sp60[GWBoardGet()]);
     HuPrcSleep(2);
-    if (_CheckFlag(0xBU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(0, 11)) != 0) {
         var_r23 = 0x140000;
     } else {
         var_r23 = mgInfoTbl[mgNext].data_dir;
     }
     var_r22 = BoardDataDirReadAsync(var_r23);
-    BoardAudSeqFadeOut(0, 0x3E8U);
-    _SetFlag(0x1000EU);
-    WipeColorSet(0xFFU, 0xFFU, 0xFFU);
+    BoardAudSeqFadeOut(0, 1000);
+    _SetFlag(FLAG_ID_MAKE(1, 14));
+    WipeColorSet(255, 255, 255);
     WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
     HuAudFXAllStop();
-    _SetFlag(0x1001CU);
+    _SetFlag(FLAG_ID_MAKE(1, 28));
     
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         BoardStatusItemHideSet(var_r31, 1);
@@ -723,7 +723,7 @@ static void CenterStatus(bitcopy* arg0, omObjData* arg1) {
     }
     SetupStatusLayout();
     DetermineMGList(arg0);
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardTutorialHookExec(0x1A, 0);
     }
     temp_r30 = (bitcopy*) mgSetupObj->work;
@@ -812,7 +812,7 @@ static void PopupVS(bitcopy* arg0, omObjData* arg1) {
     }
     HuSprScaleSet(temp_r29->unk_00[0], 0, var_f30, var_f30);
     arg0->unk_04 += 9;
-    if ((_CheckFlag(0x1000BU) != 0) && arg0->field00_bit1 == 3) {
+    if ((_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) && arg0->field00_bit1 == 3) {
         BoardTutorialHookExec(0x1B, 0);
         if (*boardTutorialData == 1) {
             arg0->field00_bit1 = 0;

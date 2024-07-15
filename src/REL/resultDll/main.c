@@ -103,7 +103,7 @@ void ObjectSetup(void)
 		}
 	}
 	HuDataDirClose(mgInfoTbl[lbl_1_bss_17C].data_dir);
-	if(mgInfoTbl[lbl_1_bss_17C].type == 3 || mgInfoTbl[lbl_1_bss_17C].type == 5 || mgInfoTbl[lbl_1_bss_17C].type == 6 || !_CheckFlag(0x10000)) {
+	if(mgInfoTbl[lbl_1_bss_17C].type == 3 || mgInfoTbl[lbl_1_bss_17C].type == 5 || mgInfoTbl[lbl_1_bss_17C].type == 6 || !_CheckFlag(FLAG_ID_MAKE(1, 0))) {
 		if(_CheckFlag(0x10000)) {
 			HuAR_DVDtoARAM(DATADIR_BOARD);
 			while(HuARDMACheck());

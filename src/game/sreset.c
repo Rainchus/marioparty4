@@ -125,7 +125,7 @@ static void *ToeThreadFunc(void *param)
 	while(1) {
 		BOOL hide_disp;
 		OSSleepThread(&ToeMessageQueue.queueSend);
-		if(!_CheckFlag(0x30000)) {
+		if(!_CheckFlag(FLAG_ID_MAKE(3, 0))) {
 			BOOL reset;
 			if(!HuSoftResetCheck()) {
 				if(SR_ExecReset) {

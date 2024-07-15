@@ -3066,7 +3066,7 @@ static s32 SeqInitRecord(SeqWork *work, va_list params)
 static s32 SeqUpdateRecord(SeqWork *work)
 {
 	s16 group;
-	if(_CheckFlag(0x1000C)) {
+	if(_CheckFlag(FLAG_ID_MAKE(1, 12))) {
 		work->state = 0;
 		work->stat |= 0xC;
 	} else {
@@ -3199,7 +3199,7 @@ static void PauseProc(void)
 			HuPrcVSleep();
 		}
 	} else {
-		if(mgPracticeEnableF && !_CheckFlag(0x1000C)) {
+		if(mgPracticeEnableF && !_CheckFlag(FLAG_ID_MAKE(1, 12))) {
 			window[2] = HuWinExCreateStyled(-10000.0f, 400.0f, 412, 42, -1, 0);
 			HuWinPriSet(window[2], 0);
 			HuWinDispOn(window[2]);
@@ -3315,7 +3315,7 @@ void MGSeqPauseKill(void)
 
 void MGSeqPauseEnableCtrl(s32 flag)
 {
-	if(!_CheckFlag(0x10008)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 8))) {
 		omSysPauseEnable(flag);
 	}
 }
@@ -3373,7 +3373,7 @@ void MGSeqPracticeInit(void)
 	Process *process;
 	s16 i;
 	process = HuPrcCurrentGet();
-	if(!_CheckFlag(0x1000C)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
 		return;
 	}
 	wipeFadeInF = 0;
@@ -3531,7 +3531,7 @@ void MGSeqPracticeExitCheck(omObjData *object)
 		}
 		object->work[0]++;
 	}
-	if(!omPauseChk() || _CheckFlag(0x1000C) || !pauseWaitF) {
+	if(!omPauseChk() || _CheckFlag(FLAG_ID_MAKE(1, 12)) || !pauseWaitF) {
 		return;
 	}
 	for(i=input=0; i<4; i++) {

@@ -147,7 +147,7 @@ void BoardStarHostSet(s16 arg0) {
     if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         return;
     }
-    if (_CheckFlag(0x10001)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 1))) {
         BoardSpaceHostSet(boardSpaceStarTbl[GWSystem.star_pos]);
     }
 }
@@ -371,7 +371,7 @@ block_B:
     }
     BoardModelRotYSet(temp_r30, 0.0f);
     BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, 0x40000001);
-    if (!_CheckFlag(0x10016)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 22))) {
         BoardCameraViewSet(1);
         BoardCameraTargetPlayerSet(temp_r31);
         BoardCameraMotionWait();
@@ -612,7 +612,7 @@ void BoardStarGive(s32 arg0, Vec *arg1) {
     HuAudFXPlay(0x338);
     HuAudFXPlay(0x353);
     StarInlineFunc01();
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardTutorialHookExec(0x15, 0);
     }
     BoardPlayerMotBlendSet(arg0, 0, 0xF);
@@ -627,7 +627,7 @@ void BoardStarGive(s32 arg0, Vec *arg1) {
     BoardPlayerStarsAdd(arg0, 1);
     HuAudFXPlay(8);
     HuPrcSleep(10);
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardPlayerMotionEndWait(arg0);
     } else {
         temp_r25 = HuAudSStreamPlay(6);
@@ -684,7 +684,7 @@ void BoardStarShowNext(s32 arg0) {
         BoardSpacePosGet(0, GWPlayer[arg0].space_curr, &sp38);
         BoardPlayerPosSetV(arg0, &sp38);
     }
-    if (!_CheckFlag(0x10017)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 23))) {
         BoardAudSeqFadeOut(0, 1000);
     }
     showNextObj = omAddObjEx(boardObjMan, 0x7E03, 0, 0, -1, ShowNextUpdate);
@@ -778,10 +778,10 @@ void BoardStarShowNext(s32 arg0) {
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    if (!_CheckFlag(0x10017)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 23))) {
         BoardMusStartBoard();
     }
-    _ClearFlag(0x1001C);
+    _ClearFlag(FLAG_ID_MAKE(1, 28));
 }
 
 static void ShowNextUpdate(omObjData *arg0) {

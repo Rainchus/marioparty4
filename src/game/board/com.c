@@ -661,7 +661,7 @@ s32 BoardComFarPlayerFind(void) {
     s32 space;
     s32 i;
 
-    if (_CheckFlag(0x1000B) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         return -1;
     }
     far_player = -1;

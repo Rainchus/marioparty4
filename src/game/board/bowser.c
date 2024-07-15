@@ -102,7 +102,7 @@ static s32 ExecMiniBowserEvent(void);
 
 s32 BoardBowserExec(s32 player, s32 space)
 {
-	if(_CheckFlag(0x1000B)) {
+	if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		HuAudFXPlay(841);
 		BoardCameraViewSet(2);
 		BoardPlayerMotBlendSet(player, 0, 15);
@@ -152,7 +152,7 @@ static void ExecBowser(void)
 {
 	s32 i;
 	s32 status;
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		HuAudFXPlay(841);
 		omVibrate(eventPlayer, 12, 4, 2);
 		if(GWBoardGet() == BOARD_ID_MAIN6 && boardBowserHook) {
@@ -170,7 +170,7 @@ static void ExecBowser(void)
 	status = BoardDataDirReadAsync(DATADIR_BKOOPA);
 	BoardDataAsyncWait(status);
 	CreatePlayerMot();
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		ExecBowserMain();
 	} else {
 		ExecMGReturn();
@@ -318,7 +318,7 @@ static void SquishPlayers(void)
 	Vec pos_space;
 	s32 i;
 	BoardPlayerPosGet(eventPlayer, &pos);
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		HuAudFXPlay(798);
 	}
 	pos.y += 6.0f;
@@ -765,7 +765,7 @@ static void CreateBowserObj(void)
 	work->mot_active = 0;
 	work->fall_done = 0;
 	work->jump_done = 0;
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		work->state = 1;
 	} else {
 		work->state = 0;
@@ -778,7 +778,7 @@ static void CreateBowserObj(void)
 	bowserObj->trans.x = pos.x;
 	bowserObj->trans.y = pos.y;
 	bowserObj->trans.z = pos.z;
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		suitItemMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 99), NULL, 0);
 		BoardModelLayerSet(suitItemMdl, 2);
 		BoardModelVisibilitySet(suitItemMdl, 0);
@@ -885,7 +885,7 @@ static void ExecBowserFall(BowserWork *work, omObjData *object)
 		BoardCameraQuakeSet(60, 100.0f);
 		object->trans.y = pos.y;
 		BoardPlayerPosGet(eventPlayer, &pos_player);
-		if(!_CheckFlag(0x10003)) {
+		if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 			HuAudFXPlay(798);
 		}
 		pos_player.y += 6.0f;

@@ -92,7 +92,7 @@ static void MushroomMain(void) {
     BoardCameraMotionWait();
     BoardPlayerIdleSet(curPlayer);
     
-    if (_CheckFlag(0x1000B) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardTutorialHookExec(13, 0);
         boardTutorialData[0] = 0;
     }
@@ -125,7 +125,7 @@ static void MushroomMain(void) {
                 BoardRand();
                 var_r26 = 0; //inline?
                 var_r29 = var_r26;
-                if (_CheckFlag(0x1000BU) != 0) {
+                if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
                     var_r29 = 0;
                 }
             }
@@ -173,7 +173,7 @@ static void MushroomMain(void) {
             MarkKillBox();
             BoardPlayerMotionEndWait(curPlayer);
             BoardPlayerIdleSet(curPlayer);
-            if (_CheckFlag(0x1000BU) != 0) {
+            if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
                 BoardPlayerIdleSet(curPlayer);
                 BoardTutorialHookExec(14, 0);
                 if (++boardTutorialData[0] < 2) {
@@ -388,7 +388,7 @@ static void InitBox(s32 arg0) {
     if (GWBoardGet() == BOARD_ID_EXTRA2) {
         itemResult = 0;
     }
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         itemResult = (boardTutorialData[0] ^ 1);
         var_r29 = 0;
     }

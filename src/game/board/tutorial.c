@@ -24,7 +24,7 @@ static void *gameStatCopy;
 
 static void TutorialProcFunc(void) {
     while (1) {
-        if (_CheckFlag(0x10010)) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 16))) {
             BoardTutorialHookExec(0x1E, 0);
         }
         HuPrcVSleep();
@@ -38,13 +38,13 @@ void BoardTutorialInit(void) {
     tutorialHook = NULL;
     tutorialProcess = NULL;
     boardTutorialF = 0;
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         tutorialProcess = HuPrcChildCreate(TutorialProcFunc, 0x2002, 0x2000, 0, boardMainProc);
     }
 }
 
 void BoardTutorialKill(void) {
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         if (tutorialProcess) {
             HuPrcKill(tutorialProcess);
         }

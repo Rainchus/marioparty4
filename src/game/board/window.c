@@ -113,7 +113,7 @@ static void ExecBoardWindow(void) {
         if (windowID == -1) {
             HuPrcEnd();
         }
-        if (_CheckFlag(0x1000B) != 0) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
             HuWinPriSet(windowID, 3);
         }
     }
@@ -148,7 +148,7 @@ static void ExecBoardWindow(void) {
         if (comKeyFunc) {
             comKeyFunc();
         }
-    } else if ((_CheckFlag(0x1000B) != 0) && ((winPosIdx == 5) || (winPosIdx == 6))) {
+    } else if ((_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) && ((winPosIdx == 5) || (winPosIdx == 6))) {
         win_curr = &winData[windowID];
         win_curr->active_pad = 0xF;
         HuWinComKeyWait(-1, -1, -1, -1, 0);
@@ -352,7 +352,7 @@ void BoardWinPlayerSet(s32 player) {
     } else {
         disablePlayer = ~(1 << GWPlayer[player].port);
     }
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         disablePlayer = 0;
     }
     if (windowID != -1) {

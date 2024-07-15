@@ -225,7 +225,7 @@ s32 fn_1_2490(void)
 		temp_f30 += 5.0f;
 		HuPrcVSleep();
 	}
-	_ClearFlag(0x1000B);
+	_ClearFlag(FLAG_ID_MAKE(1, 11));
 	WipeColorSet(255, 255, 255);
 	WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 10);
 	while(WipeStatGet()) {

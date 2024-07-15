@@ -471,7 +471,7 @@ s32 fn_1_3AAC(void)
 						} else {
 							_SetFlag(0x30000);
 							temp_r28 = HuCardFormat(temp_r31);
-							_ClearFlag(0x30000);
+							_ClearFlag(FLAG_ID_MAKE(3, 0));
 							if(temp_r28 == 0) {
 								SLSerialNoGet();
 							}

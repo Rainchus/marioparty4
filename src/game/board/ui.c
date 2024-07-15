@@ -983,7 +983,7 @@ static void WaitYourTurn(UnkUiWork02 *arg0, omObjData *arg1) {
 static void ShrinkYourTurn(UnkUiWork02 *arg0, omObjData *arg1) {
     s32 temp_r30 = GWPlayer[arg0->unk00_bit5].port;
 
-    if ((HuPadBtnDown[temp_r30] & 0x100) || GWPlayer[arg0->unk00_bit5].com || _CheckFlag(0x1000B)) {
+    if ((HuPadBtnDown[temp_r30] & 0x100) || GWPlayer[arg0->unk00_bit5].com || _CheckFlag(FLAG_ID_MAKE(1, 11))) {
         arg0->unk00_bit3 = 2;
         arg0->unk01 = 0;
         arg0->unk04 = 1.0f;
@@ -1117,7 +1117,7 @@ static void ItemUseProc(void) {
         while (BoardItemDoneCheck() == 0) {
             HuPrcVSleep();
         }
-        if (_CheckFlag(0x1000B) != 0) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
             BoardTutorialHookExec(0x17, 0);
         }
         FinishItemUse(temp_r23, var_r25);
@@ -1183,13 +1183,13 @@ static void DestroyItemUse(void) {
 }
 
 void BoardMakeRandomItem(void) {
-    s32 temp_r3;
+    s32 chosenItemIndex;
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        temp_r3 = BoardRandMod(0xE);
-        if (temp_r3 != 0xA && temp_r3 != 0xD) {
-            itemRandTbl[i] = temp_r3;
+        chosenItemIndex = BoardRandMod(0xE);
+        if (chosenItemIndex != 0xA && chosenItemIndex != 0xD) {
+            itemRandTbl[i] = chosenItemIndex;
         }
     }
     BoardItemBagItemSet(itemRandTbl);
@@ -1262,7 +1262,7 @@ static inline void ExecItemPickInlineFunc02(s32 arg0, s8 arg1, s32 arg2) {
     while (!CheckItemWindow()) {
         HuPrcVSleep();
     }
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardTutorialHostHide(1);
     }
 }
@@ -1277,7 +1277,7 @@ static void ExecItemPick(void) {
     UnkUiWork03 *temp_r27;
     Vec (*temp_r28)[6];
 
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardTutorialHostHide(0);
     }
     itemPickObj = omAddObjEx(boardObjMan, 0x7E03, 0, 0, -1, &UpdateItemPick);
@@ -1975,7 +1975,7 @@ static void CreatePickerWindow(UnkUiWork01 *arg0, s32 arg1) {
     HuWinBGTPLvlSet(arg0->unk06, 0.0f);
     HuWinMesSpeedSet(arg0->unk06, 0);
     HuWinMesSet(arg0->unk06, var_r30);
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         HuWinDispOff(arg0->unk06);
     }
 }

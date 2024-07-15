@@ -136,10 +136,10 @@ void fn_1_414(void)
 			}
 			his = omOvlHisGet(0);
 			omOvlHisChg(0, his->overlay, 1, his->stat);
-			_ClearFlag(0x10000);
-			_ClearFlag(0x10008);
-			_ClearFlag(0x1000C);
-			_ClearFlag(0x1000B);
+			_ClearFlag(FLAG_ID_MAKE(1, 0));
+			_ClearFlag(FLAG_ID_MAKE(1, 8));
+			_ClearFlag(FLAG_ID_MAKE(1, 12));
+			_ClearFlag(FLAG_ID_MAKE(1, 11));
 			GWGameStat.sound_mode = msmSysGetOutputMode();
 			switch(result) {
 				case 0:

@@ -152,8 +152,8 @@ static void ExecStart(void) {
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    _ClearFlag(0x1001C);
-    if (!_CheckFlag(0x1000B)) {
+    _ClearFlag(FLAG_ID_MAKE(1, 28));
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         streamStatus = HuAudSStreamPlay(5);
         ShowLogo();
         FocusStart();
@@ -166,10 +166,10 @@ static void ExecStart(void) {
     }
     CreatePlayerStart();
     ExecStartRoll();
-    if (!_CheckFlag(0x1000B)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardAudSeqFadeOut(0, 0x1F4);
     }
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardTutorialHookExec(4, 0);
         WipeColorSet(0, 0, 0);
         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 21);
@@ -333,7 +333,7 @@ static void CreatePlayerStart(void) {
         BoardPlayerPosSet(playerOrderOld[var_r30->unk00_field2], var_r29->trans.x, var_r29->trans.y, var_r29->trans.z);
         BoardPlayerMotionShiftSet(playerOrderOld[var_r30->unk00_field2], 4, 10.0f, 1.0f, 0);
     }
-    if (!_CheckFlag(0x1000B)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardMusStart(0, 0xC, 0x7F, 0);
     }
     while (GetPlayerStartState(3) != 0) {
@@ -387,7 +387,7 @@ static void PlayerFall(omObjData *arg0, PlayerStartWork *arg1) {
     if (arg1->unk00_field3 != 0) {
         SetPlayerStartState(playerOrderOld[arg1->unk00_field2], 0);
         BoardPlayerIdleSet(playerOrderOld[arg1->unk00_field2]);
-        if (_CheckFlag(0x1000B) && arg1->unk00_field2 == 3) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11)) && arg1->unk00_field2 == 3) {
             BoardTutorialHookExec(0, 0);
         }
         return;
@@ -440,7 +440,7 @@ static void PlayerDiceFall(omObjData *arg0, PlayerStartWork *arg1) {
         BoardModelVisibilitySet(arg1->unk08, 1);
     } else {
         if (arg1->unk02 > 30.0f) {
-            if (_CheckFlag(0x1000B)) {
+            if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
                 if (arg1->unk00_field2 == 3) {
                     BoardTutorialHookExec(1, 0);
                     for (i = 0; i < 4; i++) {
@@ -490,7 +490,7 @@ static void PlayerDiceRoll(omObjData *arg0, PlayerStartWork *arg1) {
     }
     if (arg1->unk00_field4 == 0) {
         if (GWPlayer[playerOrderOld[arg1->unk00_field2]].com) {
-            if (_CheckFlag(0x1000B)) {
+            if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
                 if (arg1->unk0E != 0) {
                     arg1->unk0E--;
                 } else {
@@ -526,7 +526,7 @@ static void PlayerDiceRoll(omObjData *arg0, PlayerStartWork *arg1) {
                     var_r29++;
                 }
             }
-            if (_CheckFlag(0x1000B)) {
+            if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
                 arg1->unk04 = tutorialRollTbl[arg1->unk00_field2];
             }
             playerOrderNew[playerOrderOld[arg1->unk00_field2]] = arg1->unk04;
@@ -556,7 +556,7 @@ static void PlayerDiceNumShow(omObjData *arg0, PlayerStartWork *arg1) {
     if (arg1->unk06 < 0) {
         arg1->unk06 = 0;
         SetPlayerStartState(playerOrderOld[arg1->unk00_field2], 0);
-        if (_CheckFlag(0x1000B)) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
             BoardTutorialHookExec(2, 0);
         }
     }
@@ -644,14 +644,14 @@ static void ExecStartRoll(void) {
     s32 var_r24;
     s32 i;
 
-    if (!_CheckFlag(0x1000B)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         for (i = 0; i < 4; i++) {
             SetPlayerStartState(i, 2);
         }
         while (GetPlayerStartState(3) != 0) {
             HuPrcVSleep();
         }
-        _CheckFlag(0x1000B);
+        _CheckFlag(FLAG_ID_MAKE(1, 11));
         var_r29 = startMesTbl[GWBoardGet()][0];
         BoardWinCreate(2, var_r29, BoardWinPortraitGetStar());
         BoardWinWait();
@@ -690,7 +690,7 @@ static void ExecStartRoll(void) {
     BoardStatusItemSet(0);
     HuPrcVSleep();
     for (i = 0; i < 4; i++) {
-        if (_CheckFlag(0x1000B)) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
             BoardTutorialHookExec(3, i);
         } else {
             if (i == 0) {
@@ -714,7 +714,7 @@ static void ExecStartRoll(void) {
     for (i = 0; i < 4; i++) {
         BoardPlayerIdleSet(i);
     }
-    if (!_CheckFlag(0x1000B)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         var_r29 = startMesTbl[GWBoardGet()][3];
         BoardWinCreate(2, var_r29, BoardWinPortraitGetStar());
         BoardWinWait();
@@ -790,7 +790,7 @@ static void InitCamera(void) {
     camFocus = BoardModelCreate(0x7000A, NULL, 0);
     BoardModelVisibilitySet(camFocus, 0);
     BoardModelPosSetV(camFocus, &camStartFocusPos);
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardCameraMoveSet(0);
         sp14.x = spacePos.x + 150.0f;
         sp14.y = spacePos.y + 100.0f;
@@ -820,7 +820,7 @@ static void InitCamera(void) {
 static void InitHost(void) {
     Vec sp8;
 
-    if (!_CheckFlag(0x1000B)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         hostMdl = BoardStarHostMdlGet();
         sp8.x = spacePos.x + 150.0f;
         sp8.y = spacePos.y;
@@ -837,7 +837,7 @@ static void CreateTapWin(void) {
     float var_f30;
     s32 var_r31;
 
-    if (!_CheckFlag(0x1000B)) {
+    if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         var_r31 = 0x120014;
         HuWinMesMaxSizeGet(1, sp8, var_r31);
         var_f31 = -10000.0f;

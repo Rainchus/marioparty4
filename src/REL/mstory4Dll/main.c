@@ -331,41 +331,41 @@ void fn_1_EC(void)
 	}
 	GWSystem.board = lbl_1_bss_8;
 	if(lbl_1_data_554[0] == 1 || lbl_1_bss_8 == 0 && lbl_1_bss_C == 1) {
-		_SetFlag(2);
+		_SetFlag(FLAG_ID_MAKE(0, 2));
 	} else {
-		_ClearFlag(2);
+		_ClearFlag(FLAG_ID_MAKE(0, 2));
 	}
 	if(lbl_1_data_554[1] == 1 || lbl_1_bss_8 == 1 && lbl_1_bss_C == 1) {
-		_SetFlag(3);
+		_SetFlag(FLAG_ID_MAKE(0, 3));
 	} else {
-		_ClearFlag(3);
+		_ClearFlag(FLAG_ID_MAKE(0, 3));
 	}
 	if(lbl_1_data_554[2] == 1 || lbl_1_bss_8 == 2 && lbl_1_bss_C == 1) {
-		_SetFlag(4);
+		_SetFlag(FLAG_ID_MAKE(0, 4));
 	} else {
-		_ClearFlag(4);
+		_ClearFlag(FLAG_ID_MAKE(0, 4));
 	}
 	if(lbl_1_data_554[3] == 1 || lbl_1_bss_8 == 3 && lbl_1_bss_C == 1) {
-		_SetFlag(5);
+		_SetFlag(FLAG_ID_MAKE(0, 5));
 	} else {
-		_ClearFlag(5);
+		_ClearFlag(FLAG_ID_MAKE(0, 5));
 	}
 	if(lbl_1_data_554[4] == 1 || lbl_1_bss_8 == 4 && lbl_1_bss_C == 1) {
-		_SetFlag(6);
+		_SetFlag(FLAG_ID_MAKE(0, 6));
 	} else {
-		_ClearFlag(6);
+		_ClearFlag(FLAG_ID_MAKE(0, 6));
 	}
 	if(lbl_1_data_554[5] == 1 || lbl_1_bss_8 == 5 && lbl_1_bss_C == 1) {
-		_SetFlag(7);
+		_SetFlag(FLAG_ID_MAKE(0, 7));
 	} else {
-		_ClearFlag(7);
+		_ClearFlag(FLAG_ID_MAKE(0, 7));
 	}
 	if(GWSystem.board == BOARD_ID_MAIN6) {
-		_SetFlag(2);
-		_SetFlag(3);
-		_SetFlag(4);
-		_SetFlag(5);
-		_SetFlag(6);
+		_SetFlag(FLAG_ID_MAKE(0, 2));
+		_SetFlag(FLAG_ID_MAKE(0, 3));
+		_SetFlag(FLAG_ID_MAKE(0, 4));
+		_SetFlag(FLAG_ID_MAKE(0, 5));
+		_SetFlag(FLAG_ID_MAKE(0, 6));
 		switch(lbl_1_bss_C) {
 			case 0:
 				HuPrcChildCreate(fn_1_0, 100, 12288, 0, lbl_1_bss_0);

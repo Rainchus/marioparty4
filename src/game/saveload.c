@@ -137,7 +137,7 @@ s32 SLFileCreate(char *fileName, u32 size, void *addr) {
     HuWinMesWait(window);
     _SetFlag(FLAG_ID_MAKE(3, 0));
     result = HuCardCreate(curSlotNo, fileName, size, &curFileInfo);
-    _ClearFlag(0x30000);
+    _ClearFlag(FLAG_ID_MAKE(3, 0));
     if (result < 0) {
         HuWinExAnimOut(window);
         HuWinExCleanup(window);
