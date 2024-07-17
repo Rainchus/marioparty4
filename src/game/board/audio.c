@@ -2,6 +2,7 @@
 #include "game/audio.h"
 #include "game/gamework_data.h"
 #include "game/msm.h"
+#include "game/board/main.h"
 
 static s16 boardSeq[2][2];
 
@@ -136,10 +137,10 @@ void BoardAudFXPlay(void) {
     s32 var_r31;
 
     switch (GWBoardGet()) {
-        case 4:
+        case BOARD_ID_MAIN5:
             var_r31 = 0x48D;
             break;
-        case 5:
+        case BOARD_ID_MAIN6:
             var_r31 = 0x4A2;
             break;
         default:

@@ -6,6 +6,16 @@
 #include "game/data.h"
 #include "dolphin.h"
 
+#define BOARD_ID_MAIN1 0 //TOADS_MIDWAY_MADNESS
+#define BOARD_ID_MAIN2 1 //GOOMBAS_GREEDY_GALA
+#define BOARD_ID_MAIN3 2 //SHY_GUYS_JUNGLE_JAM
+#define BOARD_ID_MAIN4 3 //BOOS_HAUNTED_BASH
+#define BOARD_ID_MAIN5 4 //KOOPAS_SEASIDE_SOIREE
+#define BOARD_ID_MAIN6 5 //BOWSERS_GNARLY_PARTY
+#define BOARD_ID_TUTORIAL 6 //TUTORIAL_BOARD
+#define BOARD_ID_EXTRA1 7 //MEGA_BOARD_MAYHEM
+#define BOARD_ID_EXTRA2 8 //MINI_BOARD_MAD_DASH
+
 #define BOARD_FABS(value) ((value < 0) ? -(value) : (value))
 
 typedef struct board_focus_data {

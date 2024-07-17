@@ -10,6 +10,7 @@
 #include "game/chrman.h"
 #include "rel_sqrt_consts.h"
 #include "REL/executor.h"
+#include "game/board/main.h"
 
 typedef struct struct_data0 {
 	s32 unk0;
@@ -330,41 +331,41 @@ void fn_1_EC(void)
 	}
 	GWSystem.board = lbl_1_bss_8;
 	if(lbl_1_data_554[0] == 1 || lbl_1_bss_8 == 0 && lbl_1_bss_C == 1) {
-		_SetFlag(2);
+		_SetFlag(FLAG_ID_MAKE(0, 2));
 	} else {
-		_ClearFlag(2);
+		_ClearFlag(FLAG_ID_MAKE(0, 2));
 	}
 	if(lbl_1_data_554[1] == 1 || lbl_1_bss_8 == 1 && lbl_1_bss_C == 1) {
-		_SetFlag(3);
+		_SetFlag(FLAG_ID_MAKE(0, 3));
 	} else {
-		_ClearFlag(3);
+		_ClearFlag(FLAG_ID_MAKE(0, 3));
 	}
 	if(lbl_1_data_554[2] == 1 || lbl_1_bss_8 == 2 && lbl_1_bss_C == 1) {
-		_SetFlag(4);
+		_SetFlag(FLAG_ID_MAKE(0, 4));
 	} else {
-		_ClearFlag(4);
+		_ClearFlag(FLAG_ID_MAKE(0, 4));
 	}
 	if(lbl_1_data_554[3] == 1 || lbl_1_bss_8 == 3 && lbl_1_bss_C == 1) {
-		_SetFlag(5);
+		_SetFlag(FLAG_ID_MAKE(0, 5));
 	} else {
-		_ClearFlag(5);
+		_ClearFlag(FLAG_ID_MAKE(0, 5));
 	}
 	if(lbl_1_data_554[4] == 1 || lbl_1_bss_8 == 4 && lbl_1_bss_C == 1) {
-		_SetFlag(6);
+		_SetFlag(FLAG_ID_MAKE(0, 6));
 	} else {
-		_ClearFlag(6);
+		_ClearFlag(FLAG_ID_MAKE(0, 6));
 	}
 	if(lbl_1_data_554[5] == 1 || lbl_1_bss_8 == 5 && lbl_1_bss_C == 1) {
-		_SetFlag(7);
+		_SetFlag(FLAG_ID_MAKE(0, 7));
 	} else {
-		_ClearFlag(7);
+		_ClearFlag(FLAG_ID_MAKE(0, 7));
 	}
-	if(GWSystem.board == 5) {
-		_SetFlag(2);
-		_SetFlag(3);
-		_SetFlag(4);
-		_SetFlag(5);
-		_SetFlag(6);
+	if(GWSystem.board == BOARD_ID_MAIN6) {
+		_SetFlag(FLAG_ID_MAKE(0, 2));
+		_SetFlag(FLAG_ID_MAKE(0, 3));
+		_SetFlag(FLAG_ID_MAKE(0, 4));
+		_SetFlag(FLAG_ID_MAKE(0, 5));
+		_SetFlag(FLAG_ID_MAKE(0, 6));
 		switch(lbl_1_bss_C) {
 			case 0:
 				HuPrcChildCreate(fn_1_0, 100, 12288, 0, lbl_1_bss_0);
@@ -482,7 +483,7 @@ void fn_1_12E8(void)
 	}
 }
 
-char *lbl_1_data_640[] = {
+char *charNameTbl[] = {
 	"Mario",
 	"Luigi",
 	"Peach",
@@ -523,7 +524,7 @@ void fn_1_13A0(void)
 		}
 		print8(x, y+(row_h*5), scale, "Chara Name :");
 		fontcolor = 13;
-		print8(x, y+(row_h*5), scale, "             %s", lbl_1_data_640[itemno/6]);
+		print8(x, y+(row_h*5), scale, "             %s", charNameTbl[itemno/6]);
 		fontcolor = 15;
 		print8(x, y+(row_h*6), scale, "Item  Name :");
 		if(lbl_1_data_0[itemno].unk10 == 1) {
@@ -577,7 +578,7 @@ void fn_1_13A0(void)
 		s32 character;
 		for(i=1; i<4; i++) {
 			GWPlayerCfg[i].character = GWPlayerCfg[i-1].character+1;
-			if(GWPlayerCfg[i].character > 8) {
+			if(GWPlayerCfg[i].character > GW_CHARACTER_MAX) {
 				GWPlayerCfg[i].character = 0;
 			}				
 		}
@@ -592,7 +593,7 @@ void fn_1_13A0(void)
 		CharARAMOpen(GWPlayerCfg[2].character);
 		CharARAMOpen(GWPlayerCfg[3].character);
 		GWSystem.board = itemno%6;
-		if(GWSystem.board != 5) {
+		if(GWSystem.board != BOARD_ID_MAIN6) {
 			GWPlayerCoinWinSet(0, 10);
 			omOvlGotoEx(OVL_MSTORY, 1, 2, 9999);
 		} else {

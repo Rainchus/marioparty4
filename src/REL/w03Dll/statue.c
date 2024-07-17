@@ -88,7 +88,7 @@ void fn_1_1358(void) {
         }
         if (lbl_1_bss_2C) {
             sprintf(lbl_1_bss_44, "%d", lbl_1_bss_2C);
-            BoardWinCreate(0, 0x160006, -1);
+            BoardWinCreate(0, MAKE_MESSID(22, 6), -1);
             BoardWinInsertMesSet((s32)lbl_1_bss_44, 0);
             BoardWinWait();
             BoardWinKill();
@@ -145,7 +145,7 @@ s32 fn_1_1650(s32 arg0) {
     BoardPlayerIdleSet(arg0);
     
     if (lbl_1_bss_0->unk2) {
-        BoardWinCreate(0, 0x160000, -1);
+        BoardWinCreate(0, MAKE_MESSID(22, 0), -1);
         BoardWinWait();
         BoardWinKill();
         return 0;
@@ -178,9 +178,9 @@ s32 fn_1_1650(s32 arg0) {
     }
     
     BoardPlayerIdleSet(arg0);
-    BoardWinCreate(2, 0x160001, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 1), 2);
     BoardWinWait();
-    BoardWinCreateChoice(0, 0x160002, -1, 0);
+    BoardWinCreateChoice(0, MAKE_MESSID(22, 2), -1, 0);
     BoardWinAttrSet(0x10);
 
     if (GWPlayer[arg0].com) {
@@ -338,7 +338,7 @@ s32 fn_1_1D1C(void) {
     while (BoardMusStatusGet(1) != 0) {
         HuPrcVSleep();
     }
-    BoardWinCreate(2, 0x160003, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 3), 2);
     BoardWinWait();
     BoardWinKill();
 
@@ -404,7 +404,7 @@ void fn_1_1ED4(s32 arg0) {
     }
 
     BoardAudSeqPause(0, 0, 1000);
-    BoardWinCreate(2, 0x160004, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 4), 2);
     BoardWinWait();
     BoardWinKill();
     BoardConfettiStop();
@@ -482,7 +482,7 @@ void fn_1_20E0(s32 arg0) {
     }
     
     BoardAudSeqPause(0, 0, 1000);
-    BoardWinCreate(2, 0x160005, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 5), 2);
     BoardWinWait();
     BoardCameraQuakeSet(0x8CA0, 100.0f);
     omVibrate(arg0, 0xE10, 4, 2);
@@ -588,7 +588,7 @@ s32 fn_1_2930(s32 arg0) {
         lbl_1_bss_0->unk2 = 0;
         lbl_1_bss_0->unk0 = 0;
         fn_1_B5C(0);
-        BoardWinCreate(0, 0x160008, -1);
+        BoardWinCreate(0, MAKE_MESSID(22, 8), -1);
         BoardWinWait();
         BoardWinKill();
         fn_1_CF4();
@@ -596,7 +596,7 @@ s32 fn_1_2930(s32 arg0) {
     }
 
     sprintf(lbl_1_bss_38, "%d", lbl_1_bss_0->unk0);
-    BoardWinCreate(0, 0x160007, -1);
+    BoardWinCreate(0, MAKE_MESSID(22, 7), -1);
     BoardWinInsertMesSet((s32)lbl_1_bss_38, 1);
     BoardWinWait();
     BoardWinKill();

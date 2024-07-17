@@ -211,13 +211,13 @@ s32 fn_1_9CF4(s32 arg0) {
     s16 temp_r29;
 
     if (BoardPlayerItemCount(arg0) == 3) {
-        BoardWinCreate(2, 0x16001E, 2);
+        BoardWinCreate(2, MAKE_MESSID(22, 30), 2);
         BoardWinWait();
         BoardWinKill();
         return 0;
     }
 
-    BoardWinCreateChoice(2, 0x16001A, 2, 0);
+    BoardWinCreateChoice(2, MAKE_MESSID(22, 26), 2, 0);
 
     if (GWPlayer[arg0].com != 0) {
         BoardComKeySetLeft();
@@ -226,7 +226,7 @@ s32 fn_1_9CF4(s32 arg0) {
     BoardWinWait();
 
     if (BoardWinChoiceGet() != 0) {
-        BoardWinCreate(2, 0x16001B, 2);
+        BoardWinCreate(2, MAKE_MESSID(22, 27), 2);
         BoardWinWait();
         BoardWinKill();
         return 0;
@@ -361,7 +361,7 @@ void fn_1_A44C(s32 arg0) {
     }
 
     temp_r29 = fn_1_BBC4() + 0x80000;
-    BoardWinCreate(2, 0x16001C, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 28), 2);
     BoardWinInsertMesSet(temp_r29, 0);
     BoardWinWait();
     fn_1_B8E8(4);
@@ -386,7 +386,7 @@ void fn_1_A44C(s32 arg0) {
     }
 
     HuPrcSleep(0x1E);
-    BoardWinCreate(2, 0x16001D, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 29), 2);
     BoardWinWait();
     BoardWinKill();
 }

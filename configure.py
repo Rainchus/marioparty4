@@ -822,7 +822,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m401Dll",
+        "m401Dll", #Manta Rings
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m401Dll/main.c"),
@@ -830,13 +830,13 @@ config.libs = [
         },
     ),
     Rel(
-        "m402Dll",
+        "m402Dll", #Slime Time
         objects={
             Object(Matching, "REL/m402Dll/main.c"),
         },
     ),
     Rel(
-        "m403Dll",
+        "m403Dll", #Booksquirm
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m403Dll/main.c"),
@@ -844,20 +844,20 @@ config.libs = [
         },
     ),
     Rel(
-        "m404Dll",
+        "m404Dll", #Trace Race
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m404Dll/main.c"),
         },
     ),
     Rel(
-        "m405Dll",
+        "m405Dll", #Mario Medley
         objects={
             Object(Matching, "REL/m405Dll/main.c"),
         },
     ),
     Rel(
-        "m406Dll",
+        "m406Dll", #Avalanche!
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m406Dll/main.c"),
@@ -866,7 +866,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m407dll",
+        "m407dll", #Domination
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m407dll/player.c"),
@@ -880,7 +880,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m408Dll",
+        "m408Dll", #Paratrooper Plunge
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m408Dll/main.c"),
@@ -890,7 +890,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m409Dll",
+        "m409Dll", #Toad's Quick Draw
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m409Dll/main.c"),
@@ -899,7 +899,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m410Dll",
+        "m410Dll", #Three Throw
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m410Dll/main.c"),
@@ -909,35 +909,35 @@ config.libs = [
         },
     ),
     Rel(
-        "m411Dll",
+        "m411Dll", #Photo Finish
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m411Dll/main.c"),
         },
     ),
     Rel(
-        "m412Dll",
+        "m412Dll", #Mr. Blizzard's Brigade
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m412Dll/main.c"),
         },
     ),
     Rel(
-        "m413Dll",
+        "m413Dll", #Bob-omb Breakers
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m413Dll/main.c"),
         },
     ),
     Rel(
-        "m414Dll",
+        "m414Dll", #Long Claw of the Law
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m414Dll/main.c"),
         },
     ),
     Rel(
-        "m415Dll",
+        "m415Dll", #Stamp Out!
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m415Dll/main.c"),
@@ -945,7 +945,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m416Dll",
+        "m416Dll", #Candlelight Flight
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m416Dll/main.c"),
@@ -953,7 +953,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m417Dll",
+        "m417Dll", #Makin' Waves
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m417Dll/main.c"),
@@ -963,21 +963,21 @@ config.libs = [
         },
     ),
     Rel(
-        "m418Dll",
+        "m418Dll", #Hide and Go BOOM!
         objects={
             Object(NonMatching, "REL/m418Dll/main.c"),
             Object(NonMatching, "REL/m418Dll/sequence.c"),
         },
     ),
     Rel(
-        "m419Dll",
+        "m419Dll", #Tree Stomp
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m419Dll/main.c"),
         },
     ),
     Rel(
-        "m420dll",
+        "m420dll", #Fish n' Drips
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m420dll/main.c"),
@@ -987,7 +987,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m421Dll",
+        "m421Dll", #Hop or Pop
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m421Dll/main.c"),
@@ -996,21 +996,21 @@ config.libs = [
         },
     ),
     Rel(
-        "m422Dll",
+        "m422Dll", #Money Belts
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m422Dll/main.c"),
         },
     ),
     Rel(
-        "m423Dll",
+        "m423Dll", #GOOOOOOOAL!!
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m423Dll/main.c"),
         },
     ),
     Rel(
-        "m424Dll",
+        "m424Dll", #Blame it on the Crane 
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m424Dll/main.c"),
@@ -1020,7 +1020,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m425Dll",
+        "m425Dll", #The Great Deflate
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m425Dll/main.c"),
@@ -1028,14 +1028,14 @@ config.libs = [
         },
     ),
     Rel(
-        "m426Dll",
+        "m426Dll", #Revers-a-Bomb
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m426Dll/main.c"),
         },
     ),
     Rel(
-        "m427Dll",
+        "m427Dll", #Right Oar Left?
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m427Dll/main.c"),
@@ -1044,7 +1044,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m428Dll",
+        "m428Dll", #Cliffhangers
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m428Dll/main.c"),
@@ -1053,13 +1053,13 @@ config.libs = [
         },
     ),
     Rel(
-        "m429Dll",
+        "m429Dll", #Team Treasure Trek
         objects={
             Object(Matching, "REL/m429Dll/main.c"),
         },
     ),
     Rel(
-        "m430Dll",
+        "m430Dll", #Pair-a-sailing
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m430Dll/main.c"),
@@ -1068,7 +1068,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m431Dll",
+        "m431Dll", #Order Up
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m431Dll/main.c"),
@@ -1076,13 +1076,13 @@ config.libs = [
         },
     ),
     Rel(
-        "m432Dll",
+        "m432Dll", #Dungeon Duos
         objects={
             Object(NonMatching, "REL/m432Dll/main.c"),
         },
     ),
     Rel(
-        "m433Dll",
+        "m433Dll", #Beach Volley Folly
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m433Dll/main.c"),
@@ -1091,7 +1091,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m434Dll",
+        "m434Dll", #Cheep Cheep Sweep
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m434Dll/main.c"),
@@ -1101,28 +1101,28 @@ config.libs = [
         },
     ),
     Rel(
-        "m435Dll",
+        "m435Dll", #Darts of Doom
         objects={
             Object(NonMatching, "REL/m435Dll/main.c"),
             Object(NonMatching, "REL/m435Dll/sequence.c"),
         },
     ),
     Rel(
-        "m436Dll",
+        "m436Dll", #Fruits of Doom
         objects={
             Object(NonMatching, "REL/m436Dll/main.c"),
             Object(NonMatching, "REL/m436Dll/sequence.c"),
         },
     ),
     Rel(
-        "m437Dll",
+        "m437Dll", #Balloon of Doom
         objects={
             Object(NonMatching, "REL/m437Dll/main.c"),
             Object(NonMatching, "REL/m437Dll/sequence.c"),
         },
     ),
     Rel(
-        "m438Dll",
+        "m438Dll", #Chain Chomp Fever
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m438Dll/main.c"),
@@ -1131,14 +1131,14 @@ config.libs = [
         },
     ),
     Rel(
-        "m439Dll",
+        "m439Dll", #Paths of Peril
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m439Dll/main.c"),
         },
     ),
     Rel(
-        "m440Dll",
+        "m440Dll", #Bowser's Bigger Blast
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m440Dll/main.c"),
@@ -1146,13 +1146,13 @@ config.libs = [
         },
     ),
     Rel(
-        "m441Dll",
+        "m441Dll", #Butterfly Blitz
         objects={
             Object(NonMatching, "REL/m441Dll/main.c"),
         },
     ),
     Rel(
-        "m442Dll",
+        "m442Dll", #Barrel Baron
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m442Dll/main.c"),
@@ -1160,7 +1160,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m443Dll",
+        "m443Dll", #Mario Speedwagons
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m443Dll/main.c"),
@@ -1169,7 +1169,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m444dll",
+        "m444dll", #Reversal of Fortune
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m444dll/main.c"),
@@ -1179,14 +1179,14 @@ config.libs = [
         },
     ),
     Rel(
-        "m445Dll",
+        "m445Dll", #Bowser Bop
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m445Dll/main.c"),
         },
     ),
     Rel(
-        "m446dll",
+        "m446dll", #Mystic Match 'Em
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m446Dll/main.c"),
@@ -1200,7 +1200,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m447dll",
+        "m447dll", #Archaeologuess
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m447dll/main.c"),
@@ -1212,33 +1212,33 @@ config.libs = [
         },
     ),
     Rel(
-        "m448Dll",
+        "m448Dll", #Goomba's Chip Flip
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m448Dll/main.c"),
         },
     ),
     Rel(
-        "m449Dll",
+        "m449Dll", #Kareening Koopa
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m449Dll/main.c"),
         },
     ),
     Rel(
-        "m450Dll",
+        "m450Dll", #The Final Battle!
         objects={
             Object(NonMatching, "REL/m450Dll/main.c"),
         },
     ),
     Rel(
-        "m451Dll",
+        "m451Dll", #Jigsaw Jitters
         objects={
             Object(Matching, "REL/m451Dll/m451.c"),
         },
     ),
     Rel(
-        "m453Dll",
+        "m453Dll", #Challenge Booksquirm
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m453Dll/main.c"),
@@ -1247,7 +1247,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m455Dll",
+        "m455Dll", #Rumble Fishing
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m455Dll/main.c"),
@@ -1255,7 +1255,7 @@ config.libs = [
         },
     ),
     Rel(
-        "m456Dll",
+        "m456Dll", #Take a Breather
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m456Dll/main.c"),
@@ -1263,28 +1263,28 @@ config.libs = [
         },
     ),
     Rel(
-        "m457Dll",
+        "m457Dll", #Bowser Wrestling
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m457Dll/main.c"),
         },
     ),
     Rel(
-        "m458Dll",
+        "m458Dll", #Panels of Doom
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m458Dll/main.c"),
         },
     ),
     Rel(
-        "m459dll",
+        "m459dll", #Mushroom Medic
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m459dll/main.c"),
         },
     ),
     Rel(
-        "m460Dll",
+        "m460Dll", #Doors of Doom
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m460Dll/main.c"),
@@ -1294,21 +1294,21 @@ config.libs = [
         },
     ),
     Rel(
-        "m461Dll",
+        "m461Dll", #Bob-omb X-ing
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m461Dll/main.c"),
         },
     ),
     Rel(
-        "m461Dll",
+        "m462Dll", #Goomba Stomp
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m462Dll/main.c"),
         },
     ),
     Rel(
-        "m463Dll",
+        "m463Dll", #Panel Panic 9 Player
         objects={
             Object(NonMatching, "REL/m463Dll/main.c"),
         },
@@ -1471,7 +1471,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w01Dll",
+        "w01Dll", #Toad's Midway Madness
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w01Dll/main.c"),
@@ -1480,7 +1480,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w02Dll",
+        "w02Dll", #Goomba's Greedy Gala
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w02Dll/main.c"),
@@ -1493,7 +1493,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w03Dll",
+        "w03Dll", #Shy Guy's Jungle Jam
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w03Dll/main.c"),
@@ -1506,7 +1506,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w04Dll",
+        "w04Dll", #Boo's Haunted Bash
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w04Dll/main.c"),
@@ -1518,7 +1518,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w05Dll",
+        "w05Dll", #Koopa's Seaside Soiree
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w05Dll/main.c"),
@@ -1530,7 +1530,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w06Dll",
+        "w06Dll", #Bowser's Gnarly Party
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w06Dll/main.c"),
@@ -1542,7 +1542,7 @@ config.libs = [
         },
     ),
     Rel(
-        "w10Dll",
+        "w10Dll", #Tutorial board
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w10Dll/main.c"),
@@ -1552,14 +1552,14 @@ config.libs = [
         },
     ),
     Rel(
-        "w20Dll",
+        "w20Dll", #Mega Board Mayhem
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w20Dll/main.c"),
         },
     ),
     Rel(
-        "w21Dll",
+        "w21Dll", #Mini Board Mad Dash
         objects={
             Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w21Dll/main.c"),

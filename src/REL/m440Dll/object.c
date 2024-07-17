@@ -92,7 +92,7 @@ void fn_1_AEE4(omObjData* arg0) {
     }
     temp_r31->unk5C = var_f31;
     temp_r28 = temp_r31->unk4;
-    if (_CheckFlag(0x1000CU) == 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 12)) == 0) {
         GWPlayer[temp_r28].coin_win = 0;
     }
     arg0->func = fn_1_B17C;

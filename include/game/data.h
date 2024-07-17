@@ -12,7 +12,7 @@
 #define DATA_DECODE_FSLIDE 4
 #define DATA_DECODE_RLE 5
 
-#define DATA_NUM_LISTEND -1
+#define DATA_NUM_LISTEND -1U
 
 #include "dolphin/types.h"
 

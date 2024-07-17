@@ -306,7 +306,7 @@ static void ExecStarView(void) {
 static void ExecOverheadView(void) {
     u32 var_r31;
 
-    if ((GWBoardGet() == 2 || GWBoardGet() == 5) && boardLightResetHook) {
+    if ((GWBoardGet() == BOARD_ID_MAIN3 || GWBoardGet() == BOARD_ID_MAIN6) && boardLightResetHook) {
         boardLightResetHook();
     }
     InitOverheadView();
@@ -326,7 +326,7 @@ static void ExecOverheadView(void) {
         }
         HuPrcVSleep();
     }
-    if ((GWBoardGet() == 2 || GWBoardGet() == 5) && boardLightSetHook) {
+    if ((GWBoardGet() == BOARD_ID_MAIN3 || GWBoardGet() == BOARD_ID_MAIN6) && boardLightSetHook) {
         boardLightSetHook();
     }
     DestroyButtonWin();
@@ -483,7 +483,7 @@ static void InitOverheadView(void) {
     Hu3D2Dto3D(&sp10, 1, &sp10);
     BoardModelPosSetV(temp_r31->unk04, &sp10);
     HuSprGrpDrawNoSet(temp_r31->unk02, 0x40);
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         BoardModelVisibilitySet(temp_r31->unk04, 0);
         HuSprTPLvlSet(temp_r31->unk02, 8, 0.0f);
     }
@@ -527,7 +527,7 @@ static void UpdateOverheadView(omObjData *arg0) {
         temp_r31->unk01 ^= 1;
         HuAudFXPlay(0x1C);
     }
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         var_r27 = 1;
     } else {
         var_r27 = 0;
@@ -559,7 +559,7 @@ static void UpdateOverheadView(omObjData *arg0) {
         HuSprZRotSet(temp_r31->unk02, var_r28, temp_f30);
         HuSprScaleSet(temp_r31->unk02, var_r28, 0.5f, temp_f31);
         HuSprPosSet(temp_r31->unk02, var_r28, var_r29[0], var_r29[1]);
-        if (i == 4 && (GWBoardGet() == 7 || GWBoardGet() == 8)) {
+        if (i == 4 && (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2)) {
             BoardModelVisibilitySet(temp_r31->unk04, 0);
         } else if (temp_r31->unk01 != 0) {
             if (i != 4) {

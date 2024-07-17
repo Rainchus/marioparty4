@@ -102,7 +102,7 @@ static s32 ExecMiniBowserEvent(void);
 
 s32 BoardBowserExec(s32 player, s32 space)
 {
-	if(_CheckFlag(0x1000B)) {
+	if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		HuAudFXPlay(841);
 		BoardCameraViewSet(2);
 		BoardPlayerMotBlendSet(player, 0, 15);
@@ -150,19 +150,23 @@ typedef struct bowser_event_work {
 
 static void ExecBowser(void)
 {
+	#define BOWSER_EVENT 0
+	#define MINI_BOWSER_EVENT 1
+
 	s32 i;
 	s32 status;
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		HuAudFXPlay(841);
 		omVibrate(eventPlayer, 12, 4, 2);
-		if(GWBoardGet() == 5 && boardBowserHook) {
+		if(GWBoardGet() == BOARD_ID_MAIN6 && boardBowserHook) {
 			boardBowserHook(1);
 		}
 		BoardAudSeqPause(0, 1, 1000);
+		//20% of bowser, 80% chance of koopa kid
 		if(BoardRandMod(100) < 20) {
-			eventType = 0;
+			eventType = BOWSER_EVENT;
 		} else {
-			eventType = 1;
+			eventType = MINI_BOWSER_EVENT;
 		}
 	} else {
 		BoardMusStart(1, 6, 127, 0);
@@ -170,7 +174,7 @@ static void ExecBowser(void)
 	status = BoardDataDirReadAsync(DATADIR_BKOOPA);
 	BoardDataAsyncWait(status);
 	CreatePlayerMot();
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		ExecBowserMain();
 	} else {
 		ExecMGReturn();
@@ -197,7 +201,7 @@ static void ExecBowser(void)
 		BoardPlayerIdleSet(i);
 	}
 	BoardCameraMotionWait();
-	if(GWBoardGet() == 5 && boardBowserHook) {
+	if(GWBoardGet() == BOARD_ID_MAIN6 && boardBowserHook) {
 		boardBowserHook(0);
 	} else {
 		HuPrcSleep(30);
@@ -240,7 +244,7 @@ static void ExecBowserMain(void)
 	BoardModelMotionShiftSet(bowserMdl, 3, 0.0f, 8.0f, 0);
 	HuPrcSleep(8);
 	HuAudFXPlay(58);
-	BoardWinCreate(2, 0x3000B, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 11), 5);
 	BoardWinWait();
 	BoardWinKill();
 	BoardAudSeqFadeOut(1, 1000);
@@ -287,7 +291,7 @@ static void ExecMGReturn(void)
 	BoardModelMotionShiftSet(bowserMdl, 3, 0.0f, 8.0f, 0);
 	HuPrcSleep(8);
 	HuAudFXPlay(58);
-	BoardWinCreate(2, 0x3000B, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 11), 5);
 	BoardWinWait();
 	BoardWinKill();
 	while(!BoardStatusStopCheck(0)) {
@@ -318,7 +322,7 @@ static void SquishPlayers(void)
 	Vec pos_space;
 	s32 i;
 	BoardPlayerPosGet(eventPlayer, &pos);
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		HuAudFXPlay(798);
 	}
 	pos.y += 6.0f;
@@ -349,7 +353,7 @@ static void ExecBowserSpecial(void)
 	HuAudFXPlay(58);
 	BoardMusStart(1, 6, 127, 0);
 	HuPrcSleep(120);
-	BoardWinCreate(2, 0x30007, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 7), 5);
 	BoardWinWait();
 	BoardWinKill();
 	HuAudFXPlay(857);
@@ -412,7 +416,7 @@ static void ExecBowserGame(void)
 	for(i=0; i<4; i++) {
 		BoardPlayerPosGet(i, &playerPosTemp[i]);
 	}
-	BoardWinCreate(2, 0x30008, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 8), 5);
 	BoardWinWait();
 	mess = messLoss[GWSystem.bowser_loss];
 	BoardWinCreate(2, mess, 5);
@@ -524,7 +528,7 @@ static void ExecBowserShuffle(void)
 	s32 player;
 	s32 player_new;
 	s32 reset_cam;
-	BoardWinCreate(2, 0x30010, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 16), 5);
 	BoardWinWait();
 	BoardWinKill();
 	for(i=0; i<4; i++) {
@@ -585,7 +589,7 @@ static void ExecBowserRevo(void)
 {
 	s32 i;
 	s32 coin;
-	BoardWinCreate(2, 0x30011, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 17), 5);
 	BoardWinWait();
 	BoardWinKill();
 	for(coin=i=0; i<4; i++) {
@@ -619,7 +623,7 @@ static void ExecBowserRevo(void)
 static void ExecBowserSuit(void)
 {
 	BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, 0);
-	BoardWinCreate(2, 0x30012, 5);
+	BoardWinCreate(2, MAKE_MESSID(3, 18), 5);
 	BoardWinWait();
 	HuAudFXPlay(857);
 	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, 0);
@@ -765,7 +769,7 @@ static void CreateBowserObj(void)
 	work->mot_active = 0;
 	work->fall_done = 0;
 	work->jump_done = 0;
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		work->state = 1;
 	} else {
 		work->state = 0;
@@ -778,7 +782,7 @@ static void CreateBowserObj(void)
 	bowserObj->trans.x = pos.x;
 	bowserObj->trans.y = pos.y;
 	bowserObj->trans.z = pos.z;
-	if(!_CheckFlag(0x10003)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 		suitItemMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 99), NULL, 0);
 		BoardModelLayerSet(suitItemMdl, 2);
 		BoardModelVisibilitySet(suitItemMdl, 0);
@@ -885,7 +889,7 @@ static void ExecBowserFall(BowserWork *work, omObjData *object)
 		BoardCameraQuakeSet(60, 100.0f);
 		object->trans.y = pos.y;
 		BoardPlayerPosGet(eventPlayer, &pos_player);
-		if(!_CheckFlag(0x10003)) {
+		if(!_CheckFlag(FLAG_ID_MAKE(1, 3))) {
 			HuAudFXPlay(798);
 		}
 		pos_player.y += 6.0f;
@@ -1441,19 +1445,20 @@ static s32 ExecMiniBowserEvent(void)
 	BoardAudSeqFadeOutFast(1);
 	BoardMusStart(1, 11, 127, 0);
 	HuAudFXPlay(62);
-	BoardWinCreate(2, 0x30000, 6);
+	BoardWinCreate(2, MAKE_MESSID(3, 0), 6);
 	BoardWinWait();
 	if(BoardRandMod(100) < 70) {
 		MiniBowserTake();
 	} else {
 		MiniBowserTakeAll();
 	}
+	//5% chance bowser will appear after baby bowser
 	if(BoardRandMod(100) < 5) {
 		doneF = 1;
 	}
 	if(doneF) {
 		HuPrcSleep(60);
-		BoardWinCreate(2, 0x30006, 6);
+		BoardWinCreate(2, MAKE_MESSID(3, 6), 6);
 		BoardWinWait();
 		BoardWinKill();
 		HuAudFXPlay(62);
@@ -1461,7 +1466,7 @@ static s32 ExecMiniBowserEvent(void)
 		HuPrcSleep(60);
 	} else {
 		HuAudFXPlay(62);
-		BoardWinCreate(2, 0x30002, 6);
+		BoardWinCreate(2, MAKE_MESSID(3, 2), 6);
 		BoardWinWait();
 		BoardWinKill();
 		BoardAudSeqFadeOut(1, 1000);

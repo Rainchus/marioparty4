@@ -204,7 +204,7 @@ void ObjectSetup(void)
 	SetDefLight(&pos, &dir, 255, 255, 255, 64, 64, 64, 255, 255, 255);
 	WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
 	GWMGTypeSet(-1);
-	_ClearFlag(0x10000);
+	_ClearFlag(FLAG_ID_MAKE(1, 0));
 	GWSystem.turn = 1;
 	GWSystem.max_turn = 20;
 }

@@ -176,12 +176,12 @@ s32 fn_1_6898(s32 arg0) {
     }
 
     BoardCameraTargetModelSet(-1);
-    BoardWinCreate(2, 0x160009, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 9), 2);
     BoardWinWait();
     temp_r3 = BoardPlayerCoinsGet(arg0);
 
     if (temp_r3 < 5) {
-        BoardWinCreate(2, 0x16000A, 2);
+        BoardWinCreate(2, MAKE_MESSID(22, 10), 2);
         BoardWinWait();
         BoardWinKill();
         return 0;
@@ -202,7 +202,7 @@ s32 fn_1_6898(s32 arg0) {
 
     j = 0;
     while (j == 0) {
-        BoardWinCreateChoice(2, 0x16000B, 2, 0);
+        BoardWinCreateChoice(2, MAKE_MESSID(22, 11), 2, 0);
         BoardWinInsertMesSet(lbl_1_bss_130, 2);
         BoardWinAttrSet(0x10);
 
@@ -219,7 +219,7 @@ s32 fn_1_6898(s32 arg0) {
             break;
         case 1:
         case -1:
-            BoardWinCreate(2, 0x16000E, 2);
+            BoardWinCreate(2, MAKE_MESSID(22, 14), 2);
             BoardWinWait();
             BoardWinKill();
             return 0;
@@ -235,7 +235,7 @@ s32 fn_1_6898(s32 arg0) {
     }
 
     HuAudFXPlay(0xF);
-    BoardWinCreate(2, 0x0016000C, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 12), 2);
     BoardWinWait();
     BoardWinKill();
     return 1;
@@ -434,7 +434,7 @@ void fn_1_735C(s32 arg0) {
     GWPlayer[arg0].space_curr = temp_r29;
     GWPlayer[arg0].space_prev = -1;
     BoardPlayerPostTurnHookSet(arg0, fn_1_6698);
-    BoardWinCreate(2, 0x16000D, 2);
+    BoardWinCreate(2, MAKE_MESSID(22, 13), 2);
     BoardWinWait();
     BoardWinKill();
 }

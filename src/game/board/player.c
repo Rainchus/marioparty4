@@ -221,7 +221,7 @@ void BoardPlayerModelInit(void) {
     memset(&boardPlayerMdl, 0, 8);
     suitMdl = -1;
     suitPlayerMdl = -1;
-    if ((_CheckFlag(0x10005U) != 0) || (_CheckFlag(0x10006U) && (GWBoardGet() == 5))) {
+    if ((_CheckFlag(FLAG_ID_MAKE(1, 5)) != 0) || (_CheckFlag(FLAG_ID_MAKE(1, 6)) && (GWBoardGet() == BOARD_ID_MAIN6))) {
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             temp_r25 = GWPlayer[var_r31].team_backup;
             GWPlayer[var_r31].team = temp_r25;
@@ -688,10 +688,10 @@ void BoardPlayerTurnExec(s32 arg0) {
     BoardPauseDisableSet(1);
     BoardComUseItemSet(arg0, -1);
     GWSystem.bowser_event = 0xF;
-    _ClearFlag(0x10016);
-    _ClearFlag(0x1000E);
+    _ClearFlag(FLAG_ID_MAKE(1, 22));
+    _ClearFlag(FLAG_ID_MAKE(1, 14));
     BoardCameraMoveSet(1);
-    if (_CheckFlag(0x10006U) == 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 6)) == 0) {
         BoardCameraViewSet(2);
         omVibrate((s16) arg0, 0xC, 4, 2);
 		BoardItemPrevSet(-1);
@@ -703,7 +703,7 @@ void BoardPlayerTurnExec(s32 arg0) {
                 preTurnHook[arg0] = 0;
             }
         }
-        if (_CheckFlag(0x1000BU) != 0) {
+        if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
             BoardTutorialHookExec(5, 0);
         }
         BoardPlayerTurnRollExec(arg0);
@@ -762,7 +762,7 @@ void BoardPlayerTurnMoveExec(s32 arg0) {
 
     BoardPauseDisableSet(1);
     var_r28 = 0;
-    if (_CheckFlag(0x10006U) == 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 6)) == 0) {
         BoardCameraMoveSet(1);
         var_r29 = 1;
         BoardCameraViewSet(1);
@@ -776,15 +776,15 @@ void BoardPlayerTurnMoveExec(s32 arg0) {
     } else {
         var_r29 = 0;
         var_r28 = 1;
-        _ClearFlag(0x10006);
-        _ClearFlag(0x10007);
+        _ClearFlag(FLAG_ID_MAKE(1, 6));
+        _ClearFlag(FLAG_ID_MAKE(1, 7));
         sp8 = GWPlayer[arg0].space_next;
         goto block_14;
     }
     do {
         BoardPauseDisableSet(1);
         GWPlayer[arg0].space_prev = GWPlayer[arg0].space_curr;
-        if (_CheckFlag(0x20001U) == 0) {
+        if (_CheckFlag(FLAG_ID_MAKE(2, 1)) == 0) {
             if (ExecJunction(arg0, &sp8) != 0) {
                 break;
             }
@@ -829,7 +829,7 @@ block_14:
     if (GWPlayer[arg0].bowser_suit != 0) {
         BoardCameraTargetPlayerSet(arg0);
     }
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardTutorialHookExec(7, 0);
     }
     if (BoardItemPrevGet() != -1) {
@@ -841,12 +841,12 @@ block_14:
     }
     BoardPlayerSizeRestore(arg0);
     megaDoubleDiceF = 0;
-    if (_CheckFlag(0x1000BU) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardTutorialHookExec(8, 0);
     }
     BoardSpaceBlockExec(arg0, sp8);
     BoardSpaceLandExec(arg0, sp8);
-    _SetFlag(0x1000E);
+    _SetFlag(FLAG_ID_MAKE(1, 14));
     if (GWSystem.bowser_event != 1) {
         BoardCameraViewSet(2);
         BoardCameraMotionWait();
@@ -1004,7 +1004,7 @@ static void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
             HuWinBGTPLvlSet(temp_r29->unk_04, 0.0f);
             HuWinMesSpeedSet(temp_r29->unk_04, 0);
             HuWinMesSet(temp_r29->unk_04, 0x90003);
-            if (_CheckFlag(0x1000BU) != 0) {
+            if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
                 HuWinDispOff(temp_r29->unk_04);
             }
             temp_r26 = BoardSpaceGet(0, arg1);
@@ -1400,7 +1400,7 @@ static s32 ExecJunction(s32 arg0, s16* arg1) {
     HuPrcSleep(10);
     while (1) {
         
-        if ((_CheckFlag(0x1000B) != 0) && (boardTutorialDirInputTime != -1)) {
+        if ((_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) && (boardTutorialDirInputTime != -1)) {
             if (boardTutorialDirInputTime > 0) {
                 spC4.x = boardTutorialDirInputX;
                 spC4.z = boardTutorialDirInputY;
@@ -2420,7 +2420,7 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
 static void RemoveSparkSpace(s32 player)
 {
 	if(GWPlayer[player].spark) {
-		BoardWinCreate(0, 0x12001C, -1);
+		BoardWinCreate(0, MAKE_MESSID(18, 28), -1);
 		BoardWinWait();
 		BoardWinKill();
 		GWPlayer[player].spark = 0;
@@ -2667,7 +2667,7 @@ static s32 MegaPlayerPassFunc(s32 player, s32 space)
 	if(temp_r26 == 0) {
 		return 0;
 	}
-	if (_CheckFlag(0x1000BU) != 0) {
+	if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardTutorialHookExec(24, 0);
     }
 	BoardPlayerPosGet(player, &spB8);

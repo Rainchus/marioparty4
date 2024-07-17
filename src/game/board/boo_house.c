@@ -99,7 +99,7 @@ void BoardBooHouseCreate(void) {
     Vec sp14;
     Vec sp8;
 
-    if ((GWBoardGet() == 7) || (GWBoardGet() == 8)) {
+    if ((GWBoardGet() == BOARD_ID_EXTRA1) || (GWBoardGet() == BOARD_ID_EXTRA2)) {
         return;
     }
     BoardSpaceLinkTransformGet(0x08000000, &sp14, &sp8, 0);
@@ -149,13 +149,13 @@ static void ExecBooHouse(void) {
     var_r30 = GWPlayer[currPlayer].space_curr;
     BoardPlayerIdleSet(currPlayer);
     if (BoardPlayerCoinsGet(currPlayer) < 5) {
-        BoardWinCreate(0, 0x70001, -1);
+        BoardWinCreate(0, MAKE_MESSID(7, 1), -1);
         BoardWinWait();
         BoardWinKill();
         BoardDataAsyncWait(var_r28);
         HuPrcEnd();
     }
-    BoardWinCreateChoice(0, 0x70000, -1, 0);
+    BoardWinCreateChoice(0, MAKE_MESSID(7, 0), -1, 0);
     if (GWPlayer[currPlayer].com != 0) {
         if (BoardBooComUseCheck(currPlayer) != 0) {
             BoardComKeySetLeft();
@@ -335,7 +335,7 @@ static void OpenBooHouse(void) {
     BoardModelHookSet(houseMdl[0], "yoko05", houseMdl[4]);
     BoardModelHookSet(houseMdl[0], "yoko9", houseMdl[5]);
     BoardModelHookSet(houseMdl[0], "yoko06", temp_r31);
-    if (GWBoardGet() == 5) {
+    if (GWBoardGet() == BOARD_ID_MAIN6) {
         BoardModelPosSet(temp_r31, 0.0f, 0.0f, -25.0f);
     } else {
         BoardModelPosSet(temp_r31, 0.0f, 0.0f, 0.0f);
@@ -645,7 +645,7 @@ void ApplyStarSteal(void) {
     s32 temp_r31;
 
     HuAudFXPlay(0x4C);
-    BoardWinCreate(2, 0x7000A, 3);
+    BoardWinCreate(2, MAKE_MESSID(7, 10), 3);
     BoardWinWait();
     BoardWinKill();
     BoardStatusShowSetForce(currPlayer);
@@ -670,7 +670,7 @@ void ApplyStarSteal(void) {
 }
 
 void ApplyBooLight(void) {
-    BoardWinCreate(2, 0x7000B, 3);
+    BoardWinCreate(2, MAKE_MESSID(7, 11), 3);
     BoardWinWait();
     BoardWinKill();
     BoardPlayerMotionShiftSet(currPlayer, 8, 0.0f, 8.0f, 0);

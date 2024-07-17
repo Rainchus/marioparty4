@@ -8,6 +8,7 @@
 #include "game/board/tutorial.h"
 #include "game/board/window.h"
 #include "game/board/boo.h"
+#include "game/chrman.h"
 
 #include "ext_math.h"
 
@@ -29,15 +30,136 @@ static BOOL CheckLampUse(s32 player, s32 item);
 
 static s8 itemUse = -1;
 
-static s8 comItemPreferTbl[8][12] = {
-    { 0x0C, 0x0B, 0x05, 0x03, 0x01, 0x02, 0x06, 0x04, 0x00, 0x07, 0x09, 0x0A },
-    { 0x0C, 0x0B, 0x05, 0x0A, 0x03, 0x01, 0x02, 0x00, 0x06, 0x04, 0x07, 0x09 },
-    { 0x0C, 0x0B, 0x05, 0x06, 0x03, 0x01, 0x02, 0x0A, 0x07, 0x09, 0x00, 0x04 },
-    { 0x0C, 0x05, 0x0B, 0x09, 0x03, 0x01, 0x02, 0x06, 0x00, 0x04, 0x0A, 0x07 },
-    { 0x0C, 0x0B, 0x04, 0x09, 0x0A, 0x03, 0x01, 0x05, 0x02, 0x06, 0x00, 0x07 },
-    { 0x0C, 0x0B, 0x05, 0x03, 0x01, 0x0A, 0x06, 0x02, 0x00, 0x04, 0x09, 0x07 },
-    { 0x0C, 0x05, 0x0B, 0x04, 0x07, 0x09, 0x03, 0x01, 0x0A, 0x06, 0x02, 0x00 },
-    { 0x0C, 0x05, 0x07, 0x0B, 0x0A, 0x09, 0x04, 0x06, 0x03, 0x01, 0x02, 0x00 }
+#define BOARD_ITEM_MINI_MUSHROOM 0
+#define BOARD_ITEM_MEGA_MUSHROOM 1
+#define BOARD_ITEM_SUPER_MINI_MUSHROOM 2
+#define BOARD_ITEM_SUPER_MEGA_MUSHROOM 3
+#define BOARD_ITEM_MINI_MEGA_HAMMER 4
+#define BOARD_ITEM_WARP_PIPE 5
+#define BOARD_ITEM_SWAP_CARD 6
+#define BOARD_ITEM_SPARKY_STICKER 7
+#define BOARD_ITEM_GADDLIGHT 8
+#define BOARD_ITEM_CHOMP_CALL 9
+#define BOARD_ITEM_BOWSER_SUIT 10
+#define BOARD_ITEM_BOOS_CRYSTAL_BALL 11
+#define BOARD_ITEM_MAGIC_LAMP 12
+#define SHOP_ITEMS_END BOARD_ITEM_MAGIC_LAMP
+#define BOARD_ITEM_ITEM_BAG 13
+#define BOARD_ITEMS_END BOARD_ITEM_ITEM_BAG
+
+static s8 comItemPreferTbl[GW_CHARACTER_MAX][SHOP_ITEMS_END] = {
+    {   //Mario
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_BOWSER_SUIT
+    },
+    {   //Luigi
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL
+    },   
+    {   //Peach
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MEGA_HAMMER
+    },   
+    {   //Yoshi
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SPARKY_STICKER
+    },    
+    {   //Wario
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_SPARKY_STICKER
+    },   
+    {   //DK
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_SPARKY_STICKER
+    },   
+    {   //Daisy
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM
+    },   
+    {   //Waluigi
+        BOARD_ITEM_MAGIC_LAMP,
+        BOARD_ITEM_WARP_PIPE,
+        BOARD_ITEM_SPARKY_STICKER,
+        BOARD_ITEM_BOOS_CRYSTAL_BALL,
+        BOARD_ITEM_BOWSER_SUIT,
+        BOARD_ITEM_CHOMP_CALL,
+        BOARD_ITEM_MINI_MEGA_HAMMER,
+        BOARD_ITEM_SWAP_CARD,
+        BOARD_ITEM_SUPER_MEGA_MUSHROOM,
+        BOARD_ITEM_MEGA_MUSHROOM,
+        BOARD_ITEM_SUPER_MINI_MUSHROOM,
+        BOARD_ITEM_MINI_MUSHROOM
+    }
 };
 
 static UseCheckFunc comItemUseCheckFuncTbl[] = {
@@ -131,9 +253,9 @@ s8 BoardComPreferItemGet(s32 player, s8 *items, s8 num_items) {
     weight = 100;
     for (i = 0; i < num_items; i++) {
         item = items[i];
-        for (j = 0; j < 12; j++) {
+        for (j = 0; j < SHOP_ITEMS_END; j++) {
             if (item == comItemPreferTbl[character][j]) {
-                if (j < weight && (BoardPlayerItemFind(player, item) == -1 || item == 0xC || item == 0xB)) {
+                if (j < weight && (BoardPlayerItemFind(player, item) == -1 || item == BOARD_ITEM_MAGIC_LAMP || item == BOARD_ITEM_BOOS_CRYSTAL_BALL)) {
                     weight = j;
                     prefer = i;
                 }
@@ -162,7 +284,7 @@ s32 BoardComItemWeightGet(s32 player, s32 item) {
     s32 weight;
     s32 i;
 
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < SHOP_ITEMS_END; i++) {
         if (item == comItemPreferTbl[GWPlayer[player].character][i]) {
             break;
         }
@@ -230,7 +352,7 @@ static s32 ChooseUseItem(s32 player) {
 
     useItem = -1;
     character = GWPlayer[player].character;
-    weight = 0x64;
+    weight = 100;
     for (i = 0; i < 3; i++) {
         item = GWPlayer[player].items[i];
         if (item == -1) {
@@ -242,7 +364,7 @@ static s32 ChooseUseItem(s32 player) {
         }
         result = func(player, item);
         if (result) {
-            for (j = 0; j < 0xC; j++) {
+            for (j = 0; j < SHOP_ITEMS_END; j++) {
                 if (item == comItemPreferTbl[character][j]) {
                     if (j < weight) {
                         weight = j;
@@ -252,7 +374,7 @@ static s32 ChooseUseItem(s32 player) {
             }
         }
     }
-    if (weight == 0x64) {
+    if (weight == 100) {
         return -1;
     }
     useItem = comItemPreferTbl[character][weight];
@@ -295,13 +417,13 @@ static BOOL CheckMiniUse(s32 player, s32 item) {
     if ((diff == 0 || diff == 1) && character == 1) {
         chance = 7;
     }
-    if (GWBoardGet() != 7 && GWBoardGet() != 8) {
+    if (GWBoardGet() != BOARD_ID_EXTRA1 && GWBoardGet() != BOARD_ID_EXTRA2) {
         star_dist_pipe = BoardComPathShortcutLenGet(space, 8, 0);
         star_dist_no_pipe = BoardComPathShortcutLenGet(space, 8, 1);
     } else {
-        star_dist_pipe = 0x3E7;
+        star_dist_pipe = 999;
         star_dist_no_pipe = BoardComPathBestGetFlag(space, 0x10000000, 10);
-        if ((GWBoardGet() == 8 || GWBoardGet() == 7) && BoardRandMod(0x64) < 0x3C) {
+        if ((GWBoardGet() == BOARD_ID_EXTRA2 || GWBoardGet() == BOARD_ID_EXTRA1) && BoardRandMod(100) < 60) {
             force_use_mini = 1;
         }
     }
@@ -319,7 +441,7 @@ static BOOL CheckMiniUse(s32 player, s32 item) {
             max_dist = 10;
             break;
     }
-    if ((star_dist_no_pipe < max_dist || star_dist_pipe < max_dist || force_use_mini != 0) && BoardRandMod(0x64) >= chance) {
+    if ((star_dist_no_pipe < max_dist || star_dist_pipe < max_dist || force_use_mini != 0) && BoardRandMod(100) >= chance) {
         return TRUE;
     }
     return FALSE;
@@ -355,7 +477,7 @@ static BOOL CheckMegaUse(s32 player, s32 item) {
     if (((diff == 0 || diff == 1) && character == 0) || ((diff == 0 || diff == 1) && character == 5)) {
         max_len = 8;
     }
-    if (GWBoardGet() != 7 || BoardRandMod(0x64) >= 60) {
+    if (GWBoardGet() != BOARD_ID_EXTRA1 || BoardRandMod(100) >= 60) {
         space = GWPlayer[player].space_curr;
         short_len = BoardComPathShortcutLenGet(space, 8, 0);
         space_search = GWPlayer[player].space_curr;
@@ -368,7 +490,7 @@ static BOOL CheckMegaUse(s32 player, s32 item) {
                 }
             }
         }
-        if (GWBoardGet() != 7 && GWBoardGet() != 8 && short_len < 10 && short_len > 0) {
+        if (GWBoardGet() != BOARD_ID_EXTRA1 && GWBoardGet() != BOARD_ID_EXTRA2 && short_len < 10 && short_len > 0) {
             return FALSE;
         }
     }
@@ -458,13 +580,13 @@ static BOOL CheckBoardChangeUse(s32 player, s32 item) {
         search_space = GWPlayer[i].space_curr;
         if (!GWTeamGet() || i != BoardPlayerSameTeamFind(player)) {
             space = GWPlayer[i].space_curr;
-            if (GWBoardGet() == 7) {
+            if (GWBoardGet() == BOARD_ID_EXTRA1) {
                 if (BoardComPathBestGetFlag(search_space, 0x10000000, 10) != -1) {
                     length = 10;
                 } else {
                     length = 0;
                 }
-            } else if (GWBoardGet() == 8) {
+            } else if (GWBoardGet() == BOARD_ID_EXTRA2) {
                 if (BoardComPathBestGetFlag(search_space, 0x200000, 10) != -1 || BoardComPathBestGetFlag(search_space, 0x400000, 10) != -1) {
                     length = 10;
                 } else {
@@ -661,7 +783,7 @@ s32 BoardComFarPlayerFind(void) {
     s32 space;
     s32 i;
 
-    if (_CheckFlag(0x1000B) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         return -1;
     }
     far_player = -1;

@@ -137,8 +137,7 @@ void fn_1_9C98(dataCopy2* arg0) {
 void fn_1_9D0C(omObjData* arg0) {
     Vec sp1C;
     Vec sp10;
-    f32 spC;
-    f32 sp8;
+    f32 sp8[2];
     s32 var_r30;
     dataCopy2* temp_r31;
 
@@ -147,8 +146,8 @@ void fn_1_9D0C(omObjData* arg0) {
     temp_r31->unk_02 = 5;
     temp_r31->unk_04 = 0x3C;
     temp_r31->unk_00 = MGSeqCreate(1, temp_r31->unk_02, 0x120, 0x40);
-    HuWinMesMaxSizeGet(1, &sp8, 0x27000E);
-    temp_r31->unk_06 = HuWinCreate(-10000.0f, 368.0f, sp8, spC, 0);
+    HuWinMesMaxSizeGet(1, sp8, 0x27000E);
+    temp_r31->unk_06 = HuWinCreate(-10000.0f, 368.0f, sp8[0], sp8[1], 0);
     HuWinMesSet(temp_r31->unk_06, 0x27000E);
     HuWinBGTPLvlSet(temp_r31->unk_06, 0.0f);
     HuWinMesSpeedSet(temp_r31->unk_06, 0);
@@ -374,9 +373,9 @@ void fn_1_AB24(void) {
     }
     HuPrcSleep(0x1E);
     lbl_1_bss_C6 = lbl_1_data_4B2[lbl_1_bss_C2];
-    BoardAudSeqPause(0, 0, 0x3E8);
+    BoardAudSeqPause(0, 0, 1000);
     sprintf(&sp8, "%d", lbl_1_bss_C6);
-    BoardWinCreate(2, 0x270011, 7);
+    BoardWinCreate(2, MAKE_MESSID(39, 17), 7);
     BoardWinInsertMesSet((u32)&sp8, 0);
     BoardWinInsertMesSet(lbl_1_data_4B8[lbl_1_bss_C2], 1);
     BoardWinWait();
@@ -402,42 +401,43 @@ void fn_1_AB24(void) {
     var_f31 = -1.0f;
     var_r29 = 0;
     
-loop_10:
-    for (var_r31 = 0; var_r31 < lbl_1_bss_C6; var_r31++) {
-        if (var_r31 >= var_r29) {
-            sp124[var_r31].y += var_f31;
-            BoardModelPosSetV(lbl_1_bss_D6[var_r31], &sp124[var_r31]);
-            sp34[var_r31].y += 45.0f;
-            if (sp34[var_r31].y >= 360.0f) {
-                sp34[var_r31].y -= 360.0f;
-            }
-            BoardModelRotSetV(lbl_1_bss_D6[var_r31], &sp34[var_r31]);
-            if (sp124[var_r31].y <= (80.0f + sp28.y)) {
-                sp10 = sp124[var_r31];
-                CharModelCoinEffectCreate(1, &sp10);
-                BoardModelVisibilitySet(lbl_1_bss_D6[var_r31], 0);
-                var_r29++;
-                BoardPlayerCoinsAdd(lbl_1_bss_C0, 1);
-                HuAudFXPlay(7);
-                omVibrate(lbl_1_bss_C0, 0xC, 6, 6);
+    while (1) {
+        for (var_r31 = 0; var_r31 < lbl_1_bss_C6; var_r31++) {
+            if (var_r31 >= var_r29) {
+                sp124[var_r31].y += var_f31;
+                BoardModelPosSetV(lbl_1_bss_D6[var_r31], &sp124[var_r31]);
+                sp34[var_r31].y += 45.0f;
+                if (sp34[var_r31].y >= 360.0f) {
+                    sp34[var_r31].y -= 360.0f;
+                }
+                BoardModelRotSetV(lbl_1_bss_D6[var_r31], &sp34[var_r31]);
+                if (sp124[var_r31].y <= (80.0f + sp28.y)) {
+                    sp10 = sp124[var_r31];
+                    CharModelCoinEffectCreate(1, &sp10);
+                    BoardModelVisibilitySet(lbl_1_bss_D6[var_r31], 0);
+                    var_r29++;
+                    BoardPlayerCoinsAdd(lbl_1_bss_C0, 1);
+                    HuAudFXPlay(7);
+                    omVibrate(lbl_1_bss_C0, 0xC, 6, 6);
+                }
             }
         }
-    }
-    var_f31 *= 1.05f;
-    if (var_f31 < -20.0f) {
-        var_f31 = -20.0f;
-    }
-    if (var_r29 == lbl_1_bss_C6) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_C0, 7, 0.0f, 10.0f, 0);
-    } else {
-        HuPrcVSleep();
-        goto loop_10;
+        var_f31 *= 1.05f;
+        if (var_f31 < -20.0f) {
+            var_f31 = -20.0f;
+        }
+        if (var_r29 == lbl_1_bss_C6) {
+            BoardPlayerMotionShiftSet(lbl_1_bss_C0, 7, 0.0f, 10.0f, 0);
+            break;
+        } else {
+            HuPrcVSleep();
+        }
     }
     
     while (BoardPlayerMotionEndCheck(lbl_1_bss_C0) == 0) {
         HuPrcVSleep();
     }
-    BoardWinCreate(2, 0x270012, 7);
+    BoardWinCreate(2, MAKE_MESSID(39, 18), 7);
     BoardWinWait();
     BoardWinKill();
     temp_r30->func = fn_1_B214;

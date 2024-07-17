@@ -248,7 +248,7 @@ static void ExecShop(void) {
         BoardWinKill();
         HuPrcEnd();
     }
-    BoardWinCreateChoice(0, 0xF0000, -1, 0);
+    BoardWinCreateChoice(0, MAKE_MESSID(15, 0), -1, 0);
     DecideComEnter(shopPlayer);
     BoardWinWait();
     if (BoardWinChoiceGet() != 0) {
@@ -803,7 +803,7 @@ static void GetShopItems(s32 arg0) {
     temp_r19 = rankItemGroupTbl[var_r27][GWPlayer[arg0].rank][temp_r22];
     activeItemTbl[0] = activeItemTbl[1] = activeItemTbl[2] = activeItemTbl[3] = activeItemTbl[4] = -1;
     temp_r20 = BoardPlayerCoinsGet(shopPlayer);
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         GetDefaultShopItems(arg0);
         return;
     }
@@ -904,7 +904,7 @@ static void DecideComEnter(s32 arg0) {
             var_r28 = 0;
             break;
     }
-    if (GWBoardGet() == 7 || GWBoardGet() == 8) {
+    if (GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
         if (BoardPlayerCoinsGet(arg0) < 15) {
             BoardComKeySetRight();
             return;

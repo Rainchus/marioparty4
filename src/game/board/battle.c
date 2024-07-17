@@ -111,7 +111,7 @@ static s16 battleSprPrioTbl[] = {
 };
 
 void BoardBattleExec(s32 player, s32 space) {
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         HuAudFXPlay(0x34A);
         BoardCameraViewSet(2);
         BoardPlayerMotBlendSet(player, 0, 0xF);
@@ -195,13 +195,13 @@ static void ExecBattle(void) {
         battleMGIdx[var_r30] = var_r31;
         BoardMGSetupPlayPush(4, temp_r28);
     }
-    if (_CheckFlag(0x10004)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 4))) {
         BoardStatusItemSet(1);
         WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
-        _ClearFlag(0x1001C);
+        _ClearFlag(FLAG_ID_MAKE(1, 28));
         HuPrcSleep(60);
         HuPrcEnd();
     }
@@ -287,28 +287,28 @@ static void ExecBattle(void) {
             temp_r28 = battleMGList[battleMGIdx[mgChoice]];
             GWMGAvailSet(temp_r28);
             GWSystem.mg_next = temp_r28 - 401;
-            if (_CheckFlag(0xB)) {
+            if (_CheckFlag(FLAG_ID_MAKE(0, 11))) {
                 var_r24 = DATADIR_INST;
             } else {
                 var_r24 = mgInfoTbl[temp_r28 - 401].data_dir;
             }
             var_r21 = BoardDataDirReadAsync(var_r24);
         }
-        _SetFlag(0x1000E);
+        _SetFlag(FLAG_ID_MAKE(1, 14));
         WipeColorSet(0xFF, 0xFF, 0xFF);
         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
         HuAudFXAllStop();
-        _SetFlag(0x1001C);
+        _SetFlag(FLAG_ID_MAKE(1, 28));
         HideBattleSpr();
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             BoardPlayerMotionStart(var_r31, 1, 0x40000001);
         }
         BoardDataAsyncWait(var_r21);
         if (var_r27 == 0) {
-            _SetFlag(0x10004);
+            _SetFlag(FLAG_ID_MAKE(1, 4));
             BoardNextOvlSet(OVL_INST);
             BoardFilterFadeOut(30);
             StopBattleBomb();

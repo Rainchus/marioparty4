@@ -347,7 +347,7 @@ s32 BoardSpaceStarGetNext(void)
 	s16 star_pos;
 	star_total = GWSystem.star_total;
 	star_pos = GWSystem.star_pos;
-	if(GWBoardGet() == 5) {
+	if(GWBoardGet() == BOARD_ID_MAIN6) {
 		s16 i;
 		s32 count;
 		s32 last_free;
@@ -371,7 +371,7 @@ s32 BoardSpaceStarGetNext(void)
 		goto begin;
 	}
 	switch(GWSystem.board) {
-		case 0:
+		case BOARD_ID_MAIN1:
 			if(star_total >= 2) {
 				break;
 			}
@@ -380,7 +380,7 @@ s32 BoardSpaceStarGetNext(void)
 			}
 			goto begin;
 			
-		case 1:
+		case BOARD_ID_MAIN2:
 			if(star_total >= 2) {
 				break;
 			}
@@ -389,7 +389,7 @@ s32 BoardSpaceStarGetNext(void)
 			}
 			goto begin;
 		
-		case 2:
+		case BOARD_ID_MAIN3:
 			if(star_total == 1) {
 				if(random_pos < 3 || random_pos > 5) {
 					break;
@@ -405,7 +405,7 @@ s32 BoardSpaceStarGetNext(void)
 				goto begin;
 			}
 			
-		case 3:
+		case BOARD_ID_MAIN4:
 			if(star_total == 1) {
 				if(random_pos < 5 || random_pos > 7) {
 					break;
@@ -421,7 +421,7 @@ s32 BoardSpaceStarGetNext(void)
 				break;
 			}
 			
-		case 4:
+		case BOARD_ID_MAIN5:
 			if(star_total == 1) {
 				if(random_pos <= 1 || random_pos >= 4) {
 					goto begin;
@@ -429,7 +429,7 @@ s32 BoardSpaceStarGetNext(void)
 			}
 			break;
 			
-		case 5:
+		case BOARD_ID_MAIN6:
 			if(star_total == 1) {
 				if(random_pos == 1 || random_pos == 4 || random_pos == 5) {
 					goto begin;
@@ -504,7 +504,7 @@ s32 BoardSpaceStarCheck(s32 index)
 	s32 ret;
 	BoardSpace *space = BoardSpaceGet(0, index);
 	BoardSpace *star_space;
-	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+	if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 		ret = 0;
 		goto end;
 	}
@@ -520,9 +520,19 @@ s32 BoardSpaceStarCheck(s32 index)
 
 void BoardSpaceLandExec(s32 player, s32 space)
 {
+	#define BLUE_SPACE 1
+	#define RED_SPACE 2
+	#define BOWSER_SPACE 3
+	#define MUSHROOM_SPACE 4
+	#define BATTLE_SPACE 5
+	#define HAPPENING_SPACE 6
+	#define FORTUNE_SPACE 7
+	#define STAR_SPACE 8
+	#define WARP_SPACE 9
+
 	BoardSpace *space_ptr = BoardSpaceGet(0, space);
 	switch(space_ptr->type) {
-		case 1:
+		case BLUE_SPACE:
 			GWPlayer[player].blue_count++;
 			if(GWPlayer[player].blue_count > 99) {
 				GWPlayer[player].blue_count = 99;
@@ -530,7 +540,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardLandBlueExec(player, space);
 			break;
 			
-		case 2:
+		case RED_SPACE:
 			GWPlayer[player].red_count++;
 			if(GWPlayer[player].red_count > 99) {
 				GWPlayer[player].red_count = 99;
@@ -538,7 +548,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardLandRedExec(player, space);
 			break;
 			
-		case 3:
+		case BOWSER_SPACE:
 			GWPlayer[player].bowser_count++;
 			if(GWPlayer[player].bowser_count > 99) {
 				GWPlayer[player].bowser_count = 99;
@@ -546,7 +556,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardBowserExec(player, space);
 			break;
 			
-		case 4:
+		case MUSHROOM_SPACE:
 			GWPlayer[player].mushroom_count++;
 			if(GWPlayer[player].mushroom_count > 99) {
 				GWPlayer[player].mushroom_count = 99;
@@ -554,7 +564,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardMushroomExec(player, space);
 			break;
 			
-		case 5:
+		case BATTLE_SPACE:
 			GWPlayer[player].battle_count++;
 			if(GWPlayer[player].battle_count > 99) {
 				GWPlayer[player].battle_count = 99;
@@ -562,7 +572,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardBattleExec(player, space);
 			break;
 			
-		case 6:
+		case HAPPENING_SPACE:
 			GWPlayer[player].question_count++;
 			if(GWPlayer[player].question_count > 99) {
 				GWPlayer[player].question_count = 99;
@@ -586,7 +596,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			GWPlayer[player].color = 3;
 			break;
 			
-		case 7:
+		case FORTUNE_SPACE:
 			GWPlayer[player].fortune_count++;
 			if(GWPlayer[player].fortune_count > 99) {
 				GWPlayer[player].fortune_count = 99;
@@ -594,7 +604,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardFortuneExec(player, space);
 			break;
 			
-		case 9:
+		case WARP_SPACE:
 			GWPlayer[player].warp_count++;
 			if(GWPlayer[player].warp_count > 99) {
 				GWPlayer[player].warp_count = 99;
@@ -602,7 +612,7 @@ void BoardSpaceLandExec(s32 player, s32 space)
 			BoardWarpExec(player, space);
 			break;
 			
-		case 8:
+		case STAR_SPACE:
 			BoardStarExec(player, space);
 			break;
 	}
@@ -623,7 +633,7 @@ s32 BoardSpaceWalkExec(s32 player, s32 space)
 		return 0;
 	}
 	space_ptr = BoardSpaceGet(0, space);
-	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+	if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 		is_star = 0;
 	} else {
 		star_space = BoardSpaceGet(0, boardSpaceStarTbl[GWSystem.star_pos]);
@@ -680,7 +690,7 @@ s32 BoardSpaceBlockExec(s32 player, s32 space)
 	if(!GWBonusStarGet() && GWPartyGet() == 1 && !_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		event_exec = 0;
 	}
-	if(GWBoardGet() == 7 || GWBoardGet() == 8) {
+	if(GWBoardGet() == BOARD_ID_EXTRA1 || GWBoardGet() == BOARD_ID_EXTRA2) {
 		event_exec = 0;
 	}
 	if(event_exec) {
@@ -1059,7 +1069,7 @@ void BoardSpaceInit(s32 data_num)
 		GWSystem.star_total = 0;
 		GWSystem.star_flag = 0;
 	}
-	if(GWBoardGet() != 7 && GWBoardGet() != 8) {
+	if(GWBoardGet() != BOARD_ID_EXTRA1 && GWBoardGet() != BOARD_ID_EXTRA2) {
 		starPlatMdl = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 6), NULL, 0);
 		BoardModelMotionStart(starPlatMdl, 0, 0x40000001);
 		BoardModelVisibilitySet(starPlatMdl, 0);

@@ -62,7 +62,7 @@ void WarpProcess(void) {
     }
     
     BoardPlayerIdleSet(curr_player);
-    if (_CheckFlag(0x1000B) != 0) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11)) != 0) {
         BoardTutorialHookExec(18, 0);
         boardTutorialData[0] = 0;
     }

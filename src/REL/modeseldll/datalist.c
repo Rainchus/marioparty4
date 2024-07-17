@@ -60,7 +60,7 @@ void fn_1_BED8(DataListModel *model_list)
 	for(clear_i=0; clear_i<24; clear_i++) {
 		lbl_1_bss_19A[clear_i] = lbl_1_bss_16A[clear_i] = -1;
 	}
-	for(i=0; list->datanum != 0xFFFFFFFF; list++, i++) {
+	for(i=0; list->datanum != DATA_NUM_LISTEND; list++, i++) {
 		if(list->type == 0) {
 			data = HuDataSelHeapReadNum(list->datanum, MEMORY_DEFAULT_NUM, HEAP_DATA);
 			model = Hu3DModelCreate(data);
@@ -81,7 +81,7 @@ void fn_1_BED8(DataListModel *model_list)
 		(void)i;
 	}
 	list = model_list;
-	for(i=0; list->datanum != 0xFFFFFFFF; list++, i++) {
+	for(i=0; list->datanum != DATA_NUM_LISTEND; list++, i++) {
 		if(list->type == 2) {
 			model = Hu3DModelLink(lbl_1_bss_19A[list->link]);
 			lbl_1_bss_19A[i] = model;

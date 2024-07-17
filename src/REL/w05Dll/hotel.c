@@ -121,7 +121,7 @@ void fn_1_155C(void) {
         BoardWinCreate(2, var_r27, 7);
         BoardWinInsertMesSet(MAKE_MESSID_PTR(sp8), 1);
     } else {
-        BoardWinCreate(2, 0x270003, 7);
+        BoardWinCreate(2, MAKE_MESSID(39, 3), 7);
         BoardWinInsertMesSet(MAKE_MESSID_PTR(sp18), 0);
     }
     BoardWinWait();
@@ -135,7 +135,7 @@ void fn_1_155C(void) {
         HuAudFXPlay(0xF);
         lbl_1_bss_0->unk_00 += var_r30;
         sprintf(sp18, "%d", lbl_1_bss_0->unk_00);
-        BoardWinCreate(2, 0x270016, 7);
+        BoardWinCreate(2, MAKE_MESSID(39, 22), 7);
         BoardWinInsertMesSet(MAKE_MESSID_PTR(sp18), 0);
         BoardWinWait();
         BoardWinKill();
@@ -275,7 +275,7 @@ void fn_1_1E44(void) {
         HuPrcVSleep();
     }
     if (lbl_1_bss_0->unk_00 == 0) {
-        BoardWinCreate(2, 0x270005, 7);
+        BoardWinCreate(2, MAKE_MESSID(39, 5), 7);
         BoardWinWait();
         BoardWinKill();
     } else {
@@ -299,9 +299,9 @@ void fn_1_1E44(void) {
         sprintf(&sp84, "%d", lbl_1_bss_0->unk_00);
         sprintf(&sp74, "%d", var_r28);
         if (var_r28 == lbl_1_bss_0->unk_00) {
-            BoardWinCreate(2, 0x270004, 7);
+            BoardWinCreate(2, MAKE_MESSID(39, 4), 7);
         } else {
-            BoardWinCreate(2, 0x270017, 7);
+            BoardWinCreate(2, MAKE_MESSID(39, 23), 7);
         }
         BoardWinInsertMesSet(MAKE_MESSID_PTR(sp84), 0);
         BoardWinInsertMesSet(MAKE_MESSID_PTR(sp74), 1);
@@ -369,7 +369,7 @@ void fn_1_1E44(void) {
         }
         BoardModelKill(temp_r3);
         HuPadRumbleStop(GWPlayer[lbl_1_bss_28].port);
-        BoardWinCreate(0, 0x270006, -1);
+        BoardWinCreate(0, MAKE_MESSID(39, 6), -1);
         BoardWinWait();
         BoardWinKill();
         HuPrcSleep(0x1E);

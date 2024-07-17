@@ -59,7 +59,7 @@ static void ComFortuneSwapStar(s32 player1, s32 player2);
 
 void BoardFortuneExec(s32 player, s32 space)
 {
-	if(_CheckFlag(0x1000B)) {
+	if(_CheckFlag(FLAG_ID_MAKE(1, 11))) {
 		HuAudFXPlay(842);
 		BoardCameraViewSet(2);
 		BoardPlayerMotBlendSet(player, 0, 15);
@@ -86,7 +86,7 @@ void BoardFortuneExec(s32 player, s32 space)
 static void FortuneExec(void)
 {
 	BoardAudSeqFadeOut(0, 1000);
-	if(!_CheckFlag(0x10005)) {
+	if(!_CheckFlag(FLAG_ID_MAKE(1, 5))) {
 		GWPlayer[currPlayer].show_next = 0;
 		FortuneMain();
 	} else {

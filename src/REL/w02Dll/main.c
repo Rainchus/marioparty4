@@ -266,7 +266,7 @@ void fn_1_990(void) {
 
 
     currPlayer = GWSystem.player_curr;
-    BoardWinCreateChoice(2, 0x130011U, 4, 0);
+    BoardWinCreateChoice(2, MAKE_MESSID(19, 17), 4, 0);
     if (GWPlayer[currPlayer].com) {
         if (frandBool() != 0) {
             BoardComKeySetLeft();
@@ -278,7 +278,7 @@ void fn_1_990(void) {
     BoardWinKill();
     textChoice = BoardWinChoiceGet();
     if ((textChoice == 1) || (textChoice == -1)) {
-        BoardWinCreate(2, 0x130012U, 4);
+        BoardWinCreate(2, MAKE_MESSID(19, 18), 4);
         BoardWinWait();
         BoardWinKill();
         BoardMGExit();
@@ -288,7 +288,7 @@ void fn_1_990(void) {
         BoardMGDoneFlagSet(0);
         return;
     }
-    BoardAudSeqPause(0, 1, 0x3E8);
+    BoardAudSeqPause(0, 1, 1000);
     HuPrcChildCreate(fn_1_954, 0x2003U, 0x1000U, 0, boardMainProc);
     rotation.x = 0.0f;
     rotation.y = rotation.z = 0.0f;
@@ -328,7 +328,7 @@ void fn_1_C50(void) {
 
     currPlayer = GWSystem.player_curr;
     if (BoardPlayerItemCount((s32) currPlayer) == 3) {
-        BoardWinCreate(2, 0x13001A, 4);
+        BoardWinCreate(2, MAKE_MESSID(19, 26), 4);
         BoardWinWait();
         BoardWinKill();
         HuPrcEnd();
@@ -357,7 +357,7 @@ void fn_1_C50(void) {
     fn_1_79BC(lbl_1_bss_8);
 
     HuAudFXPlay(0x43);
-    BoardWinCreateChoice(2, 0x130016, 4, 0);
+    BoardWinCreateChoice(2, MAKE_MESSID(19, 22), 4, 0);
     if (GWPlayer[currPlayer].com) {
         if (BoardComPreferItemCheck(currPlayer, lbl_1_bss_8[0], lbl_1_bss_8[1], lbl_1_bss_8[2]) != -1) {
             BoardComKeySetLeft();
@@ -370,7 +370,7 @@ void fn_1_C50(void) {
     textChoice = BoardWinChoiceGet();
     if ((textChoice == 1) || (textChoice == -1)) {
         HuAudFXPlay(0x44);
-        BoardWinCreate(2, 0x130017, 4);
+        BoardWinCreate(2, MAKE_MESSID(19, 23), 4);
         BoardWinWait();
         BoardWinKill();
         BoardMGExit();

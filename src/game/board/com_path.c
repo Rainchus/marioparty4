@@ -1,5 +1,6 @@
 #include "game/board/com_path.h"
 #include "game/board/space.h"
+#include "game/flag.h"
 
 #define NODE_INDEX(x) ((x) ? ((x) - pathNodeData) : -1)
 
@@ -311,7 +312,7 @@ s16 BoardComPathShortcutLenGet(s16 space, u32 type, s32 block_pipe) {
     s16 i;
     s32 search_child;
 
-    if (_CheckFlag(0x1000B)) {
+    if (_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         return 0;
     }
     PopulateCandidates(space, 30);

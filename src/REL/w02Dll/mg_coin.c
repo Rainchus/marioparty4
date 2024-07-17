@@ -348,7 +348,7 @@ void fn_1_46E8(void)
 		BoardModelAttrReset(lbl_1_bss_30[9], 0x40000002);
 	}
 	sprintf(sp8, "%d", lbl_1_bss_84);
-	BoardWinCreate(2, 0x130013, 4);
+	BoardWinCreate(2, MAKE_MESSID(19, 19), 4);
 	BoardWinInsertMesSet((u32)sp8, 0);
 	BoardWinWait();
 	BoardWinKill();

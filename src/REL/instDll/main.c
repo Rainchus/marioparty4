@@ -107,7 +107,7 @@ void ObjectSetup(void)
 		|| mgInfoTbl[lbl_1_bss_14].type == 5
 		|| mgInfoTbl[lbl_1_bss_14].type == 6
 		|| mgInfoTbl[lbl_1_bss_14].type == 8
-		|| !_CheckFlag(0xB)) {
+		|| !_CheckFlag(FLAG_ID_MAKE(0, 11))) {
 			HuDataDirClose(DATADIR_INST);
 			omSysPauseEnable(1);
 			omOvlCallEx(mgInfoTbl[lbl_1_bss_14].ovl, 1, 0, 0);
