@@ -181,14 +181,17 @@ typedef struct _unkStruct10 {
     u8 unk1;
     u8 unk2;
     u8 unk3;
-    char unk4[0x8];
+    u8 unk4;
+    char unk5[0x3];
+    f32 unk8;
     Vec unkC;
     Vec unk18;
     Vec unk24;
     Vec unk30;
     Vec unk3C;
     s8 unk48;
-    char unk49[0x7];
+    char unk49[0x3];
+    f32 unk4C;
 } unkStruct10; // sizeof 0x50
 
 // bss
@@ -239,6 +242,10 @@ extern s32 lbl_1_data_C0;
 // player.c
 extern u32 lbl_1_data_138; // unk
 extern s32 lbl_1_data_13C[7];
+extern GXColor lbl_1_data_158[8];
+extern HsfVector2f lbl_1_data_178[4];
+extern GXColor lbl_1_data_198[8];
+extern u32 lbl_1_data_1EC;
 
 // prototypes
 extern void ModuleProlog(void);
@@ -251,6 +258,7 @@ extern void fn_1_F70(omObjData* object);
 extern s8 fn_1_10E8(omObjData* object);
 extern s8 fn_1_1B74(omObjData* object);
 extern void fn_1_2098(omObjData* object);
+extern void fn_1_23EC(s16);
 extern void fn_1_2414(u16, u16);
 extern u16 fn_1_2454(u16);
 extern void fn_1_2484(omObjData* object);
@@ -286,14 +294,21 @@ extern s8 fn_1_8D08(u8);
 extern void fn_1_8D6C(unkStruct8*);
 extern void fn_1_91C0(omObjData*);
 extern void fn_1_962C(omObjData*);
-// ...
+extern s32 fn_1_A584(unkStruct10*);
 extern s8 fn_1_A9C0(Vec*, f32*);
 extern s32 fn_1_ABB4(void);
+extern void fn_1_AC08(s32*, s32);
 extern f32 fn_1_AD40(f32, f32, f32);
-extern void fn_1_B378(Vec*);
+extern f32 fn_1_AE94(f32, f32, f32, f32);
+extern void fn_1_AF0C(f32*, f32*, f32*, f32*, f32);
+extern f32 fn_1_B028(f32, f32, f32, f32);
+extern void fn_1_B0A0(f32*, f32*, f32*, f32*, f32);
+// ...
+extern f32 fn_1_B378(Vec*);
 extern f32 fn_1_B6A4(Vec*, unkStruct8Sub*, Vec*);
 extern f32 fn_1_B9E0(Vec*, unkStruct8Sub*, Vec*, Vec*, Vec*);
 extern f32 fn_1_BF38(s16);
+// cursor.c
 extern void fn_1_BF88(s32, s32);
 extern void fn_1_C0C0(void);
 extern unkStruct8Sub* fn_1_CCCC(s16, s16);
@@ -301,17 +316,18 @@ extern s16 fn_1_DA48(s32, s32);
 extern void fn_1_DEF4(s16, s32, s32);
 extern void fn_1_DF20(s32, s32, s32);
 extern void fn_1_E2A8(s16, s32, s32, s32, s32);
-extern void fn_1_E7C8(s16, s32, s32);
+extern s32 fn_1_E7C8(s16, s32, s32);
 extern void fn_1_E99C(s16, s16, f32, f32, f32);
-extern void fn_1_E85C(s16, s32, f32, f32, f32);
+extern void fn_1_E85C(s16, s16, f32, f32, f32);
 extern void fn_1_EC1C(s16, s16, f32, f32, f32);
 extern void fn_1_ED00(u8, s32);
 extern void fn_1_ED44(s16, s16, s32);
 extern void fn_1_EE24(u8, s32);
 extern void fn_1_EE68(s16, s16, s32);
-extern void fn_1_F024(s16, s32, u8, u8, u8, s32);
+extern void fn_1_F024(s16, s16, u8, u8, u8, u8);
 extern void fn_1_F098(s16, u8, u8, u8, u8);
-extern void fn_1_F17C(s16, s16, u8, s32);
+extern void fn_1_F17C(s16, s16, u8, u8);
 extern void fn_1_F2F8(s16, s16, u8, f32);
 extern void fn_1_F408(s16, s32, s32);
+extern void fn_1_F2F8(s16, s16, u8, f32);
 extern void fn_1_F478(s16, s16, u8, s32);
