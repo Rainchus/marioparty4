@@ -636,7 +636,7 @@ void fn_1_8D6C(unkStruct8* arg0) {
             sp8.z = 100.0f * (2.0f * temp_r31->unk64.z);
             for (var_r29 = &lbl_1_bss_10C[0], var_r27 = 0; var_r27 < 8; var_r27++, var_r29++) {
                 if ((Hu3DModelAttrGet(var_r29->unk0) & 1) == 0) {
-                    var_f31 = fn_1_B6A4(&var_r29->unkC, temp_r31, &sp8);
+                    var_f31 = fn_1_B6A4(&var_r29->unkC, &temp_r31->unk0, &sp8);
                     if (!(var_f31 >= 2250.0f) && (var_r29->unk2 == 3)) {
                         var_r29->unk2 = 4;
                         temp_r31->unk34 |= 4;
@@ -660,7 +660,7 @@ void fn_1_8D6C(unkStruct8* arg0) {
             sp20.x = -290.0f;
             sp20.y = 350.0f;
             sp20.z = -1200.0f;
-            var_f31 = fn_1_B9E0(&sp20, temp_r31, &sp8, &sp14, &sp8);
+            var_f31 = fn_1_B9E0(&sp20, &temp_r31->unk0, &sp8, &sp14, &sp8);
             if (var_f31 <= 100.0f) {
                 temp_r31->unk0.x = sp14.x;
                 temp_r31->unk0.y = sp14.y;
@@ -1149,33 +1149,86 @@ f32 fn_1_B378(Vec* arg0) {
     return var_f30;
 }
 
-f32 fn_1_B510(Vec* arg0, Vec* arg1, Vec* arg2, f32 arg8) {
+f32 fn_1_B510(Vec arg0, Vec arg1, Vec* arg2, f32 arg8) {
     if (arg8 <= 0.0f) {
-        arg2->x = arg0->x;
-        arg2->y = arg0->y;
-        arg2->z = arg0->z;
-        return 0.0f;
+        arg2->x = arg0.x;
+        arg2->y = arg0.y;
+        arg2->z = arg0.z;
+        arg8 = 0.0f;
+    } else if (arg8 >= 1.0f) {
+        arg2->x = (arg0.x + arg1.x);
+        arg2->y = (arg0.y + arg1.y);
+        arg2->z = (arg0.z + arg1.z);
+        arg8 = 1.0f;
+    } else {
+        arg2->x = (arg0.x + (arg8 * arg1.x));
+        arg2->y = (arg0.y + (arg8 * arg1.y));
+        arg2->z = (arg0.z + (arg8 * arg1.z));
     }
-    if (arg8 >= 1.0f) {
-        arg2->x = (arg0->x + arg1->x);
-        arg2->y = (arg0->y + arg1->y);
-        arg2->z = (arg0->z + arg1->z);
-        return 1.0f;
-    }
-    arg2->x = (arg0->x + (arg8 * arg1->x));
-    arg2->y = (arg0->y + (arg8 * arg1->y));
-    arg2->z = (arg0->z + (arg8 * arg1->z));
     return arg8;
 }
 
-f32 fn_1_B5E8(Vec* arg0, Vec* arg1, Vec* arg2) {
+f32 fn_1_B5E8(Vec arg0, Vec arg1, Vec arg2) {
     f32 temp_f30;
     f32 var_f31;
 
-    var_f31 = (arg2->z * (arg1->z - arg0->z)) + ((arg2->x * (arg1->x - arg0->x)) + (arg2->y * (arg1->y - arg0->y)));
-    temp_f30 = -((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y)));
+    var_f31 = (arg2.z * (arg1.z - arg0.z)) + ((arg2.x * (arg1.x - arg0.x)) + (arg2.y * (arg1.y - arg0.y)));
+    temp_f30 = -((arg2.z * arg2.z) + ((arg2.x * arg2.x) + (arg2.y * arg2.y)));
     if (temp_f30 != 0.0f) {
         var_f31 /= temp_f30;
     }
     return var_f31;
+}
+
+f32 fn_1_B6A4(Vec* arg0, Vec* arg1, Vec* arg2) {
+    Vec sp44;
+    f32 var_f31;
+
+    if (((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y))) == 0.0f) {
+        return ((arg0->z - arg1->z) * (arg0->z - arg1->z)) + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
+    } else {
+        var_f31 = fn_1_B5E8(*arg0, *arg1, *arg2);
+        fn_1_B510(*arg1, *arg2, &sp44, var_f31);
+        return ((arg0->z - sp44.z) * (arg0->z - sp44.z)) + (((arg0->x - sp44.x) * (arg0->x - sp44.x)) + ((arg0->y - sp44.y) * (arg0->y - sp44.y)));
+    }
+}
+
+f32 fn_1_B9E0(Vec* arg0, Vec* arg1, Vec* arg2, Vec* arg3, Vec* arg4) {
+    f32 var_f31;
+    
+    if (((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y))) == 0.0f) {
+        return ((arg0->z - arg1->z) * (arg0->z - arg1->z)) + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
+    } else {
+        var_f31 = fn_1_B5E8(*arg0, *arg1, *arg2);
+        fn_1_B510(*arg1, *arg2, arg3, var_f31);
+    }
+    arg4->x = arg3->x - arg0->x;
+    arg4->y = arg3->y - arg0->y;
+    arg4->z = arg3->z - arg0->z;
+    return fn_1_B378(arg4);
+}
+
+void fn_1_BE90(ModelData *model, ParticleData *particle, Mtx matrix) {
+    s32 var_r29;
+    HsfanimStruct01* var_r31;
+
+    var_r31 = particle->unk_48;
+    for (var_r29 = 0; var_r29 < particle->unk_30; var_r29++, var_r31++) {
+        var_r31->unk34.x = 0.0f;
+        var_r31->unk34.y = 200.0f;
+        var_r31->unk34.z = -500.0f;
+        var_r31->unk2C = 80.0f;
+    }
+    DCFlushRange(particle->unk_48, particle->unk_30 * 0x44);
+}
+
+f32 fn_1_BF38(s16 arg0) {
+    MotionData* motionData;
+    HsfMotion* hsfMotionData;
+    f32 length;
+
+    motionData = &Hu3DMotion[arg0];
+    hsfMotionData = motionData->unk_04->motion;
+    length = hsfMotionData->len;
+    return length;
 }

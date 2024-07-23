@@ -303,10 +303,10 @@ extern f32 fn_1_AE94(f32, f32, f32, f32);
 extern void fn_1_AF0C(f32*, f32*, f32*, f32*, f32);
 extern f32 fn_1_B028(f32, f32, f32, f32);
 extern void fn_1_B0A0(f32*, f32*, f32*, f32*, f32);
-// ...
 extern f32 fn_1_B378(Vec*);
-extern f32 fn_1_B6A4(Vec*, unkStruct8Sub*, Vec*);
-extern f32 fn_1_B9E0(Vec*, unkStruct8Sub*, Vec*, Vec*, Vec*);
+extern f32 fn_1_B6A4(Vec*, Vec*, Vec*);
+extern f32 fn_1_B9E0(Vec*, Vec*, Vec*, Vec*, Vec*);
+// ...
 extern f32 fn_1_BF38(s16);
 // cursor.c
 extern void fn_1_BF88(s32, s32);
