@@ -22,6 +22,8 @@
 
 #include "rel_sqrt_consts.h"
 
+#include "REL/m439data.h"
+
 typedef struct camera_params {
 	float zoom;
 	Vec pos;
@@ -565,17 +567,17 @@ float fn_1_1024(float arg0, float arg1, float arg2)
 }
 
 float lbl_1_data_76B0[11][2] = {
-	-180, -230,
-	-260, -150,
-	-300, 0,
-	-260, 150,
-	-150, 260,
-	-1e-50, 300,
-	150, 260,
-	260, 150,
-	300, -1e-50,
-	260, -150,
-	180, -230
+    { -180.0f, -230.0f },
+    { -260.0f, -150.0f },
+    { -300.0f, 0.0f },
+    { -260.0f, 150.0f },
+    { -150.0f, 260.0f },
+    { -0.0f, 300.0f },
+    { 150.0f, 260.0f },
+    { 260.0f, 150.0f },
+    { 300.0f, -0.0f },
+    { 260.0f, -150.0f },
+    { 180.0f, -230.0f },
 };
 
 s32 fn_1_1128(Vec *arg0)
@@ -686,11 +688,6 @@ s32 fn_1_16B0(Vec *arg0)
 		}
 	}
 }
-
-extern Vec *lbl_1_data_1014[][2];
-extern u16 lbl_1_data_1074[];
-extern float *lbl_1_data_108C[];
-
 
 float fn_1_1C54(s32 arg0, Vec *arg1, Vec *arg2)
 {
@@ -1731,11 +1728,6 @@ void fn_1_66BC(omObjData *object)
 		}
 	}
 }
-
-extern u16 lbl_1_data_73B8[];
-extern Vec **lbl_1_data_73CC[];
-
-extern s32 *lbl_1_data_73F4[];
 
 s32 fn_1_67B4(Vec *arg0, s32 arg1, s32 arg2, Vec *arg3, Vec *arg4)
 {
