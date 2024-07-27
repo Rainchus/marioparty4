@@ -1717,6 +1717,29 @@ s8 fn_1_5D58(s32 arg0, s32 arg1) {
     return var_r30;
 }
 
+static inline s8 fn_1_5D58_copy(s32 arg0, s32 arg1) {
+    UnkBss474Struct* temp_r31;
+    s8 var_r30;
+    s8 var_r29;
+    s8 var_r28;
+
+    temp_r31 = &lbl_1_bss_474[arg0];
+    if (!GWPlayerCfg[arg0].iscom) {
+        if (arg1 != 0) {
+            var_r30 = HuPadStkY[temp_r31->unk3C];
+        } else {
+            var_r30 = HuPadStkX[temp_r31->unk3C];
+        }
+    } else {
+        if (arg1 != 0) {
+            var_r30 = temp_r31->unk255;
+        } else {
+            var_r30 = temp_r31->unk254;
+        }
+    }
+    return var_r30;
+}
+
 u8 fn_1_5E10(s32 arg0, s32 arg1) {
     UnkBss474Struct* temp_r31;
     s8 var_r30;
@@ -1741,11 +1764,39 @@ u8 fn_1_5E10(s32 arg0, s32 arg1) {
     return var_r30;
 }
 
+
+static inline u8 fn_1_5E10_copy(s32 arg0, s32 arg1) {
+    UnkBss474Struct* temp_r31;
+    s8 var_r30;
+    s8 var_r29;
+    s8 var_r28;
+
+    temp_r31 = &lbl_1_bss_474[arg0];
+    if (!GWPlayerCfg[arg0].iscom) {
+        if (arg1 != 0) {
+            var_r30 = HuPadTrigR[temp_r31->unk3C];
+        } else {
+            var_r30 = HuPadTrigL[temp_r31->unk3C];
+        }
+    } else {
+        if (arg1 != 0) {
+            var_r30 = temp_r31->unk256;
+        } else {
+            var_r30 = temp_r31->unk257;
+        }
+    }
+    return var_r30;
+}
+
 u16 fn_1_5ED0(s32 arg0) {
     UnkBss474Struct* temp_r31;
     u16 var_r30;
 
     temp_r31 = &lbl_1_bss_474[arg0];
+	(void)temp_r31;
+	(void)temp_r31;
+	(void)temp_r31;
+	(void)temp_r31;
     if (!GWPlayerCfg[arg0].iscom) {
         var_r30 = HuPadBtnDown[temp_r31->unk3C];
     } else {
@@ -2160,11 +2211,196 @@ void fn_1_7680(void) {
     }
 }
 
-// TODO: https://decomp.me/scratch/YJySO
+
+static inline void m411InlineFunc(UnkBss474Struct* temp_r31, UnkBss474DoublyInnerStruct6C* temp_r30) {
+    Vec sp74;
+	Vec sp80;
+    
+    float var_f22;
+    float var_f23;
+
+    sp80.x = 60.0f + temp_r30->unk00;
+    sp80.z = 100.0f;
+    sp80.y = temp_r30->unk04 - 30.0f;
+    Hu3D3Dto2D(&sp80, 1 << temp_r31->unk38, &sp74);
+    var_f23 = 290.0f * (temp_r31->unk34 % 2) + sp74.x / 2.0f;
+    var_f22 = 245.0f * (temp_r31->unk34 / 2) + sp74.y / 2.0f;
+    HuSprGrpPosSet(temp_r31->unk0C, var_f23, var_f22);
+}
+
+#define SOME_MACRO(x) ((x) >= 0 ? (x) : (-(x) > 20))
+
 void fn_1_7738(void) {
-    (void) 1.05f;
-    (void) -20.0f;
-    (void) 5.0;
+    f32 temp_f26;
+    f32 temp_f27;
+    Process* var_r24;
+    UnkBss474Struct* temp_r31;
+    UnkBss474DoublyInnerStruct6C* temp_r30;
+    s32 var_r29;
+    UnkBss474DoublyInnerStruct6C* temp_r28;
+    s32 temp_r26;
+    UnkBss474InnerStructE4* temp_r25;
+    s32 var_r23;
+    Vec spCC;
+    Vec spC0;
+    Vec spB4;
+    UnkFn64A3Struct spA4;
+    s32 sp70;
+
+    temp_r31 = HuPrcCurrentGet()->user_data;
+    temp_r31->unk40 = 0;
+    for (var_r29 = 0; var_r29 < lbl_1_bss_E38; var_r29++) {
+        temp_r30 = &temp_r31->unk94[var_r29]->unk1C;
+        temp_r30->unk00 = 5000.0f;
+        temp_r30 = &temp_r31->unkBC[var_r29]->unk1C;
+        temp_r30->unk00 = 5000.0f;
+    }
+    while (lbl_1_bss_E98 == 0) {
+        HuPrcVSleep();
+    }
+    Hu3DModelAttrReset(temp_r31->unk08, 1);
+    for (var_r29 = 0; var_r29 < 30; var_r29++) {
+        if (lbl_1_bss_E40 == 0) {
+            lbl_1_bss_C4[temp_r31->unk38].z += 10.0f;
+        } else {
+            CZoomM[temp_r31->unk38] += 10.0f;
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelAttrReset(temp_r31->unk00, 1);
+    Hu3DModelAttrSet(temp_r31->unk02, 1);
+    if (temp_r31->unk34 == 0) {
+        HuAudFXPlay(0x56F);
+    }
+    for (var_r29 = 0; var_r29 < lbl_1_bss_E38; var_r29++) {
+        temp_r30 = &temp_r31->unk6C[var_r29]->unk1C;
+        temp_f26 = atan2d(temp_r30->unk00, temp_r30->unk04);
+        temp_f27 = sqrtf(temp_r30->unk00 * temp_r30->unk00 + temp_r30->unk04 * temp_r30->unk04);
+        temp_f27 *= 1.05f;
+        temp_r30->unk00 = temp_f27 * sind(temp_f26);
+        temp_r30->unk04 = temp_f27 * cosd(temp_f26);
+    }
+    omVibrate(temp_r31->unk34, 12, 6, 6);
+    HuPrcSleep(30);
+    CharModelMotionShiftSet(lbl_1_data_240[GWPlayerCfg[temp_r31->unk34].character], temp_r31->unk0E[5], 0.0f, 5.0f, 0);
+    HuPrcChildCreate(fn_1_75C8, 0x2000, 0x1000, 0, HuPrcCurrentGet());
+    if (temp_r31->unk34 == 0) {
+        HuAudFXPlay(0x56B);
+    }
+    for (var_r29 = 0; var_r29 < lbl_1_bss_E38; var_r29++) {
+        var_r24 = HuPrcChildCreate(fn_1_6CF4, 0x2000, 0x1000, 0, HuPrcCurrentGet());
+        temp_r30 = &temp_r31->unk6C[var_r29]->unk1C;
+        var_r24->user_data = temp_r30;
+    }
+    HuPrcSleep(40);
+    HuPrcSleep(40);
+    for (var_r29 = 0; var_r29 < 30; var_r29++) {
+        if (lbl_1_bss_E40 == 0) {
+            lbl_1_bss_C4[temp_r31->unk38].z -= 10.0f;
+        } else {
+            CZoomM[temp_r31->unk38] -= 10.0f;
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelAttrSet(temp_r31->unk08, 1);
+    HuPrcSleep(60);
+    lbl_1_bss_E98 = 2;
+    for (var_r29 = 0; var_r29 < lbl_1_bss_E38; var_r29++) {
+        sp70 = 0;
+        temp_r31->unk44 = 0;
+        temp_r31->unk264 = -1;
+        temp_r26 = lbl_1_bss_E6C[var_r29];
+        temp_r30 = &temp_r31->unk6C[temp_r26]->unk1C;
+        temp_r28 = &temp_r31->unk94[temp_r26]->unk1C;
+        if (var_r29 != 0) {
+            temp_r25 = &temp_r31->unkE4[lbl_1_bss_E6C[var_r29 - 1]];
+            temp_r30->unk00 = temp_r25->unk00;
+            temp_r30->unk04 = temp_r25->unk04;
+            temp_r28->unk00 = 20.0f + temp_r30->unk00;
+            temp_r28->unk04 = -20.0f + temp_r30->unk04;
+        } else {
+            temp_r30->unk00 = temp_r30->unk04 = 0.0f;
+            temp_r28->unk00 = 20.0f + temp_r30->unk00;
+            temp_r28->unk04 = -20.0f + temp_r30->unk04;
+            m411InlineFunc(temp_r31, temp_r30);
+            HuSprAttrReset(temp_r31->unk0C, 0, 4);
+        }
+        temp_r30->unk08 = 50.0f;
+        temp_r28->unk08 = temp_r30->unk08 - 5.0f;
+        temp_r30->unk14 = temp_r28->unk14 = 90.0f * lbl_1_bss_E44[var_r29];
+        fn_1_6820(temp_r31, temp_r26, var_r29);
+        if (var_r29 == 0) {
+            while (lbl_1_bss_E98 != 3) {
+                HuPrcVSleep();
+            }
+        }
+        while (TRUE) {
+            if (GWPlayerCfg[temp_r31->unk34].iscom == 1) {
+                fn_1_6F48(temp_r31, temp_r26, var_r29);
+            }
+            if (sp70 == 0) {
+                var_r23 = -1;
+                if (fn_1_5E10_copy(temp_r31->unk34, 0) > 20) {
+                    var_r23 = 1;
+                }
+                if (fn_1_5E10_copy(temp_r31->unk34, 1) > 20) {
+                    var_r23 = 0;
+                }
+                if (var_r23 != -1) {
+                    sp70 = 1;
+                    var_r24 = HuPrcChildCreate(fn_1_6A3C, 0x2000, 0x2000, 0, HuPrcCurrentGet());
+                    var_r24->user_data = &spA4;
+                    spA4.unk00 = temp_r31;
+                    spA4.unk04 = temp_r26;
+                    spA4.unk08 = var_r23;
+                    spA4.unk0C = &sp70;
+                }
+				(void)var_r23;
+				(void)var_r23;
+				(void)var_r23;
+				(void)var_r23;
+            }
+            if ((fn_1_5ED0(temp_r31->unk34) & 0x100) && sp70 == 0) {
+                if (0.0f == temp_r30->unk14) {
+                    temp_r25 = &temp_r31->unkE4[temp_r26];
+                    HuSetVecF(&spCC, temp_r25->unk00, temp_r25->unk04, 0.0);
+                    HuSetVecF(&spC0, temp_r30->unk00, temp_r30->unk04, 0.0);
+                    HuSubVecF(&spB4, &spCC, &spC0);
+                    if (sqrtf(spB4.x * spB4.x + spB4.y * spB4.y) < 40.0f) {
+                        HuAudFXPlay(0x56D);
+                        temp_r31->unk44 = 1;
+                        temp_r31->unk64 = temp_r30->unk00;
+                        temp_r31->unk68 = temp_r30->unk04;
+                        fn_1_5F3C(temp_r31, temp_r26);
+                        break;
+                    }
+                }
+                fn_1_6428(temp_r31, temp_r26);
+            }
+            temp_r31->unk60 = -1.0f;
+            if (SOME_MACRO(fn_1_5D58_copy(temp_r31->unk34, 0)) != 0
+                || SOME_MACRO(fn_1_5D58_copy(temp_r31->unk34, 1)) != 0)
+            {
+                temp_r31->unk60 = atan2d(fn_1_5D58_copy(temp_r31->unk34, 0), fn_1_5D58_copy(temp_r31->unk34, 1));
+            }
+            if (-1.0f != temp_r31->unk60) {
+                temp_r30->unk00 += 5 * sind(temp_r31->unk60);
+                temp_r30->unk04 += 5 * cosd(temp_r31->unk60);
+                fn_1_6DD8(temp_r31, temp_r26);
+                temp_r28->unk00 = 20.0f + temp_r30->unk00;
+                temp_r28->unk04 = -20.0f + temp_r30->unk04;
+                m411InlineFunc(temp_r31, temp_r30);
+            }
+            HuPrcVSleep();
+        }
+    }
+    temp_r31->unk40 = 4;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+    (void) var_r24;
+    (void) var_r24;
+    (void) var_r24;
 }
 
 void fn_1_8A80(float arg0, float arg1) {

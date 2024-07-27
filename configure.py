@@ -912,7 +912,7 @@ config.libs = [
         "m411Dll",  # Photo Finish
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m411Dll/main.c"),
+            Object(Matching, "REL/m411Dll/main.c"),
         },
     ),
     Rel(
