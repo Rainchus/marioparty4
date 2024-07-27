@@ -1,6 +1,7 @@
 #include "REL/m446Dll.h"
 
 #include "math.h"
+#include "ext_math.h"
 #include "game/hsfman.h"
 #include "game/printfunc.h"
 #include "game/pad.h"
@@ -70,15 +71,15 @@ void fn_1_68DC(void) {
     temp_f30 = lbl_1_bss_80.x;
     temp_f29 = lbl_1_bss_80.y;
     sp10 = lbl_1_bss_80.z;
-    sp2C.x = (lbl_1_bss_8C.x + (lbl_1_bss_7C * (sin((M_PI * temp_f29) / 180.0) * cos((M_PI * temp_f30) / 180.0))));
-    sp2C.y = (lbl_1_bss_8C.y + (lbl_1_bss_7C * -sin((M_PI * temp_f30) / 180.0)));
-    sp2C.z = (lbl_1_bss_8C.z + (lbl_1_bss_7C * (cos((M_PI * temp_f29) / 180.0) * cos((M_PI * temp_f30) / 180.0))));
+    sp2C.x = (lbl_1_bss_8C.x + (lbl_1_bss_7C * (sind(temp_f29) * cosd(temp_f30))));
+    sp2C.y = (lbl_1_bss_8C.y + (lbl_1_bss_7C * -sind(temp_f30)));
+    sp2C.z = (lbl_1_bss_8C.z + (lbl_1_bss_7C * (cosd(temp_f29) * cosd(temp_f30))));
     sp20.x = lbl_1_bss_8C.x;
     sp20.y = lbl_1_bss_8C.y;
     sp20.z = lbl_1_bss_8C.z;
-    sp14.x = (sin((M_PI * temp_f29) / 180.0) * sin((M_PI * temp_f30) / 180.0));
-    sp14.y = cos((M_PI * temp_f30) / 180.0);
-    sp14.z = (cos((M_PI * temp_f29) / 180.0) * sin((M_PI * temp_f30) / 180.0));
+    sp14.x = (sind(temp_f29) * sind(temp_f30));
+    sp14.y = cosd(temp_f30);
+    sp14.z = (cosd(temp_f29) * sind(temp_f30));
     Hu3DCameraPosSet(1, sp2C.x, sp2C.y, sp2C.z, sp14.x, sp14.y, sp14.z, sp20.x, sp20.y, sp20.z);
 }
 

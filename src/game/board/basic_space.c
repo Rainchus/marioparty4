@@ -9,6 +9,7 @@
 #include "game/objsub.h"
 #include "game/gamework_data.h"
 #include "math.h"
+#include "ext_math.h"
 #include "stdlib.h"
 
 typedef struct bit_copy {
@@ -409,11 +410,11 @@ static void CoinChgDisappear(omObjData* object, coinChg* coin_chg) {
     
     OSu16tof32(&angle, &rot);
     if (angle <= 90.0f) {
-        object->scale.x = 0.5 * cos((M_PI * rot) / 180.0);
-        object->scale.y = 2.5 * sin((M_PI * rot) / 180.0);
+        object->scale.x = 0.5 * cosd(rot);
+        object->scale.y = 2.5 * sind(rot);
     } else {
-        object->scale.x = 2.5 * sin((M_PI * rot) / 180.0);
-        object->scale.y = 0.5 * cos((M_PI * rot) / 180.0);
+        object->scale.x = 2.5 * sind(rot);
+        object->scale.y = 0.5 * cosd(rot);
     }
     if (0.0f == object->scale.x) {
         object->scale.x = 0.0001f;

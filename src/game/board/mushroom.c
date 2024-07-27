@@ -10,6 +10,7 @@
 #include "game/objsub.h"
 
 #include "math.h"
+#include "ext_math.h"
 
 extern s32 boardTutorialData[4];
 
@@ -277,7 +278,7 @@ static void ShowBox(ItemGiveWork2* arg0, omObjData* arg1) {
     }
     
     OSs16tof32(&arg0->unk_06, &arg1->rot.y);
-    arg1->trans.y = (sp8.y + (700.0f * cos((M_PI * (f64) arg0->unk_08) / 180.0)));
+    arg1->trans.y = (sp8.y + (700.0f * cosd(arg0->unk_08)));
     arg0->unk_08 += 1.5f;
     arg0->unk_06 += 30;
 }
@@ -298,7 +299,7 @@ static void ExitBox(ItemGiveWork2* arg0, omObjData* arg1) {
         arg0->unk00_field2 = 1;
     }
 
-    arg1->trans.y = spC.y + (700.0f * cos((M_PI * arg0->unk_08) / 180.0));
+    arg1->trans.y = spC.y + (700.0f * cosd(arg0->unk_08));
     arg1->rot.y = sin((M_PI * temp) / 180.0);
     arg0->unk_08 -= 1.5f;
     arg0->unk_06 -= 30;

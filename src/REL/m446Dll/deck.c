@@ -1,6 +1,7 @@
 #include "REL/m446Dll.h"
 
 #include "math.h"
+#include "ext_math.h"
 
 // bss
 u32 lbl_1_bss_20;
@@ -69,8 +70,8 @@ void fn_1_31D8(unkStruct2** arg0, unkStruct4** arg1, s32* arg2, s32 arg3) {
     while (fn_1_1D6C(*arg0, &spC) != 0) {
         if (arg3 != 0) {
             sp10 = spC->unk10;
-            sp10.x = ((25.0 * cos((M_PI * var_f31) / 180.0)) - (25.0 * sin((M_PI * var_f31) / 180.0)));
-            sp10.z = ((25.0 * cos((M_PI * var_f31) / 180.0)) + (25.0 * sin((M_PI * var_f31) / 180.0)));
+            sp10.x = ((25.0 * cosd(var_f31)) - (25.0 * sind(var_f31)));
+            sp10.z = ((25.0 * cosd(var_f31)) + (25.0 * sind(var_f31)));
             sp10.y = 81.0f + (0.1f * var_r31);
             fn_1_2890(spC, &sp10, 0x12, var_r29 += 3);
             var_f31 += var_f30;

@@ -2,6 +2,7 @@
 
 #include "math.h"
 #include "ext_math.h"
+#include "ext_math.h"
 #include "game/audio.h"
 #include "game/chrman.h"
 #include "game/gamework_data.h"
@@ -152,8 +153,8 @@ void fn_1_6928(omObjData* arg0) {
     var_r31->unk58 = var_r30;
     lbl_1_bss_F0.unk10[var_r30].unk30 = &fn_1_8D6C;
     fn_1_ED44(lbl_1_bss_F0.unk6, lbl_1_bss_F0.unk8, 4);
-    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk70 = var_r31->unk0;
-    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk72 = -1;
+    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk70[0] = var_r31->unk0;
+    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk70[1] = -1;
     fn_1_EC1C(lbl_1_bss_F0.unk6, lbl_1_bss_F0.unk8, 0.5f, 0.5f, 1.0f);
     var_r31->unk59 = 0;
     var_r31->unk60 = 0;
@@ -252,9 +253,9 @@ void fn_1_7344(omObjData* arg0) {
                     temp_r23 = fn_1_8D08(temp_r31->unk0);
                     fn_1_DEF4(temp_r31->unk58, 0, 0);
                     fn_1_EE68(lbl_1_bss_F0.unk6, lbl_1_bss_F0.unk8, 4);
-                    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk72 = temp_r23;
-                    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk74 = 0;
-                    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk76 = 0;
+                    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk70[1] = temp_r23;
+                    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk70[2] = 0;
+                    lbl_1_bss_F0.unk10[lbl_1_bss_F0.unk6].unk3C[lbl_1_bss_F0.unk8].unk70[3] = 0;
                     fn_1_E85C(lbl_1_bss_F0.unk6, lbl_1_bss_F0.unk8, temp_r31->unk24.x, 100.0f + temp_r31->unk24.y, temp_r31->unk24.z);
                     if (temp_r23 == -1) {
                         lbl_1_bss_F0.unk10[temp_r31->unk58].unk3C[0].unk58.x = temp_r30->unk0.x;
@@ -518,30 +519,30 @@ void fn_1_8838(unkStruct8* arg0) {
     var_r28 = fn_1_A9C0(var_r26, &sp8);
     temp_r31 = &arg0->unk3C[1];
     if (var_r28 == -1) {
-        if (temp_r31->unk70 != -1) {
-            temp_r31->unk70 = -1;
-            temp_r31->unk74f = 0.0f;
+        if (temp_r31->unk70[0] != -1) {
+            temp_r31->unk70[0] = -1;
+            temp_r31->unk74 = 0.0f;
             temp_r31->unk58.x = temp_r31->unk0.x;
             temp_r31->unk58.y = temp_r31->unk0.y;
             temp_r31->unk58.z = temp_r31->unk0.z;
-            temp_r31->unk78 = temp_r31->unk18;
+            temp_r31->unk78 = temp_r31->unk18.x;
         }
-        if (temp_r31->unk74f < 90.0f) {
-            temp_r31->unk74f += 9.0f;
-            if (temp_r31->unk74f > 90.0f) {
-                temp_r31->unk74f = 90.0f;
+        if (temp_r31->unk74 < 90.0f) {
+            temp_r31->unk74 += 9.0f;
+            if (temp_r31->unk74 > 90.0f) {
+                temp_r31->unk74 = 90.0f;
             }
-            temp_f31 = sin((M_PI * temp_r31->unk74f) / 180.0);
-            temp_f30 = cos((M_PI * temp_r31->unk74f) / 180.0);
+            temp_f31 = sin((M_PI * temp_r31->unk74) / 180.0);
+            temp_f30 = cosd(temp_r31->unk74);
             sp18.x = temp_r30->unk0.x - temp_r31->unk58.x;
             sp18.y = temp_r30->unk0.y - temp_r31->unk58.y;
             sp18.z = temp_r30->unk0.z - temp_r31->unk58.z;
             temp_r31->unk0.x = (temp_r31->unk58.x + (sp18.x * temp_f31));
             temp_r31->unk0.y = (temp_r31->unk58.y + (sp18.y * temp_f31));
             temp_r31->unk0.z = (temp_r31->unk58.z + (sp18.z * temp_f31));
-            temp_r31->unk18 = (0.001f + (temp_r31->unk78 * temp_f30));
-            temp_r31->unk1C = (0.001f + (temp_r31->unk78 * temp_f30));
-            temp_r31->unk20 = 1.0f;
+            temp_r31->unk18.x = (0.001f + (temp_r31->unk78 * temp_f30));
+            temp_r31->unk18.y = (0.001f + (temp_r31->unk78 * temp_f30));
+            temp_r31->unk18.z = 1.0f;
             return;
         }
         temp_r31->unk34 |= 4;
@@ -551,30 +552,30 @@ void fn_1_8838(unkStruct8* arg0) {
         return;
     }
     temp_r29 = &lbl_1_bss_10C[var_r28];
-    if (temp_r31->unk70 != var_r28) {
-        temp_r31->unk70 = var_r28;
-        temp_r31->unk74f = 0.0f;
+    if (temp_r31->unk70[0] != var_r28) {
+        temp_r31->unk70[0] = var_r28;
+        temp_r31->unk74 = 0.0f;
         temp_r31->unk58.x = temp_r31->unk0.x;
         temp_r31->unk58.y = temp_r31->unk0.y;
         temp_r31->unk58.z = temp_r31->unk0.z;
-        temp_r31->unk78 = temp_r31->unk18;
-        temp_r31->unk7C = (2.5f - temp_r31->unk18);
+        temp_r31->unk78 = temp_r31->unk18.x;
+        temp_r31->unk7C = (2.5f - temp_r31->unk18.x);
     }
-    if (temp_r31->unk74f < 90.0f) {
-        temp_r31->unk74f += 9.0f;
-        if (temp_r31->unk74f > 90.0f) {
-            temp_r31->unk74f = 90.0f;
+    if (temp_r31->unk74 < 90.0f) {
+        temp_r31->unk74 += 9.0f;
+        if (temp_r31->unk74 > 90.0f) {
+            temp_r31->unk74 = 90.0f;
         }
-        temp_f31 = sin((M_PI * temp_r31->unk74f) / 180.0);
+        temp_f31 = sin((M_PI * temp_r31->unk74) / 180.0);
         sp18.x = temp_r29->unkC.x - temp_r31->unk58.x;
         sp18.y = temp_r29->unkC.y - temp_r31->unk58.y;
         sp18.z = temp_r29->unkC.z - temp_r31->unk58.z;
         temp_r31->unk0.x = (temp_r31->unk58.x + (sp18.x * temp_f31));
         temp_r31->unk0.y = (temp_r31->unk58.y + (sp18.y * temp_f31));
         temp_r31->unk0.z = (temp_r31->unk58.z + (sp18.z * temp_f31));
-        temp_r31->unk18 = (temp_r31->unk78 + (temp_r31->unk7C * temp_f31));
-        temp_r31->unk1C = (temp_r31->unk78 + (temp_r31->unk7C * temp_f31));
-        temp_r31->unk20 = 1.0f;
+        temp_r31->unk18.x = (temp_r31->unk78 + (temp_r31->unk7C * temp_f31));
+        temp_r31->unk18.y = (temp_r31->unk78 + (temp_r31->unk7C * temp_f31));
+        temp_r31->unk18.z = 1.0f;
     } else {
         temp_r31->unk0.x = temp_r29->unkC.x;
         temp_r31->unk0.y = temp_r29->unkC.y;
@@ -589,7 +590,7 @@ s8 fn_1_8D08(u8 arg0) {
 
     data = (unkStruct7*)lbl_1_bss_3A0[arg0]->data;
     var_r30 = fn_1_CCCC(data->unk57, 1);
-    return var_r30->unk70;
+    return var_r30->unk70[0];
 }
 
 void fn_1_8D6C(unkStruct8* arg0) {
@@ -605,8 +606,8 @@ void fn_1_8D6C(unkStruct8* arg0) {
 
     temp_r31 = &arg0->unk3C[0];
     if ((temp_r31->unk34 & 4) == 0) {
-        temp_r28 = temp_r31->unk72;
-        if (temp_r31->unk74 == 0) {
+        temp_r28 = temp_r31->unk70[1];
+        if (temp_r31->unk70[2] == 0) {
             if (temp_r28 == -1) {
                 sp8.x = temp_r31->unk58.x - temp_r31->unk0.x;
                 sp8.y = temp_r31->unk58.y - temp_r31->unk0.y;
@@ -616,9 +617,9 @@ void fn_1_8D6C(unkStruct8* arg0) {
                 temp_r31->unk64.y = sp8.y;
                 temp_r31->unk64.z = sp8.z;
             }
-            temp_r31->unk74 = 0x10;
+            temp_r31->unk70[2] = 0x10;
         }
-        if (temp_r31->unk76 == 0) {
+        if (temp_r31->unk70[3] == 0) {
             if (temp_r28 != -1) {
                 var_r29 = &lbl_1_bss_10C[temp_r28];
                 if ((var_r29->unk2 != 0) && (var_r29->unk2 <= 4)) {
@@ -640,7 +641,7 @@ void fn_1_8D6C(unkStruct8* arg0) {
                     if (!(var_f31 >= 2250.0f) && (var_r29->unk2 == 3)) {
                         var_r29->unk2 = 4;
                         temp_r31->unk34 |= 4;
-                        temp_r30 = (unkStruct7*)lbl_1_bss_3A0[temp_r31->unk70]->data;
+                        temp_r30 = (unkStruct7*)lbl_1_bss_3A0[temp_r31->unk70[0]]->data;
                         if (var_r29->unk48 == lbl_1_bss_106) {
                             espAttrSet(temp_r30->unk5A[temp_r30->unk59][0], 4);
                             espAttrReset(temp_r30->unk5A[temp_r30->unk59][1], 4);
@@ -668,14 +669,14 @@ void fn_1_8D6C(unkStruct8* arg0) {
                 temp_r31->unk64.x = sp8.x;
                 temp_r31->unk64.y = sp8.y;
                 temp_r31->unk64.z = sp8.z;
-                temp_r31->unk76 = 1;
+                temp_r31->unk70[3] = 1;
                 return;
             }
         }
         temp_r31->unk0.x = (temp_r31->unk0.x + (200.0f * temp_r31->unk64.x));
         temp_r31->unk0.y = (temp_r31->unk0.y + (200.0f * temp_r31->unk64.y));
         temp_r31->unk0.z = (temp_r31->unk0.z + (200.0f * temp_r31->unk64.z));
-        if (--temp_r31->unk74 == 0) {
+        if (--temp_r31->unk70[2] == 0) {
             temp_r31->unk34 |= 4;
         }
     }
@@ -861,8 +862,8 @@ void fn_1_962C(omObjData* arg0) {
                 if (var_r31->unkC.y >= 375.0f) {
                     var_r31->unk8 -= 0.000001f * var_r31->unkC.y;
                 }
-                var_r31->unkC.x += sin((M_PI * var_r31->unk18.z) / 180.0) * var_r31->unk8;
-                var_r31->unkC.y += cos((M_PI * var_r31->unk18.z) / 180.0) * var_r31->unk8;
+                var_r31->unkC.x += sind(var_r31->unk18.z) * var_r31->unk8;
+                var_r31->unkC.y += cosd(var_r31->unk18.z) * var_r31->unk8;
                 if (var_r31->unkC.y >= 200.0) {
                     Hu3DModelAttrReset(var_r31->unk0, 1);
                 }

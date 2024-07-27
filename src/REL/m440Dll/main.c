@@ -219,8 +219,8 @@ void fn_1_AE0(omObjData* arg0) {
                 if (temp_r31->unkA != 0) {
                     temp_r31->unkA++;
                     temp_f31 = (((rand8() << 8) | rand8()) % 361);
-                    Center.x = (lbl_1_data_78[1].center.x + (10.0 * sin((M_PI * temp_f31) / 180.0)));
-                    Center.y = (lbl_1_data_78[1].center.y + (10.0 * cos((M_PI * temp_f31) / 180.0)));
+                    Center.x = (lbl_1_data_78[1].center.x + (10.0 * sind(temp_f31)));
+                    Center.y = (lbl_1_data_78[1].center.y + (10.0 * cosd(temp_f31)));
                     if (temp_r31->unkA > 0x28) {
                         temp_r31->unkA = 0;
                         return;
@@ -453,8 +453,8 @@ void fn_1_19B0(void) {
     
     for (var_r31 = 1; var_r31 < 4; var_r31++, var_f30+=120.0f) {
         temp_f31 = 0.01f * ((((rand8() << 8) | rand8()) % 51) + 50);
-        temp_f29 = (temp_f31 * (200.0 * sin((M_PI * var_f30) / 180.0)));
-        var_f28 = (temp_f31 * (200.0 * cos((M_PI * var_f30) / 180.0)));
+        temp_f29 = (temp_f31 * (200.0 * sind(var_f30)));
+        var_f28  = (temp_f31 * (200.0 * cosd(var_f30)));
         var_f27 = 0.0f;
         Hu3DModelPosSet(lbl_1_bss_10[var_r31], temp_f29, 300.0f + var_f28, var_f27);
         temp_f31 = 0.1f * ((((rand8() << 8) | rand8()) % 11) + 25);
@@ -486,8 +486,8 @@ void fn_1_1D54(f32 arg8, f32 arg9, f32 argA, s16 arg0, f32 argB, s16 arg1) {
     
     for (var_r30 = 0; var_r30 < arg0; var_r30++) {
         temp_f31 = argB + ((((rand8() << 8) | rand8()) % 11) - 5);
-        temp_f30 = sin((M_PI * temp_f31) / 180.0);
-        temp_f29 = cos((M_PI * temp_f31) / 180.0);
+        temp_f30 = sind(temp_f31);
+        temp_f29 = cosd(temp_f31);
         sp30.x = arg8 + ((((rand8() << 8) | rand8()) % 21) - 10);
         sp30.y = arg9 + ((((rand8() << 8) | rand8()) % 21) - 10);
         sp30.z = argA;
@@ -862,8 +862,8 @@ void fn_1_3DD8(omObjData* object) {
             
             for (var_r29 = 1; var_r29 < 4; var_r29++, var_f30 += 120.0f) {
                 var_f31 = 0.01f * ((((rand8() << 8) | rand8()) % 51) + 0x32);
-                var_f27 = (var_f31 * (200.0 * sin((M_PI * var_f30) / 180.0)));
-                var_f28 = var_f31 * (200.0 * cos((M_PI * var_f30) / 180.0));
+                var_f27 = (var_f31 * (200.0 * sind(var_f30)));
+                var_f28 = (var_f31 * (200.0 * cosd(var_f30)));
                 var_f29 = 0.0f;
                 Hu3DModelPosSet(lbl_1_bss_10[var_r29], var_f27, 300.0f + var_f28, var_f29);
                 var_f31 = 0.1f * ((((rand8() << 8) | rand8()) % 11) + 0x19);
