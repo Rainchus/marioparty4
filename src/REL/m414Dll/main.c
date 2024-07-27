@@ -1385,7 +1385,7 @@ void fn_1_4E10(UnkM414BssF0Struct *arg0)
     }
 }
 
-s8 fn_1_5554(s32 arg0, s32 arg1) // identical to m411Dll/main.c::fn_1_5D58
+s8 fn_1_5554(s32 arg0, s32 arg1) // similar to m411Dll/main.c::fn_1_5D58
 {
     UnkM414BssF0Struct *var_r31;
     s8 var_r30;
@@ -1416,7 +1416,7 @@ s8 fn_1_5554(s32 arg0, s32 arg1) // identical to m411Dll/main.c::fn_1_5D58
 }
 
 
-static inline s8 fn_1_5554_inline(s32 arg0, s32 arg1) // identical to m411Dll/main.c::fn_1_5D58
+static inline s8 fn_1_5554_inline(s32 arg0, s32 arg1) // similar to m411Dll/main.c::fn_1_5D58
 {
     UnkM414BssF0Struct *var_r31;
     s8 var_r30;

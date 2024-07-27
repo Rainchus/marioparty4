@@ -887,7 +887,7 @@ void fn_1_2AAC(omObjData *arg0) {
     }
     for (i = 0; i < 3; i++) {
         temp_r26 = &lbl_1_data_10[i];
-        temp_r26->unk04 = GXGetTexBufferSize(temp_r26->unk08, temp_r26->unk0A, 4, 0, 0);
+        temp_r26->unk04 = GXGetTexBufferSize(temp_r26->unk08, temp_r26->unk0A, GX_TF_RGB565, GX_FALSE, 0);
         temp_r26->unk00 = HuMemDirectMallocNum(HEAP_DATA, temp_r26->unk04, MEMORY_DEFAULT_NUM);
     }
     fn_1_280C(arg0);
