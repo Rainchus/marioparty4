@@ -17,6 +17,7 @@
 #include "game/pad.h"
 #include "stdlib.h"
 #include "math.h"
+#include "ext_math.h"
 
 static void InitJunction(s32, s32, f32);
 static void UpdateJunctionGfx(omObjData*);
@@ -1042,7 +1043,7 @@ static void InitJunction(s32 arg0, s32 arg1, f32 arg8) {
                             BoardModelLayerSet(temp_r29->unk_06[var_r27], 6);
                             sp5C.x = sp68.x + (100.0 * sin((M_PI * angle) / 180.0));
                             sp5C.y = 300.0f + sp68.y;
-                            sp5C.z = (var_f29 + (sp68.z + (100.0 * cos((M_PI * angle) / 180.0))));
+                            sp5C.z = (var_f29 + (sp68.z + (100.0 * cosd(angle))));
                             BoardModelPosSetV(temp_r29->unk_06[var_r27], &sp5C);
                             BoardModelScaleSet(temp_r29->unk_06[var_r27], var_r28->scale.x, var_r28->scale.y, var_r28->scale.z);
                             var_r27++;

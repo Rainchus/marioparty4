@@ -13,6 +13,7 @@
 #include "dolphin/gx/GXVert.h"
 
 #include "math.h"
+#include "ext_math.h"
 
 ModelData Hu3DData[0x200];
 CameraData Hu3DCamera[0x10];
@@ -1277,9 +1278,9 @@ BOOL Hu3DModelCameraInfoSet(s16 arg0, u16 arg1) {
             
             PSVECSubtract((Point3d* ) &obj_copy->camera.target, (Point3d* ) &obj_copy->camera.pos, &sp8);
             
-            sp14.x = ((sp8.x * sp8.y * (1.0 - cos((M_PI * temp_f31) / 180.0))) - (sp8.z * sin((M_PI * temp_f31) / 180.0)));
-            sp14.y = ((sp8.y * sp8.y) + (1.0f - (sp8.y * sp8.y)) * cos((M_PI * temp_f31) / 180.0));
-            sp14.z = (((sp8.y * sp8.z) * (1.0 - cos((M_PI * (f64) temp_f31) / 180.0))) + (sp8.x * sin((M_PI * temp_f31) / 180.0)));
+            sp14.x = ((sp8.x * sp8.y * (1.0 - cosd(temp_f31))) - (sp8.z * sind(temp_f31)));
+            sp14.y = ((sp8.y * sp8.y) + (1.0f - (sp8.y * sp8.y)) * cosd(temp_f31));
+            sp14.z = (((sp8.y * sp8.z) * (1.0 - cosd(temp_f31))) + (sp8.x * sind(temp_f31)));
             PSVECNormalize(&sp14, &sp8);
 
             Hu3DCameraPosSet(arg1, obj_copy->camera.target.x, obj_copy->camera.target.y, obj_copy->camera.target.z,

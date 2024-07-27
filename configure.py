@@ -895,7 +895,7 @@ config.libs = [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m409Dll/main.c"),
             Object(Matching, "REL/m409Dll/player.c"),
-            Object(NonMatching, "REL/m409Dll/cursor.c"),
+            Object(Matching, "REL/m409Dll/cursor.c"),
         },
     ),
     Rel(

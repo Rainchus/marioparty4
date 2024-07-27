@@ -136,45 +136,80 @@ typedef struct _unkStruct7 {
 
 typedef struct _unkStruct8Sub {
     Vec unk0;
-    char unkC[0xC];
-    f32 unk18;
-    f32 unk1C;
-    f32 unk20;
-    char unk24[0x10];
+    Vec unkC;
+    Vec unk18;
+    char unk24[0xC];
+    u8 unk30;
+    u8 unk31;
+    u8 unk32;
     u32 unk34;
-    char unk38[0x20];
+    s16 unk38;
+    void* unk3C;
+    void* unk40;
+    void* unk44;
+    Vec* unk48;
+    GXColor unk4C;
+    GXColor unk50;
+    struct _unkStruct12* unk54;
     Vec unk58;
     Vec unk64;
-    s16 unk70;
-    s16 unk72;
     union {
+        s16 unk70[0x10];
         struct {
-            s16 unk74;
-            s16 unk76;
+            s16 unk70s;
+            f32 unk74;
+            f32 unk78;
+            f32 unk7C;
         };
-        f32 unk74f;
     };
-    f32 unk78;
-    f32 unk7C;
-    char unk80[0x10];
 } unkStruct8Sub; // sizeof 0x90
 
 typedef struct _unkStruct8 {
-    char unk0[0x30];
+    s16 unk0;
+    s16 unk2;
+    u8 unk4;
+    s16 unk6;
+    u32 unk8;
+    Vec unkC;
+    Vec unk18;
+    Vec unk24;
     m409PlayerFunc8 unk30;
-    char unk34[0x8];
+    s16* unk34;
+    char unk38[0x4];
     unkStruct8Sub* unk3C;
-    char unk40[0x60];
+    char unk40[0x8];
+    Vec unk48;
+    Vec unk54;
+    s16 unk60[0x20];
 } unkStruct8; // sizeof 0xA0
 
+typedef struct _unkStruct9Sub {
+    AnimData* unk0;
+    s16 unk4;
+    s16 unk6;
+    u32 unk8;
+    Vec unkC;
+    Mtx unk18;
+    GXColor unk48;
+    u8 unk4C;
+    s16 unk4E;
+    s16 unk50;
+    f32 unk54;
+    f32 unk58;
+    f32 unk5C;
+    f32 unk60;
+} unkStruct9Sub; // sizeof 0x64
+
 typedef struct _unkStruct9 {
-    char unk0[0x6];
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
     s16 unk6;
     s16 unk8;
     s16 unkA;
-    char unkC[0x4];
+    unkStruct9Sub* unkC;
     unkStruct8* unk10;
-} unkStruct9;
+} unkStruct9; // sizeof 0x14
 
 typedef struct _unkStruct10 {
     u8 unk0;
@@ -193,6 +228,24 @@ typedef struct _unkStruct10 {
     char unk49[0x3];
     f32 unk4C;
 } unkStruct10; // sizeof 0x50
+
+typedef struct unkStruct11 {
+    Vec unk0;
+    Vec unkC;
+    Vec unk18;
+    Vec unk24;
+} unkStruct11; // sizeof 0x30
+
+typedef struct _unkStruct12 {
+    s8 unk0;
+    s8 unk1;
+    s16 unk2;
+    HsfVector2f* unk4;
+    u8 unk8;
+    s16 unkA;
+    f32 unkC;
+    f32 unk10;
+} unkStruct12;
 
 // bss
 // player.c
@@ -306,28 +359,57 @@ extern void fn_1_B0A0(f32*, f32*, f32*, f32*, f32);
 extern f32 fn_1_B378(Vec*);
 extern f32 fn_1_B6A4(Vec*, Vec*, Vec*);
 extern f32 fn_1_B9E0(Vec*, Vec*, Vec*, Vec*, Vec*);
-// ...
 extern f32 fn_1_BF38(s16);
 // cursor.c
-extern void fn_1_BF88(s32, s32);
+extern void fn_1_BF88(s16, s16);
 extern void fn_1_C0C0(void);
+extern void fn_1_C164(unkStruct8*);
+extern void fn_1_CB98(ModelData* model, Mtx matrix);
+extern unkStruct8* fn_1_CCB0(s16 idx);
 extern unkStruct8Sub* fn_1_CCCC(s16, s16);
-extern s16 fn_1_DA48(s32, s32);
-extern void fn_1_DEF4(s16, s32, s32);
-extern void fn_1_DF20(s32, s32, s32);
-extern void fn_1_E2A8(s16, s32, s32, s32, s32);
-extern s32 fn_1_E7C8(s16, s32, s32);
-extern void fn_1_E99C(s16, s16, f32, f32, f32);
+extern void fn_1_CCF8(unkStruct11**, s16, f32, f32);
+extern void fn_1_CE7C(Vec**, s16, Vec*);
+extern void fn_1_CF1C(GXColor**, s16, GXColor*);
+extern void fn_1_CFC4(Vec**, s16, Vec*);
+extern void fn_1_D050(HsfVector2f**, s16, HsfVector2f*);
+extern void fn_1_D0E8(unkStruct8Sub*);
+extern void fn_1_D430(unkStruct8*);
+extern s16 fn_1_DA48(u8, u8);
+extern void fn_1_DDB8(s16);
+extern void fn_1_DEF4(s16, s16, u8);
+extern s16 fn_1_DF20(u32, s16, s16);
+extern void fn_1_E228(s16);
+extern s32 fn_1_E2A8(s16, u8, u32, s16, s16);
+extern s32 fn_1_E7C8(s16, u8, u32);
+extern void fn_1_E818(s16, f32, f32, f32);
 extern void fn_1_E85C(s16, s16, f32, f32, f32);
+extern void fn_1_E8CC(s16, f32, f32, f32);
+extern void fn_1_E940(s16, f32, f32, f32);
+extern void fn_1_E99C(s16, s16, f32, f32, f32);
+extern void fn_1_E940(s16, f32, f32, f32);
+extern void fn_1_EA24(s16, f32, f32, f32);
+extern void fn_1_EAB0(s16, f32, f32, f32);
+extern void fn_1_EAF4(s16, s16, f32, f32, f32);
+extern void fn_1_EB64(s16, f32, f32, f32);
+extern void fn_1_EBD8(s16, f32, f32, f32);
 extern void fn_1_EC1C(s16, s16, f32, f32, f32);
-extern void fn_1_ED00(u8, s32);
+extern void fn_1_EC8C(s16, f32, f32, f32);
+extern void fn_1_ED00(s16, s32);
 extern void fn_1_ED44(s16, s16, s32);
-extern void fn_1_EE24(u8, s32);
-extern void fn_1_EE68(s16, s16, s32);
+extern void fn_1_EDB4(s16, s32);
+extern void fn_1_EE24(s16, u32);
+extern void fn_1_EE68(s16, s16, u32);
+extern void fn_1_EED8(s16, u32);
+extern s32 fn_1_EF48(s16, s32);
+extern s32 fn_1_EFA4(s16, s16, s32);
 extern void fn_1_F024(s16, s16, u8, u8, u8, u8);
 extern void fn_1_F098(s16, u8, u8, u8, u8);
+extern void fn_1_F110(s16, s16, u8);
 extern void fn_1_F17C(s16, s16, u8, u8);
+extern void fn_1_F1F4(s16, u8);
+extern void fn_1_F28C(s16, s16, f32);
 extern void fn_1_F2F8(s16, s16, u8, f32);
-extern void fn_1_F408(s16, s32, s32);
-extern void fn_1_F2F8(s16, s16, u8, f32);
-extern void fn_1_F478(s16, s16, u8, s32);
+extern void fn_1_F370(s16, f32);
+extern void fn_1_F408(s16, s16, u8);
+extern void fn_1_F478(s16, s16, u8, u8);
+extern void fn_1_F4F0(s16, u8);

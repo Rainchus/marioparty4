@@ -244,8 +244,8 @@ void fn_1_B884(omObjData* arg0, unkObjStruct* arg1) {
                 lbl_1_bss_74++;
             }
             arg1->unk24 = arg1->unk18;
-            arg1->unk18.x = (700.0 * cos((M_PI * lbl_1_data_250) / 180.0));
-            arg1->unk18.z = (700.0 * sin((M_PI * lbl_1_data_250) / 180.0));
+            arg1->unk18.x = (700.0 * cosd(lbl_1_data_250));
+            arg1->unk18.z = (700.0 * sind(lbl_1_data_250));
             var_f29 = (arg1->unk18.x - arg1->unk24.x);
             var_f28 = (arg1->unk18.z - arg1->unk24.z);
             var_f30 = (180.0 * (atan2(var_f29, var_f28) / M_PI));
@@ -299,8 +299,8 @@ void fn_1_B884(omObjData* arg0, unkObjStruct* arg1) {
                 lbl_1_bss_74++;
             }
             arg1->unk24 = arg1->unk18;
-            arg1->unk18.x = (arg1->unk5C * cos((M_PI * lbl_1_data_250) / 180.0));
-            arg1->unk18.z = (arg1->unk5C * sin((M_PI * lbl_1_data_250) / 180.0));
+            arg1->unk18.x = (arg1->unk5C * cosd(lbl_1_data_250));
+            arg1->unk18.z = (arg1->unk5C * sind(lbl_1_data_250));
             var_f29 = (arg1->unk18.x - arg1->unk24.x);
             var_f28 = (arg1->unk18.z - arg1->unk24.z);
             var_f30 = (180.0 * (atan2(var_f29, var_f28) / M_PI));
@@ -528,8 +528,8 @@ void fn_1_C944(omObjData* arg0, unkObjStruct* arg1) {
             }
         }
         arg1->unk24 = arg1->unk18;
-        arg1->unk18.x = (arg1->unk5C * cos((M_PI * arg1->unk68) / 180.0));
-        arg1->unk18.z = (arg1->unk5C * sin((M_PI * arg1->unk68) / 180.0));
+        arg1->unk18.x = (arg1->unk5C * cosd(arg1->unk68));
+        arg1->unk18.z = (arg1->unk5C * sind(arg1->unk68));
         if ((arg1->unk48 & 3) != 0) {
             arg1->unk48 = arg1->unk48 & ~4;
             var_f26 = (arg1->unk18.x - arg1->unk24.x);
@@ -704,8 +704,8 @@ void fn_1_D34C(omObjData* arg0, unkObjStruct* arg1) {
                 fn_1_4E00(arg1->unk4A, var_f31);
             }
         }
-        arg1->unk18.x = (410.0 * cos((M_PI * lbl_1_data_0[arg1->unk4A]) / 180.0));
-        arg1->unk18.z = (410.0 * sin((M_PI * lbl_1_data_0[arg1->unk4A]) / 180.0));
+        arg1->unk18.x = (410.0 * cosd(lbl_1_data_0[arg1->unk4A]));
+        arg1->unk18.z = (410.0 * sind(lbl_1_data_0[arg1->unk4A]));
     }
 }
 
@@ -748,8 +748,8 @@ void fn_1_D7F8(omObjData* arg0, unkObjStruct* arg1) {
                 }
                 var_f31 = (temp_r29->unk_64 - temp_f29) / temp_f28;
                 fn_1_4E00(arg1->unk4A, var_f31);
-                arg1->unk18.x = (410.0 * cos((M_PI * lbl_1_data_0[arg1->unk4A]) / 180.0));
-                arg1->unk18.z = (410.0 * sin((M_PI * lbl_1_data_0[arg1->unk4A]) / 180.0));
+                arg1->unk18.x = (410.0 * cosd(lbl_1_data_0[arg1->unk4A]));
+                arg1->unk18.z = (410.0 * sind(lbl_1_data_0[arg1->unk4A]));
                 if (arg1->unk68 >= 150.0f) {
                     arg1->unk68 = 150.0f;
                     if (temp_r29->unk_64 == var_f30) {
@@ -781,8 +781,8 @@ void fn_1_D7F8(omObjData* arg0, unkObjStruct* arg1) {
         case 2:
             arg1->unkC++;
             var_f31 = arg1->unkC / 30.0f;
-            arg1->unk18.x = ((410.0f + (var_f31 * (arg1->unk5C - 410.0f))) * cos((M_PI * lbl_1_data_0[arg1->unk4A]) / 180.0));
-            arg1->unk18.z = ((410.0f + (var_f31 * (arg1->unk5C - 410.0f))) * sin((M_PI * lbl_1_data_0[arg1->unk4A]) / 180.0));
+            arg1->unk18.x = ((410.0f + (var_f31 * (arg1->unk5C - 410.0f))) * cosd(lbl_1_data_0[arg1->unk4A]));
+            arg1->unk18.z = ((410.0f + (var_f31 * (arg1->unk5C - 410.0f))) * sind(lbl_1_data_0[arg1->unk4A]));
             if (var_f31 >= 1.0f) {
                 arg1->unkC = 0;
                 var_f31 = 1.0f;
@@ -874,8 +874,8 @@ void fn_1_E034(omObjData* arg0, unkObjStruct* arg1) {
                 arg1->unk60++;
             }
             arg1->unk24 = arg1->unk18;
-            arg1->unk18.x = (arg1->unk5C * cos((M_PI * lbl_1_bss_84) / 180.0));
-            arg1->unk18.z = (arg1->unk5C * sin((M_PI * lbl_1_bss_84) / 180.0));
+            arg1->unk18.x = (arg1->unk5C * cosd(lbl_1_bss_84));
+            arg1->unk18.z = (arg1->unk5C * sind(lbl_1_bss_84));
             var_f29 = (arg1->unk18.x - arg1->unk24.x);
             var_f28 = (arg1->unk18.z - arg1->unk24.z);
             var_f30 = (180.0 * (atan2(var_f29, var_f28) / M_PI));
@@ -932,8 +932,8 @@ void fn_1_E034(omObjData* arg0, unkObjStruct* arg1) {
                 fn_1_F4D4(arg1, 15, 1);
             }
             arg1->unk24 = arg1->unk18;
-            arg1->unk18.x = (700.0 * cos((M_PI * lbl_1_bss_84) / 180.0));
-            arg1->unk18.z = (700.0 * sin((M_PI * lbl_1_bss_84) / 180.0));
+            arg1->unk18.x = (700.0 * cosd(lbl_1_bss_84));
+            arg1->unk18.z = (700.0 * sind(lbl_1_bss_84));
             var_f29 = (arg1->unk18.x - arg1->unk24.x);
             var_f28 = (arg1->unk18.z - arg1->unk24.z);
             var_f30 = (180.0 * (atan2(var_f29, var_f28) / M_PI));
@@ -972,13 +972,13 @@ u8 fn_1_E8AC(omObjData* arg0, unkObjStruct* arg1) {
                 var_f31 = lbl_1_data_0[arg1->unk4A];
                 lbl_1_bss_78 = arg1->unk18;
                 if ((arg1->unk4A == 4) || (arg1->unk4A == 3)) {
-                    arg1->unk24.x = (840.0000610351563 * cos((M_PI * var_f31) / 180.0));
+                    arg1->unk24.x = (840.0000610351563 * cosd(var_f31));
                     arg1->unk24.y = 0.0f;
-                    arg1->unk24.z = (840.0000610351563 * sin((M_PI * var_f31) / 180.0));
+                    arg1->unk24.z = (840.0000610351563 * sind(var_f31));
                 } else {
-                    arg1->unk24.x = (1050.0 * cos((M_PI * var_f31) / 180.0));
+                    arg1->unk24.x = (1050.0 * cosd(var_f31));
                     arg1->unk24.y = 0.0f;
-                    arg1->unk24.z = (1050.0 * sin((M_PI * var_f31) / 180.0));
+                    arg1->unk24.z = (1050.0 * sind(var_f31));
                 }
                 arg1->unk30.y = 0.0f;
                 PSMTXRotRad(temp_r29->unk_F0, 0x59, 0.017453292f * arg1->unk68);
