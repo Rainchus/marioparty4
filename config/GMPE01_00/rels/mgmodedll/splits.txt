@@ -10,13 +10,13 @@ REL/executor.c:
 	.text       start:0x00000000 end:0x000000A0
 
 REL/mgmodedll/mgmode.c:
-	.text       start:0x000000A0 end:0x00006C18
+	.text       start:0x000000A0 end:0x00006D28
 	.rodata     start:0x00000000 end:0x00000160
 	.data       start:0x00000000 end:0x000000A0
 	.bss        start:0x00000000 end:0x000002E0
 
 REL/mgmodedll/free_play.c:
-	.text       start:0x00006C18 end:0x0000D8D0
+	.text       start:0x00006D28 end:0x0000D8D0
 	.rodata     start:0x00000160 end:0x000002F0
 	.data       start:0x000000A0 end:0x00000120
 	.bss        start:0x000002E0 end:0x00000370
