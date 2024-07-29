@@ -1148,7 +1148,7 @@ config.libs = [
     Rel(
         "m441Dll",  # Butterfly Blitz
         objects={
-            Object(NonMatching, "REL/m441Dll/main.c"),
+            Object(Matching, "REL/m441Dll/main.c"),
         },
     ),
     Rel(
