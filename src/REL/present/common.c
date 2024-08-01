@@ -6,8 +6,8 @@
 
 #include "REL/present.h"
 
-void fn_1_4620(omObjData *arg0);
-void fn_1_4880(omObjData *arg0);
+void fn_1_4620(omObjData *object);
+void fn_1_4880(omObjData *object);
 
 omObjFunc lbl_1_data_1A0[] = { NULL, fn_1_4620, fn_1_4880 };
 
@@ -18,14 +18,12 @@ float fn_1_4CEC(float arg8, float arg9, float argA);
 
 omObjData *fn_1_42F4(void)
 {
-    omObjData *var_r31;
-    s32 var_lr;
     s32 var_r29;
-    UnkPresentStruct5 *var_r30;
 
-    var_r31 = omAddObjEx(lbl_1_bss_4, 1002, 1, 3, 2, NULL);
-    var_r30 = HuMemDirectMallocNum(HEAP_SYSTEM, 88, MEMORY_DEFAULT_NUM);
+    omObjData *var_r31 = omAddObjEx(lbl_1_bss_4, 1002, 1, 3, 2, NULL);
+    UnkPresentStruct5 *var_r30 = HuMemDirectMallocNum(HEAP_SYSTEM, 88, MEMORY_DEFAULT_NUM);
     var_r31->data = var_r30;
+
     var_r30->x = 0.0f;
     var_r30->z = 0.0f;
     var_r30->y = 0.0f;
@@ -56,10 +54,7 @@ omObjData *fn_1_42F4(void)
 void fn_1_4534(omObjData *object)
 {
     s32 var_r31;
-    void *var_r29;
-    void *var_r30;
-
-    var_r29 = object->data;
+    void *var_r29 = object->data;
 
     for (var_r31 = 0; var_r31 < 1; var_r31++) {
         Hu3DModelKill(object->model[var_r31]);
@@ -73,9 +68,8 @@ void fn_1_4534(omObjData *object)
 
 void fn_1_45C0(omObjData *object, s32 arg1)
 {
-    UnkPresentStruct5 *var_r31;
+    UnkPresentStruct5 *var_r31 = object->data;
 
-    var_r31 = object->data;
     var_r31->unk_00 = arg1;
     object->func = lbl_1_data_1A0[arg1];
     object->unk10 = 0;
@@ -84,56 +78,52 @@ void fn_1_45C0(omObjData *object, s32 arg1)
 
 s32 fn_1_4604(omObjData *object)
 {
-    s32 *var_r31;
+    UnkPresentStruct5 *var_r31 = object->data;
 
-    var_r31 = object->data;
-    return *var_r31;
+    return var_r31->unk_00;
 }
 
 void fn_1_4620(omObjData *object)
 {
     float var_f31;
-    omObjData *var_r30;
-    void *var_r29;
-    UnkPresentStruct5 *var_r31;
+    UnkPresentStruct5 *var_r31 = object->data;
 
-    var_r31 = object->data;
     switch (object->unk10) {
-    case 0:
-        Hu3DModelAttrReset(object->model[0], 1);
-        var_r31->x = -300.0f;
-        var_r31->z = -180.0f;
-        var_r31->unk_48 = 0.0f;
-        var_r31->unk_4C = 0.025f;
-        object->unk10 = 1;
-    case 1:
-        var_f31 = sind(90.0f * var_r31->unk_48);
-        var_f31 *= var_f31;
-        var_r31->unk_14 = -300.0f + (300.0f * var_f31);
-        var_r31->unk_2C = var_r31->unk_14 - var_r31->x;
-        if ((var_r31->unk_48 = var_r31->unk_48 + var_r31->unk_4C) < 1.0f) {
+        case 0:
+            Hu3DModelAttrReset(object->model[0], 1);
+            var_r31->x = -300.0f;
+            var_r31->z = -180.0f;
+            var_r31->unk_48 = 0.0f;
+            var_r31->unk_4C = 0.025f;
+            object->unk10 = 1;
+        case 1:
+            var_f31 = sind(90.0f * var_r31->unk_48);
+            var_f31 *= var_f31;
+            var_r31->unk_14 = -300.0f + (300.0f * var_f31);
+            var_r31->unk_2C = var_r31->unk_14 - var_r31->x;
+            if ((var_r31->unk_48 = var_r31->unk_48 + var_r31->unk_4C) < 1.0f) {
+                break;
+            }
+            var_r31->x = 0.0f;
+            var_r31->unk_48 = 0.0f;
+            var_r31->unk_4C = 0.05f;
+            object->unk10 = 2;
+        case 2:
+            var_r31->unk_2C = 0.0f;
+            var_r31->unk_34 = 0.01f;
+            if ((var_r31->unk_48 = var_r31->unk_48 + var_r31->unk_4C) < 1.0f) {
+                break;
+            }
+            var_r31->unk_24 = 0.0f;
+            var_r31->unk_2C = 0.0f;
+            var_r31->unk_30 = 0.0f;
+            var_r31->unk_34 = 0.0f;
+            object->unk10 = 3;
+        case 3:
+            fn_1_45C0(object, 0);
             break;
-        }
-        var_r31->x = 0.0f;
-        var_r31->unk_48 = 0.0f;
-        var_r31->unk_4C = 0.05f;
-        object->unk10 = 2;
-    case 2:
-        var_r31->unk_2C = 0.0f;
-        var_r31->unk_34 = 0.01f;
-        if ((var_r31->unk_48 = var_r31->unk_48 + var_r31->unk_4C) < 1.0f) {
+        default:
             break;
-        }
-        var_r31->unk_24 = 0.0f;
-        var_r31->unk_2C = 0.0f;
-        var_r31->unk_30 = 0.0f;
-        var_r31->unk_34 = 0.0f;
-        object->unk10 = 3;
-    case 3:
-        fn_1_45C0(object, 0);
-        break;
-    default:
-        break;
     }
     fn_1_4A04(object);
 }
@@ -141,31 +131,29 @@ void fn_1_4620(omObjData *object)
 void fn_1_4880(omObjData *object)
 {
     float var_f31;
-    UnkPresentStruct5 *var_r30;
-    void *var_r29;
 
-    var_r30 = object->data;
+    UnkPresentStruct5 *var_r30 = object->data;
     switch (object->unk10) {
-    case 0:
-        var_r30->unk_48 = 0.0f;
-        var_r30->unk_4C = 0.025f;
-        Hu3DModelAttrReset(object->model[0], 1);
-        object->unk10 = 1;
-    case 1:
-        var_f31 = sind(90.0f * var_r30->unk_48);
-        var_f31 *= var_f31;
-        var_r30->unk_14 = -(300.0f * var_f31);
-        var_r30->unk_2C = var_r30->unk_14 - var_r30->x;
-        if ((var_r30->unk_48 = var_r30->unk_48 + var_r30->unk_4C) < 1.0f) {
+        case 0:
+            var_r30->unk_48 = 0.0f;
+            var_r30->unk_4C = 0.025f;
+            Hu3DModelAttrReset(object->model[0], 1);
+            object->unk10 = 1;
+        case 1:
+            var_f31 = sind(90.0f * var_r30->unk_48);
+            var_f31 *= var_f31;
+            var_r30->unk_14 = -(300.0f * var_f31);
+            var_r30->unk_2C = var_r30->unk_14 - var_r30->x;
+            if ((var_r30->unk_48 = var_r30->unk_48 + var_r30->unk_4C) < 1.0f) {
+                break;
+            }
+            object->unk10 = 2;
+        case 2:
+            Hu3DModelAttrSet(object->model[0], 1);
+            fn_1_45C0(object, 0);
             break;
-        }
-        object->unk10 = 2;
-    case 2:
-        Hu3DModelAttrSet(object->model[0], 1);
-        fn_1_45C0(object, 0);
-        break;
-    default:
-        break;
+        default:
+            break;
     }
     fn_1_4A04(object);
     (void)object;
@@ -173,14 +161,10 @@ void fn_1_4880(omObjData *object)
 
 void fn_1_4A04(omObjData *object)
 {
-    float var_f29;
-    float var_f30;
-    s16 var_r29;
-    UnkPresentStruct5 *var_r31;
+    UnkPresentStruct5 *var_r31 = object->data;
+    s16 var_r29 = 0;
+    float var_f30 = var_r31->unk_2C * var_r31->unk_2C + var_r31->unk_34 * var_r31->unk_34;
 
-    var_r31 = object->data;
-    var_r29 = 0;
-    var_f30 = var_r31->unk_2C * var_r31->unk_2C + var_r31->unk_34 * var_r31->unk_34;
     var_r31->unk_38 = sqrtf(var_f30);
     if (0.001f <= var_r31->unk_38) {
         if (12.0f <= var_r31->unk_38) {
@@ -194,7 +178,8 @@ void fn_1_4A04(omObjData *object)
 
         if (8.0f <= var_r31->unk_38) {
             var_r29 = 2;
-        } else {
+        }
+        else {
             var_r29 = 1;
         }
     }
@@ -210,9 +195,8 @@ void fn_1_4A04(omObjData *object)
 float fn_1_4CEC(float arg8, float arg9, float argA)
 {
     float var_f30;
-    float var_f31;
 
-    var_f31 = fmod(arg9 - arg8, 360.0f);
+    float var_f31 = fmod(arg9 - arg8, 360.0f);
     if (0.0f > var_f31) {
         var_f31 += 360.0f;
     }

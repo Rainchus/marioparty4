@@ -33,15 +33,15 @@ void ObjectSetup(void)
 void fn_1_144(s16 arg0, s32 arg1, s32 arg2)
 {
     Process *var_r30;
-    UnkPresentStruct6 *var_r31;
 
-    var_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkPresentStruct6), MEMORY_DEFAULT_NUM);
+    UnkPresentStruct6 *var_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkPresentStruct6), MEMORY_DEFAULT_NUM);
     var_r31->unk_00 = arg0;
     var_r31->unk_08 = 1.0f / arg2;
     if (arg1) {
         var_r31->unk_08 = var_r31->unk_08;
         var_r31->unk_04 = 0.0f;
-    } else {
+    }
+    else {
         var_r31->unk_08 = -var_r31->unk_08;
         var_r31->unk_04 = 1.0f;
     }
@@ -53,18 +53,19 @@ void fn_1_144(s16 arg0, s32 arg1, s32 arg2)
 
 void fn_1_254(void)
 {
-    UnkPresentStruct6 *var_r31;
+    UnkPresentStruct6 *var_r31 = HuPrcCurrentGet()->user_data;
 
-    var_r31 = HuPrcCurrentGet()->user_data;
     while (TRUE) {
         var_r31->unk_04 = var_r31->unk_04 + var_r31->unk_08;
         if (var_r31->unk_04 > 1.0f) {
             var_r31->unk_04 = 1.0f;
             break;
-        } else if (var_r31->unk_04 < 0.0f) {
+        }
+        else if (var_r31->unk_04 < 0.0f) {
             var_r31->unk_04 = 0.0f;
             break;
-        } else {
+        }
+        else {
             espTPLvlSet(var_r31->unk_00, var_r31->unk_04);
             HuPrcVSleep();
         }
@@ -80,8 +81,8 @@ void fn_1_254(void)
 void fn_1_334(s16 arg0, s32 arg1, float arg8, s32 arg2)
 {
     Process *var_r30;
-    UnkPresentStruct6Weird *var_r31; // TODO correct type? why are only 12 bytes allocated?
-    var_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, 12, MEMORY_DEFAULT_NUM);
+    // TODO correct type? why are only 12 bytes allocated?
+    UnkPresentStruct6Weird *var_r31 = HuMemDirectMallocNum(HEAP_SYSTEM, 12, MEMORY_DEFAULT_NUM);
     var_r31->unk_00 = arg0;
     var_r31->unk_0C = 1.0f / arg2;
     var_r31->unk_04 = arg8;
@@ -89,7 +90,8 @@ void fn_1_334(s16 arg0, s32 arg1, float arg8, s32 arg2)
     if (arg1) {
         var_r31->unk_0C = var_r31->unk_0C;
         var_r31->unk_08 = 0.0f;
-    } else {
+    }
+    else {
         var_r31->unk_0C = -var_r31->unk_0C;
         var_r31->unk_08 = 1.0f;
     }
@@ -101,18 +103,19 @@ void fn_1_334(s16 arg0, s32 arg1, float arg8, s32 arg2)
 
 void fn_1_45C(void)
 {
-    UnkPresentStruct6Weird *var_r31; // TODO correct type? how is 0C possible?
+    UnkPresentStruct6Weird *var_r31 = HuPrcCurrentGet()->user_data;
 
-    var_r31 = HuPrcCurrentGet()->user_data;
     while (TRUE) {
         var_r31->unk_08 = var_r31->unk_08 + var_r31->unk_0C;
         if (var_r31->unk_08 > 1.0f) {
             var_r31->unk_08 = 1.0f;
             break;
-        } else if (var_r31->unk_08 < 0.0f) {
+        }
+        else if (var_r31->unk_08 < 0.0f) {
             var_r31->unk_08 = 0.0f;
             break;
-        } else {
+        }
+        else {
             Hu3DModelTPLvlSet(var_r31->unk_00, var_r31->unk_08 * var_r31->unk_04);
             HuPrcVSleep();
         }
@@ -127,50 +130,44 @@ void fn_1_45C(void)
 
 u32 fn_1_550(u16 arg0)
 {
-    u32 var_r31;
-
-    var_r31 = HuPadBtnDown[0] & arg0;
+    u32 var_r31 = HuPadBtnDown[0] & arg0;
     return var_r31 != 0;
 }
 
 u32 fn_1_584(u16 arg0)
 {
-    u32 var_r31;
-
-    var_r31 = HuPadDStkRep[0] & arg0;
+    u32 var_r31 = HuPadDStkRep[0] & arg0;
     return var_r31 != 0;
 }
 
 u32 fn_1_5B8(u16 arg0)
 {
-    u32 var_r31;
-
-    var_r31 = HuPadDStk[0] & arg0;
+    u32 var_r31 = HuPadDStk[0] & arg0;
     return var_r31 != 0;
 }
 
 void fn_1_5EC(omObjData *object)
 {
     switch (object->unk10) {
-    case 0:
-        object->unk10 = 1;
-    case 1:
-        if (!omSysExitReq) {
+        case 0:
+            object->unk10 = 1;
+        case 1:
+            if (!omSysExitReq) {
+                break;
+            }
+            object->unk10 = 2;
+        case 2:
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
+            HuAudFadeOut(1000);
+            object->unk10 = 3;
             break;
-        }
-        object->unk10 = 2;
-    case 2:
-        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
-        HuAudFadeOut(1000);
-        object->unk10 = 3;
-        break;
-    case 3:
-        if (!WipeStatGet()) {
-            fn_1_3B18(lbl_1_bss_18);
-            omOvlReturnEx(1, 1);
-        }
-        break;
-    default:
-        break;
+        case 3:
+            if (!WipeStatGet()) {
+                fn_1_3B18(lbl_1_bss_18);
+                omOvlReturnEx(1, 1);
+            }
+            break;
+        default:
+            break;
     }
 }
