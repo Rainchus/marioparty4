@@ -5,6 +5,34 @@
 
 #include "REL/present.h"
 
+typedef struct UnkPresentCameraStruct {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ Vec target;
+    /* 0x18 */ Vec up;
+    /* 0x24 */ float unk_24;
+    /* 0x28 */ float unk_28;
+    /* 0x2C */ Vec unk_2C;
+    /* 0x38 */ Vec unk_38;
+    /* 0x44 */ float unk44;
+    /* 0x48 */ float unk48;
+    /* 0x4C */ float unk4C;
+    /* 0x50 */ float unk_50;
+    /* 0x54 */ float unk_54;
+    /* 0x58 */ Vec unk_58;
+    /* 0x64 */ Vec unk_64;
+    /* 0x70 */ float unk70;
+    /* 0x74 */ float unk74;
+    /* 0x78 */ float unk78;
+    /* 0x7C */ float unk_7C;
+    /* 0x80 */ float unk_80;
+    /* 0x84 */ float unk_84;
+    /* 0x88 */ float unk_88;
+    /* 0x8C */ float unk_8C;
+    /* 0x90 */ float unk_90;
+    /* 0x94 */ float unk_94;
+    /* 0x98 */ float unk_98;
+} UnkPresentCameraStruct; /* size = 0x9C */
+
 void fn_1_C20(omObjData *object);
 
 omObjData *fn_1_6B4(void)

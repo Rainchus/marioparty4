@@ -10,13 +10,13 @@ typedef struct {
     /* 0x00 */ OptionWindow *window;
     /* 0x04 */ s32 quitTimer;
     /* 0x08 */ s16 light;
-} StateWork; // Size 0xC
+} StateWork; /* size = 0x0C */
 
 typedef struct {
-    Vec src;
-    Vec dest;
-    GXColor color;
-} UnkLightDataStruct; // Size 0x1C TODO same as m446Dll::unkStruct10 and present::UnkPresentStruct3
+    /* 0x00 */ Vec src;
+    /* 0x0C */ Vec dest;
+    /* 0x18 */ GXColor color;
+} UnkLightDataStruct; /* size = 0x1C */ // TODO same as m446Dll::unkStruct10 and present::UnkPresentStruct3
 
 static void ExecState(omObjData *object);
 

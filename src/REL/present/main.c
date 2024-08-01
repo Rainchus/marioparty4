@@ -7,6 +7,17 @@
 
 #include "REL/present.h"
 
+typedef struct UnkPresentStruct {
+    /* 0x00 */ UnkWindowDataStruct *unk_00;
+    /* 0x04 */ s32 unk_04;
+} UnkPresentStruct; /* size = 0x08 */
+
+typedef struct UnkPresentStruct4 {
+    /* 0x00 */ Vec unk_00;
+    /* 0x0C */ Vec unk_0C;
+    /* 0x18 */ Vec unk_18;
+} UnkPresentStruct4; /* size = 0x1C */
+
 omObjData *lbl_1_bss_20;
 
 UnkPresentStruct4 lbl_1_data_F0 = { { 0.0f, 3000.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
@@ -269,7 +280,7 @@ void fn_1_41BC(UnkWindowDataStruct *windowData, s32 arg1)
 void fn_1_41E0(void)
 {
     UnkWindowDataStruct *windowData = HuPrcCurrentGet()->user_data;
-    
+
     while (TRUE) {
         switch (windowData->unk_20) {
             case 1:

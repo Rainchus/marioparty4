@@ -6,6 +6,28 @@
 
 #include "REL/present.h"
 
+typedef struct UnkPresentStruct5 {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s16 unk_04;
+    /* 0x08 */ float x;
+    /* 0x0C */ float y;
+    /* 0x10 */ float z;
+    /* 0x14 */ float unk_14;
+    /* 0x18 */ s32 unk18[2];
+    /* 0x20 */ float unk_20;
+    /* 0x24 */ float unk_24;
+    /* 0x28 */ float unk_28;
+    /* 0x2C */ float unk_2C;
+    /* 0x30 */ float unk_30;
+    /* 0x34 */ float unk_34;
+    /* 0x38 */ float unk_38;
+    /* 0x3C */ s32 unk3C[3];
+    /* 0x48 */ float unk_48;
+    /* 0x4C */ float unk_4C;
+    /* 0x50 */ s32 unk_50;
+    /* 0x54 */ s32 unk_54;
+} UnkPresentStruct5; /* size = 0x58 */
+
 void fn_1_4620(omObjData *object);
 void fn_1_4880(omObjData *object);
 

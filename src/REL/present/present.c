@@ -8,6 +8,56 @@
 
 #include "REL/present.h"
 
+typedef struct UnkPresentStruct2 {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ omObjData *unk_10[134];
+    /* 0x228 */ UnkWindowDataStruct *unk_228;
+    /* 0x22C */ UnkWindowDataStruct *unk_22C;
+    /* 0x230 */ s16 sprite;
+    /* 0x234 */ s32 unk_234;
+    /* 0x238 */ s32 unk_238;
+    /* 0x23C */ float unk_23C;
+    /* 0x240 */ float unk_240;
+    /* 0x244 */ float unk_244;
+    /* 0x248 */ float unk_248;
+    /* 0x24C */ float unk_24C;
+    /* 0x250 */ float unk_250;
+    /* 0x254 */ float unk_254;
+    /* 0x258 */ float unk_258;
+    /* 0x25C */ float unk_25C;
+    /* 0x260 */ float unk_260;
+    /* 0x264 */ float unk_264;
+    /* 0x268 */ float unk_268;
+    /* 0x26C */ float unk_26C;
+    /* 0x270 */ s32 unk_270[60];
+} UnkPresentStruct2; /* size = 0x3F0 */
+
+typedef struct UnkPresentStruct3 {
+    /* 0x00 */ Vec unk_00;
+    /* 0x0C */ Vec unk_0C;
+    /* 0x18 */ GXColor unk_18;
+} UnkPresentStruct3; /* size = 0x1C */ // same as option::state::UnkLightDataStruct
+
+typedef struct UnkPresentNestedInnerStruct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk08;
+    /* 0x0C */ s32 unk_0C;
+} UnkPresentNestedInnerStruct; /* size = 0x10 */
+
+typedef struct UnkPresentNestedOuterStruct {
+    /* 0x00 */ s32 unk00;
+    /* 0x04 */ UnkPresentNestedInnerStruct unk_04[11];
+} UnkPresentNestedOuterStruct; /* size = 0x08 */
+
+typedef struct UnkPresentStruct7 {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ float unk_04;
+} UnkPresentStruct7; /* size = 0x08 */
+
 void fn_1_180C(omObjData *object, s32 arg1);
 void fn_1_1928(omObjData *arg0);
 void fn_1_1FA8(omObjData *object, s32 arg1);

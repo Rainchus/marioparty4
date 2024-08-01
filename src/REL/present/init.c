@@ -8,6 +8,19 @@
 
 #include "REL/present.h"
 
+typedef struct UnkPresentStruct6 {
+    /* 0x00 */ s16 unk_00;
+    /* 0x04 */ float unk_04;
+    /* 0x08 */ float unk_08;
+} UnkPresentStruct6; /* size 0x0C */ // looks like a struct in option/scene.c
+
+typedef struct UnkPresentStruct6Weird {
+    /* 0x00 */ s16 unk_00;
+    /* 0x04 */ float unk_04;
+    /* 0x08 */ float unk_08;
+    /* 0x0C */ float unk_0C;
+} UnkPresentStruct6Weird; /* size = 0x10 */ // looks like a struct in option/scene.c
+
 omObjData *lbl_1_bss_18;
 omObjData *lbl_1_bss_14;
 omObjData *lbl_1_bss_10;
