@@ -7,14 +7,14 @@ Sections:
 	.bss        type:bss align:8
 
 REL/mstoryDll/main.c:
-	.text       start:0x00000000 end:0x00006AFC
-	.rodata     start:0x00000000 end:0x00000100
+	.text       start:0x00000000 end:0x00007090
+	.rodata     start:0x00000000 end:0x00000108
 	.data       start:0x00000000 end:0x00000190
 	.bss        start:0x00000000 end:0x00000058
 
 REL/mstoryDll/board_clear.c:
-	.text       start:0x00006AFC end:0x0000A830
-	.rodata     start:0x00000100 end:0x00000268
+	.text       start:0x00007090 end:0x0000A830
+	.rodata     start:0x00000108 end:0x00000268
 	.data       start:0x00000190 end:0x00000388
 	.bss        start:0x00000058 end:0x000002C8
 

@@ -735,7 +735,7 @@ void fn_1_A0A4(omObjData *object)
     object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkM410Struct14), MEMORY_DEFAULT_NUM);
     var_r30 = object->data;
     memset(var_r30, 0, sizeof(UnkM410Struct14));
-    var_r30->unk_F80 = GXGetTexBufferSize(640, 480, 5, GX_FALSE, 0);
+    var_r30->unk_F80 = GXGetTexBufferSize(640, 480, GX_TF_RGB5A3, GX_FALSE, 0);
     var_r30->unk_F84 = HuMemDirectMallocNum(HEAP_SYSTEM, var_r30->unk_F80, MEMORY_DEFAULT_NUM);
     DCFlushRange(var_r30->unk_F84, var_r30->unk_F80);
     fn_1_A9A4(&var_r30->unk_120);

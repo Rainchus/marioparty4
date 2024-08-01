@@ -912,7 +912,7 @@ config.libs = [
         "m411Dll",  # Photo Finish
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m411Dll/main.c"),
+            Object(Matching, "REL/m411Dll/main.c"),
         },
     ),
     Rel(
@@ -1148,7 +1148,7 @@ config.libs = [
     Rel(
         "m441Dll",  # Butterfly Blitz
         objects={
-            Object(NonMatching, "REL/m441Dll/main.c"),
+            Object(Matching, "REL/m441Dll/main.c"),
         },
     ),
     Rel(
