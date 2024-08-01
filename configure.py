@@ -1332,7 +1332,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/mgmodedll/mgmode.c"),
-            Object(NonMatching, "REL/mgmodedll/free_play.c"),
+            Object(Matching, "REL/mgmodedll/free_play.c"),
             Object(NonMatching, "REL/mgmodedll/record.c"),
             Object(NonMatching, "REL/mgmodedll/battle.c"),
             Object(NonMatching, "REL/mgmodedll/tictactoe.c"),
