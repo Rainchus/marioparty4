@@ -48,10 +48,11 @@ typedef struct _unkStruct3 {
     s32 unk28;
     s32 unk2C;
     s32 unk30;
-    char unk34[0x8];
+    char unk34[0x4];
+    s32 unk38;
     s32 unk3C;
     Vec unk40;
-    char unk4C[0x8];
+    HsfVector2f unk4C;
     Vec unk54;
     Vec unk60;
     f32 unk6C;
@@ -63,7 +64,10 @@ typedef struct _unkStruct3 {
     s8 unk8B;
     u16 unk8C;
     u16 unk8E;
-    char unk90[0x14];
+    HsfVector2f unk90;
+    f32 unk98;
+    s32 unk9C;
+    s32 unkA0;
     s32 unkA4;
 } unkStruct3; // sizeof 0xA8
 
@@ -76,7 +80,7 @@ typedef struct _unkStruct4 {
 
 // prototypes
 void ObjectSetup(void);
-void fn_1_6EC(f32, f32, f32, s32);
+void* fn_1_6EC(f32, f32, f32, s32);
 void fn_1_73C(void);
 void fn_1_7BC(void);
 void fn_1_894(omObjData* object);
@@ -99,10 +103,14 @@ u16 fn_1_531C(s32);
 u16 fn_1_5388(s32);
 s32 fn_1_53F4(unkStruct3*, f32, f32, f32);
 s32 fn_1_561C(unkStruct3*, s32*);
+void fn_1_5838(unkStruct3*);
+f32 fn_1_6594(f32, f32, f32);
+f32 fn_1_6698(f32, f32, unkStruct3*);
+void fn_1_6814(unkStruct3*);
+void fn_1_7C60(void);
+void fn_1_A01C(ModelData* model, ParticleData* particle, Mtx matrix);
+void fn_1_A618(ModelData* model, ParticleData* particle, Mtx matrix);
 //...
-void fn_1_7C60(void); // *
-void fn_1_A01C(ModelData* model, ParticleData* particle, Mtx matrix); // *
-void fn_1_A618(ModelData* model, ParticleData* particle, Mtx matrix); // *
 void fn_1_AA88(ModelData* model, ParticleData* particle, Mtx matrix); // *
 void fn_1_B160(void); // *
 void fn_1_B1C0(void); // *
