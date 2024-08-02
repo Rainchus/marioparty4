@@ -28,15 +28,15 @@ typedef struct UnkPresentStruct5 {
     /* 0x54 */ s32 unk_54;
 } UnkPresentStruct5; /* size = 0x58 */
 
-void fn_1_4620(omObjData *object);
-void fn_1_4880(omObjData *object);
+static void fn_1_4620(omObjData *object);
+static void fn_1_4880(omObjData *object);
+static void fn_1_4A04(omObjData *object);
+static float fn_1_4CEC(float arg8, float arg9, float argA);
 
 omObjFunc lbl_1_data_1A0[] = { NULL, fn_1_4620, fn_1_4880 };
 
 static const s32 lbl_1_rodata_BD8[] = { 0x006E0089, 0x006E008A, 0x006E008B };
 
-void fn_1_4A04(omObjData *object);
-float fn_1_4CEC(float arg8, float arg9, float argA);
 
 omObjData *fn_1_42F4(void)
 {
@@ -105,7 +105,7 @@ s32 fn_1_4604(omObjData *object)
     return var_r31->unk_00;
 }
 
-void fn_1_4620(omObjData *object)
+static void fn_1_4620(omObjData *object)
 {
     float var_f31;
     UnkPresentStruct5 *var_r31 = object->data;
@@ -150,7 +150,7 @@ void fn_1_4620(omObjData *object)
     fn_1_4A04(object);
 }
 
-void fn_1_4880(omObjData *object)
+static void fn_1_4880(omObjData *object)
 {
     float var_f31;
 
@@ -181,7 +181,7 @@ void fn_1_4880(omObjData *object)
     (void)object;
 }
 
-void fn_1_4A04(omObjData *object)
+static void fn_1_4A04(omObjData *object)
 {
     UnkPresentStruct5 *var_r31 = object->data;
     s16 var_r29 = 0;
@@ -214,7 +214,7 @@ void fn_1_4A04(omObjData *object)
     omSetRot(object, var_r31->unk_20, var_r31->unk_24, var_r31->unk_28);
 }
 
-float fn_1_4CEC(float arg8, float arg9, float argA)
+static float fn_1_4CEC(float arg8, float arg9, float argA)
 {
     float var_f30;
 

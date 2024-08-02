@@ -58,21 +58,20 @@ typedef struct UnkPresentStruct7 {
     /* 0x04 */ float unk_04;
 } UnkPresentStruct7; /* size = 0x08 */
 
-void fn_1_180C(omObjData *object, s32 arg1);
-void fn_1_1928(omObjData *arg0);
-void fn_1_1FA8(omObjData *object, s32 arg1);
-void fn_1_20E8(omObjData *arg0);
-void fn_1_268C(omObjData *object, float *arg1, float *arg2, float *arg3);
-void fn_1_2708(omObjData *arg0, float arg8, s32 arg1);
-void fn_1_2774(omObjData *arg0);
-s32 fn_1_28F0(omObjData *object);
-void fn_1_2924(omObjData *object);
-s32 fn_1_2B84(omObjData *arg0, s32 arg1, s32 arg2);
-s32 fn_1_2BCC(omObjData *object, s32 arg1);
-s32 fn_1_2C5C(omObjData *object, s32 arg1);
-s32 fn_1_3394(s32 arg0);
-void fn_1_33AC(omObjData *arg0);
-s32 fn_1_393C(s32 arg0, s32 arg1);
+static void fn_1_1928(omObjData *arg0);
+static void fn_1_1FA8(omObjData *object, s32 arg1);
+static void fn_1_20E8(omObjData *arg0);
+static void fn_1_268C(omObjData *object, float *arg1, float *arg2, float *arg3);
+static void fn_1_2708(omObjData *arg0, float arg8, s32 arg1);
+static void fn_1_2774 (omObjData *arg0);
+static s32 fn_1_28F0 (omObjData *object);
+static void fn_1_2924(omObjData *object);
+static s32 fn_1_2B84(omObjData *arg0, s32 arg1, s32 arg2);
+static s32 fn_1_2BCC(omObjData *object, s32 arg1);
+static s32 fn_1_2C5C(omObjData *object, s32 arg1);
+static s32 fn_1_3394(s32 arg0);
+static void fn_1_33AC(omObjData *arg0);
+static s32 fn_1_393C(s32 arg0, s32 arg1);
 
 UnkPresentStruct3 lbl_1_data_50 = { { 0.0f, 400.0f, 0.0f }, { 0.0f, -400.0f, -500.0f }, { 255, 255, 255, 255 } };
 omObjFunc lbl_1_data_6C[] = { NULL, fn_1_1928, fn_1_20E8, fn_1_33AC };
@@ -314,7 +313,7 @@ void fn_1_186C(omObjData *object, s32 arg1)
     var_r31->unk_238 = 0;
 }
 
-void fn_1_1928(omObjData *object)
+static void fn_1_1928(omObjData *object)
 {
     Vec sp8;
     s32 var_r29;
@@ -477,7 +476,7 @@ void fn_1_1928(omObjData *object)
     fn_1_2774(object);
 }
 
-void fn_1_1FA8(omObjData *object, s32 arg1)
+static void fn_1_1FA8(omObjData *object, s32 arg1)
 {
     float var_f31;
     float var_f30;
@@ -524,7 +523,7 @@ void fn_1_1FA8(omObjData *object, s32 arg1)
     fn_1_2708(object, var_f29, var_r28);
 }
 
-void fn_1_20E8(omObjData *object)
+static void fn_1_20E8(omObjData *object)
 {
     float var_f31;
     float var_f30;
@@ -655,7 +654,7 @@ void fn_1_20E8(omObjData *object)
     }
 }
 
-void fn_1_268C(omObjData *object, float *arg1, float *arg2, float *arg3)
+static void fn_1_268C(omObjData *object, float *arg1, float *arg2, float *arg3)
 {
     Mtx sp8;
 
@@ -665,7 +664,7 @@ void fn_1_268C(omObjData *object, float *arg1, float *arg2, float *arg3)
     *arg3 = sp8[2][3];
 }
 
-void fn_1_2708(omObjData *arg0, float arg8, s32 arg1)
+static void fn_1_2708(omObjData *arg0, float arg8, s32 arg1)
 {
     UnkPresentStruct2 *var_r31 = arg0->data;
 
@@ -675,7 +674,7 @@ void fn_1_2708(omObjData *arg0, float arg8, s32 arg1)
     var_r31->unk_250 = 1.0f / arg1;
 }
 
-void fn_1_2774(omObjData *object)
+static void fn_1_2774 (omObjData *object)
 {
     s32 var_r30;
     UnkPresentStruct2 *var_r31 = object->data;
@@ -700,7 +699,7 @@ void fn_1_2774(omObjData *object)
     }
 }
 
-s32 fn_1_28F0(omObjData *object)
+static s32 fn_1_28F0 (omObjData *object)
 {
     UnkPresentStruct2 *var_r31 = object->data;
     return var_r31->unk_248 < 1.0f;
@@ -708,7 +707,7 @@ s32 fn_1_28F0(omObjData *object)
 
 s32 lbl_1_data_84[] = { 0, 1, 2, 3, 4, 6, 7, 8 };
 
-void fn_1_2924(omObjData *object)
+static void fn_1_2924(omObjData *object)
 {
     UnkPresentStruct2 *var_r31 = object->data;
     s32 var_r30;
@@ -753,13 +752,13 @@ void fn_1_2924(omObjData *object)
 
 static const s32 lbl_1_rodata_A74[] = { 0, 6, 12, 18, 24, 59, 30, 36, 42, 48 };
 
-s32 fn_1_2B84(omObjData *arg0, s32 arg1, s32 arg2)
+static s32 fn_1_2B84(omObjData *arg0, s32 arg1, s32 arg2)
 {
     UnkPresentStruct2 *var_r31 = arg0->data;
     return var_r31->unk_270[arg2 + lbl_1_rodata_A74[arg1]] != 0;
 }
 
-s32 fn_1_2BCC(omObjData *object, s32 arg1)
+static s32 fn_1_2BCC(omObjData *object, s32 arg1)
 {
     s32 var_r31;
     s32 var_r30;
@@ -774,7 +773,7 @@ s32 fn_1_2BCC(omObjData *object, s32 arg1)
     return var_r30;
 }
 
-s32 fn_1_2C5C(omObjData *object, s32 arg1)
+static s32 fn_1_2C5C(omObjData *object, s32 arg1)
 {
     UnkPresentStruct7 spA4[10];
     Vec sp38;
@@ -881,7 +880,7 @@ s32 fn_1_2C5C(omObjData *object, s32 arg1)
 
 static const s32 lbl_1_rodata_AC8[] = { 6, 6, 6, 6, 6, 1, 6, 6, 6, 11 };
 
-s32 fn_1_3394(s32 arg0)
+static s32 fn_1_3394(s32 arg0)
 {
     return lbl_1_rodata_AC8[arg0];
 }
@@ -891,7 +890,7 @@ static const s32 lbl_1_rodata_B18[] = { 8, 20, 32, 44, 56, 0, 68, 80, 92, 0 };
 static const s32 lbl_1_rodata_B40[] = { 126, 127, 128, 129, 130, 0, 131, 132, 133, 0 };
 static const s32 lbl_1_rodata_B68[] = { 118, 119, 120, 121, 122, 0, 123, 124, 125, 0 };
 
-void fn_1_33AC(omObjData *object)
+static void fn_1_33AC(omObjData *object)
 {
     f32 var_f31;
     f32 var_f29;
@@ -949,7 +948,7 @@ void fn_1_33AC(omObjData *object)
 
 static const s32 lbl_1_rodata_BA4[][2] = { { 7, 1 } };
 
-s32 fn_1_393C(s32 arg0, s32 arg1)
+static s32 fn_1_393C(s32 arg0, s32 arg1)
 {
     s32 var_r31;
 

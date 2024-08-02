@@ -29,9 +29,9 @@ omObjData *lbl_1_bss_8;
 Process *lbl_1_bss_4;
 omObjData *lbl_1_bss_0;
 
-void fn_1_254(void);
-void fn_1_45C(void);
-void fn_1_5EC(omObjData *object);
+static void fn_1_254(void);
+static void fn_1_45C(void);
+static void fn_1_5EC(omObjData *object);
 
 void ObjectSetup(void)
 {
@@ -64,7 +64,7 @@ void fn_1_144(s16 arg0, s32 arg1, s32 arg2)
     var_r30->user_data = var_r31;
 }
 
-void fn_1_254(void)
+static void fn_1_254(void)
 {
     UnkPresentStruct6 *var_r31 = HuPrcCurrentGet()->user_data;
 
@@ -114,7 +114,7 @@ void fn_1_334(s16 arg0, s32 arg1, float arg8, s32 arg2)
     var_r30->user_data = var_r31;
 }
 
-void fn_1_45C(void)
+static void fn_1_45C(void)
 {
     UnkPresentStruct6Weird *var_r31 = HuPrcCurrentGet()->user_data;
 
@@ -141,25 +141,25 @@ void fn_1_45C(void)
     HuPrcEnd();
 }
 
-u32 fn_1_550(u16 arg0)
+s32 fn_1_550(u16 arg0)
 {
     u32 var_r31 = HuPadBtnDown[0] & arg0;
     return var_r31 != 0;
 }
 
-u32 fn_1_584(u16 arg0)
+s32 fn_1_584(u16 arg0)
 {
     u32 var_r31 = HuPadDStkRep[0] & arg0;
     return var_r31 != 0;
 }
 
-u32 fn_1_5B8(u16 arg0)
+s32 fn_1_5B8(u16 arg0)
 {
     u32 var_r31 = HuPadDStk[0] & arg0;
     return var_r31 != 0;
 }
 
-void fn_1_5EC(omObjData *object)
+static void fn_1_5EC(omObjData *object)
 {
     switch (object->unk10) {
         case 0:

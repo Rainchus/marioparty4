@@ -22,12 +22,11 @@ omObjData *lbl_1_bss_20;
 
 UnkPresentStruct4 lbl_1_data_F0 = { { 0.0f, 3000.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
 
-void fn_1_3B8C(omObjData *object);
-void fn_1_3DB8(omObjData *object);
-void fn_1_4040(UnkWindowDataStruct *arg0);
-void fn_1_4190(UnkWindowDataStruct *arg0);
-void fn_1_41E0(void);
-void fn_1_41BC(UnkWindowDataStruct *arg0, s32 arg1);
+static void fn_1_3B8C(omObjData *object);
+static void fn_1_3DB8(omObjData *object);
+static void fn_1_4190(UnkWindowDataStruct *arg0);
+static void fn_1_41BC(UnkWindowDataStruct *arg0, s32 arg1);
+static void fn_1_41E0(void);
 
 omObjData *fn_1_39A8(void)
 {
@@ -68,7 +67,7 @@ void fn_1_3B18(omObjData *object)
     HuMemDirectFree(var_r31);
 }
 
-void fn_1_3B8C(omObjData *object)
+static void fn_1_3B8C(omObjData *object)
 {
     UnkPresentStruct *var_r30 = object->data;
 
@@ -149,7 +148,7 @@ void fn_1_3B8C(omObjData *object)
     }
 }
 
-void fn_1_3DB8(omObjData *arg0)
+static void fn_1_3DB8(omObjData *arg0)
 {
     void *sp8 = arg0->data;
 
@@ -245,17 +244,17 @@ void fn_1_4104(UnkWindowDataStruct *windowData, u32 mess, s16 index)
     HuWinInsertMesSet(windowData->window, mess, index);
 }
 
-void fn_1_4144(UnkWindowDataStruct *windowData, float x, float y)
+static void fn_1_4144(UnkWindowDataStruct *windowData, float x, float y)
 {
     HuWinPosSet(windowData->window, x, y);
 }
 
-void fn_1_4184(UnkWindowDataStruct *windowData)
+static void fn_1_4184(UnkWindowDataStruct *windowData)
 {
     windowData->unk0C = 1;
 }
 
-void fn_1_4190(UnkWindowDataStruct *windowData)
+static void fn_1_4190(UnkWindowDataStruct *windowData)
 {
     windowData->unk0C = 0;
 }
@@ -268,7 +267,7 @@ void fn_1_419C(UnkWindowDataStruct *windowData)
     windowData->unk10 = 1;
 }
 
-void fn_1_41BC(UnkWindowDataStruct *windowData, s32 arg1)
+static void fn_1_41BC(UnkWindowDataStruct *windowData, s32 arg1)
 {
     if (!windowData->unk_20) {
         windowData->unk_20 = 4;
@@ -277,7 +276,7 @@ void fn_1_41BC(UnkWindowDataStruct *windowData, s32 arg1)
     windowData->choice = arg1;
 }
 
-void fn_1_41E0(void)
+static void fn_1_41E0(void)
 {
     UnkWindowDataStruct *windowData = HuPrcCurrentGet()->user_data;
 

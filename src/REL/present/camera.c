@@ -33,7 +33,7 @@ typedef struct UnkPresentCameraStruct {
     /* 0x98 */ float unk_98;
 } UnkPresentCameraStruct; /* size = 0x9C */
 
-void fn_1_C20(omObjData *object);
+static void fn_1_C20(omObjData *object);
 
 omObjData *fn_1_6B4(void)
 {
@@ -97,7 +97,7 @@ void fn_1_9A4(omObjData *object, float arg8, float arg9, float argA, s32 arg1)
     var_r31->unk_90 = 1.0f / arg1;
 }
 
-void fn_1_A28(omObjData *object, s32 arg1, float arg8, float arg9, float argA)
+static void fn_1_A28(omObjData *object, s32 arg1, float arg8, float arg9, float argA)
 {
     UnkPresentCameraStruct *var_r31 = object->data;
 
@@ -112,7 +112,7 @@ void fn_1_A28(omObjData *object, s32 arg1, float arg8, float arg9, float argA)
     var_r31->unk_98 = 1.0f / arg1;
 }
 
-float fn_1_AAC(omObjData *object)
+static float fn_1_AAC(omObjData *object)
 {
     UnkPresentCameraStruct *var_r31 = object->data;
 
@@ -120,7 +120,7 @@ float fn_1_AAC(omObjData *object)
     return var_f31;
 }
 
-float fn_1_ADC(omObjData *object)
+static float fn_1_ADC(omObjData *object)
 {
     UnkPresentCameraStruct *var_r31 = object->data;
 
@@ -128,7 +128,7 @@ float fn_1_ADC(omObjData *object)
     return var_f31;
 }
 
-void fn_1_B0C(omObjData *object, float *arg1, float *arg2, float *arg3)
+static void fn_1_B0C(omObjData *object, float *arg1, float *arg2, float *arg3)
 {
     UnkPresentCameraStruct *var_r31 = object->data;
 
@@ -137,7 +137,7 @@ void fn_1_B0C(omObjData *object, float *arg1, float *arg2, float *arg3)
     *arg3 = var_r31->pos.z;
 }
 
-void fn_1_B3C(omObjData *object, float *arg1, float *arg2, float *arg3)
+static void fn_1_B3C(omObjData *object, float *arg1, float *arg2, float *arg3)
 {
     UnkPresentCameraStruct *var_r31 = object->data;
 
@@ -167,7 +167,7 @@ void fn_1_BF8(omObjData *object)
     fn_1_C20(object);
 }
 
-void fn_1_C20(omObjData *object)
+static void fn_1_C20(omObjData *object)
 {
     float var_f31;
     float var_f30;
@@ -223,7 +223,7 @@ void fn_1_C20(omObjData *object)
         var_r31->target.y, var_r31->target.z);
 }
 
-void fn_1_1198(omObjData *object)
+static void fn_1_1198(omObjData *object)
 {
     if (HuPadBtn[0] & PAD_BUTTON_B) {
         UnkPresentCameraStruct *var_r31 = object->data;
@@ -237,7 +237,7 @@ void fn_1_1198(omObjData *object)
     }
 }
 
-void fn_1_1398(omObjData *object)
+static void fn_1_1398(omObjData *object)
 {
     UnkPresentCameraStruct *var_r31 = object->data;
     print8(32, 64, 1.5f, "AT  : x=%.2f y=%.2f z=%.2f", var_r31->target.x, var_r31->target.y, var_r31->target.z);
