@@ -1203,12 +1203,12 @@ config.libs = [
         "m447dll",  # Archaeologuess
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m447dll/main.c"),
-            Object(NonMatching, "REL/m447dll/stage.c"),
-            Object(NonMatching, "REL/m447dll/camera.c"),
-            Object(NonMatching, "REL/m447dll/player.c"),
-            Object(NonMatching, "REL/m447dll/player_col.c"),
-            Object(NonMatching, "REL/m447dll/block.c"),
+            Object(Matching, "REL/m447dll/main.c"),
+            Object(Matching, "REL/m447dll/stage.c"),
+            Object(Matching, "REL/m447dll/camera.c"),
+            Object(Matching, "REL/m447dll/player.c"),
+            Object(Matching, "REL/m447dll/player_col.c"),
+            Object(Matching, "REL/m447dll/block.c"),
         },
     ),
     Rel(
