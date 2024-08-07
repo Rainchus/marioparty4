@@ -919,7 +919,7 @@ config.libs = [
         "m412Dll",  # Mr. Blizzard's Brigade
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m412Dll/main.c"),
+            Object(Matching, "REL/m412Dll/main.c"),
         },
     ),
     Rel(
