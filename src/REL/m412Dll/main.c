@@ -1189,6 +1189,67 @@ s8 fn_1_4E58(s32 arg0, s32 arg1) {
     return var_r30;
 }
 
+static inline void DummyInline2(Vec *arg0, float arg1, float arg2)
+{
+    arg1 *= unkInline();
+    arg0->x = (arg1 * sind(arg2));
+    arg0->z = (arg1 * cosd(arg2));
+}
+
+static inline s8 fn_1_4E58_0(s32 arg0) {
+    Vec spC;
+	float temp;
+    f32 sp8;
+    f32 temp_f28;
+    f32 temp_f27;
+    s8 var_r30;
+    s8 temp_r29;
+    s8 temp_r28;
+
+    unkStruct3* temp_r31;
+
+    temp_r31 = &lbl_1_bss_4D4[arg0];
+    if (GWPlayerCfg[arg0].iscom == 0) {
+        temp_r29 = HuPadStkX[temp_r31->unk2C];
+        temp_r28 = HuPadStkY[temp_r31->unk2C];
+        temp_f28 = fn_1_1D08(atan2d(temp_r29, temp_r28));
+        temp_f28 -= lbl_1_bss_778;
+        HuSetVecF(&spC, (f32)temp_r29, 0.0, (f32)temp_r28);
+        DummyInline2(&spC, sqrtf((spC.x * spC.x) + (spC.z * spC.z)),  temp_f28);
+        var_r30 = spC.x;
+    } else {
+		var_r30 = temp_r31->unk88;
+	}
+    return var_r30;
+}
+
+static inline s8 fn_1_4E58_1(s32 arg0) {
+    Vec spC;
+	float temp;
+    f32 sp8;
+    f32 temp_f28;
+    f32 temp_f27;
+    s8 var_r30;
+    s8 temp_r29;
+    s8 temp_r28;
+
+    unkStruct3* temp_r31;
+
+    temp_r31 = &lbl_1_bss_4D4[arg0];
+    if (GWPlayerCfg[arg0].iscom == 0) {
+        temp_r29 = HuPadStkX[temp_r31->unk2C];
+        temp_r28 = HuPadStkY[temp_r31->unk2C];
+        temp_f28 = fn_1_1D08(atan2d(temp_r29, temp_r28));
+        temp_f28 -= lbl_1_bss_778;
+        HuSetVecF(&spC, (f32)temp_r29, 0.0, (f32)temp_r28);
+        DummyInline2(&spC, sqrtf((spC.x * spC.x) + (spC.z * spC.z)),  temp_f28);
+        var_r30 = spC.z;
+    } else {
+        var_r30 = temp_r31->unk89;
+    }
+    return var_r30;
+}
+
 u8 fn_1_525C(s32 arg0, s32 arg1) {
     s8 var_r30;
     s8 var_r29;
@@ -1242,11 +1303,11 @@ s32 fn_1_53F4(unkStruct3* arg0, f32 arg8, f32 arg9, f32 argA) {
     Vec sp30;
     Vec sp24;
     Vec sp18;
+    unkStruct3* temp_r31;
+    s32 var_r30;
+    s32 var_r28;
     f32 var_f27;
     f32 var_f28;
-    s32 var_r28;
-    s32 var_r30;
-    unkStruct3* temp_r31;
 
     var_r28 = -1;
     
@@ -1260,6 +1321,8 @@ s32 fn_1_53F4(unkStruct3* arg0, f32 arg8, f32 arg9, f32 argA) {
                 var_f28 = var_f27;
                 var_r28 = var_r30;
                 arg0->unkA4 = 0;
+				(void)temp_r31;
+				(void)temp_r31;
             }
         }
     }
@@ -1404,8 +1467,8 @@ end:
 }
 
 f32 fn_1_6594(f32 arg8, f32 arg9, f32 argA) {
-    f32 var_f30;
     f32 var_f31;
+    f32 var_f30;
 
     var_f31 = fmod((arg9 - arg8), 360.0);
     if (0.0f > var_f31) {
@@ -1430,6 +1493,25 @@ f32 fn_1_6698(f32 arg8, f32 arg9, unkStruct3* arg0) {
     HuSetVecF(&sp20, arg0->unk40.x, 0.0, arg0->unk40.z);
     HuSubVecF(&sp14, &sp2C, &sp20);
     return sqrtf((sp14.x * sp14.x) + (sp14.z * sp14.z));
+}
+
+static inline void PadInline(void)
+{
+	float var_f27;
+	(void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
+    (void)var_f27;
 }
 
 // fn_1_6814: https://decomp.me/scratch/WQPjD
@@ -1511,6 +1593,7 @@ void fn_1_6814(unkStruct3* arg0) {
         if (arg0->unkA0 != var_r30->unk6) {
             if (frandmod(0x64) < 0) {
                 (void)var_r21; // probably debug code
+				PadInline();
             } else {
                 (void)var_r21;
             }
@@ -1598,23 +1681,27 @@ void fn_1_6814(unkStruct3* arg0) {
         }
     }
     
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
-    (void)var_f27;
+    
 }
 
-// fn_1_7C60: https://decomp.me/scratch/eMCi6
+static inline DummyInline(Vec *arg0, Vec *arg1, Vec *arg2, float arg3, float arg4, float arg5)
+{
+    float spB8;
+    float spBC;
+	HuSetVecF(arg0, arg1->x, 0.0, arg1->z);
+    spBC = sqrtf((arg0->x * arg0->x) + (arg0->z * arg0->z));
+    spBC *= (1.0f - arg3);
+    arg0->x = spBC * sind(arg4);
+    arg0->z = spBC * cosd(arg4);
+    HuSetVecF(arg2, arg0->x, 0.0, arg0->z);
+    HuSetVecF(arg0, arg1->x, 0.0, arg1->z);
+    spB8 = sqrtf((arg0->x * arg0->x) + (arg0->z * arg0->z));
+    spB8 *= arg3;
+    arg0->x = spB8 * sind(arg5);
+    arg0->z = spB8 * cosd(arg5);
+    HuSetVecF(arg1, arg0->x, 0.0, arg0->z);
+}
+
 void fn_1_7C60(void) {
     Vec sp1A0;
     Vec sp188;
@@ -1686,7 +1773,7 @@ loop_6:
     }
     switch (temp_r31->unk30) {
         default:
-            HuSetVecF(&temp_r31->unk24, fn_1_4E58(temp_r31->unk24, 0) * 0.25f, 0.0, -fn_1_4E58(temp_r31->unk24, 1) * 0.25f);
+            HuSetVecF(&sp1A0, fn_1_4E58_0(temp_r31->unk24) / 4.0f, 0.0, -fn_1_4E58_1(temp_r31->unk24) / 4.0f);
             temp_r31->unk60.z = sqrtf((sp1A0.z * sp1A0.z) + ((sp1A0.x * sp1A0.x) + (sp1A0.y * sp1A0.y)));
             if (temp_r31->unk60.z >= 0.5f) {
                 if (temp_r31->unk60.z >= 10.0f) {
@@ -1739,8 +1826,7 @@ loop_6:
             temp_r31->unk60.y = var_f21;
             temp_r31->unk40.x += temp_r31->unk7C.x;
             temp_r31->unk40.z += temp_r31->unk7C.z;
-            temp_r31->unk38 = fn_1_53F4(temp_r31, temp_r31->unk40.x, temp_r31->unk40.y, temp_r31->unk40.z);
-            if (temp_r31->unk38 != -1) {
+            if ((temp_r31->unk38 = fn_1_53F4(temp_r31, temp_r31->unk40.x, temp_r31->unk40.y, temp_r31->unk40.z)) != -1) {
                 temp_r30 = &lbl_1_bss_4D4[temp_r31->unk38];
                 if (temp_r30->unk30 != 3) {
                     var_f31 = atan2d((temp_r30->unk40.x - temp_r31->unk40.x), (temp_r30->unk40.z - temp_r31->unk40.z));
@@ -1755,18 +1841,7 @@ loop_6:
                     temp_f20 = fn_1_1D08(180.0f + temp_f20);
                     temp_f20 = fn_1_1D08(var_f31 - (temp_f20 - var_f31));
                     var_f31 = fn_1_1D08(atan2d((temp_r30->unk40.x - temp_r31->unk40.x), (temp_r30->unk40.z - temp_r31->unk40.z)));
-                    HuSetVecF(&sp1A0, temp_r31->unk7C.x, 0.0, temp_r31->unk7C.z);
-                    spBC = sqrtf((sp1A0.x * sp1A0.x) + (sp1A0.z * sp1A0.z));
-                    spBC *= (1.0f - sp138);
-                    sp1A0.x = spBC * sind(var_f31);
-                    sp1A0.z = spBC * cosd(var_f31);
-                    HuSetVecF(&temp_r30->unk7C, sp1A0.x, 0.0, sp1A0.z);
-                    HuSetVecF(&sp1A0, temp_r31->unk7C.x, 0.0, temp_r31->unk7C.z);
-                    spB8 = sqrtf((sp1A0.x * sp1A0.x) + (sp1A0.z * sp1A0.z));
-                    spB8 *= sp138;
-                    sp1A0.x = spB8 * sind(temp_f20);
-                    sp1A0.z = spB8 * cosd(temp_f20);
-                    HuSetVecF(&temp_r31->unk7C, sp1A0.x, 0.0, sp1A0.z);
+                    DummyInline(&sp1A0, &temp_r31->unk7C, &temp_r30->unk7C, sp138, var_f31, temp_f20);
                 }
                 fn_1_5838(temp_r31);
             }
@@ -1828,7 +1903,8 @@ loop_6:
                 Hu3DModelRotSet(temp_r31->unk2, temp_r31->unk54.x, temp_r31->unk54.y, temp_r31->unk54.z);
                 HuPrcVSleep();
             }
-                
+            (void)var_r27;
+            (void)var_r27;
             while (lbl_1_bss_794 < 5) {
                 HuPrcVSleep();
             }
