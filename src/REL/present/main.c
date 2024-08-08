@@ -104,7 +104,7 @@ static void ExecPresentView(omObjData *object)
         case 6:
             HuAudFXPlay(66);
             PresentWinAnimIn(work->window);
-            PresentWinMesSet(work->window, 0x320002);
+            PresentWinMesSet(work->window, MAKE_MESSID(0x32, 0x02));
             object->unk10 = 7;
         case 7:
             if (work->window->state) {

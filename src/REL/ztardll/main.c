@@ -120,7 +120,7 @@ void fn_1_424(void)
     var_r27 = 0;
     fn_1_7D6C(lbl_1_bss_68);
     HuPrcVSleep();
-    HuDataDirClose(0x640000);
+    HuDataDirClose(DATADIR_MPEX);
     lbl_1_bss_5A = 0;
     if (mgQuitExtraF != 0) {
         mgQuitExtraF = 0;
@@ -192,14 +192,14 @@ block_7:
     }
 loop_19:
     fn_1_11020();
-    fn_1_11264(0x330024, 0, 0);
+    fn_1_11264(MAKE_MESSID(0x33, 0x24), 0, 0);
     if (lbl_1_bss_5A == 0) {
-        fn_1_11264(0x330025, 0, 1);
+        fn_1_11264(MAKE_MESSID(0x33, 0x25), 0, 1);
     }
     else {
-        fn_1_11264(0x33002A, 0, 1);
+        fn_1_11264(MAKE_MESSID(0x33, 0x2A), 0, 1);
     }
-    fn_1_11708(0x33008D);
+    fn_1_11708(MAKE_MESSID(0x33, 0x8D));
     for (var_r31 = 0; var_r31 <= 0x0A; var_r31++) {
         var_f31 = var_r31 / 10.0;
 
@@ -226,10 +226,10 @@ loop_19:
                     HuPrcVSleep();
                 }
                 if (lbl_1_bss_5A == 0) {
-                    fn_1_11264(0x330025, 0, 1);
+                    fn_1_11264(MAKE_MESSID(0x33, 0x25), 0, 1);
                 }
                 else {
-                    fn_1_11264(0x33002A, 0, 1);
+                    fn_1_11264(MAKE_MESSID(0x33, 0x2A), 0, 1);
                 }
             }
         }
@@ -324,7 +324,7 @@ loop_19:
             HuPrcChildCreate(fn_1_7C00, 0x64, 0x2000, 0, lbl_1_bss_68);
         }
         fn_1_11020();
-        fn_1_11264(0x33002C, 0, 0);
+        fn_1_11264(MAKE_MESSID(0x33, 0x2C), 0, 0);
         var_r30 = fn_1_11390(0);
         if (var_r30 != -1) {
             if (var_r30 != 1) {
@@ -392,7 +392,7 @@ void fn_1_1774(void)
     for (var_r30 = 0; var_r30 < 0x10; var_r30++) {
         sp8.unk_5A[var_r30] = sp8.unk_3A[var_r30] = -1;
     }
-    var_r29 = MessData_MesPtrGet(messDataPtr, 0x170021);
+    var_r29 = MessData_MesPtrGet(messDataPtr, MAKE_MESSID(0x17, 0x21));
     for (var_r26 = var_r29; *var_r29 != 0; var_r29++) {
         if (*var_r29 == 0xA) {
             *var_r29 = 0x10;
@@ -588,11 +588,11 @@ void fn_1_2350(void)
                 fn_1_11020();
                 fn_1_11338(GWPlayerCfg[spC[0]].character, 0);
                 fn_1_11338(GWPlayerCfg[spC[1]].character, 1);
-                fn_1_11264(0x3300A0, 0, 0);
+                fn_1_11264(MAKE_MESSID(0x33, 0xA0), 0, 0);
                 if (GWMGAvailGet(var_r31 + 0x191) == 0) {
                     GWMGAvailSet(var_r31 + 0x191);
                     GWGameStat.present[0x37] = 1;
-                    fn_1_11264(0x330029, 0, 0);
+                    fn_1_11264(MAKE_MESSID(0x33, 0x29), 0, 0);
                 }
                 fn_1_111E0();
                 WipeCreate(2, 0, 0x1E);
@@ -671,7 +671,7 @@ void fn_1_2350(void)
             HuSprTPLvlSet(lbl_1_bss_50, 2, var_r31 / 20.0);
             HuPrcVSleep();
         }
-        fn_1_114EC(0x33004F, 1);
+        fn_1_114EC(MAKE_MESSID(0x33, 0x4F), 1);
         while (TRUE) {
             if ((*HuPadBtnDown & 0x100) != 0) {
                 HuAudFXPlay(2);
@@ -827,12 +827,12 @@ void fn_1_33B0(void)
         if (var_r28 != 0xFF) {
             if (var_r28 < 8) {
                 lbl_1_bss_36[var_r31] = CharModelCreate(var_r28, 2);
-                lbl_1_bss_E[var_r31][0] = CharModelMotionCreate(var_r28, 0x5F0000);
-                lbl_1_bss_E[var_r31][1] = CharModelMotionCreate(var_r28, 0x5F0003);
+                lbl_1_bss_E[var_r31][0] = CharModelMotionCreate(var_r28, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x00));
+                lbl_1_bss_E[var_r31][1] = CharModelMotionCreate(var_r28, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x03));
                 if (var_r31 < 2) {
-                    lbl_1_bss_E[var_r31][2] = CharModelMotionCreate(var_r28, 0x5F0048);
-                    lbl_1_bss_E[var_r31][3] = CharModelMotionCreate(var_r28, 0x5F0017);
-                    lbl_1_bss_E[var_r31][4] = CharModelMotionCreate(var_r28, 0x5F0018);
+                    lbl_1_bss_E[var_r31][2] = CharModelMotionCreate(var_r28, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x48));
+                    lbl_1_bss_E[var_r31][3] = CharModelMotionCreate(var_r28, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x17));
+                    lbl_1_bss_E[var_r31][4] = CharModelMotionCreate(var_r28, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x18));
                 }
                 CharModelVoiceEnableSet(GWPlayerCfg[spC[var_r31]].character, lbl_1_bss_E[var_r31][1], 0);
                 Hu3DModelScaleSet(lbl_1_bss_36[var_r31], 0.8f, 0.8f, 0.8f);
@@ -966,7 +966,7 @@ void fn_1_4374(void)
             HuPrcVSleep();
         }
     }
-    fn_1_114EC(0x33004F, 1);
+    fn_1_114EC(MAKE_MESSID(0x33, 0x4F), 1);
     while (TRUE) {
         if (HuPadBtnDown[0] & PAD_BUTTON_A) {
             HuAudFXPlay(2);
@@ -1058,9 +1058,9 @@ void fn_1_4948(void)
         var_r30 = GWPlayerCfg[spC[var_r31]].character;
         if (var_r30 < 8) {
             lbl_1_bss_36[var_r31] = CharModelCreate(var_r30, 2);
-            lbl_1_bss_E[var_r31][0] = CharModelMotionCreate(var_r30, 0x5F0000);
-            lbl_1_bss_E[var_r31][3] = CharModelMotionCreate(var_r30, 0x5F0017);
-            lbl_1_bss_E[var_r31][4] = CharModelMotionCreate(var_r30, 0x5F0018);
+            lbl_1_bss_E[var_r31][0] = CharModelMotionCreate(var_r30, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x00));
+            lbl_1_bss_E[var_r31][3] = CharModelMotionCreate(var_r30, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x17));
+            lbl_1_bss_E[var_r31][4] = CharModelMotionCreate(var_r30, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x18));
             Hu3DModelScaleSet(lbl_1_bss_36[var_r31], 0.8f, 0.8f, 0.8f);
         }
         else {
@@ -1236,7 +1236,7 @@ s32 fn_1_524C(s32 arg0)
     var_r24 = HuWinCreate(0.0f, 0.0f, 0x1E0, 0x28, 0);
     HuWinMesSpeedSet(var_r24, 0);
     HuWinBGTPLvlSet(var_r24, 0.0f);
-    HuWinMesSet(var_r24, 0x1A0020);
+    HuWinMesSet(var_r24, MAKE_MESSID(0x1A, 0x20));
     var_r22 = &winData[var_r24];
     HuWinPriSet(var_r24, 5);
     HuWinPosSet(var_r24, (576.0f - var_r22->w) / 2, 300.0f);
@@ -1393,7 +1393,7 @@ void fn_1_66F8(void)
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    HuDataDirClose(0x160000);
+    HuDataDirClose(DATADIR_INSTPIC);
     while (lbl_1_bss_4 != 0) {
         HuPrcVSleep();
     }
