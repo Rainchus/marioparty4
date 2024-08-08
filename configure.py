@@ -1570,7 +1570,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/ztardll/main.c"),
-            Object(NonMatching, "REL/ztardll/font.c"),
+            Object(Matching, "REL/ztardll/font.c"),
             Object(NonMatching, "REL/ztardll/select.c"),
         },
     ),
