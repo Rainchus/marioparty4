@@ -77,24 +77,24 @@ void fn_1_FD90(s32 arg0);
 extern s16 lbl_1_bss_4;
 
 s32 lbl_1_data_3C8[8] = {
-    0x5F0000,
-    0x1A0000,
-    0x6D0000,
-    0x8A0000,
-    0x850000,
-    0x110000,
-    0xD0000,
-    0x810000,
+    DATADIR_MARIOMOT,
+    DATADIR_LUIGIMOT,
+    DATADIR_PEACHMOT,
+    DATADIR_YOSHIMOT,
+    DATADIR_WARIOMOT,
+    DATADIR_DONKEYMOT,
+    DATADIR_DAISYMOT,
+    DATADIR_WALUIGIMOT,
 };
 s32 lbl_1_data_3E8[8] = {
-    0x5E0000,
-    0x190000,
-    0x6C0000,
-    0x890000,
-    0x840000,
-    0x100000,
-    0xC0000,
-    0x800000,
+    DATADIR_MARIOMDL1,
+    DATADIR_LUIGIMDL1,
+    DATADIR_PEACHMDL1,
+    DATADIR_YOSHIMDL1,
+    DATADIR_WARIOMDL1,
+    DATADIR_DONKEYMDL1,
+    DATADIR_DAISYMDL1,
+    DATADIR_WALUIGIMDL1,
 };
 
 s32 lbl_1_bss_26C[0x1B];
@@ -164,9 +164,9 @@ s32 fn_1_7E0C(s32 arg0)
     var_r29 = -1;
     fn_1_A610();
     fn_1_11020();
-    fn_1_11264(0x1A0005, -1, -1);
+    fn_1_11264(MAKE_MESSID(0x1A, 0x05), -1, -1);
     fn_1_10FBC(1);
-    fn_1_11708(0x330091);
+    fn_1_11708(MAKE_MESSID(0x33, 0x91));
     lbl_1_bss_20C.unk_04 = (ZtarUnkFunc)fn_1_AEE4;
     var_r29 = -1;
     while (TRUE) {
@@ -179,7 +179,7 @@ s32 fn_1_7E0C(s32 arg0)
         }
         if (var_r29 != var_r30) {
             var_r29 = var_r30;
-            fn_1_11264(var_r30 + 0x1A001B, -1, 1);
+            fn_1_11264(var_r30 + MAKE_MESSID(0x1A, 0x1B), -1, 1);
         }
         if (lbl_1_bss_20C.unk_28 == 0) {
             if (HuPadBtnDown[0] & PAD_BUTTON_A) {
@@ -253,12 +253,12 @@ s32 fn_1_8030(s32 arg0, s32 arg1)
     fn_1_11020();
     fn_1_10FBC(1);
     if (arg1 == 1) {
-        fn_1_11264(0x1E005E, -1, -1);
+        fn_1_11264(MAKE_MESSID(0x1E, 0x5E), -1, -1);
     }
     else {
-        fn_1_11264(0x1A0009, -1, -1);
+        fn_1_11264(MAKE_MESSID(0x1A, 0x09), -1, -1);
     }
-    fn_1_11708(0x330092);
+    fn_1_11708(MAKE_MESSID(0x33, 0x92));
     for (var_r31 = 0; var_r31 < var_r30; var_r31++) {
         if (lbl_1_bss_8C[var_r31].unk_50 == 0) {
             lbl_1_bss_8C[var_r31].unk_04 = (ZtarUnkFunc)fn_1_D280;
@@ -352,15 +352,15 @@ s32 fn_1_8338(s32 arg0, s32 arg1)
             }
         }
         if (var_r26 == -1) {
-            fn_1_11338(var_r25 + 0x1A0023, 1);
-            fn_1_11264(0x1A0028, -1, var_r26);
+            fn_1_11338(var_r25 + MAKE_MESSID(0x1A, 0x23), 1);
+            fn_1_11264(MAKE_MESSID(0x1A, 0x28), -1, var_r26);
         }
         else {
-            fn_1_11338(var_r25 + 0x1A0023, 1);
-            fn_1_11264(0x1A0028, -1, var_r26);
+            fn_1_11338(var_r25 + MAKE_MESSID(0x1A, 0x23), 1);
+            fn_1_11264(MAKE_MESSID(0x1A, 0x28), -1, var_r26);
         }
         var_r26 = 1;
-        fn_1_11708(0x330092);
+        fn_1_11708(MAKE_MESSID(0x33, 0x92));
         for (var_r31 = 0; var_r31 < arg1; var_r31++) {
             if ((lbl_1_bss_8C[var_r31].unk_50 != 0) && (lbl_1_bss_8C[var_r31].unk_08 == 0)) {
                 var_r30 = var_r31;
@@ -389,9 +389,9 @@ s32 fn_1_8338(s32 arg0, s32 arg1)
                     }
                 }
                 lbl_1_bss_8C[var_r30].unk_04 = NULL;
-                fn_1_11264(0x1A0022, -1, 1);
+                fn_1_11264(MAKE_MESSID(0x1A, 0x22), -1, 1);
                 fn_1_10FBC(1);
-                fn_1_11708(0x330093);
+                fn_1_11708(MAKE_MESSID(0x33, 0x93));
                 var_r29 = fn_1_F214(&lbl_1_bss_8C[var_r30]);
                 if (var_r29 == 1) {
                     HuAudFXPlay(2);
@@ -470,9 +470,9 @@ s32 fn_1_88A4(void)
     var_r26 = -1;
     fn_1_A8E8();
     fn_1_11020();
-    fn_1_11264(0x1A0005, -1, -1);
+    fn_1_11264(MAKE_MESSID(0x1A, 0x05), -1, -1);
     fn_1_10FBC(1);
-    fn_1_11708(0x330091);
+    fn_1_11708(MAKE_MESSID(0x33, 0x91));
     lbl_1_bss_20C.unk_04 = (ZtarUnkFunc)fn_1_B468;
     while (TRUE) {
         fn_1_10FBC(1);
@@ -484,7 +484,7 @@ s32 fn_1_88A4(void)
         }
         if (var_r26 != var_r30) {
             var_r26 = var_r30;
-            fn_1_11264(var_r30 + 0x330093, -1, 1);
+            fn_1_11264(var_r30 + MAKE_MESSID(0x33, 0x93), -1, 1);
         }
         if (lbl_1_bss_20C.unk_28 != 0) {
             continue;
@@ -581,8 +581,8 @@ s32 fn_1_8B94(s32 arg0)
     }
     fn_1_11020();
     fn_1_10FBC(1);
-    fn_1_11264(0x1A0009, -1, -1);
-    fn_1_11708(0x330092);
+    fn_1_11264(MAKE_MESSID(0x1A, 0x09), -1, -1);
+    fn_1_11708(MAKE_MESSID(0x33, 0x92));
     for (var_r31 = 0; var_r31 < var_r30; var_r31++) {
         if (lbl_1_bss_8C[var_r31].unk_50 == 0) {
             lbl_1_bss_8C[var_r31].unk_04 = (ZtarUnkFunc)fn_1_D280;
@@ -668,15 +668,15 @@ s32 fn_1_8E50(s32 arg0)
             }
         }
         if (var_r26 == -1) {
-            fn_1_11338(var_r25 + 0x1A0023, 1);
-            fn_1_11264(0x1A0028, -1, var_r26);
+            fn_1_11338(var_r25 + MAKE_MESSID(0x1A, 0x23), 1);
+            fn_1_11264(MAKE_MESSID(0x1A, 0x28), -1, var_r26);
         }
         else {
-            fn_1_11338(var_r25 + 0x1A0023, 1);
-            fn_1_11264(0x1A0028, -1, var_r26);
+            fn_1_11338(var_r25 + MAKE_MESSID(0x1A, 0x23), 1);
+            fn_1_11264(MAKE_MESSID(0x1A, 0x28), -1, var_r26);
         }
         var_r26 = 1;
-        fn_1_11708(0x330092);
+        fn_1_11708(MAKE_MESSID(0x33, 0x92));
         for (var_r31 = 0; var_r31 < var_r28; var_r31++) {
             if ((lbl_1_bss_8C[var_r31].unk_50 != 0) && (lbl_1_bss_8C[var_r31].unk_08 == 0)) {
                 var_r30 = var_r31;
@@ -705,9 +705,9 @@ s32 fn_1_8E50(s32 arg0)
                     }
                 }
                 lbl_1_bss_8C[var_r30].unk_04 = NULL;
-                fn_1_11264(0x1A0022, -1, 1);
+                fn_1_11264(MAKE_MESSID(0x1A, 0x22), -1, 1);
                 fn_1_10FBC(1);
-                fn_1_11708(0x330093);
+                fn_1_11708(MAKE_MESSID(0x33, 0x93));
                 var_r29 = fn_1_F214(&lbl_1_bss_8C[var_r30]);
                 if (var_r29 == 1) {
                     HuAudFXPlay(2);
@@ -2947,7 +2947,7 @@ void fn_1_11020(void)
 void fn_1_111E0(void)
 {
     if (lbl_1_data_66C != -1) {
-        HuWinMesSet(lbl_1_data_66C, 0x250004);
+        HuWinMesSet(lbl_1_data_66C, MAKE_MESSID(0x25, 0x04));
         HuWinExAnimOut(lbl_1_data_66C);
         HuWinExCleanup(lbl_1_data_66C);
         lbl_1_data_66C = -1;
@@ -2993,7 +2993,7 @@ s32 fn_1_11390(s32 arg0)
     s32 var_r27;
     s32 var_r26;
 
-    HuWinMesMaxSizeGet(1, spC, 0x1E0035);
+    HuWinMesMaxSizeGet(1, spC, MAKE_MESSID(0x1E, 0x35));
     var_r30 = spC[0];
     var_r29 = spC[1];
     var_r27 = 0x22C - var_r30;
@@ -3003,9 +3003,9 @@ s32 fn_1_11390(s32 arg0)
     HuWinMesPalSet(var_r31, 7, 0, 0, 0);
     HuWinExAnimIn(var_r31);
     HuWinMesSpeedSet(var_r31, 0);
-    HuWinMesSet(var_r31, 0x1E0035);
+    HuWinMesSet(var_r31, MAKE_MESSID(0x1E, 0x35));
     var_r28 = HuWinChoiceGet(var_r31, arg0);
-    HuWinMesSet(var_r31, 0x250004);
+    HuWinMesSet(var_r31, MAKE_MESSID(0x25, 0x04));
     HuWinExAnimOut(var_r31);
     HuWinExCleanup(var_r31);
 

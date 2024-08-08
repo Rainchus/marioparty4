@@ -56,7 +56,7 @@ omObjData *PresentGuideCreate(void)
     Hu3DModelLayerSet(object->model[0], 1);
 
     for (var_r29 = 0; var_r29 < 3; var_r29++) {
-        object->motion[var_r29] = Hu3DJointMotion(object->model[0], HuDataSelHeapReadNum(guideMotTbl[var_r29], MEMORY_DEFAULT_NUM, HEAP_DATA));
+        object->motion[var_r29] = Hu3DJointMotionFile(object->model[0], guideMotTbl[var_r29]);
     }
     Hu3DMotionShiftSet(object->model[0], object->motion[work->motion = 0], 0.0f, 8.0f, 0x40000001);
     work->unk_50 = CharModelEffectNpcInit(object->model[0], object->motion[2], 1, 10);

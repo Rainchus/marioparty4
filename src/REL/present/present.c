@@ -5,6 +5,7 @@
 #include "game/hsfex.h"
 #include "game/hsfman.h"
 #include "game/wipe.h"
+#include "game/window.h"
 
 #include "REL/present.h"
 
@@ -502,13 +503,13 @@ static void ExecSelectRoom(omObjData *object)
                 PresentWinAnimIn(work->presentDescWindow);
                 PresentWinAnimIn(work->btnLegendWindow);
                 if (work->constellationSelF) {
-                    mess = 0x320080;
+                    mess = MAKE_MESSID(0x32, 0x80);
                 }
                 else if (work->room == ROOM_TROPHY) {
-                    mess = 0x320085;
+                    mess = MAKE_MESSID(0x32, 0x85);
                 }
                 else {
-                    mess = 0x32007e;
+                    mess = MAKE_MESSID(0x32, 0x7e);
                 }
                 PresentWinMesSet(work->btnLegendWindow, mess);
                 switch (work->room) {
@@ -522,36 +523,36 @@ static void ExecSelectRoom(omObjData *object)
                     case ROOM_WALUIGI:
                         if (work->constellationSelF) {
                             if (PresentUnlocked(object, work->room, ROOM_TROPHY)) {
-                                mess = 0x320005;
+                                mess = MAKE_MESSID(0x32, 0x05);
                             }
                             else {
-                                mess = 0x320082;
+                                mess = MAKE_MESSID(0x32, 0x82);
                             }
                         }
                         else if (UnlockedPresents(object, work->room) > 0) {
-                            mess = 0x320001;
+                            mess = MAKE_MESSID(0x32, 0x01);
                         }
                         else {
-                            mess = 0x320081;
+                            mess = MAKE_MESSID(0x32, 0x81);
                         }
                         PresentWinMesSet(work->presentDescWindow, mess);
                         PresentWinInsertMesSet(work->presentDescWindow, roomMessTbl[work->room], 0);
                         break;
                     case ROOM_TROPHY:
                         if (PresentUnlocked(object, ROOM_TROPHY, 0)) {
-                            mess = 0x320041;
+                            mess = MAKE_MESSID(0x32, 0x41);
                         }
                         else {
-                            mess = 0x320084;
+                            mess = MAKE_MESSID(0x32, 0x84);
                         }
                         PresentWinMesSet(work->presentDescWindow, mess);
                         break;
                     case ROOM_MG:
                         if (UnlockedPresents(object, ROOM_MG) > 0) {
-                            mess = 0x320083;
+                            mess = MAKE_MESSID(0x32, 0x83);
                         }
                         else {
-                            mess = 0x320081;
+                            mess = MAKE_MESSID(0x32, 0x81);
                         }
                         PresentWinMesSet(work->presentDescWindow, mess);
                         break;
@@ -718,13 +719,13 @@ static void ExecSelectPresent(omObjData *object)
             }
             PresentWinAnimIn(work->presentDescWindow);
             PresentWinAnimIn(work->btnLegendWindow);
-            PresentWinMesSet(work->btnLegendWindow, 0x32007F);
+            PresentWinMesSet(work->btnLegendWindow, MAKE_MESSID(0x32, 0x7F));
 
             if (work->roomNotEmptyF) {
                 PresentWinMesSet(work->presentDescWindow, roomTbl[room].presentData[idxInRoom].descMess);
             }
             else {
-                PresentWinMesSet(work->presentDescWindow, 0x320003);
+                PresentWinMesSet(work->presentDescWindow, MAKE_MESSID(0x32, 0x03));
             }
             work->cursorTime = 0.0f;
             work->cursorSpeed = 1.0f / 6.0f;
@@ -1099,7 +1100,7 @@ static void ExecPresentGet(omObjData *object)
         case 3:
             PresentWinAnimIn(work->presentDescWindow);
             PresentWinInsertMesSet(work->presentDescWindow, roomTbl[work->room].presentData[work->idxInRoom].nameMess, 0);
-            PresentWinMesSet(work->presentDescWindow, 0x320004);
+            PresentWinMesSet(work->presentDescWindow, MAKE_MESSID(0x32, 0x04));
             PresentWinMesWait(work->presentDescWindow);
             object->unk10 = 4;
         case 4:

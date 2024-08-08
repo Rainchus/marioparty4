@@ -68,7 +68,7 @@ omObjData *OptionGuideCreate(void)
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 12));
     Hu3DModelLayerSet(object->model[0], 1);
     for (i = 0; i < 3; i++) {
-        object->motion[i] = Hu3DJointMotion(object->model[0], HuDataSelHeapReadNum(guideMotTbl[i], MEMORY_DEFAULT_NUM, HEAP_DATA));
+        object->motion[i] = Hu3DJointMotionFile(object->model[0], guideMotTbl[i]);
     }
     work->unk_5C = CharModelEffectNpcInit(object->model[0], object->motion[2], 1, 0xC);
     work->unk_60 = CharModelEffectNpcInit(object->model[0], object->motion[1], 0, 0xC);
@@ -217,7 +217,7 @@ static void UpdateGuide(omObjData *object)
 static float LerpAngle(float start, float end, float time)
 {
     float angle;
-    
+
     float delta = fmod(end - start, 360.0);
     if (0.0f > delta) {
         delta += 360.0f;
