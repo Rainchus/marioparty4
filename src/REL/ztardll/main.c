@@ -33,6 +33,8 @@ Process *lbl_1_bss_68;
 s32 lbl_1_bss_64;
 s32 lbl_1_bss_60;
 s16 lbl_1_bss_5E;
+s16 lbl_1_bss_5C;
+
 s16 lbl_1_bss_5A;
 s16 lbl_1_bss_58;
 s32 lbl_1_bss_54;

@@ -1569,9 +1569,9 @@ config.libs = [
         "ztardll",
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/ztardll/main.c"),
+            Object(Matching, "REL/ztardll/main.c"),
             Object(Matching, "REL/ztardll/font.c"),
-            Object(NonMatching, "REL/ztardll/select.c"),
+            Object(Matching, "REL/ztardll/select.c"),
         },
     ),
 ]
