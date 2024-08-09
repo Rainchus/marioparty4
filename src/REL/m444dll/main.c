@@ -40,8 +40,10 @@ CameraViewParams lbl_1_data_0[] = {
     { { -23, 0, 0 }, { 0, 65, -97 }, 1318 },
 };
 
-DataListSprite lbl_1_data_118[]
-    = { { DATA_MAKE_NUM(DATADIR_M443, 0x22), 0, 10, 288, -200, { 255, 255, 255, 255 } }, { 0, 0, 0, 0, 0, { 0, 0, 0, 0 } } };
+DataListSprite lbl_1_data_118[] = {
+    { DATA_MAKE_NUM(DATADIR_M444, 0x22), 0, 10, 288, -200, { 255, 255, 255, 255 } },
+    { 0, 0, 0, 0, 0, { 0, 0, 0, 0 } },
+};
 
 float lbl_1_data_140[] = { 90, 250, 420 };
 
@@ -55,9 +57,16 @@ Vec lbl_1_data_14C[] = {
 
 s16 lbl_1_data_188[] = { 1, 1, 2, 2, 2 };
 
-s32 lbl_1_data_194[] = { DATA_MAKE_NUM(DATADIR_M443, 0x24), DATA_MAKE_NUM(DATADIR_M443, 0x25), DATA_MAKE_NUM(DATADIR_M443, 0x26),
-    DATA_MAKE_NUM(DATADIR_M443, 0x27), DATA_MAKE_NUM(DATADIR_M443, 0x28), DATA_MAKE_NUM(DATADIR_M443, 0x29), DATA_MAKE_NUM(DATADIR_M443, 0x2A),
-    DATA_MAKE_NUM(DATADIR_M443, 0x2B) };
+s32 lbl_1_data_194[] = {
+    DATA_MAKE_NUM(DATADIR_M444, 0x24),
+    DATA_MAKE_NUM(DATADIR_M444, 0x25),
+    DATA_MAKE_NUM(DATADIR_M444, 0x26),
+    DATA_MAKE_NUM(DATADIR_M444, 0x27),
+    DATA_MAKE_NUM(DATADIR_M444, 0x28),
+    DATA_MAKE_NUM(DATADIR_M444, 0x29),
+    DATA_MAKE_NUM(DATADIR_M444, 0x2A),
+    DATA_MAKE_NUM(DATADIR_M444, 0x2B),
+};
 
 omObjData *lbl_1_bss_30C;
 Process *lbl_1_bss_308;
@@ -1241,7 +1250,7 @@ void fn_1_655C(void)
     up.y = 1;
     up.z = 0;
     Hu3DShadowPosSet(&pos, &up, &target);
-    Hu3DReflectMapSet(HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M443, 0x23), MEMORY_DEFAULT_NUM, HEAP_DATA));
+    Hu3DReflectMapSet(HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M444, 0x23), MEMORY_DEFAULT_NUM, HEAP_DATA));
     for (i = 0; i < 4; i++) {
         lbl_1_data_470[i + 47].datanum = lbl_1_data_470[i + 51].datanum = lbl_1_data_194[GWPlayerCfg[i].character];
     }
@@ -1266,8 +1275,8 @@ void fn_1_655C(void)
     lbl_1_bss_2D0 = model;
     lbl_1_bss_2C0[0] = CharModelMotionCreate(lbl_1_bss_2DA, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x00));
     lbl_1_bss_2C0[1] = CharModelMotionCreate(lbl_1_bss_2DA, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x02));
-    lbl_1_bss_2C0[2] = CharModelMotionCreate(lbl_1_bss_2DA, lbl_1_bss_2DA + DATA_MAKE_NUM(DATADIR_M443, 0x45));
-    lbl_1_bss_2C0[3] = CharModelMotionCreate(lbl_1_bss_2DA, lbl_1_bss_2DA + DATA_MAKE_NUM(DATADIR_M443, 0x4D));
+    lbl_1_bss_2C0[2] = CharModelMotionCreate(lbl_1_bss_2DA, lbl_1_bss_2DA + DATA_MAKE_NUM(DATADIR_M444, 0x45));
+    lbl_1_bss_2C0[3] = CharModelMotionCreate(lbl_1_bss_2DA, lbl_1_bss_2DA + DATA_MAKE_NUM(DATADIR_M444, 0x4D));
     CharModelMotionSet(lbl_1_bss_2DA, lbl_1_bss_2C0[0]);
     Hu3DModelPosSet(model, 0, 0, 200);
     Hu3DModelAttrSet(model, 0x40000001);
@@ -1298,7 +1307,7 @@ void fn_1_655C(void)
     fn_1_8424();
     for (i = 0; i < 20; i++) {
         if (i == 0) {
-            model = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M443, 0x13));
+            model = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M444, 0x13));
         }
         else {
             model = Hu3DModelLink(lbl_1_bss_148[0][0]);
@@ -1311,7 +1320,7 @@ void fn_1_655C(void)
     }
     for (i = 0; i < 20; i++) {
         if (i == 0) {
-            model = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M443, 0x12));
+            model = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M444, 0x12));
         }
         else {
             model = Hu3DModelLink(lbl_1_bss_8[0][0]);
