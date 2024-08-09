@@ -23,6 +23,8 @@
 
 #include "rel_sqrt_consts.h"
 
+#include "REL/instDll.h"
+
 static s16 lbl_1_data_0 = 1;
 
 static omObjData *lbl_1_bss_60;
@@ -756,8 +758,6 @@ static float lbl_1_data_124[] = {
 	400,
 	292
 };
-
-s32 fn_1_5EA4(SeqWork *work, char *mess, s16 jp_flag);
 
 static void fn_1_2FA0(void)
 {
