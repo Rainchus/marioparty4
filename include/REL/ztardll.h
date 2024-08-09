@@ -1,20 +1,11 @@
 #ifndef ZTARDLL_H
 #define ZTARDLL_H
 
-#include "game/object.h"
+#include "game/minigame_seq.h"
 
 #include "dolphin/types.h"
 
-typedef struct ZtarDllUnkStruct {
-    char unk00[0x30];
-    s16 unk_30;
-    s16 unk_32;
-    char unk34[6];
-    s16 unk_3A[16];
-    s16 unk_5A[16];
-} ZtarDllUnkStruct; /* size = 0x7A */
-
-s32 fn_1_7754(ZtarDllUnkStruct *arg0, u8 *arg1);
+s32 fn_1_7754(SeqWork *arg0, char *mess);
 void fn_1_7C00(void);
 void fn_1_7D6C(Process *arg0);
 s32 fn_1_97D0(s32 arg0, s32 arg1);

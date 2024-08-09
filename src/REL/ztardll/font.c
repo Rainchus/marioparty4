@@ -1,4 +1,5 @@
 #include "game/sprite.h"
+#include "game/minigame_seq.h"
 
 #include "REL/ztardll.h"
 
@@ -54,9 +55,9 @@ s32 lbl_1_data_B0[0xC6] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     DATA_MAKE_NUM(DATADIR_INSTFONT, 0x00), DATA_MAKE_NUM(DATADIR_INSTFONT, 0x00), DATA_MAKE_NUM(DATADIR_INSTFONT, 0x0B),
     DATA_MAKE_NUM(DATADIR_INSTFONT, 0x0C), DATA_MAKE_NUM(DATADIR_INSTFONT, 0x00), DATA_MAKE_NUM(DATADIR_INSTFONT, 0x00) };
 
-s32 fn_1_7754(ZtarDllUnkStruct *arg0, u8 *arg1)
+s32 fn_1_7754(SeqWork *work, char *mess)
 {
-    u8 *var_r31;
+    char *var_r31;
     s16 var_r30;
     s16 *var_r29;
     s16 var_r28;
@@ -71,7 +72,7 @@ s32 fn_1_7754(ZtarDllUnkStruct *arg0, u8 *arg1)
 
     var_r27 = lbl_1_data_B0;
     for (var_r25 = 0; var_r25 < 0x10; var_r25++) {
-        if (arg0->unk_3A[var_r25] == -1) {
+        if (work->spr_grp[var_r25] == -1) {
             break;
         }
     }
@@ -81,7 +82,7 @@ s32 fn_1_7754(ZtarDllUnkStruct *arg0, u8 *arg1)
     var_r21 = HuMemDirectMalloc(HEAP_SYSTEM, 0x190);
     var_r22 = HuMemDirectMalloc(HEAP_SYSTEM, 0xC8);
     var_r29 = HuMemDirectMalloc(HEAP_SYSTEM, 0xC8);
-    for (var_r31 = arg1, var_r30 = 0, var_r28 = 0; var_r31[0] != 0; var_r31++) {
+    for (var_r31 = mess, var_r30 = 0, var_r28 = 0; var_r31[0] != 0; var_r31++) {
         if (var_r31[0] == 0x20 || var_r31[0] == 0x10) {
             var_r30 += 0xE;
         }
@@ -151,15 +152,15 @@ s32 fn_1_7754(ZtarDllUnkStruct *arg0, u8 *arg1)
         }
     }
     var_r20 = HuSprGrpCreate(var_r28);
-    arg0->unk_3A[var_r25] = var_r20;
-    arg0->unk_30 = var_r30;
+    work->spr_grp[var_r25] = var_r20;
+    work->alt_word_len = var_r30;
     var_r30 = (var_r30 / 2) - 0xE;
     for (var_r26 = 0; var_r26 < var_r28; var_r26++) {
         var_r19 = HuSprCreate(var_r21[var_r26], 0, 0);
         HuSprGrpMemberSet(var_r20, var_r26, var_r19);
         HuSprPosSet(var_r20, var_r26, var_r22[var_r26] - var_r30, var_r29[var_r26]);
     }
-    arg0->unk_32 = var_r28;
+    work->word_len = var_r28;
     HuMemDirectFree(var_r21);
     HuMemDirectFree(var_r22);
     HuMemDirectFree(var_r29);

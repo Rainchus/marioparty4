@@ -372,13 +372,13 @@ loop_19:
 
 void fn_1_1774(void)
 {
-    ZtarDllUnkStruct sp8;
+    SeqWork work;
     s16 var_r31;
     s16 var_r30;
-    u8 *var_r29;
+    char *var_r29;
     s16 var_r28;
     AnimData *var_r27;
-    u8 *var_r26;
+    char *var_r26;
     AnimData *var_r25;
     AnimData *var_r24;
     AnimData *var_r23;
@@ -390,7 +390,7 @@ void fn_1_1774(void)
     HuSprGrpDrawNoSet(lbl_1_bss_48, 0x7F);
     HuSprGrpPosSet(lbl_1_bss_48, 288.0f, 240.0f);
     for (var_r30 = 0; var_r30 < 0x10; var_r30++) {
-        sp8.unk_5A[var_r30] = sp8.unk_3A[var_r30] = -1;
+        work.sprite[var_r30] = work.spr_grp[var_r30] = -1;
     }
     var_r29 = MessData_MesPtrGet(messDataPtr, MAKE_MESSID(0x17, 0x21));
     for (var_r26 = var_r29; *var_r29 != 0; var_r29++) {
@@ -398,7 +398,7 @@ void fn_1_1774(void)
             *var_r29 = 0x10;
         }
     }
-    lbl_1_bss_52 = sp8.unk_3A[fn_1_7754(&sp8, var_r26)];
+    lbl_1_bss_52 = work.spr_grp[fn_1_7754(&work, var_r26)];
     HuSprGrpPosSet(lbl_1_bss_52, 288.0f, -300.0f);
     HuSprGrpDrawNoSet(lbl_1_bss_52, 0x7F);
     var_r27 = HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_ZTAR, 4));

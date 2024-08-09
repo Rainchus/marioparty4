@@ -67,10 +67,10 @@ void fn_1_C4B8(s32 arg0);
 void fn_1_C8EC(s32 arg0);
 void fn_1_CAF0(void);
 void fn_1_D280(omObjData *arg0, ZtarDllUnkStruct2 *arg1);
-void fn_1_DD8C(struct ZtarDllUnkStruct2 *arg0);
-void fn_1_E4AC(struct ZtarDllUnkStruct2 *arg0);
+void fn_1_DD8C(ZtarDllUnkStruct2 *arg0);
+void fn_1_E4AC(ZtarDllUnkStruct2 *arg0);
 void fn_1_E548(omObjData *arg0, ZtarDllUnkStruct2 *arg1);
-s32 fn_1_F214(struct ZtarDllUnkStruct2 *arg0);
+s32 fn_1_F214(ZtarDllUnkStruct2 *arg0);
 void fn_1_FB38(void);
 void fn_1_FD90(s32 arg0);
 
@@ -2051,49 +2051,48 @@ void fn_1_D280(omObjData *arg0, ZtarDllUnkStruct2 *arg1)
     }
     if (arg1->unk_5C != var_r25) {
         if (lbl_1_bss_74 != 0) {
-			while(1) {
-				var_r25 = var_r30 + (var_r29 * 6);
-				for (var_r28 = 0; var_r28 < 4; var_r28++) {
-					if (((var_r28 != arg1->unk_48) && (lbl_1_bss_8C[var_r28].unk_50 == 0) && (var_r25 == lbl_1_bss_8C[var_r28].unk_5C)) || (var_r25 == 0)
-						|| (var_r25 == 5) || (var_r25 == 6) || (var_r25 == 0xB)) {
-						if ((var_r27 == 0) || (var_r26 == 0)) {
-							if (((var_r30 + var_r27) > 5) || ((var_r30 + var_r27) < 0)) {
-								var_r30 = var_r23;
-							}
-							else {
-								var_r30 += var_r27;
-							}
-							if (((var_r29 + var_r26) > 2) || ((var_r29 + var_r26) < 0)) {
-								var_r29 = var_r22;
-							}
-							else {
-								var_r29 += var_r26;
-							}
-						}
-						else if (((var_r30 + var_r27) <= 5) && ((var_r30 + var_r27) >= 0)) {
-							var_r30 += var_r27;
-						}
-						else if (((var_r29 + var_r26) <= 2) && ((var_r29 + var_r26) >= 0)) {
-							var_r29 += var_r26;
-						}
-						else {
-							var_r30 = var_r23;
-							var_r29 = var_r22;
-						}
-						break;
-					}
-					else {
-						
-					}
-				}
-				if(var_r28 == 4) {
-					break;
-				}
-			}
+            while (1) {
+                var_r25 = var_r30 + (var_r29 * 6);
+                for (var_r28 = 0; var_r28 < 4; var_r28++) {
+                    if (((var_r28 != arg1->unk_48) && (lbl_1_bss_8C[var_r28].unk_50 == 0) && (var_r25 == lbl_1_bss_8C[var_r28].unk_5C))
+                        || (var_r25 == 0) || (var_r25 == 5) || (var_r25 == 6) || (var_r25 == 0xB)) {
+                        if ((var_r27 == 0) || (var_r26 == 0)) {
+                            if (((var_r30 + var_r27) > 5) || ((var_r30 + var_r27) < 0)) {
+                                var_r30 = var_r23;
+                            }
+                            else {
+                                var_r30 += var_r27;
+                            }
+                            if (((var_r29 + var_r26) > 2) || ((var_r29 + var_r26) < 0)) {
+                                var_r29 = var_r22;
+                            }
+                            else {
+                                var_r29 += var_r26;
+                            }
+                        }
+                        else if (((var_r30 + var_r27) <= 5) && ((var_r30 + var_r27) >= 0)) {
+                            var_r30 += var_r27;
+                        }
+                        else if (((var_r29 + var_r26) <= 2) && ((var_r29 + var_r26) >= 0)) {
+                            var_r29 += var_r26;
+                        }
+                        else {
+                            var_r30 = var_r23;
+                            var_r29 = var_r22;
+                        }
+                        break;
+                    }
+                    else {
+                    }
+                }
+                if (var_r28 == 4) {
+                    break;
+                }
+            }
         }
         else {
-			while(1) {
-				var_r25 = var_r30 + (var_r29 * 4);
+            while (1) {
+                var_r25 = var_r30 + (var_r29 * 4);
                 for (var_r28 = 0; var_r28 < 4; var_r28++) {
                     if ((var_r28 != arg1->unk_48) && (lbl_1_bss_8C[var_r28].unk_50 == 0) && (var_r25 == lbl_1_bss_8C[var_r28].unk_5C)) {
                         if ((var_r27 == 0) || (var_r26 == 0)) {
@@ -2105,10 +2104,11 @@ void fn_1_D280(omObjData *arg0, ZtarDllUnkStruct2 *arg1)
                             }
                             if (((var_r29 + var_r26) > 1) || ((var_r29 + var_r26) < 0)) {
                                 var_r29 = var_r22;
-                            } else {
+                            }
+                            else {
                                 var_r29 += var_r26;
                             }
-							break;
+                            break;
                         }
                         else if (((var_r30 + var_r27) <= 3) && ((var_r30 + var_r27) >= 0)) {
                             var_r30 += var_r27;
@@ -2128,10 +2128,10 @@ void fn_1_D280(omObjData *arg0, ZtarDllUnkStruct2 *arg1)
                         continue;
                     }
                 }
-				if(var_r28 == 4) {
-					break;
-				}
-			}
+                if (var_r28 == 4) {
+                    break;
+                }
+            }
         }
         if (lbl_1_bss_74 != 0) {
             var_r25 = var_r30 + (var_r29 * 6);
@@ -2388,8 +2388,8 @@ void fn_1_E548(omObjData *arg0, ZtarDllUnkStruct2 *arg1)
     }
     if (arg1->unk_5C != var_r24) {
         if (lbl_1_bss_74 != 0) {
-			while(1) {
-				fn_1_10FBC(1);
+            while (1) {
+                fn_1_10FBC(1);
                 var_r24 = var_r30 + (var_r29 * 6);
                 for (var_r28 = 0; var_r28 < 4; var_r28++) {
                     if (((var_r28 != arg1->unk_48) && (lbl_1_bss_8C[var_r28].unk_08 == 1) && (var_r24 == lbl_1_bss_8C[var_r28].unk_5C))
@@ -2421,10 +2421,10 @@ void fn_1_E548(omObjData *arg0, ZtarDllUnkStruct2 *arg1)
                         break;
                     }
                 }
-				if(var_r28 == 4) {
-					break;
-				}
-			}
+                if (var_r28 == 4) {
+                    break;
+                }
+            }
         }
         else {
             do {
@@ -2506,81 +2506,89 @@ s32 fn_1_F214(ZtarDllUnkStruct2 *arg0)
 
     var_r28 = 0;
     var_r29 = lbl_1_bss_26C[1];
-	while(1) {
-		fn_1_10FBC(1);
-		var_r28 = 0;
-		var_r26 = arg0->unk_54;
-		if(HuPadStkX[lbl_1_bss_8C[0].unk_58] >= 5 || (HuPadBtn[lbl_1_bss_8C[0].unk_58] & PAD_BUTTON_RIGHT)) {
-			if(GWGameStat.field10E_bit4 == 1) {
-				arg0->unk_54++;
-				var_r28 = 1;
-				if(arg0->unk_54 > 3) {
-					arg0->unk_54 = 0;
-				}
-			} else {
-				arg0->unk_54++;
-				var_r28 = 1;
-				if(arg0->unk_54 > 2) {
-					arg0->unk_54 = 0;
-				}
-			}
-		} else if(HuPadStkX[lbl_1_bss_8C[0].unk_58] <= -5 || (HuPadBtn[lbl_1_bss_8C[0].unk_58] & PAD_BUTTON_LEFT)) {
-			if(GWGameStat.field10E_bit4 == 1) {
-				arg0->unk_54--;
-				var_r28 = -1;
-				if(arg0->unk_54 < 0) {
-					arg0->unk_54 = 3;
-				}
-			} else {
-				arg0->unk_54--;
-				var_r28 = -1;
-				if(arg0->unk_54 < 0) {
-					arg0->unk_54 = 2;
-				}
-			}
-		} else if(HuPadBtnDown[0] & PAD_BUTTON_A) {
-			var_r27 = 1;
-			break;
-		} else if(HuPadBtnDown[0] & PAD_BUTTON_B) {
-			var_r27 = 0;
-			HuAudFXPlay(3);
-			break;
-		}
-		if(arg0->unk_54 != var_r26) {
-			HuAudFXPlay(0);
-			for(var_r30=0; var_r30<=5; var_r30++) {
-				fn_1_10FBC(1);
-				if(lbl_1_bss_74) {
-					var_f31 = fn_1_10E38(lbl_1_data_584[arg0->unk_5C][0], lbl_1_data_584[arg0->unk_5C][0]+(var_r28*10), var_r30, 5.0f);
-					HuSprPosSet(var_r29, arg0->unk_48+46, var_f31, lbl_1_data_584[arg0->unk_5C][1]+35);
-				} else {
-					var_f31 = fn_1_10E38(lbl_1_data_4D4[arg0->unk_5C%4][0], lbl_1_data_4D4[arg0->unk_5C%4][0]+(var_r28*10), var_r30, 5.0f);
-					HuSprPosSet(var_r29, arg0->unk_48+46, var_f31, lbl_1_data_4D4[(arg0->unk_5C/4)*4][1]+35);
-				}
-			}
-			HuSprBankSet(var_r29, arg0->unk_48+46, arg0->unk_54);
-			for(var_r30=0; var_r30<=5; var_r30++) {
-				fn_1_10FBC(1);
-				if(lbl_1_bss_74) {
-					var_f31 = fn_1_10E38(lbl_1_data_584[arg0->unk_5C][0]+(var_r28*10), lbl_1_data_584[arg0->unk_5C][0], var_r30, 5.0f);
-					HuSprPosSet(var_r29, arg0->unk_48+46, var_f31, lbl_1_data_584[arg0->unk_5C][1]+35);
-				} else {
-					var_f31 = fn_1_10E38(lbl_1_data_4D4[arg0->unk_5C%4][0]+(var_r28*10), lbl_1_data_4D4[arg0->unk_5C%4][0], var_r30, 5.0f);
-					HuSprPosSet(var_r29, arg0->unk_48+46, var_f31, lbl_1_data_4D4[(arg0->unk_5C/4)*4][1]+35);
-				}
-			}
-		}
-	}
-	if(var_r27 == 1) {
-		if(lbl_1_bss_74) {
-			HuSprPosSet(var_r29, arg0->unk_48+50, lbl_1_data_584[arg0->unk_5C][0], lbl_1_data_584[arg0->unk_5C][1]+35);
-		} else {
-			HuSprPosSet(var_r29, arg0->unk_48+50, lbl_1_data_4D4[arg0->unk_5C%4][0], lbl_1_data_4D4[(arg0->unk_5C/4)*4][1]+35);
-		}
-		HuSprBankSet(var_r29, arg0->unk_48+50, arg0->unk_54);
-		HuSprAttrReset(var_r29, arg0->unk_48+50, HUSPR_ATTR_DISPOFF);
-		HuSprAttrSet(var_r29, arg0->unk_48+46, HUSPR_ATTR_DISPOFF);
-	}
+    while (1) {
+        fn_1_10FBC(1);
+        var_r28 = 0;
+        var_r26 = arg0->unk_54;
+        if (HuPadStkX[lbl_1_bss_8C[0].unk_58] >= 5 || (HuPadBtn[lbl_1_bss_8C[0].unk_58] & PAD_BUTTON_RIGHT)) {
+            if (GWGameStat.field10E_bit4 == 1) {
+                arg0->unk_54++;
+                var_r28 = 1;
+                if (arg0->unk_54 > 3) {
+                    arg0->unk_54 = 0;
+                }
+            }
+            else {
+                arg0->unk_54++;
+                var_r28 = 1;
+                if (arg0->unk_54 > 2) {
+                    arg0->unk_54 = 0;
+                }
+            }
+        }
+        else if (HuPadStkX[lbl_1_bss_8C[0].unk_58] <= -5 || (HuPadBtn[lbl_1_bss_8C[0].unk_58] & PAD_BUTTON_LEFT)) {
+            if (GWGameStat.field10E_bit4 == 1) {
+                arg0->unk_54--;
+                var_r28 = -1;
+                if (arg0->unk_54 < 0) {
+                    arg0->unk_54 = 3;
+                }
+            }
+            else {
+                arg0->unk_54--;
+                var_r28 = -1;
+                if (arg0->unk_54 < 0) {
+                    arg0->unk_54 = 2;
+                }
+            }
+        }
+        else if (HuPadBtnDown[0] & PAD_BUTTON_A) {
+            var_r27 = 1;
+            break;
+        }
+        else if (HuPadBtnDown[0] & PAD_BUTTON_B) {
+            var_r27 = 0;
+            HuAudFXPlay(3);
+            break;
+        }
+        if (arg0->unk_54 != var_r26) {
+            HuAudFXPlay(0);
+            for (var_r30 = 0; var_r30 <= 5; var_r30++) {
+                fn_1_10FBC(1);
+                if (lbl_1_bss_74) {
+                    var_f31 = fn_1_10E38(lbl_1_data_584[arg0->unk_5C][0], lbl_1_data_584[arg0->unk_5C][0] + (var_r28 * 10), var_r30, 5.0f);
+                    HuSprPosSet(var_r29, arg0->unk_48 + 46, var_f31, lbl_1_data_584[arg0->unk_5C][1] + 35);
+                }
+                else {
+                    var_f31 = fn_1_10E38(lbl_1_data_4D4[arg0->unk_5C % 4][0], lbl_1_data_4D4[arg0->unk_5C % 4][0] + (var_r28 * 10), var_r30, 5.0f);
+                    HuSprPosSet(var_r29, arg0->unk_48 + 46, var_f31, lbl_1_data_4D4[(arg0->unk_5C / 4) * 4][1] + 35);
+                }
+            }
+            HuSprBankSet(var_r29, arg0->unk_48 + 46, arg0->unk_54);
+            for (var_r30 = 0; var_r30 <= 5; var_r30++) {
+                fn_1_10FBC(1);
+                if (lbl_1_bss_74) {
+                    var_f31 = fn_1_10E38(lbl_1_data_584[arg0->unk_5C][0] + (var_r28 * 10), lbl_1_data_584[arg0->unk_5C][0], var_r30, 5.0f);
+                    HuSprPosSet(var_r29, arg0->unk_48 + 46, var_f31, lbl_1_data_584[arg0->unk_5C][1] + 35);
+                }
+                else {
+                    var_f31 = fn_1_10E38(lbl_1_data_4D4[arg0->unk_5C % 4][0] + (var_r28 * 10), lbl_1_data_4D4[arg0->unk_5C % 4][0], var_r30, 5.0f);
+                    HuSprPosSet(var_r29, arg0->unk_48 + 46, var_f31, lbl_1_data_4D4[(arg0->unk_5C / 4) * 4][1] + 35);
+                }
+            }
+        }
+    }
+    if (var_r27 == 1) {
+        if (lbl_1_bss_74) {
+            HuSprPosSet(var_r29, arg0->unk_48 + 50, lbl_1_data_584[arg0->unk_5C][0], lbl_1_data_584[arg0->unk_5C][1] + 35);
+        }
+        else {
+            HuSprPosSet(var_r29, arg0->unk_48 + 50, lbl_1_data_4D4[arg0->unk_5C % 4][0], lbl_1_data_4D4[(arg0->unk_5C / 4) * 4][1] + 35);
+        }
+        HuSprBankSet(var_r29, arg0->unk_48 + 50, arg0->unk_54);
+        HuSprAttrReset(var_r29, arg0->unk_48 + 50, HUSPR_ATTR_DISPOFF);
+        HuSprAttrSet(var_r29, arg0->unk_48 + 46, HUSPR_ATTR_DISPOFF);
+    }
     return var_r27;
 }
 
