@@ -156,7 +156,7 @@ block_7:
         sp2C.y = 400.0f;
         sp2C.z = 100.0f;
         Hu3D2Dto3D(&sp2C, 1, &sp20);
-        PSVECSubtract(&sp8, &sp20, &sp14);
+        VECSubtract(&sp8, &sp20, &sp14);
         for (var_r31 = 0; var_r31 <= 0x1E; var_r31++) {
             if (var_r31 <= 0x14) {
                 var_f31 = var_r31 / 20.0;
@@ -166,8 +166,8 @@ block_7:
                 HuSprGrpPosSet(lbl_1_bss_4C[1], 438.0 + (300.0 * (1.0 - sind((90.0f * var_f31)))), 240.0f);
             }
             var_f31 = var_r31 / 30.0;
-            PSVECScale(&sp14, &sp2C, var_f31);
-            PSVECAdd(&sp2C, &sp20, &sp2C);
+            VECScale(&sp14, &sp2C, var_f31);
+            VECAdd(&sp2C, &sp20, &sp2C);
             Hu3DModelRotSet(lbl_1_bss_42, 0.0f, -10.0f, -15.0f);
             Hu3DModelPosSetV(lbl_1_bss_42, &sp2C);
             HuPrcVSleep();
@@ -1450,15 +1450,15 @@ void fn_1_6804(void)
     sp8.z = sp14.z * ((sp20.z * sp20.z) + ((1.0f - (sp20.z * sp20.z)) * cosd(var_f31)))
         + (sp14.x * (((sp20.x * sp20.z) * (1.0 - cosd(var_f31))) - sp20.y * sind(var_f31))
             + sp14.y * (((sp20.y * sp20.z) * (1.0 - cosd(var_f31))) + sp20.x * sind(var_f31)));
-    PSVECCrossProduct(&sp14, &sp20, &sp20);
-    PSVECNormalize(&sp20, &sp20);
+    VECCrossProduct(&sp14, &sp20, &sp20);
+    VECNormalize(&sp20, &sp20);
     var_r31 = HuPadSubStkX[0] & 0xF8;
     if (var_r31 != 0) {
         Center.x += 0.05f * (sp20.x * var_r31);
         Center.y += 0.05f * (sp20.y * var_r31);
         Center.z += 0.05f * (sp20.z * var_r31);
     }
-    PSVECNormalize(&sp8, &sp20);
+    VECNormalize(&sp8, &sp20);
     var_r31 = -(HuPadSubStkY[0] & 0xF8);
     if (var_r31 != 0) {
         Center.x += 0.05f * (sp20.x * var_r31);

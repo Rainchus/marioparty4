@@ -528,7 +528,7 @@ void fn_1_5080(UnkM447Struct_04* arg0) {
             fn_1_7A6C(arg0);
             var_r30 = fn_1_7984(arg0);
             fn_1_1ED4(var_r30, &sp14);
-            PSVECSubtract(&sp14, &arg0->unk28, &sp8);
+            VECSubtract(&sp14, &arg0->unk28, &sp8);
             arg0->unk38 = fn_1_4F7C(arg0->unk38, atan2d(sp8.x, sp8.z), 1.0f);
             fn_1_71FC(arg0, 3, 0.0f, 8.0f, 0);
             arg0->unk20 = 1;
@@ -695,7 +695,7 @@ void fn_1_5760(UnkM447Struct_04* arg0) {
         case 1:
             var_r30 = fn_1_7984(arg0);
             sp14 = lbl_1_bss_A4[var_r30]->unk10;
-            PSVECSubtract(&sp14, &arg0->unk28, &sp8);
+            VECSubtract(&sp14, &arg0->unk28, &sp8);
             arg0->unk38 = fn_1_4F7C(arg0->unk38, atan2d(sp8.x, sp8.z), 0.1f);
             if (arg0->unk60++ < 30) {
                 break;

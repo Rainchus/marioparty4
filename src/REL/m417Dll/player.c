@@ -434,7 +434,7 @@ void fn_1_8B0C(omObjData *object)
         case 0:
             sp8 = var_r31->unk_EC;
             sp8.y = 0.0f;
-            var_f31 = PSVECMag(&sp8);
+            var_f31 = VECMag(&sp8);
             if (var_f31 > 30.000002f) {
                 var_r31->unk_20 = atan2d(-sp8.x, -sp8.z);
                 var_r31->unk_24 = 0.01f * var_f31;
@@ -525,15 +525,15 @@ void fn_1_8E44(omObjData *object)
         case 0:
             sp8 = var_r31->unk_14C;
             sp8.y = 0.0f;
-            if (PSVECMag(&sp8) > 0.0f) {
-                PSVECNormalize(&sp8, &sp8);
+            if (VECMag(&sp8) > 0.0f) {
+                VECNormalize(&sp8, &sp8);
             }
             else {
                 sp8.x = 1.0f;
                 sp8.z = 0.0f;
             }
             var_r31->unk_68 = atan2d(-sp8.x, -sp8.z);
-            PSVECScale(&sp8, &var_r31->unk_E0, 1.6666667f);
+            VECScale(&sp8, &var_r31->unk_E0, 1.6666667f);
             fn_1_B8A0(object, 5);
             Hu3DModelLayerSet(object->model[0], 0);
             Hu3DModelShadowReset(object->model[0]);
@@ -547,17 +547,17 @@ void fn_1_8E44(omObjData *object)
             if (var_r31->unk_D4.y < -300.0f) {
                 sp8 = var_r31->unk_D4;
                 sp8.y = 0.0f;
-                if (PSVECMag(&sp8) > 0.0f) {
-                    PSVECNormalize(&sp8, &sp8);
+                if (VECMag(&sp8) > 0.0f) {
+                    VECNormalize(&sp8, &sp8);
                 }
                 else {
                     sp8.x = 0.0f;
                     sp8.z = 1.0f;
                 }
-                PSVECScale(&sp8, &sp14, 250.0f);
+                VECScale(&sp8, &sp14, 250.0f);
                 sp14.y = -100.0f;
-                PSVECSubtract(&sp14, &var_r31->unk_D4, &sp8);
-                PSVECScale(&sp8, &var_r31->unk_E0, 1.0f / 60.0f);
+                VECSubtract(&sp14, &var_r31->unk_D4, &sp8);
+                VECScale(&sp8, &var_r31->unk_E0, 1.0f / 60.0f);
                 fn_1_B8A0(object, 6);
                 var_r31->unk_50++;
             }
@@ -576,7 +576,7 @@ void fn_1_8E44(omObjData *object)
 
             break;
     }
-    PSVECAdd(&var_r31->unk_D4, &var_r31->unk_E0, &var_r31->unk_D4);
+    VECAdd(&var_r31->unk_D4, &var_r31->unk_E0, &var_r31->unk_D4);
     fn_1_9FF0(object);
     fn_1_91E0(object);
     fn_1_AD24(object);
@@ -623,7 +623,7 @@ void fn_1_9298(omObjData *object)
             sp14.x = sind(var_r31->unk_20);
             sp14.y = 0.0f;
             sp14.z = cosd(var_r31->unk_20);
-            var_f31 = PSVECDotProduct(&sp20, &sp14);
+            var_f31 = VECDotProduct(&sp20, &sp14);
             var_f31 *= (1.0f / 60.0f) * (30.0f * var_r31->unk_24);
         }
         var_r31->unk_B4.y += (0.1f * (var_f31 - var_r31->unk_B4.y));
@@ -832,15 +832,15 @@ void fn_1_9C14(omObjData *object)
             fn_1_B8A0(object, 0);
         }
     }
-    PSVECSubtract(&var_r31->unk_D4, &var_r31->unk_104, &sp1C);
+    VECSubtract(&var_r31->unk_D4, &var_r31->unk_104, &sp1C);
     if (fn_1_26F8() == 2) {
         sp1C.y += -5.8333335f * var_r31->unk_148;
     }
     PSMTXMultVec(var_r31->unk_224, &sp1C, &sp1C);
-    PSVECAdd(&sp1C, &var_r31->unk_E0, &sp1C);
+    VECAdd(&sp1C, &var_r31->unk_E0, &sp1C);
     sp10 = sp1C;
     sp10.y = 0.0f;
-    var_f31 = sp8 = PSVECMag(&sp10);
+    var_f31 = sp8 = VECMag(&sp10);
     if (var_f31 > 150.0f) {
         var_f31 = 150.0f / var_f31;
         sp1C.x = sp1C.x * var_f31;
@@ -850,7 +850,7 @@ void fn_1_9C14(omObjData *object)
     var_r31->unk_EC = sp1C;
     spC = atan2d(sp1C.x, sp1C.z);
     PSMTXMultVec(var_r31->unk_1C4, &sp1C, &sp1C);
-    PSVECAdd(&sp1C, &var_r31->unk_F8, &var_r31->unk_D4);
+    VECAdd(&sp1C, &var_r31->unk_F8, &var_r31->unk_D4);
     if (var_r31->unk_13C >= 0.95f) {
         var_r31->unk_3C = 1;
         return;
@@ -936,7 +936,7 @@ void fn_1_9FF0(omObjData *object)
         if (!var_r31->unk_40) {
             sp20 = var_r31->unk_EC;
             sp20.y = 0.0f;
-            var_f31 = (2.0f / 300.0f) * PSVECMag(&sp20);
+            var_f31 = (2.0f / 300.0f) * VECMag(&sp20);
             if (var_f31 <= 0.0f) {
                 var_f31 = 0.0f;
                 sp8.x = 1.0f;
@@ -1002,7 +1002,7 @@ void fn_1_9FF0(omObjData *object)
         sp8.x = sind(var_f31);
         sp8.y = 0.0f;
         sp8.z = cosd(var_f31);
-        var_f29 = PSVECMag(&sp20);
+        var_f29 = VECMag(&sp20);
         if (var_f29 > 0.5f) {
             var_f29 = 0.5f;
         }
@@ -1011,23 +1011,23 @@ void fn_1_9FF0(omObjData *object)
             if (fn_1_26F8() == 2) {
                 sp20 = var_r31->unk_EC;
                 sp20.y = 0.0f;
-                var_f31 = PSVECMag(&sp20);
+                var_f31 = VECMag(&sp20);
                 var_f29 = 0.006666667f * var_f31;
                 if (var_f31 > 0.0f) {
-                    PSVECNormalize(&sp20, &sp20);
+                    VECNormalize(&sp20, &sp20);
                 }
-                PSVECSubtract(&sp20, &var_r31->unk_14C, &sp14);
-                if (PSVECMag(&sp14)) {
-                    PSVECNormalize(&sp14, &sp14);
+                VECSubtract(&sp20, &var_r31->unk_14C, &sp14);
+                if (VECMag(&sp14)) {
+                    VECNormalize(&sp14, &sp14);
                 }
-                PSVECScale(&sp14, &sp14, (0.0033333336f * var_f29) + var_r31->unk_144);
-                PSVECAdd(&var_r31->unk_14C, &sp14, &var_r31->unk_14C);
+                VECScale(&sp14, &sp14, (0.0033333336f * var_f29) + var_r31->unk_144);
+                VECAdd(&var_r31->unk_14C, &sp14, &var_r31->unk_14C);
             }
             else {
-                PSVECScale(&var_r31->unk_14C, &var_r31->unk_14C, 0.98f);
+                VECScale(&var_r31->unk_14C, &var_r31->unk_14C, 0.98f);
             }
             var_r31->unk_14C.y = 0.0f;
-            var_f31 = PSVECMag(&var_r31->unk_14C);
+            var_f31 = VECMag(&var_r31->unk_14C);
             if (var_f31 > 1.0f) {
                 var_f31 = 1.0f / var_f31;
                 var_r31->unk_14C.x *= var_f31;
@@ -1095,8 +1095,8 @@ void fn_1_ADC4(omObjData *object)
             sp28 = var_r31->unk_14C;
             sp28.y = 0.0f;
             var_f31 = 0.75f + (2.5f * (var_r31->unk_74 * var_r31->unk_74));
-            PSVECScale(&sp28, &sp28, 150.0f * -var_f31);
-            var_f31 = PSVECMag(&sp28);
+            VECScale(&sp28, &sp28, 150.0f * -var_f31);
+            var_f31 = VECMag(&sp28);
             if (var_f31 > 150.0f) {
                 var_f31 = 150.0f / var_f31;
                 sp28.x *= var_f31;
@@ -1106,8 +1106,8 @@ void fn_1_ADC4(omObjData *object)
             sp28.z += (100.0 * ((0.9f - (0.3f * var_r31->unk_74)) * ((0.002 * (float)frandmod(1000)) - 1.0)));
             sp1C = var_r31->unk_110;
             sp1C.y = 0.0f;
-            PSVECSubtract(&sp28, &sp1C, &sp10);
-            var_f31 = PSVECMag(&sp10);
+            VECSubtract(&sp28, &sp1C, &sp10);
+            var_f31 = VECMag(&sp10);
             if (var_f31 > (100.0f * (1.2f - (0.3f * var_r31->unk_74)))) {
                 var_r31->unk_110 = sp28;
             }
@@ -1120,8 +1120,8 @@ void fn_1_ADC4(omObjData *object)
         sp28.y = 0.0f;
         sp1C = var_r31->unk_EC;
         sp1C.y = 0.0f;
-        PSVECSubtract(&sp28, &sp1C, &sp10);
-        var_f31 = PSVECMag(&sp10);
+        VECSubtract(&sp28, &sp1C, &sp10);
+        var_f31 = VECMag(&sp10);
         if (var_r31->unk_48) {
             var_r30 = 1;
         }
