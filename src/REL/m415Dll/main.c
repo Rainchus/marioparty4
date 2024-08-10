@@ -34,7 +34,9 @@ s16 lbl_1_bss_338;
 u8* lbl_1_bss_334;
 s32 lbl_1_bss_234[4][4][4];
 void* lbl_1_bss_34[0x80];
+s32 lbl_1_bss_2C[2];
 unkStruct lbl_1_bss_4[4];
+static s32 pad_05_00000000_bss;
 
 // data
 Vec lbl_1_data_0 = { 0.0f, 3000.0f, 2000.0f };
@@ -1762,27 +1764,27 @@ void fn_1_7674(f32* arg0, Vec* arg1, Vec* arg2, s32 arg3) {
     }
 }
 
-// https://decomp.me/scratch/QIpaI
-// void fn_1_7A54(f32 arg0, Vec* arg1, f32* arg2, Vec* arg3, Vec* arg4, s32 arg5) {
-//     f32 sp48[0x10];
-//     f32 sp8[0x10];
-//     f32 temp_f29;
-//     f32 temp_f31;
-//     f32 var_f28;
-//     s32 temp_r31;
-//     s32 var_r29;
-//     s32 var_r30;
+
+void fn_1_7A54(f32 arg0, Vec* arg1, f32* arg2, Vec* arg3, Vec* arg4, s32 arg5) {
+    f32 sp48[0x10];
+    f32 sp8[0x10];
+    f32 temp_f29;
+    f32 temp_f31;
+    f32 var_f28;
+    s32 temp_r31;
+    s32 var_r29;
+    s32 var_r30;
 
     
-//     for (var_r29 = 0; var_r29 < 3; var_r29++) {
-//         for (var_r30 = 0; var_r30 < arg5; var_r30++) {
-//             sp48[var_r30] = ((f32(*)[3])arg3)[var_r30][var_r29];
-//             sp8[var_r30] = ((f32(*)[3])arg4)[var_r30][var_r29];
-//         }
+    for (var_r29 = 0; var_r29 < 3; var_r29++) {
+        for (var_r30 = 0; var_r30 < arg5; var_r30++) {
+            sp48[var_r30] = ((f32(*)[3])arg3)[var_r30][var_r29];
+            sp8[var_r30] = ((f32(*)[3])arg4)[var_r30][var_r29];
+        }
         
-//         ((f32(*)[3])arg1)[0][var_r29] = fn_1_7520(arg0, arg2, sp48, sp8, 0);
-//     }
-// }
+        ((f32(*)[3])arg1)[0][var_r29] = fn_1_7520(arg0, arg2, sp48, sp8, 0);
+    }
+}
 
 f32 fn_1_7C68(Vec* arg0) {
     f32 temp_f29;

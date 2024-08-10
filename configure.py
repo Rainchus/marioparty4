@@ -940,7 +940,7 @@ config.libs = [
         "m415Dll",  # Stamp Out!
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m415Dll/main.c"),
+            Object(Matching, "REL/m415Dll/main.c"),
             Object(NonMatching, "REL/m415Dll/map.c"),
         },
     ),
