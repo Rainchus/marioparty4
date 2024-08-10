@@ -1175,7 +1175,7 @@ config.libs = [
             Object(NonMatching, "REL/m444dll/main.c"),
             Object(Matching, "REL/m444dll/pinball.c"),
             Object(Matching, "REL/m444dll/datalist.c"),
-            Object(NonMatching, "REL/m444dll/shadow.c"),
+            Object(Matching, "REL/m444dll/shadow.c"),
         },
     ),
     Rel(
@@ -1215,7 +1215,7 @@ config.libs = [
         "m448Dll",  # Goomba's Chip Flip
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m448Dll/main.c"),
+            Object(Matching, "REL/m448Dll/main.c"),
         },
     ),
     Rel(

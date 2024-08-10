@@ -123,6 +123,7 @@ void Hu3DParticleBlendModeSet(s16 arg0, u8 arg1);
 void Hu3DParticleHookSet(s16 arg0, ParticleHook arg1);
 void Hu3DParticleAttrSet(s16 arg0, u8 arg1);
 void Hu3DParticleAttrReset(s16 arg0, u8 arg1);
+void Hu3DParticleCntSet(s16 arg0, s16 arg1);
 void Hu3DParticleAnimModeSet(s16 arg0, s16 arg1);
 void Hu3DParManInit(void);
 s16 Hu3DParManCreate(AnimData *arg0, s16 arg1, HsfanimStruct00 *arg2);
