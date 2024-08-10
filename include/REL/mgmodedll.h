@@ -57,10 +57,21 @@ typedef struct struct_bss8 {
 extern s16 lbl_1_bss_2C80[13];
 extern s16 lbl_1_bss_2C66[13];
 extern s16 lbl_1_bss_2C2C[29];
+extern s16 lbl_1_bss_2C24[4];
+extern s16 lbl_1_bss_2C1C[4];
+extern s16 lbl_1_bss_2C14[4];
+extern s16 lbl_1_bss_2BC4[4][10];
+
 extern s16 lbl_1_bss_264C[10][70];
 extern s16 lbl_1_bss_2638[10];
 extern s16 lbl_1_bss_20C0[10][70];
 extern s16 lbl_1_bss_20AC[10];
+extern s16 lbl_1_bss_20AA;
+
+extern Process *lbl_1_bss_2D8;
+
+extern s16 lbl_1_bss_2E4;
+
 extern s16 lbl_1_bss_2A6;
 extern s16 lbl_1_bss_2A4;
 
@@ -72,6 +83,7 @@ extern DataListModel lbl_1_data_490[];
 extern DataListSprite lbl_1_data_768[];
 
 s32 fn_1_6D28(void);
+s32 fn_1_C0C8(s32 arg0);
 void fn_1_D8D0(void);
 s32 fn_1_E72C(void);
 s32 fn_1_13418(void);
@@ -91,8 +103,9 @@ void fn_1_25E74(s32 arg0);
 void fn_1_267E8(DataListModel *model_list);
 void fn_1_26A78(DataListSprite *sprite_list);
 void fn_1_26C28(void);
-
-s32 fn_1_2783C(s16 evtno);
+void fn_1_27080(void);
+s16 fn_1_271B4(s16 mgNo, s16 x, s16 y);
+void fn_1_27418(void);
 void fn_1_279FC(s32 coinSkipF);
 
 #endif

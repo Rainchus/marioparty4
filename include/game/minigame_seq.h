@@ -37,6 +37,8 @@
 #define MGSeqWinCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_WIN, MG_SEQ_WIN_TYPE_WIN, (player_1), (player_2), (player_3), (player_4))
 #define MGSeqLoseCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_WIN, MG_SEQ_WIN_TYPE_LOSE, (player_1), (player_2), (player_3), (player_4))
 #define MGSeqChampionCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_ALTWIN, MG_SEQ_WIN_TYPE_CHAMPION, (player_1), (player_2), (player_3), (player_4))
+#define MGSeqAltWinCreate(player_1, player_2, player_3, player_4) MGSeqCreate(MG_SEQ_TYPE_ALTWIN, MG_SEQ_WIN_TYPE_WIN, (player_1), (player_2), (player_3), (player_4))
+
 #define MGSeqRecordCreate(value) MGSeqCreate(MG_SEQ_TYPE_RECORD, (value))
 
 

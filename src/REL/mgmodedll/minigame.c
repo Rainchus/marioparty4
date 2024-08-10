@@ -200,7 +200,7 @@ void fn_1_27418(void)
     }
 }
 
-s32 fn_1_2783C(s16 evtno)
+void fn_1_2783C(s16 evtno)
 {
     s16 i;
     omOvlHisData *his;

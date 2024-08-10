@@ -1380,7 +1380,6 @@ void fn_1_7148(omObjData* arg0) {
     float temp_f31;
     UnkM448Struct_00* spC[2];
     s32 sp8;
-    s32 temp_r28;
     s32 i;
 
     for (i = 0; i < 13; i++) {
@@ -1537,10 +1536,7 @@ void fn_1_7148(omObjData* arg0) {
                     } else {
                         HuAudSStreamPlay(3);
                     }
-                    temp_r28 = spC[lbl_1_bss_68]->unk04;
-                    if (_CheckFlag(FLAG_ID_MAKE(1, 12)) == 0) {
-                        GWPlayer[temp_r28].coin_win = 10;
-                    }
+                    GWPlayerCoinWinSet(spC[lbl_1_bss_68]->unk04, 10);
                 } else if (lbl_1_bss_68 == 4) {
                     HuAudSStreamPlay(4);
                 }
