@@ -1783,3 +1783,83 @@ void fn_1_7674(f32* arg0, Vec* arg1, Vec* arg2, s32 arg3) {
 //         ((f32(*)[3])arg1)[0][var_r29] = fn_1_7520(arg0, arg2, sp48, sp8, 0);
 //     }
 // }
+
+f32 fn_1_7C68(Vec* arg0) {
+    f32 temp_f29;
+    f32 temp_f30;
+
+    temp_f30 = (arg0->z * arg0->z) + ((arg0->x * arg0->x) + (arg0->y * arg0->y));
+    temp_f30 = sqrtf(temp_f30);
+    
+    if (temp_f30 != 0.0f) {
+        temp_f29 = 1.0f / temp_f30;
+        arg0->x *= temp_f29;
+        arg0->y *= temp_f29;
+        arg0->z *= temp_f29;
+    } else {
+        arg0->x = arg0->y = arg0->z = 0.0f;
+    }
+    return temp_f30;
+}
+
+f32 fn_1_7E00(Vec arg0, Vec arg1, Vec* arg2, f32 arg8) {
+    if (arg8 <= 0.0f) {
+        arg2->x = arg0.x;
+        arg2->y = arg0.y;
+        arg2->z = arg0.z;
+        arg8 = 0.0f;
+    } else if (arg8 >= 1.0f) {
+        arg2->x = arg0.x + arg1.x;
+        arg2->y = arg0.y + arg1.y;
+        arg2->z = arg0.z + arg1.z;
+        arg8 = 1.0f;
+    } else {
+        arg2->x = arg0.x + (arg8 * arg1.x);
+        arg2->y = arg0.y + (arg8 * arg1.y);
+        arg2->z = arg0.z + (arg8 * arg1.z);
+    }
+    return arg8;
+}
+
+f32 fn_1_7ED8(Vec arg0, Vec arg1, Vec arg2) {
+    f32 temp_f30;
+    f32 var_f31;
+
+    var_f31 = (arg2.z * (arg1.z - arg0.z)) + ((arg2.x * (arg1.x - arg0.x)) + (arg2.y * (arg1.y - arg0.y)));
+    temp_f30 = -((arg2.z * arg2.z) + ((arg2.x * arg2.x) + (arg2.y * arg2.y)));
+    if (temp_f30 != 0.0f) {
+        var_f31 /= temp_f30;
+    }
+    return var_f31;
+}
+
+f32 fn_1_7F94(Vec* arg0, Vec* arg1, Vec* arg2) {
+    Vec sp44;
+    f32 var_f30;
+
+    if (0.0f == ((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y)))) {
+        return ((arg0->z - arg1->z) * (arg0->z - arg1->z)) + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
+    }
+
+    var_f30 = fn_1_7ED8(*arg0, *arg1, *arg2);
+    fn_1_7E00(*arg1, *arg2, &sp44, var_f30);
+    return ((arg0->z - sp44.z) * (arg0->z - sp44.z)) + (((arg0->x - sp44.x) * (arg0->x - sp44.x)) + ((arg0->y - sp44.y) * (arg0->y - sp44.y)));
+}
+
+f32 fn_1_82D0(Vec* arg0, Vec* arg1, Vec* arg2, Vec* arg3, Vec* arg4) {
+    f32 var_f31;
+    f32 var_f30;
+
+    if (0.0f == ((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y)))) {
+        return ((arg0->z - arg1->z) * (arg0->z - arg1->z)) + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
+    } else {
+        var_f30 = fn_1_7ED8(*arg0, *arg1, *arg2);
+        fn_1_7E00(*arg1, *arg2, arg3, var_f30);
+    }
+    
+    arg4->x = arg3->x - arg0->x;
+    arg4->y = arg3->y - arg0->y;
+    arg4->z = arg3->z - arg0->z;
+    
+    return fn_1_7C68(arg4);
+}
