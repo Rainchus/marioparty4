@@ -201,9 +201,8 @@ omObjData *fn_2_10A88(Vec *arg0, s16 arg1)
     }
     temp_r27->unk10 = 3;
     temp_r27->unk12 = temp_r24;
-    // I am not table to force arg1 to get reloaded without deleting code or serious temporary register allocation issues
-    (void)arg1;
-    switch ((temp_r27->unk18 = arg1)) {
+    temp_r27->unk18 = arg1;
+    switch (arg1) {
         case 1:
             Hu3DModelPosSet(temp_r31->unk10, arg0->x, arg0->y, lbl_2_bss_60.z + arg0->z);
 
