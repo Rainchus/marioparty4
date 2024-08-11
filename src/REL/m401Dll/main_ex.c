@@ -160,7 +160,7 @@ void fn_2_1301C(ModelData *model, ParticleData *particle, Mtx matrix);
 void fn_2_1350C(ModelData *model, ParticleData *particle, Mtx matrix);
 void fn_2_13B7C(ModelData *model, ParticleData *particle, Mtx matrix);
 
-omObjData *fn_2_10A88(Vec *arg0, s16 arg1)
+omObjData *fn_2_10A88(Vec *arg0, s32 arg1)
 {
     omObjData *temp_r31;
     s32 temp_r30;
@@ -172,7 +172,7 @@ omObjData *fn_2_10A88(Vec *arg0, s16 arg1)
     }
     {
         s16 temp_r22 = -1;
-        if (arg1 == 0) {
+        if ((s16)arg1 == 0) {
             temp_r22 = 1;
         }
         temp_r31 = omAddObjEx(HuPrcCurrentGet(), 0x514, 3, 0, temp_r22, NULL);
@@ -187,7 +187,7 @@ omObjData *fn_2_10A88(Vec *arg0, s16 arg1)
         Hu3DParticleCntSet(temp_r31->model[temp_r30], 0);
         Hu3DParticleAnimModeSet(temp_r31->model[temp_r30], 0);
         Hu3DModelLayerSet(temp_r31->model[temp_r30], 1);
-        if (arg1 == 1) {
+        if ((s16)arg1 == 1) {
             temp_r31->unk10 = fn_2_10A08();
             Hu3DModelAttrReset(temp_r31->unk10, 1);
             temp_r28->unk_44 = lbl_2_bss_220[1][temp_r30];
@@ -201,9 +201,9 @@ omObjData *fn_2_10A88(Vec *arg0, s16 arg1)
     }
     temp_r27->unk10 = 3;
     temp_r27->unk12 = temp_r24;
-    // I am not table to force arg1 to get reloaded without deleting code or serious temporary register allocation issues
-    (void)arg1;
-    switch ((temp_r27->unk18 = arg1)) {
+    temp_r27->unk18 = (s16)arg1;
+
+    switch ((s16)arg1) {
         case 1:
             Hu3DModelPosSet(temp_r31->unk10, arg0->x, arg0->y, lbl_2_bss_60.z + arg0->z);
 
