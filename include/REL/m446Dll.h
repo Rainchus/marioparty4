@@ -1,3 +1,6 @@
+#ifndef M446DLL_H
+#define M446DLL_H
+
 #include "dolphin/types.h"
 
 #include "game/process.h"
@@ -302,3 +305,5 @@ void fn_1_83F0(unkStruct9*);
 void fn_1_84AC(unkStruct9*);
 void fn_1_852C(unkStruct9*);
 void fn_1_860C(unkStruct9*);
+
+#endif

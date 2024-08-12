@@ -1,5 +1,5 @@
-#ifndef M401DLL_H
-#define M401DLL_H
+#ifndef INSTDLL_H
+#define INSTDLL_H
 
 #include "game/minigame_seq.h"
 

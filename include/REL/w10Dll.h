@@ -1,3 +1,6 @@
+#ifndef REL_W10_H
+#define REL_W10_H
+
 #include "game/gamework_data.h"
 #include "dolphin.h"
 #include "REL/executor.h"
@@ -87,3 +90,5 @@ extern s16 boardStarHostMdl;
 extern s16 boardShopHostMdl;
 extern s16 boardLotteryHostMdl;
 extern s16 boardBooHouseHostMdl;
+
+#endif

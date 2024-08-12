@@ -1,3 +1,6 @@
+#ifndef M440DLL_H
+#define M440DLL_H
+
 #include "dolphin/types.h"
 #include "game/hsfman.h"
 
@@ -347,3 +350,5 @@ void fn_1_F228(void);
 u16 fn_1_F4C0(unkObjStruct*, u16);
 void fn_1_F4D4(unkObjStruct*, u16, u16);
 s32 fn_1_F4FC(s32);
+
+#endif
