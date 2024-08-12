@@ -1,3 +1,6 @@
+#ifndef REL_W03_H
+#define REL_W03_H
+
 #include "game/gamework_data.h"
 #include "dolphin.h"
 #include "REL/executor.h"
@@ -27,3 +30,5 @@ typedef struct w03State {
 
 extern w03State* lbl_1_bss_0;
 extern s16 lbl_1_bss_C[MAPOBJ_MAX];
+
+#endif

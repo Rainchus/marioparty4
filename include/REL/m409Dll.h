@@ -1,3 +1,6 @@
+#ifndef M409DLL_H
+#define M409DLL_H
+
 #include "dolphin.h"
 
 #include "game/object.h"
@@ -363,3 +366,5 @@ void fn_1_F370(s16, f32);
 void fn_1_F408(s16, s16, u8);
 void fn_1_F478(s16, s16, u8, u8);
 void fn_1_F4F0(s16, u8);
+
+#endif

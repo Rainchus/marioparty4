@@ -1,3 +1,6 @@
+#ifndef REL_W05_H
+#define REL_W05_H
+
 #include "dolphin/types.h"
 
 #include "game/board/main.h"
@@ -222,3 +225,5 @@ extern s32* lbl_1_bss_10;
 extern s16 lbl_1_bss_8[4];
 extern Process* lbl_1_bss_4;
 extern bitcopy* lbl_1_bss_0;
+
+#endif

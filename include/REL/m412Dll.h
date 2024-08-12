@@ -1,3 +1,6 @@
+#ifndef M412DLL_H
+#define M412DLL_H
+
 #include "dolphin.h"
 
 #include "game/object.h"
@@ -114,3 +117,5 @@ void fn_1_A618(ModelData* model, ParticleData* particle, Mtx matrix);
 void fn_1_AA88(ModelData* model, ParticleData* particle, Mtx matrix); // *
 void fn_1_B160(void); // *
 void fn_1_B1C0(void); // *
+
+#endif
