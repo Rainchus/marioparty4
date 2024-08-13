@@ -1106,28 +1106,14 @@ loop_1:
 s8 fn_1_4BE4(s32 arg0, s32 arg1)
 {
     s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
     unkStruct3 *temp_r31;
 
     temp_r31 = &lbl_1_bss_4D4[arg0];
     if (GWPlayerCfg[arg0].iscom == 0) {
-        if (arg1 != 0) {
-            var_r29 = var_r30 = HuPadStkY[temp_r31->unk2C];
-        }
-        else {
-            var_r29 = var_r30 = HuPadStkX[temp_r31->unk2C];
-        }
-
-        (void)var_r30; // used to make the else branch go here instead of returning
+        (arg1 != 0) ? (var_r30 = HuPadStkY[temp_r31->unk2C]) : (var_r30 = HuPadStkX[temp_r31->unk2C]);
     }
     else {
-        if (arg1 != 0) {
-            var_r28 = var_r30 = temp_r31->unk89;
-        }
-        else {
-            var_r28 = var_r30 = temp_r31->unk88;
-        }
+        (arg1 != 0) ? (var_r30 = temp_r31->unk89) : (var_r30 = temp_r31->unk88);
     }
     return var_r30;
 }
@@ -1142,22 +1128,13 @@ void fn_1_4C9C(Vec *arg0, f32 arg8, f32 arg9)
     arg0->z = (temp_f29 * cosd(arg8));
 }
 
-static inline f32 unkInline(void)
-{
-    return 1.0f; // huh?
-}
-
 s8 fn_1_4E58(s32 arg0, s32 arg1)
 {
     Vec spC;
-    f32 sp8;
     f32 temp_f28;
-    f32 temp_f27;
     s8 var_r30;
     s8 temp_r29;
     s8 temp_r28;
-    s8 var_r27;
-    s8 var_r26;
     unkStruct3 *temp_r31;
 
     temp_r31 = &lbl_1_bss_4D4[arg0];
@@ -1167,40 +1144,19 @@ s8 fn_1_4E58(s32 arg0, s32 arg1)
         temp_f28 = fn_1_1D08(atan2d(temp_r29, temp_r28));
         temp_f28 -= lbl_1_bss_778;
         HuSetVecF(&spC, (f32)temp_r29, 0.0, (f32)temp_r28);
-        temp_f27 = sqrtf((spC.x * spC.x) + (spC.z * spC.z));
-        temp_f27 *= unkInline();
-        spC.x = (temp_f27 * sind(temp_f28));
-        spC.z = (temp_f27 * cosd(temp_f28));
-        if (arg1 != 0) {
-            var_r27 = var_r30 = spC.z;
-        }
-        else {
-            var_r27 = var_r30 = spC.x;
-        }
-
-        (void)var_r30; // used to make the else branch go here instead of returning
-    }
-    else if (arg1 != 0) {
-        var_r26 = var_r30 = temp_r31->unk89;
+        fn_1_4C9C(&spC, temp_f28, 1.0f);
+        (arg1 != 0) ? (var_r30 = spC.z) : (var_r30 = spC.x);
     }
     else {
-        var_r26 = var_r30 = temp_r31->unk88;
+        (arg1 != 0) ? (var_r30 = temp_r31->unk89) : (var_r30 = temp_r31->unk88);
     }
     return var_r30;
-}
-
-static inline void DummyInline2(Vec *arg0, float arg1, float arg2)
-{
-    arg1 *= unkInline();
-    arg0->x = (arg1 * sind(arg2));
-    arg0->z = (arg1 * cosd(arg2));
 }
 
 static inline s8 fn_1_4E58_0(s32 arg0)
 {
     Vec spC;
     float temp;
-    f32 sp8;
     f32 temp_f28;
     f32 temp_f27;
     s8 var_r30;
@@ -1216,7 +1172,7 @@ static inline s8 fn_1_4E58_0(s32 arg0)
         temp_f28 = fn_1_1D08(atan2d(temp_r29, temp_r28));
         temp_f28 -= lbl_1_bss_778;
         HuSetVecF(&spC, (f32)temp_r29, 0.0, (f32)temp_r28);
-        DummyInline2(&spC, sqrtf((spC.x * spC.x) + (spC.z * spC.z)), temp_f28);
+        fn_1_4C9C(&spC, temp_f28, 1.0f);
         var_r30 = spC.x;
     }
     else {
@@ -1229,7 +1185,6 @@ static inline s8 fn_1_4E58_1(s32 arg0)
 {
     Vec spC;
     float temp;
-    f32 sp8;
     f32 temp_f28;
     f32 temp_f27;
     s8 var_r30;
@@ -1245,7 +1200,7 @@ static inline s8 fn_1_4E58_1(s32 arg0)
         temp_f28 = fn_1_1D08(atan2d(temp_r29, temp_r28));
         temp_f28 -= lbl_1_bss_778;
         HuSetVecF(&spC, (f32)temp_r29, 0.0, (f32)temp_r28);
-        DummyInline2(&spC, sqrtf((spC.x * spC.x) + (spC.z * spC.z)), temp_f28);
+        fn_1_4C9C(&spC, temp_f28, 1.0f);
         var_r30 = spC.z;
     }
     else {
@@ -1257,26 +1212,14 @@ static inline s8 fn_1_4E58_1(s32 arg0)
 u8 fn_1_525C(s32 arg0, s32 arg1)
 {
     s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
     unkStruct3 *temp_r31;
 
     temp_r31 = &lbl_1_bss_4D4[arg0];
     if (GWPlayerCfg[arg0].iscom == 0) {
-        if (arg1 != 0) {
-            var_r29 = var_r30 = HuPadTrigR[temp_r31->unk2C];
-        }
-        else {
-            var_r29 = var_r30 = HuPadTrigL[temp_r31->unk2C];
-        }
-
-        (void)var_r30; // used to make the else branch go here instead of returning
-    }
-    else if (arg1 != 0) {
-        var_r28 = var_r30 = temp_r31->unk8A;
+        (arg1 != 0) ? (var_r30 = HuPadTrigR[temp_r31->unk2C]) : (var_r30 = HuPadTrigL[temp_r31->unk2C]);
     }
     else {
-        var_r28 = var_r30 = temp_r31->unk8B;
+        (arg1 != 0) ? (var_r30 = temp_r31->unk8A) : (var_r30 = temp_r31->unk8B);
     }
     return var_r30;
 }

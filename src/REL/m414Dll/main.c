@@ -313,8 +313,6 @@ void fn_1_CD8(s32 arg0, s32 arg1, float arg8)
     var_r31->unk_00 = arg0;
     var_r31->unk_04 = arg1;
 	var_r31->unk_08 = arg8;
-	(void)var_r31;
-	(void)var_r31;
 }
 
 void fn_1_D54(ModelData *arg0, ParticleData *arg1, Mtx arg2, s32 arg3)
@@ -1389,50 +1387,14 @@ s8 fn_1_5554(s32 arg0, s32 arg1) // similar to m411Dll/main.c::fn_1_5D58
 {
     UnkM414BssF0Struct *var_r31;
     s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
 
     var_r31 = &lbl_1_bss_F0[arg0];
     var_r30 = 0;
     if (lbl_1_bss_98C < 4) {
         if (!GWPlayerCfg[arg0].iscom) {
-            if (arg1) {
-                var_r30 = HuPadStkY[var_r31->unk_4C];
-                var_r29 = var_r30;
-            } else {
-                var_r30 = HuPadStkX[var_r31->unk_4C];
-                var_r29 = var_r30;
-            }
-            (void)var_r31;
-        } else if (arg1) {
-            var_r30 = var_r31->unk_1FD;
-            var_r28 = var_r30;
+            (arg1) ? (var_r30 = HuPadStkY[var_r31->unk_4C]) : (var_r30 = HuPadStkX[var_r31->unk_4C]);
         } else {
-            var_r30 = var_r31->unk_1FC;
-            var_r28 = var_r30;
-        }
-    }
-    return var_r30;
-}
-
-
-static inline s8 fn_1_5554_inline(s32 arg0, s32 arg1) // similar to m411Dll/main.c::fn_1_5D58
-{
-    UnkM414BssF0Struct *var_r31;
-    s8 var_r30;
-    var_r31 = &lbl_1_bss_F0[arg0];
-    var_r30 = 0;
-    if (lbl_1_bss_98C < 4) {
-        if (!GWPlayerCfg[arg0].iscom) {
-            if (arg1) {
-                var_r30 = HuPadStkY[var_r31->unk_4C];
-            } else {
-                var_r30 = HuPadStkX[var_r31->unk_4C];
-            }
-        } else if (arg1) {
-            var_r30 = var_r31->unk_1FD;
-        } else {
-            var_r30 = var_r31->unk_1FC;
+            (arg1) ? (var_r30 = var_r31->unk_1FD) : (var_r30 = var_r31->unk_1FC);
         }
     }
     return var_r30;
@@ -1442,46 +1404,14 @@ u8 fn_1_5624(s32 arg0, s32 arg1)
 {
     UnkM414BssF0Struct *var_r31;
     s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
 
     var_r31 = &lbl_1_bss_F0[arg0];
     var_r30 = 0;
     if (lbl_1_bss_98C < 4) {
         if (!GWPlayerCfg[arg0].iscom) {
-            if (arg1) {
-                var_r29 = var_r30 = HuPadTrigR[var_r31->unk_4C];
-            } else {
-                var_r29 = var_r30 = HuPadTrigL[var_r31->unk_4C];
-            }
-            (void)var_r31;
-        } else if (arg1) {
-            var_r28 = var_r30 = var_r31->unk_1FE;
+            (arg1) ? (var_r30 = HuPadTrigR[var_r31->unk_4C]) : (var_r30 = HuPadTrigL[var_r31->unk_4C]);
         } else {
-            var_r28 = var_r30 = var_r31->unk_1FF;
-        }
-    }
-    return var_r30;
-}
-
-static inline u8 fn_1_5624_inline(s32 arg0, s32 arg1)
-{
-    UnkM414BssF0Struct *var_r31;
-    s8 var_r30;
-
-    var_r31 = &lbl_1_bss_F0[arg0];
-    var_r30 = 0;
-    if (lbl_1_bss_98C < 4) {
-        if (!GWPlayerCfg[arg0].iscom) {
-            if (arg1) {
-                var_r30 = HuPadTrigR[var_r31->unk_4C];
-            } else {
-                var_r30 = HuPadTrigL[var_r31->unk_4C];
-            }
-        } else if (arg1) {
-            var_r30 = var_r31->unk_1FE;
-        } else {
-			var_r30 = var_r31->unk_1FF;
+            (arg1) ? (var_r30 = var_r31->unk_1FE) : (var_r30 = var_r31->unk_1FF);
         }
     }
     return var_r30;
@@ -1501,10 +1431,6 @@ u16 fn_1_56FC(s32 arg0)
             var_r30 = var_r31->unk_200;
         }
     }
-	(void)var_r31;
-	(void)var_r31;
-	(void)var_r31;
-	(void)var_r31;
     return var_r30;
 }
 
@@ -1738,8 +1664,6 @@ s32 fn_1_654C(s32 arg0, s32 arg1)
     if (var_r31 >= 16) {
         var_r31 = -1;
     }
-	(void)var_r31;
-	(void)var_r31;
     return var_r31;
 }
 
@@ -1911,7 +1835,7 @@ void fn_1_6644(void)
                 }
             }
         }
-        if (fn_1_5554_inline(var_r31->unk_44, 1) > 20 && (var_r31->unk_1F4 == 2 || var_r31->unk_1F4 == 0)) { // wrong
+        if (fn_1_5554(var_r31->unk_44, 1) > 20 && (var_r31->unk_1F4 == 2 || var_r31->unk_1F4 == 0)) {
             Hu3DModelAttrReset(var_r31->unk_20, 0x40000002);
             Hu3DModelAttrSet(var_r31->unk_20, 0x40000004);
             var_r31->unk_1F4 = 3;
@@ -1919,7 +1843,7 @@ void fn_1_6644(void)
             Hu3DModelAttrSet(var_r31->unk_12, 0x40000004);
             Hu3DMotionSpeedSet(var_r31->unk_12, 2.0f);
         }
-        if (fn_1_5554_inline(var_r31->unk_44, 1) < -20 && (var_r31->unk_1F4 == 1 || var_r31->unk_1F4 == 0)) { // wrong
+        if (fn_1_5554(var_r31->unk_44, 1) < -20 && (var_r31->unk_1F4 == 1 || var_r31->unk_1F4 == 0)) {
             Hu3DModelAttrReset(var_r31->unk_20, 0x40000006);
             var_r31->unk_1F4 = 3;
             Hu3DModelAttrReset(var_r31->unk_12, 0x40000006);
@@ -1927,10 +1851,10 @@ void fn_1_6644(void)
         }
         if (!var_r31->unk_58) {
             var_r28 = -1;
-            if (fn_1_5624_inline(var_r31->unk_44, 0) > 20 && var_r28 == -1) { // wrong
+            if (fn_1_5624(var_r31->unk_44, 0) > 20 && var_r28 == -1) {
                 var_r28 = 1;
             }
-            if (fn_1_5624_inline(var_r31->unk_44, 1) > 20 && var_r28 == -1) { // wrong
+            if (fn_1_5624(var_r31->unk_44, 1) > 20 && var_r28 == -1) {
                 var_r28 = 0;
             }
             if (var_r28 != -1) {
@@ -1955,8 +1879,6 @@ void fn_1_6644(void)
                 var_r30->user_data = &sp9C;
                 sp9C.unk_00 = var_r31;
                 sp9C.unk_04 = var_r28;
-				(void)var_r28;
-				(void)var_r28;
             }
         }
         var_r31->unk_60 = 37.0 * sind(var_r31->unk_70);

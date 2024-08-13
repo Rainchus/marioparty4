@@ -1696,46 +1696,12 @@ void fn_1_5910(void) {
 s8 fn_1_5D58(s32 arg0, s32 arg1) {
     UnkBss474Struct* temp_r31;
     s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
 
     temp_r31 = &lbl_1_bss_474[arg0];
     if (!GWPlayerCfg[arg0].iscom) {
-        if (arg1 != 0) {
-            var_r29 = var_r30 = HuPadStkY[temp_r31->unk3C];
-        } else {
-            var_r29 = var_r30 = HuPadStkX[temp_r31->unk3C];
-        }
-        (void) 1; // Required to match.
+        (arg1 != 0) ? (var_r30 = HuPadStkY[temp_r31->unk3C]) : (var_r30 = HuPadStkX[temp_r31->unk3C]);
     } else {
-        if (arg1 != 0) {
-            var_r28 = var_r30 = temp_r31->unk255;
-        } else {
-            var_r28 = var_r30 = temp_r31->unk254;
-        }
-    }
-    return var_r30;
-}
-
-static inline s8 fn_1_5D58_copy(s32 arg0, s32 arg1) {
-    UnkBss474Struct* temp_r31;
-    s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
-
-    temp_r31 = &lbl_1_bss_474[arg0];
-    if (!GWPlayerCfg[arg0].iscom) {
-        if (arg1 != 0) {
-            var_r30 = HuPadStkY[temp_r31->unk3C];
-        } else {
-            var_r30 = HuPadStkX[temp_r31->unk3C];
-        }
-    } else {
-        if (arg1 != 0) {
-            var_r30 = temp_r31->unk255;
-        } else {
-            var_r30 = temp_r31->unk254;
-        }
+        (arg1 != 0) ? (var_r30 = temp_r31->unk255) : (var_r30 = temp_r31->unk254);
     }
     return var_r30;
 }
@@ -1743,47 +1709,12 @@ static inline s8 fn_1_5D58_copy(s32 arg0, s32 arg1) {
 u8 fn_1_5E10(s32 arg0, s32 arg1) {
     UnkBss474Struct* temp_r31;
     s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
 
     temp_r31 = &lbl_1_bss_474[arg0];
     if (!GWPlayerCfg[arg0].iscom) {
-        if (arg1 != 0) {
-            var_r29 = var_r30 = HuPadTrigR[temp_r31->unk3C];
-        } else {
-            var_r29 = var_r30 = HuPadTrigL[temp_r31->unk3C];
-        }
-        (void) 1; // Required to match.
+        (arg1 != 0) ? (var_r30 = HuPadTrigR[temp_r31->unk3C]) : (var_r30 = HuPadTrigL[temp_r31->unk3C]);
     } else {
-        if (arg1 != 0) {
-            var_r28 = var_r30 = temp_r31->unk256;
-        } else {
-            var_r28 = var_r30 = temp_r31->unk257;
-        }
-    }
-    return var_r30;
-}
-
-
-static inline u8 fn_1_5E10_copy(s32 arg0, s32 arg1) {
-    UnkBss474Struct* temp_r31;
-    s8 var_r30;
-    s8 var_r29;
-    s8 var_r28;
-
-    temp_r31 = &lbl_1_bss_474[arg0];
-    if (!GWPlayerCfg[arg0].iscom) {
-        if (arg1 != 0) {
-            var_r30 = HuPadTrigR[temp_r31->unk3C];
-        } else {
-            var_r30 = HuPadTrigL[temp_r31->unk3C];
-        }
-    } else {
-        if (arg1 != 0) {
-            var_r30 = temp_r31->unk256;
-        } else {
-            var_r30 = temp_r31->unk257;
-        }
+        (arg1 != 0) ? (var_r30 = temp_r31->unk256) : (var_r30 = temp_r31->unk257);
     }
     return var_r30;
 }
@@ -1793,10 +1724,6 @@ u16 fn_1_5ED0(s32 arg0) {
     u16 var_r30;
 
     temp_r31 = &lbl_1_bss_474[arg0];
-	(void)temp_r31;
-	(void)temp_r31;
-	(void)temp_r31;
-	(void)temp_r31;
     if (!GWPlayerCfg[arg0].iscom) {
         var_r30 = HuPadBtnDown[temp_r31->unk3C];
     } else {
@@ -2214,7 +2141,7 @@ void fn_1_7680(void) {
 
 static inline void m411InlineFunc(UnkBss474Struct* temp_r31, UnkBss474DoublyInnerStruct6C* temp_r30) {
     Vec sp74;
-	Vec sp80;
+    Vec sp80;
     
     float var_f22;
     float var_f23;
@@ -2340,10 +2267,10 @@ void fn_1_7738(void) {
             }
             if (sp70 == 0) {
                 var_r23 = -1;
-                if (fn_1_5E10_copy(temp_r31->unk34, 0) > 20) {
+                if (fn_1_5E10(temp_r31->unk34, 0) > 20) {
                     var_r23 = 1;
                 }
-                if (fn_1_5E10_copy(temp_r31->unk34, 1) > 20) {
+                if (fn_1_5E10(temp_r31->unk34, 1) > 20) {
                     var_r23 = 0;
                 }
                 if (var_r23 != -1) {
@@ -2355,10 +2282,6 @@ void fn_1_7738(void) {
                     spA4.unk08 = var_r23;
                     spA4.unk0C = &sp70;
                 }
-				(void)var_r23;
-				(void)var_r23;
-				(void)var_r23;
-				(void)var_r23;
             }
             if ((fn_1_5ED0(temp_r31->unk34) & 0x100) && sp70 == 0) {
                 if (0.0f == temp_r30->unk14) {
@@ -2378,10 +2301,10 @@ void fn_1_7738(void) {
                 fn_1_6428(temp_r31, temp_r26);
             }
             temp_r31->unk60 = -1.0f;
-            if (SOME_MACRO(fn_1_5D58_copy(temp_r31->unk34, 0)) != 0
-                || SOME_MACRO(fn_1_5D58_copy(temp_r31->unk34, 1)) != 0)
+            if (SOME_MACRO(fn_1_5D58(temp_r31->unk34, 0)) != 0
+                || SOME_MACRO(fn_1_5D58(temp_r31->unk34, 1)) != 0)
             {
-                temp_r31->unk60 = atan2d(fn_1_5D58_copy(temp_r31->unk34, 0), fn_1_5D58_copy(temp_r31->unk34, 1));
+                temp_r31->unk60 = atan2d(fn_1_5D58(temp_r31->unk34, 0), fn_1_5D58(temp_r31->unk34, 1));
             }
             if (-1.0f != temp_r31->unk60) {
                 temp_r30->unk00 += 5 * sind(temp_r31->unk60);
@@ -2398,9 +2321,6 @@ void fn_1_7738(void) {
     while (TRUE) {
         HuPrcVSleep();
     }
-    (void) var_r24;
-    (void) var_r24;
-    (void) var_r24;
 }
 
 void fn_1_8A80(float arg0, float arg1) {

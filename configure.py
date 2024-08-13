@@ -1182,7 +1182,7 @@ config.libs = [
         "m445Dll",  # Bowser Bop
         objects={
             Object(Matching, "REL/executor.c"),
-            Object(NonMatching, "REL/m445Dll/main.c"),
+            Object(Matching, "REL/m445Dll/main.c"),
         },
     ),
     Rel(
