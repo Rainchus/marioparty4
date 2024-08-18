@@ -12,47 +12,51 @@
 #include "game/pad.h"
 
 typedef struct datalist_model {
-	s32 datanum;
-	u32 attr;
-	s16 type;
-	s16 link;
-	s16 mot_link;
-	Vec pos;
-	Vec rot;
-	Vec scale;
-} DataListModel;
+    s32 datanum;
+    u32 attr;
+    s16 type;
+    s16 link;
+    s16 mot_link;
+    Vec pos;
+    Vec rot;
+    Vec scale;
+} DataListModel; // Size 0x34
 
 typedef struct datalist_sprite {
-	u32 datanum;
-	s16 attr;
-	s16 prio;
-	float x;
-	float y;
-	GXColor color;
-} DataListSprite;
+    u32 datanum;
+    s16 attr;
+    s16 prio;
+    float x;
+    float y;
+    GXColor color;
+} DataListSprite; // Size 0x14
 
 typedef struct struct_bss8_24 {
-	u8 unk0[0x5C];
-	s32 unk5C;
-	s32 unk60;
-	s32 unk64;
-	s32 unk68;
-	s32 unk6C;
-	u8 unk70[0x20];
-} StructBss8_24;
+    omObjData *unk0;
+    void (*unk4)(omObjData*, ...);
+    u8 unk8[0x50];
+    s32 unk58;
+    s32 unk5C;
+    s32 unk60;
+    s32 unk64;
+    s32 unk68;
+    s32 unk6C;
+    s32 unk70[4];
+    s32 unk80[4];
+} StructBss8_24; // Size 0x90
 
 typedef struct struct_bss8 {
-	s32 unk0;
-	s32 unk4;
-	s32 unk8;
-	s32 unkC;
-	s32 unk10;
-	s32 unk14;
-	s32 unk18;
-	s32 unk1C;
-	s32 unk20;
-	StructBss8_24 unk24[4];
-} StructBss8;
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    StructBss8_24 unk24[4];
+} StructBss8; // Size 0x264
 
 extern s16 lbl_1_bss_2C80[13];
 extern s16 lbl_1_bss_2C66[13];
@@ -93,11 +97,11 @@ void fn_1_18DF8(Process *arg0, StructBss8 *arg1);
 void fn_1_19018(void);
 s32 fn_1_194C8(s32 arg0);
 
-void fn_1_25584(s16 arg0);
 s32 fn_1_2530C(s32 arg0, s32 arg1, s32 arg2);
-void fn_1_25838(s16 arg0, u32 arg1, s32 arg2, s32 arg3);
-s32 fn_1_2592C(u32 arg0, s32 arg1, s32 arg2);
-s32 fn_1_25CA8(u32 arg0);
+void fn_1_25584(s32 arg0);
+void fn_1_25838(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+s32 fn_1_2592C(s32 arg0, s32 arg1, s32 arg2);
+s32 fn_1_25CA8(s32 arg0);
 void fn_1_25E74(s32 arg0);
 
 void fn_1_267E8(DataListModel *model_list);
