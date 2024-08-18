@@ -1336,7 +1336,7 @@ config.libs = [
             Object(Matching, "REL/mgmodedll/record.c"),
             Object(Matching, "REL/mgmodedll/battle.c"),
             Object(NonMatching, "REL/mgmodedll/tictactoe.c"),
-            Object(NonMatching, "REL/mgmodedll/main.c"),
+            Object(Matching, "REL/mgmodedll/main.c"),
             Object(Matching, "REL/mgmodedll/datalist.c"),
             Object(Matching, "REL/mgmodedll/minigame.c"),
         },

@@ -777,8 +777,7 @@ void fn_1_962C(omObjData* arg0) {
             lbl_1_bss_108++;
             break;
         case 3:
-            var_r26 = arg0->model[lbl_1_bss_106 + 1];
-            Hu3DModelAttrReset(var_r26, 1);
+            Hu3DModelAttrReset(var_r26 = arg0->model[lbl_1_bss_106 + 1], 1);
             Hu3DModelHookSet(arg0->model[0], "g001mk-itemhook_r", var_r26);
             Hu3DMotionShiftSet(arg0->model[0], arg0->motion[1], 0.0f, 8.0f, 0);
             HuAudFXPlay(0x558);
@@ -928,7 +927,6 @@ void fn_1_962C(omObjData* arg0) {
     if (lbl_1_bss_108 == 2 && var_r27 >= arg0->work[0]) {
         lbl_1_bss_108++;
     }
-    (void)var_r27;
 }
 
 s32 fn_1_A584(unkStruct10* arg0) {
