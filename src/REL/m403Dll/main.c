@@ -213,7 +213,7 @@ void ObjectSetup(void) {
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     HuAudSndGrpSet(0x1C);
     lbl_1_bss_2 = 0;
-    if (GWMGRecordGet(9) == 0U) {
+    if (GWMGRecordGet(9) == 0) {
         GWMGRecordSet(9, 5);
     }
 }
@@ -401,7 +401,7 @@ static void fn_1_82C(omObjData *arg0) {
                     lbl_1_bss_28 = 90;
                     break;
                 }
-                if (GWMGRecordGet(9) < lbl_1_bss_0 - 1) {
+                if ((s32)GWMGRecordGet(9) < lbl_1_bss_0 - 1) {
                     GWMGRecordSet(9, lbl_1_bss_0 - 1);
                     lbl_1_bss_30 = 8;
                     break;
