@@ -401,7 +401,7 @@ static void fn_1_82C(omObjData *arg0) {
                     lbl_1_bss_28 = 90;
                     break;
                 }
-                if (GWMGRecordGet(9) < lbl_1_bss_0 - 1) {
+                if ((s32)GWMGRecordGet(9) < lbl_1_bss_0 - 1) {
                     GWMGRecordSet(9, lbl_1_bss_0 - 1);
                     lbl_1_bss_30 = 8;
                     break;
