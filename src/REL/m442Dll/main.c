@@ -2,6 +2,8 @@
 #include "ext_math.h"
 #include "game/audio.h"
 #include "game/chrman.h"
+#include "game/gamework.h"
+
 #include "game/gamework_data.h"
 #include "game/hsfdraw.h"
 #include "game/hsfmotion.h"
@@ -122,9 +124,6 @@ typedef struct M442MainWork2 {
     /* 0x16 */ s16 unk_16;
     /* 0x18 */ float unk_18;
 } M442MainWork2; /* size = 0x1C */
-
-void GWMGRecordSet(s32 index, s32 value);
-u32 GWMGRecordGet(s32 index);
 
 void fn_1_A30(omObjData *object);
 void fn_1_A90(Process *arg0);
@@ -250,7 +249,7 @@ void ObjectSetup(void)
     fn_1_A90(var_r31);
     fn_1_3E64(var_r31);
     fn_1_6BB4(var_r31);
-    if (!GWMGRecordGet(4)) {
+    if (GWMGRecordGet(4) == 0) {
         GWMGRecordSet(4, 0);
     }
     fn_1_91AC(var_r31, GWMGRecordGet(4));

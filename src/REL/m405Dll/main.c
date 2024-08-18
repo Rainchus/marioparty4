@@ -2288,10 +2288,7 @@ void fn_1_9288(omObjData *arg0) {
                     }
                     if (lbl_1_bss_7C >= 0 && !GWPlayerCfg[lbl_1_bss_7C].iscom && lbl_1_bss_738 > lbl_1_bss_73C) {
                         arg0->work[0] = 1007;
-                        lbl_1_bss_728 = 0.0f;
-                        lbl_1_bss_738 = lbl_1_bss_73C;
-                        GWMGRecordSet(0, lbl_1_bss_738);
-                        fn_1_580(lbl_1_bss_6E8, 7, lbl_1_bss_73C);
+                        fn_1_798(0);
                     }
                     lbl_1_bss_736 = -1;
                     lbl_1_bss_80 = 0.0f;

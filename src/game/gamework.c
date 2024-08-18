@@ -147,14 +147,14 @@ s32 GWMessDelayGet(void)
     return GWSystem.mess_delay;
 }
 
-void GWMGRecordSet(s32 index, s32 value)
+void GWMGRecordSet(s32 index, u32 value)
 {
     if(!_CheckFlag(FLAG_ID_MAKE(1, 12))) {
         GWGameStat.mg_record[index] = value;
     }
 }
 
-s32 GWMGRecordGet(s32 index)
+u32 GWMGRecordGet(s32 index)
 {
     return GWGameStat.mg_record[index];
 }

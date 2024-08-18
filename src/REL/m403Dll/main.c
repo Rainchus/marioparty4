@@ -213,7 +213,7 @@ void ObjectSetup(void) {
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     HuAudSndGrpSet(0x1C);
     lbl_1_bss_2 = 0;
-    if (GWMGRecordGet(9) == 0U) {
+    if (GWMGRecordGet(9) == 0) {
         GWMGRecordSet(9, 5);
     }
 }
