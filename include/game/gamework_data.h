@@ -274,6 +274,11 @@ static inline s32 GWBoardGet(void)
     return GWSystem.board;
 }
 
+static inline s32 GWPlayerCurrGet(void)
+{
+    return GWSystem.player_curr;
+}
+
 static inline s32 GWPlayerTeamGet(s32 player)
 {
     return GWPlayer[player].team;
