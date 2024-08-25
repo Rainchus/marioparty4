@@ -32,7 +32,7 @@ u32 frand(void);
 
 extern u32 GlobalCounter;
 
-Hu3DTexAnimDataStruct Hu3DTexAnimData[256];
+Hu3DTexAnimDataStruct Hu3DTexAnimData[HU3D_TEXANIM_MAX];
 Hu3DTexScrDataStruct Hu3DTexScrData[16];
 static Process *parManProc[64];
 
@@ -42,11 +42,11 @@ void Hu3DAnimInit(void) {
     s16 i;
 
     var_r30 = Hu3DTexAnimData;
-    for (i = 0; i < 256; i++, var_r30++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r30++) {
         var_r30->unk06 = -1;
     }
     var_r29 = Hu3DTexScrData;
-    for (i = 0; i < 16; i++, var_r29++) {
+    for (i = 0; i < HU3D_TEXSCROLL_MAX; i++, var_r29++) {
         var_r29->unk02 = -1;
     }
 }
@@ -61,12 +61,12 @@ s16 Hu3DAnimCreate(void *arg0, s16 arg1, char *arg2) {
     s16 var_r28;
 
     var_r31 = Hu3DTexAnimData;
-    for (var_r28 = 0; var_r28 < 256; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_TEXANIM_MAX; var_r28++, var_r31++) {
         if (var_r31->unk06 == -1) {
             break;
         }
     }
-    if (var_r28 == 256) {
+    if (var_r28 == HU3D_TEXANIM_MAX) {
         OSReport("Error: TexAnim Over\n");
         return -1;
     }
@@ -118,12 +118,12 @@ s16 Hu3DAnimLink(s16 arg0, s16 arg1, char *arg2) {
     s16 var_r25;
 
     var_r31 = Hu3DTexAnimData;
-    for (var_r28 = 0; var_r28 < 256; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_TEXANIM_MAX; var_r28++, var_r31++) {
         if (var_r31->unk06 == -1) {
             break;
         }
     }
-    if (var_r28 == 256) {
+    if (var_r28 == HU3D_TEXANIM_MAX) {
         OSReport("Error: TexAnim Over\n");
         return -1;
     }
@@ -190,7 +190,7 @@ void Hu3DAnimModelKill(s16 arg0) {
     Hu3DTexAnimDataStruct *var_r26 = &Hu3DTexAnimData[0];
     s16 i;
 
-    for (i = 0; i < 256; i++, var_r26++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r26++) {
         if (var_r26->unk06 == arg0) {
             Hu3DAnimKill(i);
         }
@@ -201,7 +201,7 @@ void Hu3DAnimAllKill(void) {
     Hu3DTexAnimDataStruct *var_r26 = &Hu3DTexAnimData[0];
     s16 i;
 
-    for (i = 0; i < 256; i++, var_r26++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r26++) {
         if (var_r26->unk06 != -1) {
             Hu3DAnimKill(i);
         }
@@ -265,7 +265,7 @@ s32 Hu3DAnimSet(ModelData *arg0, HsfAttribute *arg1, s16 arg2) {
     temp_r31 = temp_r25->layer;
     temp_r28 = &temp_r27->bmp[temp_r31->bmpNo];
     HuSprTexLoad(temp_r29->unk10, temp_r31->bmpNo, arg2, var_r23, var_r22,
-        (arg0->attr & 0x40) ? GX_NEAR : GX_LINEAR);
+        (arg0->attr & HU3D_ATTR_TEX_NEAR) ? GX_NEAR : GX_LINEAR);
     temp_r30->unk2C = (float) temp_r31->sizeX / temp_r28->sizeX;
     temp_r30->unk30 = (float) temp_r31->sizeY / temp_r28->sizeY;
     temp_r30->unk34.x = (float) temp_r31->startX / temp_r28->sizeX;
@@ -283,7 +283,7 @@ void Hu3DAnimExec(void) {
     s16 i;
 
     var_r30 = Hu3DTexAnimData;
-    for (i = 0; i < 256; i++, var_r30++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r30++) {
         if (var_r30->unk06 != -1 && (Hu3DPauseF == 0 || (var_r30->unk00 & 0x20))) {
             var_r25 = var_r30->unk10;
             temp_r28 = &var_r25->bank[var_r30->unk02];
@@ -312,7 +312,7 @@ void Hu3DAnimExec(void) {
         }
     }
     var_r31 = Hu3DTexScrData;
-    for (i = 0; i < 16; i++, var_r31++) {
+    for (i = 0; i < HU3D_TEXSCROLL_MAX; i++, var_r31++) {
         if (var_r31->unk02 != -1) {
             if (Hu3DPauseF != 0 && !(var_r31->unk00 & 8)) {
                 PSMTXRotRad(var_r31->unk3C, 'Z', MTXDegToRad(var_r31->unk34));
@@ -365,12 +365,12 @@ s16 Hu3DTexScrollCreate(s16 arg0, char *arg1) {
     s16 var_r28;
 
     var_r31 = Hu3DTexScrData;
-    for (var_r28 = 0; var_r28 < 16; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_TEXSCROLL_MAX; var_r28++, var_r31++) {
         if (var_r31->unk02 == -1) {
             break;
         }
     }
-    if (var_r28 == 16) {
+    if (var_r28 == HU3D_TEXSCROLL_MAX) {
         OSReport("Error: TexScroll Over\n");
         return -1;
     }
@@ -434,7 +434,7 @@ void Hu3DTexScrollAllKill(void) {
     s16 i;
 
     var_r27 = Hu3DTexScrData;
-    for (i = 0; i < 16; i++, var_r27++) {
+    for (i = 0; i < HU3D_TEXSCROLL_MAX; i++, var_r27++) {
         if (var_r27->unk02 != -1) {
             Hu3DTexScrollKill(i);
         }
@@ -689,7 +689,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
         PSMTXIdentity(sp128);
     }
     PSMTXReorder(sp128, sp8);
-    if ((Hu3DPauseF == 0 || (arg0->attr & 0x200000)) && temp_r31->unk_54 && temp_r31->unk_38 != GlobalCounter) {
+    if ((Hu3DPauseF == 0 || (arg0->attr & HU3D_ATTR_NOPAUSE)) && temp_r31->unk_54 && temp_r31->unk_38 != GlobalCounter) {
         var_r17 = temp_r31->unk_54;
         var_r17(arg0, temp_r31, arg1);
     }
@@ -758,7 +758,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
             } else {
                 GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
             }
-            if (arg0->attr & 2) {
+            if (arg0->attr & HU3D_ATTR_ZWRITE_OFF) {
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
             } else {
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
@@ -774,7 +774,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
             var_r28 = &temp_r25->frame[temp_r31->unk_22];
             temp_r21 = &temp_r22->pat[var_r28->pat];
             HuSprTexLoad(temp_r31->unk_44, temp_r21->layer->bmpNo, 0, GX_CLAMP, GX_CLAMP, GX_LINEAR);
-            if (Hu3DPauseF == 0 || (arg0->attr & 0x200000)) {
+            if (Hu3DPauseF == 0 || (arg0->attr & HU3D_ATTR_NOPAUSE)) {
                 for (i = 0; i < (s32) temp_r31->unk_24 * minimumVcount; i++) {
                     temp_r31->unk_28 += 1.0f;
                     if (temp_r31->unk_28 >= var_r28->time) {
@@ -1079,7 +1079,7 @@ static void ParManFunc(void) {
     temp_r30 = temp_r31->unk3C;
     temp_r27 = &Hu3DData[temp_r31->unk00];
     while (1) {
-        if (Hu3DPauseF != 0 && !(temp_r27->attr & 0x200000)) {
+        if (Hu3DPauseF != 0 && !(temp_r27->attr & HU3D_ATTR_NOPAUSE)) {
             HuPrcVSleep();
             continue;
         }
@@ -1229,7 +1229,7 @@ static void ParManHook(ModelData *model, ParticleData *particle, Mtx matrix) {
     s16 sp8;
     s16 i;
 
-    if (Hu3DPauseF == 0 || (model->attr & 0x200000)) {
+    if (Hu3DPauseF == 0 || (model->attr & HU3D_ATTR_NOPAUSE)) {
         var_r29 = particle->unk_48;
         for (i = 0; i < particle->unk_30; i++, var_r29++) {
             if (var_r29->unk2C) {
