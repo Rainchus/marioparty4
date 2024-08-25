@@ -17,7 +17,7 @@
 static s32 SearchObjectIndex(HsfData *arg0, u32 arg1);
 static s32 SearchAttributeIndex(HsfData *arg0, u32 arg1);
 
-MotionData Hu3DMotion[256];
+MotionData Hu3DMotion[HU3D_MOTION_MAX];
 
 static HsfBitmap *bitMapPtr;
 
@@ -26,7 +26,7 @@ void Hu3DMotionInit(void) {
     s16 i;
 
     var_r31 = (MotionData*) Hu3DData;
-    for (i = 0; i < 256; i++, var_r31++) {
+    for (i = 0; i < HU3D_MOTION_MAX; i++, var_r31++) {
         var_r31->unk_04 = 0;
     }
 }
@@ -36,12 +36,12 @@ s16 Hu3DMotionCreate(void *arg0) {
     s16 i;
 
     var_r31 = Hu3DMotion;
-    for (i = 0; i < 256; i++, var_r31++) {
+    for (i = 0; i < HU3D_MOTION_MAX; i++, var_r31++) {
         if (var_r31->unk_04 == 0) {
             break;
         }
     }
-    if (i == 256) {
+    if (i == HU3D_MOTION_MAX) {
         OSReport("Error: Create Motion Over!\n");
         return -1;
     }
@@ -57,12 +57,12 @@ s16 Hu3DMotionModelCreate(s16 arg0) {
     s16 i;
 
     var_r31 = Hu3DMotion;
-    for (i = 0; i < 256; i++, var_r31++) {
+    for (i = 0; i < HU3D_MOTION_MAX; i++, var_r31++) {
         if (var_r31->unk_04 == 0) {
             break;
         }
     }
-    if (i == 256) {
+    if (i == HU3D_MOTION_MAX) {
         OSReport("Error: Create Motion Over!\n");
         return -1;
     }
@@ -105,7 +105,7 @@ void Hu3DMotionAllKill(void) {
     s16 i;
 
     var_r27 = Hu3DMotion;
-    for (i = 0; i < 256; i++, var_r27++) {
+    for (i = 0; i < HU3D_MOTION_MAX; i++, var_r27++) {
         if (var_r27->unk_04) {
             Hu3DMotionKill(i);
         }
@@ -1051,7 +1051,7 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
         switch (arg1->channel) {
             case 8:
                 var_f30 = temp_r29->scale.x * (arg2 + temp_r29->pos.x);
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].pos.x = var_f30;
                     }
@@ -1059,7 +1059,7 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
                 break;
             case 9:
                 var_f30 = temp_r29->scale.y * (arg2 + temp_r29->pos.y);
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].pos.y = var_f30;
                     }
@@ -1067,7 +1067,7 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
                 break;
             case 10:
                 var_f30 = temp_r29->scale.z * (arg2 + temp_r29->pos.z);
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].pos.z = var_f30;
                     }
@@ -1075,7 +1075,7 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
                 break;
             case 11:
                 var_f30 = temp_r29->scale.x * (arg2 + temp_r29->pos.x);
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].target.x = var_f30;
                     }
@@ -1083,7 +1083,7 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
                 break;
             case 12:
                 var_f30 = temp_r29->scale.y * (arg2 + temp_r29->pos.y);
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].target.y = var_f30;
                     }
@@ -1091,14 +1091,14 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
                 break;
             case 13:
                 var_f30 = temp_r29->scale.z * (arg2 + temp_r29->pos.z);
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].target.z = var_f30;
                     }
                 }
                 break;
             case 14:
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         VECSubtract(&Hu3DCamera[i].pos, &Hu3DCamera[i].target, &spC);
                         VECNormalize(&spC, &spC);
@@ -1111,7 +1111,7 @@ void SetObjCameraMotion(s16 arg0, HsfTrack *arg1, float arg2) {
                 }
                 break;
             case 15:
-                for (i = 0, var_r30 = 1; i < 16; i++, var_r30 <<= 1) {
+                for (i = 0, var_r30 = 1; i < HU3D_CAM_MAX; i++, var_r30 <<= 1) {
                     if (var_r30 & temp_r28) {
                         Hu3DCamera[i].fov = arg2;
                     }

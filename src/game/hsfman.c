@@ -15,8 +15,8 @@
 #include "math.h"
 #include "ext_math.h"
 
-ModelData Hu3DData[0x200];
-CameraData Hu3DCamera[0x10];
+ModelData Hu3DData[HU3D_MODEL_MAX];
+CameraData Hu3DCamera[HU3D_CAM_MAX];
 static s16 layerNum[8];
 static void (*layerHook[8])(s16);
 AnimData *reflectAnim[5];
@@ -63,11 +63,11 @@ void Hu3DInit(void) {
     s16 i;
 
     data = Hu3DData;
-    for (i = 0; i < 0x200; i++, data++) {
+    for (i = 0; i < HU3D_MODEL_MAX; i++, data++) {
         data->hsfData = NULL;
     }
     camera = Hu3DCamera;
-    for (i = 0; i < 0x10; i++, camera++) {
+    for (i = 0; i < HU3D_CAM_MAX; i++, camera++) {
         camera->fov = -1.0f;
     }
     Hu3DMotionInit();
@@ -111,7 +111,7 @@ void Hu3DPreProc(void) {
     
     GXSetCopyClear(BGColor, 0xFFFFFF);
     data = &Hu3DData[0];
-    for (i = 0; i < 0x200; i++, data++) {
+    for (i = 0; i < HU3D_MODEL_MAX; i++, data++) {
         if (data->hsfData != 0) {
             data->attr &= ~HU3D_ATTR_MOT_EXEC;
         }
@@ -146,7 +146,7 @@ void Hu3DExec(void) {
     shadowModelDrawF = 0;
     HuSprBegin();
     var_r24 = 0;
-    for (Hu3DCameraNo = 0; Hu3DCameraNo < 0x10; Hu3DCameraNo++, camera++) {
+    for (Hu3DCameraNo = 0; Hu3DCameraNo < HU3D_CAM_MAX; Hu3DCameraNo++, camera++) {
         if (-1.0f != camera->fov) {
             GXInvalidateVtxCache();
             temp_r22 = (s16) (1 << Hu3DCameraNo);
@@ -188,7 +188,7 @@ void Hu3DExec(void) {
                     Hu3DCameraSet(Hu3DCameraNo, Hu3DCameraMtx);
                     PSMTXInvXpose(Hu3DCameraMtx, Hu3DCameraMtxXPose);
                     data = Hu3DData;
-                    for (i = 0, var_r23 = i; i < 0x200; i++, data++) {
+                    for (i = 0, var_r23 = i; i < HU3D_MODEL_MAX; i++, data++) {
                         if (data->hsfData != 0) {
                             if ((data->attr & HU3D_ATTR_CAMERA) != 0) {
                                 Hu3DCameraMotionExec(i);
@@ -269,7 +269,7 @@ void Hu3DExec(void) {
     HuSprDispInit();
     HuSprExec(0);
     data = Hu3DData;
-    for (i = 0; i < 0x200; i++, data++) {
+    for (i = 0; i < HU3D_MODEL_MAX; i++, data++) {
         if (data->hsfData != 0 && (data->unk_08 != -1 || (data->attr & HU3D_ATTR_CLUSTER_ON) != 0 || data->unk_0E != -1) && (Hu3DPauseF == 0 || (data->attr & HU3D_ATTR_NOPAUSE) != 0)) {
             Hu3DMotionNext(i);
         }
@@ -336,12 +336,12 @@ s16 Hu3DModelCreate(void *arg0) {
 
     var_r31 = Hu3DData;
     
-    for (var_r30 = 0; var_r30 < 0x200; var_r30++, var_r31++) {
+    for (var_r30 = 0; var_r30 < HU3D_MODEL_MAX; var_r30++, var_r31++) {
         if (var_r31->hsfData == 0x0) {
             break;
         }
     }
-    if (var_r30 == 0x200) {
+    if (var_r30 == HU3D_MODEL_MAX) {
         OSReport("Error: Create Model Over!\n");
         return -1;
     }
@@ -418,12 +418,12 @@ s16 Hu3DModelLink(s16 arg0) {
 
     temp_r30 = &Hu3DData[arg0];
     var_r31 = Hu3DData;
-    for (var_r28 = 0; var_r28 < 0x200; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_MODEL_MAX; var_r28++, var_r31++) {
         if (var_r31->hsfData == 0x0) {
             break;
         }
     }
-    if (var_r28 == 0x200) {
+    if (var_r28 == HU3D_MODEL_MAX) {
         return -1;
     }
     var_r31->unk_C8 = temp_r30->hsfData;
@@ -481,12 +481,12 @@ s16 Hu3DHookFuncCreate(ModelHookFunc hook) {
     s16 i;
 
     var_r31 = Hu3DData;
-    for (var_r29 = 0; var_r29 < 0x200; var_r29++, var_r31++) {
+    for (var_r29 = 0; var_r29 < HU3D_MODEL_MAX; var_r29++, var_r31++) {
         if (var_r31->hsfData == 0) {
             break;
         }
     }
-    if (var_r29 == 0x200) {
+    if (var_r29 == HU3D_MODEL_MAX) {
         return -1;
     }
     var_r31->hook = hook;
@@ -566,7 +566,7 @@ void Hu3DModelKill(s16 arg0) {
             temp_r31->hsfData = var_r28;
         }
         var_r30 = Hu3DData;
-        for (var_r27 = i = 0; i < 0x200; i++, var_r30++) {
+        for (var_r27 = i = 0; i < HU3D_MODEL_MAX; i++, var_r30++) {
             if ((var_r30->hsfData != 0) && (var_r30->hsfData == var_r28 || (var_r30->unk_24 != -1 && var_r30->unk_C8 == var_r28))) {
                 var_r27++;
             }
@@ -575,7 +575,7 @@ void Hu3DModelKill(s16 arg0) {
             temp_r31->hsfData = NULL;
             var_r30 = Hu3DData;
             if (temp_r31->unk_20 != -1) {
-                for (i = 0; i < 0x200; i++, var_r30++) {
+                for (i = 0; i < HU3D_MODEL_MAX; i++, var_r30++) {
                     if (var_r30->hsfData != 0 && var_r30->unk_24 != -1 && var_r30->unk_C8 == var_r28) {
                         Hu3DMotion[temp_r31->unk_20].unk_02 = i;
                         break;
@@ -620,7 +620,7 @@ void Hu3DModelAllKill(void) {
     modelKillAllF = 1;
     var_r30 = Hu3DData;
     
-    for (i = 0; i < 0x200; i++, var_r30++) {
+    for (i = 0; i < HU3D_MODEL_MAX; i++, var_r30++) {
         if (var_r30->hsfData != 0) {
             Hu3DModelKill(i);
         }
@@ -1069,7 +1069,7 @@ void Hu3DModelHiliteTypeSet(s16 arg0, s16 arg1) {
         var_r31->flags |= 0x100;
     }
     temp_r29 = &Hu3DData[arg0];
-    temp_r29->attr |= 0x20000;
+    temp_r29->attr |= HU3D_ATTR_HILITE;
     (void)temp_r29;
 }
 
@@ -1103,7 +1103,7 @@ void Hu3DCameraCreate(s32 cam) {
     defCamera.scissor_h = RenderMode->efbHeight;
     Hu3DCameraExistF |= cam;
     
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             *cam_ptr = defCamera;
@@ -1116,7 +1116,7 @@ void Hu3DCameraPerspectiveSet(s32 cam, f32 fov, f32 near, f32 far, f32 aspect) {
     s16 i;
     CameraData* cam_ptr;
 
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             cam_ptr->fov = fov;
@@ -1132,7 +1132,7 @@ void Hu3DCameraViewportSet(s32 cam, f32 vx, f32 vy, f32 vw, f32 vh, f32 nz, f32 
     s16 i;
     CameraData* cam_ptr;
 
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             cam_ptr->viewport_x = vx;
@@ -1150,7 +1150,7 @@ void Hu3DCameraScissorSet(s32 cam, u32 x, u32 y, u32 w, u32 h) {
     s16 i;
     CameraData* cam_ptr;
 
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             cam_ptr->scissor_x = x;
@@ -1166,7 +1166,7 @@ void Hu3DCameraPosSet(s32 cam, f32 x, f32 y, f32 z, f32 ux, f32 uy, f32 uz, f32 
     s16 i;
     CameraData* cam_ptr;
 
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             cam_ptr->pos.x = x;
@@ -1187,7 +1187,7 @@ void Hu3DCameraPosSetV(s32 cam, Vec *pos, Vec *up, Vec *target) {
     s16 i;
     CameraData* cam_ptr;
 
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             cam_ptr->pos = *pos;
@@ -1202,7 +1202,7 @@ void Hu3DCameraKill(s32 cam) {
     s16 i;
     CameraData* cam_ptr;
 
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1) {
         if ((cam & mask) != 0) {
             cam_ptr = &Hu3DCamera[i];
             cam_ptr->fov = -1.0f;
@@ -1219,9 +1219,9 @@ void Hu3DCameraAllKill(void) {
     s16 mask2;
 
     cam_ptr = &Hu3DCamera[0];
-    for (i = 0, mask = 1; i < 0x10; i++, mask <<= 1, cam_ptr++) {
+    for (i = 0, mask = 1; i < HU3D_CAM_MAX; i++, mask <<= 1, cam_ptr++) {
         if (-1.0f != cam_ptr->fov) {
-           for (j = 0, mask2 = 1; j < 0x10; j++, mask2 <<= 1) {
+           for (j = 0, mask2 = 1; j < HU3D_CAM_MAX; j++, mask2 <<= 1) {
                 if ((mask & mask2) != 0) {
                     cam_ptr2 = &Hu3DCamera[j];
                     cam_ptr2->fov = -1.0f;
@@ -1307,7 +1307,7 @@ s16 Hu3DModelCameraCreate(s16 arg0, u16 arg1) {
 
     temp_r3 = Hu3DHookFuncCreate((ModelHookFunc)-1);
     temp_r31 = &Hu3DData[(s16) temp_r3];
-    temp_r31->attr &= ~0x10;
+    temp_r31->attr &= ~HU3D_ATTR_HOOKFUNC;
     temp_r31->attr |= HU3D_ATTR_CAMERA | HU3D_ATTR_CAMERA_MOTON;
     temp_r31->unk_08 = arg0;
     temp_r31->unk_01 = arg1;
@@ -1941,7 +1941,7 @@ void Hu3DShadowExec(void) {
     GXInvalidateTexAll();
     GXSetFog(GX_FOG_NONE, 0.0f, 0.0f, 0.0f, 0.0f, BGColor);
     
-    for (var_r30 = 0; var_r30 < 0x200; var_r30++, var_r31++) {
+    for (var_r30 = 0; var_r30 < HU3D_MODEL_MAX; var_r30++, var_r31++) {
         if (var_r31->hsfData != 0 && (var_r31->attr & HU3D_ATTR_SHADOW) != 0 && (var_r31->attr & HU3D_ATTR_DISPOFF) == 0 && (var_r31->attr & HU3D_ATTR_HOOK) == 0) {
             if ((var_r31->attr & HU3D_ATTR_MOTION_OFF) != 0) {
                 test2 = 0;

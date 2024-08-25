@@ -46,13 +46,13 @@ void GXResetWriteGatherPipe(void);
 
 static const Vec lbl_8011DD20 = { 0.0f, 0.0f, -1.0f };
 
-static HsfDrawObject DrawObjData[512];
+static HsfDrawObject DrawObjData[HU3D_MODEL_MAX];
 static HsfAttribute *BmpPtrBak[8];
 static Mtx MTXBuf[96];
 static Vec scaleBuf[96];
 static GXColor texCol[16];
 static Mtx hiliteMtx;
-static s16 DrawObjNum[512];
+static s16 DrawObjNum[HU3D_MODEL_MAX];
 static Vec NBTB;
 static Vec NBTT;
 Vec PGMaxPos;

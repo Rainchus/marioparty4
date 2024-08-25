@@ -32,7 +32,7 @@ u32 frand(void);
 
 extern u32 GlobalCounter;
 
-Hu3DTexAnimDataStruct Hu3DTexAnimData[256];
+Hu3DTexAnimDataStruct Hu3DTexAnimData[HU3D_TEXANIM_MAX];
 Hu3DTexScrDataStruct Hu3DTexScrData[16];
 static Process *parManProc[64];
 
@@ -42,11 +42,11 @@ void Hu3DAnimInit(void) {
     s16 i;
 
     var_r30 = Hu3DTexAnimData;
-    for (i = 0; i < 256; i++, var_r30++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r30++) {
         var_r30->unk06 = -1;
     }
     var_r29 = Hu3DTexScrData;
-    for (i = 0; i < 16; i++, var_r29++) {
+    for (i = 0; i < HU3D_TEXSCROLL_MAX; i++, var_r29++) {
         var_r29->unk02 = -1;
     }
 }
@@ -61,12 +61,12 @@ s16 Hu3DAnimCreate(void *arg0, s16 arg1, char *arg2) {
     s16 var_r28;
 
     var_r31 = Hu3DTexAnimData;
-    for (var_r28 = 0; var_r28 < 256; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_TEXANIM_MAX; var_r28++, var_r31++) {
         if (var_r31->unk06 == -1) {
             break;
         }
     }
-    if (var_r28 == 256) {
+    if (var_r28 == HU3D_TEXANIM_MAX) {
         OSReport("Error: TexAnim Over\n");
         return -1;
     }
@@ -118,12 +118,12 @@ s16 Hu3DAnimLink(s16 arg0, s16 arg1, char *arg2) {
     s16 var_r25;
 
     var_r31 = Hu3DTexAnimData;
-    for (var_r28 = 0; var_r28 < 256; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_TEXANIM_MAX; var_r28++, var_r31++) {
         if (var_r31->unk06 == -1) {
             break;
         }
     }
-    if (var_r28 == 256) {
+    if (var_r28 == HU3D_TEXANIM_MAX) {
         OSReport("Error: TexAnim Over\n");
         return -1;
     }
@@ -190,7 +190,7 @@ void Hu3DAnimModelKill(s16 arg0) {
     Hu3DTexAnimDataStruct *var_r26 = &Hu3DTexAnimData[0];
     s16 i;
 
-    for (i = 0; i < 256; i++, var_r26++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r26++) {
         if (var_r26->unk06 == arg0) {
             Hu3DAnimKill(i);
         }
@@ -201,7 +201,7 @@ void Hu3DAnimAllKill(void) {
     Hu3DTexAnimDataStruct *var_r26 = &Hu3DTexAnimData[0];
     s16 i;
 
-    for (i = 0; i < 256; i++, var_r26++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r26++) {
         if (var_r26->unk06 != -1) {
             Hu3DAnimKill(i);
         }
@@ -283,7 +283,7 @@ void Hu3DAnimExec(void) {
     s16 i;
 
     var_r30 = Hu3DTexAnimData;
-    for (i = 0; i < 256; i++, var_r30++) {
+    for (i = 0; i < HU3D_TEXANIM_MAX; i++, var_r30++) {
         if (var_r30->unk06 != -1 && (Hu3DPauseF == 0 || (var_r30->unk00 & 0x20))) {
             var_r25 = var_r30->unk10;
             temp_r28 = &var_r25->bank[var_r30->unk02];
@@ -312,7 +312,7 @@ void Hu3DAnimExec(void) {
         }
     }
     var_r31 = Hu3DTexScrData;
-    for (i = 0; i < 16; i++, var_r31++) {
+    for (i = 0; i < HU3D_TEXSCROLL_MAX; i++, var_r31++) {
         if (var_r31->unk02 != -1) {
             if (Hu3DPauseF != 0 && !(var_r31->unk00 & 8)) {
                 PSMTXRotRad(var_r31->unk3C, 'Z', MTXDegToRad(var_r31->unk34));
@@ -365,12 +365,12 @@ s16 Hu3DTexScrollCreate(s16 arg0, char *arg1) {
     s16 var_r28;
 
     var_r31 = Hu3DTexScrData;
-    for (var_r28 = 0; var_r28 < 16; var_r28++, var_r31++) {
+    for (var_r28 = 0; var_r28 < HU3D_TEXSCROLL_MAX; var_r28++, var_r31++) {
         if (var_r31->unk02 == -1) {
             break;
         }
     }
-    if (var_r28 == 16) {
+    if (var_r28 == HU3D_TEXSCROLL_MAX) {
         OSReport("Error: TexScroll Over\n");
         return -1;
     }
@@ -434,7 +434,7 @@ void Hu3DTexScrollAllKill(void) {
     s16 i;
 
     var_r27 = Hu3DTexScrData;
-    for (i = 0; i < 16; i++, var_r27++) {
+    for (i = 0; i < HU3D_TEXSCROLL_MAX; i++, var_r27++) {
         if (var_r27->unk02 != -1) {
             Hu3DTexScrollKill(i);
         }

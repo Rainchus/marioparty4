@@ -6,6 +6,11 @@
 #include "game/memory.h"
 #include "game/data.h"
 
+#define HU3D_MODEL_MAX 512
+#define HU3D_MOTION_MAX 256
+#define HU3D_TEXANIM_MAX 256
+#define HU3D_TEXSCROLL_MAX 16
+
 #define HU3D_MOTATTR 0x40000000
 
 #define HU3D_MOTATTR_LOOP 0x40000001
@@ -25,7 +30,6 @@
 #define HU3D_CLUSTER_ATTR_LOOP ((s32)0xC0000001)
 #define HU3D_CLUSTER_ATTR_PAUSE ((s32)0xC0000002)
 #define HU3D_CLUSTER_ATTR_REV ((s32)0xC0000004)
-
 
 #define HU3D_ATTR_NONE 0
 
@@ -70,6 +74,7 @@
 #define HU3D_CAM13 (1 << 13)
 #define HU3D_CAM14 (1 << 14)
 #define HU3D_CAM15 (1 << 15)
+#define HU3D_CAM_MAX 16
 
 #define Hu3DModelCreateFile(data_id) (Hu3DModelCreate(HuDataSelHeapReadNum((data_id), MEMORY_DEFAULT_NUM, HEAP_DATA)))
 

@@ -18,7 +18,7 @@ void CamMotionEx2(s16 arg0, s16 arg1, float arg2, s16 arg3) {
     CameraData *temp_r30;
     s16 i;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < HU3D_CAM_MAX; i++) {
         if (arg1 & (1 << i)) {
             break;
         }
@@ -57,7 +57,7 @@ void CamMotionEx(s16 arg0, s16 arg1, Vec *arg2, Vec *arg3, Vec *arg4, float arg5
     temp_r22 = temp_r23->hsfData;
     temp_r18 = temp_r19->unk_04;
     temp_r26 = temp_r18->motion;
-    for (var_r25 = 0; var_r25 < 16; var_r25++) {
+    for (var_r25 = 0; var_r25 < HU3D_CAM_MAX; var_r25++) {
         if (arg1 & (1 << var_r25)) {
             break;
         }
@@ -422,7 +422,7 @@ void Hu3D2Dto3D(Vec *arg0, s16 arg1, Vec *arg2) {
     s16 i;
     Mtx spC;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < HU3D_CAM_MAX; i++) {
         if (arg1 & (1 << i)) {
             break;
         }
@@ -449,7 +449,7 @@ void Hu3D3Dto2D(Vec *arg0, s16 arg1, Vec *arg2) {
     s16 i;
     Mtx sp1C;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < HU3D_CAM_MAX; i++) {
         if (arg1 & (1 << i)) {
             break;
         }
