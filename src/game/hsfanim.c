@@ -265,7 +265,7 @@ s32 Hu3DAnimSet(ModelData *arg0, HsfAttribute *arg1, s16 arg2) {
     temp_r31 = temp_r25->layer;
     temp_r28 = &temp_r27->bmp[temp_r31->bmpNo];
     HuSprTexLoad(temp_r29->unk10, temp_r31->bmpNo, arg2, var_r23, var_r22,
-        (arg0->attr & 0x40) ? GX_NEAR : GX_LINEAR);
+        (arg0->attr & HU3D_ATTR_TEX_NEAR) ? GX_NEAR : GX_LINEAR);
     temp_r30->unk2C = (float) temp_r31->sizeX / temp_r28->sizeX;
     temp_r30->unk30 = (float) temp_r31->sizeY / temp_r28->sizeY;
     temp_r30->unk34.x = (float) temp_r31->startX / temp_r28->sizeX;
@@ -689,7 +689,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
         PSMTXIdentity(sp128);
     }
     PSMTXReorder(sp128, sp8);
-    if ((Hu3DPauseF == 0 || (arg0->attr & 0x200000)) && temp_r31->unk_54 && temp_r31->unk_38 != GlobalCounter) {
+    if ((Hu3DPauseF == 0 || (arg0->attr & HU3D_ATTR_NOPAUSE)) && temp_r31->unk_54 && temp_r31->unk_38 != GlobalCounter) {
         var_r17 = temp_r31->unk_54;
         var_r17(arg0, temp_r31, arg1);
     }
@@ -758,7 +758,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
             } else {
                 GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
             }
-            if (arg0->attr & 2) {
+            if (arg0->attr & HU3D_ATTR_ZWRITE_OFF) {
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
             } else {
                 GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
@@ -774,7 +774,7 @@ static void _Hu3DParticleAttrReset(ModelData *arg0, Mtx arg1) {
             var_r28 = &temp_r25->frame[temp_r31->unk_22];
             temp_r21 = &temp_r22->pat[var_r28->pat];
             HuSprTexLoad(temp_r31->unk_44, temp_r21->layer->bmpNo, 0, GX_CLAMP, GX_CLAMP, GX_LINEAR);
-            if (Hu3DPauseF == 0 || (arg0->attr & 0x200000)) {
+            if (Hu3DPauseF == 0 || (arg0->attr & HU3D_ATTR_NOPAUSE)) {
                 for (i = 0; i < (s32) temp_r31->unk_24 * minimumVcount; i++) {
                     temp_r31->unk_28 += 1.0f;
                     if (temp_r31->unk_28 >= var_r28->time) {
@@ -1079,7 +1079,7 @@ static void ParManFunc(void) {
     temp_r30 = temp_r31->unk3C;
     temp_r27 = &Hu3DData[temp_r31->unk00];
     while (1) {
-        if (Hu3DPauseF != 0 && !(temp_r27->attr & 0x200000)) {
+        if (Hu3DPauseF != 0 && !(temp_r27->attr & HU3D_ATTR_NOPAUSE)) {
             HuPrcVSleep();
             continue;
         }
@@ -1229,7 +1229,7 @@ static void ParManHook(ModelData *model, ParticleData *particle, Mtx matrix) {
     s16 sp8;
     s16 i;
 
-    if (Hu3DPauseF == 0 || (model->attr & 0x200000)) {
+    if (Hu3DPauseF == 0 || (model->attr & HU3D_ATTR_NOPAUSE)) {
         var_r29 = particle->unk_48;
         for (i = 0; i < particle->unk_30; i++, var_r29++) {
             if (var_r29->unk2C) {

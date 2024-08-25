@@ -113,7 +113,7 @@ void Hu3DPreProc(void) {
     data = &Hu3DData[0];
     for (i = 0; i < 0x200; i++, data++) {
         if (data->hsfData != 0) {
-            data->attr &= ~0x800;
+            data->attr &= ~HU3D_ATTR_MOT_EXEC;
         }
     }
     totalPolyCnted = totalPolyCnt;
@@ -122,6 +122,8 @@ void Hu3DPreProc(void) {
     totalTexCacheCnted = totalTexCacheCnt;
     totalPolyCnt = totalMatCnt = totalTexCnt = totalTexCacheCnt = 0;
 }
+
+#define HU3D_ATTR_CAMERA_UPDATE (HU3D_ATTR_CAMERA_MOTON|HU3D_ATTR_DISPOFF)
 
 void Hu3DExec(void) {
     GXColor unusedColor = {0, 0, 0, 0};
@@ -188,16 +190,16 @@ void Hu3DExec(void) {
                     data = Hu3DData;
                     for (i = 0, var_r23 = i; i < 0x200; i++, data++) {
                         if (data->hsfData != 0) {
-                            if ((data->attr & 0x10000) != 0) {
+                            if ((data->attr & HU3D_ATTR_CAMERA) != 0) {
                                 Hu3DCameraMotionExec(i);
                             } else {
-                                if ((data->attr & 0x2001) == 0x2001 && data->unk_08 != -1) {
+                                if ((data->attr & HU3D_ATTR_CAMERA_UPDATE) == HU3D_ATTR_CAMERA_UPDATE && data->unk_08 != -1) {
                                     Hu3DMotionExec(i, data->unk_08, data->unk_64, 0);
                                 }
-                                if ((data->attr & 9) == 0 && (data->camera & temp_r22) != 0 && data->layer == j) {
-                                    if (((data->attr & 0x800) == 0 && (data->attr & 0x100) == 0) || ((data->attr & 0x100) != 0 && (data->unk_00 & 1) != 0)) {
+                                if ((data->attr & (HU3D_ATTR_DISPOFF|HU3D_ATTR_MOTION_OFF)) == 0 && (data->camera & temp_r22) != 0 && data->layer == j) {
+                                    if (((data->attr & HU3D_ATTR_MOT_EXEC) == 0 && (data->attr & HU3D_ATTR_MOT_SLOW) == 0) || ((data->attr & HU3D_ATTR_MOT_SLOW) != 0 && (data->unk_00 & 1) != 0)) {
                                         var_r25 = 0;
-                                        data->motion_attr &= 0xBFFFFFFF;
+                                        data->motion_attr &= ~HU3D_MOTATTR;
                                         if (data->unk_08 != -1) {
                                             Hu3DMotionExec(i, data->unk_08, data->unk_64, 0);
                                         }
@@ -207,7 +209,7 @@ void Hu3DExec(void) {
                                         if (data->unk_0A != -1) {
                                             Hu3DMotionExec(i, data->unk_0A, data->unk_74, 1);
                                         }
-                                        if ((data->attr & 0x400) != 0) {
+                                        if ((data->attr & HU3D_ATTR_CLUSTER_ON) != 0) {
                                             ClusterMotionExec(data);
                                             var_r25 = 1;
                                         }
@@ -219,7 +221,7 @@ void Hu3DExec(void) {
                                             }
                                             var_r25 = 1;
                                         }
-                                        if ((data->attr & 0x90) == 0 && (data->motion_attr & 0x40000002) == 0) {
+                                        if ((data->attr & (HU3D_ATTR_ENVELOPE_OFF|HU3D_ATTR_HOOKFUNC)) == 0 && (data->motion_attr & HU3D_MOTATTR_PAUSE) == 0) {
                                             var_r25 = 1;
                                             InitVtxParm(data->hsfData);
                                             if (data->unk_0E != -1) {
@@ -238,11 +240,11 @@ void Hu3DExec(void) {
                                         }
                                         data->attr |= 0x800;
                                     }
-                                    if (var_r24 != 0 && (data->attr & 0x10) != 0) {
+                                    if (var_r24 != 0 && (data->attr & HU3D_ATTR_HOOKFUNC) != 0) {
                                         GXWaitDrawDone();
                                         var_r24 = 0;
                                     }
-                                    if ((data->attr & 0x8000) == 0 && (0.0f != data->scale.x || 0.0f != data->scale.y || 0.0f != data->scale.z)) {
+                                    if ((data->attr & HU3D_ATTR_HOOK) == 0 && (0.0f != data->scale.x || 0.0f != data->scale.y || 0.0f != data->scale.z)) {
                                         mtxRot(sp40, data->rot.x, data->rot.y, data->rot.z);
                                         mtxScaleCat(sp40, data->scale.x, data->scale.y, data->scale.z);
                                         mtxTransCat(sp40, data->pos.x, data->pos.y, data->pos.z);
@@ -268,7 +270,7 @@ void Hu3DExec(void) {
     HuSprExec(0);
     data = Hu3DData;
     for (i = 0; i < 0x200; i++, data++) {
-        if (data->hsfData != 0 && (data->unk_08 != -1 || (data->attr & 0x400) != 0 || data->unk_0E != -1) && (Hu3DPauseF == 0 || (data->attr & 0x200000) != 0)) {
+        if (data->hsfData != 0 && (data->unk_08 != -1 || (data->attr & HU3D_ATTR_CLUSTER_ON) != 0 || data->unk_0E != -1) && (Hu3DPauseF == 0 || (data->attr & HU3D_ATTR_NOPAUSE) != 0)) {
             Hu3DMotionNext(i);
         }
     }
@@ -345,8 +347,8 @@ s16 Hu3DModelCreate(void *arg0) {
     }
     var_r31->hsfData = LoadHSF(arg0);
     var_r31->unk_48 = Hu3DMallocNo = (u32)var_r31->hsfData;
-    var_r31->attr = 0;
-    var_r31->motion_attr = 0;
+    var_r31->attr = HU3D_ATTR_NONE;
+    var_r31->motion_attr = HU3D_ATTR_NONE;
     var_r31->unk_02 = 0;
     MakeDisplayList(var_r30, var_r31->unk_48);
     var_r31->unk_68 = 1.0f;
@@ -433,7 +435,7 @@ s16 Hu3DModelLink(s16 arg0) {
     var_r31->hsfData->object = temp_r3_2;
     var_r31->unk_48 = temp_r30->unk_48;
     var_r31->attr = temp_r30->attr;
-    temp_r30->attr |= 0x100000;
+    temp_r30->attr |= HU3D_ATTR_LINK;
     var_r31->motion_attr = temp_r30->motion_attr;
     var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = 0.0f;
     var_r31->rot.x = var_r31->rot.y = var_r31->rot.z = 0.0f;
@@ -448,7 +450,7 @@ s16 Hu3DModelLink(s16 arg0) {
         var_r31->unk_10[i] = temp_r30->unk_10[i];
         if (var_r31->unk_10[i] != -1) {
             ClusterAdjustObject(var_r31->hsfData, Hu3DMotion[var_r31->unk_10[i]].unk_04);
-            var_r31->attr |= 0x400;
+            var_r31->attr |= HU3D_ATTR_CLUSTER_ON;
         }
     }
     var_r31->unk_64 = temp_r30->unk_64;
@@ -489,8 +491,8 @@ s16 Hu3DHookFuncCreate(ModelHookFunc hook) {
     }
     var_r31->hook = hook;
     var_r31->unk_48 = var_r29+10000;
-    var_r31->attr = 0x10;
-    var_r31->motion_attr = 0;
+    var_r31->attr = HU3D_ATTR_HOOKFUNC;
+    var_r31->motion_attr = HU3D_ATTR_NONE;
     var_r31->pos.x = var_r31->pos.y = var_r31->pos.z = 0.0f;
     var_r31->rot.x = var_r31->rot.y = var_r31->rot.z = 0.0f;
     var_r31->scale.x = var_r31->scale.y = var_r31->scale.z = 1.0f;
@@ -531,14 +533,14 @@ void Hu3DModelKill(s16 arg0) {
     temp_r31 = &Hu3DData[arg0];
     var_r28 = temp_r31->hsfData;
     if (var_r28 != 0) {
-        if ((temp_r31->attr & 4) != 0) {
+        if ((temp_r31->attr & HU3D_ATTR_SHADOW) != 0) {
             Hu3DShadowCamBit -= 1;
         }
         layerNum[temp_r31->layer] -= 1;
 
-        if ((temp_r31->attr & 0x10) != 0) {
+        if ((temp_r31->attr & HU3D_ATTR_HOOKFUNC) != 0) {
             HuMemDirectFreeNum(HEAP_DATA, temp_r31->unk_48);
-            if ((temp_r31->attr & 0x20) != 0) {
+            if ((temp_r31->attr & HU3D_ATTR_PARTICLE_KILL) != 0) {
                 copy = temp_r31->unk_120;
                 HuSprAnimKill(copy->unk_44);
             }
@@ -548,7 +550,7 @@ void Hu3DModelKill(s16 arg0) {
             }
             return;
         }
-        if ((temp_r31->attr & 0x10000) != 0) {
+        if ((temp_r31->attr & HU3D_ATTR_CAMERA) != 0) {
             if (temp_r31->unk_08 != -1) {
                 Hu3DMotionKill(temp_r31->unk_08);
             }
@@ -685,8 +687,8 @@ void Hu3DModelAttrSet(s16 arg0, u32 arg1) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    if ((arg1 & (1 << 30)) != 0) {
-        temp_r31->motion_attr |= arg1 & 0xBFFFFFFF;
+    if ((arg1 & HU3D_MOTATTR) != 0) {
+        temp_r31->motion_attr |= arg1 & ~HU3D_MOTATTR;
     } else {
         temp_r31->attr |= arg1;
     }
@@ -696,7 +698,7 @@ void Hu3DModelAttrReset(s16 arg0, u32 arg1) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    if ((arg1 & (1 << 30)) != 0) {
+    if ((arg1 & HU3D_MOTATTR) != 0) {
         temp_r31->motion_attr &= ~arg1;
     } else {
         temp_r31->attr &= ~arg1;
@@ -805,7 +807,7 @@ void Hu3DModelTPLvlSet(s16 arg0, f32 arg8) {
             temp_r25->flags |= 1;
         } 
     }
-    temp_r28->attr |= 0x40000;
+    temp_r28->attr |= HU3D_ATTR_TPLVL_SET;
 }
 
 void Hu3DModelHiliteMapSet(s16 arg0, AnimData *arg1) {
@@ -859,10 +861,10 @@ void Hu3DModelShadowSet(s16 arg0) {
 
     temp_r31 = &Hu3DData[arg0];
     temp_r30 = temp_r31->hsfData;
-    if ((temp_r31->attr & 4) == 0) {
+    if ((temp_r31->attr & HU3D_ATTR_SHADOW) == 0) {
         Hu3DShadowCamBit++;
     }
-    temp_r31->attr |= 4;
+    temp_r31->attr |= HU3D_ATTR_SHADOW;
     var_r27 = temp_r30->object;
     
     for (var_r28 = 0; var_r28 < temp_r30->objectCnt; var_r28++, var_r27++) {
@@ -880,7 +882,7 @@ void Hu3DModelShadowReset(s16 arg0) {
 
     temp_r31 = &Hu3DData[(s16) arg0];
     temp_r30 = temp_r31->hsfData;
-    temp_r31->attr &= ~4;
+    temp_r31->attr &= ~HU3D_ATTR_SHADOW;
     Hu3DShadowCamBit -= 1;
     var_r27 = temp_r30->object;
     for (var_r28 = 0; var_r28 < temp_r30->objectCnt; var_r28++, var_r27++) {
@@ -892,14 +894,14 @@ void Hu3DModelShadowDispOn(s16 arg0) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    temp_r31->attr |= 4;
+    temp_r31->attr |= HU3D_ATTR_SHADOW;
 }
 
 void Hu3DModelShadowDispOff(s16 arg0) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    temp_r31->attr &= ~4;
+    temp_r31->attr &= ~HU3D_ATTR_SHADOW;
 }
 
 void Hu3DModelShadowMapSet(s16 arg0) {
@@ -967,7 +969,7 @@ void Hu3DModelHookSet(s16 arg0, char *arg1, s16 arg2) {
                 constData = copy->constData;
                 constData->hook = arg2;
                 data = &Hu3DData[arg2];
-                data->attr |= 0x8000;
+                data->attr |= HU3D_ATTR_HOOK;
                 (void)data;
                 return;
             }
@@ -994,7 +996,7 @@ void Hu3DModelHookReset(s16 arg0) {
             if (temp_r31->hook != -1) {
                 temp_r0 = temp_r31->hook;
                 temp_r28 = &Hu3DData[temp_r0];
-                temp_r28->attr &= ~0x8000;
+                temp_r28->attr &= ~HU3D_ATTR_HOOK;
                 temp_r31->hook = -1;
                 (void)temp_r28;
             }
@@ -1023,7 +1025,7 @@ void Hu3DModelHookObjReset(s16 arg0, char *arg1) {
                 temp_r29 = copy->constData;
                 temp_r0 = temp_r29->hook;
                 temp_r28 = &Hu3DData[temp_r0];
-                temp_r28->attr &= ~0x8000;
+                temp_r28->attr &= ~HU3D_ATTR_HOOK;
                 temp_r29->hook = -1;
                 (void)temp_r28;
                 return;
@@ -1291,7 +1293,7 @@ BOOL Hu3DModelCameraInfoSet(s16 arg0, u16 arg1) {
             
             temp_r28->unk_01 = arg1;
             temp_r24 = &Hu3DData[arg0];
-            temp_r24->attr |= 0x2000;
+            temp_r24->attr |= HU3D_ATTR_CAMERA_MOTON;
             (void)temp_r24;
             return 1;
         }
@@ -1306,7 +1308,7 @@ s16 Hu3DModelCameraCreate(s16 arg0, u16 arg1) {
     temp_r3 = Hu3DHookFuncCreate((ModelHookFunc)-1);
     temp_r31 = &Hu3DData[(s16) temp_r3];
     temp_r31->attr &= ~0x10;
-    temp_r31->attr |= 0x10000 | 0x2000;
+    temp_r31->attr |= HU3D_ATTR_CAMERA | HU3D_ATTR_CAMERA_MOTON;
     temp_r31->unk_08 = arg0;
     temp_r31->unk_01 = arg1;
     return temp_r3;
@@ -1319,7 +1321,7 @@ void Hu3DCameraMotionOn(s16 arg0, s8 arg1) {
     copy2 = &Hu3DData[arg0];
     copy2->unk_01 = arg1;
     copy = &Hu3DData[arg0];
-    copy->attr |= 0x2000;
+    copy->attr |= HU3D_ATTR_CAMERA_MOTON;
 }
 
 void Hu3DCameraMotionStart(s16 arg0, u16 arg1) {
@@ -1332,9 +1334,9 @@ void Hu3DCameraMotionStart(s16 arg0, u16 arg1) {
     temp_r27 = &Hu3DData[arg0];
     temp_r27->unk_01 = arg1;
     temp_r29 = &Hu3DData[arg0];
-    temp_r29->attr |= 0x2000;
+    temp_r29->attr |= HU3D_ATTR_CAMERA_MOTON;
     temp_r30 = &Hu3DData[arg0];
-    temp_r30->motion_attr &= ~0x40000002;
+    temp_r30->motion_attr &= ~HU3D_MOTATTR_PAUSE;
     Hu3DMotionStartEndSet(arg0, 0.0f, Hu3DMotionMotionMaxTimeGet(temp_r28->unk_08));
     Hu3DMotionTimeSet(arg0, 0.0f);
 }
@@ -1343,7 +1345,7 @@ void Hu3DCameraMotionOff(s16 arg0) {
     ModelData* temp_r31;
 
     temp_r31 = &Hu3DData[arg0];
-    temp_r31->attr &= ~0x2000;
+    temp_r31->attr &= ~HU3D_ATTR_CAMERA_MOTON;
 }
 
 void Hu3DLighInit(void) {
@@ -1456,7 +1458,7 @@ s16 Hu3DLLightCreateV(s16 arg0, Vec* arg1, Vec* arg2, GXColor* arg3) {
         return -1;
     }
     temp_r29->unk_38[var_r30] = var_r28;
-    temp_r29->attr |= 0x1000;
+    temp_r29->attr |= HU3D_ATTR_LLIGHT;
     return var_r30;
 }
 
@@ -1544,7 +1546,7 @@ void Hu3DLLightKill(s16 dataIndex, s16 lightIndex) {
         }
     }
     if (var_r30 == 8) {
-        temp_r31->attr &= ~0x1000;
+        temp_r31->attr &= ~HU3D_ATTR_LLIGHT;
     }
 }
 
@@ -1789,7 +1791,7 @@ s16 Hu3DLightSet(ModelData* arg0, Mtx *arg1, Mtx *arg2, f32 arg8) {
             var_r30 <<= 1;
         }
     }
-    if ((arg0->attr & 0x1000) != 0) {
+    if ((arg0->attr & HU3D_ATTR_LLIGHT) != 0) {
         for (i = 0; i < 8; i++) {
             if (arg0->unk_38[i] != -1) {
                 var_r29 = &Hu3DLocalLight[arg0->unk_38[i]];
@@ -1940,8 +1942,8 @@ void Hu3DShadowExec(void) {
     GXSetFog(GX_FOG_NONE, 0.0f, 0.0f, 0.0f, 0.0f, BGColor);
     
     for (var_r30 = 0; var_r30 < 0x200; var_r30++, var_r31++) {
-        if (var_r31->hsfData != 0 && (var_r31->attr & 4) != 0 && (var_r31->attr & 1) == 0 && (var_r31->attr & 0x8000) == 0) {
-            if ((var_r31->attr & 8) != 0) {
+        if (var_r31->hsfData != 0 && (var_r31->attr & HU3D_ATTR_SHADOW) != 0 && (var_r31->attr & HU3D_ATTR_DISPOFF) == 0 && (var_r31->attr & HU3D_ATTR_HOOK) == 0) {
+            if ((var_r31->attr & HU3D_ATTR_MOTION_OFF) != 0) {
                 test2 = 0;
                 if (var_r31->unk_08 != -1) {
                     Hu3DMotionExec(var_r30, var_r31->unk_08, var_r31->unk_64, 0);
@@ -1952,7 +1954,7 @@ void Hu3DShadowExec(void) {
                 if (var_r31->unk_0A != -1) {
                     Hu3DMotionExec(var_r30, var_r31->unk_0A, var_r31->unk_74, 1);
                 }
-                if ((var_r31->attr & 0x400) != 0) {
+                if ((var_r31->attr & HU3D_ATTR_CLUSTER_ON) != 0) {
                     ClusterMotionExec(var_r31);
                     test2 = 1;
                 }
@@ -1963,13 +1965,13 @@ void Hu3DShadowExec(void) {
                         Hu3DMotionExec(var_r30, var_r31->unk_0E, var_r31->unk_94, 1);
                     }
                 }
-                if ((var_r31->attr & 0x90) == 0 || (var_r31->motion_attr & 0x40000002) == 0) {
+                if ((var_r31->attr & (HU3D_ATTR_HOOKFUNC|HU3D_ATTR_ENVELOPE_OFF)) == 0 || (var_r31->motion_attr & HU3D_MOTATTR_PAUSE) == 0) {
                     test2 = 1;
                     InitVtxParm(var_r31->hsfData);
                     if (var_r31->unk_0E != -1) {
                         ShapeProc(var_r31->hsfData);
                     }
-                    if ((var_r31->attr & 0x400) != 0) {
+                    if ((var_r31->attr & HU3D_ATTR_CLUSTER_ON) != 0) {
                         ClusterProc(var_r31);
                     }
                     if (var_r31->hsfData->cenvCnt != 0) {
@@ -1977,7 +1979,7 @@ void Hu3DShadowExec(void) {
                     }
                     PPCSync();
                 }
-                var_r31->attr |= 0x800;
+                var_r31->attr |= HU3D_ATTR_MOT_EXEC;
             }
             mtxRot(sp58, var_r31->rot.x, var_r31->rot.y, var_r31->rot.z);
             PSMTXScale(spB8, var_r31->scale.x, var_r31->scale.y, var_r31->scale.z);

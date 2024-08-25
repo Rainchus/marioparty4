@@ -129,7 +129,7 @@ void Hu3DDraw(ModelData *arg0, Mtx arg1, Vec *arg2) {
     s16 i;
 
     temp_r28 = arg0->hsfData;
-    if (arg0->attr & 0x10) {
+    if (arg0->attr & HU3D_ATTR_HOOKFUNC) {
         temp_r31 = &DrawObjData[DrawObjIdx];
         PSMTXCopy(arg1, temp_r31->matrix);
         sp8.x = temp_r31->matrix[0][3];
@@ -267,7 +267,7 @@ static void objMesh(ModelData *arg0, HsfObject *arg1) {
         PSMTXCopy(temp_r29->matrix, temp_r25->matrix);
         if (temp_r25->hook != -1) {
             temp_r31 = &Hu3DData[temp_r25->hook];
-            if (!(temp_r31->attr & 1)) {
+            if (!(temp_r31->attr & HU3D_ATTR_DISPOFF)) {
                 temp_r21 = attachMotionF;
                 if (temp_r31->unk_08 != -1) {
                     attachMotionF = 1;
@@ -293,12 +293,12 @@ static void objMesh(ModelData *arg0, HsfObject *arg1) {
                 attachMotionF = temp_r21;
             }
         } else {
-            if (arg0->attr & 0x4000) {
+            if (arg0->attr & HU3D_ATTR_NOCULL) {
                 var_r19 = ObjCullCheck(arg0->hsfData, arg1, temp_r29->matrix);
             } else {
                 var_r19 = 1;
             }
-            if ((temp_r25->flags & 0x2000) || (arg1->flags & 0x400)) {
+            if ((temp_r25->flags & 0x2000) || (arg1->flags & HU3D_ATTR_CLUSTER_ON)) {
                 var_r19 = 0;
             }
             if (var_r19 != 0 && (var_r30->scale.x != 0.0f || var_r30->scale.y != 0.0f || var_r30->scale.z != 0.0f)) {
@@ -319,7 +319,7 @@ static void objMesh(ModelData *arg0, HsfObject *arg1) {
                         OSReport("Error: DrawObjIdx Over\n");
                         DrawObjIdx--;
                     }
-                } else if (arg0->attr & 0x400000) {
+                } else if (arg0->attr & HU3D_ATTR_ZCMP_OFF) {
                     temp_r29->z = -1000000.0f;
                     DrawObjIdx++;
                     if (DrawObjIdx > 0x200) {
@@ -453,12 +453,12 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
         sp2C.b = temp_r30->color[2];
         sp2C.a = 0xFF;
         GXSetChanMatColor(GX_COLOR0A0, sp2C);
-        if (temp_r29->attr & 0x400000) {
+        if (temp_r29->attr & HU3D_ATTR_ZCMP_OFF) {
             var_r31 = GX_FALSE;
         } else {
             var_r31 = GX_TRUE;
         }
-        if ((temp_r30->invAlpha != 0.0f || (temp_r30->pass & 0xF) || (temp_r20->flags & 0x800)) && !((temp_r29->attr & 2) | (temp_r19 & 0x1200))) {
+        if ((temp_r30->invAlpha != 0.0f || (temp_r30->pass & 0xF) || (temp_r20->flags & 0x800)) && !((temp_r29->attr & HU3D_ATTR_ZWRITE_OFF) | (temp_r19 & 0x1200))) {
             GXSetZMode(var_r31, GX_LEQUAL, GX_FALSE);
         } else {
             GXSetZMode(var_r31, GX_LEQUAL, GX_TRUE);
@@ -468,7 +468,7 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
         } else {
             GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
         }
-        if (temp_r29->attr & 0x800000) {
+        if (temp_r29->attr & HU3D_ATTR_CULL_FRONT) {
             GXSetCullMode(GX_CULL_FRONT);
         } else if (temp_r19 & 2) {
             GXSetCullMode(GX_CULL_NONE);
@@ -522,7 +522,7 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
                 SetShadowTex();
                 BmpPtrBak[1] = (HsfAttribute*) -1;
             }
-            if (temp_r29->attr & 0x200) {
+            if (temp_r29->attr & HU3D_ATTR_TOON_MAP) {
                 toonMapNo = 2;
                 HuSprTexLoad(toonAnim, 0, toonMapNo, GX_CLAMP, GX_CLAMP, GX_LINEAR);
                 BmpPtrBak[2] = (HsfAttribute*) -1;
@@ -540,7 +540,7 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
             } else {
                 hiliteMapNo = 3;
             }
-            if ((temp_r29->attr & 0x20000) || (temp_r19 & 0x100)) {
+            if ((temp_r29->attr & HU3D_ATTR_HILITE) || (temp_r19 & 0x100)) {
                 if (temp_r20->hiliteMap == 0) {
                     if (temp_r30->flags != 0) {
                         var_r18 = (temp_r30->pass >> 4) & 0xF;
@@ -674,7 +674,7 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
             } else {
                 toonMapNo = shadowMapNo;
             }
-            if (temp_r29->attr & 0x200) {
+            if (temp_r29->attr & HU3D_ATTR_TOON_MAP) {
                 HuSprTexLoad(toonAnim, 0, toonMapNo, GX_CLAMP, GX_CLAMP, GX_LINEAR);
                 BmpPtrBak[toonMapNo] = (HsfAttribute*) -1;
                 projectionMapNo = toonMapNo + 1;
@@ -692,7 +692,7 @@ static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1) {
             } else {
                 hiliteMapNo = projectionMapNo;
             }
-            if ((temp_r29->attr & 0x20000) || (temp_r19 & 0x100)) {
+            if ((temp_r29->attr & HU3D_ATTR_HILITE) || (temp_r19 & 0x100)) {
                 if (temp_r20->hiliteMap == 0) {
                     if (temp_r30->flags != 0) {
                         var_r18 = (temp_r30->pass >> 4) & 0xF;
@@ -761,7 +761,7 @@ static s32 SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
         var_r22 = 0;
     }
     sp1C.a = 255.0f * (1.0f - arg1->invAlpha);
-    if (temp_r28->attr & 0x200) {
+    if (temp_r28->attr & HU3D_ATTR_TOON_MAP) {
         sp1C.r = arg1->color[0];
         sp1C.g = arg1->color[1];
         sp1C.b = arg1->color[2];
@@ -792,7 +792,7 @@ static s32 SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
         var_r29++;
     }
     if (var_r26 != 0) {
-        if ((temp_r28->attr & 0x20000) || (sp18 & 0x100)) {
+        if ((temp_r28->attr & HU3D_ATTR_HILITE) || (sp18 & 0x100)) {
             GXSetTexCoordGen2(var_r29, GX_TG_MTX2x4, GX_TG_NRM, GX_TEXMTX7, GX_FALSE, GX_PTIDENTITY);
             GXSetTevOrder(var_r30, var_r29, hiliteMapNo, GX_COLOR0A0);
             GXSetTevColorIn(var_r30, GX_CC_ZERO, GX_CC_ONE, GX_CC_TEXC, GX_CC_CPREV);
@@ -983,7 +983,7 @@ static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
                 var_r31++;
             } else {
                 GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0);
-                if (!(temp_r25->attr & 0x200)) {
+                if (!(temp_r25->attr & HU3D_ATTR_TOON_MAP)) {
                     if (texCol[0].a == 1) {
                         sp50 = texCol[0];
                         sp50.a = 0xFF;
@@ -1030,7 +1030,7 @@ static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
         } else {
             GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
         }
-        if (temp_r25->attr & 0x200) {
+        if (temp_r25->attr & HU3D_ATTR_TOON_MAP) {
             GXSetTexCoordGen2(var_r30, GX_TG_SRTG, GX_TG_COLOR0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
             GXSetTevOrder(var_r31, var_r30, toonMapNo, GX_COLOR0A0);
             GXSetTevColorIn(var_r31, GX_CC_ZERO, GX_CC_TEXC, GX_CC_CPREV, GX_CC_ZERO);
@@ -1053,7 +1053,7 @@ static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
             var_r31++;
         }
         if (var_r21 != 0) {
-            if ((temp_r25->attr & 0x20000) || (sp40 & 0x100)) {
+            if ((temp_r25->attr & HU3D_ATTR_HILITE) || (sp40 & 0x100)) {
                 GXSetTexCoordGen2(var_r30, GX_TG_MTX2x4, GX_TG_NRM, GX_TEXMTX7, GX_FALSE, GX_PTIDENTITY);
                 GXSetTevOrder(var_r31, var_r30, hiliteMapNo, GX_COLOR0A0);
                 GXSetTevColorIn(var_r31, GX_CC_ZERO, GX_CC_TEXC, GX_CC_ONE, GX_CC_CPREV);
@@ -1270,7 +1270,7 @@ static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
             }
             var_r31++;
         }
-        if (temp_r25->attr & 0x200) {
+        if (temp_r25->attr & HU3D_ATTR_TOON_MAP) {
             GXSetTexCoordGen2(var_r30, GX_TG_SRTG, GX_TG_COLOR0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
             GXSetTevOrder(var_r31, var_r30, toonMapNo, GX_COLOR0A0);
             GXSetTevColorIn(var_r31, GX_CC_ZERO, GX_CC_TEXC, GX_CC_CPREV, GX_CC_ZERO);
@@ -1323,7 +1323,7 @@ static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1) {
         sp50.a = (1.0f - arg1->invAlpha) * 255.0f;
         GXSetTevColor(GX_TEVREG0, sp50);
         if (var_r21 != 0) {
-            if ((temp_r25->attr & 0x20000) || (sp40 & 0x100)) {
+            if ((temp_r25->attr & HU3D_ATTR_HILITE) || (sp40 & 0x100)) {
                 var_f31 = (arg1->hilite_scale / 300.0f) * 6.0f;
                 if (var_f31 < 0.1) {
                     var_f31 = 0.1f;
@@ -1835,7 +1835,7 @@ static s32 LoadTexture(ModelData *arg0, HsfBitmap *arg1, HsfAttribute *arg2, s16
             TL32F = 1;
             break;
     }
-    if ((arg0->attr & 0x40) || (arg2->flag & 0x40)) {
+    if ((arg0->attr & HU3D_ATTR_TEX_NEAR) || (arg2->flag & 0x40)) {
         GXInitTexObjLOD(&sp1C, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
     } else if (var_r20) {
         GXInitTexObjLOD(&sp1C, GX_LIN_MIP_LIN, GX_LINEAR, 0.0f, arg2->unk78, 0.0f, GX_FALSE, GX_TRUE, GX_ANISO_2);
@@ -2107,7 +2107,7 @@ void Hu3DDrawPost(void) {
         GXSetCullMode(GX_CULL_BACK);
         for (var_r23 = 0; var_r23 < DrawObjIdx; var_r23++) {
             temp_r28 = &DrawObjData[DrawObjNum[var_r23]];
-            if (temp_r28->model->attr & 0x10) {
+            if (temp_r28->model->attr & HU3D_ATTR_HOOKFUNC) {
                 sp28 = (void*) temp_r28->model->hsfData;
                 sp28(temp_r28->model, temp_r28->matrix);
                 for (i = 0; i < 8; i++) {
@@ -2145,7 +2145,7 @@ void Hu3DDrawPost(void) {
                         }
                     }
                 }
-                if ((temp_r28->model->attr & 0x20000) || (Hu3DObjInfoP->flags & 0x8000)) {
+                if ((temp_r28->model->attr & HU3D_ATTR_HILITE) || (Hu3DObjInfoP->flags & 0x8000)) {
                     sp54 = lbl_8011DD20;
                     temp_r22 = &Hu3DGlobalLight[temp_r28->model->unk_03];
                     sp30 = temp_r22->unk_28;
@@ -2284,7 +2284,7 @@ static void ObjDraw(HsfDrawObject *arg0) {
             }
         }
     }
-    if ((arg0->model->attr & 0x20000) || (Hu3DObjInfoP->flags & 0x8000)) {
+    if ((arg0->model->attr & HU3D_ATTR_HILITE) || (Hu3DObjInfoP->flags & 0x8000)) {
         sp44 = lbl_8011DD20;
         temp_r24 = &Hu3DGlobalLight[arg0->model->unk_03];
         sp20 = temp_r24->unk_28;
@@ -2379,7 +2379,7 @@ void MakeDisplayList(s16 arg0, u32 arg1) {
     faceNumBuf = HuMemDirectMallocNum(HEAP_DATA, 0x800 * sizeof(u16), mallocNo);
     MDObjCall(temp_r31, temp_r31->root);
     HuMemDirectFree(faceNumBuf);
-    if (var_r30->attr & 4) {
+    if (var_r30->attr & HU3D_ATTR_SHADOW) {
         Hu3DShadowCamBit++;
     }
 }
@@ -3067,7 +3067,7 @@ void PGObjCalc(ModelData *arg0, HsfObject *arg1) {
     temp_r28 = arg1->constData;
     if (temp_r28 && temp_r28->hook != -1) {
         temp_r31 = &Hu3DData[temp_r28->hook];
-        if (!(temp_r31->attr & 1)) {
+        if (!(temp_r31->attr & HU3D_ATTR_DISPOFF)) {
             var_r27 = attachMotionF;
             if (temp_r31->unk_08 != -1) {
                 attachMotionF = 1;
