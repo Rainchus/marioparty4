@@ -1703,7 +1703,7 @@ void BoardPlayerPosLerpStart(s32 arg0, Vec *arg1, Vec *arg2, s16 arg3)
         temp_r21 = BoardPlayerGet(arg0);
 
         if (playerMot[temp_r21->player_idx] != 3) {
-            var_r25 = BoardModelMotionShiftSet(BoardPlayerModelGet(arg0), 3, 0.0f, 4.0f, 0x40000001);
+            var_r25 = BoardModelMotionShiftSet(BoardPlayerModelGet(arg0), 3, 0.0f, 4.0f, HU3D_MOTATTR_LOOP);
             if (var_r25 == 0) {
                 playerMot[temp_r21->player_idx] = 3;
             }
@@ -1909,7 +1909,7 @@ void BoardPlayerIdleSet(s32 arg0)
         BoardBowserSuitMotionSetWait();
         BoardBowserSuitPlayerModelKill();
     }
-    BoardPlayerMotionShiftSet(arg0, 1, 0.0f, 8.0f, 0x40000001);
+    BoardPlayerMotionShiftSet(arg0, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 }
 
 static void ExecMotBlend(omObjData *arg0);
@@ -1992,7 +1992,7 @@ void BoardPlayerMotBlendSet(s32 arg0, s16 arg1, s16 arg2)
         }
         else if (var_f21 = 8.0f * temp_f26, abs(sp1C) > 45) {
             var_r22 = temp_r26->unk_04h;
-            BoardPlayerMotionShiftSet(arg0, var_r22, var_f24, var_f21, 0);
+            BoardPlayerMotionShiftSet(arg0, var_r22, var_f24, var_f21, HU3D_MOTATTR_NONE);
             BoardPlayerMotionSpeedSet(arg0, var_f27);
         }
         OSs16tof32(&arg2, &var_f27);
@@ -2387,7 +2387,7 @@ void BoardBowserSuitMotionCreate(void)
 void BoardBowserSuitMotionSetWait(void)
 {
     if (suitCurrMot != 0) {
-        BoardModelMotionShiftSet(suitMdl, bowserSuitMot[0], 0.0f, 4.0f, 0x40000001);
+        BoardModelMotionShiftSet(suitMdl, bowserSuitMot[0], 0.0f, 4.0f, HU3D_MOTATTR_LOOP);
         suitCurrMot = 0;
     }
 }
@@ -2402,13 +2402,13 @@ void BoardBowserSuitMotionSetWalk(void)
 
 void BoardBowserSuitMotionSetWin(void)
 {
-    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[3], 0.0f, 4.0f, 0);
+    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[3], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
     suitCurrMot = 3;
 }
 
 void BoardBowserSuitMotionSetJump(void)
 {
-    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[2], 0.0f, 4.0f, 0);
+    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[2], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
     suitCurrMot = 2;
 }
 
@@ -2519,10 +2519,10 @@ static s32 DoSparkSpace(s32 player, s32 pause_cam)
         if (GWPlayer[i].space_curr == sp34) {
             sp124[sp134++] = i;
             sp15C[i] = BoardPlayerMotionCreate(i, sparkMotTbl[GWPlayer[i].character]);
-            BoardPlayerMotionShiftSet(i, sp15C[i], 0, 8, 0);
+            BoardPlayerMotionShiftSet(i, sp15C[i], 0, 8, HU3D_MOTATTR_NONE);
             HuAudFXPlay(boardSparkSfxTblAlt[GWPlayer[i].character]);
             if (GWPlayer[i].bowser_suit) {
-                BoardModelMotionShiftSet(suitMdl, bowserSuitMot[4], 0.0f, 4.0f, 0);
+                BoardModelMotionShiftSet(suitMdl, bowserSuitMot[4], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
                 sp128 = i;
             }
         }
@@ -2883,7 +2883,7 @@ static s32 MegaPlayerPassFunc(s32 player, s32 space)
     spAC.z /= 60.0f;
     BoardPlayerRotYSet(player, 90.0 - (180.0 * (atan2(spAC.z, spAC.x) / M_PI)));
     sp98[1] = BoardVecDistXZCalc(&spC4, &spB8);
-    BoardPlayerMotionShiftSet(player, 4, 0, 8, 0);
+    BoardPlayerMotionShiftSet(player, 4, 0, 8, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     temp_r24 = 0;
     for (temp_f30 = 0; temp_f30 < 60.0f; temp_f30++) {
@@ -2906,7 +2906,7 @@ static s32 MegaPlayerPassFunc(s32 player, s32 space)
         }
         if (spB8.y <= spC4.y) {
             spB8.y = spC4.y;
-            BoardPlayerMotionShiftSet(player, 5, 0, 4, 0);
+            BoardPlayerMotionShiftSet(player, 5, 0, 4, HU3D_MOTATTR_NONE);
         }
         BoardPlayerPosSetV(player, &spB8);
         HuPrcVSleep();
@@ -2987,7 +2987,7 @@ static s32 MegaExecJump(s32 player, s32 space)
     BoardPlayerIdleSet(player);
     HuPrcSleep(10);
     sp90[1] = BoardVecDistXZCalc(&spC4, &spB8);
-    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[3], 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(suitMdl, bowserSuitMot[3], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     BoardModelMotionSpeedSet(suitMdl, 2.0f);
     HuPrcSleep(8);
     HuAudFXPlay(809);

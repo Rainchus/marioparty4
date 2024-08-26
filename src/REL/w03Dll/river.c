@@ -254,7 +254,7 @@ void fn_1_6B98(s32 arg0) {
     s16 var_r31;
     s16 i;
 
-    BoardModelMotionShiftSet(lbl_1_data_38A, 2, 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_38A, 2, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     sp8 = BoardModelRotYGet(lbl_1_data_38A);
     temp_f31 = sp8 + 180.0f;
 
@@ -277,7 +277,7 @@ void fn_1_6B98(s32 arg0) {
     spC.y /= 120.0f;
     spC.z = spC.z / 120.0f;
     BoardCameraTargetModelSet(lbl_1_data_388);
-    BoardModelMotionShiftSet(lbl_1_data_38A, 3, 0.0f, 4.0f, 0x40000001U);
+    BoardModelMotionShiftSet(lbl_1_data_38A, 3, 0.0f, 4.0f, HU3D_MOTATTR_LOOP);
     HuPrcSleep(4);
 
     var_r31 = 0;
@@ -300,7 +300,7 @@ void fn_1_6B98(s32 arg0) {
     
     BoardModelPosSetV(lbl_1_data_388, &sp18);
     BoardCameraTargetModelSet(-1);
-    BoardModelMotionShiftSet(lbl_1_data_38A, 2, 0.0f, 10.0f, 0x40000004U);
+    BoardModelMotionShiftSet(lbl_1_data_38A, 2, 0.0f, 10.0f, HU3D_MOTATTR_REV);
     sp8 = BoardModelRotYGet(lbl_1_data_38A);
     temp_f31 = 0.0f;
 
@@ -313,7 +313,7 @@ void fn_1_6B98(s32 arg0) {
         HuPrcVSleep();
     }
 
-    BoardModelMotionShiftSet(lbl_1_data_38A, 1, 0.0f, 10.0f, 0x40000001U);
+    BoardModelMotionShiftSet(lbl_1_data_38A, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
 }
 
 extern s32 lbl_1_data_368[];
@@ -349,7 +349,7 @@ void fn_1_6F9C(s32 arg0) {
 
     lbl_1_bss_124 = 1;
     HuAudFXPlay(lbl_1_data_368[GWPlayer[arg0].character]);
-    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 
     for (var_r30 = 0, var_f31 = 0.0f; var_f31 < 60.0f; var_f31 += 1.0f) {
         VECAdd(&sp14, &sp8, &sp14);
@@ -357,7 +357,7 @@ void fn_1_6F9C(s32 arg0) {
         if (sp14.y <= sp20.y) {
             sp14.y = sp20.y;
             if (var_r30 == 0) {
-                BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, 0);
+                BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                 var_r30 = 1;
             }
         }
@@ -365,7 +365,7 @@ void fn_1_6F9C(s32 arg0) {
         HuPrcVSleep();        
     }
     
-    BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(10);
     BoardPlayerIdleSet(arg0);
 
@@ -401,7 +401,7 @@ void fn_1_735C(s32 arg0) {
     sp8.y = 0.0f;
     
     HuAudFXPlay(lbl_1_data_368[GWPlayer[arg0].character]);
-    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     if (lbl_1_bss_0->unk0 != 0) {
         var_f30 = 0.25f;
     } else {
@@ -414,7 +414,7 @@ void fn_1_735C(s32 arg0) {
         if (sp14.y <= sp20.y && var_f31 > 48.0f) {
             sp14.y = sp20.y;
             if (var_r30 == 0) {
-                BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, 0);
+                BoardPlayerMotionShiftSet(arg0, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                 var_r30 = 1;
             }
         }

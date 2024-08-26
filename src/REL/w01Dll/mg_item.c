@@ -312,7 +312,7 @@ static void fn_1_E44C(omObjData *arg0) {
         arg0->rot.y = 10.0f;
         arg0->rot.z = sp18.y;
         arg0->scale.x = 0.0f;
-        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 4, 0.0f, 5.0f, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
         arg0->func = fn_1_E914;
     }
     BoardModelMotionSpeedSet(lbl_1_bss_6C4[17], lbl_1_bss_7EC);
@@ -338,7 +338,7 @@ static void fn_1_E914(omObjData *arg0) {
         for (i = 0; i < 4; i++) {
             lbl_1_bss_7FC[i]->func = fn_1_FED0;
         }
-        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, lbl_1_bss_7B8, 0.0f, 5.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, lbl_1_bss_7B8, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
         lbl_1_bss_7D6 = MGSeqStartCreate();
         BoardMusStart(1, 0xE, 0x7F, 0);
         arg0->func = fn_1_ECD4;
@@ -465,7 +465,7 @@ static void fn_1_F3F8(omObjData *arg0) {
     arg0->rot.y = 0.016666668f * (arg0->scale.y / 2) * (arg0->scale.y / 2);
     arg0->rot.z = sp18.y;
     arg0->scale.x = 0.0f;
-    BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     VECSubtract(&lbl_1_bss_7C4, &sp18, &spC);
     VECNormalize(&spC, &spC);
     BoardPlayerRotSet(lbl_1_bss_7E4, 0.0f, fn_1_10EB8(&spC), 0.0f);
@@ -494,7 +494,7 @@ static void fn_1_F890(omObjData *arg0) {
 
     BoardPlayerRotGet(lbl_1_bss_7E4, &sp8);
     if (sp8.y == 0.0f) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 1, 0.0f, 10.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         lbl_1_bss_7F0->work[0] = 0;
         lbl_1_bss_7F0->func = fn_1_10820;
         arg0->func = fn_1_FA1C;
@@ -516,7 +516,7 @@ static void fn_1_F890(omObjData *arg0) {
 
 static void fn_1_FA1C(omObjData *arg0) {
     if (lbl_1_bss_7F0->work[0] == 1) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, lbl_1_bss_7BC, 0.0f, 10.0f, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_7E4, lbl_1_bss_7BC, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         arg0->work[0] = 30;
         lbl_1_bss_7A4 = HuAudSStreamPlay(2);
         arg0->func = fn_1_FABC;
@@ -546,7 +546,7 @@ static void fn_1_FB58(void) {
     BoardWinWait();
     BoardWinKill();
     temp_r31 = HuPrcCurrentGet()->user_data;
-    BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 1, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_7E4, 1, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     lbl_1_bss_7F0->work[0] = 0;
     HuAudFXPlay(0x30D);
     HuAudFXFadeOut(lbl_1_bss_7AC, 1000);

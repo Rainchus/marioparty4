@@ -496,7 +496,7 @@ void fn_1_4C84(UnkM447Struct_04* arg0) {
             break;
     }
     if (var_r30 >= 0 && arg0->unkA4 != var_r30) {
-        fn_1_71FC(arg0, var_r30, 0.0f, 8.0f, 0x40000001);
+        fn_1_71FC(arg0, var_r30, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     }
 }
 
@@ -530,7 +530,7 @@ void fn_1_5080(UnkM447Struct_04* arg0) {
             fn_1_1ED4(var_r30, &sp14);
             VECSubtract(&sp14, &arg0->unk28, &sp8);
             arg0->unk38 = fn_1_4F7C(arg0->unk38, atan2d(sp8.x, sp8.z), 1.0f);
-            fn_1_71FC(arg0, 3, 0.0f, 8.0f, 0);
+            fn_1_71FC(arg0, 3, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
             arg0->unk20 = 1;
             /* fallthrough */
         case 1:
@@ -620,7 +620,7 @@ void fn_1_5520(UnkM447Struct_04* arg0) {
 
     switch (arg0->unk20) {
         case 0:
-            fn_1_71FC(arg0, 5, 0.0f, 8.0f, 0);
+            fn_1_71FC(arg0, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
             arg0->unk60 = 0;
             arg0->unk20 = 1;
             /* fallthrough */
@@ -688,7 +688,7 @@ void fn_1_5760(UnkM447Struct_04* arg0) {
     switch (arg0->unk20) {
         case 0:
             Hu3DModelAttrReset(arg0->unk68, 0x40000001);
-            fn_1_71FC(arg0, 5, 0.0f, 8.0f, 0);
+            fn_1_71FC(arg0, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
             arg0->unk60 = 0;
             arg0->unk20 = 1;
             /* fallthrough */
@@ -702,7 +702,7 @@ void fn_1_5760(UnkM447Struct_04* arg0) {
             }
             arg0->unk20 = 2;
         case 2:
-            fn_1_71FC(arg0, 0, 0.0f, 8.0f, 0x40000001);
+            fn_1_71FC(arg0, 0, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
             fn_1_43CC(arg0, 8);
             break;
     }
@@ -743,7 +743,7 @@ void fn_1_59D8(UnkM447Struct_04* arg0) {
             } else {
                 HuAudFXPlay(lbl_1_rodata_510[arg0->unk18]);
             }
-            fn_1_71FC(arg0, 6, 0.0f, 8.0f, 0);
+            fn_1_71FC(arg0, 6, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
             arg0->unk20 = 1;
             /* fallthrough */
         case 1:
@@ -753,7 +753,7 @@ void fn_1_59D8(UnkM447Struct_04* arg0) {
             arg0->unk20 = 2;
             /* fallthrough */
         case 2:
-            fn_1_71FC(arg0, 0, 0.0f, 8.0f, 0x40000001);
+            fn_1_71FC(arg0, 0, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
             fn_1_43CC(arg0, 0);
             fn_1_7AA4(arg0, 0, 60);
             break;
@@ -761,19 +761,12 @@ void fn_1_59D8(UnkM447Struct_04* arg0) {
 }
 
 void fn_1_5AF0(UnkM447Struct_04* arg0) {
-    s32 var_r30;
-
     switch (arg0->unk20) {
         case 0:
             if (arg0->unk1C != 0) {
                 HuAudFXPlay(0x40);
             }
-            if (arg0->unk1C != 0) {
-                var_r30 = 0x40000001;
-            } else {
-                var_r30 = 0;
-            }
-            fn_1_71FC(arg0, 7, 0.0f, 8.0f, var_r30);
+            fn_1_71FC(arg0, 7, 0.0f, 8.0f, (arg0->unk1C != 0) ? HU3D_MOTATTR_LOOP : HU3D_MOTATTR_NONE);
             arg0->unk20 = 1;
             /* fallthrough */
         case 1:
@@ -791,7 +784,7 @@ void fn_1_5AF0(UnkM447Struct_04* arg0) {
 void fn_1_5BD0(UnkM447Struct_04* arg0) {
     switch (arg0->unk20) {
         case 0:
-            fn_1_71FC(arg0, 8, 0.0f, 8.0f, 0);
+            fn_1_71FC(arg0, 8, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
             arg0->unk20 = 1;
             /* fallthrough */
         case 1:

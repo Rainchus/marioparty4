@@ -419,7 +419,7 @@ void fn_1_46E8(void)
             temp_f31 = -20.0f;
         }
         if (temp_r30 == lbl_1_bss_84) {
-            BoardPlayerMotionShiftSet(lbl_1_bss_86, 7, 0, 10, 0);
+            BoardPlayerMotionShiftSet(lbl_1_bss_86, 7, 0, 10, HU3D_MOTATTR_NONE);
             break;
         }
         HuPrcVSleep();
@@ -511,7 +511,7 @@ void fn_1_53B8(omObjData *object)
     if ((temp_r29 & PAD_BUTTON_A) || temp_r31->unk18 < 0) {
         MGSeqParamSet(temp_r31->unk1C, 2, -1);
         HuWinKill(temp_r31->unk1E);
-        BoardPlayerMotionShiftSet(lbl_1_bss_86, 4, 0, 5, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_86, 4, 0, 5, HU3D_MOTATTR_NONE);
         temp_r31->unk0 = 10;
         temp_r31->unk4 = 0;
         if (lbl_1_bss_A4->work[0] & 0x1) {
@@ -595,7 +595,7 @@ void fn_1_5868(omObjData *object)
     if (sp14.y == sp8.y) {
         BoardModelMotionTimeSet(lbl_1_bss_BC[temp_r31->unk8], 0);
         BoardModelAttrReset(lbl_1_bss_BC[temp_r31->unk8], 0x40000002);
-        BoardPlayerMotionShiftSet(lbl_1_bss_86, object->motion[1], 0, 5, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_86, object->motion[1], 0, 5, HU3D_MOTATTR_NONE);
         lbl_1_bss_A4->work[3] |= 1 << temp_r31->unk8;
         temp_r31->unk0 = 5;
         temp_r31->unk4 = 0;

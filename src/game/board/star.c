@@ -233,7 +233,7 @@ static void ExecStar(void) {
     }
     if (var_r26 != 0) {
         var_f31 /= var_r25;
-        BoardModelMotionShiftSet(temp_r30, hostMot[1], 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(temp_r30, hostMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         BoardModelMotionSpeedSet(temp_r30, 2.0f);
     }
     while (!BoardPlayerMotBlendCheck(temp_r31)) {
@@ -243,7 +243,7 @@ static void ExecStar(void) {
         }
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardCameraViewSet(3);
     BoardCameraMotionWait();
     if (GWStarsGet(temp_r31) >= 999) {
@@ -337,7 +337,7 @@ block_A:
             HuAudFXPlay(0xF);
         }
         _SetFlag(0x10017);
-        BoardModelMotionShiftSet(temp_r30, hostMot[0], 0.0f, 10.0f, 0);
+        BoardModelMotionShiftSet(temp_r30, hostMot[0], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         HuPrcSleep(30);
         starDoneF = 1;
         BoardAudSeqFadeOut(0, 1000);
@@ -348,7 +348,7 @@ block_A:
         while (!BoardStatusStopCheck(temp_r31)) {
             HuPrcVSleep();
         }
-        BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         BoardStarShowNext(temp_r31);
         BoardMusStartBoard();
         BoardModelRotYSet(temp_r30, 0.0f);
@@ -358,7 +358,7 @@ block_B:
     var_f31 = -BoardModelRotYGet(temp_r30);
     if (var_r26 != 0) {
         var_f31 /= var_r25;
-        BoardModelMotionShiftSet(temp_r30, hostMot[1], 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(temp_r30, hostMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         BoardModelMotionSpeedSet(temp_r30, 3.0f);
     }
     BoardPlayerMotBlendSet(temp_r31, 0, var_r25);
@@ -370,7 +370,7 @@ block_B:
         HuPrcVSleep();
     }
     BoardModelRotYSet(temp_r30, 0.0f);
-    BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(temp_r30, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     if (!_CheckFlag(FLAG_ID_MAKE(1, 22))) {
         BoardCameraViewSet(1);
         BoardCameraTargetPlayerSet(temp_r31);
@@ -622,7 +622,7 @@ void BoardStarGive(s32 arg0, Vec *arg1) {
     StarInlineFunc02();
     StarInlineFunc01();
     BoardPlayerVoiceEnableSet(arg0, 7, 0);
-    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuAudFXPlay(boardStarSndTbl[GWPlayer[arg0].character]);
     BoardPlayerStarsAdd(arg0, 1);
     HuAudFXPlay(8);

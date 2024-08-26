@@ -472,7 +472,7 @@ void fn_1_6EA8(void)
     BoardPlayerItemAdd(lbl_1_bss_196, lbl_1_bss_190[temp_r31]);
     omVibrate(lbl_1_bss_196, 12, 6, 6);
     temp_r28 = HuAudSStreamPlay(2);
-    BoardPlayerMotionShiftSet(lbl_1_bss_196, 7, 0, 5, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_196, 7, 0, 5, HU3D_MOTATTR_NONE);
     while (!BoardPlayerMotionEndCheck(lbl_1_bss_196)) {
         HuPrcVSleep();
     }

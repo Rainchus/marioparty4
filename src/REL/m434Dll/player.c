@@ -69,15 +69,15 @@ u32 lbl_1_data_1FC[10] = {
 };
 
 Data224Struct lbl_1_data_224[9] = {
-	{ 0, 4, 12, 0, 0x40000001 },
-	{ 1, 6, 6, 0, 0x40000001 },
-	{ 0, 8, 6, 0, 0 },
-	{ 0, 5, 6, 0, 0x40000001 },
-	{ 1, 5, 6, 0, 0x40000001 },
-	{ 0, 8, 6, 30, 0 },
-	{ 0, 9, 6, 0, 0 },
-	{ 2, 0, 12, 0, 0 },
-	{ 3, 0, 12, 0, 0 },
+	{ 0, 4, 12, 0, HU3D_MOTATTR_LOOP },
+	{ 1, 6, 6, 0, HU3D_MOTATTR_LOOP },
+	{ 0, 8, 6, 0, HU3D_MOTATTR_NONE },
+	{ 0, 5, 6, 0, HU3D_MOTATTR_LOOP },
+	{ 1, 5, 6, 0, HU3D_MOTATTR_LOOP },
+	{ 0, 8, 6, 30, HU3D_MOTATTR_NONE },
+	{ 0, 9, 6, 0, HU3D_MOTATTR_NONE },
+	{ 2, 0, 12, 0, HU3D_MOTATTR_NONE },
+	{ 3, 0, 12, 0, HU3D_MOTATTR_NONE },
 };
 
 void fn_1_4988(omObjData *object);

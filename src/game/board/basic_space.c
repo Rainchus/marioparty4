@@ -90,7 +90,7 @@ void BoardLandBlueExec(s32 player, s32 space) {
     coin_chg = BoardCoinChgCreate(&pos, coins);
     HuAudFXPlay(839);
     BoardCameraMotionWait();
-    BoardPlayerMotionShiftSet(player, 12, 0.0f, 4.0f, 0);
+    BoardPlayerMotionShiftSet(player, 12, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
     
     for (i = 0; i < coins; i++) {
         BoardPlayerCoinsAdd(player, 1);
@@ -131,7 +131,7 @@ void BoardLandRedExec(s32 player, s32 space) {
     coin_chg = BoardCoinChgCreate(&pos, -coins);
     HuAudFXPlay(840);
     BoardCameraMotionWait();
-    BoardPlayerMotionShiftSet(player, 13, 0.0f, 4.0f, 0);
+    BoardPlayerMotionShiftSet(player, 13, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
     for (i = 0; i < coins; i++) {
         BoardPlayerCoinsAdd(player, -1);
         HuAudFXPlay(14);

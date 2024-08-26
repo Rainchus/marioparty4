@@ -1570,14 +1570,14 @@ void fn_1_5708(void)
     switch (temp_r31->unk10) {
         case 0:
             if (temp_r30->unk_08 != lbl_1_bss_2C->motion[0]) {
-                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[0], 0, 8, 0x40000001);
+                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[0], 0, 8, HU3D_MOTATTR_LOOP);
             }
             break;
 
         case 1:
             if (temp_r31->unk12 == 0) {
                 temp_r31->unk12 = 1;
-                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[1], 0, 8, 0);
+                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[1], 0, 8, HU3D_MOTATTR_NONE);
             }
             else {
                 if (temp_r30->unk_0C == -1) {
@@ -1593,7 +1593,7 @@ void fn_1_5708(void)
         case 2:
             if (temp_r31->unk12 == 0) {
                 temp_r31->unk12 = 1;
-                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[5], 0, 8, 0x40000001);
+                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[5], 0, 8, HU3D_MOTATTR_LOOP);
             }
             else {
                 if (temp_r29->unkA < 180) {
@@ -1606,7 +1606,7 @@ void fn_1_5708(void)
         case 3:
             if (temp_r31->unk12 == 0) {
                 temp_r31->unk12 = 1;
-                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[2], 0, 8, 0x40000001);
+                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[2], 0, 8, HU3D_MOTATTR_LOOP);
             }
             else {
                 if (temp_r30->unk_0C == -1) {
@@ -1623,7 +1623,7 @@ void fn_1_5708(void)
         case 4:
             if (temp_r31->unk12 == 0) {
                 temp_r31->unk12 = 1;
-                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[3], 0, 8, 0);
+                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[3], 0, 8, HU3D_MOTATTR_NONE);
             }
             else {
                 if (temp_r30->unk_0C == -1) {
@@ -1638,7 +1638,7 @@ void fn_1_5708(void)
         case 5:
             if (temp_r31->unk12 == 0) {
                 temp_r31->unk12 = 1;
-                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[6], 0, 8, 0x40000001);
+                Hu3DMotionShiftSet(lbl_1_bss_2C->model[5], lbl_1_bss_2C->motion[6], 0, 8, HU3D_MOTATTR_LOOP);
             }
             break;
     }

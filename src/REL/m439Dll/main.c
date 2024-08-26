@@ -436,7 +436,7 @@ void fn_1_D0C(omObjData *object)
     }
     Hu3DModelCameraSet(object->model[0], lbl_1_data_75E0[work->unk2]);
     work->unk2C = 0;
-    work->unk30 = 0x40000001;
+    work->unk30 = HU3D_MOTATTR_LOOP;
     for (i = 0; i < 7; i++) {
         object->motion[i] = CharModelMotionCreate(work->unkC, lbl_1_data_7694[i]);
     }
@@ -964,7 +964,7 @@ void fn_1_2C84(omObjData *object)
                     object->trans.y = 100 + (-2000.0f * (temp_f28 - 0.1f)) * (temp_f28 - 0.1f);
                     object->trans.z = temp_r31->unk50.z + (temp_f28 * (temp_r31->unk5C.z - temp_r31->unk50.z));
                     temp_r28 = 3;
-                    temp_r26 = 0;
+                    temp_r26 = HU3D_MOTATTR_NONE;
                     break;
 
                 case 2:
@@ -974,7 +974,7 @@ void fn_1_2C84(omObjData *object)
                         object->trans.y = temp_r27->trans.y - 150;
                         object->trans.z = temp_r27->trans.z;
                         temp_r28 = 4;
-                        temp_r26 = 0;
+                        temp_r26 = HU3D_MOTATTR_NONE;
                     }
                     else {
                         if (temp_r31->unk3E) {
@@ -985,7 +985,7 @@ void fn_1_2C84(omObjData *object)
                         object->trans.y = temp_r31->unk74.y - (temp_f28 * (temp_r31->unk74.y - temp_r31->unk68.y));
                         object->trans.z = temp_r31->unk74.z - (temp_f28 * (temp_r31->unk74.z - temp_r31->unk68.z));
                         temp_r28 = 0;
-                        temp_r26 = 0x40000001;
+                        temp_r26 = HU3D_MOTATTR_LOOP;
                     }
                     break;
             }
@@ -1042,20 +1042,20 @@ void fn_1_3C1C(omObjData *object)
             object->rot.y = fn_1_1024(object->rot.y, 180.0f, 0.2f);
             temp_r29 = 1;
             temp_f29 = 1.0f;
-            temp_r28 = 0x40000001;
+            temp_r28 = HU3D_MOTATTR_LOOP;
             break;
 
         case 1:
             if (fn_1_374() >= 9) {
                 temp_r29 = (temp_r31->unk0_field8) ? 5 : 6;
                 temp_f29 = 1.0f;
-                temp_r28 = 0;
+                temp_r28 = HU3D_MOTATTR_NONE;
             }
             else {
                 object->rot.y = fn_1_1024(object->rot.y, 0.0f, 0.2f);
                 temp_r29 = 0;
                 temp_f29 = 1.0f;
-                temp_r28 = 0x40000001;
+                temp_r28 = HU3D_MOTATTR_LOOP;
             }
             break;
 
@@ -1065,7 +1065,7 @@ void fn_1_3C1C(omObjData *object)
             }
             temp_r29 = 0;
             temp_f29 = 1.0f;
-            temp_r28 = 0x40000001;
+            temp_r28 = HU3D_MOTATTR_LOOP;
             break;
     }
     if (temp_r31->unk0_field0) {

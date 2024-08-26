@@ -396,7 +396,7 @@ void fn_1_D90C(omObjData *object)
     var_r31->unk_58 = 0;
     var_r31->unk_14.y = 0.0f;
     var_r31->unk_14.z = 45.0f;
-    fn_1_DD7C(object, 0, 1.0f, 0x40000001);
+    fn_1_DD7C(object, 0, 1.0f, HU3D_MOTATTR_LOOP);
     object->trans.x = lbl_1_data_FF0[var_r31->unk_02];
     object->trans.z = -500.0f;
     object->trans.y = fn_1_143F4(&object->trans, &var_r31->unk_44);
@@ -538,7 +538,7 @@ void fn_1_E214(omObjData *object)
 
     if (fn_1_122C() >= 2) {
         if (var_r31->unk_00_field0 != 0) {
-            fn_1_DD7C(object, 9, 1.0f, 0);
+            fn_1_DD7C(object, 9, 1.0f, HU3D_MOTATTR_NONE);
             if ((var_r26->attr & 1) == 0) {
                 Hu3D3Dto2D(&object->trans, 1, &sp28);
                 if (sp28.x < 0.0 || sp28.x >= 576.0f || sp28.y < 0.0 || sp28.y >= 480.0f) {
@@ -1165,7 +1165,7 @@ void fn_1_10744(omObjData *object)
     var_r29 = &Hu3DData[object->model[0]];
     switch (var_r31->unk_12) {
         case 0:
-            fn_1_DD7C(object, 0, 1.0f, 0);
+            fn_1_DD7C(object, 0, 1.0f, HU3D_MOTATTR_NONE);
             if (--var_r31->unk_64 == 0) {
                 fn_1_1284();
                 var_r31->unk_12++;
@@ -1203,7 +1203,7 @@ void fn_1_10744(omObjData *object)
                     object->motion[var_r24] = CharModelMotionCreate(var_r31->unk_0C, lbl_1_data_1078[var_r24]);
                 }
                 var_r31->unk_38 = -1;
-                fn_1_DD7C(object, 0, 1.0f, 0);
+                fn_1_DD7C(object, 0, 1.0f, HU3D_MOTATTR_NONE);
                 Hu3DModelShadowSet(object->model[0]);
                 return;
             }
@@ -1214,7 +1214,7 @@ void fn_1_10744(omObjData *object)
                 object->trans.y = 0.0f;
                 var_r31->unk_12++;
                 var_r31->unk_2C.y = 0.0f;
-                fn_1_DD7C(object, 2, 1.0f, 0);
+                fn_1_DD7C(object, 2, 1.0f, HU3D_MOTATTR_NONE);
                 omVibrate(var_r31->unk_02, 0xC, 6, 6);
                 var_r31->unk_7C[0] = HuAudFXPlay(0x53B);
             }
@@ -1235,7 +1235,7 @@ void fn_1_10744(omObjData *object)
             var_r31->unk_2C.x = var_r31->unk_54 * (100.0 * (0.10000000149011612 * sind(180.0f + var_r31->unk_14.x)));
             var_r31->unk_2C.z = var_r31->unk_54 * (100.0 * (0.10000000149011612 * cosd(180.0f + var_r31->unk_14.x)));
             if (var_r31->unk_64 == 48.0f) {
-                fn_1_DD7C(object, 8, 1.0f, 0);
+                fn_1_DD7C(object, 8, 1.0f, HU3D_MOTATTR_NONE);
             }
             if (--var_r31->unk_64 == 0) {
                 var_r31->unk_12 = -1;
@@ -1277,7 +1277,7 @@ void fn_1_11058(omObjData *object)
         Hu3DModelScaleSet(object->model[var_r28], 1.0f, 1.0f, 1.0f);
     }
     Hu3DModelHookReset(object->model[0]);
-    fn_1_DD7C(object, 0, 1.0f, 0);
+    fn_1_DD7C(object, 0, 1.0f, HU3D_MOTATTR_NONE);
     var_r30->unk_00 = 0;
     var_r30->unk_12 = 0;
     var_r30->unk_00_field3 = 1;

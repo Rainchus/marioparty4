@@ -162,13 +162,13 @@ s32 fn_1_11890(omObjData* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 void fn_1_119A0(omObjData* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     switch (arg4) {
         case 0:
-            Hu3DMotionShiftSet(arg0->model[arg1], arg0->motion[arg2], 0.0f, arg3, 0);
+            Hu3DMotionShiftSet(arg0->model[arg1], arg0->motion[arg2], 0.0f, arg3, HU3D_MOTATTR_NONE);
             break;
         case 1:
-            Hu3DMotionShiftSet(arg0->model[arg1], arg0->motion[arg2], 0.0f, arg3, 0x40000001);
+            Hu3DMotionShiftSet(arg0->model[arg1], arg0->motion[arg2], 0.0f, arg3, HU3D_MOTATTR_LOOP);
             break;
         case 2:
-            Hu3DMotionShiftSet(arg0->model[arg1], arg0->motion[arg2], 0.0f, arg3, 0x40000002);
+            Hu3DMotionShiftSet(arg0->model[arg1], arg0->motion[arg2], 0.0f, arg3, HU3D_MOTATTR_PAUSE);
             break;
     }
 }
@@ -228,14 +228,14 @@ s32 fn_1_11CE0(omObjData* arg0, Vec arg1, float arg2, float arg3, float arg4, fl
         if (var_f27 > 0.0f) {
             if (arg6 == 1 || arg6 == 3) {
                 if (arg0->motion[1] != Hu3DMotionIDGet(arg0->model[0]) && arg0->motion[1] != Hu3DMotionShiftIDGet(arg0->model[0])) {
-                    Hu3DMotionShiftSet(arg0->model[0], arg0->motion[1], 0.0f, 10.0f, 0x40000001);
+                    Hu3DMotionShiftSet(arg0->model[0], arg0->motion[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
                 }
             } else if (arg0->motion[10] != Hu3DMotionIDGet(arg0->model[0]) && arg0->motion[10] != Hu3DMotionShiftIDGet(arg0->model[0])) {
-                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[10], 0.0f, 10.0f, 0x40000001);
+                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[10], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             }
         } else {
             if (arg0->motion[0] != Hu3DMotionIDGet(arg0->model[0]) && arg0->motion[0] != Hu3DMotionShiftIDGet(arg0->model[0])) {
-                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[0], 0.0f, 10.0f, 0x40000001);
+                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             }
             return 1;
         }

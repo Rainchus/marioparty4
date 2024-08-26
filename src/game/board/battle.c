@@ -454,7 +454,7 @@ static void UpdateExplode(omObjData *arg0) {
                     if (currSpace == GWPlayer[i].space_curr) {
                         temp_f31 = 20.0f * BoardRandFloat();
                         HuAudFXPlay(bombFXTbl[GWPlayer[i].character]);
-                        BoardPlayerMotionShiftSet(i, 6, temp_f31, 8.0f, 0x40000001);
+                        BoardPlayerMotionShiftSet(i, 6, temp_f31, 8.0f, HU3D_MOTATTR_LOOP);
                     }
                 }
                 CharModelLayerSetAll(2);

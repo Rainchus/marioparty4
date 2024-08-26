@@ -513,9 +513,9 @@ static void Last5Main(void)
 	}
 	BoardWinCreate(2, messBase+10, BoardWinPortraitGetStar());
 	BoardWinWait();
-	BoardModelMotionShiftSet(hostMdl, hostMot[5], 0.0f, 4.0f, 0);
+	BoardModelMotionShiftSet(hostMdl, hostMot[5], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 	HuPrcVSleep(8);
-	BoardModelMotionShiftSet(hostMdl, hostMot[6], 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, hostMot[6], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	for(temp_r31=0; temp_r31<4; temp_r31++) {
 		temp_r30 = sp28[temp_r31];
 		temp_r27 = sp24[temp_r31];
@@ -581,7 +581,7 @@ static void Last5Main(void)
 	}
 	BoardModelMotionStart(hostMdl, hostMot[5], 0x40000004);
 	HuPrcVSleep(8);
-	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	BoardWinCreate(2, messBase+15, BoardWinPortraitGetStar());
 	BoardWinWait();
 	if((s32)GWSystem.team != 0) {
@@ -619,7 +619,7 @@ static void Last5Main(void)
 	while(!CheckHostMove()) {
 		HuPrcVSleep();
 	}
-	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	HuPrcSleep(8);
 	if((s32)GWSystem.team != 0) {
 		temp_r30 = last5Player;
@@ -642,9 +642,9 @@ static void Last5Main(void)
 	BoardWinCreate(2, messBase+16, BoardWinPortraitGetStar());
 	BoardWinInsertMesSet(BoardPlayerGetCharMess(temp_r30), 3);
 	BoardWinWait();
-	BoardModelMotionShiftSet(hostMdl, hostMot[5], 0.0f, 4.0f, 0);
+	BoardModelMotionShiftSet(hostMdl, hostMot[5], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 	HuPrcVSleep(8);
-	BoardModelMotionShiftSet(hostMdl, hostMot[6], 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, hostMot[6], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	temp_r19 = 0;
 	temp_r29 = 3;
 	for(temp_f31=0; temp_r29>0; temp_f31++) {
@@ -668,7 +668,7 @@ static void Last5Main(void)
 	sp3C = sp48;
 	BoardModelMotionStart(hostMdl, hostMot[5], 0x40000004);
 	HuPrcVSleep(8);
-	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	CreateLast5Roulette();
 	SetLast5RouletteFade(1);
 	SetLast5RouletteState(2);
@@ -722,15 +722,15 @@ static void Last5Main(void)
 	BoardPlayerIdleSet(temp_r30);
 	BoardModelVisibilitySet(BoardPlayerModelGet(temp_r30), 0);
 	SetLast5RouletteFade(0);
-	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	BoardWinCreate(2, messBase+23, BoardWinPortraitGetStar());
 	BoardWinWait();
-	BoardModelMotionShiftSet(hostMdl, hostMot[4], 0.0f, 8.0f, 0);
+	BoardModelMotionShiftSet(hostMdl, hostMot[4], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
 	HuPrcSleep(8);
 	while(!BoardModelMotionEndCheck(hostMdl)) {
 		HuPrcVSleep();
 	}
-	BoardModelMotionShiftSet(hostMdl, hostMot[2], 0.0f, 8.0f, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, hostMot[2], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 	SetLotteryDrawState(4);
 }
 
@@ -1086,7 +1086,7 @@ static void ExecLotteryDraw(void)
 			SetLotteryDrawWheelState(3);
 			BoardWinCreate(2, 2+messBase+ticket, BoardWinPortraitGetStar());
 			BoardWinWait();
-			BoardModelMotionShiftSet(hostMdl, hostMot[7], 0, 8, 0);
+			BoardModelMotionShiftSet(hostMdl, hostMot[7], 0, 8, HU3D_MOTATTR_NONE);
 			HuPrcSleep(8);
 			while(BoardModelMotionTimeGet(hostMdl) < 26.0f) {
 				HuPrcVSleep();
@@ -1098,7 +1098,7 @@ static void ExecLotteryDraw(void)
 			while(!BoardModelMotionEndCheck(hostMdl)) {
 				HuPrcVSleep();
 			}
-			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, 0x40000001);
+			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, HU3D_MOTATTR_LOOP);
 			while(GetLotteryDrawWheelState() != 0) {
 				HuPrcVSleep();
 			}
@@ -1133,7 +1133,7 @@ static void ExecLotteryDraw(void)
 			}
 		} else {
 			BoardAudSeqPause(1, 1, 1000);
-			BoardModelMotionShiftSet(hostMdl, hostMot[3], 0, 8, 0x40000001);
+			BoardModelMotionShiftSet(hostMdl, hostMot[3], 0, 8, HU3D_MOTATTR_LOOP);
 			stream = HuAudSStreamPlay(10);
 			while(HuAudSStreamStatGet(stream)) {
 				HuPrcVSleep();
@@ -1164,11 +1164,11 @@ static void ExecLotteryDraw(void)
 				HuPrcVSleep();
 			}
 			BoardPlayerIdleSet(player);
-			BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, 0x40000001);
+			BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, HU3D_MOTATTR_LOOP);
 			while(!CheckHostMove()) {
 				HuPrcVSleep();
 			}
-			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, 0x40000001);
+			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, HU3D_MOTATTR_LOOP);
 			BoardStatusShowSetForce(player);
 			BoardStatusShowSet(player, 1);
 			BoardPlayerMotBlendSet(player, 0, 7);
@@ -1178,7 +1178,7 @@ static void ExecLotteryDraw(void)
 			BoardWinCreate(2, 6+messBase, BoardWinPortraitGetStar());
 			BoardWinWait();
 			BoardAudSeqPause(1, 1, 1000);
-			BoardModelMotionShiftSet(hostMdl, hostMot[1], 0, 8, 0);
+			BoardModelMotionShiftSet(hostMdl, hostMot[1], 0, 8, HU3D_MOTATTR_NONE);
 			star_pos.x = host_start.x;
 			star_pos.y = 60.0f+host_start.y;
 			star_pos.z = host_start.z;
@@ -1188,11 +1188,11 @@ static void ExecLotteryDraw(void)
 			BoardStatusShowSet(player, 0);
 			StartHostMove(&host_start, &host_end, 25);
 			BoardPlayerPosLerpStart(player, &player_start, &player_end, 25);
-			BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, 0x40000001);
+			BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, HU3D_MOTATTR_LOOP);
 			while(!CheckHostMove()) {
 				HuPrcVSleep();
 			}
-			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, 0x40000001);
+			BoardModelMotionShiftSet(hostMdl, 1, 0, 8, HU3D_MOTATTR_LOOP);
 			while(GWPlayer[player].moving) {
 				HuPrcVSleep();
 			}
@@ -1514,7 +1514,7 @@ static void StartHostMove(Vec *from, Vec *to, s16 time)
 	angle = 180.0*(atan2(object->rot.x, object->rot.z)/M_PI);
 	work->angle = 0;
 	OSf32tos16(&angle, &work->angle_end);
-	BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, 0x40000001);
+	BoardModelMotionShiftSet(hostMdl, hostMot[0], 0, 8, HU3D_MOTATTR_LOOP);
 	BoardModelMotionSpeedSet(hostMdl, 3.0f);
 }
 

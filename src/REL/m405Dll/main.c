@@ -1683,7 +1683,7 @@ void fn_1_6BFC(omObjData *arg0) {
         temp_r31->unk100 = 2005;
         temp_r31->unk104 = 0;
         Hu3DModelAttrReset(arg0->model[0], 0x40000002);
-        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[temp_r31->unk104], 0.0f, 8.0f, 0x40000001);
+        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[temp_r31->unk104], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
         Hu3DMotionSpeedSet(arg0->model[0], 1.0f);
         for (i = 0; i < 5; i++) {
             Hu3DParManAttrSet(temp_r31->unkF0[i], 1);
@@ -1802,7 +1802,7 @@ void fn_1_6BFC(omObjData *arg0) {
                         var_r27 = temp_r31->unk94 + 5;
                         temp_r31->unk104 = var_r27;
                         Hu3DModelAttrReset(arg0->model[0], 0x40000003);
-                        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[temp_r31->unk104], 0.0f, 8.0f, 0);
+                        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[temp_r31->unk104], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                         temp_r31->unk94++;
                         if (temp_r31->unk94 > lbl_1_bss_78) {
                             lbl_1_bss_78 = temp_r31->unk94;
@@ -1833,7 +1833,7 @@ void fn_1_6BFC(omObjData *arg0) {
     if (var_r27 != temp_r31->unk104) {
         temp_r31->unk104 = var_r27;
         Hu3DModelAttrReset(arg0->model[0], 0x40000002);
-        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[temp_r31->unk104], 0.0f, 30.0f, 0x40000001);
+        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[temp_r31->unk104], 0.0f, 30.0f, HU3D_MOTATTR_LOOP);
     }
     if (temp_r31->unk104 >= 2 && temp_r31->unk104 <= 4) {
         temp_r31->unk60 = 0.5f * temp_r31->unk64;

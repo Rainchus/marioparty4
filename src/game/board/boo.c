@@ -931,7 +931,7 @@ static void BallPlayerScare(omObjData *arg0, BallPlayerWork *arg1) {
         temp_r29 = arg0->data;
         temp_f31 = -BoardPlayerRotYGet(stealTarget);
         if (stealType == 2) {
-            BoardPlayerMotionShiftSet(stealTarget, temp_r29->unk04[3], 0.0f, 10.0f, 0x40000001);
+            BoardPlayerMotionShiftSet(stealTarget, temp_r29->unk04[3], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             SetBallPlayerState(0);
         } else {
             BoardPlayerMotBlendSet(stealTarget, temp_f31, 15);
@@ -1039,7 +1039,7 @@ static void BallPlayerCatch(omObjData *arg0, BallPlayerWork *arg1) {
             omVibrate(stealTarget, 12, 4, 2);
             TakeBallStar();
         }
-        BoardPlayerMotionShiftSet(stealTarget, temp_r27->unk04[0], 0.0f, 10.0f, 0);
+        BoardPlayerMotionShiftSet(stealTarget, temp_r27->unk04[0], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         arg1->unk02 = 1;
     }
     if (stealType == 0) {
@@ -1124,7 +1124,7 @@ static void SetBallBooState(s32 arg0) {
         ballBooObj->rot.y = (sp8.y - ballBooObj->trans.y) / 30.0f;
         ballBooObj->rot.z = (sp8.z - ballBooObj->trans.z) / 30.0f;
         temp_r31->unk02 = 30;
-        BoardModelMotionShiftSet(temp_r31->unk04, 1, 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(temp_r31->unk04, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     }
     if (arg0 == 5) {
         HuAudFXPlay(0x64);
@@ -1133,7 +1133,7 @@ static void SetBallBooState(s32 arg0) {
     if (arg0 == 7) {
         temp_r31->unk08 = -ballBooObj->scale.y;
         HuAudFXPlay(0x64);
-        BoardModelMotionShiftSet(temp_r31->unk04, 5, 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(temp_r31->unk04, 5, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     }
     if (arg0 == 3) {
         battleTimer = 0;
@@ -1200,7 +1200,7 @@ static void BallBooChase(omObjData *arg0, BallBooWork *arg1) {
         } else {
             SetBallBooState(0);
         }
-        BoardModelMotionShiftSet(arg1->unk04, 1, 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(arg1->unk04, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     }
 }
 
@@ -1255,7 +1255,7 @@ static void BallBooFlash(omObjData *arg0, BallBooWork *arg1) {
 
     if (BoardDAngleCalcRange(&arg0->scale.y, arg1->unk08, 8.0f) != 0) {
         SetBallBooState(6);
-        BoardModelMotionShiftSet(arg1->unk04, 3, 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(arg1->unk04, 3, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         temp_f31 = BoardPlayerRotYGet(stealTarget);
         BoardPlayerPosGet(stealTarget, &sp8);
         sp8.x += 500.0 * sind(-temp_f31);

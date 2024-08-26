@@ -570,12 +570,12 @@ void fn_1_2350(void)
                 if (var_r31 == 0x14) {
                     HuAudFXPlay(0x9A);
                     if (mgBattleStarMax < 6) {
-                        Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][2], 0.0f, 10.0f, 0);
-                        Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][2], 0.0f, 10.0f, 0);
+                        Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][2], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
+                        Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][2], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
                     }
                     else {
-                        Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][3], 0.0f, 10.0f, 0);
-                        Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][3], 0.0f, 10.0f, 0);
+                        Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][3], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
+                        Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][3], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
                     }
                 }
                 HuPrcVSleep();
@@ -601,8 +601,8 @@ void fn_1_2350(void)
                 }
             }
             else {
-                Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][0], 0.0f, 10.0f, 0x40000001);
-                Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][0], 0.0f, 10.0f, 0x40000001);
+                Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
+                Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
                 for (var_r31 = 0; var_r31 <= 0xA; var_r31++) {
                     var_f31 = 1.0 - (var_r31 / 10.0);
                     HuSprScaleSet(lbl_1_bss_50, 1, var_f31, var_f31);
@@ -613,8 +613,8 @@ void fn_1_2350(void)
             }
         }
         else {
-            Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][4], 0.0f, 10.0f, 0);
-            Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][4], 0.0f, 10.0f, 0);
+            Hu3DMotionShiftSet(lbl_1_bss_36[0], lbl_1_bss_E[0][4], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
+            Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][4], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             HuPrcSleep(0xB4);
             WipeColorSet(0, 0, 0);
             WipeCreate(2, 0, 0x1E);
@@ -640,8 +640,8 @@ void fn_1_2350(void)
             Hu3DModelPosSet(lbl_1_bss_36[2], 125.0f + (400.0f * var_f31), 0.0f, 0.0f);
             Hu3DModelPosSet(lbl_1_bss_36[3], 275.0f + (400.0f * var_f31), 0.0f, 0.0f);
             if (var_r31 == 0x19) {
-                Hu3DMotionShiftSet(lbl_1_bss_36[2], lbl_1_bss_E[2][0], 0.0f, 10.0f, 0x40000001);
-                Hu3DMotionShiftSet(lbl_1_bss_36[3], lbl_1_bss_E[3][0], 0.0f, 10.0f, 0x40000001);
+                Hu3DMotionShiftSet(lbl_1_bss_36[2], lbl_1_bss_E[2][0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
+                Hu3DMotionShiftSet(lbl_1_bss_36[3], lbl_1_bss_E[3][0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             }
             if ((GWPlayerCfg[2].character < 8) && ((var_r31 % 5) == 0)) {
                 HuAudFXPlay(GWPlayerCfg[2].character + 0xD5);
@@ -942,14 +942,14 @@ void fn_1_4374(void)
                 if (GWPlayerCfg[spC[var_r31]].character >= 8) {
                     HuAudFXPlay(lbl_1_data_4A[GWPlayerCfg[spC[var_r31]].character - 8]);
                 }
-                Hu3DMotionShiftSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][3], 0.0f, 10.0f, 0);
+                Hu3DMotionShiftSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][3], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
                 var_r30++;
             }
             else {
                 if (GWPlayerCfg[spC[var_r31]].character >= 8) {
                     HuAudFXPlay(lbl_1_data_56[GWPlayerCfg[spC[var_r31]].character - 8]);
                 }
-                Hu3DMotionShiftSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][4], 0.0f, 10.0f, 0);
+                Hu3DMotionShiftSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][4], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             }
         }
         HuSprAttrReset(lbl_1_bss_50, 1, 4);

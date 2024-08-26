@@ -559,7 +559,7 @@ void fn_1_D3AC(void)
 			temp_f31 = -40.0f;
 		}
 		if(temp_r30 == 20) {
-			BoardPlayerMotionShiftSet(lbl_1_bss_388, 7, 0, 10, 0);
+			BoardPlayerMotionShiftSet(lbl_1_bss_388, 7, 0, 10, HU3D_MOTATTR_NONE);
 			break;
 		}
 		HuPrcVSleep();

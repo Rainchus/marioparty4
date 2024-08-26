@@ -218,7 +218,7 @@ void fn_1_2D04(void)
 	} else {
 		temp_r26 = GWPlayer[temp_r31].space_curr;
 		BoardCameraTargetSpaceSet(temp_r26);
-		BoardPlayerMotionShiftSet(temp_r31, 6, 0, 5, 0x40000001);
+		BoardPlayerMotionShiftSet(temp_r31, 6, 0, 5, HU3D_MOTATTR_LOOP);
 		HuPrcSleep(60);
 		HuPrcSleep(30);
 		BoardModelPosSetV(temp_r28, &spC);

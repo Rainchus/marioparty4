@@ -1332,7 +1332,7 @@ void fn_1_40C0(Work8F68 *arg0, omObjData *arg1, s32 arg2)
     s32 temp_r29;
     if (arg2 >= 0 && arg0->unkA8 != arg2) {
         arg0->unkA8 = arg2;
-        Hu3DMotionShiftSet(arg1->model[0], arg1->motion[arg0->unkA8], 0, 8, 0x40000001);
+        Hu3DMotionShiftSet(arg1->model[0], arg1->motion[arg0->unkA8], 0, 8, HU3D_MOTATTR_LOOP);
         temp_r29 = -1;
         temp_f31 = 1;
         if (arg0->unkA4 == 1) {
@@ -1476,12 +1476,12 @@ void fn_1_50AC(Work8F68 *arg0, omObjData *arg1)
             Hu3DModelAttrReset(arg1->model[0], 0x40000001);
             if (!arg0->unkA4) {
                 arg0->unkA8 = 5;
-                Hu3DMotionShiftSet(arg1->model[0], arg1->motion[5], 0, 10, 0);
+                Hu3DMotionShiftSet(arg1->model[0], arg1->motion[5], 0, 10, HU3D_MOTATTR_NONE);
                 HuAudFXPlay(1642);
             }
             else {
                 arg0->unkA8 = 6;
-                Hu3DMotionShiftSet(arg1->model[0], arg1->motion[6], 0, 10, 0);
+                Hu3DMotionShiftSet(arg1->model[0], arg1->motion[6], 0, 10, HU3D_MOTATTR_NONE);
                 HuAudFXPlay(1643);
             }
             temp_r27 = lbl_1_bss_1A0[arg0->unkA0];
@@ -1929,13 +1929,13 @@ void fn_1_7D38(omObjData *object)
                 }
                 else {
                     temp_r31->unk9C = 2008;
-                    Hu3DMotionShiftSet(object->model[0], object->motion[4], 0, 8, 0);
+                    Hu3DMotionShiftSet(object->model[0], object->motion[4], 0, 8, HU3D_MOTATTR_NONE);
                 }
             }
             if (lbl_1_bss_1AC->work[0] == 1012) {
                 temp_r31->unk9C = 2008;
                 Hu3DMotionOverlayReset(object->model[0]);
-                Hu3DMotionShiftSet(object->model[0], object->motion[4], 0, 8, 0);
+                Hu3DMotionShiftSet(object->model[0], object->motion[4], 0, 8, HU3D_MOTATTR_NONE);
             }
             if (temp_r31->unk9C == 2008 && temp_r31->unkA0 >= 0) {
                 Hu3DModelAttrSet(lbl_1_bss_1A0[temp_r31->unkA0]->model[0], 1);
@@ -2021,7 +2021,7 @@ void fn_1_7D38(omObjData *object)
             if ((temp_r31->unk110 & 0x1) < lbl_1_bss_20) {
                 temp_r31->unk9C = 2008;
                 Hu3DModelAttrReset(object->model[0], 0x40000004);
-                Hu3DMotionShiftSet(object->model[0], object->motion[3], 0, 8, 0);
+                Hu3DMotionShiftSet(object->model[0], object->motion[3], 0, 8, HU3D_MOTATTR_NONE);
             }
             break;
 

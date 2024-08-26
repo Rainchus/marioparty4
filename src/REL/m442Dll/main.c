@@ -883,7 +883,7 @@ void fn_1_2254(omObjData *object)
                 var_r29 = 0;
                 var_f28 = 1.0f;
             }
-            var_r28 = 0x40000001;
+            var_r28 = HU3D_MOTATTR_LOOP;
             object->trans.x += var_r31->unk_24.x;
             object->trans.z += var_r31->unk_24.z;
             fn_1_37B8(object);
@@ -954,7 +954,7 @@ void fn_1_2254(omObjData *object)
             }
             var_r29 = 8;
             var_f28 = 1.0f;
-            var_r28 = 0;
+            var_r28 = HU3D_MOTATTR_NONE;
             object->trans.x += 0.2f * (var_r31->unk_4C - object->trans.x);
             object->trans.z += 0.2f * (var_r31->unk_54 - object->trans.z);
             object->rot.y = fn_1_85E8(object->rot.y, var_r31->unk_58, 0.2f);
@@ -969,7 +969,7 @@ void fn_1_2254(omObjData *object)
             }
             var_r29 = 8;
             var_f28 = var_r31->unk_3C < (var_r31->unk_3E / 2) ? 0.0f : 1.0f;
-            var_r28 = 0;
+            var_r28 = HU3D_MOTATTR_NONE;
             object->trans.x += 0.2f * (var_r31->unk_4C - object->trans.x);
             object->trans.z += 0.2f * (var_r31->unk_54 - object->trans.z);
             object->rot.y = fn_1_85E8(object->rot.y, var_r31->unk_58, 0.2f);
@@ -1295,14 +1295,14 @@ void fn_1_3C94(omObjData *object)
     if (var_r27 < 11) {
         var_r29 = 0;
         var_f31 = 1.0f;
-        var_r28 = 0x40000001;
+        var_r28 = HU3D_MOTATTR_LOOP;
     }
     else {
         object->rot.y = fn_1_85E8(object->rot.y, 0.0f, 0.2f);
         if (lbl_1_bss_11EE8 != 0) {
             var_r29 = 5;
             var_f31 = 1.0f;
-            var_r28 = 0;
+            var_r28 = HU3D_MOTATTR_NONE;
             if (var_r31->unk_3C != 0) {
                 if (--var_r31->unk_3C == 0) {
                     HuAudCharVoicePlay(var_r31->unk_10, 0x125);
@@ -1312,7 +1312,7 @@ void fn_1_3C94(omObjData *object)
         else {
             var_r29 = 6;
             var_f31 = 1.0f;
-            var_r28 = 0;
+            var_r28 = HU3D_MOTATTR_NONE;
         }
     }
     if ((var_r29 >= 0 && var_r29 != var_r31->unk_30) || var_r28 != var_r31->unk_34) {

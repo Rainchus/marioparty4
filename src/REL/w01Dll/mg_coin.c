@@ -669,7 +669,7 @@ static void fn_1_BAF8(omObjData *arg0) {
     if ((temp_r31->unk20 += 1.0f) == 30.0f) {
         sp14.y = sp8.y + 5.0f;
         BoardPlayerPosSetV(lbl_1_bss_798, &sp14);
-        BoardPlayerMotionShiftSet(lbl_1_bss_798, 2, 0.0f, 10.0f, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_798, 2, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         arg0->func = fn_1_BCDC;
     }
     BoardPlayerPosSetV(lbl_1_bss_798, &sp14);
@@ -686,7 +686,7 @@ static void fn_1_BCDC(omObjData *arg0) {
     sp8 = sp14;
     sp8.z += 100.0f;
     if (fn_1_CB44(&sp8, 10.0f) == 1) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_798, 1, 0.0f, 10.0f, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_798, 1, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         temp_r29->unk1C = 90;
         lbl_1_bss_710->work[0] = 1;
         lbl_1_bss_714[lbl_1_bss_730]->work[2] = 3;
@@ -746,7 +746,7 @@ static void fn_1_C000(void) {
     temp_r31->unk10.y = 10.0f;
     temp_r31->unk10.z = 3.0f;
     temp_r31->unk20 = 0.0f;
-    BoardPlayerMotionShiftSet(lbl_1_bss_798, 4, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_798, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     temp_r30->func = fn_1_C0FC;
     HuPrcKill(NULL);
     while (TRUE) {
@@ -765,7 +765,7 @@ static void fn_1_C0FC(omObjData *arg0) {
     sp8.z += temp_r31->unk10.z;
     temp_r31->unk20 += 1.0f;
     if (sp8.y <= lbl_1_bss_738.y) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_798, 1, 0.0f, 10.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(lbl_1_bss_798, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         sp8.y = lbl_1_bss_738.y;
         lbl_1_bss_75C = HuPrcCreate(fn_1_C25C, 0x2004, 0x1000, 0);
         lbl_1_bss_75C->user_data = arg0;
@@ -826,7 +826,7 @@ static void fn_1_C25C(void) {
             var_f31 = -20.0f;
         }
         if (var_r30 == lbl_1_bss_728) {
-            BoardPlayerMotionShiftSet(lbl_1_bss_798, 7, 0.0f, 10.0f, 0);
+            BoardPlayerMotionShiftSet(lbl_1_bss_798, 7, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             break;
         }
         HuPrcVSleep();

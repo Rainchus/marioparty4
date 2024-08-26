@@ -467,11 +467,11 @@ void fn_1_7544(void)
     gains[lbl_1_bss_172] += gains[4];
     for (i = 0; i < 4; i++) {
         if (gains[lbl_1_bss_19F0[i]]) {
-            CharModelMotionShiftSet(GWPlayerCfg[lbl_1_bss_19F0[i]].character, lbl_1_bss_1990[lbl_1_bss_19F0[i]][1], 0, 4, 0);
+            CharModelMotionShiftSet(GWPlayerCfg[lbl_1_bss_19F0[i]].character, lbl_1_bss_1990[lbl_1_bss_19F0[i]][1], 0, 4, HU3D_MOTATTR_NONE);
             HuAudPlayerVoicePlay(lbl_1_bss_19F0[i], 293);
         }
         else {
-            CharModelMotionShiftSet(GWPlayerCfg[lbl_1_bss_19F0[i]].character, lbl_1_bss_1990[lbl_1_bss_19F0[i]][2], 0, 4, 0);
+            CharModelMotionShiftSet(GWPlayerCfg[lbl_1_bss_19F0[i]].character, lbl_1_bss_1990[lbl_1_bss_19F0[i]][2], 0, 4, HU3D_MOTATTR_NONE);
         }
     }
     HuPrcSleep(20);

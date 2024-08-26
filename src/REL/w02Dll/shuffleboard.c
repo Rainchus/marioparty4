@@ -217,7 +217,7 @@ void fn_1_98D8(void)
 	while(!BoardPlayerMotBlendCheck(lbl_1_bss_36E)) {
 		HuPrcVSleep();
 	}
-	BoardPlayerMotionShiftSet(lbl_1_bss_36E, lbl_1_bss_1C0[0], 0, 10, 0x40000001);
+	BoardPlayerMotionShiftSet(lbl_1_bss_36E, lbl_1_bss_1C0[0], 0, 10, HU3D_MOTATTR_LOOP);
 	HuPrcSleep(20);
 	
 }
@@ -483,7 +483,7 @@ void fn_1_A8E8(void)
 	HuWinKill(lbl_1_bss_1AC);
 	BoardPlayerMotionStart(lbl_1_bss_36E, lbl_1_bss_1C0[1], 0);
 	BoardPlayerMotionEndWait(lbl_1_bss_36E);
-	BoardPlayerMotionShiftSet(lbl_1_bss_36E, 6, 0, 15, 0x40000001);
+	BoardPlayerMotionShiftSet(lbl_1_bss_36E, 6, 0, 15, HU3D_MOTATTR_LOOP);
 	HuPrcSleep(40);
 	BoardAudSeqFadeOut(1, 1000);
 	HuPrcSleep(70);

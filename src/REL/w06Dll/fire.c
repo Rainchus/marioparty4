@@ -95,7 +95,7 @@ static void fn_1_6F80(void) {
     fn_1_72CC(temp_r31);
     fn_1_7760(temp_r31);
     BoardCameraMotionWait();
-    BoardModelMotionShiftSet(lbl_1_bss_C0, 0, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C0, 0, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     HuPrcSleep(8);
     while (BoardModelMotionTimeGet(lbl_1_bss_C0) < 22.0f) {
         HuPrcVSleep();
@@ -113,7 +113,7 @@ static void fn_1_6F80(void) {
     if (lbl_1_bss_B8 != -1) {
         HuAudFXStop(lbl_1_bss_B8);
     }
-    BoardModelMotionShiftSet(lbl_1_bss_C0, 0, 60.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_bss_C0, 0, 60.0f, 8.0f, HU3D_MOTATTR_NONE);
     fn_1_73EC(0.0f);
     fn_1_7574();
     while (!BoardModelMotionEndCheck(lbl_1_bss_C0)) {

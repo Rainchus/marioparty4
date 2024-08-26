@@ -252,7 +252,7 @@ static void fn_1_95AC(s32 arg0) {
     BoardModelPosGet(lbl_1_data_49A, &sp2C);
     VECSubtract(&sp2C, &sp38, &sp20);
     VECNormalize(&sp20, &sp20);
-    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     HuAudFXPlay(0x3C);
     BoardMusStart(1, 6, 0x7F, 0);
@@ -280,13 +280,13 @@ static void fn_1_95AC(s32 arg0) {
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardWinCreate(2, MAKE_MESSID(48, 2), 5);
     BoardWinWait();
     BoardWinKill();
     BoardCameraMotionStartEx(-1, NULL, NULL, 2000.0f, -1.0f, 21);
     BoardCameraMotionWait();
-    BoardModelMotionShiftSet(lbl_1_data_498, 5, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     while (BoardModelMotionTimeGet(lbl_1_data_498) < 80.0f) {
         HuPrcVSleep();
@@ -386,7 +386,7 @@ static void fn_1_9E5C(s32 arg0) {
     BoardModelPosGet(lbl_1_data_49A, &sp2C);
     VECSubtract(&sp2C, &sp38, &sp20);
     VECNormalize(&sp20, &sp20);
-    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     HuAudFXPlay(0x3C);
     BoardMusStart(1, 6, 0x7F, 0);
@@ -414,7 +414,7 @@ static void fn_1_9E5C(s32 arg0) {
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 7, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(9);
     while (BoardModelMotionTimeGet(lbl_1_data_498) < 33.0f) {
         HuPrcVSleep();
@@ -459,8 +459,8 @@ static void fn_1_9E5C(s32 arg0) {
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
-    BoardPlayerMotionShiftSet(arg0, var_r25, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
+    BoardPlayerMotionShiftSet(arg0, var_r25, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(10);
     while (!BoardPlayerMotionEndCheck(arg0)) {
         HuPrcVSleep();
@@ -470,7 +470,7 @@ static void fn_1_9E5C(s32 arg0) {
     } else {
         var_r29 = MAKE_MESSID(48, 6);
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 3, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 3, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuAudFXPlay(0x3A);
     BoardWinCreate(2, var_r29, 5);
     BoardWinWait();
@@ -481,7 +481,7 @@ static void fn_1_9E5C(s32 arg0) {
     BoardCameraMoveSet(1);
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     fn_1_B6A0(0.0f, 20);
     BoardAudSeqPause(0, 0, 1000);
 }
@@ -502,7 +502,7 @@ static void fn_1_A408(s32 arg0) {
     BoardModelPosGet(lbl_1_data_49A, &sp2C);
     VECSubtract(&sp2C, &sp38, &sp20);
     VECNormalize(&sp20, &sp20);
-    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     HuAudFXPlay(0x3C);
     BoardMusStart(1, 6, 0x7F, 0);
@@ -523,16 +523,16 @@ static void fn_1_A408(s32 arg0) {
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardWinCreate(2, MAKE_MESSID(48, 7), 5);
     BoardWinWait();
     BoardWinKill();
     fn_1_BD08(0);
     BoardPlayerPosGet(arg0, &sp38);
     BoardAudSeqFadeOut(1, 1000);
-    BoardModelMotionShiftSet(lbl_1_data_498, 2, 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 2, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(55);
-    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(5);
     temp_r28 = HuAudFXPlay(0x3D);
     BoardPlayerPosGet(arg0, &sp20);
@@ -684,7 +684,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
         var_r26 = MAKE_MESSID(48, 10);
         var_r25 = 8;
         HuAudFXPlay(0x3A);
-        BoardModelMotionShiftSet(lbl_1_data_498, 3, 0.0f, 8.0f, 0);
+        BoardModelMotionShiftSet(lbl_1_data_498, 3, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     } else {
         var_r26 = MAKE_MESSID(48, 8);
         var_r25 = 7;
@@ -698,7 +698,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
         HuPrcVSleep();
     }
     if (var_r29 != 0) {
-        BoardModelMotionShiftSet(lbl_1_data_498, 7, 0.0f, 8.0f, 0);
+        BoardModelMotionShiftSet(lbl_1_data_498, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         temp_r23 = BoardPlayerCoinsGet(arg0);
         var_r30 = temp_r23 - (BoardPlayerCoinsGet(arg0) >> 1);
         if (var_r30 < 0) {
@@ -718,7 +718,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
         }
         HuAudFXPlay(0xF);
     } else {
-        BoardModelMotionShiftSet(lbl_1_data_498, 8, 0.0f, 8.0f, 0);
+        BoardModelMotionShiftSet(lbl_1_data_498, 8, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         BoardWinCreate(2, MAKE_MESSID(48, 9), 5);
         BoardWinWait();
         BoardWinKill();
@@ -743,7 +743,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
         BoardSpaceTypeSet(0, var_r24, 1);
         BoardMusStartBoard();
     }
-    BoardPlayerMotionShiftSet(arg0, var_r25, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, var_r25, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     BoardModelAttrSet(lbl_1_data_498, 0x40000004);
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
@@ -756,7 +756,7 @@ static void fn_1_AB4C(s32 arg0, s32 arg1) {
         BoardAudSeqFadeOut(1, 1000);
     }
     HuPrcSleep(48);
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardPlayerIdleSet(arg0);
     fn_1_B6A0(0.0f, 20);
 }
@@ -776,7 +776,7 @@ static void fn_1_B27C(s32 arg0) {
     BoardModelPosGet(lbl_1_data_49A, &sp2C);
     VECSubtract(&sp2C, &sp38, &sp20);
     VECNormalize(&sp20, &sp20);
-    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     HuAudFXPlay(0x3C);
     sp14.x = 0.0f;
@@ -797,9 +797,9 @@ static void fn_1_B27C(s32 arg0) {
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardMusStart(1, 6, 0x7F, 0);
-    BoardModelMotionShiftSet(lbl_1_data_498, 7, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     var_r29 = MAKE_MESSID(48, 38);
     var_r27 = 50;
@@ -821,12 +821,12 @@ static void fn_1_B27C(s32 arg0) {
         HuPrcVSleep();
     }
     var_r29 = MAKE_MESSID(48, 39);
-    BoardModelMotionShiftSet(lbl_1_data_498, 3, 0.0f, 8.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 3, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuAudFXPlay(0x3A);
     BoardWinCreate(2, var_r29, 5);
     BoardWinWait();
     BoardWinKill();
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardAudSeqFadeOut(1, 1000);
     HuPrcSleep(24);
     BoardPlayerIdleSet(arg0);
@@ -862,7 +862,7 @@ static void fn_1_B6A0(float arg0, s16 arg1) {
         BoardModelRotYSet(lbl_1_data_498, arg0);
         return;
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 6, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 6, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardModelMotionSpeedSet(lbl_1_data_498, 2.0f);
     while (arg1 > 0) {
         var_f27 = var_f25 + BoardModelRotYGet(lbl_1_data_498);
@@ -871,7 +871,7 @@ static void fn_1_B6A0(float arg0, s16 arg1) {
         arg1--;
     }
     BoardModelRotYSet(lbl_1_data_498, arg0);
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
 }
 
 static void fn_1_B8E0(omObjData *arg0) {
@@ -972,7 +972,7 @@ static void fn_1_BD8C(s32 arg0) {
 
 void fn_1_C108(s32 arg0) {
     if (arg0 != 0) {
-        BoardModelMotionShiftSet(lbl_1_data_498, 2, 0.0f, 10.0f, 0);
+        BoardModelMotionShiftSet(lbl_1_data_498, 2, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         BoardModelMotionSpeedSet(lbl_1_data_498, 2.0f);
         HuPrcSleep(30);
         lbl_1_bss_0->unk00_field4 = 1;
@@ -989,7 +989,7 @@ void fn_1_C108(s32 arg0) {
         while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
             HuPrcVSleep();
         }
-        BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, 0x40000001);
+        BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     }
 }
 
@@ -1058,7 +1058,7 @@ static void fn_1_C40C(void) {
     BoardWinWait();
     BoardWinKill();
     HuAudFXPlay(0x359);
-    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(11);
     HuAudFXPlay(0x33F);
     HuAudFXPlay(0x3C);
@@ -1077,7 +1077,7 @@ static void fn_1_C40C(void) {
     while (!BoardModelMotionEndCheck(lbl_1_data_498)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_498, 1, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     BoardWinCreate(0, MAKE_MESSID(48, 12), -1);
     BoardWinWait();
     BoardWinKill();

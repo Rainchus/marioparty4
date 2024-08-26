@@ -273,7 +273,7 @@ static void ExecShop(void) {
     HuAudFXPlay(0x330);
     HuAudFXPlay(0x32D);
     PopupShop();
-    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[2], 0.0f, 4.0f, 0);
+    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[2], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(4);
     BoardPlayerRotSet(shopPlayer, 0.0f, temp_f31, 0.0f);
     BoardPlayerMoveBetween(shopPlayer, temp_r28, temp_r25);
@@ -366,7 +366,7 @@ static void ExecShop(void) {
             if (activeItemTbl[itemCurChoice] != 0xD) {
                 BoardPlayerItemAdd(shopPlayer, activeItemTbl[itemCurChoice]);
             }
-            BoardPlayerMotionShiftSet(shopPlayer, 0xC, 0.0f, 4.0f, 0);
+            BoardPlayerMotionShiftSet(shopPlayer, 0xC, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
             HuPrcSleep(5);
             BoardPlayerMotionEndWait(shopPlayer);
             HuPrcSleep(15);
@@ -375,7 +375,7 @@ static void ExecShop(void) {
     }
     BoardAudSeqFadeOut(1, 1000);
     BoardModelVisibilitySet(itemMdl, 0);
-    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[1], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardStatusShowSet(shopPlayer, 0);
     BoardCameraTargetPlayerSet(shopPlayer);
     BoardCameraMotionWait();
@@ -1148,14 +1148,14 @@ void BoardShopTutorialExec(s32 arg0) {
     HuAudFXPlay(0x330);
     HuAudFXPlay(0x32D);
     PopupShop();
-    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[2], 0.0f, 4.0f, 0);
+    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[2], 0.0f, 4.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(4);
     while (!BoardModelMotionEndCheck(BoardShopHostGet())) {
         HuPrcVSleep();
     }
     BoardModelMotionStart(BoardShopHostGet(), shopMot[0], 0x40000001);
     BoardTutorialHookExec(0x1C, 0);
-    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[1], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardShopHostGet(), shopMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     HuPrcSleep(30);
     CloseShop();
     for (i = 0; i < 2; i++) {

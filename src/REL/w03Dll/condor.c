@@ -220,14 +220,14 @@ s32 fn_1_3478(s32 arg0)
 
     BoardPlayerIdleSet(arg0);
     HuAudFXPlay(0x447);
-    BoardModelMotionShiftSet(lbl_1_data_310, 4, 0.0f, 5.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_310, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(6);
 
     while (BoardModelMotionEndCheck(lbl_1_data_310) == 0) {
         HuPrcVSleep();
     }
 
-    BoardModelMotionShiftSet(lbl_1_data_310, 1, 0.0f, 5.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_310, 1, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     temp_r26 = BoardPlayerGetCharMess(arg0);
     BoardWinCreate(2, MAKE_MESSID(22, 16), 8);
     BoardWinInsertMesSet(temp_r26, 3);
@@ -286,7 +286,7 @@ void fn_1_3814(s32 arg0)
     Vec sp8;
     f32 temp;
 
-    BoardModelMotionShiftSet(lbl_1_data_310, 2, 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_data_310, 2, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     temp = (180.0f + BoardPlayerRotYGet(arg0));
     BoardPlayerMotBlendSet(arg0, temp, 0xF);
 
@@ -342,7 +342,7 @@ void fn_1_3968(s32 arg0)
     VECSubtract(&sp3C, &sp30, &sp24);
     VECNormalize(&sp24, &sp24);
     VECScale(&sp24, &sp24, temp_f30 / 45.0f);
-    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(5);
 
     spC = BoardPlayerRotYGet(arg0);
@@ -389,7 +389,7 @@ void fn_1_3968(s32 arg0)
     BoardModelHookSet(lbl_1_data_310, "itemhook_oya", BoardPlayerModelGet(arg0));
     BoardPlayerMotionStart(arg0, lbl_1_data_312, 0x40000001);
     HuAudFXPlay(0x44F);
-    BoardModelMotionShiftSet(lbl_1_data_310, 5, 0.0f, 5.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_data_310, 5, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
 
     sp18.x = -15.0f;
     sp18.y = 180.0f;
@@ -821,7 +821,7 @@ void fn_1_4F24(w03StructUnk2 *arg0)
         }
 
         if (arg0->unk_02 != 0) {
-            BoardModelMotionShiftSet(lbl_1_bss_C[2], 0, 101.0f, 10.0f, 0);
+            BoardModelMotionShiftSet(lbl_1_bss_C[2], 0, 101.0f, 10.0f, HU3D_MOTATTR_NONE);
         }
     }
 }

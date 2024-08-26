@@ -583,7 +583,7 @@ void fn_1_9044(omObjData *arg0, someBits3 *arg1)
             if (arg0->trans.x <= 1.0f) {
                 arg0->trans.y = 0.0f;
                 BoardPlayerIdleSet(arg1->unk00_bit5);
-                BoardModelMotionShiftSet(lbl_1_bss_C[10], 1, 0.0f, 10.0f, 0x40000001U);
+                BoardModelMotionShiftSet(lbl_1_bss_C[10], 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
                 arg1->unk00_bit0 = 1;
             }
         }
@@ -668,7 +668,7 @@ void fn_1_9474(s32 arg0)
         HuPrcVSleep();
     }
 
-    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, 0U);
+    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
 
     while (BoardPlayerMotionEndCheck(arg0) == 0) {

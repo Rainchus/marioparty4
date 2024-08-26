@@ -457,7 +457,7 @@ void fn_1_156C(omObjData *object)
     work->field_0_bit4 = 1;
     work->unk28 = 0;
     work->unk2C = -1;
-    work->unk34 = 0;
+    work->unk34 = HU3D_MOTATTR_NONE;
     work->unk38 = 50;
     if (!work->unk10) {
         fn_1_1964(object);
@@ -659,12 +659,12 @@ void fn_1_1D84(omObjData *object)
                         else {
                             temp_r29 = 2;
                         }
-                        temp_r28 = 0x40000001;
+                        temp_r28 = HU3D_MOTATTR_LOOP;
                     }
                     else {
                         temp_r31->unk1C.x = temp_r31->unk1C.z = 0;
                         temp_r29 = 0;
-                        temp_r28 = 0x40000001;
+                        temp_r28 = HU3D_MOTATTR_LOOP;
                     }
                     object->trans.x += temp_r31->unk1C.x;
                     object->trans.z += temp_r31->unk1C.z;
@@ -686,7 +686,7 @@ void fn_1_1D84(omObjData *object)
             else {
                 temp_r29 = 0;
             }
-            temp_r28 = 0x40000001;
+            temp_r28 = HU3D_MOTATTR_LOOP;
             break;
 
         case 2:
@@ -698,7 +698,7 @@ void fn_1_1D84(omObjData *object)
                 temp_f28 = VECMag(&sp34);
                 if (temp_f28 < 20 || temp_r31->unk40 == 0) {
                     temp_r29 = 5;
-                    temp_r28 = 0x40000001;
+                    temp_r28 = HU3D_MOTATTR_LOOP;
                     object->rot.y = fn_1_1C80(object->rot.y, 0, 0.2f);
                     temp_r31->field_0_bit3 = 1;
                 }
@@ -730,7 +730,7 @@ void fn_1_1D84(omObjData *object)
                     object->trans.x += temp_r31->unk1C.x;
                     object->trans.z += temp_r31->unk1C.z;
                     temp_r29 = 8;
-                    temp_r28 = 0x40000001;
+                    temp_r28 = HU3D_MOTATTR_LOOP;
                 }
                 if (temp_r31->unk40) {
                     temp_r31->unk40--;
@@ -741,7 +741,7 @@ void fn_1_1D84(omObjData *object)
         case 3:
             if (fn_1_1240() < 10) {
                 temp_r29 = 0;
-                temp_r28 = 0x40000001;
+                temp_r28 = HU3D_MOTATTR_LOOP;
             }
             else {
                 if ((!temp_r31->unk10 && lbl_1_bss_924 < 0) || (temp_r31->unk10 && lbl_1_bss_924 >= 0)) {
@@ -750,7 +750,7 @@ void fn_1_1D84(omObjData *object)
                 else {
                     temp_r29 = 7;
                 }
-                temp_r28 = 0;
+                temp_r28 = HU3D_MOTATTR_NONE;
                 object->rot.y = fn_1_1C80(object->rot.y, 0, 0.2f);
                 Hu3DModelAttrReset(object->model[0], 0x40000001);
             }
@@ -820,7 +820,7 @@ void fn_1_29DC(omObjData *object)
         temp_r31->field_0_bit0 = 0;
         temp_r31->field_0_bit1 = 1;
         temp_r31->unk2C = 3;
-        temp_r31->unk34 = 0;
+        temp_r31->unk34 = HU3D_MOTATTR_NONE;
         temp_r31->unk46 = 60;
         temp_r31->unk60 = 30;
         omVibrate(temp_r31->unk02, 12, 6, 6);
@@ -889,7 +889,7 @@ void fn_1_2EA4(omObjData *object)
                 temp_r30->unk50 = 1;
                 temp_r30->unk60 = 15;
                 temp_r30->unk2C = 3;
-                temp_r30->unk34 = 0;
+                temp_r30->unk34 = HU3D_MOTATTR_NONE;
                 HuAudFXEmiterPlay(1465, &object->trans);
             }
             break;
@@ -926,7 +926,7 @@ void fn_1_2EA4(omObjData *object)
         case 2:
             if (--temp_r30->unk60 == 0) {
                 temp_r30->unk2C = 4;
-                temp_r30->unk34 = 0;
+                temp_r30->unk34 = HU3D_MOTATTR_NONE;
                 temp_r29->field_0_bit0 = 0;
                 temp_r30->unk50 = 3;
                 temp_r30->unk60 = 30;

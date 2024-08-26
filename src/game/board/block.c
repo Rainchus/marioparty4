@@ -116,7 +116,7 @@ static void BlockProc(void)
     BoardWinCreate(0, 0x10000, -1);
     BoardWinWait();
     BoardWinKill();
-    BoardPlayerMotionShiftSet(player, 0xB, 0, 8.0, 0.0);
+    BoardPlayerMotionShiftSet(player, 0xB, 0, 8.0, HU3D_MOTATTR_NONE);
     HuPrcSleep(9);
     while (BoardPlayerMotionTimeGet(player) < 30.0f) {
         HuPrcVSleep();

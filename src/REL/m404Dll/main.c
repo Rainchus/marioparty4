@@ -1106,7 +1106,7 @@ void fn_1_44A0(omObjData *object)
         }
         if (var_r28 >= 0 && var_r28 != var_r31->unk_2C) {
             var_r31->unk_2C = var_r28;
-            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_2C], 0.0f, 5.0f, 0x40000001);
+            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_2C], 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
         }
     }
 }
@@ -1120,7 +1120,7 @@ void fn_1_4C7C(omObjData *object)
     object->trans.z = -450.0f + (300.0f * var_r30->unk_02);
     object->rot.y = 0.0f;
     var_r30->unk_2C = -1;
-    CharModelMotionShiftSet(var_r30->unk_0C, *object->motion, 0.0f, 5.0f, 0x40000001);
+    CharModelMotionShiftSet(var_r30->unk_0C, *object->motion, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     var_r30->unk_5A = 0;
     var_r30->unk_5C = fn_1_F70(object, 1.0f);
     var_r30->unk_5A = 0;
@@ -1155,7 +1155,7 @@ void fn_1_4F4C(omObjData *object)
         else {
             var_r30->unk_2C = 4;
         }
-        CharModelMotionShiftSet(var_r30->unk_0C, object->motion[var_r30->unk_2C], 0.0f, 5.0f, 0);
+        CharModelMotionShiftSet(var_r30->unk_0C, object->motion[var_r30->unk_2C], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     }
 }
 

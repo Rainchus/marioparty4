@@ -734,7 +734,7 @@ static s32 ExecPipeSpace(s32 player, s32 space)
 		if(pos.y <= pos_link.y) {
 			pos.y = pos_link.y;
 			if(!mot_disable) {
-				BoardPlayerMotionShiftSet(player, 3, 0, 4, 0x40000001);
+				BoardPlayerMotionShiftSet(player, 3, 0, 4, HU3D_MOTATTR_LOOP);
 				break;
 			}
 		} else {

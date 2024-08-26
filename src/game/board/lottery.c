@@ -533,7 +533,7 @@ static void ExecLottery(void) {
     while (!BoardModelMotionEndCheck(lotteryMdl[0])) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[3], 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[3], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     BoardPlayerRotSet(temp_r31, 0.0f, temp_r26, 0.0f);
     BoardPlayerPosLerpStart(temp_r31, &sp38, &sp2C, 0x14);
     while (GWPlayer[temp_r31].moving) {
@@ -556,7 +556,7 @@ static void ExecLottery(void) {
     while (!BoardStatusStopCheck(temp_r31)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[0], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     if (GWPlayer[temp_r31].draw_ticket == 0 && GWSystem.max_turn - GWSystem.turn >= 5) {
         SetupTicket(temp_r31);
         ShowTicket();
@@ -902,7 +902,7 @@ static void ExecBallGame(void) {
     BoardModelMotionTimeSet(lotteryMdl[1], 0.0f);
     BoardModelAttrSet(gripMdl[0], 0x40000001);
     BoardModelAttrSet(gripMdl[1], 0x40000001);
-    BoardPlayerMotionShiftSet(temp_r27, turnMot, 0.0f, 8.0f, 0x40000001);
+    BoardPlayerMotionShiftSet(temp_r27, turnMot, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardPlayerMotionSpeedSet(temp_r27, 0.0f);
     temp_f24 = BoardModelMotionMaxTimeGet(lotteryMdl[1]);
     temp_f24 -= 4.0f;
@@ -1878,7 +1878,7 @@ static void ExecPrize(void) {
         HuAudFXPlay(0x332);
     }
     if (var_r29 == 7) {
-        BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[1], 0.0f, 10.0f, 0x40000001);
+        BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     }
     if (var_r26 != 0) {
         BoardPlayerPosGet(temp_r30, &sp8);
@@ -1922,7 +1922,7 @@ static void ExecPrize(void) {
         HuAudFXPlay(loseSoundTbl[GWPlayer[temp_r30].character]);
         BoardPlayerVoiceEnableSet(temp_r30, var_r29, 0);
     }
-    BoardPlayerMotionShiftSet(temp_r30, var_r29, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(temp_r30, var_r29, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     switch (var_r31) {
         case 0:
         case 1:
@@ -1951,7 +1951,7 @@ static void ExecPrize(void) {
     } else {
         var_r28 = lotteryMessBase + 8;
     }
-    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[2], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[2], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardWinCreate(2, var_r28, BoardWinPortraitGet());
     BoardWinWait();
     BoardWinKill();
@@ -1968,7 +1968,7 @@ static void ExecLose(s32 arg0) {
 
     temp_r30 = GWPlayer[arg0].character;
     loseMot = BoardPlayerMotionCreate(arg0, loseMotTbl[temp_r30]);
-    BoardPlayerMotionShiftSet(arg0, loseMot, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, loseMot, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(10);
     while (!BoardPlayerMotionEndCheck(arg0)) {
         HuPrcVSleep();
@@ -2043,14 +2043,14 @@ void BoardLotteryTutorialExec(void) {
     while (!BoardModelMotionEndCheck(lotteryMdl[0])) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[3], 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[3], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(10);
     while (!BoardModelMotionEndCheck(BoardShopHostGet())) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[0], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardTutorialHookExec(0x1C, 0);
-    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[2], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardLotteryHostGet(), lotteryMot[2], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     HuPrcSleep(30);
     BoardModelMotionStart(lotteryMdl[0], 0, 0x40000004);
     while (!BoardModelMotionEndCheck(lotteryMdl[0])) {

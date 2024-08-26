@@ -413,13 +413,13 @@ void fn_1_1338(omObjData* arg0) {
             if (lbl_1_bss_80 == 1001 && lbl_1_bss_84 == 45 && temp_r31->unk08 != -1) {
                 var_r20 = 8;
                 Hu3DMotionShiftSet(arg0->model[0], arg0->motion[var_r20], lbl_1_data_EC[var_r20], 45.0f,
-                    (lbl_1_data_A8[var_r20] != 0) ? 0 : 0x40000001);
+                    (lbl_1_data_A8[var_r20] != 0) ? HU3D_MOTATTR_NONE : HU3D_MOTATTR_LOOP);
                 temp_r31->unk20 = var_r20;
             }
             if (lbl_1_bss_80 == 1001 && lbl_1_bss_84 == 210 && temp_r31->unk08 != -1) {
                 var_r19 = 0;
                 Hu3DMotionShiftSet(arg0->model[0], arg0->motion[var_r19], lbl_1_data_EC[var_r19], 30.0f,
-                    (lbl_1_data_A8[var_r19] != 0) ? 0 : 0x40000001);
+                    (lbl_1_data_A8[var_r19] != 0) ? HU3D_MOTATTR_NONE : HU3D_MOTATTR_LOOP);
                 temp_r31->unk20 = var_r19;
             }
             if (lbl_1_bss_80 == 1003 && temp_r31->unk08 != -1) {
@@ -820,12 +820,12 @@ void fn_1_1338(omObjData* arg0) {
         var_r18 = (temp_r31->unk08 == -1 && (var_r29 == 9 || var_r29 == 10)) ? 0 : var_r29;
         if (temp_r31->unk08 != -1) {
             Hu3DMotionShiftSet(arg0->model[0], arg0->motion[var_r18], lbl_1_data_EC[var_r18], lbl_1_data_C0[var_r18],
-                (lbl_1_data_A8[var_r18] != 0) ? 0 : 0x40000001);
+                (lbl_1_data_A8[var_r18] != 0) ? HU3D_MOTATTR_NONE : HU3D_MOTATTR_LOOP);
         } else {
             Hu3DMotionShiftSet(arg0->model[0], arg0->motion[var_r29], lbl_1_data_EC[var_r29], lbl_1_data_118[var_r29],
-                (lbl_1_data_B3[var_r29] != 0) ? 0 : 0x40000001);
+                (lbl_1_data_B3[var_r29] != 0) ? HU3D_MOTATTR_NONE : HU3D_MOTATTR_LOOP);
             if (var_r29 == 3) {
-                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[5], 15.0f, 33.0f, 0x40000002);
+                Hu3DMotionShiftSet(arg0->model[0], arg0->motion[5], 15.0f, 33.0f, HU3D_MOTATTR_PAUSE);
             }
         }
         temp_r31->unk20 = var_r29;

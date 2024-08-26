@@ -45,16 +45,16 @@ u32 lbl_1_data_1AC[] = {
 };
 
 UnkM410Struct10 lbl_1_data_1D4[] = {
-    { 0.0f, 0.0f, 12.0f, 0x40000001 },
-    { 0.0f, 0.0f, 1.1999999, 0 },
-    { 0.0f, 0.0f, 12.0f, 0x40000001 },
-    { 0.0f, 0.0f, 6.0f, 0 },
-    { 6.0f, 0.0f, 4.7999997f, 0 },
-    { 0.0f, 0.0f, 1.1999999f, 0 },
-    { 0.0f, 0.0f, 1.1999999f, 0 },
-    { 0.0f, 0.0f, 1.1999999f, 0 },
-    { 0.0f, 0.0f, 12.0f, 0 },
-    { 0.0f, 0.0f, 12.0f, 0 },
+    { 0.0f, 0.0f, 12.0f, HU3D_MOTATTR_LOOP },
+    { 0.0f, 0.0f, 1.1999999f, HU3D_MOTATTR_NONE },
+    { 0.0f, 0.0f, 12.0f, HU3D_MOTATTR_LOOP },
+    { 0.0f, 0.0f, 6.0f, HU3D_MOTATTR_NONE },
+    { 6.0f, 0.0f, 4.7999997f, HU3D_MOTATTR_NONE },
+    { 0.0f, 0.0f, 1.1999999f, HU3D_MOTATTR_NONE },
+    { 0.0f, 0.0f, 1.1999999f, HU3D_MOTATTR_NONE },
+    { 0.0f, 0.0f, 1.1999999f, HU3D_MOTATTR_NONE },
+    { 0.0f, 0.0f, 12.0f, HU3D_MOTATTR_NONE },
+    { 0.0f, 0.0f, 12.0f, HU3D_MOTATTR_NONE },
 };
 
 s32 lbl_1_data_274[] = {

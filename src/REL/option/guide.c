@@ -74,7 +74,7 @@ omObjData *OptionGuideCreate(void)
     work->unk_60 = CharModelEffectNpcInit(object->model[0], object->motion[1], 0, 0xC);
     CharModelLayerSetAll(1);
     Hu3DModelShadowSet(object->model[0]);
-    Hu3DMotionShiftSet(object->model[0], object->motion[0], 0.0f, 8.0f, 0x40000001);
+    Hu3DMotionShiftSet(object->model[0], object->motion[0], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     SetExecMode(object, MODE_DISABLED);
     UpdateGuide(object);
     return object;
@@ -207,7 +207,7 @@ static void UpdateGuide(omObjData *object)
     work->pos.x += work->posDelta.x;
     work->pos.z += work->posDelta.z;
     if (work->motion != motion) {
-        Hu3DMotionShiftSet(*object->model, object->motion[motion], 0.0f, 8.0f, 0x40000001);
+        Hu3DMotionShiftSet(*object->model, object->motion[motion], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
         work->motion = motion;
     }
     omSetTra(object, work->pos.x, work->pos.y, work->pos.z);

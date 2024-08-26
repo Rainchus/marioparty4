@@ -1,3 +1,6 @@
+#ifndef M437DLL_H
+#define M437DLL_H
+
 #include "game/object.h"
 
 #include "dolphin.h"
@@ -21,7 +24,7 @@ typedef struct {
     /* 0x00 */ void (*unk00)(void);
     /* 0x04 */ void (*unk04)(void);
     /* 0x08 */ float unk08;
-    /* 0x08 */ float unk0C;
+    /* 0x0C */ float unk0C;
     /* 0x10 */ float unk10;
     /* 0x14 */ float unk14;
     /* 0x18 */ float unk18;
@@ -71,3 +74,5 @@ void fn_1_15CD0(StructFn15CD0* arg0, s32 arg1);
 void fn_1_15DC8(StructFn15CD0* arg0);
 void fn_1_164B0(Process* arg0, StructFn15CD0* arg1, s32 arg2, const char* arg3);
 void fn_1_1660C(Process* arg0, StructFn15CD0* arg1, s32 arg2, s32 arg3);
+
+#endif

@@ -288,7 +288,7 @@ void fn_1_9FE4(void)
     VECSubtract(&sp18, &sp24, &spC);
     temp_f30 = (atan2(spC.z, spC.x) / M_PI * 180.0);
     sp8 = BoardModelRotYGet(lbl_1_bss_C[11]);
-    BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DA, 0.0f, 10.0, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DA, 0.0f, 10.0, HU3D_MOTATTR_LOOP);
 
     while (BoardDAngleCalcRange(&sp8, temp_f30, 10.0) == 0) {
         BoardModelRotYSet(lbl_1_bss_C[11], sp8);
@@ -316,7 +316,7 @@ void fn_1_9FE4(void)
     HuAudFXPlay(0x362);
     BoardCameraQuakeSet(3, 100.0f);
     fn_1_B8E8(1);
-    BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DC, 0.0f, 10.0, 0x40000005);
+    BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DC, 0.0f, 10.0, HU3D_MOTATTR_LOOP | HU3D_MOTATTR_REV);
     VECSubtract(&sp24, &sp30, &spC);
 
     spC.x /= 60.0f;
@@ -333,14 +333,14 @@ void fn_1_9FE4(void)
 
     temp_f30 = 0.0f;
     sp8 = BoardModelRotYGet(lbl_1_bss_C[11]);
-    BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DA, 0.0f, 10.0, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C[11], lbl_1_data_4DA, 0.0f, 10.0, HU3D_MOTATTR_LOOP);
 
     while (BoardDAngleCalcRange(&sp8, temp_f30, 10.0) == 0) {
         BoardModelRotYSet(lbl_1_bss_C[11], sp8);
         HuPrcVSleep();
     }
 
-    BoardModelMotionShiftSet(lbl_1_bss_C[11], 1, 0.0f, 10.0, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C[11], 1, 0.0f, 10.0, HU3D_MOTATTR_LOOP);
 }
 
 void fn_1_A44C(s32 arg0)
@@ -586,10 +586,10 @@ void fn_1_ACD8(s32 arg0)
                 MGSeqParamSet(temp_r31->unk4, 2, -1U);
                 temp_r31->unk4 = -1;
             }
-            BoardPlayerMotionShiftSet(temp_r31->unk00_bit4, 0xB, 0.0f, 10.0f, 0);
+            BoardPlayerMotionShiftSet(temp_r31->unk00_bit4, 0xB, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             return;
         case 3:
-            BoardPlayerMotionShiftSet(temp_r31->unk00_bit4, 7, 0.0f, 10.0f, 0);
+            BoardPlayerMotionShiftSet(temp_r31->unk00_bit4, 7, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             break;
     }
 }
@@ -811,7 +811,7 @@ void fn_1_B4AC(omObjData *arg0, someBits2 *arg1)
     HuAudFXPlay(0x30C);
     BoardModelHookObjReset(lbl_1_bss_C[9], lbl_1_data_508[arg1->unk2]);
     temp_f31 = BoardModelMotionTimeGet(lbl_1_bss_C[9]);
-    BoardModelMotionShiftSet(lbl_1_bss_C[9], 0, 15.0f, 10.0f, 0x40000004U);
+    BoardModelMotionShiftSet(lbl_1_bss_C[9], 0, 15.0f, 10.0f, HU3D_MOTATTR_REV);
     BoardModelMotionSpeedSet(lbl_1_bss_C[9], 0.5f);
     BoardModelMotionTimeSet(lbl_1_bss_C[9], temp_f31);
     BoardModelPosSetV(arg1->unk_06[arg1->unk2], &sp8);

@@ -1185,15 +1185,15 @@ void fn_1_B18C(omObjData *object)
 		Hu3DModelAttrReset(object->model[0], 0x40000007);
 		switch(temp_r31->unk0 & 0xC) {
 			case 0:
-				temp_r28 = 0x40000002;
+				temp_r28 = HU3D_MOTATTR_PAUSE;
 				break;
 				
 			case 4:
-				temp_r28 = 0;
+				temp_r28 = HU3D_MOTATTR_NONE;
 				break;
 				
 			case 8:
-				temp_r28 = 0x40000001;
+				temp_r28 = HU3D_MOTATTR_LOOP;
 				break;
 		}
 		if(temp_r31->unk0 & 0x2) {

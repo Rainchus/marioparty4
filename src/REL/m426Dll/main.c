@@ -894,10 +894,10 @@ void fn_1_16F8(omObjData *object)
                     if (var_r26 != var_r31->unk_28) {
                         var_r31->unk_28 = var_r26;
                         if (var_r26 == 3) {
-                            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0);
+                            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                         }
                         else {
-                            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0x40000001);
+                            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                         }
                     }
                     if (var_r31->unk_94 == -1) {
@@ -970,7 +970,7 @@ void fn_1_16F8(omObjData *object)
                             var_r31->unk_2C = 0;
                             var_r31->unk_24 = 2;
                             var_r31->unk_28 = 9;
-                            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 8.0f, 8.0f, 0);
+                            CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 8.0f, 8.0f, HU3D_MOTATTR_NONE);
                         }
                     }
                     else if (sp10 & 256) {
@@ -998,7 +998,7 @@ void fn_1_16F8(omObjData *object)
                     var_r31->unk_24 = 0;
                     var_r31->unk_2C = 0;
                     var_r31->unk_28 = 8;
-                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0x40000001);
+                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                 }
                 break;
             case 3:
@@ -1037,7 +1037,7 @@ void fn_1_16F8(omObjData *object)
                     var_r31->unk_2C = 0;
                     HuAudCharVoicePlay(var_r31->unk_0C, 281);
                     var_r31->unk_28 = 6;
-                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0x40000001);
+                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                 }
                 break;
             case 6:
@@ -1049,12 +1049,12 @@ void fn_1_16F8(omObjData *object)
                 }
                 else if (var_r31->unk_2C == 60.0f) {
                     var_r31->unk_28 = 7;
-                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0);
+                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                 }
                 else if (var_r31->unk_2C >= 90.0f) {
                     var_r31->unk_24 = 7;
                     var_r31->unk_28 = 8;
-                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0x40000001);
+                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                 }
                 break;
             case 7:
@@ -1090,7 +1090,7 @@ void fn_1_16F8(omObjData *object)
                 }
                 if (var_r26 != var_r31->unk_28) {
                     var_r31->unk_28 = var_r26;
-                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, 0);
+                    CharModelMotionShiftSet(var_r31->unk_0C, object->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                 }
                 break;
         }
@@ -1280,7 +1280,7 @@ void fn_1_2B74(Vec *arg0)
                         }
                         var_r31->unk_9C.y = 45.5f;
                         var_r31->unk_28 = 5;
-                        CharModelMotionShiftSet(var_r31->unk_0C, var_r30->motion[var_r31->unk_28], 0.0f, 8.0f, 0);
+                        CharModelMotionShiftSet(var_r31->unk_0C, var_r30->motion[var_r31->unk_28], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                         spC.x = var_r30->trans.x;
                         spC.y = var_r30->trans.y;
                         spC.z = var_r30->trans.z;
@@ -2003,7 +2003,7 @@ void fn_1_5134(omObjData *object)
                 if (lbl_1_bss_3C) {
                     var_r31->unk_30 = 0;
                     var_r31->unk_28 = 3;
-                    Hu3DMotionShiftSet(var_r31->unk_00, var_r31->unk_0C, 0.0f, 8.0f, 0x40000001);
+                    Hu3DMotionShiftSet(var_r31->unk_00, var_r31->unk_0C, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                 }
                 else {
                     var_r31->unk_48 = fn_1_770C(0.0f, var_r31->unk_48, 10.0f);
@@ -2033,7 +2033,7 @@ void fn_1_5134(omObjData *object)
                 }
                 Hu3DMotionSpeedSet(var_r31->unk_00, 1.4f * (0.33333334f * var_r31->unk_34));
                 if (lbl_1_bss_3C == 0) {
-                    Hu3DMotionShiftSet(var_r31->unk_00, var_r31->unk_08, 0.0f, 8.0f, 1073741825);
+                    Hu3DMotionShiftSet(var_r31->unk_00, var_r31->unk_08, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                     var_r31->unk_2C = 0;
                     var_r31->unk_30 = 0;
                     var_r31->unk_28 = 2;

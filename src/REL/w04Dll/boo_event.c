@@ -187,7 +187,7 @@ static void fn_1_20EC(void) {
         HuPrcVSleep();
     }
     BoardCameraMotionWait();
-    BoardPlayerMotionShiftSet(temp_r30, lbl_1_bss_52[temp_r30][0], 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(temp_r30, lbl_1_bss_52[temp_r30][0], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuAudPlayerVoicePlay(temp_r30, 0x128);
     BoardModelPosGet(lbl_1_bss_14[3], &sp20);
     BoardModelPosSetV(lbl_1_bss_FA, &sp20);
@@ -508,7 +508,7 @@ static void fn_1_30A4(void) {
                     }
                     BoardPlayerPosSetV(i, &sp14);
                     BoardPlayerRotYSet(i, 0.0f);
-                    BoardPlayerMotionShiftSet(i, lbl_1_bss_52[GWSystem.player_curr][1], 0.0f, 10.0f, 0x40000001);
+                    BoardPlayerMotionShiftSet(i, lbl_1_bss_52[GWSystem.player_curr][1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
                     temp_r31->unk08 = i;
                 }
                 if (temp_r31->unk06 == 0) {
@@ -604,7 +604,7 @@ static void fn_1_38D8(void) {
     temp_r30 = HuPrcCurrentGet()->user_data;
     temp_r31 = temp_r30->unk08;
     temp_r30->unk08 = -1;
-    BoardPlayerMotionShiftSet(temp_r31, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(temp_r31, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     sp18 = lbl_1_bss_80[temp_r31];
     GWPlayer[temp_r31].space_curr = lbl_1_bss_B0;
     BoardPlayerPosGet(temp_r31, &sp24);
@@ -917,7 +917,7 @@ static void fn_1_4848(void) {
         }
         HuPrcVSleep();
     }
-    BoardPlayerMotionShiftSet(temp_r30, lbl_1_bss_52[temp_r30][0], 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(temp_r30, lbl_1_bss_52[temp_r30][0], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuAudPlayerVoicePlay(temp_r30, 0x128);
     for (i = 0; i < 65; i++) {
         BoardModelPosGet(lbl_1_bss_FA, &sp14);
@@ -927,7 +927,7 @@ static void fn_1_4848(void) {
         }
         HuPrcVSleep();
     }
-    BoardPlayerMotionShiftSet(temp_r30, 1, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(temp_r30, 1, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     BoardModelPosGet(lbl_1_bss_FA, &sp14);
     temp_f28 = VECDistanceXZ(&sp20, &sp14);
     if (temp_f28 > 200.0f) {

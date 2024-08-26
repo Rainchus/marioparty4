@@ -156,7 +156,7 @@ void fn_1_C7D4(void) {
     while (!BoardPlayerMotBlendCheck(lbl_1_bss_324)) {
         HuPrcVSleep();
     }
-    BoardPlayerMotionShiftSet(lbl_1_bss_324, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_324, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     var_f31 = 0.0f;
     temp_f30 = 8.0f;
     VECSubtract(&sp2C, &sp20, &sp38);
@@ -411,7 +411,7 @@ static void fn_1_D770(void) {
             var_f31 = -20.0f;
         }
         if (var_r29 == lbl_1_bss_314) {
-            BoardPlayerMotionShiftSet(lbl_1_bss_324, 7, 0.0f, 10.0f, 0);
+            BoardPlayerMotionShiftSet(lbl_1_bss_324, 7, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             break;
         }
         HuPrcVSleep();
@@ -424,7 +424,7 @@ static void fn_1_D770(void) {
     BoardWinKill();
     temp_r3 = HuPrcCreate(fn_1_E004, 0x2004, 0x1000, 0);
     temp_r3->user_data = NULL;
-    BoardPlayerMotionShiftSet(lbl_1_bss_324, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_324, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     var_f30 = 0.0f;
     temp_f29 = 8.0f;
     lbl_1_bss_308.z = sp18.z + 100.0f;
@@ -549,7 +549,7 @@ static void fn_1_E374(omObjData *arg0) {
         arg0->scale.x = sp14.x;
         arg0->scale.y = sp14.y;
         arg0->scale.z = sp14.z;
-        BoardPlayerMotionShiftSet(lbl_1_bss_324, 4, 0.0f, 5.0f, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_324, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
         arg0->func = fn_1_E4C0;
     }
 }

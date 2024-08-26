@@ -153,7 +153,7 @@ void fn_1_3044(void) {
 
 void fn_1_3430(void) {
     if (GWPlayer[lbl_1_bss_4C].bowser_suit == 0) {
-        BoardPlayerMotionShiftSet(lbl_1_bss_4C, lbl_1_bss_30[2], 0.0f, 8.0f, 0);
+        BoardPlayerMotionShiftSet(lbl_1_bss_4C, lbl_1_bss_30[2], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         HuPrcSleep(8);
 
         while (BoardPlayerMotionEndCheck(lbl_1_bss_4C) == 0) {
@@ -178,7 +178,7 @@ void fn_1_3514(void) {
     s32 var_r31;
 
     BoardPlayerPosGet(lbl_1_bss_4C, &sp2C);
-    BoardPlayerMotionShiftSet(lbl_1_bss_4C, 4, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_4C, 4, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     VECSubtract(&lbl_1_bss_38, &sp2C, &sp20);
     sp20.y = 0.0f;
     VECNormalize(&sp20, &sp20);
@@ -284,7 +284,7 @@ void fn_1_3514(void) {
             }
             HuPrcVSleep();
         } else {
-            BoardPlayerMotionShiftSet(lbl_1_bss_4C, 6, 0.0f, 8.0f, 0x40000001U);
+            BoardPlayerMotionShiftSet(lbl_1_bss_4C, 6, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
             break;
         }
     }

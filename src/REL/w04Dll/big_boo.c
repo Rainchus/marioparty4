@@ -391,7 +391,7 @@ static void fn_1_6CF8(void) {
     HuPrcSleep(0x78);
     for (i = 0; i < 3; i++) {
         BoardPlayerModelAttrReset(sp8[i], 0x40000001);
-        BoardPlayerMotionShiftSet(sp8[i], lbl_1_bss_114[sp8[i]][1], 0.0f, 5.0f, 0);
+        BoardPlayerMotionShiftSet(sp8[i], lbl_1_bss_114[sp8[i]][1], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     }
     BoardModelPosGet(lbl_1_bss_274, &sp10);
     var_r28 = 10;
@@ -407,7 +407,7 @@ static void fn_1_6CF8(void) {
         HuPrcVSleep();
     }
     for (i = 0; i < 3; i++) {
-        BoardPlayerMotionShiftSet(sp8[i], 1, 0.0f, 5.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(sp8[i], 1, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     }
 }
 
@@ -780,7 +780,7 @@ static void fn_1_7888(void) {
             var_f31 = -40.0f;
         }
         if (var_r28 == var_r27) {
-            BoardPlayerMotionShiftSet(lbl_1_bss_282, 7, 0.0f, 10.0f, 0);
+            BoardPlayerMotionShiftSet(lbl_1_bss_282, 7, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             break;
         }
         HuPrcVSleep();
@@ -977,7 +977,7 @@ static void fn_1_8A60(void) {
         }
     }
     temp_r27 = HuAudSStreamPlay(6);
-    BoardPlayerMotionShiftSet(lbl_1_bss_282, 7, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_282, 7, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     while (!BoardPlayerMotionEndCheck(lbl_1_bss_282)) {
         HuPrcVSleep();
     }
@@ -1008,7 +1008,7 @@ static void fn_1_98A0(void) {
 
     BoardModelPosGet(lbl_1_bss_274, &sp14);
     var_f30 = BoardModelRotYGet(lbl_1_bss_274);
-    BoardModelMotionShiftSet(lbl_1_bss_274, 2, 0.0f, 25.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_274, 2, 0.0f, 25.0f, HU3D_MOTATTR_LOOP);
     for (i = 0; i < 25; i++) {
         var_f30 += 7.2f;
         BoardModelRotYSet(lbl_1_bss_274, var_f30);

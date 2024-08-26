@@ -341,7 +341,7 @@ void fn_2_113AC(omObjData *object)
         }
         dist = VECDistanceXYZ(&object->trans, &temp_r27->trans);
         if (dist < 108.00001f) {
-            Hu3DMotionShiftSet(lbl_2_bss_118[temp_r29]->model[0], lbl_2_bss_118[temp_r29]->motion[6], 0, 10, 0);
+            Hu3DMotionShiftSet(lbl_2_bss_118[temp_r29]->model[0], lbl_2_bss_118[temp_r29]->motion[6], 0, 10, HU3D_MOTATTR_NONE);
             HuAudFXPlay(1288);
             if (temp_r30->unk18 == 0) {
                 HuAudFXPlay(9);

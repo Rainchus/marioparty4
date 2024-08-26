@@ -58,7 +58,7 @@ omObjData *PresentGuideCreate(void)
     for (var_r29 = 0; var_r29 < 3; var_r29++) {
         object->motion[var_r29] = Hu3DJointMotionFile(object->model[0], guideMotTbl[var_r29]);
     }
-    Hu3DMotionShiftSet(object->model[0], object->motion[work->motion = 0], 0.0f, 8.0f, 0x40000001);
+    Hu3DMotionShiftSet(object->model[0], object->motion[work->motion = 0], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     work->unk_50 = CharModelEffectNpcInit(object->model[0], object->motion[2], 1, 10);
     work->unk_54 = CharModelEffectNpcInit(object->model[0], object->motion[1], 0, 10);
     CharModelLayerSetAll(1);
@@ -204,7 +204,7 @@ static void UpdateGuide(omObjData *object)
     work->pos.x += work->posDelta.x;
     work->pos.z += work->posDelta.z;
     if (work->motion != motion) {
-        Hu3DMotionShiftSet(object->model[0], object->motion[work->motion = motion], 0.0f, 8.0f, 0x40000001);
+        Hu3DMotionShiftSet(object->model[0], object->motion[work->motion = motion], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     }
     omSetTra(object, work->pos.x, work->pos.y, work->pos.z);
     omSetRot(object, work->rot.x, work->rot.y, work->rot.z);
