@@ -331,7 +331,7 @@ static void CreatePlayerStart(void) {
         var_r29->trans.y = spC.y + 700.0f;
         var_r29->trans.z = spC.z + 100.0f;
         BoardPlayerPosSet(playerOrderOld[var_r30->unk00_field2], var_r29->trans.x, var_r29->trans.y, var_r29->trans.z);
-        BoardPlayerMotionShiftSet(playerOrderOld[var_r30->unk00_field2], 4, 10.0f, 1.0f, 0);
+        BoardPlayerMotionShiftSet(playerOrderOld[var_r30->unk00_field2], 4, 10.0f, 1.0f, HU3D_MOTATTR_NONE);
     }
     if (!_CheckFlag(FLAG_ID_MAKE(1, 11))) {
         BoardMusStart(0, 0xC, 0x7F, 0);
@@ -400,7 +400,7 @@ static void PlayerFall(omObjData *arg0, PlayerStartWork *arg1) {
     if (arg0->trans.y < spacePos.y) {
         arg0->trans.y = spacePos.y;
         arg1->unk02 = 0;
-        BoardPlayerMotionShiftSet(playerOrderOld[arg1->unk00_field2], 5, 0.0f, 4.0f, 0);
+        BoardPlayerMotionShiftSet(playerOrderOld[arg1->unk00_field2], 5, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
         arg1->unk01 = 0xC;
         arg1->unk00_field3 = 1;
     }
@@ -704,7 +704,7 @@ static void ExecStartRoll(void) {
         }
         BoardStatusShowSet(i, 1);
         SetPlayerStartState(playerOrderOld[i], 6);
-        BoardPlayerMotionShiftSet(i, 7, 0.0f, 8.0f, 0);
+        BoardPlayerMotionShiftSet(i, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         HuPrcSleep(8);
         while (!BoardPlayerMotionEndCheck(i)) {
             HuPrcVSleep();
@@ -734,7 +734,7 @@ static void ExecStartRoll(void) {
             HuPrcSleep(var_r23);
         }
         for (i = 0; i < 4; i++) {
-            BoardPlayerMotionShiftSet(i, 7, 0.0f, 8.0f, 0);
+            BoardPlayerMotionShiftSet(i, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         }
         HuAudFXPlay(0xF);
         while (1) {

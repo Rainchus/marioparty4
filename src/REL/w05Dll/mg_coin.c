@@ -449,7 +449,7 @@ void fn_1_AB24(void)
             var_f31 = -20.0f;
         }
         if (var_r29 == lbl_1_bss_C6) {
-            BoardPlayerMotionShiftSet(lbl_1_bss_C0, 7, 0.0f, 10.0f, 0);
+            BoardPlayerMotionShiftSet(lbl_1_bss_C0, 7, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             break;
         }
         else {

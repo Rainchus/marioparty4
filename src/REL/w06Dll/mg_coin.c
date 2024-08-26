@@ -208,7 +208,7 @@ static s32 fn_1_4BF8(s32 arg0) {
     BoardPlayerRotYSet(arg0, atan2d(-sp20.x, -sp20.z));
     BoardPlayerPosLerpStart(arg0, &sp2C, &sp38, 40);
     BoardModelPosGet(lbl_1_bss_C[5], &sp2C);
-    BoardModelMotionShiftSet(lbl_1_bss_C[5], lbl_1_data_1DA, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C[5], lbl_1_data_1DA, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardModelMotionSpeedSet(lbl_1_bss_C[5], 2.0f);
     while (GWPlayer[arg0].moving) {
         BoardPlayerPosGet(arg0, &sp38);
@@ -216,7 +216,7 @@ static s32 fn_1_4BF8(s32 arg0) {
         BoardModelRotYSet(lbl_1_bss_C[5], atan2d(sp20.x, sp20.z));
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_bss_C[5], 1, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C[5], 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardPlayerIdleSet(arg0);
     BoardPlayerRotYSet(arg0, -90.0f);
     BoardAudSeqPause(0, 1, 1000);
@@ -255,7 +255,7 @@ static void fn_1_4FB8(s32 arg0) {
     while (lbl_1_bss_54) {
         HuPrcVSleep();
     }
-    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     while (!BoardPlayerMotionEndCheck(arg0)) {
         HuPrcVSleep();
@@ -281,7 +281,7 @@ static void fn_1_519C(s32 arg0) {
     if (lbl_1_bss_8C == 0) {
         BoardPlayerPosLerpStart(arg0, &sp20, &sp14, 40);
         BoardModelPosGet(lbl_1_bss_C[5], &sp20);
-        BoardModelMotionShiftSet(lbl_1_bss_C[5], lbl_1_data_1DA, 0.0f, 8.0f, 0x40000001);
+        BoardModelMotionShiftSet(lbl_1_bss_C[5], lbl_1_data_1DA, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
         BoardModelMotionSpeedSet(lbl_1_bss_C[5], 2.0f);
         while (GWPlayer[arg0].moving) {
             BoardPlayerPosGet(arg0, &sp14);
@@ -289,7 +289,7 @@ static void fn_1_519C(s32 arg0) {
             BoardModelRotYSet(lbl_1_bss_C[5], atan2d(sp8.x, sp8.z));
             HuPrcVSleep();
         }
-        BoardModelMotionShiftSet(lbl_1_bss_C[5], 1, 0.0f, 8.0f, 0x40000001);
+        BoardModelMotionShiftSet(lbl_1_bss_C[5], 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     }
     BoardModelRotYSet(lbl_1_bss_C[5], 0.0f);
     BoardCameraMotionWait();
@@ -446,7 +446,7 @@ static void fn_1_59D0(s32 arg0) {
         return;
     }
     if (arg0 == 4) {
-        BoardModelMotionShiftSet(temp_r31->unk04, 2, 0.0f, 8.0f, 0);
+        BoardModelMotionShiftSet(temp_r31->unk04, 2, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         temp_r31->unk02 = 10;
         return;
     }

@@ -377,7 +377,7 @@ static void fn_1_15CC(s32 arg0) {
     }
     fn_1_2048(lbl_1_bss_33, 3);
     temp_r25 = HuAudSStreamPlay(2);
-    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(8);
     while (!BoardPlayerMotionEndCheck(arg0)) {
         HuPrcVSleep();
@@ -969,7 +969,7 @@ static void fn_1_3698(s8 arg0) {
     sp18.z = sp24.z;
     temp_f31 = sp18.x - sp24.x;
     if (ABS(temp_f31) < 1.0f) {
-        BoardModelMotionShiftSet(lbl_1_bss_C[4], 1, 0.0f, 8.0f, 0x40000001);
+        BoardModelMotionShiftSet(lbl_1_bss_C[4], 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
         lbl_1_bss_28->trans.y = 0.0f;
         return;
     }
@@ -982,7 +982,7 @@ static void fn_1_3698(s8 arg0) {
     VECSubtract(&sp18, &sp24, &spC);
     lbl_1_bss_28->trans.y = temp_f31 / var_f30;
     BoardModelRotYSet(lbl_1_bss_C[4], atan2d(spC.x, spC.z));
-    BoardModelMotionShiftSet(lbl_1_bss_C[4], temp_r31->unk08, 0.0f, 8.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_C[4], temp_r31->unk08, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
     BoardModelMotionSpeedSet(lbl_1_bss_C[4], 2.0f);
 }
 
@@ -1037,11 +1037,11 @@ static void fn_1_3974(omObjData *arg0) {
             fn_1_3560(0);
             temp_r31->unk06 = 0;
             BoardModelRotYSet(lbl_1_bss_C[4], 0.0f);
-            BoardModelMotionShiftSet(lbl_1_bss_C[4], 1, 0.0f, 10.0f, 0x40000001);
+            BoardModelMotionShiftSet(lbl_1_bss_C[4], 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             break;
         case 2:
             if (temp_r31->unk06++ == 0) {
-                BoardModelMotionShiftSet(lbl_1_bss_C[4], temp_r31->unk0A, 0.0f, 10.0f, 0x40000001);
+                BoardModelMotionShiftSet(lbl_1_bss_C[4], temp_r31->unk0A, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
                 break;
             }
             if (temp_r31->unk06 < 50) {
@@ -1053,7 +1053,7 @@ static void fn_1_3974(omObjData *arg0) {
         case 4:
             temp_r31->unk00_field3 = 0;
             lbl_1_bss_33 = temp_r31->unk01[temp_r31->unk00_field2];
-            BoardModelMotionShiftSet(lbl_1_bss_C[4], 1, 0.0f, 10.0f, 0x40000001);
+            BoardModelMotionShiftSet(lbl_1_bss_C[4], 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             fn_1_3560(0);
             break;
         case 5:

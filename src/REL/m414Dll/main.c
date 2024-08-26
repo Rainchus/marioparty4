@@ -1184,9 +1184,9 @@ void fn_1_42AC(void)
     }
     CharModelMotionSpeedSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], 1.0f);
     if (var_r30->unk_08) {
-        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[1], 60.0f, 5.0f, 0);
+        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[1], 60.0f, 5.0f, HU3D_MOTATTR_NONE);
     } else {
-        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[1], 0.0f, 5.0f, 0);
+        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[1], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     }
     HuPrcSleep(5);
     Hu3DModelAttrSet(var_r31->unk_12, 0x40000002);
@@ -1981,7 +1981,7 @@ void fn_1_79A8(void)
     CharModelMotionSpeedSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], 1.0f);
     for (var_r30 = 0; var_r30 < 4; var_r30++) {
         var_r31 = &lbl_1_bss_F0[var_r30];
-        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[1], 0.0f, 5.0f, 0);
+        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[1], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     }
     HuPrcSleep(5);
     for (var_r30 = 0; var_r30 < 4; var_r30++) {
@@ -2084,7 +2084,7 @@ void fn_1_7FC8(s32 arg0)
     HuAudFXPlay(lbl_1_data_8C[lbl_1_bss_978]);
     for (var_r29 = 0; var_r29 < 4; var_r29++) {
         var_r31 = &lbl_1_bss_F0[var_r29];
-        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[0], 0.0f, 5.0f, 0x40000001);
+        CharModelMotionShiftSet(lbl_1_data_30[GWPlayerCfg[var_r31->unk_44].character], var_r31->unk_14[0], 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     }
     HuPrcSleep(5);
     for (var_r29 = 0; var_r29 < 4; var_r29++) {

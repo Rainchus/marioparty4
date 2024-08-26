@@ -920,7 +920,7 @@ static void fn_1_276C(void) {
         BoardPlayerMotionStart(lbl_1_bss_6B4, lbl_1_bss_5CC[1], 0);
         BoardPlayerMotionTimeSet(lbl_1_bss_6B4, temp_f26);
     } else {
-        BoardPlayerMotionShiftSet(lbl_1_bss_6B4, lbl_1_bss_5CC[0], 0.0f, 10.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(lbl_1_bss_6B4, lbl_1_bss_5CC[0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     }
     fn_1_2F18();
 }
@@ -1257,7 +1257,7 @@ static s32 fn_1_48B4(void) {
     lbl_1_bss_6B2 = 0;
     lbl_1_bss_6B4 = GWSystem.player_curr;
     temp_r30 = GWPlayer[lbl_1_bss_6B4].space_curr;
-    BoardPlayerMotionShiftSet(lbl_1_bss_6B4, 1, 0.0f, 14.0f, 0x40000001);
+    BoardPlayerMotionShiftSet(lbl_1_bss_6B4, 1, 0.0f, 14.0f, HU3D_MOTATTR_LOOP);
     BoardWinCreateChoice(0, MAKE_MESSID(13, 0), -1, 0);
     if (GWPlayer[lbl_1_bss_6B4].com) {
         fn_1_9D00(lbl_1_bss_6B4);
@@ -1699,7 +1699,7 @@ static void fn_1_6194(Bss18Work *arg0, omObjData *arg1) {
     arg1->scale.x = sp2C.x;
     arg1->scale.y = sp2C.y;
     arg1->scale.z = sp2C.z;
-    BoardPlayerMotionShiftSet(GWSystem.player_curr, 4, 15.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(GWSystem.player_curr, 4, 15.0f, 5.0f, HU3D_MOTATTR_NONE);
     arg0->unk00_field1 = 2;
     arg0->unk01 = 0;
 }
@@ -1731,7 +1731,7 @@ static void fn_1_63F0(Bss18Work *arg0, omObjData *arg1) {
     }
     if (arg0->unk01 == 25) {
         BoardPlayerPosSet(GWSystem.player_curr, arg1->scale.x, arg1->scale.y, arg1->scale.z);
-        BoardPlayerMotionShiftSet(GWSystem.player_curr, 5, 0.0f, 8.0f, 0);
+        BoardPlayerMotionShiftSet(GWSystem.player_curr, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     }
     if (arg0->unk01 < 25) {
         OSu8tof32(&arg0->unk01, &temp_f29);
@@ -1778,7 +1778,7 @@ static void fn_1_6A14(Bss18Work *arg0, omObjData *arg1) {
     arg1->scale.x = sp20.x;
     arg1->scale.y = sp20.y;
     arg1->scale.z = sp20.z;
-    BoardPlayerMotionShiftSet(GWSystem.player_curr, 4, 15.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(GWSystem.player_curr, 4, 15.0f, 5.0f, HU3D_MOTATTR_NONE);
     BoardPlayerRotYSet(GWSystem.player_curr, atan2d(sp8.x, sp8.z));
     arg0->unk00_field1 = 3;
     arg0->unk01 = 0;
@@ -1804,7 +1804,7 @@ static void fn_1_6BC0(Bss18Work *arg0, omObjData *arg1) {
     }
     if (arg0->unk01 == 25) {
         BoardPlayerPosSet(GWSystem.player_curr, arg1->scale.x, arg1->scale.y, arg1->scale.z);
-        BoardPlayerMotionShiftSet(GWSystem.player_curr, 5, 0.0f, 8.0f, 0);
+        BoardPlayerMotionShiftSet(GWSystem.player_curr, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     }
     if (arg0->unk01 < 25) {
         OSu8tof32(&arg0->unk01, &temp_f29);

@@ -122,7 +122,7 @@ void fn_1_1618(void) {
         BoardWinWait();
         BoardWinKill();
     }
-    BoardPlayerMotionShiftSet(temp_r31, 1, 0.0f, 10.0f, 0x40000001);
+    BoardPlayerMotionShiftSet(temp_r31, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardCameraViewSet(1);
     BoardCameraMotionWait();
     BoardRollDispSet(1);

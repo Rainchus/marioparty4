@@ -166,7 +166,7 @@ static void MushroomMain(void) {
                 var_r27 = MAKE_MESSID(5, 2);
             }
             
-            BoardPlayerMotionShiftSet(curPlayer, 0xC, 0.0f, 4.0f, 0);
+            BoardPlayerMotionShiftSet(curPlayer, 0xC, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
             HuPrcSleep(4);
             BoardWinCreate(0, var_r27, -1);
             BoardWinWait();

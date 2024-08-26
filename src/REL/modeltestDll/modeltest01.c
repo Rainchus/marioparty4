@@ -446,9 +446,9 @@ void fn_1_5DA8(void)
 				fn_1_69C8(temp_r28, sp16[0], 0);
 				fn_1_69C8(temp_r28, sp16[1], 1);
 				fn_1_69C8(temp_r28, sp16[2], 2);
-				Hu3DMotionShiftSet(sp16[0], sp40[0][0], 0, 16, 0x40000001);
-				Hu3DMotionShiftSet(sp16[1], sp40[1][0], 0, 16, 0x40000001);
-				Hu3DMotionShiftSet(sp16[2], sp40[2][0], 0, 16, 0x40000001);
+				Hu3DMotionShiftSet(sp16[0], sp40[0][0], 0, 16, HU3D_MOTATTR_LOOP);
+				Hu3DMotionShiftSet(sp16[1], sp40[1][0], 0, 16, HU3D_MOTATTR_LOOP);
+				Hu3DMotionShiftSet(sp16[2], sp40[2][0], 0, 16, HU3D_MOTATTR_LOOP);
 			}
 			temp_r24 = 0;
 		}

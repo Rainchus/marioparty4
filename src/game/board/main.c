@@ -1322,7 +1322,7 @@ static void ExecBoardMG(omObjData *object)
 		return;
 	}
 	if(GWPlayer[GWSystem.player_curr].moving == 0) {
-		BoardPlayerMotionShiftSet(GWSystem.player_curr, 1, 0.0f, 10.0f, 0x40000001);
+		BoardPlayerMotionShiftSet(GWSystem.player_curr, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
 		if(!_CheckFlag(FLAG_ID_MAKE(1, 21))) {
 			_SetFlag(FLAG_ID_MAKE(1, 20));
 			object->func = KillBoardMG;

@@ -253,7 +253,7 @@ static void ExecBooHouse(void)
     BoardPlayerMoveBetween(currPlayer, var_r30, temp_r29);
     BoardPlayerIdleSet(currPlayer);
     BoardMusStart(1, 1, 0x7F, 0);
-    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[0], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardWinCreate(2, hostMesTbl[GWBoardGet()][0], BoardWinPortraitGet());
     BoardWinWait();
 
@@ -295,7 +295,7 @@ repeatWindowView:
         BoardStatusShowSet(currPlayer, 0);
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[1], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     CloseBooHouse();
     BoardCameraViewSet(1);
     BoardCameraRotSet(0.0f, 0.0f);
@@ -409,19 +409,19 @@ static void OpenBooHouse(void)
     while (BoardModelMotionTimeGet(houseMdl[0]) < 90.0f) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(houseMdl[0], houseShowMot, 0.0f, 10.0f, 0x40000001);
-    BoardModelMotionShiftSet(houseMdl[1], houseHideMot, 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(houseMdl[0], houseShowMot, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
+    BoardModelMotionShiftSet(houseMdl[1], houseHideMot, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardModelHookObjReset(houseMdl[0], "yoko02");
     SetBooBallPos();
-    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[2], 0.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[2], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 }
 
 static void CloseBooHouse(void)
 {
     BoardModelPosSet(ballMdl, 0.0f, 0.0f, 0.0f);
     BoardModelHookSet(houseMdl[0], "yoko02", ballMdl);
-    BoardModelMotionShiftSet(houseMdl[1], 0, 90.0f, 10.0f, 0);
-    BoardModelMotionShiftSet(houseMdl[0], 0, 90.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(houseMdl[1], 0, 90.0f, 10.0f, HU3D_MOTATTR_NONE);
+    BoardModelMotionShiftSet(houseMdl[0], 0, 90.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(0xA);
 
     while (BoardModelMotionShiftIDGet(houseMdl[0]) != -1) {
@@ -697,7 +697,7 @@ void ApplyCoinSteal(s16 arg0, s16 arg1)
     BoardWinKill();
     BoardStatusShowSetForce(currPlayer);
     BoardStatusShowSet(currPlayer, 1);
-    BoardPlayerMotionShiftSet(currPlayer, 7, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(currPlayer, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
 
     for (var_r30 = 0; var_r30 < arg0; var_r30++) {
         BoardPlayerCoinsAdd(currPlayer, 1);
@@ -721,7 +721,7 @@ void ApplyStarSteal(void)
     BoardAudSeqPause(1, 1, 0x3E8);
     HuPrcSleep(0x17);
     BoardPlayerVoiceEnableSet(currPlayer, 7, 0);
-    BoardPlayerMotionShiftSet(currPlayer, 7, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(currPlayer, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuAudFXPlay(boardStarSndTbl[GWPlayer[currPlayer].character]);
     BoardPlayerStarsAdd(currPlayer, 1);
     HuAudFXPlay(8);
@@ -742,7 +742,7 @@ void ApplyBooLight(void)
     BoardWinCreate(2, MAKE_MESSID(7, 11), 3);
     BoardWinWait();
     BoardWinKill();
-    BoardPlayerMotionShiftSet(currPlayer, 8, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(currPlayer, 8, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     while (BoardPlayerMotionEndCheck(currPlayer) == 0) {
         HuPrcVSleep();
     }
@@ -860,13 +860,13 @@ void BoardBooHouseTutorialExec(void)
     while (BoardModelMotionEndCheck(BoardBooHouseHostGet()) == 0) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[0], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[0], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardTutorialHookExec(0x1C, 0);
-    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[1], 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(BoardBooHouseHostGet(), hostMot[1], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     BoardModelPosSet(ballMdl, 0.0f, 0.0f, 0.0f);
     BoardModelHookSet(houseMdl[0], "yoko02", ballMdl);
-    BoardModelMotionShiftSet(houseMdl[1], 0, 90.0f, 10.0f, 0);
-    BoardModelMotionShiftSet(houseMdl[0], 0, 90.0f, 10.0f, 0);
+    BoardModelMotionShiftSet(houseMdl[1], 0, 90.0f, 10.0f, HU3D_MOTATTR_NONE);
+    BoardModelMotionShiftSet(houseMdl[0], 0, 90.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(0xA);
     while (BoardModelMotionShiftIDGet(houseMdl[0]) != -1) {
         HuPrcVSleep();

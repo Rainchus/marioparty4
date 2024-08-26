@@ -220,12 +220,12 @@ static void ExecBowserMain(void)
 	BoardCameraViewSet(3);
 	BoardFilterFadeInit(30, 160);
 	BoardCameraMotionWait();
-	BoardPlayerMotionShiftSet(eventPlayer, jumpMot, 0.0f, 10.0f, 0x40000001);
+	BoardPlayerMotionShiftSet(eventPlayer, jumpMot, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
 	BoardPlayerMotionSpeedSet(eventPlayer, 2.0f);
 	HuPrcSleep(120);
 	ConfigBowserEvent();
 	HuAudFXPlay(scareFxTbl[GWPlayer[eventPlayer].character]);
-	BoardPlayerMotionShiftSet(eventPlayer, scareMot, 0.0f, 10.0f, 0);
+	BoardPlayerMotionShiftSet(eventPlayer, scareMot, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	CreateMiniBowser();
 	while(!CheckMiniBowser()) {
 		HuPrcVSleep();
@@ -241,7 +241,7 @@ static void ExecBowserMain(void)
 		HuPrcSleep(30);
 	}
 	ExecBowserSpecial();
-	BoardModelMotionShiftSet(bowserMdl, 3, 0.0f, 8.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 3, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
 	HuPrcSleep(8);
 	HuAudFXPlay(58);
 	BoardWinCreate(2, MAKE_MESSID(3, 11), 5);
@@ -288,7 +288,7 @@ static void ExecMGReturn(void)
 	DoMGReturnEffect();
 	GWSystem.player_curr = player;
 	BoardStatusShowSetAll(1);
-	BoardModelMotionShiftSet(bowserMdl, 3, 0.0f, 8.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 3, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
 	HuPrcSleep(8);
 	HuAudFXPlay(58);
 	BoardWinCreate(2, MAKE_MESSID(3, 11), 5);
@@ -357,7 +357,7 @@ static void ExecBowserSpecial(void)
 	BoardWinWait();
 	BoardWinKill();
 	HuAudFXPlay(857);
-	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	for(i=0; i<4; i++) {
 		omVibrate(i, 12, 12, 0);
 	}
@@ -376,7 +376,7 @@ static void ExecBowserSpecial(void)
 	while(!BoardModelMotionEndCheck(bowserMdl)) {
 		HuPrcVSleep();
 	}
-	BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	StopBowserEvent();
 	switch(GWSystem.bowser_event) {
 		case 0:
@@ -422,7 +422,7 @@ static void ExecBowserGame(void)
 	BoardWinCreate(2, mess, 5);
 	BoardWinWait();
 	BoardWinKill();
-	BoardModelMotionShiftSet(bowserMdl, 5, 0.0f, 8.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
 	HuPrcSleep(8);
 	while(BoardModelMotionTimeGet(bowserMdl) < 80.0f) {
 		HuPrcVSleep();
@@ -545,7 +545,7 @@ static void ExecBowserShuffle(void)
 		player++;
 	}
 	HuAudFXPlay(857);
-	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	while(!BoardModelMotionEndCheck(bowserMdl)) {
 		HuPrcVSleep();
 	}
@@ -597,7 +597,7 @@ static void ExecBowserRevo(void)
 	}
 	coin /= 4;
 	HuAudFXPlay(857);
-	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	while(!BoardModelMotionEndCheck(bowserMdl)) {
 		HuPrcVSleep();
 	}
@@ -622,11 +622,11 @@ static void ExecBowserRevo(void)
 
 static void ExecBowserSuit(void)
 {
-	BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	BoardWinCreate(2, MAKE_MESSID(3, 18), 5);
 	BoardWinWait();
 	HuAudFXPlay(857);
-	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, 0);
+	BoardModelMotionShiftSet(bowserMdl, 4, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
 	HuPrcSleep(10);
 	StartSuitGive();
 	while(!CheckSuitGive()) {
@@ -826,7 +826,7 @@ static void ExecBowserObj(omObjData *object)
 	}
 	if(work->mot_active && BoardModelMotionEndCheck(bowserMdl)) {
 		work->mot_active = 0;
-		BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, 0x40000001);
+		BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
 	}
 	switch(work->state) {
 		case 1:
@@ -880,7 +880,7 @@ static void ExecBowserFall(BowserWork *work, omObjData *object)
 	}
 	if(BoardModelMotionEndCheck(bowserMdl)) {
 		work->state = 0;
-		BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, 0x40000001);
+		BoardModelMotionShiftSet(bowserMdl, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
 		return;
 	}
 	if(!work->fall_done && !(BoardModelMotionTimeGet(bowserMdl) < 140.0f)) {
@@ -933,7 +933,7 @@ static void ExecBowserJump(BowserWork *work, omObjData *object)
 {
 	switch(work->jump_state) {
 		case 0:
-			BoardModelMotionShiftSet(bowserMdl, 2, 0.0f, 4.0f, 0);
+			BoardModelMotionShiftSet(bowserMdl, 2, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 			work->jump_state = 1;
 			break;
 			
@@ -1532,9 +1532,9 @@ static void MiniBowserTake(void)
 		omVibrate(eventPlayer, 12, 6, 6);
 	}
 	if(coin_inc < 0) {
-		BoardPlayerMotionShiftSet(eventPlayer, 13, 0.0f, 4.0f, 0);
+		BoardPlayerMotionShiftSet(eventPlayer, 13, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 	} else {
-		BoardPlayerMotionShiftSet(eventPlayer, 12, 0.0f, 4.0f, 0);
+		BoardPlayerMotionShiftSet(eventPlayer, 12, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 	}
 	for(i=0; i<steal; i++) {
 		BoardPlayerCoinsAdd(eventPlayer, coin_inc);
@@ -1607,9 +1607,9 @@ static void MiniBowserTakeAll(void)
 	}
 	for(i=0; i<4; i++) {
 		if(coin_inc < 0) {
-			BoardPlayerMotionShiftSet(i, 13, 0.0f, 4.0f, 0);
+			BoardPlayerMotionShiftSet(i, 13, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 		} else {
-			BoardPlayerMotionShiftSet(i, 12, 0.0f, 4.0f, 0);
+			BoardPlayerMotionShiftSet(i, 12, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
 		}
 	}
 	if(steal >= 20) {
@@ -1778,9 +1778,9 @@ static void SetMiniBowserMotion(s32 mot, u8 end, s32 pause)
 	work = OM_GET_WORK_PTR(miniBowserBalloonObj, MiniBowserBalloonWork);
 	models = work->models;
 	if(pause) {
-		attr = 0x40000001;
+		attr = HU3D_MOTATTR_LOOP;
 	} else {
-		attr = 0;
+		attr = HU3D_MOTATTR_NONE;
 	}
 	if(end) {
 		OSu8tof32(&end, &shift_end);

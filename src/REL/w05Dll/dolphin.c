@@ -180,7 +180,7 @@ void fn_1_4034(s32 arg0)
     }
     Hu3DModelObjPosGet(BoardModelIDGet(lbl_1_data_118), lbl_1_data_22C[var_r27], &sp34);
     temp_f25 = (180.0 * (atan2((sp34.x - sp40.x), (sp34.z - sp40.z)) / M_PI));
-    BoardModelMotionShiftSet(lbl_1_bss_64, 2, 0.0f, 10.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_64, 2, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
 
     while (fn_1_1208(lbl_1_bss_64, temp_f25, 10.0f) == 0) {
         HuPrcVSleep();
@@ -244,7 +244,7 @@ loop_37:
     }
 
     fn_1_66C0(1, &sp40);
-    BoardModelMotionShiftSet(lbl_1_bss_64, 5, 0.0f, 5.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_bss_64, 5, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     var_r30 = 0;
     var_r31 = 0;
 

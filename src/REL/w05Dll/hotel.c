@@ -108,7 +108,7 @@ void fn_1_155C(void) {
     while (fn_1_1208(lbl_1_bss_14[4], temp_f31, 10.0f) == 0) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     var_r30 = BoardPlayerCoinsGet(lbl_1_bss_28);
     sprintf(sp18, "%d", lbl_1_bss_0->unk_00);
     if (var_r30 > 0) {
@@ -188,7 +188,7 @@ void fn_1_155C(void) {
     while (fn_1_1208(lbl_1_bss_14[4], 0.0f, 15.0f) == 0) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     BoardCameraViewSet(1);
 
     while (BoardPlayerMotBlendCheck(lbl_1_bss_28) == 0) {
@@ -271,7 +271,7 @@ void fn_1_1E44(void) {
     while (fn_1_1208(lbl_1_bss_14[4], temp_f31, 10.0f) == 0) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, 0x40000001);
+    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     temp_f31 = 180.0 * (atan2((sp2C.x - sp50.x), (sp2C.z - sp50.z)) / M_PI);
     BoardPlayerMotBlendSet(lbl_1_bss_28, temp_f31, 0xF);
 
@@ -377,17 +377,17 @@ void fn_1_1E44(void) {
         BoardWinWait();
         BoardWinKill();
         HuPrcSleep(0x1E);
-        BoardModelMotionShiftSet(lbl_1_bss_14[4], sp8[3], 0.0f, 5.0f, 0U);
+        BoardModelMotionShiftSet(lbl_1_bss_14[4], sp8[3], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
         
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
-            BoardPlayerMotionShiftSet(var_r31, sp1C[var_r31][1], 0.0f, 5.0f, 0);
+            BoardPlayerMotionShiftSet(var_r31, sp1C[var_r31][1], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
             BoardPlayerVoiceEnableSet(var_r31, 6, 1);
         }
         HuPrcSleep(0x23);
-        BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, 0x40000001);
+        BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
         
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
-            BoardPlayerMotionShiftSet(var_r31, 1, 0.0f, 5.0f, 0x40000001);
+            BoardPlayerMotionShiftSet(var_r31, 1, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
         }
     }
     BoardCameraViewSet(1);
@@ -413,7 +413,7 @@ void fn_1_1E44(void) {
     while (fn_1_1208(lbl_1_bss_14[4], 0.0f, 15.0f) == 0) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, 0x40000001U);
+    BoardModelMotionShiftSet(lbl_1_bss_14[4], 0, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         BoardModelMotionKill(lbl_1_bss_14[4], sp8[var_r31]);

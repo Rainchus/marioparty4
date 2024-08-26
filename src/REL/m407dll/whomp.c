@@ -447,7 +447,7 @@ void fn_1_34A4(omObjData *arg0)
     temp_r30->unk_2C++;
 
     if (Hu3DMotionEndCheck(arg0->model[0]) != 0) {
-        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[5], 0.0f, 10.0f, 0x40000001);
+        Hu3DMotionShiftSet(arg0->model[0], arg0->motion[5], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
         switch (temp_r30->unk_28) {
             case 0:
                 fn_1_290C(arg0, 0);
@@ -464,7 +464,7 @@ void fn_1_36D0(omObjData *arg0)
     unkDominationData7 *sp8;
 
     sp8 = arg0->data;
-    Hu3DMotionShiftSet(arg0->model[0], arg0->motion[2], 0.0f, 10.0f, 0x40000001);
+    Hu3DMotionShiftSet(arg0->model[0], arg0->motion[2], 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
     Hu3DMotionSet(arg0->model[1], arg0->motion[0]);
     Hu3DModelAttrSet(arg0->model[1], 0x40000001);
     Hu3DModelAttrReset(arg0->model[2], 1);

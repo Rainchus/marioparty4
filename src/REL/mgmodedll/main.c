@@ -2505,13 +2505,13 @@ void fn_1_25E74(s32 arg0) {
 void fn_1_25EC8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     switch (arg3) {
         case 0:
-            Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, 0);
+            Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, HU3D_MOTATTR_NONE);
             break;
         case 1:
-            Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, 0x40000001);
+            Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, HU3D_MOTATTR_LOOP);
             break;
         case 2:
-            Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, 0x40000002);
+            Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, HU3D_MOTATTR_PAUSE);
             break;
     }
 }

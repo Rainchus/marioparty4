@@ -1061,7 +1061,7 @@ void fn_1_3B44(omObjData* object) {
         CharModelMotionShiftSet(temp_r31->unk1, object->motion[temp_r31->unk18], 0.0f, 8.0f, var_r28);
         temp_r31->unk28 = CharModelMotionMaxTimeGet(temp_r31->unk1);
         if (var_r25 != 0) {
-            Hu3DMotionShiftSet(object->model[2], object->model[var_r25], 0.0f, 8.0f, 0);
+            Hu3DMotionShiftSet(object->model[2], object->model[var_r25], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         }
     }
     if ((Hu3DModelAttrGet(object->model[2]) & 1) != 0) {

@@ -1642,7 +1642,7 @@ void fn_1_6268(void) {
                     Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
                 }
             } else {
-                Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 8.0f, 0x40000001);
+                Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                 Hu3DMotionShiftSpeedSet(temp_r31->unk00, 1.0f);
             }
         } else {
@@ -1661,39 +1661,39 @@ void fn_1_6268(void) {
                     if (temp_r31->unk24 != 2) {
                         temp_r31->unk24 = 2;
                         if (fn_1_520(temp_r31->unk18) == FALSE) {
-                            CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[2], 0.0f, 8.0f, 0x40000001);
+                            CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[2], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                             if (lbl_1_bss_6DC < 5) {
                                 Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
                                 Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
                             }
                         } else {
-                            Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[2], 0.0f, 8.0f, 0x40000001);
+                            Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[2], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                             Hu3DMotionShiftSpeedSet(temp_r31->unk00, 2.0f);
                         }
                     }
                 } else if (temp_r31->unk24 != 1) {
                     temp_r31->unk24 = 1;
                     if (fn_1_520(temp_r31->unk18) == FALSE) {
-                        CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[1], 0.0f, 8.0f, 0x40000001);
+                        CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[1], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                         if (lbl_1_bss_6DC < 5) {
                             Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
                             Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
                         }
                     } else {
-                        Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[1], 0.0f, 8.0f, 0x40000001);
+                        Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[1], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                         Hu3DMotionShiftSpeedSet(temp_r31->unk00, 2.0f);
                     }
                 }
             } else if (temp_r31->unk24 != 0) {
                 temp_r31->unk24 = 0;
                 if (fn_1_520(temp_r31->unk18) == FALSE) {
-                    CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 0.0f, 0x40000001);
+                    CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 0.0f, HU3D_MOTATTR_LOOP);
                     if (lbl_1_bss_6DC < 5) {
                         Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
                         Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
                     }
                 } else {
-                    Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 0.0f, 0x40000001);
+                    Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 0.0f, HU3D_MOTATTR_LOOP);
                     Hu3DMotionShiftSpeedSet(temp_r31->unk00, 1.0f);
                 }
             }
@@ -1718,9 +1718,9 @@ void fn_1_6268(void) {
 block_exit_loop:
     lbl_1_bss_6DC = 6;
     if (fn_1_520(temp_r31->unk18) == FALSE) {
-        CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 2.0f, 0x40000001);
+        CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 2.0f, HU3D_MOTATTR_LOOP);
     } else {
-        Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 0.0f, 0x40000001);
+        Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 0.0f, HU3D_MOTATTR_LOOP);
         Hu3DMotionShiftSpeedSet(temp_r31->unk00, 1.0f);
     }
     var_f19 = 10.0f;
@@ -1747,7 +1747,7 @@ block_exit_loop:
     if (lbl_1_bss_588->unk30 > lbl_1_bss_588[1].unk30) {
         var_r26 = 0;
     }
-    var_r24 = 0;
+    var_r24 = HU3D_MOTATTR_NONE;
     if (temp_r31->unk18 != 0) {
         if (fn_1_520(1) == FALSE) {
             if (var_r26 != -1) {
@@ -1782,10 +1782,10 @@ block_exit_loop:
     } else {
         if (var_r28 == 6) {
             var_r28 = 5;
-            var_r24 = 0x40000001;
+            var_r24 = HU3D_MOTATTR_LOOP;
         } else {
             var_r28 = 6;
-            var_r24 = 0;
+            var_r24 = HU3D_MOTATTR_NONE;
         }
         Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[var_r28], 0.0f, 8.0f, var_r24);
         if (var_r28 == 6) {
@@ -1951,10 +1951,10 @@ void fn_1_8320(void) {
     for (i = 0; i < 2; i++) {
         temp_r31 = &lbl_1_bss_588[i];
         if (fn_1_520(temp_r31->unk18) == FALSE) {
-            CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 8.0f, 0x40000001);
+            CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
             Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
         } else {
-            Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 8.0f, 0x40000001);
+            Hu3DMotionShiftSet(temp_r31->unk00, temp_r31->unk08[0], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
         }
     }
 }

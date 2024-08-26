@@ -118,7 +118,7 @@ void fn_1_7BB0(void) {
         temp_r27 = BoardSpaceFlagPosGet(0, lbl_1_data_434[i][var_r28], &sp8);
         BoardModelPosSetV(lbl_1_bss_D0[i], &sp8);
         BoardModelRotYSet(lbl_1_bss_D0[i], lbl_1_data_41C[i][var_r28]);
-        BoardModelMotionShiftSet(lbl_1_bss_D0[i], 0, 60.0f * var_f29, 0.0f, 0);
+        BoardModelMotionShiftSet(lbl_1_bss_D0[i], 0, 60.0f * var_f29, 0.0f, HU3D_MOTATTR_NONE);
         HuPrcSleep(2);
         BoardModelMotionSpeedSet(lbl_1_bss_D0[i], 0.0f);
         lbl_1_bss_D6[i][var_r28] = temp_r27;
@@ -157,7 +157,7 @@ void fn_1_7FA4(void) {
     temp_r29 = BoardSpaceFlagPosGet(0, lbl_1_data_434[var_r31][temp_r30], &sp8);
     BoardModelPosSetV(lbl_1_bss_D0[var_r31], &sp8);
     BoardModelRotYSet(lbl_1_bss_D0[var_r31], lbl_1_data_41C[var_r31][temp_r30]);
-    BoardModelMotionShiftSet(lbl_1_bss_D0[var_r31], 0, 60.0f * temp_f31, 0.0f, 0);
+    BoardModelMotionShiftSet(lbl_1_bss_D0[var_r31], 0, 60.0f * temp_f31, 0.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(2);
     BoardModelMotionSpeedSet(lbl_1_bss_D0[var_r31], 0.0f);
     lbl_1_bss_D6[var_r31][temp_r30] = temp_r29;
@@ -249,7 +249,7 @@ static s32 fn_1_8490(s32 arg0, s8 arg1) {
                 BoardPlayerIdleSet(arg0);
                 HuPrcSleep(30);
             } else {
-                BoardPlayerMotionShiftSet(arg0, lbl_1_data_418, 0.0f, 6.0f, 0);
+                BoardPlayerMotionShiftSet(arg0, lbl_1_data_418, 0.0f, 6.0f, HU3D_MOTATTR_NONE);
                 BoardPlayerMotionSpeedSet(arg0, 1.5f);
                 HuPrcSleep(60);
             }
@@ -262,7 +262,7 @@ static s32 fn_1_8490(s32 arg0, s8 arg1) {
                 BoardPlayerIdleSet(arg0);
                 HuPrcSleep(30);
             } else {
-                BoardPlayerMotionShiftSet(arg0, lbl_1_data_418, 0.0f, 6.0f, 0x40000001);
+                BoardPlayerMotionShiftSet(arg0, lbl_1_data_418, 0.0f, 6.0f, HU3D_MOTATTR_LOOP);
                 BoardPlayerMotionSpeedSet(arg0, 3.0f);
                 HuPrcSleep(60);
             }

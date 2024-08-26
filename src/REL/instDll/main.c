@@ -519,7 +519,7 @@ static void fn_1_17E4(void)
 				CharModelMotionSet(char_tbl[j], mot_tbl[j][2]);
 			}
 			if(time == 30) {
-				CharModelMotionShiftSet(char_tbl[j], mot_tbl[j][0], 0, 10, 0x40000001);
+				CharModelMotionShiftSet(char_tbl[j], mot_tbl[j][0], 0, 10, HU3D_MOTATTR_LOOP);
 			}
 			if(time <= 20) {
 				Hu3DModelPosSet(player_mdl[j], player_pos[j].x, player_pos[j].y+(1000.0*cos(M_PI*(time*4.5f)/180.0)), player_pos[j].z);
@@ -635,7 +635,7 @@ static void fn_1_220C(void)
 		Hu3DModelRotSet(model, 0.0f, 90-((i/10.0f)*70), 0);
 		HuPrcVSleep();
 	}
-	Hu3DMotionShiftSet(model, motion[0], 0, 10, 0x40000001);
+	Hu3DMotionShiftSet(model, motion[0], 0, 10, HU3D_MOTATTR_LOOP);
 	model_ptr = &Hu3DData[model];
 	while(1) {
 		fontcolor = FONT_COLOR_RED;

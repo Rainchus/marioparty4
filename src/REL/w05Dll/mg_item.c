@@ -79,7 +79,7 @@ void fn_1_6B7C(void)
     BoardModelMotionStartEndSet(lbl_1_bss_14[0], 0x1E, 0x5A);
     BoardModelAttrReset(lbl_1_bss_14[0], 0x40000002);
     BoardMusStart(1, 0x22, 0x7F, 0);
-    BoardPlayerMotionShiftSet(lbl_1_bss_B6, lbl_1_bss_9E[0], 0.0f, 30.0f, 0x40000001);
+    BoardPlayerMotionShiftSet(lbl_1_bss_B6, lbl_1_bss_9E[0], 0.0f, 30.0f, HU3D_MOTATTR_LOOP);
     HuPrcSleep(0x1E);
     BoardModelVisibilitySet(lbl_1_bss_A2, 1);
     BoardModelHookSet(BoardPlayerModelGet(lbl_1_bss_B6), "a-itemhook-r", lbl_1_bss_A2);
@@ -348,7 +348,7 @@ void fn_1_799C(void)
     BoardPlayerItemAdd(lbl_1_bss_B6, lbl_1_bss_B0[temp_r31]);
     omVibrate(lbl_1_bss_B6, 0xC, 6, 6);
     temp_r27 = HuAudSStreamPlay(2);
-    BoardPlayerMotionShiftSet(lbl_1_bss_B6, 7, 0.0f, 5.0f, 0);
+    BoardPlayerMotionShiftSet(lbl_1_bss_B6, 7, 0.0f, 5.0f, HU3D_MOTATTR_NONE);
 
     while (BoardPlayerMotionEndCheck(lbl_1_bss_B6) == 0) {
         HuPrcVSleep();
@@ -520,7 +520,7 @@ void fn_1_8668(omObjData *arg0)
 
     if (arg0->work[0] == 0) {
         BoardModelHookReset(BoardPlayerModelGet(lbl_1_bss_B6));
-        BoardPlayerMotionShiftSet(lbl_1_bss_B6, 1, 0.0f, 5.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(lbl_1_bss_B6, 1, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
         arg0->func = NULL;
         lbl_1_bss_8C->func = fn_1_7928;
         BoardModelKill(lbl_1_bss_A2);

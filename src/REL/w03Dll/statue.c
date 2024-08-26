@@ -278,7 +278,7 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
 
     HuAudFXPlay(var_r29);
     BoardPlayerVoiceEnableSet(arg0, lbl_1_bss_6A, 0);
-    BoardPlayerMotionShiftSet(arg0, lbl_1_bss_6A, 0.0f, 8.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, lbl_1_bss_6A, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(9);
 
     while (BoardPlayerMotionEndCheck(arg0) == 0) {
@@ -289,7 +289,7 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
     HuPrcSleep(60);
     
     if (arg1 != 0) {
-        BoardPlayerMotionShiftSet(arg0, lbl_1_bss_68, 0.0f, 8.0f, 0);
+        BoardPlayerMotionShiftSet(arg0, lbl_1_bss_68, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
         HuPrcSleep(9);
         while (BoardPlayerMotionEndCheck(arg0) == 0) {
             HuPrcVSleep();
@@ -306,7 +306,7 @@ void fn_1_19DC(s32 arg0, s32 arg1) {
     }
 
     BoardAudSeqPause(0, 1, 1000);
-    BoardPlayerMotionShiftSet(arg0, lbl_1_data_280, 0.0f, 10.0f, 0);
+    BoardPlayerMotionShiftSet(arg0, lbl_1_data_280, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(11);
 
     while (BoardPlayerMotionEndCheck(arg0) == 0) {

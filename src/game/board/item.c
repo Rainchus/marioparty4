@@ -944,7 +944,7 @@ static void ExecItemPipe(void) {
             }
             HuPrcVSleep();
         }
-        BoardPlayerMotionShiftSet(sp2C[1], 6, 0.0f, 8.0f, 0x40000001);
+        BoardPlayerMotionShiftSet(sp2C[1], 6, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
         BoardModelVoiceEnableSet(BoardPlayerModelGet(sp2C[1]), 6, 0);
         CharModelLayerSetAll(2);
         BoardPlayerIdleSet(sp2C[0]);
@@ -1480,7 +1480,7 @@ static void ExecItemWhistle(void) {
         }
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(temp_r28, temp_r20, 0.0f, 5.0f, 0x40000001);
+    BoardModelMotionShiftSet(temp_r28, temp_r20, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     HuAudFXPlay(0x322);
     for (var_r29 = 0; var_r29 < 180; var_r29++) {
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
@@ -1533,7 +1533,7 @@ static void ExecItemWhistle(void) {
         if (sp28[0] < 100.0f) {
             if (var_r27 == 0) {
                 var_r27 = 1;
-                BoardModelMotionShiftSet(temp_r28, temp_r21, 0.0f, 3.0f, 0x40000001);
+                BoardModelMotionShiftSet(temp_r28, temp_r21, 0.0f, 3.0f, HU3D_MOTATTR_LOOP);
                 HuAudFXPlay(forceMoveSfxTbl[GWBoardGet()]);
             }
             sp9C.y += var_f30;
@@ -1619,18 +1619,18 @@ static void ExecItemBowser(void) {
     HuAudFXPlay(0x326);
     BoardModelVisibilitySet(temp_r31, 1);
     BoardModelHookSet(suitMdl, "itemhook_head", temp_r31);
-    BoardModelMotionShiftSet(suitMdl, suitMot[1], 0.0f, 5.0f, 0);
-    BoardModelMotionShiftSet(temp_r31, suitCommonMot[1], 0.0f, 5.0f, 0);
+    BoardModelMotionShiftSet(suitMdl, suitMot[1], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
+    BoardModelMotionShiftSet(temp_r31, suitCommonMot[1], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     while (!BoardModelMotionEndCheck(suitMdl)) {
         HuPrcVSleep();
     }
-    BoardModelMotionShiftSet(suitMdl, suitMot[0], 0.0f, 5.0f, 0);
-    BoardModelMotionShiftSet(temp_r31, suitCommonMot[0], 0.0f, 5.0f, 0);
+    BoardModelMotionShiftSet(suitMdl, suitMot[0], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
+    BoardModelMotionShiftSet(temp_r31, suitCommonMot[0], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(0x28);
     HuAudPlayerVoicePlay(currItemRestore, 0x129);
     omVibrate(currItemRestore, 12, 4, 2);
     HuPrcSleep(60);
-    BoardModelMotionShiftSet(suitMdl, 0, 0.0f, 5.0f, 0x40000001);
+    BoardModelMotionShiftSet(suitMdl, 0, 0.0f, 5.0f, HU3D_MOTATTR_LOOP);
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
@@ -1828,7 +1828,7 @@ static void ExecItemBooBall(void) {
                     BoardWinKill();
                     BoardStatusShowSetAll(1);
                     if (var_r29 != 0) {
-                        BoardPlayerMotionShiftSet(currItemRestore, 7, 0.0f, 8.0f, 0);
+                        BoardPlayerMotionShiftSet(currItemRestore, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                         HuPrcSleep(30);
                         for (var_r31 = 0; var_r31 < spC; var_r31++) {
                             BoardPlayerCoinsAdd(currItemRestore, 1);
@@ -1837,7 +1837,7 @@ static void ExecItemBooBall(void) {
                         }
                         BoardPlayerMotionEndWait(currItemRestore);
                         HuPrcSleep(10);
-                        BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 8.0f, 0x40000001);
+                        BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                     }
                     break;
                 case 1:
@@ -1874,7 +1874,7 @@ static void ExecItemBooBall(void) {
                     if (var_r29 != 0) {
                         BoardPlayerVoiceEnableSet(currItemRestore, 7, 0);
                         sp18 = HuAudSStreamPlay(6);
-                        BoardPlayerMotionShiftSet(currItemRestore, 7, 0.0f, 8.0f, 0);
+                        BoardPlayerMotionShiftSet(currItemRestore, 7, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
                         HuAudFXPlay(boardStarSndTbl[GWPlayer[currItemRestore].character]);
                         BoardPlayerStarsAdd(currItemRestore, 1);
                         HuAudFXPlay(8);
@@ -1885,7 +1885,7 @@ static void ExecItemBooBall(void) {
                             HuPrcVSleep();
                         }
                     }
-                    BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 8.0f, 0x40000001);
+                    BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                     break;
                 case 3:
                     BoardViewMapExec(currItemRestore);
@@ -2311,7 +2311,7 @@ static void GenieSceneExec(void) {
         temp_f30 = 40.0f - var_f31 * var_f31 * 0.25f * 0.0125f;
         if (temp_f30 <= 0.0f && var_r22 == 0) {
             var_r22 = 1;
-            BoardModelMotionShiftSet(temp_r28, 3, 0.0f, 4.0f, 0);
+            BoardModelMotionShiftSet(temp_r28, 3, 0.0f, 4.0f, HU3D_MOTATTR_NONE);
         }
         var_f31 += 1.0f;
         sp50.y += temp_f30;
@@ -2668,7 +2668,7 @@ static void ExecItemBag(void) {
             }
             HuPrcChildWatch();
             BoardPlayerItemAdd(currItemRestore, itemBagItems[var_r30]);
-            BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 10.0f, 0x40000001);
+            BoardPlayerMotionShiftSet(currItemRestore, 1, 0.0f, 10.0f, HU3D_MOTATTR_LOOP);
             HuPrcSleep(10);
             var_r30++;
         }
@@ -2754,8 +2754,8 @@ static void RestoreItemBowser(void) {
     BoardModelAttrSet(temp_r31, 0x400000);
     suitMdl = BoardBowserSuitModelGet();
     temp_r29 = BoardBowserSuitPlayerModelGet();
-    BoardModelMotionShiftSet(suitMdl, suitMot[0], 0.0f, 5.0f, 0);
-    BoardModelMotionShiftSet(temp_r29, suitCommonMot[0], 0.0f, 5.0f, 0);
+    BoardModelMotionShiftSet(suitMdl, suitMot[0], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
+    BoardModelMotionShiftSet(temp_r29, suitCommonMot[0], 0.0f, 5.0f, HU3D_MOTATTR_NONE);
     HuPrcSleep(40);
     HuAudPlayerVoicePlay(currItemRestore, 0x129);
     HuPrcSleep(20);

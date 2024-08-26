@@ -641,7 +641,7 @@ void fn_1_26E4(omObjData *object)
         }
     }
     CharModelVoiceEnableSet(temp_r31->unk2, object->motion[1], 0);
-    CharModelMotionShiftSet(temp_r31->unk2, object->motion[0], 0, 0.2, 0x40000001);
+    CharModelMotionShiftSet(temp_r31->unk2, object->motion[0], 0, 0.2, HU3D_MOTATTR_LOOP);
     CharModelLayerSetAll(2);
     CharModelMotionDataClose(temp_r31->unk2);
     object->model[1] = Hu3DModelCreateFile(lbl_1_data_C8[temp_r31->unk2]);
@@ -692,7 +692,7 @@ void fn_1_2FAC(omObjData *object)
                 temp_r31->unk28.x = temp_r31->unk28.y = temp_r31->unk28.z = 0;
                 object->trans.x -= 10.0 * (2.0 * sind(temp_r31->unk58.x));
                 object->trans.z -= 10.0 * (2.0 * cosd(temp_r31->unk58.x));
-                CharModelMotionShiftSet(temp_r31->unk2, object->motion[4], 0, 0.2, 0x40000001);
+                CharModelMotionShiftSet(temp_r31->unk2, object->motion[4], 0, 0.2, HU3D_MOTATTR_LOOP);
                 temp_r31->unk1C.x = temp_r31->unk94.x = object->trans.x;
                 temp_r31->unk1C.y = temp_r31->unk94.y = object->trans.y;
                 temp_r31->unk1C.z = temp_r31->unk94.z = object->trans.z;
@@ -915,7 +915,7 @@ void fn_1_3E80(omObjData *object)
         temp_r31->unk28.z = temp_r31->unk40.z * temp_f29;
         temp_r31->unk34.x = temp_r31->unk28.x * (1.0f / 60.0f);
         temp_r31->unk34.z = temp_r31->unk28.z * (1.0f / 60.0f);
-        CharModelMotionShiftSet(temp_r31->unk2, object->motion[5], 0, 0.2f, 0);
+        CharModelMotionShiftSet(temp_r31->unk2, object->motion[5], 0, 0.2f, HU3D_MOTATTR_NONE);
         HuAudFXPlay(1358);
         omVibrate(object->work[0], 12, 4, 2);
         if (temp_r31->unk8) {
@@ -930,7 +930,7 @@ void fn_1_3E80(omObjData *object)
         }
     }
     if (fn_1_6878() == 4 && (temp_r31->unk4 & 0x20) == 0) {
-        CharModelMotionShiftSet(temp_r31->unk2, object->motion[3], 0, 0.2f, 0);
+        CharModelMotionShiftSet(temp_r31->unk2, object->motion[3], 0, 0.2f, HU3D_MOTATTR_NONE);
         Hu3DModelShadowSet(object->model[0]);
         object->work[1] = 0;
         object->func = fn_1_5098;
@@ -971,7 +971,7 @@ void fn_1_4A58(omObjData *object)
     temp_r31->unk10++;
     if (fn_1_6878() == 4) {
         temp_r26 = 0;
-        CharModelMotionShiftSet(temp_r31->unk2, object->motion[3], 0, 0.2f, 0);
+        CharModelMotionShiftSet(temp_r31->unk2, object->motion[3], 0, 0.2f, HU3D_MOTATTR_NONE);
         Hu3DModelShadowSet(object->model[0]);
         object->work[1] = 0;
         object->func = fn_1_5098;
@@ -979,7 +979,7 @@ void fn_1_4A58(omObjData *object)
     else if (temp_r31->unk10 > 60) {
         temp_r26 = 0;
         temp_r31->unk4 &= ~0x3;
-        CharModelMotionShiftSet(temp_r31->unk2, object->motion[4], 0, 0.2f, 0x40000001);
+        CharModelMotionShiftSet(temp_r31->unk2, object->motion[4], 0, 0.2f, HU3D_MOTATTR_LOOP);
         object->func = fn_1_3E80;
     }
     if (temp_r26) {
@@ -1048,12 +1048,12 @@ void fn_1_54E4(omObjData *object)
     if (!(temp_r30->unk4 & 0x8)) {
         temp_r30->unk4 |= 0x8;
         if (temp_r30->unk14 != 0) {
-            CharModelMotionShiftSet(temp_r30->unk2, object->motion[1], 0, 0.2f, 0);
+            CharModelMotionShiftSet(temp_r30->unk2, object->motion[1], 0, 0.2f, HU3D_MOTATTR_NONE);
             HuAudCharVoicePlay(temp_r30->unk2, 290);
             GWPlayerCoinCollectAdd(object->work[0], temp_r30->unk14);
         }
         else {
-            CharModelMotionShiftSet(temp_r30->unk2, object->motion[2], 0, 0.2f, 0);
+            CharModelMotionShiftSet(temp_r30->unk2, object->motion[2], 0, 0.2f, HU3D_MOTATTR_NONE);
         }
         object->work[1] = 0;
     }

@@ -143,17 +143,17 @@ u32 lbl_1_data_90[11][3] = {
 };
 
 UnkM417Struct8 lbl_1_data_114[11] = {
-    { 0, 0.2f, 0.0f, -1.0f, 0x40000001 },
-    { 1, 0.2f, 0.0f, -1.0f, 0 },
-    { 2, 0.2f, 0.0f, -1.0f, 0 },
-    { 3, 0.2f, 0.0f, -1.0f, 0x40000001 },
-    { 4, 0.2f, 0.0f, -1.0f, 0x40000001 },
-    { 5, 0.5f, 0.0f, -1.0f, 0 },
-    { 6, 0.2f, 0.0f, -1.0f, 0x40000001 },
-    { 7, 0.03f, 0.0f, -1.0f, 0 },
-    { 8, 0.0f, 0.0f, -1.0f, 0 },
-    { 9, 0.2f, 0.0f, -1.0f, 0 },
-    { 10, 0.0f, 0.0f, -1.0f, 0 },
+    { 0, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_LOOP },
+    { 1, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
+    { 2, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
+    { 3, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_LOOP },
+    { 4, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_LOOP },
+    { 5, 0.5f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
+    { 6, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_LOOP },
+    { 7, 0.03f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
+    { 8, 0.0f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
+    { 9, 0.2f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
+    { 10, 0.0f, 0.0f, -1.0f, HU3D_MOTATTR_NONE },
 };
 
 s32 lbl_1_bss_8AC; // unused
