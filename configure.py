@@ -1110,8 +1110,8 @@ config.libs = [
     Rel(
         "m436Dll",  # Fruits of Doom
         objects={
-            Object(NonMatching, "REL/m436Dll/main.c"),
-            Object(NonMatching, "REL/m436Dll/sequence.c"),
+            Object(Matching, "REL/m436Dll/main.c"),
+            Object(Matching, "REL/m436Dll/sequence.c"),
         },
     ),
     Rel(
