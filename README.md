@@ -2,32 +2,11 @@ Mario Party 4
 [![Build Status]][actions] ![Progress] ![DOL Progress] ![RELs Progress] [![Discord Badge]][discord]
 =============
 
-<!--
-Replace with your repository's URL.
--->
 [Build Status]: https://github.com/Rainchus/marioparty4/actions/workflows/build.yml/badge.svg
 [actions]: https://github.com/Rainchus/marioparty4/actions/workflows/build.yml
-<!---
-Code progress URL:
-https://progress.decomp.club/data/[project]/[version]/all/?mode=shield&measure=code
-URL encoded then appended to: https://img.shields.io/endpoint?label=Code&url=
--->
 [Progress]: https://img.shields.io/endpoint?label=Code&url=https%3A%2F%2Fprogress.decomp.club%2Fdata%2Fmarioparty4%2FGMPE01_00%2Fall%2F%3Fmode%3Dshield%26measure%3Dcode
-<!---
-DOL progress URL:
-https://progress.decomp.club/data/[project]/[version]/dol/?mode=shield&measure=code
-URL encoded then appended to: https://img.shields.io/endpoint?label=DOL&url=
--->
 [DOL Progress]: https://img.shields.io/endpoint?label=DOL&url=https%3A%2F%2Fprogress.decomp.club%2Fdata%2Fmarioparty4%2FGMPE01_00%2Fdol%2F%3Fmode%3Dshield%26measure%3Dcode
-<!--
-REL progress URL:
-https://progress.decomp.club/data/[project]/[version]/modules/?mode=shield&measure=code
-URL encoded then appended to: https://img.shields.io/endpoint?label=RELs&url=
--->
 [RELs Progress]: https://img.shields.io/endpoint?label=RELs&url=https%3A%2F%2Fprogress.decomp.club%2Fdata%2Fmarioparty4%2FGMPE01_00%2Fmodules%2F%3Fmode%3Dshield%26measure%3Dcode
-<!--
-Replace with your Discord server's ID and invite URL.
--->
 [Discord Badge]: https://img.shields.io/discord/994839212618690590?color=%237289DA&logo=discord&logoColor=%23FFFFFF
 [discord]: https://discord.gg/T4faGveujK
 
@@ -37,12 +16,12 @@ This repository does **not** contain any game assets or assembly whatsoever. An 
 
 Supported versions:
 
-- `GAMEID`: Rev 0 (USA)
+- `GMPE01_00`: Rev 0 (USA)
 
 Dependencies
 ============
 
-Windows:
+Windows
 --------
 
 On Windows, it's **highly recommended** to use native tooling. WSL or msys2 are **not** required.  
@@ -53,7 +32,7 @@ When running under WSL, [objdiff](#diffing) is unable to get filesystem notifica
 - Download [ninja](https://github.com/ninja-build/ninja/releases) and add it to `%PATH%`.
   - Quick install via pip: `pip install ninja`
 
-macOS:
+macOS
 ------
 - Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages):
   ```
@@ -69,29 +48,29 @@ After OS upgrades, if macOS complains about `Wine Crossover.app` being unverifie
 sudo xattr -rd com.apple.quarantine '/Applications/Wine Crossover.app'
 ```
 
-Linux:
+Linux
 ------
 - Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages).
 - For non-x86(_64) platforms: Install wine from your package manager.
-  - For x86(_64), [WiBo](https://github.com/decompals/WiBo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
+  - For x86(_64), [wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
 
 Building
 ========
 
 - Clone the repository:
   ```
-  git clone https://github.com/Rainchus/mp4-dtk.git
+  git clone https://github.com/Rainchus/marioparty4.git
   ```
-- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GMPE01`.
+- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GMPE01_00`.
 ![](assets/dolphin-extract.png)
   - To save space, the only necessary files are the following. Any others can be deleted.
     - `sys/main.dol`
-    - `files/rels/*.rel`
+    - `files/dll/*.rel`
 - Configure:
   ```
   python configure.py
   ```
-  To use a version other than `GMPE01` (USA), specify it with `--version`.
+  To use a version other than `GMPE01_00` (USA), specify it with `--version`.
 - Build:
   ```
   ninja

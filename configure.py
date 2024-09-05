@@ -12,17 +12,11 @@
 # Append --help to see available options.
 ###
 
-import sys
 import argparse
-
+import sys
 from pathlib import Path
-from tools.project import (
-    Object,
-    ProjectConfig,
-    calculate_progress,
-    generate_build,
-    is_windows,
-)
+from typing import Any, Dict, List
+from tools.project import *
 
 # Game versions
 DEFAULT_VERSION = 0
@@ -30,27 +24,25 @@ VERSIONS = [
     "GMPE01_00",  # USA 1.0
 ]
 
-if len(VERSIONS) > 1:
-    versions_str = ", ".join(VERSIONS[:-1]) + f" or {VERSIONS[-1]}"
-else:
-    versions_str = VERSIONS[0]
-
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "mode",
+    choices=["configure", "progress"],
     default="configure",
-    help="configure or progress (default: configure)",
+    help="script mode (default: configure)",
     nargs="?",
 )
 parser.add_argument(
+    "-v",
     "--version",
-    dest="version",
+    choices=VERSIONS,
+    type=str.upper,
     default=VERSIONS[DEFAULT_VERSION],
-    help=f"version to build ({versions_str})",
+    help="version to build",
 )
 parser.add_argument(
     "--build-dir",
-    dest="build_dir",
+    metavar="DIR",
     type=Path,
     default=Path("build"),
     help="base build directory (default: build)",
@@ -63,31 +55,24 @@ parser.add_argument(
 )
 parser.add_argument(
     "--compilers",
-    dest="compilers",
+    metavar="DIR",
     type=Path,
     help="path to compilers (optional)",
 )
 parser.add_argument(
     "--map",
-    dest="map",
     action="store_true",
     help="generate map file(s)",
 )
 parser.add_argument(
-    "--no-asm",
-    action="store_true",
-    help="don't incorporate .s files from asm directory",
-)
-parser.add_argument(
     "--debug",
-    dest="debug",
     action="store_true",
     help="build with debug info (non-matching)",
 )
 if not is_windows():
     parser.add_argument(
         "--wrapper",
-        dest="wrapper",
+        metavar="BINARY",
         type=Path,
         help="path to wibo or wine (optional)",
     )
@@ -98,14 +83,19 @@ parser.add_argument(
     help="path to decomp-toolkit binary or source (optional)",
 )
 parser.add_argument(
+    "--objdiff",
+    metavar="BINARY | DIR",
+    type=Path,
+    help="path to objdiff-cli binary or source (optional)",
+)
+parser.add_argument(
     "--sjiswrap",
-    dest="sjiswrap",
+    metavar="EXE",
     type=Path,
     help="path to sjiswrap.exe (optional)",
 )
 parser.add_argument(
     "--verbose",
-    dest="verbose",
     action="store_true",
     help="print verbose output",
 )
@@ -118,14 +108,13 @@ parser.add_argument(
 args = parser.parse_args()
 
 config = ProjectConfig()
-config.version = args.version.upper()
-if config.version not in VERSIONS:
-    sys.exit(f"Invalid version '{config.version}', expected {versions_str}")
+config.version = str(args.version)
 version_num = VERSIONS.index(config.version)
 
 # Apply arguments
 config.build_dir = args.build_dir
 config.dtk_path = args.dtk
+config.objdiff_path = args.objdiff
 config.binutils_path = args.binutils
 config.compilers_path = args.compilers
 config.debug = args.debug
@@ -134,13 +123,15 @@ config.non_matching = args.non_matching
 config.sjiswrap_path = args.sjiswrap
 if not is_windows():
     config.wrapper = args.wrapper
-if args.no_asm:
+# Don't build asm unless we're --non-matching
+if not config.non_matching:
     config.asm_dir = None
 
 # Tool versions
 config.binutils_tag = "2.42-1"
-config.compilers_tag = "20231018"
-config.dtk_tag = "v0.7.4"
+config.compilers_tag = "20240706"
+config.dtk_tag = "v0.9.6"
+config.objdiff_tag = "v2.0.0-beta.6"
 config.sjiswrap_tag = "v1.1.1"
 config.wibo_tag = "0.6.11"
 
@@ -329,8 +320,9 @@ def Rel(lib_name, objects):
     }
 
 
-Matching = True
-NonMatching = False
+Matching = True                   # Object matches and should be linked
+NonMatching = False               # Object does not match and should not be linked
+Equivalent = config.non_matching  # Object should be linked when configured with --non-matching
 
 config.warn_missing_config = True
 config.warn_missing_source = False
@@ -788,19 +780,18 @@ config.libs = [
         "objects": [
             Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/empty.c"),  # Must be marked as matching
+            Object(Matching, "REL/board_executor.c"),
         ],
     },
     Rel(
         "_minigameDLL",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/_minigameDLL/_minigameDLL.c"),
         },
     ),
     Rel(
         "bootDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/bootDll/main.c"),
             Object(Matching, "REL/bootDll/nintendo_data.c"),
         },
@@ -809,14 +800,12 @@ config.libs = [
         "E3setupDLL",
         objects={
             Object(Matching, "REL/E3setupDLL/mgselect.c"),
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/E3setupDLL/main.c"),
         },
     ),
     Rel(
         "instDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/instDll/main.c"),
             Object(NonMatching, "REL/instDll/font.c"),
         },
@@ -824,7 +813,6 @@ config.libs = [
     Rel(
         "m401Dll",  # Manta Rings
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m401Dll/main.c"),
             Object(Matching, "REL/m401Dll/main_ex.c"),
         },
@@ -838,7 +826,6 @@ config.libs = [
     Rel(
         "m403Dll",  # Booksquirm
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m403Dll/main.c"),
             Object(Matching, "REL/m403Dll/scene.c"),
         },
@@ -846,7 +833,6 @@ config.libs = [
     Rel(
         "m404Dll",  # Trace Race
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m404Dll/main.c"),
         },
     ),
@@ -859,7 +845,6 @@ config.libs = [
     Rel(
         "m406Dll",  # Avalanche!
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m406Dll/main.c"),
             Object(Matching, "REL/m406Dll/map.c"),
             Object(Matching, "REL/m406Dll/player.c"),
@@ -868,7 +853,6 @@ config.libs = [
     Rel(
         "m407dll",  # Domination
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m407dll/player.c"),
             Object(Matching, "REL/m407dll/map.c"),
             Object(Matching, "REL/m407dll/camera.c"),
@@ -882,7 +866,6 @@ config.libs = [
     Rel(
         "m408Dll",  # Paratrooper Plunge
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m408Dll/main.c"),
             Object(Matching, "REL/m408Dll/camera.c"),
             Object(Matching, "REL/m408Dll/stage.c"),
@@ -892,7 +875,6 @@ config.libs = [
     Rel(
         "m409Dll",  # Toad's Quick Draw
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m409Dll/main.c"),
             Object(Matching, "REL/m409Dll/player.c"),
             Object(Matching, "REL/m409Dll/cursor.c"),
@@ -901,7 +883,6 @@ config.libs = [
     Rel(
         "m410Dll",  # Three Throw
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m410Dll/main.c"),
             Object(Matching, "REL/m410Dll/stage.c"),
             Object(Matching, "REL/m410Dll/game.c"),
@@ -911,35 +892,30 @@ config.libs = [
     Rel(
         "m411Dll",  # Photo Finish
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m411Dll/main.c"),
         },
     ),
     Rel(
         "m412Dll",  # Mr. Blizzard's Brigade
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m412Dll/main.c"),
         },
     ),
     Rel(
         "m413Dll",  # Bob-omb Breakers
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m413Dll/main.c"),
         },
     ),
     Rel(
         "m414Dll",  # Long Claw of the Law
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m414Dll/main.c"),
         },
     ),
     Rel(
         "m415Dll",  # Stamp Out!
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m415Dll/main.c"),
             Object(NonMatching, "REL/m415Dll/map.c"),
         },
@@ -947,7 +923,6 @@ config.libs = [
     Rel(
         "m416Dll",  # Candlelight Flight
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m416Dll/main.c"),
             Object(Matching, "REL/m416Dll/map.c"),
         },
@@ -955,7 +930,6 @@ config.libs = [
     Rel(
         "m417Dll",  # Makin' Waves
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m417Dll/main.c"),
             Object(Matching, "REL/m417Dll/water.c"),
             Object(Matching, "REL/m417Dll/player.c"),
@@ -972,14 +946,12 @@ config.libs = [
     Rel(
         "m419Dll",  # Tree Stomp
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m419Dll/main.c"),
         },
     ),
     Rel(
         "m420dll",  # Fish n' Drips
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m420dll/main.c"),
             Object(NonMatching, "REL/m420dll/player.c"),
             Object(NonMatching, "REL/m420dll/map.c"),
@@ -989,7 +961,6 @@ config.libs = [
     Rel(
         "m421Dll",  # Hop or Pop
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m421Dll/main.c"),
             Object(NonMatching, "REL/m421Dll/player.c"),
             Object(NonMatching, "REL/m421Dll/map.c"),
@@ -998,21 +969,18 @@ config.libs = [
     Rel(
         "m422Dll",  # Money Belts
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m422Dll/main.c"),
         },
     ),
     Rel(
         "m423Dll",  # GOOOOOOOAL!!
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m423Dll/main.c"),
         },
     ),
     Rel(
         "m424Dll",  # Blame it on the Crane
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m424Dll/main.c"),
             Object(NonMatching, "REL/m424Dll/map.c"),
             Object(NonMatching, "REL/m424Dll/ball.c"),
@@ -1022,7 +990,6 @@ config.libs = [
     Rel(
         "m425Dll",  # The Great Deflate
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m425Dll/main.c"),
             Object(NonMatching, "REL/m425Dll/thwomp.c"),
         },
@@ -1030,14 +997,12 @@ config.libs = [
     Rel(
         "m426Dll",  # Revers-a-Bomb
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m426Dll/main.c"),
         },
     ),
     Rel(
         "m427Dll",  # Right Oar Left?
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m427Dll/main.c"),
             Object(NonMatching, "REL/m427Dll/map.c"),
             Object(NonMatching, "REL/m427Dll/player.c"),
@@ -1046,7 +1011,6 @@ config.libs = [
     Rel(
         "m428Dll",  # Cliffhangers
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m428Dll/main.c"),
             Object(NonMatching, "REL/m428Dll/map.c"),
             Object(NonMatching, "REL/m428Dll/player.c"),
@@ -1061,7 +1025,6 @@ config.libs = [
     Rel(
         "m430Dll",  # Pair-a-sailing
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m430Dll/main.c"),
             Object(NonMatching, "REL/m430Dll/water.c"),
             Object(NonMatching, "REL/m430Dll/player.c"),
@@ -1070,7 +1033,6 @@ config.libs = [
     Rel(
         "m431Dll",  # Order Up
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m431Dll/main.c"),
             Object(Matching, "REL/m431Dll/object.c"),
         },
@@ -1084,7 +1046,6 @@ config.libs = [
     Rel(
         "m433Dll",  # Beach Volley Folly
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m433Dll/main.c"),
             Object(NonMatching, "REL/m433Dll/map.c"),
             Object(NonMatching, "REL/m433Dll/player.c"),
@@ -1093,7 +1054,6 @@ config.libs = [
     Rel(
         "m434Dll",  # Cheep Cheep Sweep
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m434Dll/main.c"),
             Object(Matching, "REL/m434Dll/map.c"),
             Object(NonMatching, "REL/m434Dll/player.c"),
@@ -1124,7 +1084,6 @@ config.libs = [
     Rel(
         "m438Dll",  # Chain Chomp Fever
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m438Dll/main.c"),
             Object(NonMatching, "REL/m438Dll/map.c"),
             Object(NonMatching, "REL/m438Dll/fire.c"),
@@ -1133,14 +1092,12 @@ config.libs = [
     Rel(
         "m439Dll",  # Paths of Peril
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m439Dll/main.c"),
         },
     ),
     Rel(
         "m440Dll",  # Bowser's Bigger Blast
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m440Dll/main.c"),
             Object(Matching, "REL/m440Dll/object.c"),
         },
@@ -1154,7 +1111,6 @@ config.libs = [
     Rel(
         "m442Dll",  # Barrel Baron
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m442Dll/main.c"),
             Object(Matching, "REL/m442Dll/score.c"),
         },
@@ -1162,7 +1118,6 @@ config.libs = [
     Rel(
         "m443Dll",  # Mario Speedwagons
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m443Dll/main.c"),
             Object(NonMatching, "REL/m443Dll/map.c"),
             Object(NonMatching, "REL/m443Dll/player.c"),
@@ -1171,7 +1126,6 @@ config.libs = [
     Rel(
         "m444dll",  # Reversal of Fortune
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m444dll/main.c"),
             Object(Matching, "REL/m444dll/pinball.c"),
             Object(Matching, "REL/m444dll/datalist.c"),
@@ -1181,14 +1135,12 @@ config.libs = [
     Rel(
         "m445Dll",  # Bowser Bop
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m445Dll/main.c"),
         },
     ),
     Rel(
         "m446dll",  # Mystic Match 'Em
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m446Dll/main.c"),
             Object(Matching, "REL/m446Dll/card.c"),
             Object(Matching, "REL/m446Dll/deck.c"),
@@ -1202,7 +1154,6 @@ config.libs = [
     Rel(
         "m447dll",  # Archaeologuess
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m447dll/main.c"),
             Object(Matching, "REL/m447dll/stage.c"),
             Object(Matching, "REL/m447dll/camera.c"),
@@ -1214,14 +1165,12 @@ config.libs = [
     Rel(
         "m448Dll",  # Goomba's Chip Flip
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m448Dll/main.c"),
         },
     ),
     Rel(
         "m449Dll",  # Kareening Koopa
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m449Dll/main.c"),
         },
     ),
@@ -1240,7 +1189,6 @@ config.libs = [
     Rel(
         "m453Dll",  # Challenge Booksquirm
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m453Dll/main.c"),
             Object(NonMatching, "REL/m453Dll/map.c"),
             Object(NonMatching, "REL/m453Dll/score.c"),
@@ -1249,7 +1197,6 @@ config.libs = [
     Rel(
         "m455Dll",  # Rumble Fishing
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/m455Dll/main.c"),
             Object(NonMatching, "REL/m455Dll/stage.c"),
         },
@@ -1257,7 +1204,6 @@ config.libs = [
     Rel(
         "m456Dll",  # Take a Breather
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m456Dll/main.c"),
             Object(NonMatching, "REL/m456Dll/stage.c"),
         },
@@ -1265,28 +1211,24 @@ config.libs = [
     Rel(
         "m457Dll",  # Bowser Wrestling
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m457Dll/main.c"),
         },
     ),
     Rel(
         "m458Dll",  # Panels of Doom
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m458Dll/main.c"),
         },
     ),
     Rel(
         "m459dll",  # Mushroom Medic
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m459dll/main.c"),
         },
     ),
     Rel(
         "m460Dll",  # Doors of Doom
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m460Dll/main.c"),
             Object(NonMatching, "REL/m460Dll/player.c"),
             Object(NonMatching, "REL/m460Dll/map.c"),
@@ -1302,7 +1244,6 @@ config.libs = [
     Rel(
         "m462Dll",  # Goomba Stomp
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(NonMatching, "REL/m462Dll/main.c"),
         },
     ),
@@ -1322,14 +1263,12 @@ config.libs = [
     Rel(
         "messDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/messDll/main.c"),
         },
     ),
     Rel(
         "mgmodedll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/mgmodedll/mgmode.c"),
             Object(Matching, "REL/mgmodedll/free_play.c"),
             Object(Matching, "REL/mgmodedll/record.c"),
@@ -1343,7 +1282,6 @@ config.libs = [
     Rel(
         "modeltestDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/modeltestDll/main.c"),
             Object(Matching, "REL/modeltestDll/modeltest00.c"),
             Object(Matching, "REL/modeltestDll/modeltest01.c"),
@@ -1352,7 +1290,6 @@ config.libs = [
     Rel(
         "modeseldll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/modeseldll/main.c"),
             Object(NonMatching, "REL/modeseldll/modesel.c"),
             Object(Matching, "REL/modeseldll/filesel.c"),
@@ -1410,7 +1347,6 @@ config.libs = [
     Rel(
         "option",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/option/scene.c"),
             Object(Matching, "REL/option/camera.c"),
             Object(Matching, "REL/option/room.c"),
@@ -1425,7 +1361,6 @@ config.libs = [
     Rel(
         "present",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/present/init.c"),
             Object(Matching, "REL/present/camera.c"),
             Object(Matching, "REL/present/present.c"),
@@ -1436,7 +1371,6 @@ config.libs = [
     Rel(
         "resultDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/resultDll/main.c"),
             Object(Matching, "REL/resultDll/battle.c"),
             Object(Matching, "REL/resultDll/datalist.c"),
@@ -1451,28 +1385,24 @@ config.libs = [
     Rel(
         "selmenuDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/selmenuDll/main.c"),
         },
     ),
     Rel(
         "staffDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/staffDll/main.c"),
         },
     ),
     Rel(
         "subchrselDll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/subchrselDll/main.c"),
         },
     ),
     Rel(
         "w01Dll",  # Toad's Midway Madness
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w01Dll/main.c"),
             Object(Matching, "REL/w01Dll/mg_coin.c"),
             Object(Matching, "REL/w01Dll/mg_item.c"),
@@ -1481,7 +1411,6 @@ config.libs = [
     Rel(
         "w02Dll",  # Goomba's Greedy Gala
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w02Dll/main.c"),
             Object(Matching, "REL/w02Dll/gendice.c"),
             Object(Matching, "REL/w02Dll/gamble.c"),
@@ -1494,7 +1423,6 @@ config.libs = [
     Rel(
         "w03Dll",  # Shy Guy's Jungle Jam
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w03Dll/main.c"),
             Object(Matching, "REL/w03Dll/statue.c"),
             Object(Matching, "REL/w03Dll/condor.c"),
@@ -1507,7 +1435,6 @@ config.libs = [
     Rel(
         "w04Dll",  # Boo's Haunted Bash
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w04Dll/main.c"),
             Object(Matching, "REL/w04Dll/bridge.c"),
             Object(Matching, "REL/w04Dll/boo_event.c"),
@@ -1519,7 +1446,6 @@ config.libs = [
     Rel(
         "w05Dll",  # Koopa's Seaside Soiree
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w05Dll/main.c"),
             Object(Matching, "REL/w05Dll/hotel.c"),
             Object(Matching, "REL/w05Dll/monkey.c"),
@@ -1531,7 +1457,6 @@ config.libs = [
     Rel(
         "w06Dll",  # Bowser's Gnarly Party
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w06Dll/main.c"),
             Object(Matching, "REL/w06Dll/mg_item.c"),
             Object(Matching, "REL/w06Dll/mg_coin.c"),
@@ -1543,7 +1468,6 @@ config.libs = [
     Rel(
         "w10Dll",  # Tutorial board
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w10Dll/main.c"),
             Object(Matching, "REL/w10Dll/host.c"),
             Object(Matching, "REL/w10Dll/scene.c"),
@@ -1553,21 +1477,18 @@ config.libs = [
     Rel(
         "w20Dll",  # Mega Board Mayhem
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w20Dll/main.c"),
         },
     ),
     Rel(
         "w21Dll",  # Mini Board Mad Dash
         objects={
-            Object(Matching, "REL/board_executor.c"),
             Object(Matching, "REL/w21Dll/main.c"),
         },
     ),
     Rel(
         "ztardll",
         objects={
-            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/ztardll/main.c"),
             Object(Matching, "REL/ztardll/font.c"),
             Object(Matching, "REL/ztardll/select.c"),
@@ -1575,12 +1496,15 @@ config.libs = [
     ),
 ]
 
+# Optional extra categories for progress tracking
+config.progress_categories = []
+config.progress_each_module = args.verbose
+
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
     generate_build(config)
 elif args.mode == "progress":
     # Print progress and write progress.json
-    config.progress_each_module = args.verbose
     calculate_progress(config)
 else:
     sys.exit("Unknown mode: " + args.mode)
