@@ -4,6 +4,7 @@
 #include "game/hsfanim.h"
 #include "game/object.h"
 #include "game/pad.h"
+#include "game/disp.h"
 #include "game/process.h"
 #include "game/window.h"
 #include "game/board/main.h"
@@ -239,10 +240,10 @@ static void RollMain(void) {
                     var_f31 = -10000.0f;
                     break;
                 case 1:
-                    var_f31 = 288.0f - (sp8[0] / 2 - 16.0f);
+                    var_f31 = HU_DISP_CENTERX- (sp8[0] / 2 - 16.0f);
                     break;
             }
-            var_f30 = 304.0f;
+            var_f30 = HU_DISP_HEIGHT-176;
             rollWin = HuWinCreate(var_f31, var_f30, sp8[0], sp8[1], 0);
             HuWinBGTPLvlSet(rollWin, 0.0f);
             HuWinMesSpeedSet(rollWin, 0);
@@ -735,17 +736,17 @@ static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1) {
     Vec sp30;
     Vec sp24;
     Vec sp54[2];
-    Vec sp18 = { 288.0f, 155.0f, 240.0f };
+    Vec sp18 = { (HU_DISP_WIDTH/2), (HU_DISP_HEIGHT*155)/480, 240.0f };
     Vec sp3C[2] = {
-        { 144.0f, 155.0f, 240.0f },
-        { 432.0f, 155.0f, 240.0f }
+        { (HU_DISP_WIDTH*1)/4, (HU_DISP_HEIGHT*155)/480, 240.0f },
+        { (HU_DISP_WIDTH*3)/4, (HU_DISP_HEIGHT*155)/480, 240.0f }
     };
     Vec sp6C[3] = {
-        { 144.0f, 155.0f, 240.0f },
-        { 432.0f, 155.0f, 240.0f },
-        { 288.0f, 155.0f, 240.0f }
+        { (HU_DISP_WIDTH*1)/4, (HU_DISP_HEIGHT*155)/480, 240.0f },
+        { (HU_DISP_WIDTH*3)/4, (HU_DISP_HEIGHT*155)/480, 240.0f },
+        { (HU_DISP_WIDTH/2), (HU_DISP_HEIGHT*155)/480, 240.0f }
     };
-    Vec spC = { 288.0f, 176.0f, 240.0f };
+    Vec spC = { (HU_DISP_WIDTH/2), (HU_DISP_HEIGHT*176)/480, 240.0f };
     Vec *var_r29;
     float var_f31;
     s16 var_r27;

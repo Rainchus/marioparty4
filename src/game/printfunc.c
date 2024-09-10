@@ -1,6 +1,8 @@
 #include "dolphin.h"
 #include "game/printfunc.h"
 #include "game/init.h"
+#include "game/disp.h"
+
 #include "stdio.h"
 #include "stdarg.h"
 
@@ -140,7 +142,7 @@ void pfDrawFonts(void)
     if(saftyFrameF) {
         WireDraw();
     }
-    MTXOrtho(proj, 0, 480, 0, 640, 0, 10);
+    MTXOrtho(proj, 0, HU_FB_HEIGHT, 0, HU_FB_WIDTH, 0, 10);
     GXSetProjection(proj, GX_ORTHOGRAPHIC);
     MTXIdentity(modelview);
     GXLoadPosMtxImm(modelview, GX_PNMTX0);
@@ -289,7 +291,7 @@ void pfDrawFonts(void)
                                 GXEnd();
                             }
                             x += char_w;
-                            if(x > 640) {
+                            if(x > HU_FB_WIDTH) {
                                 x = 0;
                                 y += char_h;
                             }
@@ -301,18 +303,21 @@ void pfDrawFonts(void)
     }
 }
 
+#define SAFETY_W 16
+#define SAFETY_H 40
+
 static void WireDraw(void)
 {
     Mtx44 proj;
     Mtx modelview;
-    MTXOrtho(proj, 0, 480, 0, 576, 0, 10);
+    MTXOrtho(proj, 0, HU_DISP_HEIGHT, 0, HU_DISP_WIDTH, 0, 10);
     GXSetProjection(proj, GX_ORTHOGRAPHIC);
     if(RenderMode->field_rendering) {
-        GXSetViewportJitter(0, 0, 640, 480, 0, 1, VIGetNextField());
+        GXSetViewportJitter(0, 0, HU_FB_WIDTH, HU_FB_HEIGHT, 0, 1, VIGetNextField());
     } else {
-        GXSetViewport(0, 0, 640, 480, 0, 1);
+        GXSetViewport(0, 0, HU_FB_WIDTH, HU_FB_HEIGHT, 0, 1);
     }
-    GXSetScissor(0, 0, 640, 480);
+    GXSetScissor(0, 0, HU_FB_WIDTH, HU_FB_HEIGHT);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_F32, 0);
@@ -331,21 +336,21 @@ static void WireDraw(void)
     MTXIdentity(modelview);
     GXLoadPosMtxImm(modelview, GX_PNMTX0);
     GXBegin(GX_LINES, 0, 8);
-    GXPosition2f32(16, 40);
+    GXPosition2f32(SAFETY_W, SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(16, 440);
+    GXPosition2f32(SAFETY_W, HU_DISP_HEIGHT-SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(16, 40);
+    GXPosition2f32(SAFETY_W, SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(560, 40);
+    GXPosition2f32(HU_DISP_WIDTH-SAFETY_W, SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(560, 440);
+    GXPosition2f32(HU_DISP_WIDTH-SAFETY_W, HU_DISP_HEIGHT-SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(560, 40);
+    GXPosition2f32(HU_DISP_WIDTH-SAFETY_W, SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(560, 440);
+    GXPosition2f32(HU_DISP_WIDTH-SAFETY_W, HU_DISP_HEIGHT-SAFETY_H);
     GXColor3u8(255, 0, 0);
-    GXPosition2f32(16, 440);
+    GXPosition2f32(SAFETY_W, HU_DISP_HEIGHT-SAFETY_H);
     GXColor3u8(255, 0, 0);
     GXEnd();
 }

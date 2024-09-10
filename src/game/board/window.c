@@ -1,6 +1,8 @@
 #include "game/board/window.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/disp.h"
+
 #include "game/gamework_data.h"
 
 static s8 winChoice;
@@ -82,9 +84,9 @@ static void ExecBoardWindow(void) {
         {432.0f,  96.0f},
     };
     f32 pos_all[7][2] = {
-        {96.0f, 328.0f},  {72.0f, 128.0f},
-        {36.0f, 344.0f},  {128.0f, 312.0f},
-        {144.0f, 144.0f}, {128.0f, 264.0f},
+        {96.0f, HU_DISP_HEIGHT-152},  {72.0f, 128.0f},
+        {36.0f, HU_DISP_HEIGHT-136},  {128.0f, HU_DISP_HEIGHT-168},
+        {144.0f, HU_DISP_CENTERY-96 }, {128.0f, HU_DISP_HEIGHT-216},
         {128.0f,  75.0f},
     };
     

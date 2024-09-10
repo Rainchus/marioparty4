@@ -3,6 +3,7 @@
 #include "game/hsfformat.h"
 #include "game/hsfload.h"
 #include "game/sprite.h"
+#include "game/disp.h"
 
 #include "ext_math.h"
 #include "string.h"
@@ -396,7 +397,7 @@ s32 ObjCullCheck(HsfData *arg0, HsfObject *arg1, Mtx arg2) {
     }
     sp24 = sind(temp_r30->fov * 0.5) / cosd(temp_r30->fov * 0.5);
     temp_f27 = sp24 * temp_f18;
-    temp_f24 = 1.2f * temp_f27;
+    temp_f24 = HU_DISP_ASPECT * temp_f27;
     temp_f24 = temp_f21 + ABS(temp_f24);
     temp_f27 = temp_f21 + ABS(temp_f27);
     if (ABS(temp_f20) < temp_f24 && ABS(temp_f19) < temp_f27) {

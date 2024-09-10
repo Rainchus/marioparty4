@@ -16,6 +16,8 @@
 #include "game/hsfman.h"
 #include "game/objsub.h"
 #include "game/pad.h"
+#include "game/disp.h"
+
 #include "math.h"
 #include "stdlib.h"
 
@@ -2084,7 +2086,7 @@ void BoardRollCreate(s32 arg0, s32 arg1)
     for (var_r30 = 0; var_r30 < 2; var_r30++) {
         BoardSpriteCreate(DATA_MAKE_NUM(DATADIR_BOARD, 0x2B), 0x4B0, 0, &temp_r31->unk_06[var_r30]);
         HuSprGrpMemberSet(temp_r31->unk_04, var_r30, temp_r31->unk_06[var_r30]);
-        HuSprPosSet(temp_r31->unk_04, var_r30, 288.0f, 240.0f);
+        HuSprPosSet(temp_r31->unk_04, var_r30, HU_DISP_CENTERX, HU_DISP_CENTERY);
         HuSprAttrSet(temp_r31->unk_04, var_r30, 4);
     }
     rollObj = temp_r3;
@@ -2131,7 +2133,7 @@ static void UpdateRollSprite(omObjData *arg0)
 {
     Vec sp1C;
     s32 sp14[2];
-    f32 spC[2] = { 320.0f, 256.0f };
+    f32 spC[2] = { HU_DISP_CENTERX+32, HU_DISP_CENTERX-32 };
     s32 var_r30;
     s32 temp_r29;
     bitcopy3 *temp_r31;
@@ -2152,12 +2154,11 @@ static void UpdateRollSprite(omObjData *arg0)
         }
         else {
             if ((sp14[1] == 0) && (var_r30 == 0)) {
-                sp1C.x = 288.0f;
-            }
-            else {
+                sp1C.x = HU_DISP_CENTERX;
+            } else {
                 sp1C.x = spC[var_r30];
             }
-            sp1C.y = 176.0f;
+            sp1C.y = (HU_DISP_HEIGHTF*176)/480;
             HuSprAttrReset(temp_r31->unk_04, var_r30, 4);
             HuSprBankSet(temp_r31->unk_04, var_r30, sp14[var_r30]);
             HuSprPosSet(temp_r31->unk_04, var_r30, sp1C.x, sp1C.y);

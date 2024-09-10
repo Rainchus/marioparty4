@@ -17,6 +17,7 @@
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
+#include "game/disp.h"
 
 #include "ext_math.h"
 
@@ -189,9 +190,9 @@ static float statusHideOfsTbl[4] = {
 
 static float statusPosTbl[4][2] = {
     { 114.0f, 84.0f },
-    { 462.0f, 84.0f },
-    { 114.0f, 396.0f },
-    { 462.0f, 396.0f }
+    { HU_DISP_WIDTH-114, 84.0f },
+    { 114.0f, HU_DISP_HEIGHT-84 },
+    { HU_DISP_WIDTH-114, HU_DISP_HEIGHT-84 }
 };
 
 static u8 statusColTbl[4][4] = {
@@ -248,8 +249,8 @@ static s32 itemMdlTbl[14] = {
 };
 
 static Vec teamItemStatusPosTbl[2] = {
-    { 190.0f, 116.0f, 0.0f },
-    { 386.0f, 116.0f, 0.0f }
+    { HU_DISP_CENTERX-98, 116.0f, 0.0f },
+    { HU_DISP_CENTERX+98, 116.0f, 0.0f }
 };
 
 s32 BoardItemModelGet(s32 arg0) {
@@ -923,7 +924,7 @@ void BoardYourTurnExec(s32 arg0) {
     HuSprAttrSet(yourTurnSprGrp, 0, 1);
     HuSprScaleSet(yourTurnSprGrp, 0, 0.001f, 0.001f);
     HuSprAttrSet(yourTurnSprGrp, 0, 8);
-    HuSprGrpPosSet(yourTurnSprGrp, 288.0f, 240.0f);
+    HuSprGrpPosSet(yourTurnSprGrp, HU_DISP_CENTERX, HU_DISP_CENTERY);
     HuAudFXPlay(0x307);
     while (yourTurnObj) {
         HuPrcVSleep();
@@ -1476,9 +1477,9 @@ static void SetItemUIStatus(s32 arg0) {
                 var_f31 = statusPosTbl[i][0];
                 var_f30 = statusPosTbl[i][1];
                 for (j = 0; j < 6; j++) {
-                    (temp_r28 + 4)[i][j].x = statusSprPosTbl[j + 0xB][0];
-                    (temp_r28 + 4)[i][j].y = statusSprPosTbl[j + 0xB][1];
-                    if (j + 0xB >= 0xD && j + 0xB <= 0xF) {
+                    (temp_r28 + 4)[i][j].x = statusSprPosTbl[j + 11][0];
+                    (temp_r28 + 4)[i][j].y = statusSprPosTbl[j + 11][1];
+                    if (j + 11 >= 13 && j + 11 <= 15) {
                         (temp_r28 + 4)[i][j].x += var_f31;
                         (temp_r28 + 4)[i][j].y += var_f30;
                     }
@@ -1815,8 +1816,8 @@ static void CreateItemWindow(s32 arg0, s32 arg1) {
                 = temp_r31->unk06[i] = temp_r31->unk00[i] = -1;
         } else {
             temp_r31->unk00[i] = temp_r28;
-            temp_r31->unk74[i].x = i * 576.0f + 36.0f;
-            temp_r31->unk74[i].y = var_f30 + 240.0f;
+            temp_r31->unk74[i].x = i * HU_DISP_WIDTHF + 36.0f;
+            temp_r31->unk74[i].y = var_f30 + HU_DISP_CENTERY;
             temp_r31->unk74[i].z = 0.0f;
             temp_r31->unk2C[i] = temp_r31->unk74[i];
             temp_r31->unk12[i] = HuWinCreate(temp_r31->unk2C[i].x, temp_r31->unk2C[i].y, 0x1F8, 0x60, 0);
@@ -1970,7 +1971,7 @@ static void CreatePickerWindow(UnkUiWork01 *arg0, s32 arg1) {
     }
     HuWinMesMaxSizeGet(1, spC, var_r30);
     var_f30 = -10000.0f;
-    var_f29 = var_f31 + 352.0f;
+    var_f29 = var_f31 + (HU_DISP_HEIGHT-128);
     arg0->unk06 = HuWinCreate(var_f30, var_f29, spC[0], spC[1], 0);
     HuWinBGTPLvlSet(arg0->unk06, 0.0f);
     HuWinMesSpeedSet(arg0->unk06, 0);

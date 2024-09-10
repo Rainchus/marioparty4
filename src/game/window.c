@@ -9,6 +9,7 @@
 #include "game/pad.h"
 #include "game/armem.h"
 #include "game/audio.h"
+#include "game/disp.h"
 
 #include "ext_math.h"
 #include "stdarg.h"
@@ -274,12 +275,12 @@ s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     w = (w + 15) & 0xFFF0;
     h = (h + 15) & 0xFFF0;
     if (x == -10000.0f) {
-        window->pos_x = (576.0f - w) / 2;
+        window->pos_x = (HU_DISP_WIDTHF - w) / 2;
     } else {
         window->pos_x = x;
     }
     if (y == -10000.0f) {
-        window->pos_y = (480.0f - h) / 2;
+        window->pos_y = (HU_DISP_HEIGHTF - h) / 2;
     } else {
         window->pos_y = y;
     }
@@ -427,7 +428,7 @@ static void MesDispFunc(HuSprite *sprite) {
     if (window->num_chars != 0) {
         group = &HuSprGrpData[window->group];
         GXInvalidateTexAll();
-        C_MTXOrtho(proj, 0.0f, 480.0f, 0.0f, 576.0f, 0.0f, 10.0f);
+        C_MTXOrtho(proj, 0.0f, HU_DISP_HEIGHTF, 0.0f, HU_DISP_WIDTHF, 0.0f, 10.0f);
         GXSetProjection(proj, GX_ORTHOGRAPHIC);
         GXClearVtxDesc();
         GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -1819,7 +1820,7 @@ s16 HuWinExCreateStyled(float x, float y, s16 w, s16 h, s16 portrait, s16 frame)
     s16 window;
 
     if (portrait >= 0) {
-        h = (h < 0x54) ? 0x54 : h;
+        h = (h < 84) ? 84 : h;
     }
     window = HuWinCreate(x, y, w, h, frame);
     window_ptr = &winData[window];
