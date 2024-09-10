@@ -7,6 +7,8 @@
 #include "game/pad.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
+#include "game/disp.h"
+
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
@@ -52,10 +54,10 @@ static s16 focusMdl = -1;
 
 static float overhead2DPos[][2] = {
     {  48.0f,  72.0f },
-    { 528.0f,  72.0f },
-    {  48.0f, 408.0f },
-    { 528.0f, 408.0f },
-    { 288.0f,  72.0f }
+    { HU_DISP_WIDTH-48,  72.0f },
+    {  48.0f, HU_DISP_HEIGHT-72 },
+    { HU_DISP_WIDTH-48, HU_DISP_HEIGHT-72 },
+    { HU_DISP_CENTERX,  72.0f }
 };
 
 static float mapViewMinZ[] = {
@@ -534,7 +536,7 @@ static void UpdateOverheadView(omObjData *arg0) {
     }
     for (i = 0; i < 5; i++) {
         var_r29 = overhead2DPos[i];
-        sp20.x = var_r29[0] - 288.0f;
+        sp20.x = var_r29[0] - HU_DISP_CENTERX;
         sp20.y = var_r29[1] - 240.0f;
         sp20.z = 1000.0f;
         if (i != 4) {
@@ -545,7 +547,7 @@ static void UpdateOverheadView(omObjData *arg0) {
             BoardSpacePosGet(0, BoardSpaceStarGetCurr(), &sp14);
         }
         Hu3D3Dto2D(&sp14, 1, &sp14);
-        sp14.x -= 288.0f;
+        sp14.x -= HU_DISP_CENTERX;
         sp14.y -= 240.0f;
         VECSubtract(&sp20, &sp14, &sp8);
         sp8.z = 0.0f;

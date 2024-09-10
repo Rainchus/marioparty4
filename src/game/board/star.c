@@ -1,6 +1,8 @@
 #include "game/board/star.h"
 #include "game/audio.h"
 #include "game/data.h"
+#include "game/disp.h"
+
 #include "game/flag.h"
 #include "game/gamework.h"
 #include "game/gamework_data.h"
@@ -708,7 +710,7 @@ void BoardStarShowNext(s32 arg0) {
     }
     BoardViewMoveStart(&sp38, &sp50, var_r27);
     showNextObj->trans.x = 68.0f;
-    showNextObj->trans.y = 430.0f;
+    showNextObj->trans.y = HU_DISP_HEIGHT-50;
     showNextObj->trans.z = 100.0f;
     sp44.x = showNextObj->trans.x;
     sp44.y = showNextObj->trans.y;

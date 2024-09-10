@@ -10,6 +10,8 @@
 #include "game/hsfdraw.h"
 #include "game/hsfex.h"
 #include "game/objsub.h"
+#include "game/disp.h"
+
 #include "math.h"
 
 static void WarpInit(s32);
@@ -212,8 +214,8 @@ static void WarpImpact(s32 player) {
     f32 angle;
     s16 i;
 
-    pos.x = 288.0f;
-    pos.y = 240.0f;
+    pos.x = HU_DISP_CENTERX;
+    pos.y = HU_DISP_CENTERY;
     pos.z = 700.0f;
     Hu3D2Dto3D(&pos, 1, &pos);
     BoardModelPosSetV(warpImpactMdl, &pos);

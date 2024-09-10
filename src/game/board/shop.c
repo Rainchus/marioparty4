@@ -4,6 +4,7 @@
 #include "game/gamework_data.h"
 #include "game/object.h"
 #include "game/objsub.h"
+#include "game/disp.h"
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/sprite.h"
@@ -472,12 +473,12 @@ static void CreateShopWin(void) {
     var_r30->unk01 = 0xC;
     var_r30->unk04 = 0;
     shopWinObj = var_r31;
-    var_r30->unk06 = HuWinCreate(36.0f, 344.0f, 0x1F8, 0x60, 0);
+    var_r30->unk06 = HuWinCreate(36.0f, HU_DISP_HEIGHT-136, 0x1F8, 0x60, 0);
     HuWinMesSpeedSet(var_r30->unk06, 0);
     HuWinDrawNoSet(var_r30->unk06, 0x40);
     HuWinExAnimIn(var_r30->unk06);
     sp8.x = 84.0f;
-    sp8.y = 392.0f;
+    sp8.y = HU_DISP_HEIGHT-88;
     sp8.z = 400.0f;
     var_r31->scale.x = var_r31->scale.y = var_r31->scale.z = 0.25f;
     Hu3D2Dto3D(&sp8, 1, &sp8);

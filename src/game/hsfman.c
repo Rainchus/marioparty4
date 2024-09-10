@@ -10,6 +10,8 @@
 #include "game/perf.h"
 #include "game/ShapeExec.h"
 #include "game/sprite.h"
+#include "game/disp.h"
+
 #include "dolphin/gx/GXVert.h"
 
 #include "math.h"
@@ -1083,12 +1085,12 @@ CameraData defCamera = {
     20.0f,
     5000.0f,
     0.0f,
-    1.2f,
+    HU_DISP_ASPECT,
     {0.0f, 0.0f, 100.0f},
     {0.0f, 1.0f, 0.0f},
     {0.0f, 0.0f, 0.0f},
-    0, 0, 640, 480,
-    0.0f, 0.0f, 640.0f, 480.0f,
+    0, 0, HU_FB_WIDTH, HU_FB_HEIGHT,
+    0.0f, 0.0f, HU_FB_WIDTH, HU_FB_HEIGHT,
     0.0f, 1.0f
 };
 
@@ -1289,7 +1291,7 @@ BOOL Hu3DModelCameraInfoSet(s16 arg0, u16 arg1) {
                              sp8.x, sp8.y, sp8.z, 
                              obj_copy->camera.pos.x, obj_copy->camera.pos.y, obj_copy->camera.pos.z);
             
-            Hu3DCameraPerspectiveSet(arg1, obj_copy->camera.fov, obj_copy->camera.near, obj_copy->camera.far, 1.2f);
+            Hu3DCameraPerspectiveSet(arg1, obj_copy->camera.fov, obj_copy->camera.near, obj_copy->camera.far, HU_DISP_ASPECT);
             
             temp_r28->unk_01 = arg1;
             temp_r24 = &Hu3DData[arg0];
@@ -1886,7 +1888,7 @@ void Hu3DShadowCreate(f32 arg8, f32 arg9, f32 argA) {
     Hu3DShadowData.unk_2C.x = -1.0f;
     Hu3DShadowData.unk_2C.y = 1.0f;
     Hu3DShadowData.unk_2C.z = 0.0f;
-    C_MTXLightPerspective(Hu3DShadowData.unk_68, arg8, 1.2f, 0.5f, -0.5f, 0.5f, 0.5f);
+    C_MTXLightPerspective(Hu3DShadowData.unk_68, arg8, HU_DISP_ASPECT, 0.5f, -0.5f, 0.5f, 0.5f);
     VECNormalize(&Hu3DShadowData.unk_2C, &Hu3DShadowData.unk_2C);
     Hu3DShadowData.unk_00 = 0x80;
     Hu3DShadowF = 1;
@@ -1923,7 +1925,7 @@ void Hu3DShadowExec(void) {
 
     Hu3DDrawPreInit();
     GXSetCopyClear(sp14, 0xFFFFFF);
-    C_MTXPerspective(sp18, Hu3DShadowData.unk_08.x, 1.2f, Hu3DShadowData.unk_08.y, Hu3DShadowData.unk_08.z);
+    C_MTXPerspective(sp18, Hu3DShadowData.unk_08.x, HU_DISP_ASPECT, Hu3DShadowData.unk_08.y, Hu3DShadowData.unk_08.z);
     GXSetProjection(sp18, GX_PERSPECTIVE);
     if (Hu3DShadowData.unk_02 <= 0xF0) {
         GXSetScissor(2, 2, Hu3DShadowData.unk_02 * 2 - 4, Hu3DShadowData.unk_02 * 2 - 4);
@@ -2054,7 +2056,7 @@ s16 Hu3DProjectionCreate(void *arg0, f32 arg8, f32 arg9, f32 argA) {
     var_r31->unk_2C.x = -1.0f;
     var_r31->unk_2C.y = 1.0f;
     var_r31->unk_2C.z = 0.0f;
-    C_MTXLightPerspective(var_r31->unk_68, arg8, 1.2f, 0.5f, -0.5f, 0.5f, 0.5f);
+    C_MTXLightPerspective(var_r31->unk_68, arg8, HU_DISP_ASPECT, 0.5f, -0.5f, 0.5f, 0.5f);
     VECNormalize(&var_r31->unk_2C, &var_r31->unk_2C);
     var_r31->unk_00 = 0x80;
     Hu3DProjectionNum++;

@@ -8,6 +8,8 @@
 #include "game/window.h"
 #include "game/wipe.h"
 #include "game/pad.h"
+#include "game/disp.h"
+
 #include "game/minigame_seq.h"
 
 #include "math.h"
@@ -59,23 +61,23 @@ static s32 SeqUpdateFlip(SeqWork *work);
 OverlayID mgSeqOvlPrev = OVL_INVALID;
 
 static SeqInfo seqInfoTbl[] = {
-	{ NULL, NULL, 292.0f, 240.0f, 1.0f, 1.0f, 60 },
-	{ SeqInitTimer, SeqUpdateTimer, 292.0f, 64.0f, 1.0f, 1.0f, 60 },
-	{ SeqInitType2, SeqUpdateType2, 292.0f, 240.0f, 0.5f, 0.5f, 60 },
-	{ SeqInitMGBasic, SeqUpdateMGBasic, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitMGCommon, SeqUpdateMG1vs3, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitWin, SeqUpdateWin, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitMGCommon, SeqUpdateMGBattle, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitMGCommon, SeqUpdateMGStory, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitMGBasic, SeqUpdateMGBasic, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitMGCommon, SeqUpdateMG2vs2, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitFlip, SeqUpdateFlip, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitMGCommon, SeqUpdateMGBowser, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitWin, SeqUpdateWin, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ SeqInitDraw, SeqUpdateDraw, 292.0f, 240.0f, 1.0f, 1.0f, 60 },
-	{ SeqInitRecord, SeqUpdateRecord, 292.0f, 240.0f, 1.0f, 1.0f, 180 },
-	{ NULL, NULL, 292.0f, 240.0f, 1.0f, 1.0f, 60 },
-	{ NULL, NULL, 292.0f, 240.0f, 1.0f, 1.0f, 60 },
+	{ NULL, NULL, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
+	{ SeqInitTimer, SeqUpdateTimer, HU_DISP_CENTERX+4, 64.0f, 1.0f, 1.0f, 60 },
+	{ SeqInitType2, SeqUpdateType2, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 0.5f, 0.5f, 60 },
+	{ SeqInitMGBasic, SeqUpdateMGBasic, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitMGCommon, SeqUpdateMG1vs3, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitWin, SeqUpdateWin, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitMGCommon, SeqUpdateMGBattle, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitMGCommon, SeqUpdateMGStory, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitMGBasic, SeqUpdateMGBasic, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitMGCommon, SeqUpdateMG2vs2, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitFlip, SeqUpdateFlip, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitMGCommon, SeqUpdateMGBowser, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitWin, SeqUpdateWin, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ SeqInitDraw, SeqUpdateDraw, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
+	{ SeqInitRecord, SeqUpdateRecord, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+	{ NULL, NULL, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
+	{ NULL, NULL, HU_DISP_CENTERX+4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
 };
 
 static s32 seqType2SprTbl[6] = {
@@ -956,7 +958,7 @@ static s32 SeqInitMGBasic(SeqWork *work, va_list params)
 	
 	for(i=0; i<work->word_len; i++) {
 		HuSprTPLvlSet(work->spr_grp[word_grp], i, 1.0f);
-		HuSprPosSet(work->spr_grp[word_grp], i, -100.0f, 240.0f);
+		HuSprPosSet(work->spr_grp[word_grp], i, -100.0f, HU_DISP_CENTERY);
 	}
 	if(seqPauseF) {
 		work->type = 2;
@@ -1185,7 +1187,7 @@ static s32 SeqInitMGCommon(SeqWork *work, va_list params)
 		HuSprGrpPosSet(work->spr_grp[word_grp], 0.0f, 0.0f);
 		for(j=0; j<work->word_len; j++) {
 			HuSprTPLvlSet(work->spr_grp[word_grp], j, tp_lvl);
-			HuSprPosSet(work->spr_grp[word_grp], j, -100.0f, 240.0f);
+			HuSprPosSet(work->spr_grp[word_grp], j, -100.0f, HU_DISP_CENTERY);
 			HuSprPriSet(work->spr_grp[word_grp], j, i+5);
 			HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
 		}
@@ -1299,11 +1301,11 @@ static s32 SeqUpdateMGBattle(SeqWork *work)
 									discard_cnt = 0;
 									scale_ang = 0.0f;
 									for(idx=0; idx<40.0f-time; idx++) {
-										if(x+ofs_x > 576 || x+ofs_x < 0) {
+										if(x+ofs_x > HU_DISP_WIDTH || x+ofs_x < 0) {
 											ofs_x = -ofs_x;
 											discard_cnt++;
 										}
-										if(y+ofs_y > 480 || y+ofs_y < 0) {
+										if(y+ofs_y > HU_DISP_HEIGHT || y+ofs_y < 0) {
 											ofs_y = -ofs_y;
 											discard_cnt++;
 										}
@@ -1376,12 +1378,12 @@ static s32 SeqUpdateMGBattle(SeqWork *work)
 							time = work->time-80;
 							for(j=0; j<work->word_len; j++) {
 								pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(j*56);
-								HuSprPosSet(work->spr_grp[0], j, pos_x+((288.0f-pos_x)*(1.0-cos((M_PI*(time*6.0))/180.0))), work->y);
+								HuSprPosSet(work->spr_grp[0], j, pos_x+((HU_DISP_CENTERX-pos_x)*(1.0-cos((M_PI*(time*6.0))/180.0))), work->y);
 							}
 							if(time == 15.0f) {
 								for(j=0; j<work->word_len; j++) {
 									HuSprAttrReset(work->spr_grp[1], j, HUSPR_ATTR_DISPOFF);
-									HuSprPosSet(work->spr_grp[1], j, 288.0f, work->y);
+									HuSprPosSet(work->spr_grp[1], j, HU_DISP_CENTERX, work->y);
 									HuSprTPLvlSet(work->spr_grp[1], j, 1.0f);
 								}
 							}
@@ -1397,9 +1399,9 @@ static s32 SeqUpdateMGBattle(SeqWork *work)
 									if(scale < 0.0f) {
 										scale = 0.0f;
 									}
-									HuSprPosSet(work->spr_grp[0], j, 288.0f, work->y+((-100.0f-work->y)*(time/20.0f)));
+									HuSprPosSet(work->spr_grp[0], j, HU_DISP_CENTERX, work->y+((-100.0f-work->y)*(time/20.0f)));
 									HuSprTPLvlSet(work->spr_grp[0], j, scale);
-									HuSprPosSet(work->spr_grp[1], j, 288.0f, work->y+((580.0f-work->y)*(time/20.0f)));
+									HuSprPosSet(work->spr_grp[1], j, HU_DISP_CENTERX, work->y+((580.0f-work->y)*(time/20.0f)));
 									HuSprTPLvlSet(work->spr_grp[1], j, scale);
 								}
 							}
@@ -1601,11 +1603,11 @@ static s32 SeqUpdateMG1vs3(SeqWork *work)
 									if(time <= 20) {
 										float pos_base = (28.0f+(work->x-(0.5f*(work->word_len*56))))+(j*56);
 										pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+((work->word_len-j-1)*56);
-										HuSprPosSet(work->spr_grp[i], j, pos_base+((time/20.0f)*(pos_x-pos_base)), work->y+((440.0f-work->y)*(time/20.0f)));
+										HuSprPosSet(work->spr_grp[i], j, pos_base+((time/20.0f)*(pos_x-pos_base)), work->y+(((HU_DISP_HEIGHT-40)-work->y)*(time/20.0f)));
 									} else {
 										time -= 20.0f;
 										pos_x = (28.0f+(work->x-(0.5f*(work->word_len*56))))+((work->word_len-j-1)*56);
-										pos_y = 440.0f;
+										pos_y = HU_DISP_HEIGHT-40;
 										HuSprPosSet(work->spr_grp[i], j, pos_x, pos_y+((-40.0f-pos_y)*(time/20.0f)));
 									}
 								}
@@ -1708,11 +1710,11 @@ static s32 SeqUpdateMGStory(SeqWork *work)
 								continue;
 							}
 							pos_x = -50.0f;
-							HuSprPosSet(work->spr_grp[0], idx, pos_x+((288.0f-pos_x)*(time/15.0f)), work->y);
+							HuSprPosSet(work->spr_grp[0], idx, pos_x+((HU_DISP_CENTERX-pos_x)*(time/15.0f)), work->y);
 							HuSprTPLvlSet(work->spr_grp[0], idx, 1.0f);
 							HuSprZRotSet(work->spr_grp[0], idx, (1.0-(time/15.0f))*180.0);
-							pos_x = 626.0f;
-							HuSprPosSet(work->spr_grp[1], idx, pos_x+((288.0f-pos_x)*(time/15.0f)), work->y);
+							pos_x = HU_DISP_WIDTH+50;
+							HuSprPosSet(work->spr_grp[1], idx, pos_x+((HU_DISP_CENTERX-pos_x)*(time/15.0f)), work->y);
 							HuSprTPLvlSet(work->spr_grp[1], idx, 1.0f);
 							HuSprZRotSet(work->spr_grp[1], idx, (1.0-(time/15.0f))*-180.0);
 						}
@@ -1726,7 +1728,7 @@ static s32 SeqUpdateMGStory(SeqWork *work)
 							time = work->time-35;
 							for(idx=0; idx<work->word_len; idx++) {
 								pos_x = (work->x-(0.5f*(work->word_len*56)))+28.0f+(idx*56);
-								HuSprPosSet(work->spr_grp[0], idx, 288.0f+((pos_x-288.0f)*(time/10.0f)), work->y);
+								HuSprPosSet(work->spr_grp[0], idx, HU_DISP_CENTERX+((pos_x-HU_DISP_CENTERX)*(time/10.0f)), work->y);
 							}
 						} else {
 							if(work->time > 55) {
@@ -2358,7 +2360,7 @@ static s32 SeqUpdateMGBowser(SeqWork *work)
 								pos_x = (28.0f+(0.5f*-(work->word_len*56)))+(idx*56);
 								angle = 180.0*(atan2(pos_x, center_x)/M_PI);
 								pos_x = work->x+(center_x*sin(M_PI*(angle+time_angle)/180.0));
-								pos_y = work->y-(240.0*(1.0-(time/50.0f)));
+								pos_y = work->y-(HU_DISP_CENTERY*(1.0-(time/50.0f)));
 								HuSprPosSet(work->spr_grp[0], idx, pos_x, pos_y);
 								temp_f25 = 0.9+(0.1*cos(M_PI*(angle+time_angle)/180.0));
 								HuSprScaleSet(work->spr_grp[0], idx, temp_f25*cos(M_PI*(angle+time_angle)/180.0), temp_f25);
@@ -2439,12 +2441,12 @@ static s32 SeqUpdateMGBowser(SeqWork *work)
 						if(work->time > 80 && work->time <= 125) {
 							static float letterOfs[] = {
 								-30, -30,
-								606, -30,
-								340, 510,
-								606, 510,
-								-30, 450,
-								606, 120,
-								450, -30,
+								HU_DISP_WIDTH+30, -30,
+								HU_DISP_CENTERX+52, HU_DISP_HEIGHT+30,
+								HU_DISP_WIDTH+30, HU_DISP_HEIGHT+30,
+								-30, HU_DISP_HEIGHT-30,
+								HU_DISP_WIDTH+30, 120,
+								HU_DISP_CENTERX+162, -30,
 							};
 							for(i=0; i<4; i++) {
 								time = work->time-80-i;
@@ -2524,7 +2526,7 @@ static s32 SeqInitDraw(SeqWork *work, va_list params)
 		
 		word_grp = SeqMakeWord(work, wordMgTbl[2+word_ofs], word_flag);
 	}
-	HuSprGrpPosSet(work->spr_grp[word_grp], 288.0f, 240.0f);
+	HuSprGrpPosSet(work->spr_grp[word_grp], HU_DISP_CENTERX, HU_DISP_CENTERY);
 	work->param[0] = 3;
 	return 1;
 }
@@ -2790,27 +2792,27 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
 		if(num_winners == 1) {
 			word_x = 32.0f+((float)winnerNameW[0]+(winnerNameW[1]*work->win_scale));
 			if(j == 0) {
-				word_x = (((576.0f-word_x)/2.0f)+(word_x-(winnerNameW[0]/2)))-288.0f;
+				word_x = (((HU_DISP_WIDTH-word_x)/2.0f)+(word_x-(winnerNameW[0]/2)))-HU_DISP_CENTERX;
 			} else {
-				word_x = (((576.0f-word_x)/2.0f)+(winnerNameW[1]/2))-288.0f;
+				word_x = (((HU_DISP_WIDTH-word_x)/2.0f)+(winnerNameW[1]/2))-HU_DISP_CENTERX;
 			}
 		} else {
-			if(abs(winPosOfs[num_winners-1][j][0]) == 144.0f) {
-				if(winnerNameW[j]+32 < 288.0f) {
-					word_x = 176.0f;
+			if(abs(winPosOfs[num_winners-1][j][0]) == (HU_DISP_WIDTHF/4)) {
+				if(winnerNameW[j]+32 < HU_DISP_CENTERX) {
+					word_x = (HU_DISP_WIDTHF/4)+32.0f;
 				} else {
 					word_x = 32.0f+((winnerNameW[j]*work->win_scale)/2.0f);
 				}
 				if(winPosOfs[num_winners-1][j][0] < 0) {
-					word_x = -(288.0f-word_x);
+					word_x = -(HU_DISP_CENTERX-word_x);
 				} else {
-					word_x = (576.0f-word_x)-288.0f;
+					word_x = (HU_DISP_WIDTH-word_x)-HU_DISP_CENTERX;
 				}
 			} else {
 				word_x = winPosOfs[num_winners-1][j][0];
 			}
 		}
-		HuSprGrpPosSet(work->spr_grp[j], 288.0f+word_x, 240.0f+winPosOfs[num_winners-1][j][1]);
+		HuSprGrpPosSet(work->spr_grp[j], HU_DISP_CENTERX+word_x, HU_DISP_CENTERY+winPosOfs[num_winners-1][j][1]);
 	}
 	if(seqPauseF) {
 		work->type = 1;
@@ -2896,24 +2898,24 @@ static s32 SeqUpdateWin(SeqWork *work)
 						}
 						if(work->word_len == 2) {
 							pos_x = winnerNameW[1]+winnerNameW[0]+32;
-							pos_x = (((576.0f-pos_x)/2.0f)+(winnerNameW[1]/2))-288.0f;
+							pos_x = (((HU_DISP_WIDTH-pos_x)/2.0f)+(winnerNameW[1]/2))-HU_DISP_CENTERX;
 						} else {
-							if(abs(winPosOfs[work->word_len-2][idx][0]) == 144.0f) {
-								if(winnerNameW[idx]+32 < 288.0f) {
-									pos_x = 176.0f;
+							if(abs(winPosOfs[work->word_len-2][idx][0]) == (HU_DISP_WIDTHF/4)) {
+								if(winnerNameW[idx]+32 < HU_DISP_CENTERX) {
+									pos_x = (HU_DISP_WIDTHF/4)+32;
 								} else {
 									pos_x = 32.0f+((winnerNameW[idx]*work->win_scale)/2.0f);
 								}
 								if(winPosOfs[work->word_len-2][idx][0] < 0) {
-									pos_x = -(288.0f-pos_x);
+									pos_x = -(HU_DISP_CENTERX-pos_x);
 								} else {
-									pos_x = (576.0f-pos_x)-288.0f;
+									pos_x = (HU_DISP_WIDTH-pos_x)-HU_DISP_CENTERX;
 								}
 							} else {
 								pos_x = winPosOfs[work->word_len-2][idx][0];
 							}
 						}
-						HuSprGrpPosSet(work->spr_grp[idx], (288.0f+pos_x)+ofs[0], ofs[1]+(240.0f+winPosOfs[work->word_len-2][idx][1]));
+						HuSprGrpPosSet(work->spr_grp[idx], (HU_DISP_CENTERX+pos_x)+ofs[0], ofs[1]+(HU_DISP_CENTERY+winPosOfs[work->word_len-2][idx][1]));
 					}
 				}
 				if(work->time == 125) {
@@ -3058,7 +3060,7 @@ static s32 SeqInitRecord(SeqWork *work, va_list params)
 			}
 		}
 	}
-	HuSprGrpPosSet(spr_grp, 288.0f, 240.0f);
+	HuSprGrpPosSet(spr_grp, HU_DISP_CENTERX, HU_DISP_CENTERY);
 	work->param[0] = 3;
 	return 1;
 }
@@ -3159,6 +3161,10 @@ void MGSeqPauseInit(void)
 	pauseWaitF = 0;
 }
 
+#define PAUSE_WIN_X (HU_DISP_CENTERX-206)
+#define PAUSE_WIN_DIST (HU_DISP_CENTERX+112)
+#define PAUSE_EXIT_Y (HU_DISP_HEIGHT-80)
+
 static void PauseProc(void)
 {
 	s16 mg;
@@ -3195,12 +3201,12 @@ static void PauseProc(void)
 	if(mgInfoTbl[mg].inst_mess[1] == 0 && mgInfoTbl[mg].inst_mess[2] == 0) {
 		for(i=1; i<=20; i++) {
 			ratio = sin(M_PI*(i*4.5f)/180.0);
-			HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*290)-50.0f);
+			HuSprGrpPosSet(work.spr_grp[0], HU_DISP_CENTERX, (ratio*290)-50.0f);
 			HuPrcVSleep();
 		}
 	} else {
 		if(mgPracticeEnableF && !_CheckFlag(FLAG_ID_MAKE(1, 12))) {
-			window[2] = HuWinExCreateStyled(-10000.0f, 400.0f, 412, 42, -1, 0);
+			window[2] = HuWinExCreateStyled(-10000.0f, PAUSE_EXIT_Y, 412, 42, -1, 0);
 			HuWinPriSet(window[2], 0);
 			HuWinDispOn(window[2]);
 			HuWinMesSpeedSet(window[2], 0);
@@ -3209,12 +3215,12 @@ static void PauseProc(void)
 		}
 		if(mgInfoTbl[mg].inst_mess[2]) {
 			s16 insert_idx;
-			window[0] = HuWinExCreateStyled(-10000.0f, 140.0f, 412, 120, -1, 0);
+			window[0] = HuWinExCreateStyled(-10000.0f, HU_DISP_CENTERY-100, 412, 120, -1, 0);
 			HuWinPriSet(window[0], 0);
 			HuWinDispOn(window[0]);
 			HuWinMesSpeedSet(window[0], 0);
 			HuWinMesSet(window[0], mgInfoTbl[mg].inst_mess[1]);
-			window[1] = HuWinExCreateStyled(-10000.0f, 276.0f, 412, 120, -1, 0);
+			window[1] = HuWinExCreateStyled(-10000.0f, HU_DISP_CENTERY+36, 412, 120, -1, 0);
 			HuWinPriSet(window[1], 0);
 			HuWinDispOn(window[1]);
 			HuWinMesSpeedSet(window[1], 0);
@@ -3228,26 +3234,26 @@ static void PauseProc(void)
 			}
 			for(i=1; i<=20; i++) {
 				ratio = sin(M_PI*(i*4.5f)/180.0);
-				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
-				HuWinPosSet(window[0], (482*ratio)-400, 140);
-				HuWinPosSet(window[1], 400+(ratio*-318), 272);
+				HuSprGrpPosSet(work.spr_grp[0], HU_DISP_CENTERX, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (PAUSE_WIN_DIST+PAUSE_WIN_X)*ratio-PAUSE_WIN_DIST, HU_DISP_CENTERY-100);
+				HuWinPosSet(window[1], -(PAUSE_WIN_DIST-PAUSE_WIN_X)*ratio+PAUSE_WIN_DIST, HU_DISP_CENTERY+32);
 				if(window[2] != -1) {
-					HuWinPosSet(window[2], 82, 404+(100*(1.0-ratio)));
+					HuWinPosSet(window[2], PAUSE_WIN_X, (PAUSE_EXIT_Y+4)+(100*(1.0-ratio)));
 				}
 				HuPrcVSleep();
 			}
 		} else {
-			window[0] = HuWinExCreateStyled(-10000.0f, 170.0f, 412, 120, -1, 0);
+			window[0] = HuWinExCreateStyled(-10000.0f, HU_DISP_CENTERY-70, 412, 120, -1, 0);
 			HuWinPriSet(window[0], 0);
 			HuWinDispOn(window[0]);
 			HuWinMesSpeedSet(window[0], 0);
 			HuWinMesSet(window[0], mgInfoTbl[mg].inst_mess[1]);
 			for(i=1; i<=20; i++) {
 				ratio = sin(M_PI*(i*4.5f)/180.0);
-				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
-				HuWinPosSet(window[0], (482*ratio)-400, 170);
+				HuSprGrpPosSet(work.spr_grp[0], HU_DISP_CENTERX, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (PAUSE_WIN_DIST+PAUSE_WIN_X)*ratio-PAUSE_WIN_DIST, HU_DISP_CENTERY-70);
 				if(window[2] != -1) {
-					HuWinPosSet(window[2], 400+(ratio*-318), 404);
+					HuWinPosSet(window[2], -(PAUSE_WIN_DIST-PAUSE_WIN_X)*ratio+PAUSE_WIN_DIST, PAUSE_EXIT_Y+4);
 				}
 				HuPrcVSleep();
 			}
@@ -3262,28 +3268,28 @@ static void PauseProc(void)
 	if(window[0] == -1 && window[1] == -1) {
 		for(i=1; i<=10; i++) {
 			ratio = cos(M_PI*(i*9.0f)/180.0);
-			HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*290)-50.0f);
+			HuSprGrpPosSet(work.spr_grp[0], HU_DISP_CENTERX, (ratio*290)-50.0f);
 			HuPrcVSleep();
 		}
 	} else {
 		if(window[1] != -1) {
 			for(i=1; i<=10; i++) {
 				ratio = cos(M_PI*(i*9.0f)/180.0);
-				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
-				HuWinPosSet(window[0], (482*ratio)-400, 140);
-				HuWinPosSet(window[1], 400+(ratio*-318), 272);
+				HuSprGrpPosSet(work.spr_grp[0], HU_DISP_CENTERX, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (PAUSE_WIN_DIST+PAUSE_WIN_X)*ratio-PAUSE_WIN_DIST, HU_DISP_CENTERY-100);
+				HuWinPosSet(window[1], -(PAUSE_WIN_DIST-PAUSE_WIN_X)*ratio+PAUSE_WIN_DIST, HU_DISP_CENTERY+32);
 				if(window[2] != -1) {
-					HuWinPosSet(window[2], 82, 404+(100*(1.0-ratio)));
+					HuWinPosSet(window[2], PAUSE_WIN_X, (PAUSE_EXIT_Y+4)+(100*(1.0-ratio)));
 				}
 				HuPrcVSleep();
 			}
 		} else {
 			for(i=1; i<=10; i++) {
 				ratio = cos(M_PI*(i*9.0f)/180.0);
-				HuSprGrpPosSet(work.spr_grp[0], 288.0f, (ratio*150)-50.0f);
-				HuWinPosSet(window[0], (482*ratio)-400, 170);
+				HuSprGrpPosSet(work.spr_grp[0], HU_DISP_CENTERX, (ratio*150)-50.0f);
+				HuWinPosSet(window[0], (PAUSE_WIN_DIST+PAUSE_WIN_X)*ratio-PAUSE_WIN_DIST, HU_DISP_CENTERY-70);
 				if(window[2] != -1) {
-					HuWinPosSet(window[2], 400+(ratio*-318), 404);
+					HuWinPosSet(window[2], -(PAUSE_WIN_DIST-PAUSE_WIN_X)*ratio+PAUSE_WIN_DIST, PAUSE_EXIT_Y+4);
 				}
 				HuPrcVSleep();
 			}
@@ -3398,8 +3404,8 @@ static void PracticeProc(void)
 	float time;
 	static float yPosTbl[] = {
 		53,
-		424,
-		240
+		HU_DISP_HEIGHT-56,
+		HU_DISP_CENTERY
 	};
 	time = 0.0f;
 	for(i=0; practiceTbl[i][0] != OVL_INVALID; i++) {
@@ -3413,7 +3419,7 @@ static void PracticeProc(void)
 	anim = HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 5)));
 	sprite = HuSprCreate(anim, 1, 0);
 	HuSprGrpMemberSet(group, 0, sprite);
-	HuSprPosSet(group, 0, 288.0f, yPosTbl[practice[1]]);
+	HuSprPosSet(group, 0, HU_DISP_CENTERX, yPosTbl[practice[1]]);
 	do {
 		if(!wipeFadeInF || WipeStatGet()) {
 			HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);

@@ -19,6 +19,7 @@
 #include "game/board/tutorial.h"
 #include "game/board/ui.h"
 #include "game/pad.h"
+#include "game/disp.h"
 #include "game/msm.h"
 
 typedef struct camera_view {
@@ -1135,7 +1136,7 @@ void BoardCameraInit(void)
 	camera->fov = 25;
 	camera->near = 100;
 	camera->far = 13000;
-	camera->aspect = 1.2;
+	camera->aspect = HU_DISP_ASPECT;
 	camera->viewport_x = 0;
 	camera->viewport_y = 0;
 	camera->viewport_h = 480;
@@ -1638,9 +1639,9 @@ static void DrawFilter(ModelData *model, Mtx matrix)
 	}
 	work = OM_GET_WORK_PTR(filterObj, FilterWork);
 	x1 = 0.0f;
-	x2 = 640.0f;
+	x2 = HU_FB_WIDTH;
 	y1 = 0.0f;
-	y2 = 480.0f;
+	y2 = HU_FB_HEIGHT;
 	MTXOrtho(proj, y1, y2, x1, x2, 0, 10);
 	GXSetProjection(proj, GX_ORTHOGRAPHIC);
 	MTXIdentity(modelview);
@@ -2003,7 +2004,7 @@ void BoardLast5GfxInit(void)
 		HuSprAttrSet(work->group, 1, HUSPR_ATTR_NOANIM);
 		object->trans.x = 0.0f;
 		HuSprGrpTPLvlSet(work->group, object->trans.x);
-		HuSprGrpPosSet(work->group, 288, 72);
+		HuSprGrpPosSet(work->group, HU_DISP_CENTERX, 72);
 		HuAudFXPlay(838);
 		work->time = 0;
 	}
