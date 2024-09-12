@@ -88,6 +88,7 @@ Vec lbl_1_bss_290[2];
 float lbl_1_bss_288[2];
 s16 lbl_1_bss_148[20][8];
 s16 lbl_1_bss_8[20][8];
+s16 lbl_1_bss_6;
 s16 lbl_1_bss_4;
 s32 lbl_1_bss_0;
 
@@ -656,9 +657,9 @@ void fn_1_470(void)
         default:
             break;
     }
-    HuWinInsertMesSizeGet((u32)GWPlayerCfg[lbl_1_bss_2D6].character, 0);
+    HuWinInsertMesSizeGet((8+GWPlayerCfg[lbl_1_bss_2D6].character)-8, 0);
     HuWinInsertMesSizeGet(temp_r24, 1);
-    HuWinInsertMesSizeGet((u32)GWPlayerCfg[lbl_1_bss_2D4].character, 2);
+    HuWinInsertMesSizeGet((8+GWPlayerCfg[lbl_1_bss_2D4].character)-8, 2);
     HuWinMesMaxSizeGet(1, sp8, temp_r28);
     temp_r30 = HuWinExCreateStyled(-10000, 340, sp8[0], sp8[1], -1, 1);
     HuWinExAnimIn(temp_r30);
@@ -692,7 +693,7 @@ void fn_1_470(void)
     }
     for (temp_r31 = 0; temp_r31 <= 20; temp_r31++) {
         for (temp_r27 = 0; temp_r27 < 3; temp_r27++) {
-            lbl_1_bss_34C[temp_r27].y = (180.0 * cosd(4.5 * temp_r29)) - 100.0;
+            lbl_1_bss_34C[temp_r27].y = (180.0 * cosd(4.5 * temp_r31)) - 100.0;
         }
         HuPrcVSleep();
     }
