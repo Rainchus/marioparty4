@@ -1126,7 +1126,7 @@ config.libs = [
     Rel(
         "m444dll",  # Reversal of Fortune
         objects={
-            Object(NonMatching, "REL/m444dll/main.c"),
+            Object(Matching, "REL/m444dll/main.c"),
             Object(Matching, "REL/m444dll/pinball.c"),
             Object(Matching, "REL/m444dll/datalist.c"),
             Object(Matching, "REL/m444dll/shadow.c"),
