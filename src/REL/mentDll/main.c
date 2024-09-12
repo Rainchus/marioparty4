@@ -3506,12 +3506,12 @@ void fn_1_13EDC(void)
 
     var_r31 = &lbl_1_bss_64;
     var_r31->unk_08 = 0.0f;
-    var_r31->unk_0C = 0.0f;
+    var_r31->unk_0C = 215.0f;
     var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = -10.0f;
+    var_r31->unk_20 = 0.0f;
     var_r31->unk_24 = 0.0f;
     var_r31->unk_28 = 0.0f;
-    var_r31->unk_38 = 2900.0f;
+    var_r31->unk_38 = 1600.0f;
 }
 
 void fn_1_13F68(void)
@@ -3677,7 +3677,7 @@ void fn_1_148B0(void)
     sp8[9] = 0.0f;
     sp8[10] = 0.0f;
     sp8[14] = 1100.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 30.0f, 10.0f);
+    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 10.0f, 5.0f);
 }
 
 void fn_1_149A0(void)
@@ -3688,7 +3688,7 @@ void fn_1_149A0(void)
     var_r31->unk_08 = 0.0f;
     var_r31->unk_0C = 125.0f;
     var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = 5.0f;
+    var_r31->unk_20 = -5.0f;
     var_r31->unk_24 = 0.0f;
     var_r31->unk_28 = 0.0f;
     var_r31->unk_38 = 1750.0f;
@@ -3702,7 +3702,7 @@ void fn_1_14A2C(void)
     var_r31->unk_08 = 1200.0f;
     var_r31->unk_0C = 125.0f;
     var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = -4.0f;
+    var_r31->unk_20 = -5.0f;
     var_r31->unk_24 = 0.0f;
     var_r31->unk_28 = 0.0f;
     var_r31->unk_38 = 1750.0f;
@@ -3716,7 +3716,7 @@ void fn_1_14AB8(void)
     var_r31 = &lbl_1_bss_64;
     sp8[2] = 0.0f;
     sp8[3] = 125.0f;
-    sp8[4] = 0.0f;
+    sp8[4] = 460.0f;
     sp8[8] = 0.0f;
     sp8[9] = 0.0f;
     sp8[10] = 0.0f;
@@ -4087,86 +4087,71 @@ s32 fn_1_1648C(MentDllUnkBss3114Struct *arg0)
 
     var_r28 = 0;
     var_r29 = lbl_1_bss_35BC[0].unk_30;
-loop_1:
-    fn_1_4D8();
-    var_r28 = 0;
-    var_r26 = arg0->unk_64;
-    if (HuPadStkX[lbl_1_bss_3114->unk_6C] >= 5) {
-    block_3:
-        if (lbl_1_bss_A8[5] == 1) {
-            arg0->unk_64++;
-            var_r28 = 1;
-            if (arg0->unk_64 > 3) {
-                arg0->unk_64 = 0;
+    while(1) {
+        fn_1_4D8();
+        var_r28 = 0;
+        var_r26 = arg0->unk_64;
+        if(HuPadStkX[lbl_1_bss_3114->unk_6C] >= 5 || (HuPadBtn[lbl_1_bss_3114->unk_6C] & PAD_BUTTON_RIGHT)) {
+            if(lbl_1_bss_A8[5] == 1) {
+                arg0->unk_64++;
+                var_r28 = 1;
+                if(arg0->unk_64 > 3) {
+                    arg0->unk_64 = 0;
+                }
+            } else {
+                arg0->unk_64++;
+                var_r28 = 1;
+                if(arg0->unk_64 > 2) {
+                    arg0->unk_64 = 0;
+                }
             }
-        }
-        else {
-            arg0->unk_64++;
-            var_r28 = 1;
-            if (arg0->unk_64 > 2) {
-                arg0->unk_64 = 0;
+        } else if(HuPadStkX[lbl_1_bss_3114->unk_6C] <= -5 || (HuPadBtn[lbl_1_bss_3114->unk_6C] & PAD_BUTTON_LEFT)) {
+            if(lbl_1_bss_A8[5] == 1) {
+                arg0->unk_64--;
+                var_r28 = -1;
+                if(arg0->unk_64 < 0) {
+                    arg0->unk_64 = 3;
+                }
+            } else {
+                arg0->unk_64--;
+                var_r28 = -1;
+                if(arg0->unk_64 < 0) {
+                    arg0->unk_64 = 2;
+                }
             }
+        } else if(HuPadBtnDown[0] & PAD_BUTTON_A) {
+            var_r27 = 1;
+            HuAudFXPlay(2);
+            break;
+        } else if(HuPadBtnDown[0] & PAD_BUTTON_B) {
+            var_r27 = 0;
+            HuAudFXPlay(3);
+            break;
         }
-    block_19:
-        if (arg0->unk_64 != var_r26) {
+        if(arg0->unk_64 != var_r26) {
             HuAudFXPlay(0);
-            for (var_r30 = 0; var_r30 <= 5; var_r30++) {
+            for(var_r30=0; var_r30<=5; var_r30++) {
                 fn_1_4D8();
-                var_f31 = fn_1_32C(lbl_1_data_57C[arg0->unk_68 % 4][0], lbl_1_data_57C[arg0->unk_68 % 4][0] + (var_r28 * 0xA), var_r30, 5.0f);
-                HuSprPosSet(var_r29, arg0->unk_58 + 0x20, var_f31, lbl_1_data_57C[arg0->unk_68 / 4][1] + 0x23);
-                HuSprPosSet(var_r29, arg0->unk_58 + 0x24, 1.0f + var_f31, lbl_1_data_57C[arg0->unk_68 / 4][1] + 0x25);
+                var_f31 = fn_1_32C(lbl_1_data_57C[arg0->unk_68%4][0], lbl_1_data_57C[arg0->unk_68%4][0]+(var_r28*10), var_r30, 5);
+                HuSprPosSet(var_r29, arg0->unk_58+32, var_f31, lbl_1_data_57C[arg0->unk_68/4][1]+35);
+                HuSprPosSet(var_r29, arg0->unk_58+36, 1+var_f31, lbl_1_data_57C[arg0->unk_68/4][1]+37);
             }
-            HuSprBankSet(var_r29, arg0->unk_58 + 0x20, arg0->unk_64);
-            for (var_r30 = 0; var_r30 <= 5; var_r30++) {
+            HuSprBankSet(var_r29, arg0->unk_58+32, arg0->unk_64);
+            for(var_r30=0; var_r30<=5; var_r30++) {
                 fn_1_4D8();
-                var_f31 = fn_1_32C(lbl_1_data_57C[arg0->unk_68 % 4][0] + (var_r28 * 0xA), lbl_1_data_57C[arg0->unk_68 % 4][0], var_r30, 5.0f);
-                HuSprPosSet(var_r29, arg0->unk_58 + 0x20, var_f31, lbl_1_data_57C[arg0->unk_68 / 4][1] + 0x23);
-                HuSprPosSet(var_r29, arg0->unk_58 + 0x24, 1.0f + var_f31, lbl_1_data_57C[arg0->unk_68 / 4][1] + 0x25);
+                var_f31 = fn_1_32C(lbl_1_data_57C[arg0->unk_68%4][0]+(var_r28*10), lbl_1_data_57C[arg0->unk_68%4][0], var_r30, 5);
+                HuSprPosSet(var_r29, arg0->unk_58+32, var_f31, lbl_1_data_57C[arg0->unk_68/4][1]+35);
+                HuSprPosSet(var_r29, arg0->unk_58+36, 1+var_f31, lbl_1_data_57C[arg0->unk_68/4][1]+37);
             }
         }
-        goto loop_1;
     }
-    if ((HuPadBtn[lbl_1_bss_3114->unk_6C] & PAD_BUTTON_RIGHT) != 0) {
-        goto block_3;
+    if(var_r27 == 1) {
+        HuSprPosSet(var_r29, arg0->unk_58+49, lbl_1_data_57C[arg0->unk_68%4][0], lbl_1_data_57C[arg0->unk_68/4][1]+35);
+        HuSprBankSet(var_r29, arg0->unk_58+49, arg0->unk_64);
+        HuSprAttrReset(var_r29, arg0->unk_58+49, 4);
+        HuSprAttrSet(var_r29, arg0->unk_58+32, 4);
     }
-    if (HuPadStkX[lbl_1_bss_3114->unk_6C] <= -5) {
-    block_10:
-        if (lbl_1_bss_A8[5] == 1) {
-            arg0->unk_64--;
-            var_r28 = -1;
-            if (arg0->unk_64 < 0) {
-                arg0->unk_64 = 3;
-            }
-        }
-        else {
-            arg0->unk_64--;
-            var_r28 = -1;
-            if (arg0->unk_64 < 0) {
-                arg0->unk_64 = 2;
-            }
-        }
-        goto block_19;
-    }
-    if ((HuPadBtn[lbl_1_bss_3114->unk_6C] & PAD_BUTTON_LEFT) != 0) {
-        goto block_10;
-    }
-    if ((HuPadBtnDown[0] & PAD_BUTTON_A) != 0) {
-        var_r27 = 1;
-        HuAudFXPlay(2);
-    }
-    else if ((HuPadBtnDown[0] & PAD_BUTTON_B) != 0) {
-        var_r27 = 0;
-        HuAudFXPlay(3);
-    }
-    else {
-        goto block_19;
-    }
-    if (var_r27 == 1) {
-        HuSprPosSet(var_r29, arg0->unk_58 + 0x31, lbl_1_data_57C[arg0->unk_68 % 4][0], lbl_1_data_57C[arg0->unk_68 / 4][1] + 0x23);
-        HuSprBankSet(var_r29, arg0->unk_58 + 0x31, arg0->unk_64);
-        HuSprAttrReset(var_r29, arg0->unk_58 + 0x31, 4);
-        HuSprAttrSet(var_r29, arg0->unk_58 + 0x20, 4);
-    }
+    
     return var_r27;
 }
 
@@ -5438,7 +5423,7 @@ void fn_1_1D4FC(MentDllUnkBss35BCStruct *arg0, s32 arg1, s32 arg2, s32 arg3)
         { 0x00000070, 0x0000011A },
         { 0x000001D2, 0x0000011A },
     };
-    arg0->unk_30 = var_r30 = HuSprGrpCreate(0x22);
+    arg0->unk_30 = var_r30 = (s16)HuSprGrpCreate(0x22);
     var_r29 = HuSprCreate(HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_MENT, 0x58)), 0x7D0, 0);
     HuSprGrpMemberSet(var_r30, 0, var_r29);
     HuSprTPLvlSet(var_r30, 0, 0.8f);
