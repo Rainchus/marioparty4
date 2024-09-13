@@ -1,15 +1,16 @@
-#include "REL/mentDll.h"
-#include "game/wipe.h"
-#include "game/board/tutorial.h"
 #include "math.h"
-#include "game/hsfman.h"
+#include "ext_math.h"
+#include "game/object.h"
 #include "game/window.h"
+#include "game/hsfman.h"
+#include "game/process.h"
+#include "game/objsub.h"
+#include "game/wipe.h"
 
 Process* lbl_1_bss_0;
 
 extern s32 _prolog();
 extern void _epilog();
-
 void fn_1_144(void);
 
 typedef void (*VoidFunc)(void);
@@ -130,146 +131,296 @@ void fn_1_6D0(void) {
     HuWinInit(1);
 }
 
-void fn_1_6F4(s16 arg0, s32 arg1, f32 arg8, f32 arg9) {
-    f32 sp24;
-    f32 sp20;
-    f32 sp1C;
-    f32 sp18;
-    f32 sp14;
-    f32 sp10;
-    f32 spC;
-    f32 sp8;
-    WindowData* temp_r29;
-    f32 temp_f24;
-    f32 temp_f25;
-    f32 temp_f26;
-    f32 temp_f27;
-    f32 temp_f28;
-    f32 temp_f29;
-    f32 temp_f30;
-    f32 temp_f31;
-    f32 var_f18;
-    f32 var_f19;
-    f32 var_f20;
-    f32 var_f21;
-    f32 var_f22;
-    f32 var_f23;
-    f32 var_f30;
-    f32 var_f31;
-    s32 var_r31;
+void fn_1_6F4(s32 window, f32 centerX, f32 centerY, s32 toSmallF)
+{
+    WindowData* winPtr;
+    f32 smallPosX;
+    f32 smallPosY;
+    f32 winPosX; 
+    f32 winPosY;
+    f32 width;
+    f32 height;
+    f32 smallScaleX;
+    f32 smallScaleY;
+    f32 posX;
+    f32 posY;
+    f32 scaleX;
+    f32 scaleY;
+    s32 time;
 
-    sp8 = arg8;
-    spC = arg9;
-    temp_r29 = &winData[arg0];
-    temp_f29 = temp_r29->pos_x;
-    temp_f28 = temp_r29->pos_y;
-    temp_f25 = (f32) temp_r29->w;
-    temp_f24 = (f32) temp_r29->h;
-    temp_f31 = temp_f29 + (temp_f25 * sp8);
-    temp_f27 = 4.0f / temp_f25;
-    if (((4.0f + temp_f31) - (temp_f29 + temp_f25)) >= 0.0f) {
-        var_f31 = (temp_f29 + temp_f25) - 4.0f;
+    winPtr = (WindowData *)&winData[window];
+    winPosX = winPtr->pos_x;
+    winPosY = winPtr->pos_y;
+    width = winPtr->w;
+    height = winPtr->h;
+    smallPosX = winPosX + (width * centerX);
+    smallScaleX = 4.0f / width;
+
+    // adjust horizontal position
+    if (((4.0f + smallPosX) - (winPosX + width)) >= 0.0f) {
+        smallPosX = (winPosX + width) - 4.0f;
     } else {
-        if ((temp_f29 - (temp_f31 - 2.0f)) >= 0.0f) {
-            var_f31 = temp_f29;
+        if ((winPosX - (smallPosX - 2.0f)) >= 0.0f) {
+            smallPosX = winPosX;
         } else {
-            var_f31 = temp_f31 - 2.0f;
+            smallPosX = smallPosX - 2.0f;
         }
     }
-    temp_f30 = temp_f28 + (temp_f24 * spC);
-    temp_f26 = 4.0f / temp_f24;
 
-    if (((4.0f + temp_f30) - (temp_f28 + temp_f24)) >= 0.0f) {
-        var_f30 = (temp_f28 + temp_f24) - 4.0f;
+    smallPosY = winPosY + (height * centerY);
+    smallScaleY = 4.0f / height;
+
+    // adjust vertical position
+    if (((4.0f + smallPosY) - (winPosY + height)) >= 0.0f) {
+        smallPosY = (winPosY + height) - 4.0f;
     } else {
-        if ((temp_f28 - (temp_f30 - 2.0f)) >= 0.0f) {
-            var_f30 = temp_f28;
+        if ((winPosY - (smallPosY - 2.0f)) >= 0.0f) {
+            smallPosY = winPosY;
         } else {
-            var_f30 = temp_f30 - 2.0f;
+            smallPosY = smallPosY - 2.0f;
         }
     }
-    if (arg1 != 0) {
-        HuWinPosSet(arg0, var_f31, var_f30);
-        HuWinScaleSet(arg0, temp_f27, temp_f26);
-        var_f23 = var_f31;
-        var_f21 = temp_f27;
-        var_f22 = var_f30;
-        var_f20 = temp_f26;
+
+    if (toSmallF != 0) {
+        HuWinPosSet(window, smallPosX, smallPosY);
+        HuWinScaleSet(window, smallScaleX, smallScaleY);
+        posX = smallPosX;
+        scaleX = smallScaleX;
+        posY = smallPosY;
+        scaleY = smallScaleY;
     } else {
-        HuWinPosSet(arg0, temp_f29, temp_f28);
-        HuWinScaleSet(arg0, 1.0f, 1.0f);
-        var_f23 = temp_f29;
-        var_f21 = 1.0f;
-        var_f22 = temp_f28;
-        var_f20 = 1.0f;
+        HuWinPosSet(window, winPosX, winPosY);
+        HuWinScaleSet(window, 1.0f, 1.0f);
+        posX = winPosX;
+        scaleX = 1.0f;
+        posY = winPosY;
+        scaleY = 1.0f;
     }
-    HuWinDispOn(arg0);
-    for (var_r31 = 0; var_r31 <= 15; var_r31++) {
+    HuWinDispOn(window);
+
+    // animation loop
+    for (time = 0; time <= 15; ++time) {
         HuPrcVSleep();
-        if (arg1 != 0) {
-            if (var_r31 <= 0xA) {
-                if ((f32) var_r31 >= 10.0f) {
-                    var_f19 = temp_f29;
-                } else {
-                    var_f19 = (var_f31 + ((temp_f29 - var_f31) * sin((M_PI * (9.0f * (f32) var_r31)) / 180.0)));
-                }
-                var_f23 = var_f19;
-                if ((f32) var_r31 >= 10.0f) {
-                    var_f18 = 1.0f;
-                } else {
-                    var_f18 = (temp_f27 + ((1.0f - temp_f27) * sin((M_PI * (9.0f * (f32) var_r31)) / 180.0)));
-                }
-                var_f21 = var_f18;
+        if (toSmallF != 0) {
+            if (time <= 0xA) {
+                posX = (time >= 10.0f) ? winPosX : (f32)(smallPosX + ((winPosX - smallPosX) * sind(9.0f * time)));
+                scaleX = (time >= 10.0f) ? 1.0f : (f32)(smallScaleX + ((1.0f - smallScaleX) * sind(9.0f * time)));
             } else {
-                if ((f32) (var_r31 - 0xA) >= 5.0f) {
-                    sp24 = temp_f28;
-                } else {
-                    sp24 = (var_f30 + ((temp_f28 - var_f30) * sin((M_PI * (18.0f * (f32) (var_r31 - 0xA))) / 180.0)));
-                }
-                var_f22 = sp24;
-                if ((f32) (var_r31 - 0xA) >= 5.0f) {
-                    sp20 = 1.0f;
-                } else {
-                    sp20 = (temp_f26 + ((1.0f - temp_f26) * sin((M_PI * (18.0f * (f32) (var_r31 - 0xA))) / 180.0)));
-                }
-                var_f20 = sp20;
+                posY = ((time - 0xA) >= 5.0f) ? winPosY : (f32)(smallPosY + ((winPosY - smallPosY) * sind(18.0f * (time - 0xA))));
+                scaleY = ((time - 0xA) >= 5.0f) ? 1.0f : (f32)(smallScaleY + ((1.0f - smallScaleY) * sind(18.0f * (time - 0xA))));
             }
-        } else if (var_r31 <= 0xA) {
-            if ((f32) var_r31 >= 10.0f) {
-                sp1C = var_f30;
-            } else {
-                sp1C = (temp_f28 + ((var_f30 - temp_f28) * sin((M_PI * (9.0f * var_r31)) / 180.0)));
-            }
-            var_f22 = sp1C;
-            if ((f32) var_r31 >= 10.0f) {
-                sp18 = temp_f26;
-            } else {
-                sp18 = (f32) (1.0 + ((temp_f26 - 1.0f) * sin((M_PI * (9.0f * var_r31)) / 180.0)));
-            }
-            var_f20 = sp18;
+        } else if (time <= 0xA) {
+            posY  = (time >= 10.0f) ? smallPosY : (f32)(winPosY + ((smallPosY - winPosY) * sind(9.0f * time)));
+            scaleY  = (time >= 10.0f) ? smallScaleY : (f32)(1.0 + ((smallScaleY - 1.0f) * sind(9.0f * time)));
         } else {
-            if ((f32) (var_r31 - 0xA) >= 5.0f) {
-                sp14 = var_f31;
-            } else {
-                sp14 = (temp_f29 + ((var_f31 - temp_f29) * sin((M_PI * (18.0f * (var_r31 - 0xA))) / 180.0)));
-            }
-            var_f23 = sp14;
-            if ((f32) (var_r31 - 0xA)>= 5.0f) {
-                sp10 = temp_f27;
-            } else {
-                sp10 = (1.0 + ((temp_f27 - 1.0f) * sin((M_PI * (18.0f * (var_r31 - 0xA))) / 180.0)));
-            }
-            var_f21 = sp10;
+            posX = ((time - 0xA) >= 5.0f) ? smallPosX : (f32)(winPosX + ((smallPosX - winPosX) * sind(18.0f * (time - 0xA))));
+            scaleX = ((time - 0xA) >= 5.0f) ? smallScaleX : (f32)(1.0 + ((smallScaleX - 1.0f) * sind(18.0f * (time - 0xA))));
         }
-        HuWinPosSet(arg0, var_f23, var_f22);
-        HuWinScaleSet(arg0, var_f21, var_f20);
+        HuWinPosSet(window, posX, posY);
+        HuWinScaleSet(window, scaleX, scaleY);
     }
-    if (arg1 != 0) {
-        HuWinPosSet(arg0, temp_f29, temp_f28);
-        HuWinScaleSet(arg0, 1.0f, 1.0f);
+
+    if (toSmallF != 0) {
+        HuWinPosSet(window, winPosX, winPosY);
+        HuWinScaleSet(window, 1.0f, 1.0f);
     } else {
-        HuWinPosSet(arg0, var_f31, var_f30);
-        HuWinScaleSet(arg0, temp_f27, temp_f26);
+        HuWinPosSet(window, smallPosX, smallPosY);
+        HuWinScaleSet(window, smallScaleX, smallScaleY);
     }
     HuPrcVSleep();
+}
+
+s32 fn_1_113C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 arg8, f32 arg9, s32 arg6, s32 arg4, s32 arg5) {
+    f32 sp18;
+    f32 sp14;
+    s32 temp_r30;
+
+    if (arg6 % 2 == 0) {
+        arg2 = (arg2 * 0x15) + 0x10;
+        arg3 = (arg3 * 0x1A) + 0x10;
+        arg1 = (445.0f - (f32) arg3);
+        switch (arg0) {           
+        case -1:
+            arg0 = 0x10;
+            break;
+        case 0:
+            arg0 = (1.0f + ((576.0f - (f32) arg2) * 0.5f));
+            break;
+        case 1:
+            arg0 = (556.0f - (f32) arg2);
+            break;
+        }
+    } else {
+        HuWinMesMaxSizeGet(1, &sp14, arg5);
+        arg2 = (s32) sp14;
+        arg3 = (s32) sp18;
+        arg0 = (s32) (556.0f - (f32) arg2);
+        arg1 = (s32) (445.0f - (f32) arg3);
+    }
+    temp_r30 = HuWinExCreateStyled((f32) arg0, (f32) arg1, arg2, arg3, -1, 1);
+    if (arg6 == 1) {
+        HuWinAttrSet(temp_r30, 0x10U);
+    }
+    HuWinMesPalSet(temp_r30, 7U, 0U, 0U, 0U);
+    winData[temp_r30].active_pad = 1;
+    fn_1_6F4(temp_r30, arg8, arg9, 1);
+    return temp_r30;
+}
+
+//nonmatching
+// s16 fn_1_1434(s32 arg0) {
+//     s16 temp_r29;
+//     s16 temp_r31;
+//     s16 temp_r3;
+
+//     temp_r31 = (0x15 * 0x15) + 16;
+//     temp_r29 = (2 * 0x1A) + 16;
+//     switch (arg0) {
+//     case -1:
+//         arg0 = 16;
+//         break;
+//     case 0:
+//         arg0 = (s32) (1.0f + ((576.0f - (f32) temp_r31) * 0.5f));
+//         break;
+//     case 1:
+//         arg0 = (s32) (556.0f - (f32) temp_r31);
+//         break;
+//     }
+//     temp_r3 = HuWinExCreateStyled(temp_r31, temp_r29, -1, 1, (f32) arg0, (f32) (s32) (445.0f - (f32) temp_r29));
+//     HuWinMesPalSet(temp_r3, 7, 0, 0, 0);
+//     winData[temp_r3].active_pad = 1;
+//     fn_1_6F4(temp_r3, 1, 0.5f, 0.5f);
+//     return temp_r3;
+// }
+
+void fn_1_164C(s32 arg0, f32 arg8, f32 arg9) {
+    HuWinMesSet(arg0, 0x250004);
+    HuPrcVSleep();
+    fn_1_6F4(arg0, arg8, arg9, 0);
+    HuWinExCleanup(arg0);
+}
+
+void fn_1_16AC(s32 arg0) {
+    HuWinMesSet(arg0, 0x250004);
+    HuPrcVSleep();
+    fn_1_6F4(arg0, 0, 0.5f, 0.5f);
+    HuWinExCleanup(arg0);
+}
+
+void fn_1_1714(s32 arg0, s32 arg1) {
+    if ((arg1 == -999) || (arg1 == 0)) {
+        return;
+    }
+    if (arg1 == -1000) {
+        do {
+            HuPrcVSleep();
+        } while (HuWinStatGet(arg0) == 1);
+        return;
+    }
+    if (arg1 > 0) {
+        HuPrcSleep(arg1);
+        return;
+    }
+    HuWinComKeyReset();
+    HuWinMesWait(arg0);
+    HuWinComKeyReset();
+}
+
+void fn_1_17A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 i;
+    s32 temp_r28 = 0;
+    s32 var_r30 = 0;
+
+    (void)arg0;
+    
+    temp_r28 = HuWinKeyWaitNumGet(arg1);
+    if ((arg2 == -1) || (arg2 >= (s32) (temp_r28 - 1))) {
+        arg2 = temp_r28 - 1;
+    }
+    HuWinComKeyReset();
+    for (i = 0; i < temp_r28; i++) {
+        var_r30 = 0;
+        do {
+            HuPrcVSleep();
+        } while (HuWinStatGet(arg0) != 1);
+        
+        if (i == arg2) {
+            HuWinAttrSet(arg0, 0x400);
+            var_r30 = 1;
+        }
+        
+        while (1) {
+            HuPrcVSleep();
+            //seems like this should be a switch, but I could not get even close to matching it with one
+            if (var_r30 == 0) {
+                goto label;
+            }
+            if (var_r30 == 1) {
+                if (HuWinStatGet(arg0) == 1) {
+
+                } else {
+                    var_r30 = 2;
+                    continue;                    
+                }
+            }
+            if (var_r30 != 2) {
+                continue;
+            } else {
+                HuPrcSleep(arg3);
+                HuWinAttrReset(arg0, 0x400);
+                HuWinKeyWaitEntry(arg0);
+                break;
+            }
+            
+            label:
+            if (HuWinStatGet(arg0) != 1) {
+                break;
+            }
+        }
+    }
+    HuWinComKeyReset();
+    HuWinMesWait(arg0);
+    HuWinComKeyReset();
+    HuWinComKeyReset();
+}
+
+s32 fn_1_18D8(s32 arg0, s32 arg1) {
+    s32 temp_r31;
+
+    HuWinComKeyReset();
+    temp_r31 = HuWinChoiceGet(arg0, arg1);
+    HuWinComKeyReset();
+    return temp_r31;
+}
+
+void fn_1_1928(s32 arg0, s32 arg1, s32 arg2) {
+    HuWinInsertMesSet(arg0, arg1, arg2);
+}
+
+void fn_1_1968(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    if (arg3 == -999) {
+        HuWinMesSpeedSet(arg0, 0);
+    } else {
+        HuWinMesSpeedSet(arg0, 1);
+    }
+    HuWinMesSet(arg0, arg1);
+    if (arg2 == -1) {
+        if ((arg3 != -999) && (arg3 != 0)) {
+            if (arg3 == -1000) {
+                do {
+                    HuPrcVSleep();
+                } while (HuWinStatGet(arg0) == 1);
+                return;
+            }
+            if (arg3 > 0) {
+                HuPrcSleep(arg3);
+                return;
+            }
+            HuWinComKeyReset();
+            HuWinMesWait(arg0);
+            HuWinComKeyReset();
+        }
+    } else {
+        fn_1_17A4(arg0, arg1, arg2, arg3);
+    }
 }
