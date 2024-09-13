@@ -6,8 +6,12 @@
 #include "game/process.h"
 #include "game/objsub.h"
 #include "game/wipe.h"
+#include "game/board/tutorial.h"
 
 Process* lbl_1_bss_0;
+
+//TODO: unknown type
+extern s32 lbl_1_bss_A8[];
 
 extern s32 _prolog();
 extern void _epilog();
@@ -49,16 +53,16 @@ void _epilog(void) {
     }
 }
 
-// void fn_1_144(void) {
-//     _ClearFlag(0x1000BU);
-//     boardTutorialF = 0;
-//     lbl_1_bss_0 = omInitObjMan(0x3E, 0x2000);
-//     omGameSysInit(lbl_1_bss_0);
-//     lbl_1_bss_A8->unk0 = omovlevtno;
-//     lbl_1_bss_A8[1] = omovlstat;
-//     fn_1_658C(lbl_1_bss_0);
-//     omAddObjEx(lbl_1_bss_0, 0x2000, 0U, 0U, -1, fn_1_4C);
-// }
+void fn_1_144(void) {
+    _ClearFlag(0x1000BU);
+    boardTutorialF = 0;
+    lbl_1_bss_0 = omInitObjMan(0x3E, 0x2000);
+    omGameSysInit(lbl_1_bss_0);
+    lbl_1_bss_A8[0] = omovlevtno;
+    lbl_1_bss_A8[1] = omovlstat;
+    fn_1_658C(lbl_1_bss_0);
+    omAddObjEx(lbl_1_bss_0, 0x2000, 0U, 0U, -1, fn_1_4C);
+}
 
 f32 fn_1_20C(f32 arg8, f32 arg9, f32 argA, f32 argB) {
     if (argB <= argA) {
@@ -231,33 +235,32 @@ void fn_1_6F4(s32 window, f32 centerX, f32 centerY, s32 toSmallF)
 }
 
 s32 fn_1_113C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 arg8, f32 arg9, s32 arg6, s32 arg4, s32 arg5) {
-    f32 sp18;
-    f32 sp14;
+    f32 sp14[2];
     s32 temp_r30;
 
     if (arg6 % 2 == 0) {
         arg2 = (arg2 * 0x15) + 0x10;
         arg3 = (arg3 * 0x1A) + 0x10;
-        arg1 = (445.0f - (f32) arg3);
+        arg1 = (445.0f - arg3);
         switch (arg0) {           
         case -1:
             arg0 = 0x10;
             break;
         case 0:
-            arg0 = (1.0f + ((576.0f - (f32) arg2) * 0.5f));
+            arg0 = (1.0f + ((576.0f - arg2) / 2));
             break;
         case 1:
-            arg0 = (556.0f - (f32) arg2);
+            arg0 = (556.0f - arg2);
             break;
         }
     } else {
-        HuWinMesMaxSizeGet(1, &sp14, arg5);
-        arg2 = (s32) sp14;
-        arg3 = (s32) sp18;
-        arg0 = (s32) (556.0f - (f32) arg2);
-        arg1 = (s32) (445.0f - (f32) arg3);
+        HuWinMesMaxSizeGet(1, sp14, arg5);
+        arg2 = sp14[0];
+        arg3 = sp14[1];
+        arg0 = (556.0f - arg2);
+        arg1 = (445.0f - arg3);
     }
-    temp_r30 = HuWinExCreateStyled((f32) arg0, (f32) arg1, arg2, arg3, -1, 1);
+    temp_r30 = HuWinExCreateStyled(arg0, arg1, arg2, arg3, -1, 1);
     if (arg6 == 1) {
         HuWinAttrSet(temp_r30, 0x10U);
     }
@@ -267,31 +270,9 @@ s32 fn_1_113C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 arg8, f32 arg9, s32 ar
     return temp_r30;
 }
 
-//nonmatching
-// s16 fn_1_1434(s32 arg0) {
-//     s16 temp_r29;
-//     s16 temp_r31;
-//     s16 temp_r3;
-
-//     temp_r31 = (0x15 * 0x15) + 16;
-//     temp_r29 = (2 * 0x1A) + 16;
-//     switch (arg0) {
-//     case -1:
-//         arg0 = 16;
-//         break;
-//     case 0:
-//         arg0 = (s32) (1.0f + ((576.0f - (f32) temp_r31) * 0.5f));
-//         break;
-//     case 1:
-//         arg0 = (s32) (556.0f - (f32) temp_r31);
-//         break;
-//     }
-//     temp_r3 = HuWinExCreateStyled(temp_r31, temp_r29, -1, 1, (f32) arg0, (f32) (s32) (445.0f - (f32) temp_r29));
-//     HuWinMesPalSet(temp_r3, 7, 0, 0, 0);
-//     winData[temp_r3].active_pad = 1;
-//     fn_1_6F4(temp_r3, 1, 0.5f, 0.5f);
-//     return temp_r3;
-// }
+s32 fn_1_1434(s32 arg0) {
+    return fn_1_113C(arg0, 0, 0x15, 2, 0.5f, 0.5f, 2, 0, 0);
+}
 
 void fn_1_164C(s32 arg0, f32 arg8, f32 arg9) {
     HuWinMesSet(arg0, 0x250004);
@@ -351,29 +332,16 @@ void fn_1_17A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         
         while (1) {
             HuPrcVSleep();
-            //seems like this should be a switch, but I could not get even close to matching it with one
-            if (var_r30 == 0) {
-                goto label;
-            }
-            if (var_r30 == 1) {
-                if (HuWinStatGet(arg0) == 1) {
-
-                } else {
+            if (var_r30 != 0) {
+                if (var_r30 == 1 && HuWinStatGet(arg0) != 1) {
                     var_r30 = 2;
-                    continue;                    
+                } else if (var_r30 == 2) {
+                    HuPrcSleep(arg3);
+                    HuWinAttrReset(arg0, 0x400);
+                    HuWinKeyWaitEntry(arg0);
+                    break;
                 }
-            }
-            if (var_r30 != 2) {
-                continue;
-            } else {
-                HuPrcSleep(arg3);
-                HuWinAttrReset(arg0, 0x400);
-                HuWinKeyWaitEntry(arg0);
-                break;
-            }
-            
-            label:
-            if (HuWinStatGet(arg0) != 1) {
+            } else if (HuWinStatGet(arg0) != 1) {
                 break;
             }
         }
@@ -423,4 +391,15 @@ void fn_1_1968(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     } else {
         fn_1_17A4(arg0, arg1, arg2, arg3);
     }
+}
+
+s32 fn_1_1A5C(s32 arg0, s32 arg1) {
+    s32 var_r28;
+    s32 var_r25 = 0;
+
+    var_r28 = fn_1_113C(0, 0, 0, 0, 0.5f, 0.5f, arg1, 0, arg0);
+    HuWinMesSet(var_r28, arg0);
+    var_r25 = fn_1_18D8(var_r28, 0);
+    fn_1_164C(var_r28, 0.5f, 0.5f);
+    return var_r25;
 }
