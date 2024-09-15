@@ -1299,7 +1299,7 @@ config.libs = [
     Rel(
         "mpexDll",
         objects={
-            Object(NonMatching, "REL/mpexDll/main.c"),
+            Object(Matching, "REL/mpexDll/main.c"),
             Object(NonMatching, "REL/mpexDll/mpex.c"),
             Object(NonMatching, "REL/mpexDll/charsel.c"),
             Object(NonMatching, "REL/mpexDll/mgname.c"),
