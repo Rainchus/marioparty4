@@ -109,9 +109,7 @@ s16 HuWinChoiceGet(s16 window, s16 start_choice);
 s16 HuWinChoiceNumGet(s16 window);
 void HuWinChoiceDisable(s16 window, s16 choice);
 s16 HuWinChoiceNowGet(s16 window);
-#ifndef HUWIN_USE_OLD_DEFS
 void HuWinMesWait(s16 window);
-#endif
 s16 HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y);
 s16 HuWinSprSet(s16 window, s16 sprite, float x, float y);
 void HuWinSprPosSet(s16 window, s16 index, float x, float y);

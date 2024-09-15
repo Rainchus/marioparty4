@@ -1256,7 +1256,7 @@ config.libs = [
     Rel(
         "mentDll",
         objects={
-            Object(NonMatching, "REL/mentDll/common.c"),
+            Object(Matching, "REL/mentDll/common.c"),
             Object(Matching, "REL/mentDll/main.c"),
         },
     ),

@@ -11,6 +11,10 @@
 #include "REL/mentDll.h"
 #include "game/printfunc.h"
 #include "game/hsfmotion.h"
+#include "game/sprite.h"
+
+#include "rel_sqrt_consts.h"
+
 
 Process* lbl_1_bss_0;
 //TODO: unknown type
@@ -96,7 +100,7 @@ f32 fn_1_234(f32 arg8, f32 arg9, f32 argA) {
 }
 
 //fn_1_254
-f32 CosineEaseInOut(f32 arg8, f32 arg9, f32 argA, f32 argB) {
+f32 fn_1_254(f32 arg8, f32 arg9, f32 argA, f32 argB) {
     if (argA >= argB) {
         return arg9;
     }
@@ -104,7 +108,7 @@ f32 CosineEaseInOut(f32 arg8, f32 arg9, f32 argA, f32 argB) {
 }
 
 //fn_1_32C
-f32 SinusoidalInterpolation(f32 arg8, f32 arg9, f32 argA, f32 argB) {
+f32 fn_1_32C(f32 arg8, f32 arg9, f32 argA, f32 argB) {
     if (argA >= argB) {
         return arg9;
     }
@@ -306,7 +310,7 @@ void fn_1_164C(s32 arg0, f32 arg8, f32 arg9) {
 void fn_1_16AC(s32 arg0) {
     HuWinMesSet(arg0, 0x250004);
     HuPrcVSleep();
-    fn_1_6F4(arg0, 0, 0.5f, 0.5f);
+    fn_1_6F4(arg0, 0.5f, 0.5f, 0);
     HuWinExCleanup(arg0);
 }
 
@@ -644,27 +648,27 @@ void fn_1_33EC(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg
 }
 
 void fn_1_3858(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg8, f32 arg9) {
-    arg1->prevCenter.x = SinusoidalInterpolation(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
-    arg1->prevCenter.y = SinusoidalInterpolation(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
-    arg1->prevCenter.z = SinusoidalInterpolation(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
+    arg1->prevCenter.x = fn_1_32C(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
+    arg1->prevCenter.y = fn_1_32C(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
+    arg1->prevCenter.z = fn_1_32C(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
 
-    arg1->prevRot.x = SinusoidalInterpolation(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
-    arg1->prevRot.y = SinusoidalInterpolation(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
-    arg1->prevRot.z = SinusoidalInterpolation(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
+    arg1->prevRot.x = fn_1_32C(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
+    arg1->prevRot.y = fn_1_32C(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
+    arg1->prevRot.z = fn_1_32C(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
 
-    arg1->prevZoom = SinusoidalInterpolation(arg0->prevZoom, arg1->zoom, arg8, arg9);
+    arg1->prevZoom = fn_1_32C(arg0->prevZoom, arg1->zoom, arg8, arg9);
 }
 
 void fn_1_3CAC(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg8, f32 arg9) {
-    arg1->prevCenter.x = SinusoidalInterpolation(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
-    arg1->prevCenter.y = SinusoidalInterpolation(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
-    arg1->prevCenter.z = SinusoidalInterpolation(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
+    arg1->prevCenter.x = fn_1_32C(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
+    arg1->prevCenter.y = fn_1_32C(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
+    arg1->prevCenter.z = fn_1_32C(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
 
-    arg1->prevRot.x = SinusoidalInterpolation(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
-    arg1->prevRot.y = SinusoidalInterpolation(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
-    arg1->prevRot.z = SinusoidalInterpolation(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
+    arg1->prevRot.x = fn_1_32C(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
+    arg1->prevRot.y = fn_1_32C(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
+    arg1->prevRot.z = fn_1_32C(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
 
-    arg1->prevZoom = SinusoidalInterpolation(arg0->prevZoom, arg1->zoom, arg8, arg9);
+    arg1->prevZoom = fn_1_32C(arg0->prevZoom, arg1->zoom, arg8, arg9);
 
     arg0->center.x = arg1->prevCenter.x;
     arg0->center.y = arg1->prevCenter.y;
@@ -678,15 +682,15 @@ void fn_1_3CAC(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg
 }
 
 void fn_1_4138(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg8, f32 arg9, f32 argA) {
-    arg1->prevCenter.x = SinusoidalInterpolation(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
-    arg1->prevCenter.y = SinusoidalInterpolation(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
-    arg1->prevCenter.z = SinusoidalInterpolation(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
+    arg1->prevCenter.x = fn_1_32C(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
+    arg1->prevCenter.y = fn_1_32C(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
+    arg1->prevCenter.z = fn_1_32C(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
 
-    arg1->prevRot.x = SinusoidalInterpolation(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
-    arg1->prevRot.y = SinusoidalInterpolation(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
-    arg1->prevRot.z = SinusoidalInterpolation(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
+    arg1->prevRot.x = fn_1_32C(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
+    arg1->prevRot.y = fn_1_32C(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
+    arg1->prevRot.z = fn_1_32C(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
     
-    arg1->prevZoom = SinusoidalInterpolation(arg0->prevZoom, arg1->zoom, arg8, arg9);
+    arg1->prevZoom = fn_1_32C(arg0->prevZoom, arg1->zoom, arg8, arg9);
 
     arg0->center.x = SmoothInterpolate(arg0->center.x, arg1->prevCenter.x, argA);
     arg0->center.y = SmoothInterpolate(arg0->center.y, arg1->prevCenter.y, argA);
@@ -700,27 +704,27 @@ void fn_1_4138(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg
 }
 
 void fn_1_4790(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg8, f32 arg9) {
-    arg1->prevCenter.x = CosineEaseInOut(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
-    arg1->prevCenter.y = CosineEaseInOut(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
-    arg1->prevCenter.z = CosineEaseInOut(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
+    arg1->prevCenter.x = fn_1_254(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
+    arg1->prevCenter.y = fn_1_254(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
+    arg1->prevCenter.z = fn_1_254(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
 
-    arg1->prevRot.x = CosineEaseInOut(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
-    arg1->prevRot.y = CosineEaseInOut(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
-    arg1->prevRot.z = CosineEaseInOut(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
+    arg1->prevRot.x = fn_1_254(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
+    arg1->prevRot.y = fn_1_254(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
+    arg1->prevRot.z = fn_1_254(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
 
-    arg1->prevZoom = CosineEaseInOut(arg0->prevZoom, arg1->zoom, arg8, arg9);
+    arg1->prevZoom = fn_1_254(arg0->prevZoom, arg1->zoom, arg8, arg9);
 }
 
 void fn_1_4C54(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg8, f32 arg9) {
-    arg1->prevCenter.x = CosineEaseInOut(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
-    arg1->prevCenter.y = CosineEaseInOut(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
-    arg1->prevCenter.z = CosineEaseInOut(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
+    arg1->prevCenter.x = fn_1_254(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
+    arg1->prevCenter.y = fn_1_254(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
+    arg1->prevCenter.z = fn_1_254(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
 
-    arg1->prevRot.x = CosineEaseInOut(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
-    arg1->prevRot.y = CosineEaseInOut(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
-    arg1->prevRot.z = CosineEaseInOut(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
+    arg1->prevRot.x = fn_1_254(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
+    arg1->prevRot.y = fn_1_254(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
+    arg1->prevRot.z = fn_1_254(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
 
-    arg1->prevZoom = CosineEaseInOut(arg0->prevZoom, arg1->zoom, arg8, arg9);
+    arg1->prevZoom = fn_1_254(arg0->prevZoom, arg1->zoom, arg8, arg9);
 
     arg0->center.x = arg1->prevCenter.x;
     arg0->center.y = arg1->prevCenter.y;
@@ -734,15 +738,15 @@ void fn_1_4C54(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg
 }
 
 void fn_1_5150(MentDllUnkBss64Struct* arg0, MentDllUnkBss64Struct* arg1, f32 arg8, f32 arg9, f32 argA) {
-    arg1->prevCenter.x = CosineEaseInOut(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
-    arg1->prevCenter.y = CosineEaseInOut(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
-    arg1->prevCenter.z = CosineEaseInOut(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
+    arg1->prevCenter.x = fn_1_254(arg0->prevCenter.x, arg1->center.x, arg8, arg9);
+    arg1->prevCenter.y = fn_1_254(arg0->prevCenter.y, arg1->center.y, arg8, arg9);
+    arg1->prevCenter.z = fn_1_254(arg0->prevCenter.z, arg1->center.z, arg8, arg9);
 
-    arg1->prevRot.x = CosineEaseInOut(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
-    arg1->prevRot.y = CosineEaseInOut(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
-    arg1->prevRot.z = CosineEaseInOut(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
+    arg1->prevRot.x = fn_1_254(arg0->prevRot.x, arg1->rot.x, arg8, arg9);
+    arg1->prevRot.y = fn_1_254(arg0->prevRot.y, arg1->rot.y, arg8, arg9);
+    arg1->prevRot.z = fn_1_254(arg0->prevRot.z, arg1->rot.z, arg8, arg9);
 
-    arg1->prevZoom = CosineEaseInOut(arg0->prevZoom, arg1->zoom, arg8, arg9);
+    arg1->prevZoom = fn_1_254(arg0->prevZoom, arg1->zoom, arg8, arg9);
 
     arg0->center.x = SmoothInterpolate(arg0->center.x, arg1->prevCenter.x, argA);
     arg0->center.y = SmoothInterpolate(arg0->center.y, arg1->prevCenter.y, argA);
@@ -819,4 +823,126 @@ void fn_1_5CDC(omObjData* arg0, s32 arg1, s32 arg2) {
     do {
         HuPrcVSleep();
     } while (Hu3DMotionEndCheck(arg0->model[arg1]) == 0);
+}
+
+void fn_1_5D38(omObjData *arg0, s32 arg1, Vec arg2, float arg8, float arg9, float argA, s32 arg3, s32 arg4)
+{
+    s32 temp_r29 = 0;
+    s32 temp_r28 = 0;
+    
+    Vec sp4C;
+    Vec sp40;
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    sp40.x = Hu3DData[arg0->model[arg1]].pos.x;
+    sp40.y = Hu3DData[arg0->model[arg1]].pos.y;
+    sp40.z = Hu3DData[arg0->model[arg1]].pos.z;
+    sp34.x = arg2.x;
+    sp34.y = arg2.y;
+    sp34.z = arg2.z;
+    sp1C.x = Hu3DData[arg0->model[arg1]].rot.x;
+    sp1C.y = Hu3DData[arg0->model[arg1]].rot.y;
+    sp1C.z = Hu3DData[arg0->model[arg1]].rot.z;
+    sp10.x = 0;
+    sp10.y = arg8;
+    sp10.z = 0;
+    if(sp34.x-sp40.x >= 0.0f) {
+        temp_r29 = 1;
+    } else {
+        temp_r29 = 0;
+    }
+    if(sp34.z-sp40.z >= 0.0f) {
+        temp_r28 = 1;
+    } else {
+        temp_r28 = 0;
+    }
+    while(arg3) {
+        fn_1_4D8();
+        sp28.y = -(atan2d(sp34.z-sp40.z, sp34.x-sp40.x)-90);
+        if(sp28.y < 0.0f) {
+            sp28.y += 360.0f;
+        } else if(sp28.y >= 360.0f) {
+            sp28.y -= 360.0f;
+        }
+        if(arg4) {
+            if(sp28.y >= 180.0f) {
+                if(sp1C.y-sp28.y >= 180.0f) {
+                    sp1C.y -= 360.0f;
+                }
+                if(sp1C.y-sp28.y < -180.0f) {
+                    sp1C.y += 360.0f;
+                }
+            } else {
+                if(sp1C.y-sp28.y > 180.0f) {
+                    sp1C.y -= 360.0f;
+                }
+                if(sp1C.y-sp28.y <= -180.0f) {
+                    sp1C.y += 360.0f;
+                }
+            }
+        }
+        sp4C.x = sp40.x = sp40.x+(arg9*sind(sp28.y));
+        sp4C.z = sp40.z = sp40.z+(arg9*cosd(sp28.y));
+        if(temp_r29 == 1) {
+            if(sp40.x >= sp34.x) {
+                sp4C.x = sp40.x = sp34.x;
+                temp_r29 = 2;
+            }
+        } else if(temp_r29 == 0) {
+            if(sp40.x <= sp34.x) {
+                sp4C.x = sp40.x = sp34.x;
+                temp_r29 = 2;
+            }
+        }
+        if(temp_r28 == 1) {
+            if(sp40.z >= sp34.z) {
+                sp4C.z = sp40.z = sp34.z;
+                temp_r28 = 2;
+            }
+        } else if(temp_r28 == 0) {
+            if(sp40.z <= sp34.z) {
+                sp4C.z = sp40.z = sp34.z;
+                temp_r28 = 2;
+            }
+        }
+        if(arg4) {
+            sp1C.y = fn_1_234(sp1C.y, sp28.y, argA);
+        }
+        Hu3DModelPosSet(arg0->model[arg1], sp4C.x, sp40.y, sp4C.z);
+        Hu3DModelRotSet(arg0->model[arg1], sp1C.x, sp1C.y, sp1C.z);
+        if(temp_r29 == 2 && temp_r28 == 2) {
+            break;
+        }
+    }
+    sp1C.y = Hu3DData[arg0->model[arg1]].rot.y;
+    if(arg4) {
+        s32 temp_r27;
+        for(temp_r27=0; temp_r27<=argA; temp_r27++) {
+            fn_1_4D8();
+            if(sp10.y >= 180.0f) {
+                if(sp1C.y-sp10.y >= 180.0f) {
+                    sp1C.y -= 360.0f;
+                }
+                if(sp1C.y-sp10.y < -180.0f) {
+                    sp1C.y += 360.0f;
+                }
+            } else {
+                if(sp1C.y-sp10.y > 180.0f) {
+                    sp1C.y -= 360.0f;
+                }
+                if(sp1C.y-sp10.y <= -180.0f) {
+                    sp1C.y += 360.0f;
+                }
+            }
+            sp10.z = fn_1_20C(sp1C.y, sp10.y, temp_r27, argA);
+            Hu3DModelRotSet(arg0->model[arg1], sp1C.x, sp10.z, sp1C.z);
+        }
+    }
+}
+
+void fn_1_6534(s32 grpId, s32 memberNo, float posX, float posY)
+{
+    HuSprPosSet(grpId, memberNo, posX, posY+0.5f);
 }
