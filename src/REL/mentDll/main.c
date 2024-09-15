@@ -186,7 +186,7 @@ s32 lbl_1_bss_A8[8];
 MentDllUnkBss64Struct lbl_1_bss_64;
 s32 lbl_1_bss_24[16];
 s32 lbl_1_bss_14[4];
-s32 lbl_1_bss_0[5];
+s32 lbl_1_bss_8[3];
 
 void fn_1_658C(Process *arg0)
 {
