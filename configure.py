@@ -955,7 +955,7 @@ config.libs = [
             Object(NonMatching, "REL/m420dll/main.c"),
             Object(NonMatching, "REL/m420dll/player.c"),
             Object(NonMatching, "REL/m420dll/map.c"),
-            Object(NonMatching, "REL/m420dll/rand.c"),
+            Object(Matching, "REL/m420dll/rand.c"),
         },
     ),
     Rel(
