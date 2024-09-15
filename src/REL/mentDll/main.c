@@ -13,7 +13,6 @@
 #include "game/sprite.h"
 #include "game/window.h"
 #include "game/wipe.h"
-
 #include "REL/mentDll.h"
 
 typedef struct MentDllUnkBssE4Struct {
@@ -155,23 +154,6 @@ void fn_1_2342C(omObjData *object);
 void fn_1_C174(s32 arg0);
 void fn_1_E654(s32 arg0);
 void fn_1_E71C(s32 arg0);
-
-s32 lbl_1_data_0[][4] = {
-    { 0x00000037, 0x00000038, 0x00000036, 0x00000039 },
-    { 0x00000043, 0x00000045, 0x00000044, 0x00000043 },
-    { 0x00000040, 0x00000042, 0x00000041, 0x00000040 },
-    { 0x0000004B, 0x0000004D, 0x0000004C, 0x0000004B },
-    { 0x00000046, 0x00000048, 0x00000047, 0x00000046 },
-    { 0x0000003E, 0x0000003F, 0x0000003E, 0x0000003E },
-    { 0x0000003A, 0x0000003B, 0x0000003C, 0xFFFFFFFF },
-};
-
-s32 lbl_1_data_70 = -1;
-
-char lbl_1_data_74[] = ">>>>>>>>>> CAMERA DATA <<<<<<<<<<";
-char lbl_1_data_96[] = "CENTER : %.2f, %.2f, %.2f";
-char lbl_1_data_B0[] = "ROT    : %.2f, %.2f, %.2f";
-char lbl_1_data_CA[] = "ZOOM   : %.2f";
 
 Vec lbl_1_data_D8[6] = {
     { 0.0f, 0.0f, 460.0f },
@@ -315,7 +297,7 @@ void fn_1_6C4C(void)
     s32 var_r28 = 0;
     {
         GXColor sp10 = { 0x00, 0x00, 0x80, 0x80 };
-        while (TRUE) {
+        while (1) {
             fn_1_4D8();
             if (HuPadBtnDown[0] & PAD_TRIGGER_R) {
                 var_r28++;
@@ -452,7 +434,7 @@ void fn_1_7218(void)
     }
     lbl_1_bss_D8 = 1;
     HuPrcEnd();
-    while (TRUE) {
+    while (1) {
         HuPrcVSleep();
     }
 }
@@ -520,7 +502,7 @@ void fn_1_7684(void)
     CharARAMOpen(GWPlayerCfg[2].character);
     CharARAMOpen(GWPlayerCfg[3].character);
     omOvlCallEx(spC[GWSystem.board], 1, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
     }
 }
@@ -558,18 +540,18 @@ void fn_1_7858(void)
 
 void fn_1_7900(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = lbl_1_bss_DC;
-    sp8[3] = 60.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 850.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 10.0f, 5.0f);
+    sp8.center.x = lbl_1_bss_DC;
+    sp8.center.y = 60.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 850.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 10.0f, 5.0f);
 }
 
 s32 lbl_1_data_2F0 = -1;
@@ -783,7 +765,7 @@ void fn_1_85C8(void)
     saveExecF = 0;
     if (GWGameStat.party_continue == 1) {
         var_r31 = fn_1_1434(0, 0, 0);
-        while (TRUE) {
+        while (1) {
             fn_1_4D8();
             fn_1_59A0(lbl_1_bss_33AC[0].unk_00, 1, 4, 0xF, 1);
             fn_1_1968(var_r31, 0x1A0001, -1, 5);
@@ -887,7 +869,7 @@ s32 fn_1_8B68(void)
     }
     var_r27 = fn_1_1434(0, 0, 0);
     HuAudFXPlay(lbl_1_data_0[var_r28][2]);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         fn_1_4D8();
         fn_1_5818(lbl_1_bss_33AC[var_r28].unk_00, 1, 4, 0xF, 1);
@@ -898,7 +880,7 @@ s32 fn_1_8B68(void)
         lbl_1_bss_35BC[0].unk_04 = (MentDllUnkFunc)fn_1_1FF4C;
         var_r25 = 0x63;
         var_r23 = 0;
-        while (TRUE) {
+        while (1) {
             fn_1_4D8();
             var_r30 = 0;
             for (var_r31 = 0; var_r31 < 4; var_r31++) {
@@ -1021,7 +1003,7 @@ s32 fn_1_8FB8(void)
             lbl_1_bss_3114[var_r31].unk_04 = (MentDllUnkFunc)fn_1_15CB4;
         }
     }
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             if ((lbl_1_bss_3114[var_r31].unk_60 == 0) && (HuPadBtnDown[lbl_1_bss_3114[var_r31].unk_6C] & PAD_BUTTON_A)) {
@@ -1813,7 +1795,7 @@ void fn_1_B654(omObjData *arg0, MentDllUnkBss35BCStruct *arg1)
             case 0:
                 var_r30 = 1;
                 fn_1_14CE0();
-                while (TRUE) {
+                while (1) {
                     fn_1_4D8();
                     switch (var_r29) {
                         case 1:
@@ -1974,7 +1956,7 @@ void fn_1_C174(s32 arg0)
             omOvlCallEx(spC[GWSystem.board], 1, 0, 0);
             break;
     }
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
     }
 }
@@ -2027,7 +2009,7 @@ void fn_1_C4B8(void)
         return;
     }
     var_r31 = fn_1_1434(0, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         fn_1_59A0(lbl_1_bss_33AC[0].unk_00, 1, 4, 0xF, 1);
         fn_1_1968(var_r31, 0x1E0001, -1, 5);
@@ -2108,7 +2090,7 @@ void fn_1_C4B8(void)
                     }
                 }
             }
-            while (TRUE) {
+            while (1) {
                 fn_1_4D8();
             }
         }
@@ -2176,14 +2158,14 @@ s32 fn_1_CD8C(void)
     sp8 = 0;
     fn_1_1CF68();
     var_r31 = fn_1_1434(0, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         fn_1_59A0(lbl_1_bss_33AC[0].unk_00, 1, 4, 0xF, 1);
         fn_1_1968(var_r31, 0x1E005E, -1, -1);
         fn_1_59A0(lbl_1_bss_33AC[0].unk_00, 1, 1, 0xF, 1);
         fn_1_2154(0x1A0020);
         lbl_1_bss_3114->unk_04 = (MentDllUnkFunc)fn_1_1E404;
-        while (TRUE) {
+        while (1) {
             if (lbl_1_bss_3114->unk_70[0] == 1) {
                 var_r30 = 1;
                 break;
@@ -2230,7 +2212,7 @@ s32 fn_1_CF8C(void)
     var_r28 = -1;
     var_r27 = -1;
     var_r31 = fn_1_1434(0, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         fn_1_59A0(lbl_1_bss_33AC[0].unk_00, 1, 4, 0xF, 1);
         fn_1_1968(var_r31, 0x1E0009, -1, -1);
@@ -2239,7 +2221,7 @@ s32 fn_1_CF8C(void)
         lbl_1_bss_35BC[1].unk_08[1] = 0;
         fn_1_1DED8();
         lbl_1_bss_35BC[0].unk_04 = (MentDllUnkFunc)fn_1_1E8A4;
-        while (TRUE) {
+        while (1) {
             fn_1_4D8();
             if ((var_r28 != lbl_1_bss_35BC[0].unk_08[0]) || (var_r27 != lbl_1_bss_35BC[0].unk_1C[lbl_1_bss_35BC[0].unk_08[0] - 1])) {
                 var_r28 = lbl_1_bss_35BC[0].unk_08[0];
@@ -2679,7 +2661,7 @@ void fn_1_E71C(s32 arg0)
     HuAudSeqAllFadeOut(0x3E8);
     HuAudSStreamAllFadeOut(0x3E8);
     omOvlCallEx(spC[GWSystem.board], 1, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
     }
 }
@@ -2855,7 +2837,7 @@ void fn_1_1053C(void)
     HuAudFXAllStop();
     HuAudSStreamAllStop();
     omOvlGotoEx(OVL_OPTION, 1, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
     }
 }
@@ -2913,7 +2895,7 @@ void fn_1_10C5C(void)
     HuAudFXAllStop();
     HuAudSStreamAllStop();
     omOvlGotoEx(OVL_PRESENT, 1, 0, 0);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
     }
 }
@@ -2988,7 +2970,7 @@ void fn_1_114A0(void)
     MGSeqKillAll();
     HuAudFadeOut(1);
     omOvlReturnEx(1, 1);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
     }
 }
@@ -3033,7 +3015,7 @@ void fn_1_116F4(void)
             lbl_1_bss_366C.unk_04 = (MentDllUnkFunc)fn_1_FEAC;
             break;
     }
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         if (lbl_1_bss_366C.unk_04 == NULL) {
             continue;
@@ -3208,7 +3190,7 @@ void fn_1_121D8(void)
             fn_1_18788(lbl_1_bss_35BC, 0, 0, 0);
         }
     }
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         if (lbl_1_bss_35BC[var_r30].unk_04 == NULL) {
             continue;
@@ -3343,7 +3325,7 @@ void fn_1_12E40(void)
     lbl_1_bss_33AC[var_r30].unk_04 = NULL;
     lbl_1_bss_33AC[var_r30].unk_30 = var_r30;
     fn_1_12A0C(var_r31, var_r30);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         if (lbl_1_bss_33AC[var_r30].unk_04 != NULL) {
             lbl_1_bss_33AC[var_r30].unk_04(var_r31, &lbl_1_bss_33AC[var_r30]);
@@ -3376,7 +3358,7 @@ void fn_1_134A8(void)
     lbl_1_bss_3354.unk_00 = var_r31;
     lbl_1_bss_3354.unk_04 = NULL;
     fn_1_13348(var_r31);
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         if (lbl_1_bss_3354.unk_04 != NULL) {
             lbl_1_bss_3354.unk_04(var_r31, &lbl_1_bss_3354);
@@ -3461,7 +3443,7 @@ void fn_1_13970(void)
     else {
         fn_1_1368C(var_r27, var_r26);
     }
-    while (TRUE) {
+    while (1) {
         fn_1_4D8();
         if (lbl_1_bss_3114[var_r26].unk_04 == NULL) {
             continue;
@@ -3475,29 +3457,29 @@ void fn_1_13D60(void)
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    var_r31->unk_08 = 0.0f;
-    var_r31->unk_0C = 0.0f;
-    var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = -10.0f;
-    var_r31->unk_24 = 0.0f;
-    var_r31->unk_28 = 0.0f;
-    var_r31->unk_38 = 2900.0f;
+    var_r31->center.x = 0.0f;
+    var_r31->center.y = 0.0f;
+    var_r31->center.z = 0.0f;
+    var_r31->rot.x = -10.0f;
+    var_r31->rot.y = 0.0f;
+    var_r31->rot.z = 0.0f;
+    var_r31->zoom = 2900.0f;
 }
 
 void fn_1_13DEC(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 0.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = -10.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1150.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 180.0f, 15.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 0.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = -10.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1150.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 180.0f, 15.0f);
 }
 
 void fn_1_13EDC(void)
@@ -3505,98 +3487,98 @@ void fn_1_13EDC(void)
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    var_r31->unk_08 = 0.0f;
-    var_r31->unk_0C = 215.0f;
-    var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = 0.0f;
-    var_r31->unk_24 = 0.0f;
-    var_r31->unk_28 = 0.0f;
-    var_r31->unk_38 = 1600.0f;
+    var_r31->center.x = 0.0f;
+    var_r31->center.y = 215.0f;
+    var_r31->center.z = 0.0f;
+    var_r31->rot.x = 0.0f;
+    var_r31->rot.y = 0.0f;
+    var_r31->rot.z = 0.0f;
+    var_r31->zoom = 1600.0f;
 }
 
 void fn_1_13F68(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 215.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1600.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 60.0f, 10.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 215.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1600.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 60.0f, 10.0f);
 }
 
 void fn_1_14058(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 215.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1600.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 10.0f, 5.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 215.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1600.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 10.0f, 5.0f);
 }
 
 void fn_1_14148(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 1200.0f;
-    sp8[3] = 215.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1600.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 10.0f, 5.0f);
+    sp8.center.x = 1200.0f;
+    sp8.center.y = 215.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1600.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 10.0f, 5.0f);
 }
 
 void fn_1_14238(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 125.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = -5.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1750.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 30.0f, 10.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 125.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = -5.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1750.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 30.0f, 10.0f);
 }
 
 void fn_1_14328(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 1200.0f;
-    sp8[3] = 125.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = -5.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1750.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 30.0f, 10.0f);
+    sp8.center.x = 1200.0f;
+    sp8.center.y = 125.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = -5.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1750.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 30.0f, 10.0f);
 }
 
 void fn_1_14418(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
     s32 var_r30;
 
@@ -3607,19 +3589,19 @@ void fn_1_14418(void)
         fn_1_5818(lbl_1_bss_35BC[var_r30].unk_00, 5, 5, 0, 0);
         HuAudFXPlay(0x7D);
     }
-    sp8[2] = 0.0f;
+    sp8.center.x = 0.0f;
     if (var_r30 == 1) {
-        sp8[2] = 1200.0f;
+        sp8.center.x = 1200.0f;
     }
-    sp8[3] = 100.0f;
-    sp8[4] = 460.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 125.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40, 180.0f, 10.0f);
-    if (var_r31->unk_40++ >= 0x5A) {
-        if (var_r31->unk_40 == 0x5B) {
+    sp8.center.y = 100.0f;
+    sp8.center.z = 460.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 125.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40, 180.0f, 10.0f);
+    if (var_r31->unk_40++ >= 90) {
+        if (var_r31->unk_40 == 91) {
             if (var_r30 == 0) {
                 lbl_1_bss_24[10] = HuAudFXPlay(0x22);
             }
@@ -3627,57 +3609,57 @@ void fn_1_14418(void)
                 lbl_1_bss_24[10] = HuAudFXPlay(0x23);
             }
         }
-        var_r31->unk_20 = fn_1_20C(var_r31->unk_20, -45.0f, var_r31->unk_40 - 0x5A, 90.0f);
+        var_r31->rot.x = fn_1_20C(var_r31->rot.x, -45.0f, var_r31->unk_40 - 0x5A, 90.0f);
         Hu3DData[lbl_1_bss_35BC[var_r30].unk_00->model[4]].rot.x = fn_1_20C(0.0f, 45.0f, var_r31->unk_40 - 0x5A, 90.0f);
     }
 }
 
 void fn_1_146D0(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 215.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1600.0f;
-    fn_1_5150(var_r31, sp8, var_r31->unk_40++, 30.0f, 10.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 215.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1600.0f;
+    fn_1_5150(var_r31, &sp8, var_r31->unk_40++, 30.0f, 10.0f);
 }
 
 void fn_1_147C0(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 1200.0f;
-    sp8[3] = 215.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1600.0f;
-    fn_1_5150(var_r31, sp8, var_r31->unk_40++, 30.0f, 10.0f);
+    sp8.center.x = 1200.0f;
+    sp8.center.y = 215.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1600.0f;
+    fn_1_5150(var_r31, &sp8, var_r31->unk_40++, 30.0f, 10.0f);
 }
 
 void fn_1_148B0(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 30.0f;
-    sp8[4] = 0.0f;
-    sp8[8] = -5.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 1100.0f;
-    fn_1_4138(var_r31, sp8, var_r31->unk_40++, 10.0f, 5.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 30.0f;
+    sp8.center.z = 0.0f;
+    sp8.rot.x = -5.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 1100.0f;
+    fn_1_4138(var_r31, &sp8, var_r31->unk_40++, 10.0f, 5.0f);
 }
 
 void fn_1_149A0(void)
@@ -3685,13 +3667,13 @@ void fn_1_149A0(void)
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    var_r31->unk_08 = 0.0f;
-    var_r31->unk_0C = 125.0f;
-    var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = -5.0f;
-    var_r31->unk_24 = 0.0f;
-    var_r31->unk_28 = 0.0f;
-    var_r31->unk_38 = 1750.0f;
+    var_r31->center.x = 0.0f;
+    var_r31->center.y = 125.0f;
+    var_r31->center.z = 0.0f;
+    var_r31->rot.x = -5.0f;
+    var_r31->rot.y = 0.0f;
+    var_r31->rot.z = 0.0f;
+    var_r31->zoom = 1750.0f;
 }
 
 void fn_1_14A2C(void)
@@ -3699,29 +3681,29 @@ void fn_1_14A2C(void)
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    var_r31->unk_08 = 1200.0f;
-    var_r31->unk_0C = 125.0f;
-    var_r31->unk_10 = 0.0f;
-    var_r31->unk_20 = -5.0f;
-    var_r31->unk_24 = 0.0f;
-    var_r31->unk_28 = 0.0f;
-    var_r31->unk_38 = 1750.0f;
+    var_r31->center.x = 1200.0f;
+    var_r31->center.y = 125.0f;
+    var_r31->center.z = 0.0f;
+    var_r31->rot.x = -5.0f;
+    var_r31->rot.y = 0.0f;
+    var_r31->rot.z = 0.0f;
+    var_r31->zoom = 1750.0f;
 }
 
 void fn_1_14AB8(void)
 {
-    float sp8[18];
+    MentDllUnkBss64Struct sp8;
     MentDllUnkBss64Struct *var_r31;
 
     var_r31 = &lbl_1_bss_64;
-    sp8[2] = 0.0f;
-    sp8[3] = 125.0f;
-    sp8[4] = 460.0f;
-    sp8[8] = 0.0f;
-    sp8[9] = 0.0f;
-    sp8[10] = 0.0f;
-    sp8[14] = 125.0f;
-    fn_1_5150(var_r31, sp8, var_r31->unk_40++, 120.0f, 10.0f);
+    sp8.center.x = 0.0f;
+    sp8.center.y = 125.0f;
+    sp8.center.z = 460.0f;
+    sp8.rot.x = 0.0f;
+    sp8.rot.y = 0.0f;
+    sp8.rot.z = 0.0f;
+    sp8.zoom = 125.0f;
+    fn_1_5150(var_r31, &sp8, var_r31->unk_40++, 120.0f, 10.0f);
 }
 
 void fn_1_14BA8(void)
@@ -6249,7 +6231,7 @@ void fn_1_21134(omObjData *object)
 
     var_r29 = &lbl_1_bss_64;
     for (var_r31 = 1; var_r31 < 0xA; var_r31++) {
-        if ((var_r29->unk_38 <= 1200.0f) || (lbl_1_bss_16C4[var_r31].unk_1C == -200.0f)) {
+        if ((var_r29->zoom <= 1200.0f) || (lbl_1_bss_16C4[var_r31].unk_1C == -200.0f)) {
             if (lbl_1_bss_16C4[var_r31].unk_1C >= -100.0f) {
                 lbl_1_bss_16C4[var_r31].unk_00 = 0;
                 lbl_1_bss_16C4[var_r31].unk_1C = -200.0f;
@@ -6270,9 +6252,9 @@ void fn_1_21134(omObjData *object)
         }
     }
     for (var_r31 = 0xA; var_r31 < 0x8C; var_r31++) {
-        if ((lbl_1_bss_16C4[var_r31].unk_24 == 0.0f) && (lbl_1_bss_16C4[var_r31].unk_14 > (var_r29->unk_38 - 400.0f))
-            && (lbl_1_bss_16C4[var_r31].unk_0C < (200.0f + var_r29->unk_08)) && (lbl_1_bss_16C4[var_r31].unk_0C > (var_r29->unk_08 - 200.0f))) {
-            if (var_r29->unk_08 >= lbl_1_bss_16C4[var_r31].unk_0C) {
+        if ((lbl_1_bss_16C4[var_r31].unk_24 == 0.0f) && (lbl_1_bss_16C4[var_r31].unk_14 > (var_r29->zoom - 400.0f))
+            && (lbl_1_bss_16C4[var_r31].unk_0C < (200.0f + var_r29->center.x)) && (lbl_1_bss_16C4[var_r31].unk_0C > (var_r29->center.x - 200.0f))) {
+            if (var_r29->center.x >= lbl_1_bss_16C4[var_r31].unk_0C) {
                 lbl_1_bss_16C4[var_r31].unk_24 = -300.0f;
             }
             else {
