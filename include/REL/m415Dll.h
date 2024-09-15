@@ -1,7 +1,9 @@
 #include "dolphin.h"
 
-#include "game/hsfformat.h"
+#include "game/hsfman.h"
 #include "game/object.h"
+
+extern u8 texMtxTbl[];
 
 #define FABS(x) ((x < 0.0f) ? -(x) : (x))
 
@@ -90,26 +92,56 @@ typedef struct _unkStruct4 {
     f32 unk148;
 } unkStruct4;
 
+typedef struct _unkSubStruct4 {
+    s8 unk0;
+    s8 unk1;
+    char unk2[0x2];
+    HsfVector2f unk4[4];
+    u8 unk24;
+    char unk25[0x3];
+    f32 unk28;
+    f32 unk2C;
+} unkSubStruct4;
+
 // taken from m438
 typedef struct _unkSubStruct {
     Vec unk0;
-    char unkC[0xC];
+    Vec unkC;
     Vec unk18;
-    char unk24[0x2C];
+    char unk24[0xC];
+    u8 unk30;
+    u8 unk31;
+    u8 unk32;
+    u8 unk33;
+    u32 unk34;
+    s16 unk38;
+    void* unk3C;
+    Vec* unk40;
+    GXColor* unk44;
+    Vec* unk48;
+    GXColor unk4C;
     GXColor unk50;
-    char unk54[0x8];
+    unkSubStruct4* unk54;
+    char unk58[0x4];
     s8 unk5C;
     char unk5D[0xB];
     Vec unk68;
     char unk74[0x20];
 } unkSubStruct; /* size = 0x94 */
 
+typedef void (*unkSubStruct2Func)(struct _unkSubStruct2*);
+
 typedef struct _unkSubStruct2 {
     s16 unk0;
     s16 unk2;
-    char unk4[0x2C];
-    void *unk30; // TODO type
-    char unk34[8];
+    u8 unk4;
+    u32 unk8;
+    Vec unkC;
+    Vec unk18;
+    Vec unk24;
+    unkSubStruct2Func unk30;
+    s16* unk34;
+    char unk38[4];
     unkSubStruct *unk3C;
     char unk40[0x20];
     u8 unk60;
@@ -124,16 +156,47 @@ typedef struct _unkSubStruct2 {
     char unk94[0x28];
 } unkSubStruct2; /* size = 0xBC */
 
+typedef struct _unkSubStruct3 {
+    AnimData* unk0;
+    s16 unk4;
+    s16 unk6;
+    s32 unk8;
+    Vec unkC;
+    Mtx unk18;
+    GXColor unk48;
+    u8 unk4C;
+    u8 unk4D;
+    char unk4E[0x2];
+    char unk50[0x8];
+    f32 unk58;
+    char unk5C[0x4];
+    f32 unk60;
+} unkSubStruct3; /* size = 0x64 */
+
 typedef struct _unkStruct5 {
-    /* 0x00 */ char unk00[0x36];
+    Mtx unk0;
+    s16 unk30;
+    s16 unk32;
+    s16 unk34;
     s16 unk36;
     s16 unk38;
     s16 unk3A;
-    char unk3C[4];
+    unkSubStruct3 *unk3C;
     unkSubStruct2 *unk40;
 } unkStruct5; /* size =  */
 
+typedef struct _unkStruct6 {
+    Vec unk0;
+    Vec unkC;
+    Vec unk18;
+    Vec unk24;
+} unkStruct6;
+
+// bss
+extern unkStruct5 lbl_1_bss_36C;
+
 // prototypes
+// main.c
 void ObjectSetup(void);
 void fn_1_43C(omObjData* object);
 void fn_1_4B0(omObjData* object);
@@ -174,10 +237,26 @@ void fn_1_6F90(f32*, f32*, f32*, f32*, f32);
 void fn_1_7268(f32*, f32*, f32*, s32);
 f32 fn_1_7520(f32, f32*, f32*, f32*, s32);
 void fn_1_7674(f32*, Vec*, Vec*, s32);
-// ...
 void fn_1_7A54(f32, Vec*, f32*, Vec*, Vec*, s32);
-void fn_1_8780(s32, s32);
-AnimData** fn_1_9734(s16); // *
+f32 fn_1_7C68(Vec*);
+f32 fn_1_7E00(Vec, Vec, Vec*, f32);
+f32 fn_1_7ED8(Vec, Vec, Vec);
+f32 fn_1_7F94(Vec*, Vec*, Vec*);
+f32 fn_1_82D0(Vec*, Vec*, Vec*, Vec*, Vec*);
+// map.c
+void fn_1_8780(s16, s16);
+void fn_1_95C0(ModelData*, Mtx);
+unkSubStruct2* fn_1_96EC(s16);
+unkSubStruct* fn_1_9708(s16, s16);
+AnimData** fn_1_9734(s16);
+void fn_1_9750(unkStruct6**, s16, f32, f32);
+void fn_1_98D4(Vec**, s16, Vec*);
+void fn_1_9974(GXColor**, s16, GXColor*);
+void fn_1_9A1C(Vec**, s16, Vec*);
+void fn_1_9AA8(HsfVector2f**, s16, HsfVector2f*);
+void fn_1_9B40(unkSubStruct*);
+void fn_1_9DC8(unkSubStruct2*);
+// ...
 s16 fn_1_A2D0(s32, s32);
 void fn_1_A800(s16);
 s16 fn_1_A94C(s32, s16, s16);
