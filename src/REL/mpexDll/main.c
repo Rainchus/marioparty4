@@ -53,7 +53,7 @@ void fn_1_1C0(omObjData *object)
     }
 }
 
-void fn_1_230(void)
+void ObjectSetup(void)
 {
     mgPracticeEnableF = 0;
     lbl_1_bss_0 = omInitObjMan(0x3E, 0x2000);
