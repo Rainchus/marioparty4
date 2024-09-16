@@ -1205,7 +1205,7 @@ config.libs = [
         "m456Dll",  # Take a Breather
         objects={
             Object(NonMatching, "REL/m456Dll/main.c"),
-            Object(NonMatching, "REL/m456Dll/stage.c"),
+            Object(Matching, "REL/m456Dll/stage.c"),
         },
     ),
     Rel(
