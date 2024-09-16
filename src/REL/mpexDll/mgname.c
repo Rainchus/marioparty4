@@ -3,6 +3,7 @@
 #include "game/audio.h"
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
+#include "game/minigame_seq.h"
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/printfunc.h"
@@ -213,7 +214,7 @@ s32 lbl_1_data_788[0xC6] = {
     0x140025,
 };
 
-s32 fn_1_1CB80(MpexDllUnkStruct3 *arg0, u8 *arg1, s16 arg2)
+s32 fn_1_1CB80(SeqWork *arg0, u8 *arg1, s16 arg2)
 {
     u8 *var_r31;
     s16 var_r30;
@@ -231,7 +232,7 @@ s32 fn_1_1CB80(MpexDllUnkStruct3 *arg0, u8 *arg1, s16 arg2)
     var_r27 = lbl_1_data_788;
 
     for (var_r23 = 0; var_r23 < 0x10; var_r23++) {
-        if (arg0->unk_3A[var_r23] == -1) {
+        if (arg0->spr_grp[var_r23] == -1) {
             break;
         }
     }
@@ -309,8 +310,8 @@ s32 fn_1_1CB80(MpexDllUnkStruct3 *arg0, u8 *arg1, s16 arg2)
         }
     }
     var_r20 = HuSprGrpCreate(var_r28);
-    arg0->unk_3A[var_r23] = var_r20;
-    arg0->unk_30 = var_r30;
+    arg0->spr_grp[var_r23] = var_r20;
+    arg0->alt_word_len = var_r30;
     var_r30 = (var_r30 / 2) - 0xE;
     for (var_r26 = 0; var_r26 < var_r28; var_r26++) {
         var_r19 = HuSprCreate(var_r21[var_r26], 0, 0);
@@ -318,7 +319,7 @@ s32 fn_1_1CB80(MpexDllUnkStruct3 *arg0, u8 *arg1, s16 arg2)
         HuSprPosSet(var_r20, var_r26, var_r22[var_r26] - var_r30, var_r29[var_r26]);
     }
 
-    arg0->unk_32 = var_r28;
+    arg0->word_len = var_r28;
     HuMemDirectFree(var_r21);
     HuMemDirectFree(var_r22);
     HuMemDirectFree(var_r29);
@@ -327,7 +328,7 @@ s32 fn_1_1CB80(MpexDllUnkStruct3 *arg0, u8 *arg1, s16 arg2)
 
 s32 fn_1_1D02C(u32 arg0)
 {
-    MpexDllUnkStruct3 sp10;
+    SeqWork sp10;
     s16 spC[2];
 
     u8 *var_r31;
@@ -341,7 +342,7 @@ s32 fn_1_1D02C(u32 arg0)
     var_r25 = GWGameStat.language;
     lbl_1_bss_6AC = var_r25;
     for (var_r30 = 0; var_r30 < 0x10; var_r30++) {
-        sp10.unk_5A[var_r30] = sp10.unk_3A[var_r30] = -1;
+        sp10.sprite[var_r30] = sp10.spr_grp[var_r30] = -1;
     }
     var_r28 = MessData_MesPtrGet(messDataPtr, arg0);
     var_r31 = var_r28;
@@ -361,8 +362,8 @@ s32 fn_1_1D02C(u32 arg0)
                 var_r27 = 0;
             }
             var_r26 = fn_1_1CB80(&sp10, var_r28, var_r27);
-            HuSprGrpPosSet(sp10.unk_3A[var_r29], 288.0f, 240.0f);
-            spC[var_r29] = sp10.unk_30;
+            HuSprGrpPosSet(sp10.spr_grp[var_r29], 288.0f, 240.0f);
+            spC[var_r29] = sp10.alt_word_len;
             var_r29++;
             if (var_r30 == 0) {
                 var_r28 = var_r31 + 1;

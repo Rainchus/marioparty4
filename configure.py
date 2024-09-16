@@ -1302,7 +1302,7 @@ config.libs = [
             Object(Matching, "REL/mpexDll/main.c"),
             Object(NonMatching, "REL/mpexDll/mpex.c"),
             Object(NonMatching, "REL/mpexDll/charsel.c"),
-            Object(NonMatching, "REL/mpexDll/mgname.c"),
+            Object(Matching, "REL/mpexDll/mgname.c"),
         },
     ),
     Rel(
