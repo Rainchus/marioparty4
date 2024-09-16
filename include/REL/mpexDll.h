@@ -34,4 +34,6 @@ s32 fn_1_1B574(float, float, float, float);
 s32 fn_1_1B64C(float, float, float, float);
 s32 fn_1_1B7D0(s32 arg0);
 
+extern u8 lbl_1_bss_6AC;
+
 #endif
