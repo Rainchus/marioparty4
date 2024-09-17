@@ -326,7 +326,7 @@ s32 fn_1_1CB80(SeqWork *arg0, u8 *arg1, s16 arg2)
     return var_r20;
 }
 
-s32 fn_1_1D02C(u32 arg0)
+s32 fn_1_1D02C(s32 arg0)
 {
     SeqWork sp10;
     s16 spC[2];

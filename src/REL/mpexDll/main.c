@@ -16,7 +16,7 @@ void fn_1_A70(MpexDllUnkStruct *arg0);
 
 MpexDllUnkStruct lbl_1_bss_64;
 s32 lbl_1_bss_4[0x18];
-Process *lbl_1_bss_0; // it's something bigger
+Process *lbl_1_bss_0;
 
 void fn_1_A0(void)
 {
