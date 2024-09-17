@@ -26,13 +26,16 @@ typedef struct MpexDllUnkStruct2 {
     /* 0x58 */ u32 unk_58;
 } MpexDllUnkStruct2; /* size = unknown */
 
+void fn_1_374(void);
+void fn_1_298(void);
+void fn_1_910(MpexDllUnkFunc arg0);
+void fn_1_25C4(MpexDllUnkStruct2 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void fn_1_28E0(MpexDllUnkStruct2 *arg0, s32 arg1, Vec *arg2, float arg8, float arg9, float argA, s32 arg3, s32 arg4);
 s32 fn_1_3044(Process *arg0);
 
-// s32 fn_1_1B52C(float, float, float, float); seems implicit in main.c
-s32 fn_1_1B554(float, float, float);
-s32 fn_1_1B574(float, float, float, float);
-s32 fn_1_1B64C(float, float, float, float);
-s32 fn_1_1B7D0(s32 arg0);
+void fn_1_1B7D0(s32 arg0);
+
+s32 fn_1_1D02C(s32 arg0);
 
 extern u8 lbl_1_bss_6AC;
 
