@@ -1109,7 +1109,7 @@ void fn_1_F1F4(s16 arg0, u8 arg1) {
 
     if (arg0 != 0) {
         temp_r29 = &lbl_1_bss_F0.unk10[arg0];
-        var_r31 = (unkStruct8Sub *)(&temp_r29->unk3C);
+        var_r31 = (unkStruct8Sub *)(&temp_r29->unk3C); //! BAD WHY
         (void)temp_r29;
         
         for (var_r28 = 0; var_r28 < temp_r29->unk2; var_r28++, var_r31++) {
