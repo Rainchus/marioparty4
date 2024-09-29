@@ -955,7 +955,7 @@ config.libs = [
             Object(NonMatching, "REL/m420dll/main.c"),
             Object(NonMatching, "REL/m420dll/player.c"),
             Object(NonMatching, "REL/m420dll/map.c"),
-            Object(NonMatching, "REL/m420dll/rand.c"),
+            Object(Matching, "REL/m420dll/rand.c"),
         },
     ),
     Rel(
@@ -1198,14 +1198,14 @@ config.libs = [
         "m455Dll",  # Rumble Fishing
         objects={
             Object(Matching, "REL/m455Dll/main.c"),
-            Object(NonMatching, "REL/m455Dll/stage.c"),
+            Object(Matching, "REL/m455Dll/stage.c"),
         },
     ),
     Rel(
         "m456Dll",  # Take a Breather
         objects={
             Object(NonMatching, "REL/m456Dll/main.c"),
-            Object(NonMatching, "REL/m456Dll/stage.c"),
+            Object(Matching, "REL/m456Dll/stage.c"),
         },
     ),
     Rel(
@@ -1256,8 +1256,8 @@ config.libs = [
     Rel(
         "mentDll",
         objects={
-            Object(NonMatching, "REL/mentDll/common.c"),
-            Object(NonMatching, "REL/mentDll/main.c"),
+            Object(Matching, "REL/mentDll/common.c"),
+            Object(Matching, "REL/mentDll/main.c"),
         },
     ),
     Rel(
@@ -1299,10 +1299,10 @@ config.libs = [
     Rel(
         "mpexDll",
         objects={
-            Object(NonMatching, "REL/mpexDll/main.c"),
+            Object(Matching, "REL/mpexDll/main.c"),
             Object(NonMatching, "REL/mpexDll/mpex.c"),
-            Object(NonMatching, "REL/mpexDll/charsel.c"),
-            Object(NonMatching, "REL/mpexDll/mgname.c"),
+            Object(Matching, "REL/mpexDll/charsel.c"),
+            Object(Matching, "REL/mpexDll/mgname.c"),
         },
     ),
     Rel(

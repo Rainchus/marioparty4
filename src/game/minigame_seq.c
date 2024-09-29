@@ -2797,9 +2797,9 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
 				word_x = (((HU_DISP_WIDTH-word_x)/2.0f)+(winnerNameW[1]/2))-HU_DISP_CENTERX;
 			}
 		} else {
-			if(abs(winPosOfs[num_winners-1][j][0]) == (HU_DISP_WIDTHF/4)) {
+			if(abs(winPosOfs[num_winners-1][j][0]) == 144.0f) {
 				if(winnerNameW[j]+32 < HU_DISP_CENTERX) {
-					word_x = (HU_DISP_WIDTHF/4)+32.0f;
+					word_x = 176.0f;
 				} else {
 					word_x = 32.0f+((winnerNameW[j]*work->win_scale)/2.0f);
 				}
@@ -2900,9 +2900,9 @@ static s32 SeqUpdateWin(SeqWork *work)
 							pos_x = winnerNameW[1]+winnerNameW[0]+32;
 							pos_x = (((HU_DISP_WIDTH-pos_x)/2.0f)+(winnerNameW[1]/2))-HU_DISP_CENTERX;
 						} else {
-							if(abs(winPosOfs[work->word_len-2][idx][0]) == (HU_DISP_WIDTHF/4)) {
+							if(abs(winPosOfs[work->word_len-2][idx][0]) == 144.0f) {
 								if(winnerNameW[idx]+32 < HU_DISP_CENTERX) {
-									pos_x = (HU_DISP_WIDTHF/4)+32;
+									pos_x = 176.0f;
 								} else {
 									pos_x = 32.0f+((winnerNameW[idx]*work->win_scale)/2.0f);
 								}

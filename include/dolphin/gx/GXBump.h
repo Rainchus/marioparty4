@@ -19,8 +19,9 @@ void GXSetTevIndirect(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXIndTe
                       GXIndTexBiasSel bias_sel, GXIndTexMtxID matrix_sel, GXIndTexWrap wrap_s,
                       GXIndTexWrap wrap_t, GXBool add_prev, GXBool ind_lod,
                       GXIndTexAlphaSel alpha_sel);
-void GXSetTevIndWarp(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXBool signed_offsets,
-                     GXBool replace_mode, GXIndTexMtxID matrix_sel);
+//Must be implicit to match m455dll
+//void GXSetTevIndWarp(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXBool signed_offsets,
+//                     GXBool replace_mode, GXIndTexMtxID matrix_sel);
                      
 void GXSetTevIndTile (GXTevStageID tev_stage, GXIndTexStageID ind_stage,
 			     u16 tilesize_s, u16 tilesize_t, 
