@@ -1333,12 +1333,12 @@ void fn_1_5B20(unkSubStruct2* arg0) {
                 var_r31->unk0.y = 6.0f;
                 var_r31->unk0.z = 65.0f * var_r31->unk68.z;
             }
-            arg0->unk7C = 30;
+            arg0->unk7Cs = 30;
             arg0->unk60++;
         case 1:
-            arg0->unk7C--;
-            temp_f31 = (30.0f - arg0->unk7C) / 30.0f;
-            temp_f29 = arg0->unk7C / 30.0f;
+            arg0->unk7Cs--;
+            temp_f31 = (30.0f - arg0->unk7Cs) / 30.0f;
+            temp_f29 = arg0->unk7Cs / 30.0f;
             var_r31 = arg0->unk3C;
             for (var_r29 = 0; var_r29 < arg0->unk2; var_r29++, var_r31++) {
                 var_r31->unk0.x += 5.0f * temp_f29 * var_r31->unk68.x;
@@ -1352,7 +1352,7 @@ void fn_1_5B20(unkSubStruct2* arg0) {
                 var_r31->unk50.b = 0xFF;
                 var_r31->unk50.a = 96.0f * (1.0f - (temp_f31 * temp_f31));
             }
-            if (arg0->unk7C == 0) {
+            if (arg0->unk7Cs == 0) {
                 arg0->unk60++;
             }
             break;

@@ -1,6 +1,8 @@
+#define HUSPR_USE_OLD_DEFS
 #include "REL/m415Dll.h"
 
 #include "game/hsfdraw.h"
+#include "game/sprite.h"
 
 void fn_1_8780(s16 arg0, s16 arg1) {
     s32 var_r31;
@@ -519,5 +521,916 @@ void fn_1_9DC8(unkSubStruct2* arg0) {
         if ((arg0->unk8 & 0x80000000) != 0) {
             fn_1_A800(arg0->unk0);
         }
+    }
+}
+
+s16 fn_1_A2D0(u8 arg0, u8 arg1) {
+    s32 var_r29;
+    s32 var_r28;
+    unkSubStruct* var_r30;
+    unkSubStruct2* var_r31;
+    void* temp_r25;
+
+    var_r31 = lbl_1_bss_36C.unk40 + 1;
+    
+    for (var_r29 = 1; var_r29 < lbl_1_bss_36C.unk30; var_r29++, var_r31++) {
+        if (var_r31->unk8 == 0) {
+            break;
+        }
+    }
+    if (var_r29 == lbl_1_bss_36C.unk30) {
+        return 0;
+    }
+    var_r31->unk0 = var_r29;
+    var_r31->unk8 = 1;
+    var_r31->unk30 = NULL;
+    var_r31->unk2 = arg0;
+    var_r31->unk4 = arg1;
+    var_r30 = HuMemDirectMallocNum(HEAP_SYSTEM, arg0 * sizeof(unkSubStruct), 0x10000000);
+    var_r31->unk3C = var_r30;
+    var_r31->unk34 = HuMemDirectMallocNum(HEAP_SYSTEM, arg1 * 2, 0x10000000);
+    var_r31->unk48 = 0;
+    var_r31->unk4C = HuMemDirectMallocNum(HEAP_SYSTEM, arg0 * sizeof(unkType), 0x10000000);
+    var_r31->unk50 = HuMemDirectMallocNum(HEAP_SYSTEM, arg0 * sizeof(Vec[4]), 0x10000000);
+    var_r31->unk54 = HuMemDirectMallocNum(HEAP_SYSTEM, arg0 * sizeof(unkType2), 0x10000000);
+    var_r31->unk58 = HuMemDirectMallocNum(HEAP_SYSTEM, arg0 * sizeof(Vec), 0x10000000);
+    var_r31->unk5C = HuMemDirectMallocNum(HEAP_SYSTEM, arg1 * (arg0 * sizeof(unkSubStruct4)), 0x10000000);
+    DCFlushRangeNoSync(var_r31->unk4C, arg0 << 8);
+    var_r31->unkC.x = var_r31->unkC.y = var_r31->unkC.z = 0.0f;
+    var_r31->unk18.x = var_r31->unk18.y = var_r31->unk18.z = 0.0f;
+    var_r31->unk24.x = var_r31->unk24.y = var_r31->unk24.z = 1.0f;
+    var_r31->unk70.x = var_r31->unk70.y = var_r31->unk70.z = 0.0f;
+    var_r31->unk64.x = var_r31->unk64.y = var_r31->unk64.z = 0.0f;
+    var_r31->unk60 = 0;
+    
+    for (var_r29 = 0; var_r29 < 0x20; var_r29++) {
+        var_r31->unk7C[var_r29] = 0;
+    }
+    for (var_r29 = 0; var_r29 < arg1; var_r29++) {
+        var_r31->unk34[var_r29] = 0;
+    }
+    for (var_r29 = 0; var_r29 < arg0; var_r29++, var_r30++) {
+        var_r30->unk34 = 1;
+        var_r30->unk33 = arg1;
+        var_r30->unk30 = 0;
+        var_r30->unk31 = 2;
+        var_r30->unk32 = 0;
+        
+        
+        var_r30->unk4C.r = var_r30->unk4C.g = var_r30->unk4C.b = 0;
+        var_r30->unk4C.a = 0xFF;
+        var_r30->unk50.r = var_r30->unk50.g = var_r30->unk50.b = 0xFF;
+        var_r30->unk50.a = 0xFF;
+        var_r30->unk54 = &var_r31->unk5C[var_r29 * arg1];
+        for (var_r28 = 0; var_r28 < arg1; var_r28++) {
+            var_r30->unk54[var_r28].unk0 = var_r30->unk54[var_r28].unk1 = 0;
+            var_r30->unk54[var_r28].unk28 = 1.0f;
+            var_r30->unk54[var_r28].unk2C = 0.0f;
+        }
+        
+        var_r30->unk0.x = var_r30->unk0.y = var_r30->unk0.z = 0.0f;
+        var_r30->unkC.x = var_r30->unkC.y = var_r30->unkC.z = 0.0f;
+        var_r30->unk18.x = var_r30->unk18.y = var_r30->unk18.z = 1.0f;
+        var_r30->unk68.x = var_r30->unk68.y = var_r30->unk68.z = 0.0f;
+        var_r30->unk5C.x = var_r30->unk5C.y = var_r30->unk5C.z = 0.0f;
+        var_r30->unk58 = 0;
+        
+        for (var_r28 = 0; var_r28 < 0x10; var_r28++) {
+            var_r30->unk74[var_r28] = 0;
+        }
+        var_r30->unk40 = &var_r31->unk50[var_r29 * 4];
+        var_r30->unk44 = &var_r31->unk54[var_r29 * 4];
+        var_r30->unk48 = &var_r31->unk58[var_r29];
+        var_r30->unk3C = var_r31->unk4C + var_r31->unk48;
+        fn_1_9B40(var_r30);
+        var_r31->unk48 += var_r30->unk38;
+    }
+    temp_r25 = var_r31->unk4C;
+    var_r31->unk4C = HuMemDirectMallocNum(HEAP_SYSTEM, var_r31->unk48, 0x10000000);
+    memcpy(var_r31->unk4C, temp_r25, var_r31->unk48);
+    HuMemDirectFree(temp_r25);
+    DCFlushRangeNoSync(var_r31->unk50, arg0 * 0x30);
+    DCFlushRangeNoSync(var_r31->unk54, arg0 * 0x10);
+    DCFlushRangeNoSync(var_r31->unk58, arg0 * 0xC);
+    DCFlushRangeNoSync(var_r31->unk4C, var_r31->unk48);
+    var_r30 = var_r31->unk3C;
+    var_r31->unk48 = 0;
+    
+    for (var_r29 = 0; var_r29 < arg0; var_r29++, var_r30++) {
+        var_r30->unk3C = var_r31->unk4C + var_r31->unk48;
+        var_r31->unk48 += var_r30->unk38;
+    }
+    lbl_1_bss_36C.unk36 = var_r31->unk0;
+    lbl_1_bss_36C.unk38 = 0;
+    lbl_1_bss_36C.unk3A = 0;
+    return var_r31->unk0;
+}
+
+void fn_1_A800(s16 arg0) {
+    s32 var_r30;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk8 != 0) {
+            if (temp_r31->unk50 != NULL) {
+                HuMemDirectFree(temp_r31->unk50);
+            }
+            if (temp_r31->unk54 != NULL) {
+                HuMemDirectFree(temp_r31->unk54);
+            }
+            if (temp_r31->unk58 != NULL) {
+                HuMemDirectFree(temp_r31->unk58);
+            }
+            if (temp_r31->unk4C != NULL) {
+                HuMemDirectFree(temp_r31->unk4C);
+            }
+            if (temp_r31->unk5C != NULL) {
+                HuMemDirectFree(temp_r31->unk5C);
+            }
+            
+            for (var_r30 = 0; var_r30 < temp_r31->unk4; var_r30++) {
+                fn_1_AF48(temp_r31->unk34[var_r30]);
+            }
+            HuMemDirectFree(temp_r31->unk3C);
+            HuMemDirectFree(temp_r31->unk34);
+            temp_r31->unk8 = 0;
+        }
+    }
+}
+
+void fn_1_A920(s16 arg0, s16 arg1, u8 arg2) {
+    lbl_1_bss_36C.unk36 = arg0;
+    lbl_1_bss_36C.unk38 = arg1;
+    lbl_1_bss_36C.unk3A = arg2;
+}
+
+s16 fn_1_A94C(u32 arg0, s16 arg1, s16 arg2) {
+    AnimData* var_r30;
+    f32 var_f31;
+    f32 var_f30;
+    s32 var_r29;
+    unkSubStruct3* var_r31;
+
+    var_r31 = lbl_1_bss_36C.unk3C + 1;
+    for (var_r29 = 1; var_r29 < lbl_1_bss_36C.unk32; var_r29++, var_r31++) {
+        if ((var_r31->unk6 != 0) && (var_r31->unk8 == arg0)) {
+           break;
+        }
+    }
+    if (var_r29 < lbl_1_bss_36C.unk32) {
+        var_r31->unk6++;
+        return var_r29;
+    }
+    var_r31 = lbl_1_bss_36C.unk3C + 1;
+    for (var_r29 = 1; var_r29 < lbl_1_bss_36C.unk32; var_r29++, var_r31++) {
+        if (var_r31->unk6 == 0) {
+            break;
+        }
+    }
+    var_r31->unk8 = arg0;
+    var_r31->unk6 = 1;
+    if (((arg0 & 0xFFFF0000) + 0x10000) == 0U) {
+        var_r30 = HuSprAnimMake(arg1, arg2, 2);
+        var_r30->bmp->data = HuMemDirectMallocNum(HEAP_SYSTEM, arg2 * (arg1 * 2), 0x10000000);
+        arg1 = arg2 = 0;
+    } else {
+        var_r30 = HuSprAnimRead(HuDataReadNum(arg0, 0x10000000));
+    }
+    if ((arg1 == 0) || (arg2 == 0)) {
+        arg1 = var_r30->bmp->sizeX;
+        arg2 = var_r30->bmp->sizeY;
+        var_f31 = var_f30 = 1.0f;
+    } else {
+        var_f31 = arg1 / (f32) var_r30->bmp->sizeX;
+        var_f30 = arg2 / (f32) var_r30->bmp->sizeY;
+    }
+    var_r31->unk0 = var_r30;
+    var_r31->unk4E = arg1;
+    var_r31->unk50 = arg2;
+    var_r31->unk54 = var_f31;
+    var_r31->unk58 = var_f30;
+    var_r31->unk5C = 1.0f / var_r30->bmp->sizeX;
+    var_r31->unk60 = 1.0f / var_r30->bmp->sizeY;
+    var_r31->unk4 = 0;
+    var_r31->unk4C = (var_r30->bmp->sizeY / arg2);
+    if (var_r31->unk4C < 1) {
+        var_r31->unk4C = 1;
+    }
+    var_r31->unk4D = 0;
+    if ((arg1 > var_r30->bmp->sizeX) || (arg2 > var_r30->bmp->sizeY)) {
+        var_r31->unk4D = 1;
+    }
+    var_r31->unk48.r = var_r31->unk48.g = var_r31->unk48.b = 0xFF;
+    var_r31->unk48.a = 0xFF;
+    PSMTXIdentity(var_r31->unk18);
+    var_r31->unkC.x = var_r31->unkC.y = var_r31->unkC.z = 0.0f;
+    return var_r29;
+}
+
+void fn_1_ACF4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+    f32 var_f31;
+    f32 var_f30;
+    AnimData* var_r30;
+    unkSubStruct3* var_r31;
+
+    var_r31 = &lbl_1_bss_36C.unk3C[arg0];
+    HuSprAnimKill(var_r31->unk0);
+    var_r31->unk8 |= 0xFFFF0000;
+    var_r30 = HuSprAnimMake(arg2, arg3, arg1);
+    var_r30->bmp->data = HuMemDirectMallocNum(HEAP_SYSTEM, arg3 * (var_r30->bmp->pixSize * arg2), 0x10000000U);
+    var_f31 = arg4 / (f32) var_r30->bmp->sizeX;
+    var_f30 = arg5 / (f32) var_r30->bmp->sizeY;
+    var_r31->unk0 = var_r30;
+    var_r31->unk4E = arg2;
+    var_r31->unk50 = arg3;
+    var_r31->unk54 = var_f31;
+    var_r31->unk58 = var_f30;
+    var_r31->unk5C = 1.0f / var_r30->bmp->sizeX;
+    var_r31->unk60 = 1.0f / var_r30->bmp->sizeY;
+    var_r31->unk4 = 0;
+    var_r31->unk4C = var_r30->bmp->sizeY / arg5;
+    var_r31->unk4D = 0;
+    var_r31->unk48.r = var_r31->unk48.g = var_r31->unk48.b = 0xFF;
+    var_r31->unk48.a = 0xFF;
+}
+
+void fn_1_AF48(s16 arg0) {
+    unkSubStruct3* temp_r31;
+
+    temp_r31 = &lbl_1_bss_36C.unk3C[arg0];
+    if (temp_r31->unk8 != 0) {
+        if (temp_r31->unk6 != 0) {
+            temp_r31->unk6 -= 1;
+        }
+        if (temp_r31->unk6 == 0) {
+            HuSprAnimKill(temp_r31->unk0);
+            temp_r31->unk8 = 0;
+        }
+    }
+}
+
+u8 fn_1_AFC8(s16 arg0, u8 arg1, s32 arg2, s16 arg3, s16 arg4) {
+    s32 temp_r3;
+
+    temp_r3 = fn_1_A94C(arg2, arg3, arg4);
+    if (temp_r3 == 0) {
+        return 0;
+    }
+    fn_1_B0B8(arg0, arg1, temp_r3);
+    return temp_r3;
+}
+
+u8 fn_1_B038(s16 arg0, u8 arg1, s32 arg2) {
+    u8 var_r31;
+    s32 var_r30;
+    u8 var_r29;
+
+    if ((var_r30 = fn_1_A94C(arg2, 0, 0)) == 0) {
+        var_r31 = 0;
+    } else {
+        fn_1_B0B8(arg0, arg1, var_r30);
+        var_r31 = var_r30;
+    }
+    var_r29 = var_r31;
+    return var_r29;
+}
+
+s32 fn_1_B0B8(s16 arg0, u8 arg1, s16 arg2) {
+    s32 var_r27;
+    unkSubStruct* var_r29;
+    unkSubStruct2* temp_r28;
+    unkSubStruct3* temp_r30;
+    unkSubStruct4* temp_r31;
+
+    if (arg2 == 0) {
+        return 0;
+    }
+    if (arg0 == 0) {
+        return 0;
+    }
+    temp_r28 = &lbl_1_bss_36C.unk40[arg0];
+    temp_r28->unk8 |= 2;
+    temp_r28->unk34[arg1] = arg2;
+    temp_r30 = &lbl_1_bss_36C.unk3C[arg2];
+    var_r29 = temp_r28->unk3C;
+    
+    for (var_r27 = 0; var_r27 < temp_r28->unk2; var_r27++, var_r29++) {
+        if (arg1 == 0) {
+            var_r29->unk40[0].x = -0.5f * temp_r30->unk4E;
+            var_r29->unk40[0].y = 0.5f * temp_r30->unk50;
+            var_r29->unk40[1].x = (0.5f * temp_r30->unk4E);
+            var_r29->unk40[1].y = (0.5f * temp_r30->unk50);
+            var_r29->unk40[2].x = (0.5f * temp_r30->unk4E);
+            var_r29->unk40[2].y = (-0.5f * temp_r30->unk50);
+            var_r29->unk40[3].x = (-0.5f * temp_r30->unk4E);
+            var_r29->unk40[3].y = (-0.5f * temp_r30->unk50);
+            var_r29->unk40[0].z = var_r29->unk40[1].z = var_r29->unk40[2].z = var_r29->unk40[3].z = 0.0f;
+        }
+        temp_r31 = &var_r29->unk54[arg1];
+        temp_r31->unk24 = 0;
+        temp_r31->unk0 = temp_r31->unk1 = 0;
+        temp_r31->unk28 = 1.0f;
+        temp_r31->unk2C = 0.0f;
+        temp_r31->unk4[0].x = temp_r31->unk0 * temp_r30->unk54;
+        temp_r31->unk4[0].y = temp_r31->unk0 * temp_r30->unk58;
+        temp_r31->unk4[1].x = (temp_r31->unk0 + 1) * temp_r30->unk54;
+        temp_r31->unk4[1].y = temp_r31->unk0 * temp_r30->unk58;
+        temp_r31->unk4[2].x = (temp_r31->unk0 + 1) * temp_r30->unk54;
+        temp_r31->unk4[2].y = (temp_r31->unk0 + 1) * temp_r30->unk58;
+        temp_r31->unk4[3].x = temp_r31->unk0 * temp_r30->unk54;
+        temp_r31->unk4[3].y = (temp_r31->unk0 + 1) * temp_r30->unk58;
+        if ((temp_r31->unk0 + 1) < temp_r30->unk4C) {
+            temp_r31->unk4[2].y -= temp_r30->unk60;
+            temp_r31->unk4[3].y -= temp_r30->unk60;
+        }
+        DCFlushRangeNoSync(temp_r31->unk4, 0x20);
+    }
+    lbl_1_bss_36C.unk36 = arg0;
+    lbl_1_bss_36C.unk3A = arg1;
+    return 1;
+}
+
+void fn_1_B634(s32 arg0) {
+    s32 var_r28;
+    s32 var_r27;
+    s16 var_r26;
+    unkSubStruct2* temp_r31;
+    unkSubStruct3* temp_r30;
+    unkSubStruct3* temp_r29;
+
+    for (var_r28 = 1; var_r28 < lbl_1_bss_36C.unk30; var_r28++) {
+        if ((s16)var_r28 != 0) {
+            temp_r31 = &lbl_1_bss_36C.unk40[(s16)var_r28];
+            if (temp_r31->unk8 != 0) {
+                if (temp_r31->unk50 != NULL) {
+                    HuMemDirectFree(temp_r31->unk50);
+                }
+                if (temp_r31->unk54 != NULL) {
+                    HuMemDirectFree(temp_r31->unk54);
+                }
+                if (temp_r31->unk58 != NULL) {
+                    HuMemDirectFree(temp_r31->unk58);
+                }
+                if (temp_r31->unk4C != NULL) {
+                    HuMemDirectFree(temp_r31->unk4C);
+                }
+                if (temp_r31->unk5C != NULL) {
+                    HuMemDirectFree(temp_r31->unk5C);
+                }
+                
+                for (var_r27 = 0; var_r27 < temp_r31->unk4; var_r27++) {
+                    var_r26 = temp_r31->unk34[var_r27];
+                    temp_r29 = &lbl_1_bss_36C.unk3C[var_r26];
+                    if (temp_r29->unk8 != 0) {
+                        if (temp_r29->unk6 != 0) {
+                            temp_r29->unk6--;
+                        }
+                        if (temp_r29->unk6 == 0) {
+                            HuSprAnimKill(temp_r29->unk0);
+                            temp_r29->unk8 = 0;
+                        }
+                    }
+                }
+                HuMemDirectFree(temp_r31->unk3C);
+                HuMemDirectFree(temp_r31->unk34);
+                temp_r31->unk8 = 0;
+            }
+        }
+    }
+    
+    for (var_r28 = 1; var_r28 < lbl_1_bss_36C.unk32; var_r28++) {
+        temp_r30 = &lbl_1_bss_36C.unk3C[(s16)var_r28];
+        if (temp_r30->unk8 != 0) {
+            if (temp_r30->unk6 != 0) {
+                temp_r30->unk6 -= 1;
+            }
+            if (temp_r30->unk6 == 0) {
+                HuSprAnimKill(temp_r30->unk0);
+                temp_r30->unk8 = 0;
+            }
+        }
+    }
+    HuMemDirectFree(lbl_1_bss_36C.unk40);
+    HuMemDirectFree(lbl_1_bss_36C.unk3C);
+    Hu3DModelKill(lbl_1_bss_36C.unk34);
+}
+
+void fn_1_B864(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r31->unkC.x = arg8;
+        temp_r31->unkC.y = arg9;
+        temp_r31->unkC.z = argA;
+        if (temp_r31->unk2 == 1) {
+            temp_r31->unk3C->unk0 = temp_r31->unkC;
+        }
+    }
+}
+
+void fn_1_B8D0(s16 arg0, s16 arg1, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct* temp_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r30->unk2 > arg1) {
+            temp_r31 = &temp_r30->unk3C[arg1];
+            temp_r31->unk0.x = arg8;
+            temp_r31->unk0.y = arg9;
+            temp_r31->unk0.z = argA;
+        }
+    }
+}
+
+void fn_1_B940(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    s32 var_r29;
+    unkSubStruct* var_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        var_r31 = temp_r30->unk3C;
+        for (var_r29 = 0; var_r29 < temp_r30->unk2; var_r29++, var_r31++) {
+            var_r31->unk0.x = arg8;
+            var_r31->unk0.y = arg9;
+            var_r31->unk0.z = argA;
+        }
+    }
+}
+
+void fn_1_B9B4(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r31->unkC.x += arg8;
+        temp_r31->unkC.y += arg9;
+        temp_r31->unkC.z += argA;
+        if (temp_r31->unk2 == 1) {
+            temp_r31->unk3C->unk0 = temp_r31->unkC;
+        }
+    }
+}
+
+void fn_1_BA38(s16 arg0, s16 arg1, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct* temp_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r30->unk2 > arg1) {
+            temp_r31 = &temp_r30->unk3C[arg1];
+            temp_r31->unk0.x += arg8;
+            temp_r31->unk0.y += arg9;
+            temp_r31->unk0.z += argA;
+        }
+    }
+}
+
+void fn_1_BAC0(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    s32 var_r29;
+    unkSubStruct* var_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        var_r31 = temp_r30->unk3C;
+        
+        for (var_r29 = 0; var_r29 < temp_r30->unk2; var_r29++, var_r31++) {
+            var_r31->unk0.x += arg8;
+            var_r31->unk0.y += arg9;
+            var_r31->unk0.z += argA;
+        }
+    }
+}
+
+void fn_1_BB4C(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r31->unk18.x = arg8;
+        temp_r31->unk18.y = arg9;
+        temp_r31->unk18.z = argA;
+        if (temp_r31->unk2 == 1) {
+            temp_r31->unk3C->unkC = temp_r31->unk18;
+        }
+    }
+}
+
+void fn_1_BBB8(s16 arg0, s16 arg1, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct* temp_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r30->unk2 > arg1) {
+            temp_r31 = &temp_r30->unk3C[arg1];
+            temp_r31->unkC.x = arg8;
+            temp_r31->unkC.y = arg9;
+            temp_r31->unkC.z = argA;
+        }
+    }
+}
+
+void fn_1_BC28(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    s32 var_r29;
+    unkSubStruct* var_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        var_r31 = temp_r30->unk3C;
+        for (var_r29 = 0; var_r29 < temp_r30->unk2; var_r29++, var_r31++) {
+            var_r31->unkC.x = arg8;
+            var_r31->unkC.y = arg9;
+            var_r31->unkC.z = argA;
+        }
+    }
+}
+
+void fn_1_BC9C(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r31->unk24.x = arg8;
+        temp_r31->unk24.y = arg9;
+        temp_r31->unk24.z = argA;
+        if (temp_r31->unk2 == 1) {
+            temp_r31->unk3C->unk18 = temp_r31->unk24;
+        }
+    }
+}
+
+void fn_1_BD08(s16 arg0, s16 arg1, f32 arg8, f32 arg9, f32 argA) {
+    unkSubStruct* temp_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r30->unk2 > arg1) {
+            temp_r31 = &temp_r30->unk3C[arg1];
+            temp_r31->unk18.x = arg8;
+            temp_r31->unk18.y = arg9;
+            temp_r31->unk18.z = argA;
+        }
+    }
+}
+
+void fn_1_BD78(s16 arg0, f32 arg8, f32 arg9, f32 argA) {
+    s32 var_r29;
+    unkSubStruct* var_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        var_r31 = temp_r30->unk3C;
+        for (var_r29 = 0; var_r29 < temp_r30->unk2; var_r29++, var_r31++) {
+            var_r31->unk18.x = arg8;
+            var_r31->unk18.y = arg9;
+            var_r31->unk18.z = argA;
+        }
+    }
+}
+
+void fn_1_BDEC(s16 arg0, s32 arg1) {
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r31->unk8 |= arg1;
+    }
+}
+
+void fn_1_BE30(s16 arg0, s16 arg1, s32 arg2) {
+    unkSubStruct* temp_r30;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            temp_r30 = &temp_r31->unk3C[arg1];
+            temp_r30->unk34 |= arg2;
+        }
+    }
+}
+
+void fn_1_BEA0(s16 arg0, s32 arg1) {
+    s32 var_r30;
+    unkSubStruct* temp_r29;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r29 = temp_r31->unk3C;
+        
+        for (var_r30 = 0; var_r30 < temp_r31->unk2; var_r30++) {
+            temp_r29->unk34 |= arg1;
+        }
+    }
+}
+
+void fn_1_BF10(s16 arg0, u32 arg1) {
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r31->unk8 &= ~arg1;
+    }
+}
+
+void fn_1_BF54(s16 arg0, s16 arg1, u32 arg2) {
+    unkSubStruct* temp_r30;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            temp_r30 = &temp_r31->unk3C[arg1];
+            temp_r30->unk34 &= ~arg2;
+        }
+    }
+}
+
+void fn_1_BFC4(s16 arg0, u32 arg1) {
+    s32 var_r30;
+    unkSubStruct* temp_r29;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        temp_r29 = temp_r31->unk3C;
+
+        for (var_r30 = 0; var_r30 < temp_r31->unk2; var_r30++) {
+            temp_r29->unk34 &= ~arg1;
+        }
+    }
+}
+
+s32 fn_1_C034(s16 arg0, s32 arg1) {
+    unkSubStruct2* temp_r31;
+    
+    if (arg0 == 0) {
+        return 0;
+    }
+
+    temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+    if ((temp_r31->unk8 & arg1) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+s16 fn_1_C090(s16 arg0, s16 arg1, s32 arg2) {
+    unkSubStruct* temp_r30;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            temp_r30 = &temp_r31->unk3C[arg1];
+            if ((temp_r30->unk34 & arg2) != 0) {
+                arg0 = 1;
+            } else {
+                arg0 = 0;
+            }
+        }
+    }
+    return arg0;
+}
+
+void fn_1_C110(s16 arg0, s16 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
+    unkSubStruct* temp_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r30->unk2 > arg1) {
+            temp_r31 = &temp_r30->unk3C[arg1];
+            temp_r31->unk50.r = arg2;
+            temp_r31->unk50.g = arg3;
+            temp_r31->unk50.b = arg4;
+            temp_r31->unk50.a = arg5;
+        }
+    }
+}
+
+void fn_1_C184(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+    s32 var_r29;
+    unkSubStruct* var_r31;
+    unkSubStruct2* temp_r30;
+
+    if (arg0 != 0) {
+        temp_r30 = &lbl_1_bss_36C.unk40[arg0];
+        var_r31 = temp_r30->unk3C;
+        
+        for (var_r29 = 0; var_r29 < temp_r30->unk2; var_r29++, var_r31++) {
+            var_r31->unk50.r = arg1;
+            var_r31->unk50.g = arg2;
+            var_r31->unk50.b = arg3;
+            var_r31->unk50.a = arg4;
+        }
+    }
+}
+
+void fn_1_C1FC(s16 arg0, s16 arg1, u8 arg2) {
+    unkSubStruct* temp_r30;
+    unkSubStruct2* temp_r31;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            temp_r30 = &temp_r31->unk3C[arg1];
+            temp_r30->unk30 = arg2;
+        }
+    }
+}
+
+void fn_1_C264(s16 arg0, u8 arg1) {
+    s32 var_r29;
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        var_r30 = temp_r31->unk3C;
+        
+        for (var_r29 = 0; var_r29 < temp_r31->unk2; var_r29++, var_r30++) {
+            var_r30->unk30 = arg1;
+        }
+    }
+}
+
+void fn_1_C2D0(s16 arg0, s16 arg1, u8 arg2) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk31 = arg2;
+        }
+    }
+}
+
+void fn_1_C338(s16 arg0, u8 arg1) {
+    s32 var_r29;
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        var_r30 = temp_r31->unk3C;
+
+        for (var_r29 = 0; var_r29 < temp_r31->unk2; var_r29++, var_r30++) {
+            var_r30->unk31 = arg1;
+        }
+    }
+}
+
+void fn_1_C3A4(s16 arg0, s16 arg1, u8 arg2) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk54->unk24 = arg2;
+        }
+    }
+}
+
+void fn_1_C410(s16 arg0, s16 arg1, u8 arg2, u8 arg3) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk54[arg2].unk24 = arg3;
+        }
+    }
+}
+
+void fn_1_C488(s16 arg0, u8 arg1) {
+    s32 var_r28;
+    s32 var_r30;
+    unkSubStruct* var_r31;
+    unkSubStruct2* temp_r29;
+
+    if (arg0 != 0) {
+        temp_r29 = &lbl_1_bss_36C.unk40[arg0];
+        var_r31 = (unkSubStruct*)&temp_r29->unk3C; //! BAD WHY
+        (void)temp_r29;
+        
+        for (var_r28 = 0; var_r28 < temp_r29->unk2; var_r28++, var_r31++) {
+            for (var_r30 = 0; var_r30 < var_r31->unk33; var_r30++) {
+                var_r31->unk54[var_r30].unk24 = arg1;
+            }
+        }
+    }
+}
+
+void fn_1_C520(s16 arg0, s16 arg1, f32 arg8) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk54->unk28 = arg8;
+        }
+    }
+}
+
+void fn_1_C58C(s16 arg0, s16 arg1, u8 arg2, f32 arg8) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk54[arg2].unk28 = arg8;
+        }
+    }
+}
+
+void fn_1_C604(s16 arg0, f32 arg8) {
+    unkSubStruct* volatile sp8;
+    s32 var_r29;
+    unkSubStruct2* temp_r31;
+    s32 var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        sp8 = temp_r31->unk3C;
+        
+        for (var_r29 = 0; var_r29 < temp_r31->unk2; var_r29++) {
+            for (var_r30 = 0; var_r30 < sp8->unk33; var_r30++) {
+                sp8->unk54[var_r30].unk28 = arg8;
+            }
+        }
+    }
+}
+
+void fn_1_C69C(s16 arg0, s16 arg1, u8 arg2) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk54->unk0 = arg2;
+        }
+    }
+}
+
+void fn_1_C70C(s16 arg0, s16 arg1, u8 arg2, u8 arg3) {
+    unkSubStruct2* temp_r31;
+    unkSubStruct* var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        if (temp_r31->unk2 > arg1) {
+            var_r30 = &temp_r31->unk3C[arg1];
+            var_r30->unk54[arg2].unk0 = arg3;
+        }
+    }
+}
+
+// ...
+
+void fn_1_C784(s16 arg0, u8 arg1) {
+    unkSubStruct* volatile sp8;
+    s32 var_r29;
+    unkSubStruct2* temp_r31;
+    s32 var_r30;
+
+    if (arg0 != 0) {
+        temp_r31 = &lbl_1_bss_36C.unk40[arg0];
+        sp8 = temp_r31->unk3C;
+        for (var_r29 = 0; var_r29 < temp_r31->unk2; var_r29++) {
+            for (var_r30 = 0; var_r30 < sp8->unk33; var_r30++) {
+                sp8->unk54[var_r30].unk0 = arg1;
+            }
+        }
+    }
+}
+
+void fn_1_C81C(s16 arg0, u8 arg1) {
+    unkSubStruct3* var_r31;
+    if (arg0 != 0) {
+        var_r31 = &lbl_1_bss_36C.unk3C[arg0];
+        var_r31->unk4 = arg1;
     }
 }
