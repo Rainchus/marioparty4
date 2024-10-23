@@ -7,6 +7,7 @@
 #define _MATH_INLINE static inline
 #endif
 
+#ifdef __MWERKS__
 extern inline float sqrtf(float x)
 {
 	volatile float y;
@@ -21,6 +22,9 @@ extern inline float sqrtf(float x)
 	}
 	return x;
 }
+#else
+float sqrtf(float x);
+#endif
 
 double atan(double x);
 double copysign(double x, double y);
@@ -38,15 +42,15 @@ double fmod(double x, double y);
 double log(double x);
 double pow(double x, double y);
 float tanf(float x);
-float sinf(float x);
-float cosf(float x);
-float atan2f(float y, float x);
-float acosf(float x);
 
+#ifdef __MWERKS__
 extern inline double fabs(double x)
 {
    return __fabs(x);
 }
+#else
+double fabs(double x);
+#endif
 
 _MATH_INLINE float fabsf(float x) { return (float)fabs((double)x); }
 _MATH_INLINE float sinf(float x) { return (float)sin((double)x); }

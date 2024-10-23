@@ -1,6 +1,7 @@
 #ifndef _CTYPE_H
 #define _CTYPE_H
 
+#include "dolphin/types.h"
 
 extern unsigned char __ctype_map[256];
 extern unsigned char __lower_map[256];
@@ -22,19 +23,25 @@ extern unsigned char __upper_map[256];
 #define __whitespace (__motion_char | __space_char)
 #define __control (__motion_char | __control_char)
 
+#ifdef __MWERKS__
+#define DECL_WEAK __declspec(weak)
+#else
+#define DECL_WEAK __attribute__((weak))
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    __declspec(weak) int isalpha(int __c);
-    __declspec(weak) int isdigit(int __c);
-    __declspec(weak) int isspace(int __c);
-    __declspec(weak) int isupper(int __c);
-    __declspec(weak) int isxdigit(int __c);
+    DECL_WEAK int isalpha(int __c);
+    DECL_WEAK int isdigit(int __c);
+    DECL_WEAK int isspace(int __c);
+    DECL_WEAK int isupper(int __c);
+    DECL_WEAK int isxdigit(int __c);
 
-    __declspec(weak) int tolower(int __c);
-    __declspec(weak) int toupper(int __c);
+    DECL_WEAK int tolower(int __c);
+    DECL_WEAK int toupper(int __c);
 
     // added underscore to avoid naming conflicts
     inline int _isalpha(int c) { return (int)(__ctype_map[(u8)c] & __letter); }
