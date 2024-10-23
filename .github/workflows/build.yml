@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    container: ghcr.io/rainchus/marioparty4-build:main
+    container: ghcr.io/mariopartyrd/mp-gc-build:main
 
     runs-on: ubuntu-latest
     strategy:
@@ -15,11 +15,10 @@ jobs:
         version: [GMPE01_00]
 
     steps:
-    # Checkout the repository (shallow clone)
+    # Checkout the repository
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
         submodules: recursive
 
     # Set Git config

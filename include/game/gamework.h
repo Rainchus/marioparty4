@@ -7,7 +7,7 @@
 
 void GWInit(void);
 void GWGameStatReset(void);
-s32 GWMessSpeedGet(void);
+// s32 GWMessSpeedGet(void);
 s32 GWMessDelayGet(void);
 void GWMGRecordSet(s32 index, u32 value);
 u32 GWMGRecordGet(s32 index);

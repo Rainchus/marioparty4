@@ -1,12 +1,13 @@
 Mario Party 4  
-[![Build Status]][actions] ![Progress] ![DOL Progress] ![RELs Progress] [![Discord Badge]][discord]
+[![Build Status]][actions] [![Progress]][progress site] [![DOL Progress]][progress site] [![RELs Progress]][progress site] [![Discord Badge]][discord]
 =============
 
-[Build Status]: https://github.com/Rainchus/marioparty4/actions/workflows/build.yml/badge.svg
-[actions]: https://github.com/Rainchus/marioparty4/actions/workflows/build.yml
-[Progress]: https://img.shields.io/endpoint?label=Code&url=https%3A%2F%2Fprogress.decomp.club%2Fdata%2Fmarioparty4%2FGMPE01_00%2Fall%2F%3Fmode%3Dshield%26measure%3Dcode
-[DOL Progress]: https://img.shields.io/endpoint?label=DOL&url=https%3A%2F%2Fprogress.decomp.club%2Fdata%2Fmarioparty4%2FGMPE01_00%2Fdol%2F%3Fmode%3Dshield%26measure%3Dcode
-[RELs Progress]: https://img.shields.io/endpoint?label=RELs&url=https%3A%2F%2Fprogress.decomp.club%2Fdata%2Fmarioparty4%2FGMPE01_00%2Fmodules%2F%3Fmode%3Dshield%26measure%3Dcode
+[Build Status]: https://github.com/mariopartyrd/marioparty4/actions/workflows/build.yml/badge.svg
+[actions]: https://github.com/mariopartyrd/marioparty4/actions/workflows/build.yml
+[Progress]: https://decomp.dev/mariopartyrd/marioparty4.svg?mode=shield&measure=code&label=Code&category=all
+[DOL Progress]: https://decomp.dev/mariopartyrd/marioparty4.svg?mode=shield&measure=code&label=DOL&category=dol
+[RELs Progress]: https://decomp.dev/mariopartyrd/marioparty4.svg?mode=shield&measure=code&label=RELs&category=modules
+[progress site]: https://decomp.dev/mariopartyrd/marioparty4
 [Discord Badge]: https://img.shields.io/discord/994839212618690590?color=%237289DA&logo=discord&logoColor=%23FFFFFF
 [discord]: https://discord.gg/T4faGveujK
 
@@ -59,27 +60,28 @@ Building
 
 - Clone the repository:
   ```
-  git clone https://github.com/Rainchus/marioparty4.git
+  git clone https://github.com/mariopartyrd/marioparty4.git
   ```
-- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GMPE01_00`.
-![](assets/dolphin-extract.png)
-  - To save space, the only necessary files are the following. Any others can be deleted.
-    - `sys/main.dol`
-    - `files/dll/*.rel`
+
+- Initialize and update submodules:
+
+  ```sh
+  git submodule update --init --recursive
+  ```
+
+- Copy your game's disc image to `orig/GMPE01_00`.
+  - Supported formats: ISO (GCM), RVZ, WIA, WBFS, CISO, NFS, GCZ, TGC
+  - After the initial build, the disc image can be deleted to save space.
+
 - Configure:
   ```
   python configure.py
   ```
-  To use a version other than `GMPE01_00` (USA), specify it with `--version`.
+
 - Build:
   ```
   ninja
   ```
-
-Visual Studio Code
-==================
-
-If desired, use the recommended Visual Studio Code settings by renaming the `.vscode.example` directory to `.vscode`.
 
 Diffing
 =======
@@ -89,5 +91,3 @@ Once the initial build succeeds, an `objdiff.json` should exist in the project r
 Download the latest release from [encounter/objdiff](https://github.com/encounter/objdiff). Under project settings, set `Project directory`. The configuration should be loaded automatically. 
 
 Select an object from the left sidebar to begin diffing. Changes to the project will rebuild automatically: changes to source files, headers, `configure.py`, `splits.txt` or `symbols.txt`.
-
-![](assets/objdiff.png)
