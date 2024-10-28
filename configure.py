@@ -977,6 +977,7 @@ config.libs = [
         "m420dll",  # Fish n' Drips
         objects={
             Object(NonMatching, "REL/m420dll/main.c"),
+            Object(Matching, "REL/m420dll/camera.c"),
             Object(NonMatching, "REL/m420dll/player.c"),
             Object(NonMatching, "REL/m420dll/map.c"),
             Object(Matching, "REL/m420dll/rand.c"),
