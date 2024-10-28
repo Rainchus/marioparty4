@@ -1143,8 +1143,8 @@ config.libs = [
     Rel(
         "m443Dll",  # Mario Speedwagons
         objects={
-            Object(NonMatching, "REL/m443Dll/main.c"),
-            Object(NonMatching, "REL/m443Dll/map.c"),
+            Object(Matching, "REL/m443Dll/main.c"),
+            Object(Matching, "REL/m443Dll/map.c"),
             Object(NonMatching, "REL/m443Dll/player.c"),
         },
     ),
