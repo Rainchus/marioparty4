@@ -83,15 +83,18 @@ s32 fn_1_198(void)
         sp8[var_r31] = 0;
     }
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        if (GWPlayerCfg[var_r31].group == 0) {
-            lbl_1_bss_18[0] = fn_1_1B8C(var_r31, 0);
-        }
-        else {
-            do {
-                var_r30 = fn_1_8944() % 3;
-            } while (sp8[var_r30] != 0);
-            sp8[var_r30] = 1;
-            lbl_1_bss_18[var_r30 + 1] = fn_1_1B8C(var_r31, var_r30 + 1);
+        switch(GWPlayerCfg[var_r31].group) {
+            case 0:
+                lbl_1_bss_18[0] = fn_1_1B8C(var_r31, 0);
+                break;
+            
+            default:
+                do {
+                    var_r30 = fn_1_8944() % 3;
+                } while (sp8[var_r30] != 0);
+                sp8[var_r30] = 1;
+                lbl_1_bss_18[var_r30 + 1] = fn_1_1B8C(var_r31, var_r30 + 1);
+                break;
         }
     }
     lbl_1_bss_18[1]->unk_E8 = NULL;

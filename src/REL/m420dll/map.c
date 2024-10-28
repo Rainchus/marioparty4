@@ -116,6 +116,7 @@ Process *lbl_1_bss_A3C;
 Process *lbl_1_bss_A2C[4];
 s32 lbl_1_bss_A28;
 s16 lbl_1_bss_9F0[0x1C];
+s16 lbl_1_bss_9EE;
 s16 lbl_1_bss_9EC;
 M420DllUnkMapStruct2 lbl_1_bss_140[15];
 struct M420DllUnkMapStruct lbl_1_bss_C0[2];
@@ -914,13 +915,9 @@ float fn_1_73F8(float arg8)
 
 void fn_1_74F8(float *arg0, float *arg1, float *arg2, float *arg3, float arg8)
 {
-    float var_f31;
     float var_f30;
     float var_f29;
-    float var_f28;
-    float var_f27;
     float var_f26;
-    float var_f25;
 
     s32 var_r31;
     s32 var_r30;
@@ -937,27 +934,13 @@ void fn_1_74F8(float *arg0, float *arg1, float *arg2, float *arg3, float arg8)
         if (var_r31 > var_r29) {
             var_r30 = var_r29;
         }
-        var_f31 = arg8 - var_r31;
-        if (var_f31 < 0.0f) {
-            var_f31 = -var_f31;
-        }
-        if (var_f31 < 1.0f) {
-            var_f27 = (4.0f + ((var_f31 * (3.0f * var_f31 * var_f31)) - (6.0f * var_f31 * var_f31))) / 6.0f;
-        }
-        else if (var_f31 < 2.0f) {
-            var_f28 = var_f31 - 2.0f;
-            var_f27 = (var_f28 * (-var_f28 * var_f28)) / 6.0f;
-        }
-        else {
-            var_f27 = 0.0f;
-        }
-        var_f25 = var_f27;
-        var_f26 = var_f25;
+        var_f26 = fn_1_73F8(arg8 - var_r31);
         var_f30 += var_f26 * arg0[var_r30];
         var_f29 += var_f26 * arg1[var_r30];
     }
     *arg2 = var_f30;
     *arg3 = var_f29;
+    
 }
 
 void fn_1_7704(void)
@@ -1233,3 +1216,5 @@ void fn_1_8414(void)
         HuPrcVSleep();
     }
 }
+
+const float _pad = 0;

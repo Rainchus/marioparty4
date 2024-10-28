@@ -253,21 +253,6 @@ void fn_1_21C8(M420DllPlayerStruct *arg0, Vec *arg1, s32 arg2, s32 arg3)
     arg0->unk_00_field2 = 1;
 }
 
-void inline fn_1_2260_alt(M420DllPlayerStruct *arg0, s32 arg1)
-{
-    s32 var_r30;
-    s32 var_r29;
-
-    for (var_r30 = 0; var_r30 < arg1; var_r30++) {
-        fn_1_355C(arg0);
-        var_r29 = arg0->unk_48;
-        HuPrcVSleep();
-        if (arg0->unk_48 != var_r29) {
-            break;
-        }
-    }
-}
-
 void fn_1_2260(M420DllPlayerStruct *arg0)
 {
     s32 var_r30;
@@ -285,6 +270,20 @@ void fn_1_2260(M420DllPlayerStruct *arg0)
     }
 }
 
+#define WAITMODECHG(player, maxTime) \
+    do { \
+        s32 time; \
+        s32 mode; \
+        for (time = 0; time < maxTime; time++) { \
+            fn_1_355C(arg0); \
+            mode = arg0->unk_48; \
+            HuPrcVSleep(); \
+            if (arg0->unk_48 != mode) { \
+                return; \
+            } \
+        } \
+    } while(0)
+    
 void fn_1_22CC(M420DllPlayerStruct *arg0)
 {
     float var_f31;
@@ -305,7 +304,7 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
 
     while (arg0->unk_50 < 6) {
         fn_1_326C(arg0);
-        while (var_r29 == 0) {
+        do {
             if (arg0->unk_00_field0 == 0) {
                 var_r29 = fn_1_34AC(arg0);
             }
@@ -323,7 +322,7 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
             }
             switch (var_r29) {
                 case 0:
-                    fn_1_2260(arg0);
+                    WAITMODECHG(arg0, 1);
                     break;
                 case 1:
                     var_f31 = 5.0f * arg0->unk_50;
@@ -337,39 +336,37 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
                     arg0->unk_5C[arg0->unk_50++] = 1;
                     HuAudFXPlay(0x5F4);
                     fn_1_60F0();
-                    fn_1_2260_alt(arg0, 5);
+                    WAITMODECHG(arg0, 5);
                     break;
                 case 2:
                     if (arg0->unk_50 <= 0) {
-                        fn_1_2260(arg0);
-                    }
-                    else {
+                        WAITMODECHG(arg0, 1);
+                    } else {
                         Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
                         Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
                         Hu3DModelAttrSet(arg0->unk_AC, 0x40000004);
                         fn_1_63EC();
-                        fn_1_2260_alt(arg0, 1);
-                        if (Hu3DMotionEndCheck(arg0->unk_AC) != 0) {
-                            for (var_r28 = 0; var_r28 < 0xA; var_r28++) {
-                                arg0->unk_5C[var_r28] = 0;
-                            }
-                            arg0->unk_50 = 0;
-                            var_f31 = 0.0f;
-                            var_f30 = 0.0f;
-                            CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[5]);
-                            Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
-                            Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
-                            Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
+                        while(!Hu3DMotionEndCheck(arg0->unk_AC))
+                        WAITMODECHG(arg0, 1);
+                        for (var_r28 = 0; var_r28 < 0xA; var_r28++) {
+                            arg0->unk_5C[var_r28] = 0;
                         }
+                        arg0->unk_50 = 0;
+                        var_f31 = 0.0f;
+                        var_f30 = 0.0f;
+                        CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[5]);
+                        Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
+                        Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
+                        Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
                     }
                     break;
                 default:
                     break;
             }
-        }
+        } while (var_r29 == 0);
     }
     fn_1_326C(arg0);
-    fn_1_2260_alt(arg0, 5);
+    WAITMODECHG(arg0, 5);
     fn_1_3450(arg0);
     arg0->unk_48 = 2;
 }
@@ -401,171 +398,102 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
         HuAudFXPlay(0x5F1);
         fn_1_669C(1);
         fn_1_6554();
-        for (var_r28 = 0; var_r28 < 0xF; var_r28++) {
-            CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[7], 0.0f, 6.0f, 0);
-            for (var_r27 = 0; var_r27 < 6; var_r27++) {
-                fn_1_669C(1);
-                fn_1_36E4(arg0);
-                HuAudFXPlay(0x5F2);
-
-                fn_1_355C(arg0);
-                var_r19 = arg0->unk_48;
-                HuPrcVSleep();
-                if (arg0->unk_48 != var_r19) {
-                    break;
-                }
-            }
-            fn_1_355C(arg0);
-            var_r20 = arg0->unk_48;
-            HuPrcVSleep();
-            if (arg0->unk_48 != var_r20) {
-                break;
-            }
-        }
+        WAITMODECHG(arg0, 15);
+        CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[7], 0.0f, 6.0f, 0);
+        WAITMODECHG(arg0, 6);
+        fn_1_669C(0);
+        fn_1_36E4(arg0);
+        HuAudFXPlay(0x5F2);
     }
-    else {
-    block_10:
-        fn_1_3098(arg0);
-        arg0->unk_50 = 0;
-        arg0->unk_58 = var_r29->unk_10 + (fn_1_8944() % var_r29->unk_14);
-
-        while (arg0->unk_50 < 1) {
-            fn_1_326C(arg0);
-            for (var_r21 = 0; var_r21 < 0x12; var_r21++) {
-                fn_1_3450(arg0);
-                arg0->unk_48 = 6;
-
-                fn_1_355C(arg0);
-                sp8[0] = arg0->unk_48;
-                HuPrcVSleep();
-                if (arg0->unk_48 == sp8[0]) {
-                    break;
-                }
-            }
-        }
+    fn_1_3098(arg0);
+    arg0->unk_50 = 0;
+    arg0->unk_58 = var_r29->unk_10 + (fn_1_8944() % var_r29->unk_14);
+    while (arg0->unk_50 < 1) {
         fn_1_326C(arg0);
-    loop_12:
-        if (arg0->unk_00_field0 == 0) {
-            var_r30 = fn_1_34AC(arg0);
-        }
-        else if (arg0->unk_58 > 0) {
-            arg0->unk_58 = arg0->unk_58 - 1;
-            var_r30 = 0;
-        }
-        else if ((fn_1_8944() % 30) != 0) {
-            var_r30 = 1;
-        }
-        else {
-            var_r30 = 2;
-        }
-        switch (var_r30) {
-            case 0:
-                for (var_r26 = 0; var_r26 < 1; var_r26++) {
-                    fn_1_355C(arg0);
-                    var_r18 = arg0->unk_48;
-                    HuPrcVSleep();
-                    if (arg0->unk_48 != var_r18) {
-                        break;
-                    }
-                }
-            case 1:
-                if (arg0->unk_4C != 1) {
-                    CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[7], 0.0f, 6.0f, 0);
-                    for (var_r25 = 0; var_r25 < 6; var_r25++) {
+        do {
+            if(arg0->unk_00_field0 == 0) {
+                var_r30 = fn_1_34AC(arg0);
+            } else if(arg0->unk_58 > 0) {
+                arg0->unk_58--;
+                var_r30 = 0;
+            } else if(fn_1_8944() % 30) {
+                var_r30 = 1;
+            } else {
+                var_r30 = 2;
+            }
+            switch (var_r30) {
+                case 0:
+                    WAITMODECHG(arg0, 1);
+                    break;
+                
+                case 1:
+                    if(arg0->unk_4C != 1) {
+                        CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[7], 0.0f, 6.0f, 0);
+                        WAITMODECHG(arg0, 6);
                         fn_1_374C(arg0->unk_E8);
                         fn_1_36E4(arg0);
                         HuAudFXPlay(0x5F2);
-                        fn_1_355C(arg0);
-                        var_r17 = arg0->unk_48;
-                        HuPrcVSleep();
-                        if (arg0->unk_48 == var_r17) {
-                            break;
-                        }
                     }
-                }
-            block_36:
-                arg0->unk_5C[arg0->unk_50++] = 1;
-                switch (arg0->unk_4C) {
-                    case 1:
-                    case 2:
-                        var_f31 = 0.0f;
-                        var_f30 = 34.0f;
-                        CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
-                        Hu3DMotionStartEndSet(arg0->unk_AC, 0.0f, 34.0f);
-                        Hu3DMotionTimeSet(arg0->unk_AC, 0.0f);
-                        Hu3DMotionSpeedSet(arg0->unk_AC, 2.0f);
-                        break;
-                }
-                arg0->unk_48 = 5;
-                break;
-            case 2:
-                switch (arg0->unk_4C) {
-                    case 0:
-                        break;
-                    case 1:
-                        var_f31 = 0.0f;
-                        var_f30 = 10.0f;
-                        CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
-                        Hu3DMotionStartEndSet(arg0->unk_AC, 0.0f, 10.0f);
-                        Hu3DMotionTimeSet(arg0->unk_AC, 0.0f);
-                        Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
-                        for (var_r24 = 0; var_r24 < 0x1E; var_r24++) {
+                    arg0->unk_5C[arg0->unk_50++] = 1;
+                    switch(arg0->unk_4C) {
+                        case 1:
+                        case 2:
+                            var_f31 = 0.0f;
+                            var_f30 = 34.0f;
+                            CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
+                            Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
+                            Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
+                            Hu3DMotionSpeedSet(arg0->unk_AC, 2.0f);
+                            break;
+                        
+                        case 3:
+                            arg0->unk_48 = 5;
+                            return;
+                    }
+                    break;
+                    
+                case 2:
+                    switch(arg0->unk_4C) {
+                        case 1:
+                            var_f31 = 0.0f;
+                            var_f30 = 10.0f;
+                            CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
+                            Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
+                            Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
+                            Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
+                            WAITMODECHG(arg0, 30);
                             var_f31 = 60.0f;
                             var_f30 = 70.0f;
                             CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
-                            Hu3DMotionStartEndSet(arg0->unk_AC, 60.0f, 70.0f);
-                            Hu3DMotionTimeSet(arg0->unk_AC, 60.0f);
+                            Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
+                            Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
                             Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
-                            for (var_r23 = 0; var_r23 < 0x1E; var_r23++) {
-                                fn_1_355C(arg0);
-                                sp8[2] = arg0->unk_48;
-                                HuPrcVSleep();
-                                if (arg0->unk_48 != sp8[2]) {
-                                    break;
-                                }
-                            }
-                            fn_1_355C(arg0);
-                            sp8[3] = arg0->unk_48;
-                            HuPrcVSleep();
-                            if (arg0->unk_48 != sp8[3]) {
-                                break;
-                            }
-                        }
-                    case 2:
-                    case 3:
-                        CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[9], 0.0f, 2.0f, 0);
-                        for (var_r22 = 0; var_r22 < 0x3C; var_r22++) {
+                            WAITMODECHG(arg0, 30);
+                            break;
+                            
+                        case 2:
+                        case 3:
+                            CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[9], 0.0f, 2.0f, 0);
+                            WAITMODECHG(arg0, 60);
                             CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[0], 0.0f, 8.0f, 0);
-                            fn_1_355C(arg0);
-                            sp8[1] = arg0->unk_48;
-                            HuPrcVSleep();
-                            if (arg0->unk_48 != sp8[1]) {
-                                break;
-                            }
-                        }
-                        break;
-                }
-                break;
-        }
+                            break;
+                    }
+                    break;
+            }
+        } while(var_r30 == 0);
+        
     }
+    fn_1_326C(arg0);
+    WAITMODECHG(arg0, 18);
+    fn_1_3450(arg0);
+    arg0->unk_48 = 6;
 }
 
 void fn_1_2CE0(M420DllPlayerStruct *arg0)
 {
-    s32 var_r30;
-    s32 var_r29;
-
     CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[0], 0.0f, 30.0f, 0x40000001);
-
-    // fn_1_2260?
-    for (var_r30 = 0; var_r30 < 0x23; var_r30++) {
-        fn_1_355C(arg0);
-        var_r29 = arg0->unk_48;
-        HuPrcVSleep();
-        if (arg0->unk_48 != var_r29) {
-            return;
-        }
-    }
+    
+    WAITMODECHG(arg0, 35);
     arg0->unk_48 = 0;
 }
 
@@ -614,53 +542,68 @@ void fn_1_2EA8(M420DllPlayerStruct *arg0)
     fn_1_326C(arg0);
     CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[3], 0.0f, 1.0f, 0);
     var_r30 = fn_1_6660();
+    
     Hu3DModelAttrReset(var_r30, 0x40000002);
     Hu3DModelAttrSet(var_r30, 0x40000001);
     Hu3DMotionTimeSet(var_r30, 0.0f);
-
-    for (var_r29 = 0; var_r29 < 0x18; var_r29++) {
-        HuAudFXPlay(0x5F7);
-        fn_1_636C();
-        fn_1_1E64(arg0, 0x1E, 1);
-        Hu3DModelAttrSet(var_r30, 0x40000002);
-        fn_1_5AA8(1, 22.5f);
-        for (var_r28 = 0; var_r28 < 0x14; var_r28++) {
-            HuAudFXPlay(0x5F8);
-            fn_1_3450(arg0);
-            fn_1_378C(arg0);
-            for (var_r27 = 0; var_r27 < 0x14; var_r27++) {
-                CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[0], 0.0f, 30.0f, 0x40000001);
-                for (var_r26 = 0; var_r26 < 0x19; var_r26++) {
-                    arg0->unk_48 = 6;
-
-                    fn_1_355C(arg0);
-                    var_r22 = arg0->unk_48;
-                    HuPrcVSleep();
-                    if (arg0->unk_48 != var_r22) {
-                        break;
-                    }
-                }
-                fn_1_355C(arg0);
-                var_r23 = arg0->unk_48;
-                HuPrcVSleep();
-                if (arg0->unk_48 != var_r23) {
-                    break;
-                }
-            }
+    {
+        s32 var_r30;
+        s32 var_r29;
+        for (var_r30 = 0; var_r30 < 24; var_r30++) {
             fn_1_355C(arg0);
-            var_r24 = arg0->unk_48;
+            var_r29 = arg0->unk_48;
             HuPrcVSleep();
-            if (arg0->unk_48 != var_r24) {
-                break;
+            if (arg0->unk_48 != var_r29) {
+                return;
             }
-        }
-        fn_1_355C(arg0);
-        var_r25 = arg0->unk_48;
-        HuPrcVSleep();
-        if (arg0->unk_48 != var_r25) {
-            break;
         }
     }
+    HuAudFXPlay(0x5F7);
+    fn_1_636C();
+    fn_1_1E64(arg0, 1, 0x1E);
+    Hu3DModelAttrSet(var_r30, 0x40000002);
+    fn_1_5AA8(1, 22.5f);
+    {
+        s32 var_r30;
+        s32 var_r29;
+        for (var_r30 = 0; var_r30 < 20; var_r30++) {
+            fn_1_355C(arg0);
+            var_r29 = arg0->unk_48;
+            HuPrcVSleep();
+            if (arg0->unk_48 != var_r29) {
+                return;
+            }
+        }
+    }
+    HuAudFXPlay(0x5F8);
+    fn_1_3450(arg0);
+    fn_1_378C(arg0);
+    {
+        s32 var_r30;
+        s32 var_r29;
+        for (var_r30 = 0; var_r30 < 20; var_r30++) {
+            fn_1_355C(arg0);
+            var_r29 = arg0->unk_48;
+            HuPrcVSleep();
+            if (arg0->unk_48 != var_r29) {
+                return;
+            }
+        }
+    }
+    CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[0], 0.0f, 30.0f, 0x40000001);
+    {
+        s32 var_r30;
+        s32 var_r29;
+        for (var_r30 = 0; var_r30 < 25; var_r30++) {
+            fn_1_355C(arg0);
+            var_r29 = arg0->unk_48;
+            HuPrcVSleep();
+            if (arg0->unk_48 != var_r29) {
+                return;
+            }
+        }
+    }
+    arg0->unk_48 = 6;
 }
 
 void fn_1_3098(M420DllPlayerStruct *arg0)
