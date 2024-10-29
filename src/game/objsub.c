@@ -1166,7 +1166,7 @@ s16 mgTypeCurr;
 s16 mgBattleStar[4];
 s16 mgBattleStarMax;
 u8 lbl_801D3E94;
-s32 mgRecordExtra;
+u32 mgRecordExtra;
 s32 mgQuitExtraF;
 s32 mgPracticeEnableF;
 s32 mgInstExitEnableF;

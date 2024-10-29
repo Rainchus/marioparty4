@@ -117,7 +117,7 @@ extern s32 omcurdll;
 extern s32 omovlhisidx;
 extern s32 omovlevtno;
 extern s32 omnextovlevtno;
-extern s32 omovlstat;
+extern u32 omovlstat;
 extern char omUPauseFlag;
 extern s16 omSysExitReq;
 extern s16 omdispinfo;
