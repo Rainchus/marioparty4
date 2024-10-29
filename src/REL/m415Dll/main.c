@@ -388,7 +388,7 @@ void fn_1_15D0(omObjData* object) {
     Hu3DModelRotSetV(var_r31, &sp8);
     lbl_1_bss_338 = Hu3DAnimCreate(HuDataReadNum(0x2E000A, 0x10000000), var_r31, "dummy");
     var_r28 = 0x57E40;
-    lbl_1_bss_334 = HuMemDirectMallocNum(HEAP_DATA, var_r28, 0x10000000);
+    lbl_1_bss_334 = HuMemDirectMallocNum(HEAP_DATA, var_r28, MEMORY_DEFAULT_NUM);
     memset(lbl_1_bss_334, 0, var_r28);
     (void)var_r28;
     memset(&lbl_1_bss_234, 0, 0x100);
@@ -1459,7 +1459,7 @@ void* fn_1_63A8(s32 arg0) {
     if (var_r31 == 0x80) {
         return NULL;
     }
-    lbl_1_bss_34[var_r31] = HuMemDirectMallocNum(HEAP_SYSTEM, arg0, 0x10000000);
+    lbl_1_bss_34[var_r31] = HuMemDirectMallocNum(HEAP_SYSTEM, arg0, MEMORY_DEFAULT_NUM);
     return lbl_1_bss_34[var_r31];
 }
 
