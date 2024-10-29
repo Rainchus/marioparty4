@@ -26,7 +26,7 @@ extern s16 mgTypeCurr;
 extern s16 mgBattleStar[4];
 extern s16 mgBattleStarMax;
 extern u8 lbl_801D3E94;
-extern s32 mgRecordExtra;
+extern u32 mgRecordExtra;
 extern s32 mgQuitExtraF;
 extern s32 mgPracticeEnableF;
 extern s32 mgInstExitEnableF;

@@ -38,7 +38,7 @@ s32 omcurdll;
 s32 omovlhisidx;
 s32 omovlevtno;
 s32 omnextovlevtno;
-s32 omovlstat;
+u32 omovlstat;
 static s32 omnextovlstat;
 char omUPauseFlag;
 s16 omSysExitReq;

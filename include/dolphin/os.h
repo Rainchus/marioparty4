@@ -19,7 +19,7 @@ extern "C" {
 #ifdef __MWERKS__
 #define AT_ADDRESS(xyz) : (xyz)
 #else
-#define AT_ADDRESS
+#define AT_ADDRESS(xyz)
 #endif
 typedef s64 OSTime;
 typedef u32 OSTick;
