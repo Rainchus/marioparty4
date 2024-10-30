@@ -29,6 +29,54 @@ typedef struct M443DllCameraStruct {
     u32 unk_A0;
 } M443DllCameraStruct; /* size = 0xA4 */
 
+typedef struct M443DllWorkStruct {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 unkC;
+    char unk10[0xC];
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
+    char unk28[0xC];
+    s16 unk34;
+    char unk3A[0x12];
+    f32 unk48;
+    f32 unk4C;
+    f32 unk50;
+    f32 unk54;
+    f32 unk58;
+    f32 unk5C;
+    s32 unk60;
+    char unk64[0x4];
+    s32 unk68;
+    char unk6C[0x14];
+    s32 unk80;
+    char unk84[0x4];
+    f32 unk88;
+    char unk8C[0x4];
+    f32 unk90;
+    char unk94[0x4];
+    f32 unk98;
+    f32 unk9C;
+    f32 unkA0;
+    f32 unkA4;
+    s32 unkA8;
+    s32 unkAC;
+    s32 unkB0;
+    s32 unkB4;
+    s32 unkB8;
+    f32 unkBC;
+    f32 unkC0;
+    Vec unkC4;
+    Vec unkD0;
+    Vec unkDC;
+    Vec unkE8;
+    char unkF4[0xC];
+    M443DllCameraStruct* unk100;
+    M443DllCameraStruct* unk104;
+} M443DllWorkStruct; /* size = 0x134 */
+
 void fn_1_3FE8(u32 arg0);
 u32 fn_1_3FFC(void);
 M443DllCameraStruct *fn_1_40AC(s32 arg0);

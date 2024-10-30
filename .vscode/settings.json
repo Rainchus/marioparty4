@@ -13,8 +13,14 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.associations": {
+    "*.csv": "plaintext",
+    "*.s": "plaintext",
+    "*.json": "jsonc",
+    "*.c": "c",
     "*.inc": "c",
-    ".clangd": "yaml"
+    ".clangd": "yaml",
+    "m443dll.h": "c",
+    "object.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {
@@ -27,7 +33,5 @@
       "report.json": true,
       "compile_commands.json": true,
   },
-  // Disable C/C++ IntelliSense, use clangd instead
-  "C_Cpp.intelliSenseEngine": "disabled",
   "cmake.ignoreCMakeListsMissing": true,
 }
