@@ -1214,9 +1214,9 @@ config.libs = [
     Rel(
         "m453Dll",  # Challenge Booksquirm
         objects={
-            Object(NonMatching, "REL/m453Dll/main.c"),
-            Object(NonMatching, "REL/m453Dll/map.c"),
-            Object(NonMatching, "REL/m453Dll/score.c"),
+            Object(Matching, "REL/m453Dll/main.c"),
+            Object(Matching, "REL/m453Dll/map.c"),
+            Object(Matching, "REL/m453Dll/score.c"),
         },
     ),
     Rel(
