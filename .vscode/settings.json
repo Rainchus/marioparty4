@@ -34,4 +34,6 @@
       "compile_commands.json": true,
   },
   "cmake.ignoreCMakeListsMissing": true,
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true
 }

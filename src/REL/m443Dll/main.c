@@ -1040,7 +1040,7 @@ s32 fn_1_42B4(void)
     return ((M443DllWork *)lbl_1_bss_70->data)->unk_00;
 }
 
-s32 fn_1_42CC(void)
+u32 fn_1_42CC(void)
 {
     return ((M443DllWork *)lbl_1_bss_70->data)->unk_0C;
 }
@@ -1050,7 +1050,7 @@ u32 fn_1_42E4(void)
     return ((M443DllWork *)lbl_1_bss_70->data)->unk_14;
 }
 
-s32 fn_1_42FC(void)
+u32 fn_1_42FC(void)
 {
     return ((M443DllWork *)lbl_1_bss_70->data)->unk_28;
 }
