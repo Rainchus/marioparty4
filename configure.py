@@ -1145,7 +1145,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/m443Dll/main.c"),
             Object(Matching, "REL/m443Dll/map.c"),
-            Object(NonMatching, "REL/m443Dll/player.c"),
+            Object(Matching, "REL/m443Dll/player.c"),
         },
     ),
     Rel(
