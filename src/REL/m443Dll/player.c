@@ -14,12 +14,20 @@
 
 #include "REL/m443Dll.h"
 
+typedef struct M443DllUnkStruct {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    Vec2f unkC;
+    s16 unk14[11];
+} M443DllUnkStruct;
+
 typedef struct M443DllWorkStruct {
     s32 unk0;
     s32 unk4;
     s32 unk8;
     s32 unkC;
-    s32 unk10;
+    u32 unk10;
     s32 unk14;
     f32 unk18;
     s32 unk1C;
@@ -45,12 +53,12 @@ typedef struct M443DllWorkStruct {
     u32 unk74;
     f32 unk78;
     f32 unk7C;
-    s32 unk80;
-    char unk84[0x4];
+    u32 unk80;
+    u32 unk84;
     f32 unk88;
     char unk8C[0x4];
     f32 unk90;
-    char unk94[0x4];
+    f32 unk94;
     f32 unk98;
     f32 unk9C;
     f32 unkA0;
@@ -69,9 +77,22 @@ typedef struct M443DllWorkStruct {
     char unkF4[0xC];
     M443DllCameraStruct* unk100;
     M443DllCameraStruct* unk104;
-    s32 unk108;
-    char unk10C[0x28];
+    union {
+        M443DllUnkStruct unk108s;
+        struct {
+            s32 unk108;
+            s32 unk10C;
+        };
+    };
 } M443DllWorkStruct; /* size = 0x134 */
+
+typedef struct M443DllStruct8 {
+    u16 unk0;
+    f32 unk4;
+    f32 unk8;
+    f32 unkC;
+    u32 unk10;
+} M443DllStruct8; // copy of UnkM417Struct8
 
 void fn_1_5680(omObjData* object);
 void fn_1_5BD4(omObjData* object);
@@ -79,17 +100,25 @@ void fn_1_6458(omObjData* object);
 void fn_1_6674(omObjData* object);
 void fn_1_6750(omObjData* object);
 void fn_1_69B4(omObjData* object);
+void fn_1_6B90(omObjData* object);
 void fn_1_6DA8(omObjData* object);
 void fn_1_7130(omObjData* object);
 void fn_1_7340(omObjData* object);
-void fn_1_8138(omObjData*, s32);
+void fn_1_8138(omObjData*, u32);
 s32 fn_1_82C4(omObjData* object);
 void fn_1_8508(omObjData*);
+void fn_1_8680(omObjData* object);
+f32 fn_1_8AC8(u32, f32);
+f32 fn_1_8C68(f32);
 f32 fn_1_8C8C(s32, f32);
+f32 fn_1_8D00(u32, f32);
+f32 fn_1_8D74(f32);
+void fn_1_8E34(s32);
+void fn_1_8FFC(u32, Vec*, f32, f32);
 void fn_1_95A4(u32);
 
-s32 lbl_1_bss_78[6];
 omObjData* lbl_1_bss_90[4];
+s32 lbl_1_bss_78[6];
 
 char* lbl_1_data_264[0x8] = {
     "itemhook-r", "itemhook-r", "itemhook-r", "itemhook-r", 
@@ -103,6 +132,13 @@ u32 lbl_1_data_284[8][2] = {
 };
 u32 lbl_1_data_2C4[4] = {
     0, 0x4A0020, 0x17, 0x72
+};
+
+M443DllStruct8 lbl_1_data_2D4[4] = {
+    { 0x0, 0.2f, 0.0f, -1.0f, 0x40000001 },
+    { 0x1, 0.2f, 0.0f, -1.0f, 0x40000001 },
+    { 0x2, 0.2f, 0.0f, -1.0f,        0x0 },
+    { 0x3, 0.2f, 0.0f, -1.0f,        0x0 }
 };
 
 s32 lbl_1_data_324[4] = {
@@ -651,5 +687,507 @@ void fn_1_7130(omObjData* object) {
                 temp_r31->unkC4.y = 0.0f;
             }
         }
+    }
+}
+
+void fn_1_7340(omObjData* object) {
+    M443DllWorkStruct* temp_r31 = object->data;
+    HsfObject* var_r29;
+    f32 sp28[8] = {
+          0.0f, 40.0f,   0.0f, 0.0f,
+        -16.0f, 40.0f, -16.0f, 0.0f
+    };
+    f32 var_f31;
+    f32 var_f29;
+    u32 temp_r24;
+
+    temp_r24 = temp_r31->unk80;
+    if (temp_r31->unk88 > 3300.0f) {
+        if (fn_1_42E4() == 2) {
+            temp_r31->unk10C = 0;
+            if (temp_r31->unk84 == 0) {
+                if ((temp_r31->unk10 & 0x100) != 0) {
+                    if (temp_r31->unk80 < 3) {
+                        temp_r31->unk80++;
+                        temp_r31->unk84 = 30;
+                    }
+                } else {
+                    if (temp_r31->unk88 >= 8000.0f) {
+                        temp_r31->unk10C = 1;
+                    }
+                }
+            } else {
+                temp_r31->unk84--;
+            }
+        }
+    } else if ((temp_r31->unk88 < 1500.0f) && (temp_r31->unk80 != 0)) {
+        temp_r31->unk80--;
+        temp_r31->unk84 = 30;
+    }
+    if (temp_r31->unk80 != temp_r24) {
+        temp_r31->unk88 = fn_1_8D00(temp_r31->unk80, temp_r31->unk90);
+        omVibrate(object->work[0], 0xC, 4, 2);
+    }
+    var_f31 = (1.5f * temp_r31->unk18) - 0.5f;
+    if (var_f31 < -0.4f) {
+        var_f31 = -1.0f;
+    }
+    var_f29 = 0.75f;
+    if ((var_f31 > -0.5f) && (temp_r31->unkA0 < 1.0f)) {
+        var_f29 += 0.25f * (1.0f - temp_r31->unkA0);
+    }
+    var_f31 = var_f31 * fn_1_8AC8(temp_r31->unk80, temp_r31->unk88);
+    var_f31 -= temp_r31->unkA0 * fn_1_8D74(fn_1_8C8C(temp_r31->unk80, temp_r31->unk88));
+    var_f31 = var_f29 * fn_1_8C68(var_f31);
+    temp_r31->unk90 += 0.016666668f * var_f31;
+    temp_r31->unk7C += temp_r31->unkA0 * (temp_r31->unk90 - temp_r31->unk7C);
+    var_f31 = temp_r31->unk90 + temp_r31->unkA0 * (temp_r31->unk7C - temp_r31->unk90);
+    temp_r31->unk88 = fn_1_8D00(temp_r31->unk80, var_f31);
+    if (fn_1_42E4() <= 2) {
+        if (fn_1_42E4() == 2) {
+            if (temp_r31->unk18 <= 0.0f) {
+                temp_r31->unk90 *= 0.98f;
+            }
+        }
+        if ((temp_r31->unk88 > 8000.0f) && ((temp_r31->unk40 & 0xF) == 0)) {
+            omVibrate(object->work[0], 0xC, 6, 6);
+        }
+    }
+    if (temp_r31->unk88 > 9500.0f) {
+        temp_r31->unk88 = 9000.0f;
+        temp_r31->unk90 = fn_1_8C8C(temp_r31->unk80, temp_r31->unk88);
+    } else if (temp_r31->unk88 < 1000.0f) {
+        temp_r31->unk88 = 1000.0f;
+        temp_r31->unk90 = fn_1_8C8C(temp_r31->unk80, temp_r31->unk88);
+    }
+    temp_r31->unk94 = (0.31206876f * temp_r31->unk90);
+    if (temp_r31->unkA0 < 1.0f) {
+        var_f31 = temp_r31->unk90 - temp_r31->unk7C;
+        if (var_f31 > 2.0f) {
+            var_f31 = 1.0f - (0.02f * var_f31);
+            if (var_f31 > 1.0f) {
+                var_f31 = 1.0f;
+            }
+            if (var_f31 < 0.0f) {
+                var_f31 = 0.0f;
+            }
+            var_f31 = (1.0f - var_f31 * var_f31);
+            temp_r31->unkA0 += (1.0f / 3000.0f) * (1.0f - 1.5f * var_f31);
+            if (temp_r31->unkA0 > 0.9f) {
+                temp_r31->unkA0 = 1.0f;
+            }
+            if (temp_r31->unkA0 < 0.0001f) {
+                temp_r31->unkA0 = 0.0001f;
+            }
+        } else {
+            temp_r31->unkA0 = 1.0f;
+        }
+    }
+    temp_r31->unk78 += 1.6666667f * temp_r31->unk7C;
+    if (fn_1_42E4() < 2) {
+        temp_r31->unk7C = 0.0f;
+        temp_r31->unk78 = 0.0f;
+        temp_r31->unkA0 = 0.0f;
+    }
+    if (temp_r31->unk78 >= 40000.0f) {
+        if (temp_r31->unk7C >= 30.0f) {
+            Hu3DMotionSpeedSet(object->model[2], 1.0f);
+            Hu3DModelAttrReset(object->model[2], 1U);
+            if (fn_1_42E4() == 2) {
+                HuAudFXPlay(0x733);
+            }
+        }
+    }
+    fn_1_8680(object);
+    temp_r31->unk74 = 1 - temp_r31->unk74;
+    var_f31 = 22.5f * (temp_r31->unk40 & 0xF);
+    var_r29 = Hu3DModelObjPtrGet(object->model[2], "ballon");
+    var_r29->data.base.rot.z = var_f31;
+    var_r29 = Hu3DModelObjPtrGet(object->model[1], "r_tire");
+    if ((temp_r31->unk7C <= 0.0f) && (temp_r31->unk94 < 1.5f)) {
+        temp_r31->unk94 = 0.0f;
+    }
+    var_r29->data.base.rot.x += 6.0000005f * temp_r31->unk94;
+    var_r29->data.base.rot.x = fmod(var_r29->data.base.rot.x, 360.0);
+    var_r29 = Hu3DModelObjPtrGet(object->model[1], "f_tire");
+    var_r29->data.base.rot.x += 6.0000005f * (0.003978877f * (100.0f * temp_r31->unk7C));
+    var_r29->data.base.rot.x = fmod(var_r29->data.base.rot.x, 360.0);
+    var_f31 = 0.110999994f * temp_r31->unk94;
+    if (var_f31 > 1.0f) {
+        var_f31 = 1.0f;
+    }
+    Hu3DMotionTimeSet(object->model[1], 30.0f * var_f31);
+    fn_1_4314(object->work[0], temp_r31->unk78);
+    fn_1_6B90(object);
+    if (temp_r31->unkA0 < 1.0f) {
+        var_f31 = (320.4422f * temp_r31->unk94) - (100.0f * temp_r31->unk7C);
+        if (var_f31 > 0.0f) {
+            var_f31 *= 0.0002f;
+            if (var_f31 > 1.0f) {
+                var_f31 = 1.0f;
+            }
+            fn_1_8FFC(object->work[0], &temp_r31->unkDC, var_f31, 100.0f * temp_r31->unk7C);
+        }
+    }
+    fn_1_8E34(object->model[3]);
+    if (temp_r31->unkB4 >= 0) {
+        HuAudFXPitchSet(temp_r31->unkB4, (8191.0f * (0.0001f * temp_r31->unk88)));
+        if (fn_1_42E4() >= 5) {
+            HuAudFXFadeOut(temp_r31->unkB4, 0x3C);
+            temp_r31->unkB4 = -1;
+        }
+    }
+    if (fn_1_42E4() < 2) {
+        if (temp_r31->unkA8 < 0) {
+            temp_r31->unkA8 = HuAudFXPlay(lbl_1_data_344[object->work[0]]);
+        }
+        if (temp_r31->unkA8 >= 0) {
+            var_f31 = fn_1_8C8C(temp_r31->unk80, 10000.0f);
+            var_f31 = (1.0f / (0.31206876f * var_f31));
+            HuAudFXPitchSet(temp_r31->unkA8, (8191.0f * (temp_r31->unk94 * var_f31)));
+            var_f31 = 127.0f;
+            if (temp_r31->unk94 < 0.1f) {
+                var_f31 = 0.0f;
+            }
+            HuAudFXVolSet(temp_r31->unkA8, var_f31);
+        }
+    } else if (fn_1_42E4() <= 2) {
+        if (temp_r31->unkA8 < 0) {
+            temp_r31->unkA8 = HuAudFXPlay(lbl_1_data_344[object->work[0]]);
+        }
+        if (temp_r31->unkA8 >= 0) {
+            HuAudFXPitchSet(temp_r31->unkA8, (8191.0f * (0.0001f * temp_r31->unk88) * (1.0f - temp_r31->unkA0)));
+            var_f31 = 127.0f;
+            if (temp_r31->unkA0 >= 1.0f) {
+                var_f31 = 0.0f;
+            }
+            HuAudFXVolSet(temp_r31->unkA8, var_f31);
+        }
+    } else if (temp_r31->unkA8 >= 0) {
+        HuAudFXStop(temp_r31->unkA8);
+        temp_r31->unkA8 = -1;
+    }
+    if ((fn_1_42E4() >= 1) && (temp_r31->unkB0 >= 0)) {
+        HuAudFXFadeOut(temp_r31->unkB0, 30);
+        temp_r31->unkB0 = -1;
+    }
+    if ((fn_1_42E4() == 2) && (temp_r31->unkB8 < 0)) {
+        temp_r31->unkB8 = HuAudFXPlay(lbl_1_data_354[object->work[0]]);
+    }
+    if (temp_r31->unkB8 >= 0) {
+        var_f31 = 0.012048192f * temp_r31->unk7C;
+        HuAudFXPitchSet(temp_r31->unkB8, ((2.0f * (8191.0f * var_f31)) - 8191.0f));
+        HuAudFXVolSet(temp_r31->unkB8, (127.0f * var_f31));
+        if (fn_1_42E4() >= 5U) {
+            HuAudFXFadeOut(temp_r31->unkB8, 0x3C);
+            temp_r31->unkB8 = -1;
+        }
+    }
+}
+
+void fn_1_8138(omObjData* object, u32 arg1) { // near replica of fn_1_B8A0 of m417Dll
+    f32 var_f31;
+    M443DllWorkStruct* temp_r30;
+
+    temp_r30 = object->data;
+    if ((temp_r30->unk8 != arg1) && (arg1 < 4)) {
+        var_f31 = 60.0f * lbl_1_data_2D4[arg1].unk4;
+        if (temp_r30->unk8 < 0) {
+            var_f31 = 0.0f;
+        }
+        temp_r30->unk8 = arg1;
+        CharModelMotionShiftSet(temp_r30->unk0, object->motion[lbl_1_data_2D4[arg1].unk0], 60.0f * lbl_1_data_2D4[arg1].unk8, var_f31, lbl_1_data_2D4[arg1].unk10);
+        if (lbl_1_data_2D4[arg1].unkC >= 0.0f) {
+            Hu3DMotionShiftStartEndSet(object->model[0], 60.0f * lbl_1_data_2D4[arg1].unk8, 60.0f * lbl_1_data_2D4[arg1].unkC);
+        }
+    }
+}
+
+s32 fn_1_82C4(omObjData* object) {
+    s32 var_r30;
+    M443DllWorkStruct* temp_r31;
+
+    temp_r31 = object->data;
+    var_r30 = 0;
+    if ((CharModelMotionEndCheck(temp_r31->unk0) != 0) && (CharModelMotionShiftIDGet(temp_r31->unk0) < 0)) {
+        var_r30 = 1;
+    }
+    return var_r30;
+}
+
+s32 fn_1_8338(omObjData* object, u32 arg1) {
+    s32 var_r27;
+    s32 var_r26;
+    M443DllWorkStruct* temp_r31;
+
+    var_r27 = 0;
+    temp_r31 = object->data;
+    var_r26 = 0;
+    if ((CharModelMotionEndCheck(temp_r31->unk0) != 0) && (CharModelMotionShiftIDGet(temp_r31->unk0) < 0)) {
+        var_r26 = 1;
+    }
+    
+    if (var_r26 != 0) {
+        fn_1_8138(object, arg1);
+        var_r27 = 1;
+    }
+    return var_r27;
+}
+
+u32 lbl_1_data_410[11][2] = {
+    { 0x4A0015, 0xFA },
+    { 0x4A0016, 0xF0 },
+    { 0x4A0017, 0xE6 },
+    { 0x4A0018, 0xF0 },
+    { 0x4A0019, 0xF0 },
+    { 0x4A001A, 0xF0 },
+    { 0x4A001B, 0xF0 },
+    { 0x61002E, 0xF0 },
+    { 0x61002E, 0xF0 },
+    { 0x61002E, 0xF0 },
+    { 0x4A001C, 0xF0 },
+};
+
+Vec2f lbl_1_data_468[4] = {
+    { 64.0f, 54.0f },
+    { 46.0f, 54.0f },
+    { 64.0f, 44.0f },
+    { 46.0f, 44.0f },
+};
+
+void fn_1_8508(omObjData* object) {
+    s32 var_r30;
+    M443DllWorkStruct* temp_r28;
+    M443DllUnkStruct* temp_r31;
+    f32* temp_r4;
+
+    temp_r28 = object->data;
+    temp_r31 = &temp_r28->unk108s;
+    
+    for (var_r30 = 0; var_r30 < 11; var_r30++) {
+        temp_r31->unk14[var_r30] = -1;
+        if (lbl_1_data_410[var_r30][0] != 0) {
+            temp_r31->unk14[var_r30] = espEntry(lbl_1_data_410[var_r30][0], lbl_1_data_410[var_r30][1], 0);
+            espAttrSet(temp_r31->unk14[var_r30], 8);
+            espDispOff(temp_r31->unk14[var_r30]);
+        }
+    }
+    espColorSet(temp_r31->unk14[0], 0, 0, 0);
+    espTPLvlSet(temp_r31->unk14[0], 0.5);
+    espScaleSet(temp_r31->unk14[1], 0.75, 0.75);
+    espScaleSet(temp_r31->unk14[2], 0.75, 0.75);
+    temp_r31->unkC = lbl_1_data_468[object->work[0]];
+}
+
+f32 lbl_1_data_488[][2] = {
+    {   20.0f,   4.0f },
+    {   18.0f,   6.0f },
+    {   46.0f,  33.0f },
+    {   72.0f,  32.0f },
+    {   72.0f,  14.0f },
+    {   72.0f,  -4.0f },
+    {   72.0f, -22.0f },
+    { -140.0f,  32.0f },
+    { -158.0f,  32.0f },
+    { -176.0f,  32.0f },
+    {  -96.0f,  32.0f },
+};
+
+void fn_1_8680(omObjData* object) {
+    f32 var_f31;
+    s32 var_r27;
+    s32 var_r30;
+    u32 var_r28;
+    M443DllWorkStruct* temp_r29;
+    M443DllUnkStruct* temp_r31;
+
+    temp_r29 = object->data;
+    temp_r31 = &temp_r29->unk108s;
+    temp_r31->unk8++;
+    
+    for (var_r30 = 0; var_r30 < 11; var_r30++) {
+        if (temp_r31->unk14[var_r30] >= 0) {
+            if (temp_r31->unk0 == 0) {
+                espDispOff(temp_r31->unk14[var_r30]);
+            } else {
+                espDispOn(temp_r31->unk14[var_r30]);
+                espPosSet(
+                    temp_r31->unk14[var_r30],
+                    0.9f * (temp_r29->unk104->unk_44 + temp_r31->unkC.x + lbl_1_data_488[var_r30][0]),
+                    temp_r29->unk104->unk_48 + temp_r31->unkC.y + lbl_1_data_488[var_r30][1]
+                );
+            }
+        }
+    }
+    var_f31 = 0.0f;
+    if (temp_r29->unk88 > 8000.0f) {
+        var_f31 = (0.004f * frandmod(0x3E8)) - 2.0f;
+    }
+    espZRotSet(temp_r31->unk14[2], (90.0f * (0.0001f * temp_r29->unk88)) + var_f31);
+    
+    for (var_r30 = 0; var_r30 < 4; var_r30++) {
+        var_r27 = 0;
+        if (temp_r29->unk80 == var_r30) {
+            var_r27 = 2;
+        } else if (((temp_r29->unk80 + 1) == var_r30) && (temp_r31->unk4 != 0)) {
+            var_r27 += (temp_r31->unk8 >> 1) & 1;
+        }
+        espBankSet(temp_r31->unk14[var_r30 + 3], var_r27);
+    }
+    var_r28 = (3.6f * temp_r29->unk7C);
+    var_r30 = var_r28 % 10;
+    espBankSet(temp_r31->unk14[7], var_r30);
+    var_r28 = (var_r28 - var_r30) / 10;
+    var_r30 = var_r28 % 10;
+    espBankSet(temp_r31->unk14[8], var_r30);
+    var_r28 = (var_r28 - var_r30) / 10;
+    var_r30 = var_r28 % 10;
+    espBankSet(temp_r31->unk14[9], var_r30);
+}
+
+f32 lbl_1_data_4E0[4] = {
+    18.5f, 9.25f, 6.66f, 5.55f
+};
+
+f32 fn_1_8958(u32 arg0) {
+    if (arg0 >= 4) {
+        if (arg0 >= 4) {
+        }
+    }
+    return lbl_1_data_4E0[arg0];
+}
+
+f32 fn_1_8990(f32 arg8) {
+    f32 var_f30;
+    f32 var_f31;
+
+    var_f30 = 0.8f * (0.00016666666f * (6000.0f - arg8));
+    var_f30 = 0.6f * (1.0f - (var_f30 * var_f30));
+    var_f31 = 0.000400000002f * (6500.0f - arg8);
+    var_f31 = 0.4f * (1.0f - (var_f31 * var_f31));
+    if (var_f31 > 0.0f) {
+        var_f30 += var_f31;
+    }
+    var_f31 = arg8 - 8000.0f;
+    if (var_f31 > 0.0f) {
+        var_f31 = 1.0f - (0.00033333333f * var_f31);
+        var_f30 = var_f31 * (var_f30 * var_f31);
+    }
+    return 55.0f * var_f30;
+}
+
+f32 fn_1_8AC8(u32 arg0, f32 arg1) {
+    return 1.7647059f * (fn_1_8990(arg1) * fn_1_8958(arg0));
+}
+
+f32 fn_1_8C68(f32 arg0) {
+    return 9.8f * (0.0012820513f * arg0);
+}
+
+f32 fn_1_8C8C(s32 arg0, f32 arg1) {
+    return 3.204422f * ((0.016666668f * arg1) / fn_1_8958(arg0));
+}
+
+f32 fn_1_8D00(u32 arg0, f32 arg1) {
+    return 0.31206876f * (60.0f * arg1) * fn_1_8958(arg0);
+}
+
+f32 fn_1_8D74(f32 arg0) {
+    return 0.024899999f * (arg0 * arg0);
+}
+
+f32 fn_1_8D8C(u32 arg0, f32 arg8) {
+    return arg8 / fn_1_8958(arg0);
+}
+f32 fn_1_8DE0(u32 arg0, f32 arg8) {
+    return arg8 * fn_1_8958(arg0);
+}
+
+void fn_1_8E34(s32 arg0) {
+    s32 var_r29;
+    ParticleData* temp_r30;
+    HsfanimStruct01* var_r31;
+
+    temp_r30 = Hu3DData[arg0].unk_120;
+    var_r31 = temp_r30->unk_48;
+    
+    for (var_r29 = 0; var_r29 < temp_r30->unk_30; var_r29++, var_r31++) {
+        if (var_r31->unk00_s16 != 0) {
+            PSVECAdd(&var_r31->unk34, &var_r31->unk08, &var_r31->unk34);
+            var_r31->unk08.z -= 0.3f;
+            var_r31->unk2C += 2.0f;
+            var_r31->unk40.a *= 0.98f;
+            if (var_r31->unk00_s16 < 24.0f) {
+                var_r31->unk40.a = var_r31->unk40.a * 0.9f;
+            }
+            if (--var_r31->unk00_s16 == 0) {
+                var_r31->unk00 = 0;
+                var_r31->unk2C = 0.0f;
+                var_r31->unk40.a = 0;
+            }
+        }
+    }
+    DCStoreRange(temp_r30->unk_48, temp_r30->unk_30 * 0x44);
+}
+
+static inline f32 isEven(u32 arg) {
+    if ((arg & 1) != 0) {
+        return 1.0f;
+    } else {
+        return -1.0f;
+    }
+}
+
+void fn_1_8FFC(u32 arg0, Point3d* arg1, f32 arg2, f32 arg3) {
+    f32 temp_f31;
+    f32 var_f29;
+    ParticleData* temp_r29;
+    s32 var_r28;
+    u32 var_r27;
+    HsfanimStruct01* var_r31;
+
+    temp_r29 = Hu3DData[lbl_1_bss_90[arg0]->model[3]].unk_120;
+    if (frandmod(0x3E8) > 1000.0f * arg2) return;
+    
+    var_r27 = 2;
+    var_r31 = temp_r29->unk_48;
+    
+    for (var_r28 = 0; var_r28 < temp_r29->unk_30; var_r28++, var_r31++) {
+        if (var_r31->unk00_s16 != 0) continue;
+        
+        var_r31->unk00_s16 = (60.0f * (0.6f + (0.0005f * frandmod(0x3E8))));
+        var_f29 = isEven(var_r27);
+        temp_f31 = 0.030000001f * frandmod(0x3E8);
+        var_r31->unk34.x = arg1->x + var_f29 * (70.0f + (0.07f * frandmod(0x3E8)));
+        var_r31->unk34.y = 10.0f + (arg1->y + (0.02f * frandmod(0x3E8)));
+        var_r31->unk34.z = (250.0f + arg1->z);
+        temp_f31 = 0.8333334f + 0.0016666667f * frandmod(0x3E8);
+        temp_f31 *= 1.0f + arg2;
+        var_r31->unk08.x = (0.0025f * frandmod(0x3E8) - 1.25f);
+        var_r31->unk08.y = (3.3333335f + 0.0016666667f * frandmod(0x3E8));
+        var_r31->unk08.z = ((4.166667f + (0.0016666667f * frandmod(0x3E8))) - (0.016666668f * (0.5f * arg3)));
+        var_r31->unk30 = frandmod(0x168);
+        temp_f31 = 0.001f * frandmod(0x3E8);
+        var_r31->unk2C = (50.0f + (100.0f * temp_f31));
+        var_r31->unk40.a = (70.0f + (80.0f * (1.0f - temp_f31)));
+        var_r31->unk40.r = (50.0f + (145.0f * temp_f31));
+        var_r31->unk40.g = (55.0f + (140.0f * temp_f31));
+        var_r31->unk40.b = (70.0f + (125.0f * temp_f31));
+        if (--var_r27 < 1) break;
+    }
+}
+
+void fn_1_95A4(u32 arg0) {
+    s32 var_r29;
+    ParticleData* temp_r30;
+    HsfanimStruct01* var_r31;
+
+    temp_r30 = Hu3DData[lbl_1_bss_90[arg0]->model[3]].unk_120;
+    var_r31 = temp_r30->unk_48;
+    
+    for (var_r29 = 0; var_r29 < temp_r30->unk_30; var_r29++, var_r31++) {
+        var_r31->unk00 = 0;
+        var_r31->unk2C = 0.0f;
+        var_r31->unk40.a = 0;
     }
 }
