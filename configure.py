@@ -1263,7 +1263,7 @@ config.libs = [
     Rel(
         "m461Dll",  # Bob-omb X-ing
         objects={
-            Object(NonMatching, "REL/m461Dll/main.c"),
+            Object(Matching, "REL/m461Dll/main.c"),
         },
     ),
     Rel(
