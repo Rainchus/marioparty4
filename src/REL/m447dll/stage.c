@@ -96,7 +96,7 @@ void fn_1_1F00(UnkM447Struct_06 *arg0, s32 arg1)
     s16 temp_r31;
 
     temp_r31 = arg0->unk00[arg1 + 3];
-    Hu3DModelAttrReset(temp_r31, 0x40000002);
+    Hu3DModelAttrReset(temp_r31, HU3D_MOTATTR_PAUSE);
     Hu3DMotionTimeSet(temp_r31, 0.0f);
     Hu3DMotionStartEndSet(temp_r31, 0.0f, 40.0f);
     arg0->unk54[arg1] = 1;
@@ -377,7 +377,7 @@ void fn_1_2A3C(UnkM447Struct_06 *arg0)
                 temp_r29 = arg0->unk00[i + 16];
                 Hu3DModelPosSet(temp_r29, lbl_1_rodata_190[i].x, lbl_1_rodata_190[i].y, lbl_1_rodata_190[i].z);
                 Hu3DMotionTimeSet(temp_r29, 0.0f);
-                Hu3DModelAttrReset(temp_r29, 0x40000001);
+                Hu3DModelAttrReset(temp_r29, HU3D_MOTATTR_LOOP);
                 Hu3DModelAttrReset(temp_r29, HU3D_ATTR_DISPOFF);
             }
             arg0->unk40 = 0;

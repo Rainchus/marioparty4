@@ -264,7 +264,7 @@ void fn_1_470(void)
     HuWinExAnimOut(temp_r30);
     HuWinExCleanup(temp_r30);
     HuWinComKeyReset();
-    Hu3DModelAttrReset(lbl_1_bss_199C2[11], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[11], HU3D_MOTATTR_PAUSE);
     HuAudFXPlay(1854);
     Hu3DMotionShiftSet(lbl_1_bss_199C2[22], lbl_1_bss_1990E[24], 0, 10, HU3D_MOTATTR_LOOP);
     for (temp_r31 = 0; temp_r31 < 20; temp_r31++) {
@@ -286,7 +286,7 @@ void fn_1_470(void)
     }
     HuAudFXPlay(1856);
     fn_1_861C(0);
-    Hu3DModelAttrReset(lbl_1_bss_199C2[9], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[9], HU3D_MOTATTR_PAUSE);
     HuAudFXPlay(1863);
     while (Hu3DMotionTimeGet(lbl_1_bss_199C2[9]) < lbl_1_data_140[0]) {
         HuPrcVSleep();
@@ -374,7 +374,7 @@ void fn_1_470(void)
     }
     Hu3DMotionShiftSet(lbl_1_bss_199C2[26], lbl_1_bss_1990E[27], 0, 10, HU3D_MOTATTR_LOOP);
     fn_1_861C(1);
-    Hu3DModelAttrReset(lbl_1_bss_199C2[9], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[9], HU3D_MOTATTR_PAUSE);
     HuAudFXPlay(1862);
     CharModelMotionShiftSet(lbl_1_bss_2DA, lbl_1_bss_2C0[1], 0, 10, HU3D_MOTATTR_LOOP);
     for (temp_r31 = 0; temp_r31 < 20; temp_r31++) {
@@ -458,7 +458,7 @@ void fn_1_470(void)
     }
     Hu3DMotionShiftSet(lbl_1_bss_199C2[30], lbl_1_bss_1990E[31], 0, 10, HU3D_MOTATTR_LOOP);
     fn_1_861C(2);
-    Hu3DModelAttrReset(lbl_1_bss_199C2[9], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[9], HU3D_MOTATTR_PAUSE);
     HuAudFXPlay(1862);
     CharModelMotionShiftSet(lbl_1_bss_2DA, lbl_1_bss_2C0[1], 0, 10, HU3D_MOTATTR_LOOP);
     for (temp_r31 = 0; temp_r31 < 20; temp_r31++) {
@@ -512,13 +512,13 @@ void fn_1_470(void)
         HuPrcVSleep();
     }
     HuAudFXPlay(1862);
-    Hu3DModelAttrReset(lbl_1_bss_199C2[9], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[9], HU3D_MOTATTR_PAUSE);
     while (Hu3DMotionEndCheck(lbl_1_bss_199C2[9]) == 0) {
         HuPrcVSleep();
     }
-    Hu3DModelAttrReset(lbl_1_bss_199C2[11], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[11], HU3D_MOTATTR_PAUSE);
     HuAudFXPlay(1855);
-    Hu3DModelAttrSet(lbl_1_bss_199C2[11], 0x40000004);
+    Hu3DModelAttrSet(lbl_1_bss_199C2[11], HU3D_MOTATTR_REV);
     while (Hu3DMotionTimeGet(lbl_1_bss_199C2[11]) > 0.0f) {
         if (Hu3DMotionTimeGet(lbl_1_bss_199C2[11]) == 25.0f) {
             HuAudFXPlay(1854);

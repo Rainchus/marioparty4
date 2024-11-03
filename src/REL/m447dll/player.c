@@ -588,8 +588,8 @@ void fn_1_5520(UnkM447Struct_04 *arg0)
             arg0->unk20 = 6;
             /* fallthrough */
         case 6:
-            Hu3DModelAttrReset(arg0->unk68, 0x40000002);
-            Hu3DModelAttrReset(arg0->unk68, 0x40000001);
+            Hu3DModelAttrReset(arg0->unk68, HU3D_MOTATTR_PAUSE);
+            Hu3DModelAttrReset(arg0->unk68, HU3D_MOTATTR_LOOP);
             arg0->unk60 = 0;
             arg0->unk20 = 7;
             /* fallthrough */
@@ -613,7 +613,7 @@ void fn_1_5760(UnkM447Struct_04 *arg0)
 
     switch (arg0->unk20) {
         case 0:
-            Hu3DModelAttrReset(arg0->unk68, 0x40000001);
+            Hu3DModelAttrReset(arg0->unk68, HU3D_MOTATTR_LOOP);
             fn_1_71FC(arg0, 5, 0.0f, 8.0f, HU3D_MOTATTR_NONE);
             arg0->unk60 = 0;
             arg0->unk20 = 1;

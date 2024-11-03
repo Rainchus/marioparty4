@@ -553,7 +553,7 @@ static void SMCharInit(omObjData *object)
         void *data = HuDataSelHeapReadNum(charMdlTbl[i], MEMORY_DEFAULT_NUM, HEAP_DATA);
         charModelID[i] = Hu3DModelCreate(data);
         Hu3DModelPosSet(charModelID[i], 0.0f, 0.0f, 0.0f);
-        Hu3DModelAttrSet(charModelID[i], 0x40000001);
+        Hu3DModelAttrSet(charModelID[i], HU3D_MOTATTR_LOOP);
         Hu3DMotionSet(charModelID[i], Hu3DJointMotionFile(charModelID[i], charMdlMotTbl[i]));
     }
     for (i = 0; i < 4; i++) {

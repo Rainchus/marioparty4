@@ -26,7 +26,6 @@
 #include "game/window.h"
 #include "game/wipe.h"
 
-
 #include "ext_math.h"
 
 typedef struct {
@@ -561,7 +560,7 @@ static void ItemSizeSet(s32 arg0)
             HuPrcVSleep();
         }
     }
-    Hu3DModelAttrReset(temp_r28, 0x40000002);
+    Hu3DModelAttrReset(temp_r28, HU3D_MOTATTR_PAUSE);
     BoardPlayerSizeSet(currItemRestore, arg0);
 }
 

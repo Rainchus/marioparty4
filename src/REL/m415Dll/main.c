@@ -1029,7 +1029,7 @@ void fn_1_3B44(omObjData *object)
                 }
                 else {
                     if ((Hu3DMotionTimeGet(temp_r23) >= 10.0f) && (Hu3DMotionShiftIDGet(temp_r23) < 0)) {
-                        Hu3DModelAttrSet(temp_r23, 0x40000004);
+                        Hu3DModelAttrSet(temp_r23, HU3D_MOTATTR_REV);
                     }
                 }
             }

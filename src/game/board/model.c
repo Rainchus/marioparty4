@@ -310,7 +310,7 @@ s32 BoardModelPassSet(s16 model, s32 pass)
             Hu3DModelAttrSet(model_ptr->id, HU3D_ATTR_ZWRITE_OFF);
         }
         else {
-            Hu3DModelAttrReset(model_ptr->id, 2);
+            Hu3DModelAttrReset(model_ptr->id, HU3D_ATTR_ZWRITE_OFF);
         }
         return 0;
     }
@@ -456,7 +456,7 @@ s32 BoardModelMotionUpdateSet(s16 model, s32 flag)
             Hu3DModelAttrSet(model_ptr->id, HU3D_MOTATTR_LOOP);
         }
         else {
-            Hu3DModelAttrReset(model_ptr->id, 0x40000001);
+            Hu3DModelAttrReset(model_ptr->id, HU3D_MOTATTR_LOOP);
         }
         return 0;
     }
@@ -513,7 +513,7 @@ s32 BoardModelMotionStart(s16 model, s32 motion, u32 attr)
                 CharModelMotionTimeSet(model_ptr->character, model_ptr->mot_end);
             }
         }
-        Hu3DModelAttrReset(model_ptr->id, 0x40000003);
+        Hu3DModelAttrReset(model_ptr->id, HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
         Hu3DModelAttrSet(model_ptr->id, attr);
         model_ptr->curr_mot = motion;
         return 0;

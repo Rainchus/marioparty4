@@ -7,7 +7,6 @@
 #include "game/pad.h"
 #include "game/printfunc.h"
 
-
 #include "game/hsfmotion.h"
 
 #include "game/audio.h"
@@ -19,10 +18,8 @@
 #include "game/window.h"
 #include "game/wipe.h"
 
-
 #include "ext_math.h"
 #include "math.h"
-
 
 #include "rel_sqrt_consts.h"
 
@@ -255,7 +252,7 @@ static void fn_1_994(void)
         HuPrcVSleep();
     }
     HuAudFXPlay(1211);
-    Hu3DModelAttrReset(model, 0x40000002);
+    Hu3DModelAttrReset(model, HU3D_MOTATTR_PAUSE);
     for (i = 1; i <= 20; i++) {
         Hu3DModelPosSet(model, 0.0f, (200.0 * (sind(i * 2.25f) * (1.0 / sind(45)))) - 200.0, pos_z);
         rot_x = (20 - i) * cosd(i * 13.5f);
@@ -267,7 +264,7 @@ static void fn_1_994(void)
     Hu3DModelAttrSet(model, HU3D_MOTATTR_PAUSE);
     HuPrcSleep(10);
     HuAudFXPlay(1212);
-    Hu3DModelAttrReset(model, 0x40000002);
+    Hu3DModelAttrReset(model, HU3D_MOTATTR_PAUSE);
     i = Hu3DHookFuncCreate(fn_1_50B0);
 
     Hu3DModelCameraSet(i, 1);
@@ -358,7 +355,7 @@ static void fn_1_994(void)
     lbl_1_data_0 = 4;
     HuPrcSleep(10);
 
-    Hu3DModelAttrReset(model, 0x40000002);
+    Hu3DModelAttrReset(model, HU3D_MOTATTR_PAUSE);
     HuPrcSleep(10);
     fov_vel = 0;
     for (i = 0; i <= 60; i++) {
@@ -522,7 +519,7 @@ static void fn_1_17E4(void)
                 continue;
             }
             if (time == 0) {
-                Hu3DModelAttrReset(player_mdl[j], 0x40000001);
+                Hu3DModelAttrReset(player_mdl[j], HU3D_MOTATTR_LOOP);
                 CharModelVoiceEnableSet(char_tbl[i], mot_tbl[i][1], 1);
                 CharModelMotionSet(char_tbl[j], mot_tbl[j][1]);
             }

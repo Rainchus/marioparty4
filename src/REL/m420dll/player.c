@@ -330,9 +330,9 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
                     CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[5]);
                     Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
                     Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
-                    Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
-                    Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
-                    Hu3DModelAttrReset(arg0->unk_AC, 0x40000004);
+                    Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_PAUSE);
+                    Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_LOOP);
+                    Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_REV);
                     arg0->unk_5C[arg0->unk_50++] = 1;
                     HuAudFXPlay(0x5F4);
                     fn_1_60F0();
@@ -343,9 +343,9 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
                         WAITMODECHG(arg0, 1);
                     }
                     else {
-                        Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
-                        Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
-                        Hu3DModelAttrSet(arg0->unk_AC, 0x40000004);
+                        Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_PAUSE);
+                        Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_LOOP);
+                        Hu3DModelAttrSet(arg0->unk_AC, HU3D_MOTATTR_REV);
                         fn_1_63EC();
                         while (!Hu3DMotionEndCheck(arg0->unk_AC))
                             WAITMODECHG(arg0, 1);
@@ -358,7 +358,7 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
                         CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[5]);
                         Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
                         Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
-                        Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
+                        Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_LOOP);
                     }
                     break;
                 default:
@@ -464,14 +464,14 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
                             CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
                             Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
                             Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
-                            Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
+                            Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_PAUSE);
                             WAITMODECHG(arg0, 30);
                             var_f31 = 60.0f;
                             var_f30 = 70.0f;
                             CharModelMotionSet(arg0->unk_0A, arg0->unk_AE[4]);
                             Hu3DMotionStartEndSet(arg0->unk_AC, var_f31, var_f30);
                             Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
-                            Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
+                            Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_PAUSE);
                             WAITMODECHG(arg0, 30);
                             break;
 
@@ -511,9 +511,9 @@ void fn_1_2D7C(M420DllPlayerStruct *arg0)
     var_f31 = 30.0f;
     Hu3DMotionStartEndSet(arg0->unk_AC, var_f30, var_f31);
     Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
-    Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
-    Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
-    Hu3DModelAttrSet(arg0->unk_AC, 0x40000004);
+    Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_LOOP);
+    Hu3DModelAttrSet(arg0->unk_AC, HU3D_MOTATTR_REV);
     HuAudFXPlay(0x5F6);
     fn_1_6268();
     fn_1_5AA8(0, 22.5f);
@@ -546,7 +546,7 @@ void fn_1_2EA8(M420DllPlayerStruct *arg0)
     CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[3], 0.0f, 1.0f, 0);
     var_r30 = fn_1_6660();
 
-    Hu3DModelAttrReset(var_r30, 0x40000002);
+    Hu3DModelAttrReset(var_r30, HU3D_MOTATTR_PAUSE);
     Hu3DModelAttrSet(var_r30, HU3D_MOTATTR_LOOP);
     Hu3DMotionTimeSet(var_r30, 0.0f);
     {
@@ -830,9 +830,9 @@ void fn_1_3970(M420DllPlayerStruct *arg0)
     }
     fn_1_3450(arg0);
     if (arg0->unk_4C == 0) {
-        Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
-        Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
-        Hu3DModelAttrSet(arg0->unk_AC, 0x40000004);
+        Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_PAUSE);
+        Hu3DModelAttrReset(arg0->unk_AC, HU3D_MOTATTR_LOOP);
+        Hu3DModelAttrSet(arg0->unk_AC, HU3D_MOTATTR_REV);
         fn_1_63EC();
         CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[6], 0.0f, 32.0f, 0);
         Hu3DMotionShiftStartEndSet(arg0->unk_AC, 0.0f, 59.0f);

@@ -183,7 +183,7 @@ void fn_1_799C(unkStruct7 *arg0)
 
     if (arg0->unk8 == 0) {
         for (var_r30 = 0; var_r30 < 9; var_r30++) {
-            Hu3DModelAttrReset(arg0->unkC[var_r30 + 1], 0x40000002);
+            Hu3DModelAttrReset(arg0->unkC[var_r30 + 1], HU3D_MOTATTR_PAUSE);
             Hu3DMotionTimeSet(arg0->unkC[var_r30 + 1], 0.0f);
         }
     }

@@ -362,7 +362,7 @@ void fn_1_7544(void)
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
-        Hu3DModelAttrReset(lbl_1_bss_1A9C[i + 4], 0x40000002);
+        Hu3DModelAttrReset(lbl_1_bss_1A9C[i + 4], HU3D_MOTATTR_PAUSE);
         Hu3DMotionSpeedSet(lbl_1_bss_1A9C[i + 4], 1.5f);
     }
     HuPrcSleep(35);
@@ -422,7 +422,7 @@ void fn_1_7544(void)
             HuPrcVSleep();
         }
         HuAudFXPlay(828);
-        Hu3DModelAttrReset(lbl_1_bss_1A9C[10], 0x40000002);
+        Hu3DModelAttrReset(lbl_1_bss_1A9C[10], HU3D_MOTATTR_PAUSE);
         Hu3DModelPosSet(lbl_1_bss_1A9C[10], 0, 0, 200);
         for (i = 0; i < Hu3DMotionMaxTimeGet(lbl_1_bss_1A9C[10]); i++) {
             if (i > 10) {

@@ -122,9 +122,9 @@ unkStruct9 *m446StageCreate(void)
     Hu3DModelAttrSet(var_r31->unk0[4], HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(var_r31->unk0[3], HU3D_MOTATTR_PAUSE);
     Hu3DModelAttrSet(var_r31->unk0[4], HU3D_MOTATTR_PAUSE);
-    Hu3DModelAttrReset(var_r31->unk0[3], 0x40000001);
-    Hu3DModelAttrReset(var_r31->unk0[4], 0x40000001);
-    Hu3DModelAttrReset(var_r31->unk0[2], 0x40000001);
+    Hu3DModelAttrReset(var_r31->unk0[3], HU3D_MOTATTR_LOOP);
+    Hu3DModelAttrReset(var_r31->unk0[4], HU3D_MOTATTR_LOOP);
+    Hu3DModelAttrReset(var_r31->unk0[2], HU3D_MOTATTR_LOOP);
 
     for (var_r30 = 0; var_r30 < 3; var_r30++) {
         var_r31->unkA[var_r30] = Hu3DGLightCreateV(&lbl_1_data_460[var_r30].unk0, &lbl_1_data_460[var_r30].unkC, &lbl_1_data_460[var_r30].unk18);
@@ -180,8 +180,8 @@ void fn_1_84AC(unkStruct9 *arg0)
 {
     Hu3DModelAttrReset(arg0->unk0[3], HU3D_ATTR_DISPOFF);
     Hu3DModelAttrReset(arg0->unk0[4], HU3D_ATTR_DISPOFF);
-    Hu3DModelAttrReset(arg0->unk0[3], 0x40000002);
-    Hu3DModelAttrReset(arg0->unk0[4], 0x40000002);
+    Hu3DModelAttrReset(arg0->unk0[3], HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrReset(arg0->unk0[4], HU3D_MOTATTR_PAUSE);
     arg0->unk24 = 1;
     arg0->unk1C = 0;
     arg0->unk20 = 0;
@@ -192,8 +192,8 @@ void fn_1_852C(unkStruct9 *arg0)
 {
     Hu3DModelAttrSet(arg0->unk0[3], HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(arg0->unk0[4], HU3D_ATTR_DISPOFF);
-    Hu3DModelAttrSet(arg0->unk0[3], 0x40000002U);
-    Hu3DModelAttrSet(arg0->unk0[4], 0x40000002U);
+    Hu3DModelAttrSet(arg0->unk0[3], HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrSet(arg0->unk0[4], HU3D_MOTATTR_PAUSE);
     Hu3DMotionStartEndSet(arg0->unk0[2], 0.0f, 359.0f);
     Hu3DMotionStartEndSet(arg0->unk0[3], 0.0f, 119.0f);
     Hu3DMotionStartEndSet(arg0->unk0[4], 0.0f, 119.0f);

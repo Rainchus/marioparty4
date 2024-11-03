@@ -1379,7 +1379,7 @@ s16 fn_1_4B14(s16 arg0, s16 arg1, s16 *arg2)
             temp_r31->unk18 = 0;
             temp_r31->unk20 = 1;
             Hu3DMotionTimeSet(lbl_1_bss_2C->model[arg0 + 1], 0);
-            Hu3DModelAttrReset(lbl_1_bss_2C->model[arg0 + 1], 0x40000002);
+            Hu3DModelAttrReset(lbl_1_bss_2C->model[arg0 + 1], HU3D_MOTATTR_PAUSE);
             HuAudFXPlay(9);
             break;
         }

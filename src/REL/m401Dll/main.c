@@ -1169,7 +1169,7 @@ void fn_2_3F28(omObjData *object)
                 temp_r31->unk30.y = object->trans.y;
                 temp_r31->unk30.z = object->trans.z;
                 Hu3DModelAttrReset(object->model[3], HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrReset(object->model[3], 0x40000002);
+                Hu3DModelAttrReset(object->model[3], HU3D_MOTATTR_PAUSE);
                 Hu3DModelClusterAttrReset(object->model[3], 0, 0xC0000002);
                 Hu3DModelPosSet(object->model[3], object->trans.x, 100, 100 + object->trans.z);
                 Hu3DMotionTimeSet(object->model[3], 0);
@@ -1384,12 +1384,12 @@ void fn_2_48A0(omObjData *object)
                     temp_r31->unk6C = 1;
                     omVibrate(temp_r31->unk4, 12, 4, 2);
                     Hu3DModelAttrReset(object->model[2], HU3D_ATTR_DISPOFF);
-                    Hu3DModelAttrReset(object->model[2], 0x40000002);
+                    Hu3DModelAttrReset(object->model[2], HU3D_MOTATTR_PAUSE);
                     Hu3DModelAttrSet(object->model[2], HU3D_MOTATTR_LOOP);
                     Hu3DModelPosSet(object->model[2], object->trans.x, 950, 30 + object->trans.z);
                     Hu3DModelScaleSet(object->model[2], 1, 1, 1);
                     Hu3DMotionTimeSet(object->model[2], 0);
-                    Hu3DModelAttrReset(object->model[3], 0x40000002);
+                    Hu3DModelAttrReset(object->model[3], HU3D_MOTATTR_PAUSE);
                     Hu3DModelAttrReset(object->model[3], HU3D_ATTR_DISPOFF);
                     Hu3DModelClusterAttrReset(object->model[3], 0, 0xC0000002);
                     Hu3DModelPosSet(object->model[3], object->trans.x, 0, 30 + object->trans.z);
@@ -2564,7 +2564,7 @@ void fn_2_A318(omObjData *object)
             temp_r30->unk0.y = atan2d(temp_r28->trans.y - object->trans.y, temp_r28->trans.x - object->trans.x);
             temp_r30->unk0.z = 8.0f + ((1.0f / 255.0f) * ((9.0f * frandu8())));
             Hu3DMotionSet(object->model[0], object->motion[1]);
-            Hu3DModelAttrReset(object->model[0], 0x40000001);
+            Hu3DModelAttrReset(object->model[0], HU3D_MOTATTR_LOOP);
             lbl_2_bss_78.x = object->trans.x;
             lbl_2_bss_78.y = object->trans.y;
             lbl_2_bss_78.z = object->trans.z;
@@ -2807,7 +2807,7 @@ void fn_2_C130(omObjData *object)
                 temp_r31->unk50->work[0] = 1;
                 temp_r31->unk6C = 0;
                 CharModelMotionSet(((M401WorkPlayer *)(lbl_2_bss_118[temp_r30]->data))->unk86, lbl_2_bss_118[temp_r30]->motion[4]);
-                Hu3DModelAttrReset(lbl_2_bss_118[temp_r30]->model[0], 0x40000001);
+                Hu3DModelAttrReset(lbl_2_bss_118[temp_r30]->model[0], HU3D_MOTATTR_LOOP);
                 lbl_2_bss_118[temp_r30]->func = fn_2_48A0;
                 Hu3DModelAmbSet(lbl_2_bss_118[temp_r30]->model[0], 0.7f, 0.7f, 0.7f);
                 omSetTra(lbl_2_bss_118[temp_r30], -225.0f + (temp_r30 * 150), 740, 400);

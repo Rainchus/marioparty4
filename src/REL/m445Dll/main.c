@@ -779,7 +779,7 @@ void fn_1_1C64(void)
         else {
             Hu3DMotionSet(temp_r31->unk00, temp_r31->unk02[1]);
         }
-        Hu3DModelAttrReset(temp_r31->unk00, 0x40000005);
+        Hu3DModelAttrReset(temp_r31->unk00, HU3D_MOTATTR_LOOP | HU3D_MOTATTR_REV);
         while (!Hu3DMotionEndCheck(temp_r31->unk00)) {
             temp_r31->unk44++;
             HuPrcVSleep();
@@ -801,7 +801,7 @@ void fn_1_1C64(void)
         Hu3DModelAttrSet(var_r25->unk28, HU3D_MOTATTR_PAUSE);
         if (temp_r31->unk14 == 6) {
             HuPrcSleep(12);
-            Hu3DModelAttrReset(var_r25->unk28, 0x40000006);
+            Hu3DModelAttrReset(var_r25->unk28, HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
             if (temp_r31->unk38 != 0) {
                 fn_1_4B8(temp_r31->unk48, temp_r31->unk4C, 0x758);
             }
@@ -811,7 +811,7 @@ void fn_1_1C64(void)
         }
         if (temp_r31->unk14 == 7) {
             HuPrcSleep(11);
-            Hu3DModelAttrReset(var_r25->unk28, 0x40000006);
+            Hu3DModelAttrReset(var_r25->unk28, HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
             fn_1_4B8(temp_r31->unk48, temp_r31->unk4C, 0x754);
             Hu3DModelAttrReset(lbl_1_bss_6E0, HU3D_ATTR_DISPOFF);
             Hu3DMotionTimeSet(lbl_1_bss_6E0, 0.0f);
@@ -827,10 +827,10 @@ void fn_1_1C64(void)
             else {
                 fn_1_4B8(temp_r31->unk48, temp_r31->unk4C, 0x757);
             }
-            Hu3DModelAttrReset(var_r25->unk28, 0x40000006);
+            Hu3DModelAttrReset(var_r25->unk28, HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
             if (lbl_1_data_260[temp_r31->unk14] > 1) {
                 Hu3DMotionSet(var_r29->unk28, var_r29->unk08[temp_r31->unk0C + 1]);
-                Hu3DModelAttrReset(var_r29->unk28, 0x40000006);
+                Hu3DModelAttrReset(var_r29->unk28, HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
             }
         }
         while (!Hu3DMotionEndCheck(var_r25->unk28)) {
@@ -850,7 +850,7 @@ void fn_1_1C64(void)
             if (temp_r31->unk20[0] == 1) {
                 temp_r31->unk20[0] = 2;
                 Hu3DMotionSet(var_r25->unk28, var_r25->unk08[temp_r31->unk0C + 3]);
-                Hu3DModelAttrReset(var_r25->unk28, 0x40000001);
+                Hu3DModelAttrReset(var_r25->unk28, HU3D_MOTATTR_LOOP);
                 if (temp_r31->unk38 != 0) {
                     if (temp_r31->unk28 != 0) {
                         fn_1_4B8(temp_r31->unk48, temp_r31->unk4C, 0x75C);
@@ -871,7 +871,7 @@ void fn_1_1C64(void)
             if (temp_r31->unk20[1] == 1) {
                 temp_r31->unk20[1] = 2;
                 Hu3DMotionSet(var_r29->unk28, var_r29->unk08[temp_r31->unk0C + 3]);
-                Hu3DModelAttrReset(var_r29->unk28, 0x40000001);
+                Hu3DModelAttrReset(var_r29->unk28, HU3D_MOTATTR_LOOP);
                 if (temp_r31->unk38 != 0) {
                     if (temp_r31->unk2C != 0) {
                         fn_1_4B8(temp_r31->unk48, temp_r31->unk4C, 0x75C);
@@ -918,16 +918,16 @@ void fn_1_1C64(void)
                 Hu3DMotionSet(var_r25->unk28, var_r25->unk08[temp_r31->unk0C + 1]);
                 Hu3DMotionTimeSet(var_r25->unk28, Hu3DMotionMaxTimeGet(var_r25->unk28));
                 Hu3DMotionSpeedSet(var_r25->unk28, 2.0f);
-                Hu3DModelAttrSet(var_r25->unk28, 0x40000004);
-                Hu3DModelAttrReset(var_r25->unk28, 0x40000001);
+                Hu3DModelAttrSet(var_r25->unk28, HU3D_MOTATTR_REV);
+                Hu3DModelAttrReset(var_r25->unk28, HU3D_MOTATTR_LOOP);
             }
             if (lbl_1_data_260[temp_r31->unk14] > 1 && temp_r31->unk20[1] == 0) {
                 var_r29->unk34 = 0;
                 Hu3DMotionSet(var_r29->unk28, var_r29->unk08[temp_r31->unk0C + 1]);
                 Hu3DMotionTimeSet(var_r29->unk28, Hu3DMotionMaxTimeGet(var_r29->unk28));
                 Hu3DMotionSpeedSet(var_r29->unk28, 2.0f);
-                Hu3DModelAttrSet(var_r29->unk28, 0x40000004);
-                Hu3DModelAttrReset(var_r29->unk28, 0x40000001);
+                Hu3DModelAttrSet(var_r29->unk28, HU3D_MOTATTR_REV);
+                Hu3DModelAttrReset(var_r29->unk28, HU3D_MOTATTR_LOOP);
             }
             if (lbl_1_data_260[temp_r31->unk14] > 1) {
                 while (!Hu3DMotionEndCheck(var_r25->unk28) || !Hu3DMotionEndCheck(var_r29->unk28)) {
@@ -944,14 +944,14 @@ void fn_1_1C64(void)
         if (lbl_1_data_260[temp_r31->unk14] > 1) {
             Hu3DMotionSpeedSet(var_r29->unk28, 1.0f);
         }
-        Hu3DModelAttrSet(temp_r31->unk00, 0x40000004);
+        Hu3DModelAttrSet(temp_r31->unk00, HU3D_MOTATTR_REV);
         if (temp_r31->unk14 == 6 && temp_r31->unk20[0] == 0) {
             HuPrcSleep(26);
             Hu3DMotionSet(var_r25->unk28, var_r25->unk08[temp_r31->unk0C + 1]);
             Hu3DMotionTimeSet(var_r25->unk28, Hu3DMotionMaxTimeGet(var_r25->unk28));
             Hu3DMotionSpeedSet(var_r25->unk28, 2.0f);
-            Hu3DModelAttrSet(var_r25->unk28, 0x40000004);
-            Hu3DModelAttrReset(var_r25->unk28, 0x40000001);
+            Hu3DModelAttrSet(var_r25->unk28, HU3D_MOTATTR_REV);
+            Hu3DModelAttrReset(var_r25->unk28, HU3D_MOTATTR_LOOP);
         }
         while (!Hu3DMotionEndCheck(temp_r31->unk00)) {
             HuPrcVSleep();
@@ -1599,7 +1599,7 @@ void fn_1_6268(void)
                 Hu3DMotionSet(temp_r31->unk00, temp_r31->unk08[4]);
                 Hu3DMotionSpeedSet(temp_r31->unk00, 1.0f);
             }
-            Hu3DModelAttrReset(temp_r31->unk00, 0x40000001);
+            Hu3DModelAttrReset(temp_r31->unk00, HU3D_MOTATTR_LOOP);
             HuPrcSleep(15);
             if (temp_r31->unk18 != 0) {
                 fn_1_4B8(temp_r31->unk34, temp_r31->unk3C, 0x75F);
@@ -1663,10 +1663,10 @@ void fn_1_6268(void)
             temp_r31->unk24 = 0;
             if (fn_1_520(temp_r31->unk18) == FALSE) {
                 CharModelMotionSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0]);
-                Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
+                Hu3DModelAttrSet(temp_r31->unk00, HU3D_MOTATTR_OVL_LOOP);
                 if (lbl_1_bss_6DC < 5) {
                     Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
-                    Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
+                    Hu3DModelAttrSet(temp_r31->unk00, HU3D_MOTATTR_OVL_LOOP);
                 }
             }
             else {
@@ -1694,7 +1694,7 @@ void fn_1_6268(void)
                                 lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[2], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                             if (lbl_1_bss_6DC < 5) {
                                 Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
-                                Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
+                                Hu3DModelAttrSet(temp_r31->unk00, HU3D_MOTATTR_OVL_LOOP);
                             }
                         }
                         else {
@@ -1710,7 +1710,7 @@ void fn_1_6268(void)
                             lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[1], 0.0f, 8.0f, HU3D_MOTATTR_LOOP);
                         if (lbl_1_bss_6DC < 5) {
                             Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
-                            Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
+                            Hu3DModelAttrSet(temp_r31->unk00, HU3D_MOTATTR_OVL_LOOP);
                         }
                     }
                     else {
@@ -1725,7 +1725,7 @@ void fn_1_6268(void)
                     CharModelMotionShiftSet(lbl_1_data_0[GWPlayerCfg[temp_r31->unk18].character], temp_r31->unk08[0], 0.0f, 0.0f, HU3D_MOTATTR_LOOP);
                     if (lbl_1_bss_6DC < 5) {
                         Hu3DMotionOverlaySet(temp_r31->unk00, temp_r31->unk08[4]);
-                        Hu3DModelAttrSet(temp_r31->unk00, 0x40000200);
+                        Hu3DModelAttrSet(temp_r31->unk00, HU3D_MOTATTR_OVL_LOOP);
                     }
                 }
                 else {
@@ -1923,7 +1923,7 @@ void fn_1_8320(void)
     HuPrcSleep(30);
     HuAudFXPlay(0x755);
     temp_r28 = lbl_1_bss_288[5].unk00;
-    Hu3DModelAttrReset(temp_r28, 0x40000003);
+    Hu3DModelAttrReset(temp_r28, HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
     while (!Hu3DMotionEndCheck(temp_r28)) {
         HuPrcVSleep();
     }
@@ -1982,7 +1982,7 @@ void fn_1_8320(void)
         else {
             Hu3DMotionSet(temp_r31->unk00, temp_r31->unk08[3]);
         }
-        Hu3DModelAttrReset(temp_r31->unk00, 0x40000001);
+        Hu3DModelAttrReset(temp_r31->unk00, HU3D_MOTATTR_LOOP);
     }
     HuPrcSleep(20);
     for (i = 0; i < 2; i++) {

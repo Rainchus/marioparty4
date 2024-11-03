@@ -18,7 +18,6 @@
 #include "game/objsub.h"
 #include "game/pad.h"
 
-
 #include "math.h"
 #include "stdlib.h"
 
@@ -2694,7 +2693,7 @@ void BoardPlayerResizeAnimExec(s32 player, s32 size)
             HuPrcVSleep();
         }
     }
-    Hu3DModelAttrReset(modelid, 0x40000002);
+    Hu3DModelAttrReset(modelid, HU3D_MOTATTR_PAUSE);
     BoardPlayerSizeSet(player, size);
 }
 

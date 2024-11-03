@@ -693,7 +693,7 @@ s32 fn_1_20C8(void)
         }
         var_r30 = temp_r29->unk00;
         Hu3DModelCameraSet(var_r30, 1);
-        Hu3DModelAttrSet(var_r30, 0x40000040);
+        Hu3DModelAttrSet(var_r30, HU3D_MOTATTR_SHAPE_LOOP);
     }
     temp_r29 = &var_r31->unkE4[0];
     var_r28 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M411, 51), MEMORY_DEFAULT_NUM, HEAP_DATA);
@@ -769,7 +769,7 @@ void fn_1_25D0(void)
         Hu3DModelCameraSet(temp_r31->unk00, 1 << temp_r31->unk38);
         Hu3DModelPosSet(temp_r31->unk00, 0.0f, 0.0f, 0.0f);
         Hu3DModelRotSet(temp_r31->unk00, 0.0f, 0.0f, 0.0f);
-        Hu3DModelAttrSet(temp_r31->unk00, 0x4001);
+        Hu3DModelAttrSet(temp_r31->unk00, HU3D_ATTR_DISPOFF | HU3D_ATTR_NOCULL);
         var_r28 = HuDataSelHeapReadNum(lbl_1_data_54[lbl_1_bss_E3C], MEMORY_DEFAULT_NUM, HEAP_DATA);
         temp_r31->unk04 = Hu3DModelCreate(var_r28);
         var_r28 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M411, 14), MEMORY_DEFAULT_NUM, HEAP_DATA);
@@ -868,7 +868,7 @@ void fn_1_25D0(void)
         if (lbl_1_bss_E40 == 0) {
             var_r28 = HuDataSelHeapReadNum(lbl_1_data_260[GWPlayerCfg[i].character], MEMORY_DEFAULT_NUM, HEAP_DATA);
             temp_r31->unk20 = Hu3DModelCreate(var_r28);
-            Hu3DModelAttrSet(temp_r31->unk20, 0x800001);
+            Hu3DModelAttrSet(temp_r31->unk20, HU3D_ATTR_DISPOFF | HU3D_ATTR_CULL_FRONT);
             Hu3DModelCameraSet(temp_r31->unk20, 1);
             for (j = 0; j < 9; j++) {
                 var_r28 = HuDataSelHeapReadNum((u8)lbl_1_data_280[j] + lbl_1_data_2A4[GWPlayerCfg[i].character], MEMORY_DEFAULT_NUM, HEAP_DATA);
@@ -1236,9 +1236,9 @@ void fn_1_4454(void)
         HuPrcVSleep();
     }
     Hu3DMotionSet(temp_r31->unk00, temp_r31->unk02[2]);
-    Hu3DModelAttrReset(temp_r31->unk00, 0x40000001);
+    Hu3DModelAttrReset(temp_r31->unk00, HU3D_MOTATTR_LOOP);
     Hu3DMotionSet(var_r30->unk00, var_r30->unk02[2]);
-    Hu3DModelAttrReset(var_r30->unk00, 0x40000001);
+    Hu3DModelAttrReset(var_r30->unk00, HU3D_MOTATTR_LOOP);
     while (Hu3DMotionEndCheck(temp_r31->unk00) == 0) {
         HuPrcVSleep();
     }

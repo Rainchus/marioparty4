@@ -752,7 +752,7 @@ void fn_1_1D84(omObjData *object)
                 }
                 temp_r28 = HU3D_MOTATTR_NONE;
                 object->rot.y = fn_1_1C80(object->rot.y, 0, 0.2f);
-                Hu3DModelAttrReset(object->model[0], 0x40000001);
+                Hu3DModelAttrReset(object->model[0], HU3D_MOTATTR_LOOP);
             }
             break;
     }
@@ -984,7 +984,7 @@ void fn_1_361C(omObjData *object)
             temp_r29->rot.y = object->rot.y;
             Hu3DModelObjPosGet(object->model[0], "test11_tex_we-itemhook-r", &temp_r29->pos);
             Hu3DModelHookReset(object->model[0]);
-            Hu3DModelAttrReset(object->model[1], 0x8000);
+            Hu3DModelAttrReset(object->model[1], HU3D_ATTR_HOOK);
             Hu3DModelShadowReset(object->model[1]);
             Hu3DModelAttrReset(object->model[0], HU3D_ATTR_DISPOFF);
         }

@@ -904,7 +904,7 @@ void fn_1_5530(void)
             }
         }
     } while (var_r31 != 4);
-    Hu3DModelAttrReset(lbl_1_bss_3B0.unk_00->model[5], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_3B0.unk_00->model[5], HU3D_MOTATTR_PAUSE);
     fn_1_25C4(lbl_1_bss_2D8[0].unk_00, 1, 2, 0xF, 1);
     fn_1_28E0(lbl_1_bss_2D8[0].unk_00, 1, sp14, 0.0f, 9.0f, 0.0f, 1, 0);
     fn_1_25C4(lbl_1_bss_2D8[0].unk_00, 1, 1, 0xF, 1);
@@ -940,7 +940,7 @@ void fn_1_581C(void)
         fn_1_1B7D0(1);
     } while (lbl_1_bss_1B8[0].unk_04 != NULL);
 
-    Hu3DModelAttrReset(lbl_1_bss_3B0.unk_00->model[5], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_3B0.unk_00->model[5], HU3D_MOTATTR_PAUSE);
     fn_1_25C4(lbl_1_bss_2D8[1].unk_00, 1, 2, 0xF, 1);
     fn_1_28E0(lbl_1_bss_2D8[1].unk_00, 1, sp14, 0.0f, 9.0f, 0.0f, 1, 0);
     fn_1_25C4(lbl_1_bss_2D8[1].unk_00, 1, 1, 0xF, 1);

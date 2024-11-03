@@ -181,12 +181,12 @@ void fn_1_485C(omObjData *arg0)
     if (temp_r30->unk_1C == 0) {
         Hu3DMotionTimeSet(*arg0->model, 0.0f);
         Hu3DModelAttrReset(*arg0->model, HU3D_ATTR_DISPOFF);
-        Hu3DModelAttrReset(*arg0->model, 0x40000002);
+        Hu3DModelAttrReset(*arg0->model, HU3D_MOTATTR_PAUSE);
         Hu3DModelAttrSet(*arg0->model, HU3D_MOTATTR_LOOP);
         temp_r30->unk_1C++;
     }
     else if (temp_r30->unk_1C == 1) {
-        Hu3DModelAttrReset(arg0->model[0], 0x40000001);
+        Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_LOOP);
         temp_r30->unk_1C++;
     }
 

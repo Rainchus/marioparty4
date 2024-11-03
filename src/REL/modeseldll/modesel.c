@@ -59,8 +59,8 @@ s32 fn_1_2490(void)
         HuPrcVSleep();
     }
     HuPrcSleep(20);
-    Hu3DModelAttrReset(lbl_1_bss_19A[14], 0x40000002);
-    Hu3DModelAttrReset(lbl_1_bss_19A[15], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_19A[14], HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrReset(lbl_1_bss_19A[15], HU3D_MOTATTR_PAUSE);
     HuAudFXPlay(2093);
     HuPrcSleep(120);
     HuAudFXPlay(2095);
@@ -153,7 +153,7 @@ s32 fn_1_2490(void)
             continue;
         }
     }
-    Hu3DModelAttrReset(lbl_1_bss_19A[lbl_1_data_80[lbl_1_bss_80]], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_19A[lbl_1_data_80[lbl_1_bss_80]], HU3D_MOTATTR_PAUSE);
     HuAudSeqAllFadeOut(1000);
     for (temp_r31 = 0; temp_r31 <= 20; temp_r31++) {
         temp_f31 = temp_r31 / 20.0f;
@@ -197,7 +197,7 @@ s32 fn_1_2490(void)
     }
     HuPrcSleep(90);
     Hu3DFogSet(3000, 8000, 255, 255, 255);
-    Hu3DModelAttrReset(lbl_1_bss_19A[22], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_19A[22], HU3D_MOTATTR_PAUSE);
     HuPrcSleep(60);
     temp_f31 = 0;
     temp_f30 = 5;

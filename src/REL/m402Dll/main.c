@@ -747,7 +747,7 @@ static void fn_1_2880(UnkFn27A8Struct *arg0, omObjData *arg1)
     arg0->unk08 = 0.0f;
     arg0->unk0C = 0.0f;
     arg0->unk10 = arg0->unk0C;
-    Hu3DModelAttrReset(arg1->model[0], 0x40000002);
+    Hu3DModelAttrReset(arg1->model[0], HU3D_MOTATTR_PAUSE);
     Hu3DModelAttrSet(arg1->model[0], HU3D_MOTATTR_LOOP);
     Hu3DMotionSet(arg1->model[0], arg1->motion[0]);
 }
@@ -782,7 +782,7 @@ static void fn_1_2B30(UnkFn27A8Struct *arg0, omObjData *arg1, omObjData *arg2)
     arg0->unk0C = Hu3DMotionTimeGet(arg2->model[0]);
     Hu3DMotionTimeSet(lbl_1_bss_54[arg0->unk54]->model[0], 0.0f);
     Hu3DMotionSpeedSet(arg1->model[0], 1.0f);
-    Hu3DModelAttrReset(arg1->model[0], 0x40000003);
+    Hu3DModelAttrReset(arg1->model[0], HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
     Hu3DMotionShiftSet(arg1->model[0], arg1->motion[7], 0.0f, 8.0f, HU3D_MOTATTR_NONE);
     fn_1_2970(arg0, arg2, 1);
     HuAudCharVoicePlay(arg0->unk58, 0x123);
@@ -803,7 +803,7 @@ static u8 fn_1_2DBC(UnkFn27A8Struct *arg0, omObjData *arg1)
     arg0->unk1C += arg0->unk20;
     if (18.0f < arg0->unk50) {
         arg0->unk20 = (670.0f - arg0->unk1C) / 20.0f;
-        Hu3DModelAttrReset(arg1->model[0], 0x40000003);
+        Hu3DModelAttrReset(arg1->model[0], HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
         Hu3DMotionSet(arg1->model[0], arg1->motion[2]);
         Hu3DMotionTimeSet(arg1->model[0], 20.0f);
         omVibrate(arg0->unk54, 12, 4, 2);
@@ -1033,7 +1033,7 @@ static void fn_1_43D8(omObjData *arg0)
                 Hu3DMotionShiftSet(arg0->model[0], arg0->motion[2], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
                 Hu3DMotionSet(temp_r30->model[0], temp_r30->motion[0]);
                 Hu3DModelAttrSet(temp_r30->model[0], HU3D_MOTATTR_PAUSE);
-                Hu3DModelAttrReset(temp_r30->model[0], 0x40000001);
+                Hu3DModelAttrReset(temp_r30->model[0], HU3D_MOTATTR_LOOP);
                 Hu3DModelAttrReset(temp_r30->model[0], HU3D_ATTR_DISPOFF);
             }
             break;
@@ -1059,7 +1059,7 @@ static void fn_1_43D8(omObjData *arg0)
                 temp_r31->unk4C++;
                 temp_r31->unk50 = 0;
                 temp_r31->unk04 = 536.0f;
-                Hu3DModelAttrReset(temp_r30->model[0], 0x40000002);
+                Hu3DModelAttrReset(temp_r30->model[0], HU3D_MOTATTR_PAUSE);
                 spE8.x = temp_r31->unk00 * sind(180.0f + temp_r31->unk18);
                 spE8.y = temp_r31->unk04;
                 spE8.z = temp_r31->unk00 * cosd(180.0f + temp_r31->unk18);
@@ -1146,9 +1146,9 @@ static void fn_1_43D8(omObjData *arg0)
             if (temp_r31->unk54 == lbl_1_bss_26) {
                 temp_r31->unk4C = 2012;
                 temp_r31->unk20 = 10.5f;
-                Hu3DModelAttrReset(arg0->model[0], 0x40000003);
+                Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
                 Hu3DMotionShiftSet(arg0->model[0], arg0->motion[8], 0.0f, 20.0f, HU3D_MOTATTR_NONE);
-                Hu3DModelAttrReset(temp_r30->model[0], 0x40000003);
+                Hu3DModelAttrReset(temp_r30->model[0], HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
                 Hu3DMotionShiftSet(temp_r30->model[0], temp_r30->motion[2], 20.0f, 20.0f, HU3D_MOTATTR_NONE);
                 HuAudFXPlay(0x513);
                 fn_1_4190(temp_r31->unk18);
@@ -1391,7 +1391,7 @@ static void fn_1_6E64(omObjData *arg0)
     omSetTra(arg0, temp_r30->unk00, temp_r30->unk04, temp_r30->unk08);
     omSetRot(arg0, 0.0f, temp_r30->unk0C, 0.0f);
     Hu3DModelShadowSet(arg0->model[0]);
-    Hu3DModelAttrReset(arg0->model[0], 0x40000002);
+    Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_PAUSE);
     Hu3DModelAttrReset(arg0->model[0], HU3D_ATTR_DISPOFF);
     arg0->func = fn_1_6AB4;
 }
@@ -1519,7 +1519,7 @@ static void fn_1_7950(omObjData *arg0)
         omSetTra(arg0, temp_r30->unk00.x, temp_r30->unk00.y, temp_r30->unk00.z);
         omSetRot(arg0, temp_r30->unk0C, temp_r30->unk10, temp_r30->unk14);
         omSetSca(arg0, temp_r30->unk18, temp_r30->unk1C, temp_r30->unk20);
-        Hu3DModelAttrReset(arg0->model[0], 0x40000003);
+        Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE);
         Hu3DModelAttrReset(arg0->model[0], HU3D_ATTR_DISPOFF);
         arg0->func = fn_1_70E4;
     }
@@ -1597,7 +1597,7 @@ static void fn_1_7E84(omObjData *arg0)
     arg0->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M402, 36));
     Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(arg0->model[0], HU3D_MOTATTR_LOOP);
-    Hu3DModelAttrReset(arg0->model[0], 0x40000002);
+    Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_PAUSE);
     Hu3DModelLayerSet(arg0->model[0], 1);
     temp_f31 = 135.0f + 90.0f * arg0->work[0];
     omSetTra(arg0, 155.5 * sind(temp_f31), 0.0f, 155.5 * cosd(temp_f31));
@@ -1725,7 +1725,7 @@ static void fn_1_8218(omObjData *arg0)
                 lbl_1_bss_2C += 1.0f;
                 if (lbl_1_bss_26 >= 0 && 110.0f == lbl_1_bss_2C) {
                     Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF);
-                    Hu3DModelAttrReset(arg0->model[2], 0x40000002);
+                    Hu3DModelAttrReset(arg0->model[2], HU3D_MOTATTR_PAUSE);
                     Hu3DModelAttrReset(arg0->model[2], HU3D_ATTR_DISPOFF);
                     Hu3DMotionTimeSet(arg0->model[2], 0.0f);
                     Hu3DMotionSpeedSet(arg0->model[2], 3.0f);
@@ -1745,7 +1745,7 @@ static void fn_1_8218(omObjData *arg0)
     lbl_1_bss_30 -= 1.0f;
     if (0.0f == lbl_1_bss_30) {
         Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF);
-        Hu3DModelAttrReset(arg0->model[2], 0x40000002);
+        Hu3DModelAttrReset(arg0->model[2], HU3D_MOTATTR_PAUSE);
         Hu3DModelAttrReset(arg0->model[2], HU3D_ATTR_DISPOFF);
         Hu3DMotionTimeSet(arg0->model[2], 0.0f);
         Hu3DMotionSpeedSet(arg0->model[2], 3.0f);

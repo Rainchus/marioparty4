@@ -480,7 +480,7 @@ void fn_1_19B0(void)
         temp_f31 = 0.1f * ((((rand8() << 8) | rand8()) % 11) + 25);
         Hu3DModelScaleSet(lbl_1_bss_10[var_r31], temp_f31, temp_f31, temp_f31);
         Hu3DModelAttrReset(lbl_1_bss_10[var_r31], HU3D_ATTR_DISPOFF);
-        Hu3DModelAttrReset(lbl_1_bss_10[var_r31], 0x40000002);
+        Hu3DModelAttrReset(lbl_1_bss_10[var_r31], HU3D_MOTATTR_PAUSE);
     }
 }
 
@@ -613,7 +613,7 @@ void fn_1_2470(omObjData *arg0)
     arg0->model[7] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M440, 0x07));
     temp_r26 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M440, 0x01));
     Hu3DModelAttrSet(arg0->model[0], HU3D_MOTATTR_LOOP);
-    Hu3DModelAttrSet(arg0->model[2], 0x20000);
+    Hu3DModelAttrSet(arg0->model[2], HU3D_ATTR_HILITE);
     Hu3DModelAttrSet(arg0->model[2], HU3D_MOTATTR_PAUSE);
     Hu3DModelAttrSet(temp_r26, HU3D_ATTR_DISPOFF);
 
@@ -783,7 +783,7 @@ void fn_1_2D28(omObjData *object)
             temp_r31->rot.y = (360.0f * var_f31);
             break;
         case 0x3:
-            Hu3DModelAttrReset(object->model[3], 0x40000002);
+            Hu3DModelAttrReset(object->model[3], HU3D_MOTATTR_PAUSE);
             Hu3DMotionSpeedSet(object->model[3], 2.0f);
             if (lbl_1_data_F0[0] == 0) {
                 HuAudFXPlay(0x711);
@@ -864,7 +864,7 @@ void fn_1_3DD8(omObjData *object)
     sp8 = (unkStruct *)object->data;
     switch (lbl_1_data_EC[0]) {
         case 0:
-            Hu3DModelAttrReset(object->model[2], 0x40000002);
+            Hu3DModelAttrReset(object->model[2], HU3D_MOTATTR_PAUSE);
             lbl_1_data_EC[0]++;
             return;
         case 1:
@@ -904,7 +904,7 @@ void fn_1_3DD8(omObjData *object)
                 var_f31 = 0.1f * ((((rand8() << 8) | rand8()) % 11) + 0x19);
                 Hu3DModelScaleSet(lbl_1_bss_10[var_r29], var_f31, var_f31, var_f31);
                 Hu3DModelAttrReset(lbl_1_bss_10[var_r29], HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrReset(lbl_1_bss_10[var_r29], 0x40000002);
+                Hu3DModelAttrReset(lbl_1_bss_10[var_r29], HU3D_MOTATTR_PAUSE);
             }
             fn_1_45BC(object);
             fn_1_4EEC(7, 5);

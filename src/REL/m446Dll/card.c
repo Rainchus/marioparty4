@@ -302,7 +302,7 @@ unkStruct4 *m446CardCreate(s32 arg0)
     Hu3DModelLayerSet(temp_r31->unkA[0], 0);
     temp_r31->unkA[1] = Hu3DModelCreateFile(lbl_1_rodata_6C[arg0]);
     Hu3DModelAmbSet(temp_r31->unkA[1], 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(temp_r31->unkA[1], 0x40000001U);
+    Hu3DModelAttrSet(temp_r31->unkA[1], HU3D_MOTATTR_LOOP);
     Hu3DModelLayerSet(temp_r31->unkA[0], 0);
     fn_1_2A58(temp_r31);
     fn_1_2EC0(temp_r31, 1);

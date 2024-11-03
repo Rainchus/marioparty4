@@ -626,10 +626,10 @@ void fn_1_5850(void)
     Hu3DMotionSet(lbl_1_bss_19A[index + 4], lbl_1_bss_16A[6]);
     Hu3DMotionSpeedSet(lbl_1_bss_19A[index + 4], 2.0f);
     if (param) {
-        Hu3DModelAttrReset(lbl_1_bss_19A[index + 4], 0x40000004);
+        Hu3DModelAttrReset(lbl_1_bss_19A[index + 4], HU3D_MOTATTR_REV);
     }
     else {
-        Hu3DModelAttrSet(lbl_1_bss_19A[index + 4], 0x40000004);
+        Hu3DModelAttrSet(lbl_1_bss_19A[index + 4], HU3D_MOTATTR_REV);
         Hu3DMotionTimeSet(lbl_1_bss_19A[index + 4], Hu3DMotionMaxTimeGet(lbl_1_bss_19A[6]));
     }
     for (i = 0; i < 10; i++) {

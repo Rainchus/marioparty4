@@ -2540,7 +2540,7 @@ s32 fn_1_6888(Vec *arg0)
     var_r31->unk_14 = arg0->z;
     Hu3DMotionTimeSet(var_r31->unk_00, 0.0f);
     Hu3DMotionSpeedSet(var_r31->unk_00, 0.5f);
-    Hu3DModelAttrSet(var_r31->unk_00, 0);
+    Hu3DModelAttrSet(var_r31->unk_00, HU3D_MOTATTR_NONE);
     Hu3DModelPosSet(var_r31->unk_00, var_r31->unk_0C, var_r31->unk_10, var_r31->unk_14);
     Hu3DModelScaleSet(var_r31->unk_00, 1.0f, 1.0f, 1.0f);
     Hu3DModelAttrReset(var_r31->unk_00, HU3D_ATTR_DISPOFF);

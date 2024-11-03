@@ -257,7 +257,7 @@ unkStruct8 *m446PlayerCreate(s32 arg0, unkStruct6 *arg1)
     Hu3DModelShadowSet(var_r31->unk3C[0]);
     Hu3DModelShadowSet(var_r31->unk3C[1]);
     Hu3DModelPosSet(var_r31->unk3C[1], 0.0f, 100.0f, 0.0f);
-    Hu3DModelAttrReset(var_r31->unk3C[1], 0x40000001);
+    Hu3DModelAttrReset(var_r31->unk3C[1], HU3D_MOTATTR_LOOP);
     Hu3DModelAttrSet(var_r31->unk3C[1], HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(var_r31->unk3C[1], 2000.0f, 2000.0f, 2000.0f);
     fn_1_637C(var_r31, 0);
@@ -762,7 +762,7 @@ void fn_1_6074(unkStruct8 *arg0)
             break;
         case 4:
             if (arg0->unk14 == 1) {
-                Hu3DModelAttrReset(arg0->unk3C[1], 0x40000001);
+                Hu3DModelAttrReset(arg0->unk3C[1], HU3D_MOTATTR_LOOP);
             }
             if (arg0->unk14++ < 0x1E)
                 break;

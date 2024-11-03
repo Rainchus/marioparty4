@@ -1360,8 +1360,8 @@ void fn_1_7148(omObjData *arg0)
         case 1001:
             lbl_1_bss_84++;
             if (lbl_1_bss_84 == 1) {
-                Hu3DModelAttrReset(lbl_1_bss_88->model[1], 0x40000002);
-                Hu3DModelAttrReset(lbl_1_bss_88->model[2], 0x40000002);
+                Hu3DModelAttrReset(lbl_1_bss_88->model[1], HU3D_MOTATTR_PAUSE);
+                Hu3DModelAttrReset(lbl_1_bss_88->model[2], HU3D_MOTATTR_PAUSE);
             }
             if (lbl_1_bss_84 > 0 && lbl_1_bss_84 <= 40 && lbl_1_bss_84 % 10 == 0 && lbl_1_bss_9C[12].unk00 < 3) {
                 lbl_1_bss_9C[12].unk04[lbl_1_bss_9C[12].unk00] = 0.0f;

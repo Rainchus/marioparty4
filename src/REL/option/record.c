@@ -342,7 +342,7 @@ static void StartSystemMotion(omObjData *object, s32 type)
             Hu3DMotionTimeSet(model, 6.0f);
             break;
     }
-    Hu3DModelAttrReset(object->model[0], 0x40000002);
+    Hu3DModelAttrReset(object->model[0], HU3D_MOTATTR_PAUSE);
 }
 
 static omObjData *CreateHand(void)

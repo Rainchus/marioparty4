@@ -382,7 +382,7 @@ void fn_1_3364(omObjData *arg0)
     temp_r31 = arg0->data;
     if (temp_r31->unk_2C == 0) {
         Hu3DMotionSet(arg0->model[0], arg0->motion[4]);
-        Hu3DModelAttrReset(arg0->model[0], 0x40000001);
+        Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_LOOP);
         switch (temp_r31->unk_28) {
             case 0:
                 fn_1_4544(0, 0, temp_r31->unk_08.x, 0.0f, temp_r31->unk_08.z);
@@ -421,7 +421,7 @@ void fn_1_34A4(omObjData *arg0)
             Hu3DModelAttrReset(arg0->model[0], HU3D_ATTR_DISPOFF);
         }
         Hu3DMotionSet(arg0->model[0], arg0->motion[3]);
-        Hu3DModelAttrReset(arg0->model[0], 0x40000001);
+        Hu3DModelAttrReset(arg0->model[0], HU3D_MOTATTR_LOOP);
         switch (temp_r30->unk_28) { /* irregular */
             case 0:
                 fn_1_4544(0, 0, temp_r30->unk_08.x, 0.0f, temp_r30->unk_08.z);
@@ -441,7 +441,7 @@ void fn_1_34A4(omObjData *arg0)
 
     if ((temp_r30->unk_2C == 0xA) && (temp_r30->unk_28 == 1)) {
         Hu3DMotionSet(arg0->model[1], arg0->motion[1]);
-        Hu3DModelAttrReset(arg0->model[1], 0x40000001);
+        Hu3DModelAttrReset(arg0->model[1], HU3D_MOTATTR_LOOP);
     }
 
     temp_r30->unk_2C++;
@@ -468,7 +468,7 @@ void fn_1_36D0(omObjData *arg0)
     Hu3DMotionSet(arg0->model[1], arg0->motion[0]);
     Hu3DModelAttrSet(arg0->model[1], HU3D_MOTATTR_LOOP);
     Hu3DModelAttrReset(arg0->model[2], HU3D_ATTR_DISPOFF);
-    Hu3DModelAttrReset(arg0->model[2], 0x40000002);
+    Hu3DModelAttrReset(arg0->model[2], HU3D_MOTATTR_PAUSE);
     Hu3DModelAttrSet(arg0->model[2], HU3D_MOTATTR_LOOP);
     fn_1_290C(arg0, 0);
 }

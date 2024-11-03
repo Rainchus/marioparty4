@@ -1535,7 +1535,7 @@ static omObjData *CreateNoteObj(s32 type)
     note->model[0] = Hu3DModelCreateFile(noteMdlTbl[type]);
     Hu3DModelAttrSet(note->model[0], HU3D_MOTATTR_LOOP);
     Hu3DModelLayerSet(note->model[0], 2);
-    Hu3DModelAttrReset(note->model[0], 2);
+    Hu3DModelAttrReset(note->model[0], HU3D_ATTR_ZWRITE_OFF);
     return note;
 }
 

@@ -235,8 +235,8 @@ static void StartSystemMotion(omObjData *system, s32 rumbleF, BOOL slowF)
 {
     s16 model = system->model[0];
 
-    Hu3DModelAttrReset(system->model[0], 0x40000002);
-    Hu3DModelAttrReset(system->model[0], 0x40000001);
+    Hu3DModelAttrReset(system->model[0], HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrReset(system->model[0], HU3D_MOTATTR_LOOP);
     if (rumbleF) {
         Hu3DMotionStartEndSet(model, 60.0f, 120.0f);
         if (slowF) {
@@ -279,12 +279,12 @@ static void KillPad(omObjData *pad)
 static void ShakePad(omObjData *pad, BOOL on)
 {
     if (on) {
-        Hu3DModelAttrReset(pad->model[0], 0x40000002);
+        Hu3DModelAttrReset(pad->model[0], HU3D_MOTATTR_PAUSE);
         Hu3DModelAttrSet(pad->model[0], HU3D_MOTATTR_LOOP);
     }
     else {
         Hu3DModelAttrSet(pad->model[0], HU3D_MOTATTR_PAUSE);
-        Hu3DModelAttrReset(pad->model[0], 0x40000001);
+        Hu3DModelAttrReset(pad->model[0], HU3D_MOTATTR_LOOP);
     }
 }
 
@@ -316,8 +316,8 @@ void OptionRumbleMotionShowStart(omObjData *object)
 
     Hu3DMotionStartEndSet(model, 0.0f, 40.0f);
     Hu3DMotionTimeSet(model, 0.0f);
-    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000002);
-    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000001);
+    Hu3DModelAttrReset(work->padFilter->model[0], HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrReset(work->padFilter->model[0], HU3D_MOTATTR_LOOP);
     Hu3DModelLayerSet(work->padFilter->model[0], 2);
     HuAudFXPlay(0x83D);
 }
@@ -329,8 +329,8 @@ void OptionRumbleMotionHideStart(omObjData *object)
 
     Hu3DMotionStartEndSet(model, 40.0f, 80.0f);
     Hu3DMotionTimeSet(model, 40.0f);
-    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000002);
-    Hu3DModelAttrReset(work->padFilter->model[0], 0x40000001);
+    Hu3DModelAttrReset(work->padFilter->model[0], HU3D_MOTATTR_PAUSE);
+    Hu3DModelAttrReset(work->padFilter->model[0], HU3D_MOTATTR_LOOP);
     HuAudFXPlay(0x83E);
 }
 

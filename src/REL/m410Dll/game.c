@@ -1064,7 +1064,7 @@ void fn_1_7138(omObjData *object)
         }
         var_r31->unk_1C.x = var_f31;
         if (var_r31->unk_00_field4) {
-            Hu3DModelAttrReset(object->model[var_r29], 0x40000002);
+            Hu3DModelAttrReset(object->model[var_r29], HU3D_MOTATTR_PAUSE);
             Hu3DMotionSpeedSet(object->model[var_r29], 4.0f);
             Hu3DMotionSet(object->model[var_r29], 0);
             Hu3DMotionClusterNoSet(object->model[var_r29], Hu3DData[object->model[var_r29]].unk_10[0], 0);

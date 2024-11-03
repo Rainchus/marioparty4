@@ -300,7 +300,7 @@ void fn_1_DF0(void)
         }
         if (time == 20) {
             HuAudFXPlay(2173);
-            Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000006);
+            Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
         }
         HuPrcVSleep();
     }
@@ -395,7 +395,7 @@ void fn_1_DF0(void)
     modelP = &Hu3DData[lbl_1_bss_2C80[9]];
     posModel = modelP->pos;
     VECSubtract(&pos3D, &posModel, &pos2D);
-    Hu3DModelAttrSet(lbl_1_bss_2C80[9], 0x40000004);
+    Hu3DModelAttrSet(lbl_1_bss_2C80[9], HU3D_MOTATTR_REV);
     espAttrSet(lbl_1_bss_2C2C[0], HUSPR_ATTR_DISPOFF);
     HuAudFXPlay(2174);
     for (time = 0; time <= 20; time++) {
@@ -442,8 +442,8 @@ s32 fn_1_1B0C(void)
         Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_ATTR_DISPOFF);
     }
     else {
-        Hu3DModelAttrSet(lbl_1_bss_2C80[9], 0x40000004);
-        Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000002);
+        Hu3DModelAttrSet(lbl_1_bss_2C80[9], HU3D_MOTATTR_REV);
+        Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE);
         espAttrSet(lbl_1_bss_2C2C[0], HUSPR_ATTR_DISPOFF);
         fn_1_25E74(lbl_1_bss_2CC);
         fn_1_25584(lbl_1_bss_2CE);
@@ -495,7 +495,7 @@ exit:
     modelP = &Hu3DData[lbl_1_bss_2C80[9]];
     posModel = modelP->pos;
     VECSubtract(&pos3D, &posModel, &pos2D);
-    Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000006);
+    Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
     for (i = 0; i <= 20; i++) {
         if (i == 10) {
             HuAudFXPlay(2173);
@@ -531,8 +531,8 @@ s32 fn_1_21C4(void)
         Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_ATTR_DISPOFF);
     }
     else {
-        Hu3DModelAttrSet(lbl_1_bss_2C80[9], 0x40000004);
-        Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000002);
+        Hu3DModelAttrSet(lbl_1_bss_2C80[9], HU3D_MOTATTR_REV);
+        Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE);
         espAttrSet(lbl_1_bss_2C2C[0], HUSPR_ATTR_DISPOFF);
         fn_1_25E74(lbl_1_bss_2CC);
         fn_1_25584(lbl_1_bss_2CE);
@@ -585,7 +585,7 @@ exit:
     modelP = &Hu3DData[lbl_1_bss_2C80[9]];
     posModel = modelP->pos;
     VECSubtract(&pos3D, &posModel, &pos2D);
-    Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000006);
+    Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
     for (i = 0; i <= 20; i++) {
         if (i == 10) {
             HuAudFXPlay(2173);
@@ -625,8 +625,8 @@ s32 fn_1_2940(void)
         Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_ATTR_DISPOFF);
     }
     else {
-        Hu3DModelAttrSet(lbl_1_bss_2C80[9], 0x40000004);
-        Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000002);
+        Hu3DModelAttrSet(lbl_1_bss_2C80[9], HU3D_MOTATTR_REV);
+        Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE);
         espAttrSet(lbl_1_bss_2C2C[0], HUSPR_ATTR_DISPOFF);
         fn_1_25E74(lbl_1_bss_2CC);
         fn_1_25584(lbl_1_bss_2CE);
@@ -683,7 +683,7 @@ exit:
     modelP = &Hu3DData[lbl_1_bss_2C80[9]];
     posModel = modelP->pos;
     VECSubtract(&pos3D, &posModel, &pos2D);
-    Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000006);
+    Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
     for (i = 0; i <= 20; i++) {
         if (i == 10) {
             HuAudFXPlay(2173);
@@ -719,8 +719,8 @@ s32 fn_1_3150(void)
         Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_ATTR_DISPOFF);
     }
     else {
-        Hu3DModelAttrSet(lbl_1_bss_2C80[9], 0x40000004);
-        Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000002);
+        Hu3DModelAttrSet(lbl_1_bss_2C80[9], HU3D_MOTATTR_REV);
+        Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE);
         espAttrSet(lbl_1_bss_2C2C[0], HUSPR_ATTR_DISPOFF);
         fn_1_25E74(lbl_1_bss_2CC);
         fn_1_25584(lbl_1_bss_2CE);
@@ -774,7 +774,7 @@ exit:
     modelP = &Hu3DData[lbl_1_bss_2C80[9]];
     posModel = modelP->pos;
     VECSubtract(&pos3D, &posModel, &pos2D);
-    Hu3DModelAttrReset(lbl_1_bss_2C80[9], 0x40000006);
+    Hu3DModelAttrReset(lbl_1_bss_2C80[9], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
     for (i = 0; i <= 20; i++) {
         if (i == 10) {
             HuAudFXPlay(2173);

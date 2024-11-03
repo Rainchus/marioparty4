@@ -447,7 +447,7 @@ void fn_1_8BC(void)
         temp_r30->unk8 = var_r29 = Hu3DModelLink(var_r29);
         Hu3DModelLayerSet(var_r29, 0);
         Hu3DModelAttrSet(var_r29, HU3D_MOTATTR_LOOP);
-        Hu3DModelAttrSet(var_r29, 0x800001);
+        Hu3DModelAttrSet(var_r29, HU3D_ATTR_DISPOFF | HU3D_ATTR_CULL_FRONT);
         var_r27 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M412, 0x1D), MEMORY_DEFAULT_NUM, HEAP_DATA);
         temp_r30->unkA = var_r29 = Hu3DModelCreate(var_r27);
         Hu3DModelLayerSet(var_r29, 3);
@@ -783,9 +783,9 @@ loop_10:
         var_r29 = 0x3C;
     }
     if (var_r29 == lbl_1_data_348[temp_r31->unk28]) {
-        Hu3DModelAttrReset(temp_r31->unk0, 0x40000002);
-        Hu3DModelAttrReset(temp_r31->unk2, 0x40000002);
-        Hu3DModelAttrReset(temp_r31->unk4, 0x40000002);
+        Hu3DModelAttrReset(temp_r31->unk0, HU3D_MOTATTR_PAUSE);
+        Hu3DModelAttrReset(temp_r31->unk2, HU3D_MOTATTR_PAUSE);
+        Hu3DModelAttrReset(temp_r31->unk4, HU3D_MOTATTR_PAUSE);
     }
     if (var_r25 == Hu3DMotionTimeGet(temp_r31->unk0)) {
         temp_r31->unk20 = 1;
@@ -823,8 +823,8 @@ loop_10:
     temp_r27 = &lbl_1_bss_4D4[var_r26];
     Hu3DMotionSet(temp_r31->unk0, temp_r31->unkC[1]);
     Hu3DMotionSet(temp_r31->unk2, temp_r31->unkC[1]);
-    Hu3DModelAttrReset(temp_r31->unk0, 0x40000001);
-    Hu3DModelAttrReset(temp_r31->unk2, 0x40000001);
+    Hu3DModelAttrReset(temp_r31->unk0, HU3D_MOTATTR_LOOP);
+    Hu3DModelAttrReset(temp_r31->unk2, HU3D_MOTATTR_LOOP);
     var_r29 = Hu3DMotionMaxTimeGet(temp_r31->unk0);
     var_f24 = fn_1_1D08(atan2d(temp_r27->unk40.x - temp_r31->unk2C.x, temp_r27->unk40.z - temp_r31->unk2C.z));
     temp_f18 = (temp_r27->unk40.x + (50.0 * sind(var_f24)));
@@ -967,9 +967,9 @@ loop_1:
         HuPrcVSleep();
         goto loop_1;
     }
-    Hu3DModelAttrReset(temp_r31->unk0, 0x40000002);
+    Hu3DModelAttrReset(temp_r31->unk0, HU3D_MOTATTR_PAUSE);
     Hu3DModelClusterAttrReset(temp_r31->unk0, 0, -0x3FFFFFFE);
-    Hu3DModelAttrReset(temp_r31->unk2, 0x40000002);
+    Hu3DModelAttrReset(temp_r31->unk2, HU3D_MOTATTR_PAUSE);
     Hu3DModelClusterAttrReset(temp_r31->unk2, 0, -0x3FFFFFFE);
     Hu3DModelAttrReset(temp_r31->unk6, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrReset(temp_r31->unk8, HU3D_ATTR_DISPOFF);
@@ -1023,9 +1023,9 @@ loop_1:
     }
     temp_r27 = &lbl_1_bss_4D4[var_r26];
     Hu3DMotionSet(temp_r31->unk0, temp_r31->unkC[3]);
-    Hu3DModelAttrReset(temp_r31->unk0, 0x40000001);
+    Hu3DModelAttrReset(temp_r31->unk0, HU3D_MOTATTR_LOOP);
     Hu3DMotionSet(temp_r31->unk2, temp_r31->unk16[3]);
-    Hu3DModelAttrReset(temp_r31->unk2, 0x40000001);
+    Hu3DModelAttrReset(temp_r31->unk2, HU3D_MOTATTR_LOOP);
     var_r29 = Hu3DMotionMaxTimeGet(temp_r31->unk0);
     var_f29 = fn_1_1D08(atan2d(temp_r27->unk40.x - temp_r31->unk2C.x, temp_r27->unk40.z - temp_r31->unk2C.z));
     sp6C = (temp_r27->unk40.x + (50.0 * sind(var_f29)));
@@ -1741,7 +1741,7 @@ loop_6:
             Hu3DModelPosSet(temp_r31->unkA, temp_r31->unk40.x + (100.0 * sind(lbl_1_bss_778)), 200.0f + temp_r31->unk40.y,
                 temp_r31->unk40.z + (100.0 * cosd(lbl_1_bss_778)));
             Hu3DModelAttrReset(temp_r31->unkA, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrReset(temp_r31->unkA, 0x40000002);
+            Hu3DModelAttrReset(temp_r31->unkA, HU3D_MOTATTR_PAUSE);
             HuPrcSleep(10);
             Hu3DModelAttrSet(temp_r31->unk0, HU3D_MOTATTR_PAUSE);
             Hu3DModelAttrSet(temp_r31->unk2, HU3D_MOTATTR_PAUSE);
@@ -2037,12 +2037,12 @@ void fn_1_ADC8(void)
     var_f31 = Hu3DMotionMaxTimeGet(lbl_1_bss_79E);
     for (; var_f31; var_r31++, var_f31--) {
         if (var_r31 == 0x33) {
-            Hu3DModelAttrReset(lbl_1_bss_798[0], 0x40000002);
+            Hu3DModelAttrReset(lbl_1_bss_798[0], HU3D_MOTATTR_PAUSE);
             Hu3DModelAttrReset(lbl_1_bss_798[0], HU3D_ATTR_DISPOFF);
             Hu3DModelPosSet(lbl_1_bss_798[0], 1465.0f, 770.0f, -2400.0f);
         }
         if (var_r31 == 0x47) {
-            Hu3DModelAttrReset(lbl_1_bss_798[1], 0x40000002);
+            Hu3DModelAttrReset(lbl_1_bss_798[1], HU3D_MOTATTR_PAUSE);
             Hu3DModelAttrReset(lbl_1_bss_798[1], HU3D_ATTR_DISPOFF);
             Hu3DModelPosSet(lbl_1_bss_798[1], 1531.0f, 773.0f, -2380.0f);
         }

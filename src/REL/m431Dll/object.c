@@ -2,7 +2,6 @@
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 
-
 #include "game/audio.h"
 #include "game/gamework_data.h"
 #include "game/minigame_seq.h"
@@ -12,10 +11,8 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 
-
 #include "REL/m431Dll.h"
 #include "ext_math.h"
-
 
 typedef struct bss_struct_62C {
     u8 unk0;
@@ -1215,7 +1212,7 @@ void fn_1_B18C(omObjData *object)
         }
     }
     else {
-        Hu3DModelAttrReset(object->model[0], 0x40000007);
+        Hu3DModelAttrReset(object->model[0], HU3D_MOTATTR_LOOP | HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV);
         switch (temp_r31->unk0 & 0xC) {
             case 0:
                 temp_r28 = HU3D_MOTATTR_PAUSE;

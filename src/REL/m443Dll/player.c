@@ -804,7 +804,7 @@ void fn_1_7340(omObjData *object)
     if (temp_r31->unk78 >= 40000.0f) {
         if (temp_r31->unk7C >= 30.0f) {
             Hu3DMotionSpeedSet(object->model[2], 1.0f);
-            Hu3DModelAttrReset(object->model[2], 1U);
+            Hu3DModelAttrReset(object->model[2], HU3D_ATTR_DISPOFF);
             if (fn_1_42E4() == 2) {
                 HuAudFXPlay(0x733);
             }
@@ -987,7 +987,7 @@ void fn_1_8508(omObjData *object)
         temp_r31->unk14[var_r30] = -1;
         if (lbl_1_data_410[var_r30][0] != 0) {
             temp_r31->unk14[var_r30] = espEntry(lbl_1_data_410[var_r30][0], lbl_1_data_410[var_r30][1], 0);
-            espAttrSet(temp_r31->unk14[var_r30], 8);
+            espAttrSet(temp_r31->unk14[var_r30], HUSPR_ATTR_LINEAR);
             espDispOff(temp_r31->unk14[var_r30]);
         }
     }

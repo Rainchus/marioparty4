@@ -173,7 +173,7 @@ s16 fn_1_8DD0(s16 arg0)
     float sp8 = 0;
     Hu3DMotionTimeSet(lbl_1_bss_199C2[9], lbl_1_data_258[arg0]);
     Hu3DModelAttrSet(lbl_1_bss_199C2[9], HU3D_MOTATTR_PAUSE);
-    Hu3DModelAttrReset(lbl_1_bss_199C2[arg0 + 65], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_199C2[arg0 + 65], HU3D_MOTATTR_PAUSE);
     Hu3DMotionSpeedSet(lbl_1_bss_199C2[arg0 + 65], 0.1 * (-lbl_1_bss_1888.y - 14.0f) + 1.0);
     temp_r28 = 0;
     spC.z = spC.y = spC.x = 0;
@@ -223,7 +223,7 @@ s16 fn_1_8DD0(s16 arg0)
             lbl_1_bss_18F0[lbl_1_bss_1884].y = -500;
             lbl_1_bss_18F0[lbl_1_bss_1884].z = 0;
             lbl_1_bss_1884++;
-            Hu3DModelAttrReset(lbl_1_bss_199C2[arg0 + 55], 0x40000002);
+            Hu3DModelAttrReset(lbl_1_bss_199C2[arg0 + 55], HU3D_MOTATTR_PAUSE);
             Hu3DMotionTimeSet(lbl_1_bss_199C2[arg0 + 55], 0);
             temp_r28 = 1;
         }

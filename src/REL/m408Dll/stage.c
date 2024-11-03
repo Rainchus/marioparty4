@@ -348,7 +348,7 @@ void fn_1_D004(omObjData *object)
                 temp_r28 = ((ParticleData *)Hu3DData[temp_r27].unk_120)->unk_1C;
                 temp_r28[2] -= 0.025f;
                 if (temp_r28[2] <= 0) {
-                    Hu3DModelAttrReset(temp_r27, 0x20);
+                    Hu3DModelAttrReset(temp_r27, HU3D_ATTR_PARTICLE_KILL);
                     Hu3DModelKill(temp_r27);
                     object->model[6] = 0;
                 }
@@ -500,7 +500,7 @@ void fn_1_DA6C(ModelData *model, ParticleData *particle, Mtx matrix)
     DCFlushRange(particle->unk_48, particle->unk_30 * sizeof(HsfanimStruct01));
     if (particle->unk_00 >= particle->unk_30 && temp_r29->unk_02 == 2) {
         temp_r29->unk_02 = 0;
-        Hu3DModelAttrReset(temp_r29->unk_00, 0x20);
+        Hu3DModelAttrReset(temp_r29->unk_00, HU3D_ATTR_PARTICLE_KILL);
         Hu3DModelKill(temp_r29->unk_00);
     }
 }
@@ -540,7 +540,7 @@ void fn_1_DFD0(ModelData *model, ParticleData *particle, Mtx matrix)
 
         case 1:
             if (--particle->unk_00 == 0) {
-                Hu3DModelAttrReset(temp_r30->unk_00, 0x20);
+                Hu3DModelAttrReset(temp_r30->unk_00, HU3D_ATTR_PARTICLE_KILL);
                 Hu3DModelKill(temp_r30->unk_00);
                 return;
             }
@@ -747,7 +747,7 @@ void fn_1_F06C(ModelData *model, ParticleData *particle, Mtx matrix)
                 temp_r31->unk02--;
             }
             if (particle->unk_30 == temp_r27) {
-                Hu3DModelAttrReset(temp_r29->unk_00, 0x20);
+                Hu3DModelAttrReset(temp_r29->unk_00, HU3D_ATTR_PARTICLE_KILL);
                 Hu3DModelKill(temp_r29->unk_00);
                 return;
             }
