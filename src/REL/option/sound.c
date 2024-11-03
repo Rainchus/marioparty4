@@ -624,7 +624,7 @@ static void ExecOptionSel(omObjData *object)
             OptionWinAnimIn(work->window[0]);
             OptionWinMesSet(work->window[0], choiceMess[work->cursorPos]);
             if (!work->cameraDoneF) {
-                Hu3DModelAttrReset(work->object[7]->model[0], 1);
+                Hu3DModelAttrReset(work->object[7]->model[0], HU3D_ATTR_DISPOFF);
                 work->cameraDoneF = TRUE;
             }
             omSetTra(work->object[7], -34.0f + 40.0f * work->cursorPos, 120.0f, -500.0f);
@@ -661,7 +661,7 @@ static void ExecOptionSel(omObjData *object)
             if (!work->optionSelected) {
                 OptionRumbleMotionHideStart(optionRumble);
             }
-            Hu3DModelAttrSet(work->object[7]->model[0], 1);
+            Hu3DModelAttrSet(work->object[7]->model[0], HU3D_ATTR_DISPOFF);
             object->unk10 = 4;
             /* fallthrough */
         case 4:
@@ -715,7 +715,7 @@ static void ExecOutputMode(omObjData *object)
             OptionWinAnimIn(work->window[0]);
             OptionWinMesSet(work->window[0], soundModeNameTbl[work->soundMode]);
             if (!work->cameraDoneF) {
-                Hu3DModelAttrReset(work->object[8]->model[0], 1);
+                Hu3DModelAttrReset(work->object[8]->model[0], HU3D_ATTR_DISPOFF);
                 work->cameraDoneF = TRUE;
             }
             pos.x = -38.0f;
@@ -768,7 +768,7 @@ static void ExecOutputMode(omObjData *object)
             KillNoteSpawner(object);
             OptionWinAnimOut(work->window[1]);
             OptionWinAnimOut(work->window[0]);
-            Hu3DModelAttrSet(work->object[8]->model[0], 1);
+            Hu3DModelAttrSet(work->object[8]->model[0], HU3D_ATTR_DISPOFF);
             object->unk10 = 5;
             /* fallthrough */
         case 5:
@@ -1204,10 +1204,10 @@ static omObjData *CreateHand(void)
     object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 13));
     Hu3DModelLayerSet(object->model[0], 2);
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
     omSetRot(object, -80.0f, 45.0f, 0.0f);
     omSetSca(object, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(object->model[0], 1);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
     return object;
 }
 
@@ -1227,10 +1227,10 @@ static omObjData *CreateOutputModeHand(void)
     object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
     Hu3DModelLayerSet(object->model[0], 2);
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
     omSetRot(object, 0.0f, -90.0f, 0.0f);
     omSetSca(object, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(object->model[0], 1);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
     return object;
 }
 
@@ -1249,7 +1249,7 @@ static omObjData *CreateSystem(void)
 
     system = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     system->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 3));
-    Hu3DModelAttrSet(system->model[0], 0x40000001);
+    Hu3DModelAttrSet(system->model[0], HU3D_MOTATTR_LOOP);
     Hu3DModelLayerSet(system->model[0], 0);
     return system;
 }
@@ -1276,7 +1276,7 @@ static omObjData *CreateLightObj(s32 id, BOOL off)
     else {
         object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 4));
     }
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
     Hu3DModelLayerSet(object->model[0], 0);
     omSetTra(object, lightPosTbl[id].x, lightPosTbl[id].y, lightPosTbl[id].z);
     return object;
@@ -1293,12 +1293,12 @@ static void KillLightObj(omObjData *object)
 
 static void LightDispOff(omObjData *indicator)
 {
-    Hu3DModelAttrReset(indicator->model[0], 1);
+    Hu3DModelAttrReset(indicator->model[0], HU3D_ATTR_DISPOFF);
 }
 
 static void LightDispOn(omObjData *indicator)
 {
-    Hu3DModelAttrSet(indicator->model[0], 1);
+    Hu3DModelAttrSet(indicator->model[0], HU3D_ATTR_DISPOFF);
 }
 
 static s32 spriteDataTbl[] = {
@@ -1392,7 +1392,7 @@ static void OptionSelDisp(omObjData *object)
 
 static void OptionSelHide(omObjData *object)
 {
-	static const s32 sprHideTbl[] = { 12, 0, 1, 2, 3, 4, 5 };
+    static const s32 sprHideTbl[] = { 12, 0, 1, 2, 3, 4, 5 };
     SoundWork *work = object->data;
     s32 i;
 
@@ -1443,11 +1443,9 @@ static void OutputModeDisp(omObjData *object)
     }
 }
 
-
-
 static void OutputModeHide(omObjData *object)
 {
-	static const s32 sprHideTbl[] = { 13, 6, 7, 8, 9 };
+    static const s32 sprHideTbl[] = { 13, 6, 7, 8, 9 };
     SoundWork *work = object->data;
     s32 i;
 
@@ -1474,10 +1472,9 @@ static void MusicPageDisp(omObjData *object, s32 page)
     }
 }
 
-
 static void MusicPageHide(omObjData *object)
 {
-	static const s32 sprHideTbl[] = { 10 };
+    static const s32 sprHideTbl[] = { 10 };
     SoundWork *work = object->data;
     s32 i;
 
@@ -1508,11 +1505,9 @@ static void VoicePageDisp(omObjData *object, s32 character)
     }
 }
 
-
-
 static void VoicePageHide(omObjData *object)
 {
-	static const s32 sprHideTbl[] = { 11, 0 };
+    static const s32 sprHideTbl[] = { 11, 0 };
     SoundWork *work = object->data;
     s32 i;
 
@@ -1538,7 +1533,7 @@ static omObjData *CreateNoteObj(s32 type)
     noteWork->enabled = FALSE;
     noteWork->type = type;
     note->model[0] = Hu3DModelCreateFile(noteMdlTbl[type]);
-    Hu3DModelAttrSet(note->model[0], 0x40000001);
+    Hu3DModelAttrSet(note->model[0], HU3D_MOTATTR_LOOP);
     Hu3DModelLayerSet(note->model[0], 2);
     Hu3DModelAttrReset(note->model[0], 2);
     return note;
@@ -1568,7 +1563,7 @@ static void HandleNote(omObjData *note)
     float y;
     float tplvl;
 
-    Hu3DModelAttrReset(note->model[0], 1);
+    Hu3DModelAttrReset(note->model[0], HU3D_ATTR_DISPOFF);
     time = sind(45.0f * noteWork->pos);
     time = time * time;
     switch (noteWork->side) {
@@ -1595,7 +1590,7 @@ static void HandleNote(omObjData *note)
         return;
     }
     noteWork->enabled = FALSE;
-    Hu3DModelAttrSet(note->model[0], 1);
+    Hu3DModelAttrSet(note->model[0], HU3D_ATTR_DISPOFF);
     note->func = NULL;
     note->unk10 = 0;
 }

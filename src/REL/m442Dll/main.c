@@ -514,7 +514,7 @@ void fn_1_E88(omObjData *object)
         object->motion[var_r29 + var_r28] = CharModelMotionCreate(var_r30->unk_10, var_r30->unk_10 + lbl_1_data_118[var_r28]);
     }
     Hu3DMotionSet(object->model[0], object->motion[0]);
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
     Hu3DMotionOverlaySet(object->model[0], object->motion[7]);
     CharModelVoiceEnableSet(var_r30->unk_10, object->motion[5], 0);
     object->trans.x = lbl_1_data_120[var_r30->unk_02].x;
@@ -522,13 +522,13 @@ void fn_1_E88(omObjData *object)
     object->trans.z = lbl_1_data_120[var_r30->unk_02].z;
     object->model[2] = Hu3DParticleCreate(lbl_1_bss_11F00, 0x32);
     Hu3DParticleHookSet(object->model[2], fn_1_7890);
-    Hu3DModelAttrSet(object->model[2], 1);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF);
     Hu3DModelLayerSet(object->model[2], 1);
     var_r30->unk_5C = -1;
     var_r30->unk_40 = -1;
     object->model[3] = Hu3DHookFuncCreate(fn_1_5EDC);
     Hu3DModelLayerSet(object->model[3], 7);
-    Hu3DModelAttrSet(object->model[3], 1);
+    Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
     var_r27 = &Hu3DData[object->model[3]];
     var_r27->unk_120 = var_r30;
     CharModelDataClose(var_r30->unk_10);
@@ -899,7 +899,7 @@ void fn_1_2254(omObjData *object)
                 else {
                     spC = lbl_1_bss_C9F8[var_r31->unk_48].unk_00;
                 }
-                Hu3DModelAttrSet(object->model[3], 1);
+                Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
                 if ((fn_1_3AE4(object, &spC) == 1)
                     && ((var_r31->unk_48 >= 0
                             && ((lbl_1_bss_C9F8[var_r31->unk_48].unk_10 == object) || (lbl_1_bss_C9F8[var_r31->unk_48].unk_10 == NULL)))
@@ -947,7 +947,7 @@ void fn_1_2254(omObjData *object)
                     var_r26 = Hu3DData[object->model[2]].unk_120;
                     *(s16 *)var_r26 = 0;
                     (void)var_r26;
-                    Hu3DModelAttrReset(object->model[2], 1);
+                    Hu3DModelAttrReset(object->model[2], HU3D_ATTR_DISPOFF);
                     Hu3DModelPosSet(object->model[2], object->trans.x + (140.0 * sind(object->rot.y)), object->trans.y,
                         object->trans.z + (140.0 * cosd(object->rot.y)));
                 }
@@ -995,7 +995,7 @@ void fn_1_2254(omObjData *object)
     }
     if (var_r31->unk_40 >= 0) {
         if (var_r31->unk_0C == 0) {
-            Hu3DModelAttrReset(object->model[3], 1);
+            Hu3DModelAttrReset(object->model[3], HU3D_ATTR_DISPOFF);
         }
         switch (var_r31->unk_40) {
             case 0:
@@ -1020,7 +1020,7 @@ void fn_1_2254(omObjData *object)
         var_r31->unk_42++;
     }
     else {
-        Hu3DModelAttrSet(object->model[3], 1);
+        Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
     }
     Hu3DModelPosSet(object->model[3], object->trans.x, 300.0f + object->trans.y, object->trans.z);
     if ((var_r29 >= 0 && var_r29 != var_r31->unk_30) || var_r28 != var_r31->unk_34) {
@@ -1272,8 +1272,8 @@ void fn_1_3C20(omObjData *object)
 
     var_r30 = object->data;
     Hu3DMotionOverlayReset(object->model[0]);
-    Hu3DModelAttrSet(object->model[1], 1);
-    Hu3DModelAttrSet(object->model[3], 1);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
     var_r30->unk_3C = 10;
     object->func = fn_1_3C94;
 }
@@ -1914,12 +1914,12 @@ void fn_1_6D24(omObjData *object)
     var_r29->unk_18 = 1.0f;
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M442, 0x02));
     Hu3DModelLayerSet(object->model[0], 7);
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
-    Hu3DModelAttrSet(object->model[0], 1);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
     object->model[1] = Hu3DParticleCreate(lbl_1_bss_11EFC, 0x64);
     Hu3DParticleHookSet(object->model[1], fn_1_7EBC);
     Hu3DModelLayerSet(object->model[1], 7);
-    Hu3DModelAttrSet(object->model[1], 1);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
     for (var_r27 = 0, var_r30 = 1; var_r30 < 24; var_r30++) {
         for (var_r28 = 1; var_r28 < 24; var_r28++) {
             if (*(lbl_1_bss_11C6D + (var_r30 * 0x19) + var_r28) == 0) {
@@ -1962,8 +1962,8 @@ void fn_1_72C4(omObjData *object)
     switch (var_r31->unk_02) {
         case 0:
             if (var_r31->unk_00_field0) {
-                Hu3DModelAttrReset(object->model[0], 1);
-                Hu3DModelAttrReset(object->model[1], 1);
+                Hu3DModelAttrReset(object->model[0], HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrReset(object->model[1], HU3D_ATTR_DISPOFF);
                 var_r31->unk_02 = 1;
                 var_r31->unk_18 = 0.0f;
                 var_r31->unk_0C = 60;

@@ -9,10 +9,8 @@
 #include "game/window.h"
 #include "game/wipe.h"
 
-
 #include "REL/modeseldll.h"
 #include "ext_math.h"
-
 
 s16 lbl_1_data_80[] = { 16, 17, 18, 19, 20, 21 };
 
@@ -87,10 +85,10 @@ s32 fn_1_2490(void)
     while (!Hu3DMotionEndCheck(lbl_1_bss_19A[15])) {
         HuPrcVSleep();
     }
-    Hu3DModelAttrSet(lbl_1_bss_19A[15], 1);
+    Hu3DModelAttrSet(lbl_1_bss_19A[15], HU3D_ATTR_DISPOFF);
     for (temp_r31 = 0; temp_r31 < 6; temp_r31++) {
-        Hu3DModelAttrReset(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], 1);
-        Hu3DModelAttrSet(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], 0x40000002);
+        Hu3DModelAttrReset(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], HU3D_MOTATTR_PAUSE);
         Hu3DMotionTimeSet(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], 0);
         Hu3DModelPosSet(lbl_1_bss_19A[lbl_1_data_80[temp_r31]], 0, -50, 0);
     }
@@ -186,10 +184,10 @@ s32 fn_1_2490(void)
     temp_r22 = HuSprAnimRead(HuDataReadNum(lbl_1_data_A4[lbl_1_bss_80], MEMORY_DEFAULT_NUM));
     Hu3DAnimCreate(temp_r23, lbl_1_bss_19A[22], "ys002_a1");
     Hu3DAnimCreate(temp_r22, lbl_1_bss_19A[22], "ys002_a2");
-    Hu3DModelAttrSet(lbl_1_bss_19A[lbl_1_data_80[lbl_1_bss_80]], 1);
+    Hu3DModelAttrSet(lbl_1_bss_19A[lbl_1_data_80[lbl_1_bss_80]], HU3D_ATTR_DISPOFF);
     Hu3DMotionTimeSet(lbl_1_bss_19A[22], 0);
-    Hu3DModelAttrReset(lbl_1_bss_19A[22], 1);
-    Hu3DModelAttrSet(lbl_1_bss_19A[22], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_19A[22], HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(lbl_1_bss_19A[22], HU3D_MOTATTR_PAUSE);
     Hu3DModelPosSet(lbl_1_bss_19A[22], 0, 27, 50);
     Hu3DModelScaleSet(lbl_1_bss_19A[22], 1.0f, 1.063f, 1.0f);
     for (temp_r31 = 1; temp_r31 <= 20; temp_r31++) {
@@ -236,10 +234,10 @@ void fn_1_3668(void)
     sp8.y = 1;
     sp8.z = 0;
     Hu3DShadowPosSet(&sp20, &sp8, &sp14);
-    Hu3DModelAttrReset(lbl_1_bss_19A[15], 1);
-    Hu3DModelAttrSet(lbl_1_bss_19A[15], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_19A[15], HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(lbl_1_bss_19A[15], HU3D_MOTATTR_PAUSE);
     Hu3DMotionTimeSet(lbl_1_bss_19A[15], 0);
-    Hu3DModelAttrReset(lbl_1_bss_19A[14], 1);
-    Hu3DModelAttrSet(lbl_1_bss_19A[14], 0x40000002);
+    Hu3DModelAttrReset(lbl_1_bss_19A[14], HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(lbl_1_bss_19A[14], HU3D_MOTATTR_PAUSE);
     Hu3DMotionTimeSet(lbl_1_bss_19A[14], 0);
 }

@@ -307,15 +307,15 @@ void fn_1_7BC(void)
     Bss348Data *data = &lbl_1_bss_348[0];
     while (1) {
         if (omPauseChk()) {
-            Hu3DModelAttrSet(data->unk0[0], 1);
-            Hu3DModelAttrSet(data->unk0[1], 1);
-            Hu3DModelAttrSet(data->unk0[2], 1);
+            Hu3DModelAttrSet(data->unk0[0], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(data->unk0[1], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(data->unk0[2], HU3D_ATTR_DISPOFF);
             HuSprAttrSet(data->unkA, 0, HUSPR_ATTR_DISPOFF);
         }
         else {
-            Hu3DModelAttrReset(data->unk0[0], 1);
-            Hu3DModelAttrReset(data->unk0[1], 1);
-            Hu3DModelAttrReset(data->unk0[2], 1);
+            Hu3DModelAttrReset(data->unk0[0], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrReset(data->unk0[1], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrReset(data->unk0[2], HU3D_ATTR_DISPOFF);
             HuSprAttrReset(data->unkA, 0, HUSPR_ATTR_DISPOFF);
         }
         HuPrcVSleep();
@@ -399,7 +399,7 @@ void fn_1_B2C(void)
         Hu3DModelCameraSet(temp_r31->unk0[0], 1 << temp_r31->unk38);
         Hu3DModelPosSet(temp_r31->unk0[0], 0, 0, 0);
         Hu3DModelRotSet(temp_r31->unk0[0], 0, 0, 0);
-        Hu3DModelAttrSet(temp_r31->unk0[0], 0x4000);
+        Hu3DModelAttrSet(temp_r31->unk0[0], HU3D_ATTR_NOCULL);
         temp_r29 = HuDataSelHeapReadNum(lbl_1_data_54[lbl_1_bss_B5C], MEMORY_DEFAULT_NUM, HEAP_DATA);
         temp_r31->unk0[1] = Hu3DModelCreate(temp_r29);
         temp_r29 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M451, 0x0D), MEMORY_DEFAULT_NUM, HEAP_DATA);
@@ -413,7 +413,7 @@ void fn_1_B2C(void)
         Hu3DModelPosSet(temp_r31->unk0[2], 0, 0, 0);
         Hu3DModelRotSet(temp_r31->unk0[2], 0, 0, 0);
         Hu3DModelTPLvlSet(temp_r31->unk0[2], 128);
-        Hu3DModelAttrSet(temp_r31->unk0[2], 0x4000);
+        Hu3DModelAttrSet(temp_r31->unk0[2], HU3D_ATTR_NOCULL);
         for (temp_r28 = 0; temp_r28 < lbl_1_bss_B58; temp_r28++) {
             temp_r31->unk6C[temp_r28] = Hu3DModelObjPtrGet(temp_r31->unk0[0], lbl_1_data_464[lbl_1_bss_B5C][temp_r28]);
             if (!temp_r31->unk6C[temp_r28]) {

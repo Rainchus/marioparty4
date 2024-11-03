@@ -833,7 +833,7 @@ static void LotteryInlineFunc00(s32 arg0, s32 arg1) {
         temp_f30 = 4.0f;
         if (lotterySpr == -1) {
             lotterySpr = espEntry(sp20[arg0], 30001, 0);
-            espAttrSet(lotterySpr, 1);
+            espAttrSet(lotterySpr, HUSPR_ATTR_NOANIM);
         }
     } else {
         sp34.y = (sp10[arg0] / 2) + 40;

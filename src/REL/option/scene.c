@@ -52,7 +52,8 @@ void OptionFadeSprite(s16 sprite, BOOL inF, s32 duration)
     if (inF) {
         work->speed = work->speed;
         work->tplvl = 0.0f;
-    } else {
+    }
+    else {
         work->speed = -work->speed;
         work->tplvl = 1.0f;
     }
@@ -103,7 +104,7 @@ void OptionFadeModel(s16 model, BOOL inF, s32 duration)
         work->speed = -work->speed;
         work->tplvl = 1.0f;
     }
-    Hu3DModelAttrReset(work->id, 1);
+    Hu3DModelAttrReset(work->id, HU3D_ATTR_DISPOFF);
     Hu3DModelTPLvlSet(work->id, work->tplvl);
     process = HuPrcChildCreate(FadeModel, 0x3000, 0x1500, 0, HuPrcCurrentGet());
     process->user_data = work;
@@ -128,7 +129,7 @@ static void FadeModel(void)
     }
     Hu3DModelTPLvlSet(work->id, work->tplvl);
     if (work->tplvl <= 0.0f) {
-        Hu3DModelAttrSet(work->id, 1);
+        Hu3DModelAttrSet(work->id, HU3D_ATTR_DISPOFF);
     }
     HuMemDirectFree(work);
     HuPrcEnd();
@@ -199,7 +200,7 @@ static void KillScene(void)
     HuPrcVSleep();
     sprite = espEntry(0x860020, 0x1388, 0);
     espPosSet(sprite, 288.0f, 240.0f);
-    espAttrReset(sprite, 4);
+    espAttrReset(sprite, HUSPR_ATTR_DISPOFF);
     Hu3DBGColorSet(0, 0, 0);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
     while (WipeStatGet() != 0) {

@@ -435,7 +435,7 @@ void fn_1_1774(void)
     lbl_1_bss_3E[0] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 1));
     lbl_1_bss_3E[1] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 2));
     Hu3DMotionSet(lbl_1_bss_42, lbl_1_bss_3E[0]);
-    Hu3DModelAttrSet(lbl_1_bss_42, 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_42, HU3D_MOTATTR_LOOP);
     Hu3DModelPosSet(lbl_1_bss_42, 0.0f, 1000.0f, 0.0f);
     lbl_1_bss_8 = HuPrcChildCreate(fn_1_1CF0, 0x64, 0x2000, 0, lbl_1_bss_68);
 }
@@ -802,7 +802,7 @@ void fn_1_33B0(void)
     lbl_1_bss_42 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_ZTAR, 0));
     lbl_1_bss_3E[0] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 1));
     lbl_1_bss_3E[1] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 2));
-    Hu3DModelAttrSet(lbl_1_bss_42, 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_42, HU3D_MOTATTR_LOOP);
     Hu3DModelPosSetV(lbl_1_bss_42, &sp2C);
     Hu3DModelRotSet(lbl_1_bss_42, 0.0f, -10.0f, -15.0f);
     Hu3DMotionSet(lbl_1_bss_42, lbl_1_bss_3E[0]);
@@ -845,7 +845,7 @@ void fn_1_33B0(void)
                 Hu3DModelScaleSet(lbl_1_bss_36[var_r31], 0.8f, 0.8f, 0.8f);
             }
             Hu3DMotionSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][0]);
-            Hu3DModelAttrSet(lbl_1_bss_36[var_r31], 0x40000001);
+            Hu3DModelAttrSet(lbl_1_bss_36[var_r31], HU3D_MOTATTR_LOOP);
             Hu3DModelPosSet(lbl_1_bss_36[var_r31], var_r26, 0.0f, 0.0f);
             Hu3DModelShadowSet(lbl_1_bss_36[var_r31]);
             var_r26 += 0x96;
@@ -1048,7 +1048,7 @@ void fn_1_4948(void)
     lbl_1_bss_42 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_ZTAR, 0));
     lbl_1_bss_3E[0] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 1));
     lbl_1_bss_3E[1] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 2));
-    Hu3DModelAttrSet(lbl_1_bss_42, 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_42, HU3D_MOTATTR_LOOP);
     Hu3DModelPosSetV(lbl_1_bss_42, &sp2C);
     Hu3DModelRotSet(lbl_1_bss_42, 0.0f, -10.0f, -15.0f);
     Hu3DMotionSet(lbl_1_bss_42, lbl_1_bss_3E[0]);
@@ -1073,7 +1073,7 @@ void fn_1_4948(void)
             Hu3DModelScaleSet(lbl_1_bss_36[var_r31], 0.8f, 0.8f, 0.8f);
         }
         Hu3DMotionSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][0]);
-        Hu3DModelAttrSet(lbl_1_bss_36[var_r31], 0x40000001);
+        Hu3DModelAttrSet(lbl_1_bss_36[var_r31], HU3D_MOTATTR_LOOP);
         Hu3DModelPosSet(lbl_1_bss_36[var_r31], var_r28, 0.0f, 0.0f);
         Hu3DModelShadowSet(lbl_1_bss_36[var_r31]);
         var_r28 += 0x96;

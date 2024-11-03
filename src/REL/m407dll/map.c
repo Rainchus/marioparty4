@@ -76,7 +76,7 @@ void fn_1_162C(omObjData *arg0)
     Hu3DModelAmbSet(arg0->model[0], 1.0f, 1.0f, 1.0f);
     arg0->model[1] = Hu3DModelCreateFile(lbl_1_data_198[3]);
     Hu3DModelAmbSet(arg0->model[1], 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(arg0->model[1], 1);
+    Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF);
     for (i = 0; i < ARRAY_COUNT(GWPlayerCfg); i++) {
         arg0->model[i + 2] = Hu3DModelCreateFile(lbl_1_data_198[GWPlayerCfg[i].character + 4]);
         Hu3DModelAmbSet(arg0->model[i + 2], 1.0f, 1.0f, 1.0f);
@@ -107,11 +107,11 @@ void fn_1_162C(omObjData *arg0)
 
     Hu3DModelPosSet(arg0->model[11], 0.0f, 0.0f, -3900.0f);
     Hu3DModelPosSet(arg0->model[12], 0.0f, 0.0f, 0.0f);
-    Hu3DModelAttrSet(arg0->model[12], 0x40000001);
+    Hu3DModelAttrSet(arg0->model[12], HU3D_MOTATTR_LOOP);
 
     if (lbl_1_bss_20 > 0) {
         Hu3DModelPosSet(arg0->model[1], 0.0f, 0.0f, 200.0f * (f32)lbl_1_bss_20);
-        Hu3DModelAttrReset(arg0->model[1], 1);
+        Hu3DModelAttrReset(arg0->model[1], HU3D_ATTR_DISPOFF);
     }
 }
 

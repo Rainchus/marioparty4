@@ -219,7 +219,7 @@ void fn_1_11960(omObjData *object)
                 if (temp_r27 < 0) {
                     temp_r27 = Hu3DModelCreateFile(lbl_1_data_1A0[temp_r31->unk0]);
                     temp_r23 = Hu3DJointMotionFile(temp_r27, lbl_1_data_1C4[temp_r31->unk0]);
-                    Hu3DModelAttrSet(temp_r27, 0x40000001);
+                    Hu3DModelAttrSet(temp_r27, HU3D_MOTATTR_LOOP);
                     Hu3DMotionSet(temp_r27, temp_r23);
                     temp_r28 = temp_r27;
                 }
@@ -233,7 +233,7 @@ void fn_1_11960(omObjData *object)
                 if (temp_r26 < 0) {
                     temp_r26 = Hu3DModelCreateFile(lbl_1_data_1A0[temp_r31->unk0]);
                     temp_r22 = Hu3DJointMotionFile(temp_r26, lbl_1_data_1C4[temp_r31->unk0]);
-                    Hu3DModelAttrSet(temp_r26, 0x40000001);
+                    Hu3DModelAttrSet(temp_r26, HU3D_MOTATTR_LOOP);
                     Hu3DMotionSet(temp_r26, temp_r22);
                     temp_r28 = temp_r26;
                 }
@@ -270,15 +270,15 @@ void fn_1_11960(omObjData *object)
         Hu3DModelRotSetV(object->model[temp_r29], &temp_r31->unk34);
         Hu3DModelScaleSet(object->model[temp_r29], 0.15f, 0.15f, 0.15f);
         Hu3DModelCameraSet(object->model[temp_r29], 1);
-        Hu3DModelAttrSet(object->model[temp_r29], 1);
+        Hu3DModelAttrSet(object->model[temp_r29], HU3D_ATTR_DISPOFF);
         if (temp_r31->unk0 < 7) {
-            Hu3DModelAttrSet(object->model[temp_r29], 0x40000001);
+            Hu3DModelAttrSet(object->model[temp_r29], HU3D_MOTATTR_LOOP);
         }
     }
     for (temp_r29 = lbl_1_bss_DA0; temp_r29 < lbl_1_bss_DA0 + lbl_1_bss_D9C; temp_r29++) {
         temp_r28 = Hu3DParticleCreate(HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_M408, 0x18)), 32);
         object->model[temp_r29] = temp_r28;
-        Hu3DModelAttrSet(temp_r28, 1);
+        Hu3DModelAttrSet(temp_r28, HU3D_ATTR_DISPOFF);
         Hu3DModelLayerSet(temp_r28, 6);
         Hu3DParticleColSet(temp_r28, 255, 255, 255);
         Hu3DParticleHookSet(temp_r28, fn_1_15658);
@@ -403,10 +403,10 @@ void fn_1_123C8(omObjData *object)
             Hu3DModelRotSetV(object->model[temp_r29], &temp_r31->unk34);
             Hu3DModelScaleSet(object->model[temp_r29], 0.15f * temp_r31->unk4C, 0.15f * temp_r31->unk4C, 0.15f * temp_r31->unk4C);
             if (temp_r31->unkC.y > fn_1_6888() - 1000 && temp_r31->unkC.y < fn_1_6888() + 200) {
-                Hu3DModelAttrReset(object->model[temp_r29], 1);
+                Hu3DModelAttrReset(object->model[temp_r29], HU3D_ATTR_DISPOFF);
             }
             else {
-                Hu3DModelAttrSet(object->model[temp_r29], 1);
+                Hu3DModelAttrSet(object->model[temp_r29], HU3D_ATTR_DISPOFF);
             }
             if (temp_r31->unk0 == 7 || temp_r31->unk0 == 8) {
                 if (temp_r31->unkC.y > fn_1_6888() - 150 && temp_r31->unkC.y < fn_1_6888() + 10) {
@@ -415,13 +415,13 @@ void fn_1_123C8(omObjData *object)
             }
         }
         else {
-            Hu3DModelAttrSet(object->model[temp_r29], 1);
+            Hu3DModelAttrSet(object->model[temp_r29], HU3D_ATTR_DISPOFF);
         }
     }
     temp_r28 = fn_1_6878();
     if (temp_r28 == 5) {
         for (temp_r29 = 0; temp_r29 < lbl_1_bss_DA0; temp_r29++, temp_r31++) {
-            Hu3DModelAttrSet(object->model[temp_r29], 1);
+            Hu3DModelAttrSet(object->model[temp_r29], HU3D_ATTR_DISPOFF);
         }
         object->func = fn_1_12670;
     }
@@ -567,7 +567,7 @@ void fn_1_12C6C(StructBssDA4 *arg0)
             if (arg0->unkC.y - 15.0f > Center.y + CZoom) {
                 arg0->unk54 = 4;
                 arg0->unk50 = 0;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             break;
 
@@ -646,7 +646,7 @@ void fn_1_1305C(StructBssDA4 *arg0)
             if (arg0->unkC.y - 15.0f > Center.y + CZoom) {
                 arg0->unk54 = 4;
                 arg0->unk50 = 0;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             break;
 
@@ -709,7 +709,7 @@ void fn_1_134D8(StructBssDA4 *arg0)
             if (arg0->unkC.y - 15.0f > Center.y + CZoom) {
                 arg0->unk54 = 4;
                 arg0->unk50 = 0;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             break;
 
@@ -784,7 +784,7 @@ void fn_1_13820(StructBssDA4 *arg0)
             arg0->unk5C = 1;
             arg0->unk54 = 4;
             arg0->unk50 = 0;
-            Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+            Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             break;
 
         case 4:
@@ -833,7 +833,7 @@ void fn_1_13D88(StructBssDA4 *arg0)
     }
     if (arg0->unk5C == 1 && arg0->unkC.y - 15.0f > Center.y + CZoom) {
         arg0->unk50 = 0;
-        Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+        Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
     }
     if (arg0->unk34.y > 360.0f) {
         arg0->unk34.y -= 360.0f;
@@ -911,7 +911,7 @@ void fn_1_1406C(StructBssDA4 *arg0)
             break;
 
         case 3:
-            Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+            Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             arg0->unk5C = 1;
             arg0->unk50 = 0;
             arg0->unk54++;
@@ -1018,7 +1018,7 @@ void fn_1_144D0(StructBssDA4 *arg0)
             }
             else {
                 arg0->unk54 = 4;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             temp_f27 = 0;
             temp_f29 = 50 + (40 * temp_f27);
@@ -1046,7 +1046,7 @@ void fn_1_144D0(StructBssDA4 *arg0)
         case 4:
             if (arg0->unk5C == 1 && arg0->unkC.y - 15.0f > Center.y + CZoom) {
                 arg0->unk50 = 0;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             break;
     }
@@ -1086,7 +1086,7 @@ void fn_1_14DB4(StructBssDA4 *arg0)
                 arg0->unk54 = 4;
                 arg0->unk60 = 0;
                 temp_r30 = lbl_1_bss_75A8->model[arg0->unk8];
-                Hu3DModelAttrReset(temp_r30, 1);
+                Hu3DModelAttrReset(temp_r30, HU3D_ATTR_DISPOFF);
                 fn_1_15B50(temp_r30);
                 fn_1_155E0(temp_r30, 1);
                 fn_1_15618(temp_r30, arg0->unkC.x, arg0->unkC.y, arg0->unkC.z);
@@ -1122,7 +1122,7 @@ void fn_1_14DB4(StructBssDA4 *arg0)
             }
             else {
                 arg0->unk50 = 0;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             break;
     }
@@ -1172,7 +1172,7 @@ void fn_1_151A4(StructBssDA4 *arg0)
                 arg0->unk54 = 4;
                 arg0->unk60 = 0;
                 temp_r30 = lbl_1_bss_75A8->model[arg0->unk8];
-                Hu3DModelAttrReset(temp_r30, 1);
+                Hu3DModelAttrReset(temp_r30, HU3D_ATTR_DISPOFF);
                 fn_1_15B50(temp_r30);
                 fn_1_155E0(temp_r30, 1);
                 fn_1_15618(temp_r30, arg0->unkC.x, arg0->unkC.y, arg0->unkC.z);
@@ -1205,7 +1205,7 @@ void fn_1_151A4(StructBssDA4 *arg0)
             }
             else {
                 arg0->unk50 = 0;
-                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], 1);
+                Hu3DModelAttrSet(lbl_1_bss_75A8->model[arg0->unk4], HU3D_ATTR_DISPOFF);
             }
             break;
     }
@@ -1368,7 +1368,7 @@ void fn_1_15BCC(omObjData *object)
     for (temp_r29 = 0; temp_r29 < 4; temp_r29++) {
         temp_r30 = Hu3DParticleCreate(HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_M408, 0x19)), 9);
         object->model[temp_r29] = temp_r30;
-        Hu3DModelAttrSet(temp_r30, 1);
+        Hu3DModelAttrSet(temp_r30, HU3D_ATTR_DISPOFF);
         Hu3DModelLayerSet(temp_r30, 7);
         Hu3DParticleColSet(temp_r30, 255, 255, 255);
         Hu3DParticleHookSet(temp_r30, fn_1_15D64);
@@ -1391,7 +1391,7 @@ void fn_1_15CA4(omObjData *object)
     temp_r29 = object->model[temp_r31];
     temp_r28 = &Hu3DData[temp_r29];
     temp_r27 = temp_r28->unk_120;
-    Hu3DModelAttrReset(temp_r29, 1);
+    Hu3DModelAttrReset(temp_r29, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(temp_r29, lbl_1_bss_D6C[temp_r31].x, lbl_1_bss_D6C[temp_r31].y, lbl_1_bss_D6C[temp_r31].z);
     temp_r27->unk_34 = 0;
 }

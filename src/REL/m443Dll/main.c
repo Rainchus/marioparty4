@@ -8,6 +8,7 @@
 #include "game/minigame_seq.h"
 #include "game/object.h"
 #include "game/objsub.h"
+#include "game/sprite.h"
 #include "game/wipe.h"
 #include "math.h"
 #include "rel_sqrt_consts.h"
@@ -630,7 +631,7 @@ void fn_1_2DD8(M443DllUnkStruct *arg0)
         arg0->unk_1C[var_r30] = -1;
         if (lbl_1_data_108[var_r30].unk_00 != 0) {
             arg0->unk_1C[var_r30] = espEntry(lbl_1_data_108[var_r30].unk_00, lbl_1_data_108[var_r30].unk_04, 0);
-            espAttrSet(arg0->unk_1C[var_r30], 8);
+            espAttrSet(arg0->unk_1C[var_r30], HUSPR_ATTR_LINEAR);
             espDispOff(arg0->unk_1C[var_r30]);
         }
     }
@@ -840,10 +841,10 @@ void fn_1_3770(omObjData *arg0)
                 break;
         }
         if (var_r24 != 0) {
-            Hu3DModelAttrReset(arg0->model[0], 1);
+            Hu3DModelAttrReset(arg0->model[0], HU3D_ATTR_DISPOFF);
         }
         else {
-            Hu3DModelAttrSet(arg0->model[0], 1);
+            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF);
         }
         for (var_r30 = 0; var_r30 < 4; var_r30++) {
             sp30[var_r30] = var_r28[var_r30 + 6].unk_04;

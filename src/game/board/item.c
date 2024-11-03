@@ -1,17 +1,5 @@
 #include "game/board/item.h"
 #include "game/audio.h"
-#include "game/chrman.h"
-#include "game/data.h"
-#include "game/gamework.h"
-#include "game/gamework_data.h"
-#include "game/hsfanim.h"
-#include "game/hsfman.h"
-#include "game/objsub.h"
-#include "game/pad.h"
-#include "game/process.h"
-#include "game/sprite.h"
-#include "game/window.h"
-#include "game/wipe.h"
 #include "game/board/audio.h"
 #include "game/board/boo.h"
 #include "game/board/char_wheel.h"
@@ -22,9 +10,22 @@
 #include "game/board/space.h"
 #include "game/board/star.h"
 #include "game/board/ui.h"
-#include "game/board/window.h"
 #include "game/board/view.h"
+#include "game/board/window.h"
+#include "game/chrman.h"
+#include "game/data.h"
 #include "game/frand.h"
+#include "game/gamework.h"
+#include "game/gamework_data.h"
+#include "game/hsfanim.h"
+#include "game/hsfman.h"
+#include "game/objsub.h"
+#include "game/pad.h"
+#include "game/process.h"
+#include "game/sprite.h"
+#include "game/window.h"
+#include "game/wipe.h"
+
 
 #include "ext_math.h"
 
@@ -112,118 +113,46 @@ static AnimData *genieParticleAnim;
 static s16 geniePlayerMot[3];
 static Process *itemProc;
 
-s32 lbl_801D37A0[2] = {
-    DATA_MAKE_NUM(DATADIR_BOARD, 117),
-    -1
-};
+s32 lbl_801D37A0[2] = { DATA_MAKE_NUM(DATADIR_BOARD, 117), -1 };
 
-static void (*itemFuncTbl[])(void) = {
-    ExecItemMini,
-    ExecItemMega,
-    ExecItemMiniSuper,
-    ExecItemMegaSuper,
-    ExecItemHammer,
-    ExecItemPipe,
-    ExecItemSwap,
-    ExecItemSpark,
-    ExecItemLight,
-    ExecItemWhistle,
-    ExecItemBowser,
-    ExecItemBooBall,
-    ExecItemGenie,
-    ExecItemBag
-};
+static void (*itemFuncTbl[])(void) = { ExecItemMini, ExecItemMega, ExecItemMiniSuper, ExecItemMegaSuper, ExecItemHammer, ExecItemPipe, ExecItemSwap,
+    ExecItemSpark, ExecItemLight, ExecItemWhistle, ExecItemBowser, ExecItemBooBall, ExecItemGenie, ExecItemBag };
 
-static void (*itemRestoreFuncTbl[])(void) = {
-    RestoreItemMini,
-    RestoreItemMega,
-    RestoreItemMiniSuper,
-    RestoreItemMegaSuper,
-    RestoreItemNull,
-    RestoreItemNull,
-    RestoreItemNull,
-    RestoreItemNull,
-    RestoreItemNull,
-    RestoreItemNull,
-    RestoreItemBowser,
-    RestoreItemNull,
-    RestoreItemNull,
-    RestoreItemNull
-};
+static void (*itemRestoreFuncTbl[])(void)
+    = { RestoreItemMini, RestoreItemMega, RestoreItemMiniSuper, RestoreItemMegaSuper, RestoreItemNull, RestoreItemNull, RestoreItemNull,
+          RestoreItemNull, RestoreItemNull, RestoreItemNull, RestoreItemBowser, RestoreItemNull, RestoreItemNull, RestoreItemNull };
 
-static s32 itemMdlTbl[] = {
-    DATA_MAKE_NUM(DATADIR_BOARD, 109),
-    DATA_MAKE_NUM(DATADIR_BOARD, 110),
-    DATA_MAKE_NUM(DATADIR_BOARD, 111),
-    DATA_MAKE_NUM(DATADIR_BOARD, 112),
-    DATA_MAKE_NUM(DATADIR_BOARD, 113),
-    DATA_MAKE_NUM(DATADIR_BOARD, 114),
-    DATA_MAKE_NUM(DATADIR_BOARD, 115),
-    DATA_MAKE_NUM(DATADIR_BOARD, 116),
-    DATA_MAKE_NUM(DATADIR_BOARD, 118),
-    DATA_MAKE_NUM(DATADIR_BOARD, 119),
-    DATA_MAKE_NUM(DATADIR_BOARD, 120),
-    DATA_MAKE_NUM(DATADIR_BOARD, 121),
-    DATA_MAKE_NUM(DATADIR_BOARD, 122),
-    DATA_MAKE_NUM(DATADIR_BOARD, 123)
-};
+static s32 itemMdlTbl[] = { DATA_MAKE_NUM(DATADIR_BOARD, 109), DATA_MAKE_NUM(DATADIR_BOARD, 110), DATA_MAKE_NUM(DATADIR_BOARD, 111),
+    DATA_MAKE_NUM(DATADIR_BOARD, 112), DATA_MAKE_NUM(DATADIR_BOARD, 113), DATA_MAKE_NUM(DATADIR_BOARD, 114), DATA_MAKE_NUM(DATADIR_BOARD, 115),
+    DATA_MAKE_NUM(DATADIR_BOARD, 116), DATA_MAKE_NUM(DATADIR_BOARD, 118), DATA_MAKE_NUM(DATADIR_BOARD, 119), DATA_MAKE_NUM(DATADIR_BOARD, 120),
+    DATA_MAKE_NUM(DATADIR_BOARD, 121), DATA_MAKE_NUM(DATADIR_BOARD, 122), DATA_MAKE_NUM(DATADIR_BOARD, 123) };
 
-static s32 forceMoveSfxTbl[] = {
-    0x38, 0x45, 0x42, 0x4D, 0x48, 0x3F
-};
+static s32 forceMoveSfxTbl[] = { 0x38, 0x45, 0x42, 0x4D, 0x48, 0x3F };
 
-static s32 callMotTbl[] = {
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 82),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 82),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 82),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 82),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 82),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 82),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 82),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 82)
-};
+static s32 callMotTbl[] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 82), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 82), DATA_MAKE_NUM(DATADIR_PEACHMOT, 82),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 82), DATA_MAKE_NUM(DATADIR_WARIOMOT, 82), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 82),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 82), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 82) };
 
-static char *callHookTbl[] = {
-    "c000m01-itemhook-r",
-    "c001m01-itemhook-r",
-    "c002m01-itemhook-r",
-    "c003m01-itemhook-r",
-    "c004m01-itemhook-r",
-    "c005m01-itemhook-r",
-    "c006m01-itemhook-r",
-    "c007m01-itemhook-r"
-};
+static char *callHookTbl[] = { "c000m01-itemhook-r", "c001m01-itemhook-r", "c002m01-itemhook-r", "c003m01-itemhook-r", "c004m01-itemhook-r",
+    "c005m01-itemhook-r", "c006m01-itemhook-r", "c007m01-itemhook-r" };
 
-static s32 callAttackMotTbl[] = {
-    DATA_MAKE_NUM(DATADIR_W01, 31),
-    DATA_MAKE_NUM(DATADIR_W02, 5),
-    DATA_MAKE_NUM(DATADIR_W03, 29),
-    DATA_MAKE_NUM(DATADIR_W04, 9),
-    DATA_MAKE_NUM(DATADIR_W05, 7),
-    DATA_MAKE_NUM(DATADIR_W06, 19)
-};
+static s32 callAttackMotTbl[] = { DATA_MAKE_NUM(DATADIR_W01, 31), DATA_MAKE_NUM(DATADIR_W02, 5), DATA_MAKE_NUM(DATADIR_W03, 29),
+    DATA_MAKE_NUM(DATADIR_W04, 9), DATA_MAKE_NUM(DATADIR_W05, 7), DATA_MAKE_NUM(DATADIR_W06, 19) };
 
-static s32 callAttackMotTbl2[] = {
-    DATA_MAKE_NUM(DATADIR_W01, 32),
-    DATA_MAKE_NUM(DATADIR_W02, 6),
-    DATA_MAKE_NUM(DATADIR_W03, 30),
-    DATA_MAKE_NUM(DATADIR_W04, 10),
-    DATA_MAKE_NUM(DATADIR_W05, 8),
-    DATA_MAKE_NUM(DATADIR_W06, 20)
-};
+static s32 callAttackMotTbl2[] = { DATA_MAKE_NUM(DATADIR_W01, 32), DATA_MAKE_NUM(DATADIR_W02, 6), DATA_MAKE_NUM(DATADIR_W03, 30),
+    DATA_MAKE_NUM(DATADIR_W04, 10), DATA_MAKE_NUM(DATADIR_W05, 8), DATA_MAKE_NUM(DATADIR_W06, 20) };
 
-static s32 suitMotTbl[][2] = {
-    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 1), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 2) },
+static s32 suitMotTbl[][2] = { { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 1), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 2) },
     { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 4), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 5) },
     { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 7), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 8) },
     { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 10), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 11) },
     { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 13), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 14) },
     { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 16), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 17) },
     { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 19), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 20) },
-    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 22), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 23) }
-};
+    { DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 22), DATA_MAKE_NUM(DATADIR_BKOOPASUIT, 23) } };
 
-void BoardItemStart(s32 arg0, s32 arg1) {
+void BoardItemStart(s32 arg0, s32 arg1)
+{
     currItemRestore = arg0;
     currItem = arg1;
     suitMdl = -1;
@@ -231,22 +160,26 @@ void BoardItemStart(s32 arg0, s32 arg1) {
     HuPrcDestructorSet2(itemProc, ItemDestroy);
 }
 
-BOOL BoardItemDoneCheck(void) {
+BOOL BoardItemDoneCheck(void)
+{
     if (itemProc) {
         return FALSE;
-    } else {
+    }
+    else {
         return TRUE;
     }
 }
 
-void BoardItemPlayerRestore(s32 arg0, s32 arg1) {
+void BoardItemPlayerRestore(s32 arg0, s32 arg1)
+{
     currItemRestore = arg0;
     currItem = arg1;
     itemProc = HuPrcChildCreate(RestoreProcess, 0x2004, 0x1000, 0, boardMainProc);
     HuPrcDestructorSet2(itemProc, RestoreDestroy);
 }
 
-static void ItemProcess(void) {
+static void ItemProcess(void)
+{
     void (*temp_r31)(void) = itemFuncTbl[currItem];
 
     HuPrcChildCreate(temp_r31, 0x2003, 0x1000, 0, HuPrcCurrentGet());
@@ -254,7 +187,8 @@ static void ItemProcess(void) {
     HuPrcEnd();
 }
 
-static void RestoreProcess(void) {
+static void RestoreProcess(void)
+{
     void (*temp_r31)(void) = itemRestoreFuncTbl[currItem];
 
     HuPrcChildCreate(temp_r31, 0x2003, 0x1000, 0, HuPrcCurrentGet());
@@ -262,15 +196,18 @@ static void RestoreProcess(void) {
     HuPrcEnd();
 }
 
-static void ItemDestroy(void) {
+static void ItemDestroy(void)
+{
     itemProc = NULL;
 }
 
-static void RestoreDestroy(void) {
+static void RestoreDestroy(void)
+{
     itemProc = NULL;
 }
 
-static void ItemSizeShowAnim(void) {
+static void ItemSizeShowAnim(void)
+{
     Vec sp24;
     Vec sp18;
     Vec spC;
@@ -307,7 +244,8 @@ static void ItemSizeShowAnim(void) {
     BoardModelKill(suitMdl);
 }
 
-static void ItemRotProc(void) {
+static void ItemRotProc(void)
+{
     Vec sp20;
     Vec sp14;
     Vec sp8;
@@ -354,7 +292,8 @@ static void ItemRotProc(void) {
 // TODO: needs the inline keyword to be inlined into ExecItemHammer, but adding it messes up sdata2.
 // sdata2 order should be: 1000.0f, 0.15f, then 20.0f.
 // With the inline keyword, it becomes 0.15f, 20.0f, then 1000.0f (workaround in BoardUiInlineFunc02 below).
-static inline void BoardUiInlineFunc01(Vec *arg0) {
+static inline void BoardUiInlineFunc01(Vec *arg0)
+{
     Vec sp30;
     Vec sp3C;
     Vec sp48;
@@ -386,11 +325,11 @@ static inline void BoardUiInlineFunc01(Vec *arg0) {
         BoardModelPosSetV(suitMdl, &sp3C);
         VECAdd(&sp48, arg0, &sp48);
         for (i = 0; i < 3; i++) {
-            if (((float*) &sp48)[i] < 0.0f) {
-                ((float*) &sp48)[i] += 360.0f;
+            if (((float *)&sp48)[i] < 0.0f) {
+                ((float *)&sp48)[i] += 360.0f;
             }
-            if (((float*) &sp48)[i] >= 360.0f) {
-                ((float*) &sp48)[i] -= 360.0f;
+            if (((float *)&sp48)[i] >= 360.0f) {
+                ((float *)&sp48)[i] -= 360.0f;
             }
         }
         BoardModelRotSetV(suitMdl, &sp48);
@@ -400,13 +339,14 @@ static inline void BoardUiInlineFunc01(Vec *arg0) {
     BoardModelPosSetV(suitMdl, &sp3C);
 }
 
-static void BoardUiInlineFunc02(void) {
+static void BoardUiInlineFunc02(void)
+{
     Vec sp18;
     Vec sp24;
     float sp8;
     float var_f30;
 
-    (void) 1000.0f; // TODO: fix this.
+    (void)1000.0f; // TODO: fix this.
     sp8 = 1.0f;
     BoardModelPosGet(suitMdl, &sp24);
     BoardPlayerPosGet(currItemRestore, &sp18);
@@ -429,7 +369,8 @@ static void BoardUiInlineFunc02(void) {
     BoardModelPosSetV(suitMdl, &sp24);
 }
 
-static inline void BoardUiInlineFunc03(s32 arg0) {
+static inline void BoardUiInlineFunc03(s32 arg0)
+{
     Vec sp8;
     Vec sp14;
     s32 space = GWPlayer[arg0].space_curr;
@@ -447,13 +388,15 @@ static inline void BoardUiInlineFunc03(s32 arg0) {
     BoardPlayerIdleSet(arg0);
 }
 
-static inline void BoardUiInlineFunc04(Process *arg0, s32 arg1) {
+static inline void BoardUiInlineFunc04(Process *arg0, s32 arg1)
+{
     UnkItemShowProcStruct *temp_r19 = arg0->user_data;
 
     temp_r19->unk00 = arg1;
 }
 
-static inline Process *BoardUiInlineFunc05(UnkItemShowProcStruct *arg0) {
+static inline Process *BoardUiInlineFunc05(UnkItemShowProcStruct *arg0)
+{
     Process *temp_r27;
 
     temp_r27 = HuPrcCreate(ItemRotProc, 0x2004, 0x1000, 0);
@@ -462,7 +405,8 @@ static inline Process *BoardUiInlineFunc05(UnkItemShowProcStruct *arg0) {
     return temp_r27;
 }
 
-static Process *ItemShowProc(UnkItemShowProcStruct *arg0, Vec *arg1) {
+static Process *ItemShowProc(UnkItemShowProcStruct *arg0, Vec *arg1)
+{
     Vec sp20;
     Vec sp14;
     Vec sp8;
@@ -477,7 +421,8 @@ static Process *ItemShowProc(UnkItemShowProcStruct *arg0, Vec *arg1) {
     }
     if (arg1 == NULL) {
         sp8.x = sp8.y = sp8.z = 1.0f;
-    } else {
+    }
+    else {
         sp8 = *arg1;
     }
     if (suitMdl >= 0) {
@@ -506,7 +451,8 @@ static Process *ItemShowProc(UnkItemShowProcStruct *arg0, Vec *arg1) {
     return var_r29;
 }
 
-static s16 ItemGetTarget(void) {
+static s16 ItemGetTarget(void)
+{
     s32 sp20[4];
     s32 sp10[4];
     float sp8[2];
@@ -542,7 +488,8 @@ static s16 ItemGetTarget(void) {
     HuWinMesSet(temp_r29, MAKE_MESSID(18, 14));
     if (GWPlayer[currItemRestore].com) {
         var_r26 = 0xF;
-    } else {
+    }
+    else {
         var_r26 = 0;
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             if (var_r31 != currItemRestore) {
@@ -575,7 +522,8 @@ static s16 ItemGetTarget(void) {
     return temp_r22;
 }
 
-static void ItemSizeSet(s32 arg0) {
+static void ItemSizeSet(s32 arg0)
+{
     float sp24[9];
     float sp14[4];
     float sp8[3] = { 1.0f, 0.3f, 2.5f };
@@ -603,7 +551,7 @@ static void ItemSizeSet(s32 arg0) {
     sp24[8] = sp14[3];
     temp_r26 = BoardPlayerModelGet(currItemRestore);
     temp_r28 = BoardModelIDGet(temp_r26);
-    Hu3DModelAttrSet(temp_r28, 0x40000002);
+    Hu3DModelAttrSet(temp_r28, HU3D_MOTATTR_PAUSE);
     var_r27 = 0;
     for (i = 0; i < 9; i++) {
         temp_f30 = (sp24[var_r27++] - var_f31) / 10.0f;
@@ -617,7 +565,8 @@ static void ItemSizeSet(s32 arg0) {
     BoardPlayerSizeSet(currItemRestore, arg0);
 }
 
-static void ExecItemMini(void) {
+static void ExecItemMini(void)
+{
     suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
     BoardModelLayerSet(suitMdl, 2);
     HuAudFXPlay(0x350);
@@ -634,7 +583,8 @@ static void ExecItemMini(void) {
     }
 }
 
-static void ExecItemMega(void) {
+static void ExecItemMega(void)
+{
     suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
     BoardModelLayerSet(suitMdl, 2);
     HuAudFXPlay(0x350);
@@ -651,7 +601,8 @@ static void ExecItemMega(void) {
     }
 }
 
-static void ExecItemMiniSuper(void) {
+static void ExecItemMiniSuper(void)
+{
     suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
     BoardModelLayerSet(suitMdl, 2);
     HuAudFXPlay(0x350);
@@ -668,7 +619,8 @@ static void ExecItemMiniSuper(void) {
     }
 }
 
-static void ExecItemMegaSuper(void) {
+static void ExecItemMegaSuper(void)
+{
     suitMdl = BoardModelCreate(itemMdlTbl[currItem], NULL, 0);
     BoardModelLayerSet(suitMdl, 2);
     HuAudFXPlay(0x350);
@@ -685,7 +637,8 @@ static void ExecItemMegaSuper(void) {
     }
 }
 
-static void ExecItemHammer(void) {
+static void ExecItemHammer(void)
+{
     Vec sp6C;
     Vec sp60;
     float sp10[2];
@@ -703,7 +656,8 @@ static void ExecItemHammer(void) {
     var_r30 = frandBool();
     if (var_r30 != 0) {
         BoardModelMotionTimeSet(suitMdl, 1.5f);
-    } else {
+    }
+    else {
         BoardModelMotionTimeSet(suitMdl, 0.0f);
     }
     BoardModelAttrSet(suitMdl, 0x40000002);
@@ -725,7 +679,8 @@ static void ExecItemHammer(void) {
             var_r30 ^= 1;
             if (var_r30 != 0) {
                 BoardModelMotionTimeSet(suitMdl, 1.5f);
-            } else {
+            }
+            else {
                 BoardModelMotionTimeSet(suitMdl, 0.0f);
             }
         }
@@ -734,7 +689,8 @@ static void ExecItemHammer(void) {
             if (var_r26 == 0) {
                 break;
             }
-        } else {
+        }
+        else {
             if (HuPadBtnDown[GWPlayerCfg[currItemRestore].pad_idx] & 0x100) {
                 break;
             }
@@ -747,7 +703,8 @@ static void ExecItemHammer(void) {
     omVibrate(temp_r27, 12, 6, 6);
     if (var_r30 != 0) {
         BoardPlayerAutoSizeSet(temp_r27, 2);
-    } else {
+    }
+    else {
         BoardPlayerAutoSizeSet(temp_r27, 1);
     }
     HuPrcSleep(30);
@@ -759,7 +716,8 @@ static void ExecItemHammer(void) {
     }
 }
 
-static void ExecItemPipe(void) {
+static void ExecItemPipe(void)
+{
     Vec spE4[2];
     Vec spCC[2];
     Vec spB4[2];
@@ -816,7 +774,8 @@ static void ExecItemPipe(void) {
         HuWinMesWait(temp_r28);
         HuPrcSleep(180);
         HuWinKill(temp_r28);
-    } else {
+    }
+    else {
         BoardUiInlineFunc03(sp2C[1]);
         HuAudFXPlay(0x318);
         for (var_r31 = 0; var_r31 < 2; var_r31++) {
@@ -910,7 +869,8 @@ static void ExecItemPipe(void) {
                 if (GWPlayer[sp2C[var_r31]].character == 5) {
                     if (var_r27 != 0) {
                         var_r27--;
-                    } else {
+                    }
+                    else {
                         var_f31 += 0.05f;
                         if (var_f31 > 1.0f) {
                             var_f31 = 1.0f;
@@ -923,13 +883,15 @@ static void ExecItemPipe(void) {
                 if (fabs(spCC[var_r31].x - spE4[var_r31].x) <= fabs(spB4[var_r31].x)) {
                     spCC[var_r31].x = spE4[var_r31].x;
                     var_r30++;
-                } else {
+                }
+                else {
                     spCC[var_r31].x += spB4[var_r31].x;
                 }
                 if (fabs(spCC[var_r31].z - spE4[var_r31].z) <= fabs(spB4[var_r31].z)) {
                     spCC[var_r31].z = spE4[var_r31].z;
                     var_r30++;
-                } else {
+                }
+                else {
                     spCC[var_r31].z += spB4[var_r31].z;
                 }
                 if (spCC[var_r31].y < spE4[var_r31].y) {
@@ -979,7 +941,8 @@ static void ExecItemPipe(void) {
     }
 }
 
-static void ExecItemSwap(void) {
+static void ExecItemSwap(void)
+{
     Vec sp1A4[3];
     Vec sp180[3];
     Vec sp15C[3];
@@ -1026,22 +989,22 @@ static void ExecItemSwap(void) {
     BoardModelPosGet(suitMdl, &spB4);
     BoardPlayerRotGet(currItemRestore, &sp90);
     for (var_r27 = 0; var_r27 < 3; var_r27++) {
-        if (((float*) &sp90)[var_r27] < 0.0f) {
-            ((float*) &sp90)[var_r27] += 360.0f;
+        if (((float *)&sp90)[var_r27] < 0.0f) {
+            ((float *)&sp90)[var_r27] += 360.0f;
         }
-        if (((float*) &sp90)[var_r27] >= 360.0f) {
-            ((float*) &sp90)[var_r27] -= 360.0f;
+        if (((float *)&sp90)[var_r27] >= 360.0f) {
+            ((float *)&sp90)[var_r27] -= 360.0f;
         }
     }
     BoardModelRotGet(suitMdl, &spA8);
     while (1) {
         VECAdd(&spA8, &sp9C, &spA8);
         for (var_r26 = 0; var_r26 < 3; var_r26++) {
-            if (((float*) &spA8)[var_r26] < 0.0f) {
-                ((float*) &spA8)[var_r26] += 360.0f;
+            if (((float *)&spA8)[var_r26] < 0.0f) {
+                ((float *)&spA8)[var_r26] += 360.0f;
             }
-            if (((float*) &spA8)[var_r26] >= 360.0f) {
-                ((float*) &spA8)[var_r26] -= 360.0f;
+            if (((float *)&spA8)[var_r26] >= 360.0f) {
+                ((float *)&spA8)[var_r26] -= 360.0f;
             }
         }
         sp9C.y *= 0.94f;
@@ -1067,7 +1030,8 @@ static void ExecItemSwap(void) {
     }
     if (var_r23 >= var_r22) {
         var_r28 = var_r23 * 2;
-    } else {
+    }
+    else {
         var_r28 = var_r22 * 2;
     }
     BoardModelRotGet(suitMdl, &sp3C);
@@ -1200,7 +1164,8 @@ static void ExecItemSwap(void) {
     }
 }
 
-static void ExecItemSpark(void) {
+static void ExecItemSpark(void)
+{
     Vec sp68;
     Vec sp5C;
     Vec sp50;
@@ -1299,7 +1264,8 @@ static void ExecItemSpark(void) {
     }
 }
 
-static void ExecItemLight(void) {
+static void ExecItemLight(void)
+{
     s16 temp_r31;
 
     HuAudFXPlay(0x350);
@@ -1321,7 +1287,8 @@ static void ExecItemLight(void) {
     }
 }
 
-static void ExecItemWhistle(void) {
+static void ExecItemWhistle(void)
+{
     Vec spF0[4];
     Vec spC0[4];
     Vec spB4;
@@ -1414,8 +1381,7 @@ static void ExecItemWhistle(void) {
     BoardModelPosSetV(suitMdl, &sp84);
     BoardModelHookSet(sp8, temp_r22, suitMdl);
     while (BoardPlayerMotionTimeGet(currItemRestore) < BoardPlayerMotionMaxTimeGet(currItemRestore)) {
-        if (BoardPlayerMotionTimeGet(currItemRestore) == 95.0f
-            || BoardPlayerMotionTimeGet(currItemRestore) == 185.0f
+        if (BoardPlayerMotionTimeGet(currItemRestore) == 95.0f || BoardPlayerMotionTimeGet(currItemRestore) == 185.0f
             || BoardPlayerMotionTimeGet(currItemRestore) == 275.0f) {
             HuAudFXPlay(0x31F);
         }
@@ -1563,7 +1529,8 @@ static void ExecItemWhistle(void) {
     }
 }
 
-static void ExecItemBowser(void) {
+static void ExecItemBowser(void)
+{
     Vec sp2C;
     Vec sp20;
     Vec sp14;
@@ -1637,13 +1604,10 @@ static void ExecItemBowser(void) {
     }
 }
 
-static s32 booMotTbl[3] = {
-    DATA_MAKE_NUM(DATADIR_BGUEST, 24),
-    DATA_MAKE_NUM(DATADIR_BGUEST, 22),
-    -1
-};
+static s32 booMotTbl[3] = { DATA_MAKE_NUM(DATADIR_BGUEST, 24), DATA_MAKE_NUM(DATADIR_BGUEST, 22), -1 };
 
-static inline void ExecItemBooBallInlineFunc01(s32 speed) {
+static inline void ExecItemBooBallInlineFunc01(s32 speed)
+{
     Vec sp20;
     s32 var_r20;
 
@@ -1655,14 +1619,14 @@ static inline void ExecItemBooBallInlineFunc01(s32 speed) {
     BoardModelAlphaSet(booBallMdl, booBallAlpha);
     BoardModelVisibilitySet(booBallMdl, 1);
     for (var_r20 = 0; var_r20 < speed; var_r20++) {
-        booBallAlpha -= (255.0f/speed);
+        booBallAlpha -= (255.0f / speed);
         if (booBallAlpha < 0.0f) {
             booBallAlpha = 0.0f;
         }
-        booBallScale.x -= (1.0f/speed);
-        booBallScale.y -= (1.0f/speed);
-        booBallScale.z -= (1.0f/speed);
-        booBallPos.y -= (20.0f/speed);
+        booBallScale.x -= (1.0f / speed);
+        booBallScale.y -= (1.0f / speed);
+        booBallScale.z -= (1.0f / speed);
+        booBallPos.y -= (20.0f / speed);
         BoardModelAlphaSet(booBallMdl, booBallAlpha);
         BoardModelScaleSetV(booBallMdl, &booBallScale);
         BoardModelPosSetV(booBallMdl, &booBallPos);
@@ -1674,7 +1638,8 @@ static inline void ExecItemBooBallInlineFunc01(s32 speed) {
     BoardModelAlphaSet(booBallMdl, booBallAlpha);
 }
 
-static inline void ExecItemBooBallInlineFunc02(s32 speed) {
+static inline void ExecItemBooBallInlineFunc02(s32 speed)
+{
     Vec sp20;
     s32 var_r20;
 
@@ -1686,14 +1651,14 @@ static inline void ExecItemBooBallInlineFunc02(s32 speed) {
     BoardModelAlphaSet(booBallMdl, booBallAlpha);
     BoardModelVisibilitySet(booBallMdl, 1);
     for (var_r20 = 0; var_r20 < speed; var_r20++) {
-        booBallAlpha += (255.0f/speed);
+        booBallAlpha += (255.0f / speed);
         if (booBallAlpha > 255.0f) {
             booBallAlpha = 255.0f;
         }
-        booBallScale.x += (1.0f/speed);
-        booBallScale.y += (1.0f/speed);
-        booBallScale.z += (1.0f/speed);
-        booBallPos.y += (20.0f/speed);
+        booBallScale.x += (1.0f / speed);
+        booBallScale.y += (1.0f / speed);
+        booBallScale.z += (1.0f / speed);
+        booBallPos.y += (20.0f / speed);
         BoardModelAlphaSet(booBallMdl, booBallAlpha);
         BoardModelScaleSetV(booBallMdl, &booBallScale);
         BoardModelPosSetV(booBallMdl, &booBallPos);
@@ -1707,7 +1672,8 @@ static inline void ExecItemBooBallInlineFunc02(s32 speed) {
     BoardModelAlphaSet(booBallMdl, booBallAlpha);
 }
 
-static void ExecItemBooBall(void) {
+static void ExecItemBooBall(void)
+{
     UnkItemShowProcStruct spA0;
     UnkItemShowProcStruct sp80;
     Vec sp74;
@@ -1754,7 +1720,8 @@ static void ExecItemBooBall(void) {
         BoardWinCreate(2, MAKE_MESSID(18, 22), 3);
         BoardWinWait();
         BoardWinKill();
-    } else {
+    }
+    else {
         var_r28 = 0;
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             if (var_r31 != currItemRestore) {
@@ -1779,7 +1746,8 @@ static void ExecItemBooBall(void) {
             if (GWPlayer[currItemRestore].com) {
                 if (var_r28 != 0 && BoardPlayerCoinsGet(currItemRestore) >= 50) {
                     BoardComKeySetDown();
-                } else {
+                }
+                else {
                     BoardComKeySetUp();
                 }
             }
@@ -1809,15 +1777,20 @@ static void ExecItemBooBall(void) {
                     var_r29 = BoardBooStealValueGet(&spC, &spA);
                     if (var_r29 == 0) {
                         var_r30 = MAKE_MESSID(7, 11);
-                    } else if (spA == 0) {
+                    }
+                    else if (spA == 0) {
                         var_r30 = MAKE_MESSID(7, 9);
-                    } else if (spA >= 1 && spA <= 3) {
+                    }
+                    else if (spA >= 1 && spA <= 3) {
                         var_r30 = MAKE_MESSID(7, 8);
-                    } else if (spA >= 4 && spA <= 6) {
+                    }
+                    else if (spA >= 4 && spA <= 6) {
                         var_r30 = MAKE_MESSID(7, 7);
-                    } else if (spA >= 7 && spA <= 8) {
+                    }
+                    else if (spA >= 7 && spA <= 8) {
                         var_r30 = MAKE_MESSID(7, 6);
-                    } else {
+                    }
+                    else {
                         var_r30 = MAKE_MESSID(7, 5);
                     }
                     sprintf(booCoinStr, "%d", spC);
@@ -1861,7 +1834,8 @@ static void ExecItemBooBall(void) {
                     ExecItemBooBallInlineFunc02(30);
                     if (var_r29 != 0) {
                         var_r30 = MAKE_MESSID(7, 10);
-                    } else {
+                    }
+                    else {
                         var_r30 = MAKE_MESSID(7, 11);
                     }
                     HuAudFXPlay(0x4C);
@@ -1928,7 +1902,8 @@ static void ForceConsts(void)
     (void)125.0f;
 }
 
-static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix) {
+static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix)
+{
     HsfanimStruct01 *var_r31;
     Vec spC;
     float sp8;
@@ -1971,7 +1946,8 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
                 var_r31->unk00_s16 = 0;
             }
         }
-    } else {
+    }
+    else {
         particle->unk_00--;
     }
     var_r31 = particle->unk_48;
@@ -1991,7 +1967,8 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
                     var_r31->unk00_s16 = 1;
                 }
                 var_r31->unk40.a = var_r31->unk14.y;
-            } else {
+            }
+            else {
                 VECAdd(&var_r31->unk34, &var_r31->unk08, &var_r31->unk34);
                 var_r31->unk2C += 0.2f;
                 var_r31->unk14.y -= 1.8214285f;
@@ -2005,8 +1982,9 @@ static void LampParticleUpdate(ModelData *model, ParticleData *particle, Mtx mat
     }
 }
 
-static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix) {
-    HsfanimStruct01* var_r31;
+static void GenieParticleUpdate(ModelData *model, ParticleData *particle, Mtx matrix)
+{
+    HsfanimStruct01 *var_r31;
     float temp_f31;
     float temp_f30;
     s32 var_r28;
@@ -2054,11 +2032,13 @@ static Vec shadowPos = { 0.0f, 4500.0f, 500.0f };
 static Vec shadowTarget = { 0.0f, 0.9f, -0.1f };
 static Vec shadowUp = { 0.0f, 0.0f, 500.0f };
 
-static void GenieCameraProcInlineFunc(void) {
+static void GenieCameraProcInlineFunc(void)
+{
     Hu3DShadowPosSet(&shadowPos, &shadowTarget, &shadowUp);
 }
 
-static void GenieCameraProc(void) {
+static void GenieCameraProc(void)
+{
     while (1) {
         Hu3DCameraPerspectiveSet(2, genieFov, 10.0f, 20000.0f, 1.2f);
         Hu3DCameraPosSetV(2, &booCamPos, &booCamTarget, &booCamUp);
@@ -2070,7 +2050,8 @@ static void GenieCameraProc(void) {
     }
 }
 
-static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Vec *arg3, Vec *arg4) {
+static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Vec *arg3, Vec *arg4)
+{
     Vec spC = { 0.0f, 0.0f, 0.0f };
     float temp_f31 = arg2 * arg2;
     float sp8 = temp_f31 * arg2;
@@ -2090,13 +2071,26 @@ static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Ve
         temp_r30 = &arg0[arg1].unk10;
         temp_r27 = &arg0[arg1 + 1].unk10;
         temp_r26 = &arg0[arg1 + 2].unk10;
-        arg3->x = 0.5f * ((temp_r31->x - temp_r29->x * 2.0f + temp_r28->x) * temp_f31 + (temp_r31->x * -3.0f + temp_r29->x * 4.0f - temp_r28->x) * arg2 + temp_r31->x * 2.0f);
-        arg3->y = 0.5f * ((temp_r31->y - temp_r29->y * 2.0f + temp_r28->y) * temp_f31 + (temp_r31->y * -3.0f + temp_r29->y * 4.0f - temp_r28->y) * arg2 + temp_r31->y * 2.0f);
-        arg3->z = 0.5f * ((temp_r31->z - temp_r29->z * 2.0f + temp_r28->z) * temp_f31 + (temp_r31->z * -3.0f + temp_r29->z * 4.0f - temp_r28->z) * arg2 + temp_r31->z * 2.0f);
-        arg4->x = 0.5f * ((temp_r30->x - temp_r27->x * 2.0f + temp_r26->x) * temp_f31 + (temp_r30->x * -3.0f + temp_r27->x * 4.0f - temp_r26->x) * arg2 + temp_r30->x * 2.0f);
-        arg4->y = 0.5f * ((temp_r30->y - temp_r27->y * 2.0f + temp_r26->y) * temp_f31 + (temp_r30->y * -3.0f + temp_r27->y * 4.0f - temp_r26->y) * arg2 + temp_r30->y * 2.0f);
-        arg4->z = 0.5f * ((temp_r30->z - temp_r27->z * 2.0f + temp_r26->z) * temp_f31 + (temp_r30->z * -3.0f + temp_r27->z * 4.0f - temp_r26->z) * arg2 + temp_r30->z * 2.0f);
-    } else {
+        arg3->x = 0.5f
+            * ((temp_r31->x - temp_r29->x * 2.0f + temp_r28->x) * temp_f31 + (temp_r31->x * -3.0f + temp_r29->x * 4.0f - temp_r28->x) * arg2
+                + temp_r31->x * 2.0f);
+        arg3->y = 0.5f
+            * ((temp_r31->y - temp_r29->y * 2.0f + temp_r28->y) * temp_f31 + (temp_r31->y * -3.0f + temp_r29->y * 4.0f - temp_r28->y) * arg2
+                + temp_r31->y * 2.0f);
+        arg3->z = 0.5f
+            * ((temp_r31->z - temp_r29->z * 2.0f + temp_r28->z) * temp_f31 + (temp_r31->z * -3.0f + temp_r29->z * 4.0f - temp_r28->z) * arg2
+                + temp_r31->z * 2.0f);
+        arg4->x = 0.5f
+            * ((temp_r30->x - temp_r27->x * 2.0f + temp_r26->x) * temp_f31 + (temp_r30->x * -3.0f + temp_r27->x * 4.0f - temp_r26->x) * arg2
+                + temp_r30->x * 2.0f);
+        arg4->y = 0.5f
+            * ((temp_r30->y - temp_r27->y * 2.0f + temp_r26->y) * temp_f31 + (temp_r30->y * -3.0f + temp_r27->y * 4.0f - temp_r26->y) * arg2
+                + temp_r30->y * 2.0f);
+        arg4->z = 0.5f
+            * ((temp_r30->z - temp_r27->z * 2.0f + temp_r26->z) * temp_f31 + (temp_r30->z * -3.0f + temp_r27->z * 4.0f - temp_r26->z) * arg2
+                + temp_r30->z * 2.0f);
+    }
+    else {
         temp_r31 = &arg0[arg1 - 1].unk04;
         temp_r29 = &arg0[arg1].unk04;
         temp_r28 = &arg0[arg1 + 1].unk04;
@@ -2105,70 +2099,56 @@ static void GenieCameraCalc(UnkGenieCameraStruct *arg0, s32 arg1, float arg2, Ve
         temp_r27 = &arg0[arg1].unk10;
         temp_r26 = &arg0[arg1 + 1].unk10;
         temp_r24 = &arg0[arg1 + 2].unk10;
-        arg3->x = 0.5f * ((-temp_r31->x + temp_r29->x * 3.0f - temp_r28->x * 3.0f + temp_r25->x) * temp_f31 * arg2 + (temp_r31->x * 2.0f - temp_r29->x * 5.0f + temp_r28->x * 4.0f - temp_r25->x) * temp_f31 + (-temp_r31->x + temp_r28->x) * arg2 + temp_r29->x * 2.0f);
-        arg3->y = 0.5f * ((-temp_r31->y + temp_r29->y * 3.0f - temp_r28->y * 3.0f + temp_r25->y) * temp_f31 * arg2 + (temp_r31->y * 2.0f - temp_r29->y * 5.0f + temp_r28->y * 4.0f - temp_r25->y) * temp_f31 + (-temp_r31->y + temp_r28->y) * arg2 + temp_r29->y * 2.0f);
-        arg3->z = 0.5f * ((-temp_r31->z + temp_r29->z * 3.0f - temp_r28->z * 3.0f + temp_r25->z) * temp_f31 * arg2 + (temp_r31->z * 2.0f - temp_r29->z * 5.0f + temp_r28->z * 4.0f - temp_r25->z) * temp_f31 + (-temp_r31->z + temp_r28->z) * arg2 + temp_r29->z * 2.0f);
-        arg4->x = 0.5f * ((-temp_r30->x + temp_r27->x * 3.0f - temp_r26->x * 3.0f + temp_r24->x) * temp_f31 * arg2 + (temp_r30->x * 2.0f - temp_r27->x * 5.0f + temp_r26->x * 4.0f - temp_r24->x) * temp_f31 + (-temp_r30->x + temp_r26->x) * arg2 + temp_r27->x * 2.0f);
-        arg4->y = 0.5f * ((-temp_r30->y + temp_r27->y * 3.0f - temp_r26->y * 3.0f + temp_r24->y) * temp_f31 * arg2 + (temp_r30->y * 2.0f - temp_r27->y * 5.0f + temp_r26->y * 4.0f - temp_r24->y) * temp_f31 + (-temp_r30->y + temp_r26->y) * arg2 + temp_r27->y * 2.0f);
-        arg4->z = 0.5f * ((-temp_r30->z + temp_r27->z * 3.0f - temp_r26->z * 3.0f + temp_r24->z) * temp_f31 * arg2 + (temp_r30->z * 2.0f - temp_r27->z * 5.0f + temp_r26->z * 4.0f - temp_r24->z) * temp_f31 + (-temp_r30->z + temp_r26->z) * arg2 + temp_r27->z * 2.0f);
+        arg3->x = 0.5f
+            * ((-temp_r31->x + temp_r29->x * 3.0f - temp_r28->x * 3.0f + temp_r25->x) * temp_f31 * arg2
+                + (temp_r31->x * 2.0f - temp_r29->x * 5.0f + temp_r28->x * 4.0f - temp_r25->x) * temp_f31 + (-temp_r31->x + temp_r28->x) * arg2
+                + temp_r29->x * 2.0f);
+        arg3->y = 0.5f
+            * ((-temp_r31->y + temp_r29->y * 3.0f - temp_r28->y * 3.0f + temp_r25->y) * temp_f31 * arg2
+                + (temp_r31->y * 2.0f - temp_r29->y * 5.0f + temp_r28->y * 4.0f - temp_r25->y) * temp_f31 + (-temp_r31->y + temp_r28->y) * arg2
+                + temp_r29->y * 2.0f);
+        arg3->z = 0.5f
+            * ((-temp_r31->z + temp_r29->z * 3.0f - temp_r28->z * 3.0f + temp_r25->z) * temp_f31 * arg2
+                + (temp_r31->z * 2.0f - temp_r29->z * 5.0f + temp_r28->z * 4.0f - temp_r25->z) * temp_f31 + (-temp_r31->z + temp_r28->z) * arg2
+                + temp_r29->z * 2.0f);
+        arg4->x = 0.5f
+            * ((-temp_r30->x + temp_r27->x * 3.0f - temp_r26->x * 3.0f + temp_r24->x) * temp_f31 * arg2
+                + (temp_r30->x * 2.0f - temp_r27->x * 5.0f + temp_r26->x * 4.0f - temp_r24->x) * temp_f31 + (-temp_r30->x + temp_r26->x) * arg2
+                + temp_r27->x * 2.0f);
+        arg4->y = 0.5f
+            * ((-temp_r30->y + temp_r27->y * 3.0f - temp_r26->y * 3.0f + temp_r24->y) * temp_f31 * arg2
+                + (temp_r30->y * 2.0f - temp_r27->y * 5.0f + temp_r26->y * 4.0f - temp_r24->y) * temp_f31 + (-temp_r30->y + temp_r26->y) * arg2
+                + temp_r27->y * 2.0f);
+        arg4->z = 0.5f
+            * ((-temp_r30->z + temp_r27->z * 3.0f - temp_r26->z * 3.0f + temp_r24->z) * temp_f31 * arg2
+                + (temp_r30->z * 2.0f - temp_r27->z * 5.0f + temp_r26->z * 4.0f - temp_r24->z) * temp_f31 + (-temp_r30->z + temp_r26->z) * arg2
+                + temp_r27->z * 2.0f);
     }
 }
 
-static s32 armUpMotTbl[] = {
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 92),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 92),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 92),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 92),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 92),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 92),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 92),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 92)
-};
+static s32 armUpMotTbl[] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 92), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 92), DATA_MAKE_NUM(DATADIR_PEACHMOT, 92),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 92), DATA_MAKE_NUM(DATADIR_WARIOMOT, 92), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 92),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 92), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 92) };
 
-static s32 scareMotTbl[] = {
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 28),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 28),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 28),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 28),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 28),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 28),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 28),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 28)
-};
+static s32 scareMotTbl[] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 28), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 28), DATA_MAKE_NUM(DATADIR_PEACHMOT, 28),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 28), DATA_MAKE_NUM(DATADIR_WARIOMOT, 28), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 28),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 28), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 28) };
 
-static s32 impactMotTbl[] = {
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 94),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 94),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 94),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 94),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 94),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 94),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 94),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 94)
-};
+static s32 impactMotTbl[] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 94), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 94), DATA_MAKE_NUM(DATADIR_PEACHMOT, 94),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 94), DATA_MAKE_NUM(DATADIR_WARIOMOT, 94), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 94),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 94), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 94) };
 
-static UnkGenieCameraStruct cameraDataTbl[] = {
-    60.0f, {    0.0f, 100.0f,  950.0f }, { 0.0f, 100.0f, 600.0f },
-    60.0f, { -353.0f, 100.0f,  662.5f }, { 0.0f, 100.0f, 600.0f },
-    60.0f, { -500.0f, 100.0f,  375.0f }, { 0.0f, 100.0f, 600.0f },
-    60.0f, { -353.0f, 100.0f,   87.5f }, { 0.0f, 100.0f, 600.0f },
-     1.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f },
-    89.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f },
-     1.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f },
-     9.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f },
-     1.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f },
-     5.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f },
-     5.0f, {    0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f }
-};
+static UnkGenieCameraStruct cameraDataTbl[] = { 60.0f, { 0.0f, 100.0f, 950.0f }, { 0.0f, 100.0f, 600.0f }, 60.0f, { -353.0f, 100.0f, 662.5f },
+    { 0.0f, 100.0f, 600.0f }, 60.0f, { -500.0f, 100.0f, 375.0f }, { 0.0f, 100.0f, 600.0f }, 60.0f, { -353.0f, 100.0f, 87.5f },
+    { 0.0f, 100.0f, 600.0f }, 1.0f, { 0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f }, 89.0f, { 0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f },
+    1.0f, { 0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f }, 9.0f, { 0.0f, 100.0f, -200.0f }, { 0.0f, 100.0f, 600.0f }, 1.0f,
+    { 0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f }, 5.0f, { 0.0f, 100.0f, -200.0f }, { 0.0f, 500.0f, 600.0f }, 5.0f, { 0.0f, 100.0f, -200.0f },
+    { 0.0f, 500.0f, 600.0f } };
 
-static s32 genieMotTbl[] = {
-    DATA_MAKE_NUM(DATADIR_BOARD, 125),
-    DATA_MAKE_NUM(DATADIR_BOARD, 126),
-    DATA_MAKE_NUM(DATADIR_BOARD, 127),
-    -1
-};
+static s32 genieMotTbl[] = { DATA_MAKE_NUM(DATADIR_BOARD, 125), DATA_MAKE_NUM(DATADIR_BOARD, 126), DATA_MAKE_NUM(DATADIR_BOARD, 127), -1 };
 
-static void GenieSceneExec(void) {
+static void GenieSceneExec(void)
+{
     GXColor sp1C = { 0xFF, 0xFF, 0xFF, 0xFF };
     Vec sp50;
     Vec sp44;
@@ -2366,7 +2346,8 @@ static void GenieSceneExec(void) {
     HuAudFXPauseAll(0);
 }
 
-static void ExecItemGenie(void) {
+static void ExecItemGenie(void)
+{
     UnkItemShowProcStruct sp24;
     Vec sp18;
     Vec spC;
@@ -2498,7 +2479,8 @@ static void ExecItemGenie(void) {
     }
 }
 
-void BoardItemBagItemSet(s16 *arg0) {
+void BoardItemBagItemSet(s16 *arg0)
+{
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -2506,7 +2488,8 @@ void BoardItemBagItemSet(s16 *arg0) {
     }
 }
 
-static void ExecItemBagJump(void) {
+static void ExecItemBagJump(void)
+{
     Vec sp20;
     Vec sp14;
     Vec sp8;
@@ -2515,7 +2498,7 @@ static void ExecItemBagJump(void) {
     float var_f31;
     s16 temp_r31;
 
-    temp_r31 = (s16) HuPrcCurrentGet()->user_data;
+    temp_r31 = (s16)HuPrcCurrentGet()->user_data;
     BoardModelScaleGet(temp_r31, &sp20);
     BoardModelPosGet(temp_r31, &sp14);
     sp8 = sp14;
@@ -2549,7 +2532,8 @@ static void ExecItemBagJump(void) {
     }
 }
 
-static void ExecItemBagShow(void) {
+static void ExecItemBagShow(void)
+{
     Vec sp14;
     Vec sp8;
     float var_f31;
@@ -2581,7 +2565,8 @@ static void ExecItemBagShow(void) {
     }
 }
 
-static void ExecItemBag(void) {
+static void ExecItemBag(void)
+{
     UnkItemShowProcStruct sp3C;
     Vec sp30;
     Vec sp24;
@@ -2644,12 +2629,14 @@ static void ExecItemBag(void) {
                 var_r25 = 0x100;
                 var_r26 = frandmod(40) + 30;
             }
-        } else {
+        }
+        else {
             var_r25 = HuPadBtnDown[temp_r23];
         }
         if (!(var_r25 & 0x100)) {
             HuPrcVSleep();
-        } else {
+        }
+        else {
             BoardPlayerDiceJumpStart(currItemRestore);
             while (!BoardPlayerDiceJumpCheck(currItemRestore)) {
                 HuPrcVSleep();
@@ -2660,7 +2647,7 @@ static void ExecItemBag(void) {
             BoardModelScaleSetV(sp8[var_r30], &sp24);
             BoardModelVisibilitySet(sp8[var_r30], 1);
             temp_r29 = HuPrcChildCreate(ExecItemBagJump, 0x2004, 0x1000, 0, HuPrcCurrentGet());
-            temp_r29->user_data = (void*) sp8[var_r30];
+            temp_r29->user_data = (void *)sp8[var_r30];
             temp_r29 = HuPrcChildCreate(ExecItemBagShow, 0x2004, 0x1000, 0, HuPrcCurrentGet());
             temp_r29->user_data = temp_r24;
             while (GWPlayer[currItemRestore].jump) {
@@ -2691,14 +2678,16 @@ static void ExecItemBag(void) {
     }
 }
 
-static void RestoreItemNull(void) {
+static void RestoreItemNull(void)
+{
     HuPrcKill(NULL);
     while (1) {
         HuPrcVSleep();
     }
 }
 
-static void RestoreItemMini(void) {
+static void RestoreItemMini(void)
+{
     HuAudFXPlay(0x311);
     ItemSizeSet(0);
     HuPrcKill(NULL);
@@ -2707,7 +2696,8 @@ static void RestoreItemMini(void) {
     }
 }
 
-static void RestoreItemMega(void) {
+static void RestoreItemMega(void)
+{
     HuAudFXPlay(0x313);
     ItemSizeSet(0);
     HuPrcKill(NULL);
@@ -2716,7 +2706,8 @@ static void RestoreItemMega(void) {
     }
 }
 
-static void RestoreItemMiniSuper(void) {
+static void RestoreItemMiniSuper(void)
+{
     HuAudFXPlay(0x311);
     ItemSizeSet(0);
     HuPrcKill(NULL);
@@ -2725,7 +2716,8 @@ static void RestoreItemMiniSuper(void) {
     }
 }
 
-static void RestoreItemMegaSuper(void) {
+static void RestoreItemMegaSuper(void)
+{
     HuAudFXPlay(0x313);
     ItemSizeSet(0);
     HuPrcKill(NULL);
@@ -2734,7 +2726,8 @@ static void RestoreItemMegaSuper(void) {
     }
 }
 
-static void RestoreItemBowser(void) {
+static void RestoreItemBowser(void)
+{
     Vec sp20;
     Vec sp14;
     Vec sp8;

@@ -270,20 +270,20 @@ void fn_1_2260(M420DllPlayerStruct *arg0)
     }
 }
 
-#define WAITMODECHG(player, maxTime) \
-    do { \
-        s32 time; \
-        s32 mode; \
-        for (time = 0; time < maxTime; time++) { \
-            fn_1_355C(arg0); \
-            mode = arg0->unk_48; \
-            HuPrcVSleep(); \
-            if (arg0->unk_48 != mode) { \
-                return; \
-            } \
-        } \
-    } while(0)
-    
+#define WAITMODECHG(player, maxTime)                                                                                                                 \
+    do {                                                                                                                                             \
+        s32 time;                                                                                                                                    \
+        s32 mode;                                                                                                                                    \
+        for (time = 0; time < maxTime; time++) {                                                                                                     \
+            fn_1_355C(arg0);                                                                                                                         \
+            mode = arg0->unk_48;                                                                                                                     \
+            HuPrcVSleep();                                                                                                                           \
+            if (arg0->unk_48 != mode) {                                                                                                              \
+                return;                                                                                                                              \
+            }                                                                                                                                        \
+        }                                                                                                                                            \
+    } while (0)
+
 void fn_1_22CC(M420DllPlayerStruct *arg0)
 {
     float var_f31;
@@ -341,13 +341,14 @@ void fn_1_22CC(M420DllPlayerStruct *arg0)
                 case 2:
                     if (arg0->unk_50 <= 0) {
                         WAITMODECHG(arg0, 1);
-                    } else {
+                    }
+                    else {
                         Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
                         Hu3DModelAttrReset(arg0->unk_AC, 0x40000001);
                         Hu3DModelAttrSet(arg0->unk_AC, 0x40000004);
                         fn_1_63EC();
-                        while(!Hu3DMotionEndCheck(arg0->unk_AC))
-                        WAITMODECHG(arg0, 1);
+                        while (!Hu3DMotionEndCheck(arg0->unk_AC))
+                            WAITMODECHG(arg0, 1);
                         for (var_r28 = 0; var_r28 < 0xA; var_r28++) {
                             arg0->unk_5C[var_r28] = 0;
                         }
@@ -411,23 +412,26 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
     while (arg0->unk_50 < 1) {
         fn_1_326C(arg0);
         do {
-            if(arg0->unk_00_field0 == 0) {
+            if (arg0->unk_00_field0 == 0) {
                 var_r30 = fn_1_34AC(arg0);
-            } else if(arg0->unk_58 > 0) {
+            }
+            else if (arg0->unk_58 > 0) {
                 arg0->unk_58--;
                 var_r30 = 0;
-            } else if(fn_1_8944() % 30) {
+            }
+            else if (fn_1_8944() % 30) {
                 var_r30 = 1;
-            } else {
+            }
+            else {
                 var_r30 = 2;
             }
             switch (var_r30) {
                 case 0:
                     WAITMODECHG(arg0, 1);
                     break;
-                
+
                 case 1:
-                    if(arg0->unk_4C != 1) {
+                    if (arg0->unk_4C != 1) {
                         CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[7], 0.0f, 6.0f, 0);
                         WAITMODECHG(arg0, 6);
                         fn_1_374C(arg0->unk_E8);
@@ -435,7 +439,7 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
                         HuAudFXPlay(0x5F2);
                     }
                     arg0->unk_5C[arg0->unk_50++] = 1;
-                    switch(arg0->unk_4C) {
+                    switch (arg0->unk_4C) {
                         case 1:
                         case 2:
                             var_f31 = 0.0f;
@@ -445,15 +449,15 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
                             Hu3DMotionTimeSet(arg0->unk_AC, var_f31);
                             Hu3DMotionSpeedSet(arg0->unk_AC, 2.0f);
                             break;
-                        
+
                         case 3:
                             arg0->unk_48 = 5;
                             return;
                     }
                     break;
-                    
+
                 case 2:
-                    switch(arg0->unk_4C) {
+                    switch (arg0->unk_4C) {
                         case 1:
                             var_f31 = 0.0f;
                             var_f30 = 10.0f;
@@ -470,7 +474,7 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
                             Hu3DModelAttrReset(arg0->unk_AC, 0x40000002);
                             WAITMODECHG(arg0, 30);
                             break;
-                            
+
                         case 2:
                         case 3:
                             CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[9], 0.0f, 2.0f, 0);
@@ -480,8 +484,7 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
                     }
                     break;
             }
-        } while(var_r30 == 0);
-        
+        } while (var_r30 == 0);
     }
     fn_1_326C(arg0);
     WAITMODECHG(arg0, 18);
@@ -492,7 +495,7 @@ void fn_1_276C(M420DllPlayerStruct *arg0)
 void fn_1_2CE0(M420DllPlayerStruct *arg0)
 {
     CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[0], 0.0f, 30.0f, 0x40000001);
-    
+
     WAITMODECHG(arg0, 35);
     arg0->unk_48 = 0;
 }
@@ -542,9 +545,9 @@ void fn_1_2EA8(M420DllPlayerStruct *arg0)
     fn_1_326C(arg0);
     CharModelMotionShiftSet(arg0->unk_0A, arg0->unk_AE[3], 0.0f, 1.0f, 0);
     var_r30 = fn_1_6660();
-    
+
     Hu3DModelAttrReset(var_r30, 0x40000002);
-    Hu3DModelAttrSet(var_r30, 0x40000001);
+    Hu3DModelAttrSet(var_r30, HU3D_MOTATTR_LOOP);
     Hu3DMotionTimeSet(var_r30, 0.0f);
     {
         s32 var_r30;
@@ -561,7 +564,7 @@ void fn_1_2EA8(M420DllPlayerStruct *arg0)
     HuAudFXPlay(0x5F7);
     fn_1_636C();
     fn_1_1E64(arg0, 1, 0x1E);
-    Hu3DModelAttrSet(var_r30, 0x40000002);
+    Hu3DModelAttrSet(var_r30, HU3D_MOTATTR_PAUSE);
     fn_1_5AA8(1, 22.5f);
     {
         s32 var_r30;

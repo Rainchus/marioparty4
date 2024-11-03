@@ -1125,7 +1125,7 @@ void fn_1_2964(omObjData *object)
     memset(var_r31->unk_F0, 0, sizeof(var_r31->unk_F0));
     var_r27 = CharModelCreate(var_r31->unk_01, 8);
     object->model[0] = var_r27;
-    Hu3DModelAttrSet(var_r27, 0x40000001);
+    Hu3DModelAttrSet(var_r27, HU3D_MOTATTR_LOOP);
     Hu3DModelShadowSet(var_r27);
     CharModelStepTypeSet(var_r31->unk_01, 0);
     var_r31->unk_A4 = -1;
@@ -1269,7 +1269,7 @@ void fn_1_2E4C(omObjData *object)
         }
         if (var_r31->unk_10 != 0) {
             var_r31->unk_07 = 0;
-            Hu3DModelAttrSet(var_r25, 1);
+            Hu3DModelAttrSet(var_r25, HU3D_ATTR_DISPOFF);
             object->func = fn_1_35BC;
         }
     }
@@ -1439,10 +1439,10 @@ void fn_1_35C0(omObjData *object)
     }
     if ((var_r31->unk_07 & 4) != 0) {
         if ((var_r31->unk_0B & 2) != 0) {
-            Hu3DModelAttrSet(var_r25, 1);
+            Hu3DModelAttrSet(var_r25, HU3D_ATTR_DISPOFF);
         }
         else {
-            Hu3DModelAttrReset(var_r25, 1);
+            Hu3DModelAttrReset(var_r25, HU3D_ATTR_DISPOFF);
         }
         if (--var_r31->unk_0B == 0) {
             var_r31->unk_07 = var_r31->unk_07 & 0xFFFFFFFB;
@@ -1555,7 +1555,7 @@ void fn_1_4724(omObjData *object)
     Hu3DModelScaleSet(var_r29, 1.5f, 1.5f, 1.5f);
     Hu3DMotionSet(var_r29, object->motion[0]);
     Hu3DMotionSpeedSet(var_r29, 2.0f);
-    Hu3DModelAttrSet(var_r29, 0x40000001);
+    Hu3DModelAttrSet(var_r29, HU3D_MOTATTR_LOOP);
     Hu3DModelShadowSet(var_r29);
     var_r31 = fn_1_7BFC(sizeof(M438MainWork4));
     object->data = var_r31;
@@ -1790,7 +1790,7 @@ void fn_1_4724(omObjData *object)
 //                     if (temp_r0 == 0) {
 //                         HuAudFXEmiterPlay(0x700, var_r31 + 0x10);
 //                         Hu3DModelAttrReset(*var_r30->model, 0x40000002);
-//                         Hu3DModelAttrSet(*var_r30->model, 0x40000001);
+//                         Hu3DModelAttrSet(*var_r30->model, HU3D_MOTATTR_LOOP);
 //                         var_r31->unk_1C = 0.0f;
 //                         var_r31->unk_00 = var_r31->unk_00 + 1;
 //                     }
@@ -1888,7 +1888,7 @@ void fn_1_4724(omObjData *object)
 //                 Hu3DModelAttrReset(*var_r30->model, 0x40000006);
 //                 Hu3DMotionSet(*var_r30->model, var_r30->motion->unk_02);
 //                 Hu3DMotionSpeedSet(*var_r30->model, 1.0f);
-//                 Hu3DModelAttrSet(*var_r30->model, 0x40000001);
+//                 Hu3DModelAttrSet(*var_r30->model, HU3D_MOTATTR_LOOP);
 //                 var_r31->unk_04 = 1;
 //             }
 //             break;

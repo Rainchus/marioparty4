@@ -40,7 +40,7 @@ typedef struct {
     /* 0x008 */ OptionWindow *window[10];
     /* 0x030 */ s32 execMode;
     /* 0x034 */ s16 sprList[153];
-	/* 0x166 */ s16 unk166[3];
+    /* 0x166 */ s16 unk166[3];
     /* 0x16C */ s32 recordType;
     /* 0x170 */ s32 board;
     /* 0x174 */ s32 mgPage;
@@ -199,7 +199,7 @@ static void ExecRecord(omObjData *object)
             OptionWinAnimIn(work->window[1]);
             OptionWinMesSet(work->window[1], MAKE_MESSID(47, 169));
             if (!work->cameraDoneF) {
-                Hu3DModelAttrReset(work->hand->model[0], 1);
+                Hu3DModelAttrReset(work->hand->model[0], HU3D_ATTR_DISPOFF);
                 work->cameraDoneF = TRUE;
             }
             pos.x = 505.0 * -sin(305 * M_PI / 180.0);
@@ -287,7 +287,7 @@ static void ExecRecord(omObjData *object)
             }
             OptionWinAnimOut(work->window[0]);
             OptionWinAnimOut(work->window[1]);
-            Hu3DModelAttrSet(work->hand->model[0], 1);
+            Hu3DModelAttrSet(work->hand->model[0], HU3D_ATTR_DISPOFF);
             object->unk10 = 6;
             /* fallthrough */
         case 6:
@@ -312,7 +312,7 @@ static omObjData *CreateSystem(void)
 
     object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 1));
-    Hu3DModelAttrSet(object->model[0], 0x40000002);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_PAUSE);
     Hu3DModelLayerSet(object->model[0], 0);
     Hu3DMotionStartEndSet(object->model[0], 0.0f, 6.0f);
     Hu3DMotionTimeSet(object->model[0], 6.0f);
@@ -352,10 +352,10 @@ static omObjData *CreateHand(void)
     object = omAddObjEx(optionObjMan, 1003, 1, 0, 1, NULL);
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_OPTION, 14));
     Hu3DModelLayerSet(object->model[0], 2);
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
     omSetRot(object, 30.0f, 190.0f, 0.0f);
     omSetSca(object, 0.6f, 0.6f, 0.6f);
-    Hu3DModelAttrSet(object->model[0], 1);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
     return object;
 }
 
@@ -646,23 +646,8 @@ static void ShowBoard(omObjData *object, s32 board)
 
 #define BOARD_SPR_HIDE_COUNT 53
 
-static const s32 boardSprHideTbl[BOARD_SPR_HIDE_COUNT] = 
-{ 
-	0, 1, 2, 3, 4, 5,
-	49, 50, 51, 52, 53, 54, 55, 56, 
-	8, 9, 10, 
-	11, 12, 13, 14,
-    23, 24, 25, 
-	26, 27, 28, 
-	29, 30, 31, 
-	32, 33, 34, 
-	38, 39, 40, 
-	35, 36, 37, 
-	41, 42, 43, 
-	44, 45, 46, 
-	15, 16, 17, 18, 
-	19, 20, 21, 22
-};
+static const s32 boardSprHideTbl[BOARD_SPR_HIDE_COUNT] = { 0, 1, 2, 3, 4, 5, 49, 50, 51, 52, 53, 54, 55, 56, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26,
+    27, 28, 29, 30, 31, 32, 33, 34, 38, 39, 40, 35, 36, 37, 41, 42, 43, 44, 45, 46, 15, 16, 17, 18, 19, 20, 21, 22 };
 
 static void HideBoard(omObjData *object)
 {
@@ -709,19 +694,8 @@ static void ShowTotal(omObjData *object)
 
 #define TOTAL_SPR_HIDE_COUNT 33
 
-static const s32 totalSprHideTbl[TOTAL_SPR_HIDE_COUNT] = 
-{ 
-	6, 
-	57, 58, 59, 60, 61, 62, 63, 64, 
-	65, 66, 67, 
-	68, 69, 70, 
-	71, 72, 73, 
-	74, 75, 76, 
-	77, 78, 79, 
-	80, 81, 82, 
-	83, 84, 85, 
-	86, 87, 88 
-};
+static const s32 totalSprHideTbl[TOTAL_SPR_HIDE_COUNT]
+    = { 6, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 };
 
 static void HideTotal(omObjData *object)
 {
@@ -844,18 +818,9 @@ static void ShowMG(omObjData *object, s32 page)
 
 #define MG_SPR_HIDE_COUNT 65
 
-static const s32 mgSprHideTbl[65] = 
-{ 
-	7, 
-	89, 90, 91, 92, 93, 94, 95, 96,
-	97, 98, 99, 100, 101, 102, 103, 104,
-	105, 106, 107, 108, 109, 110, 111, 112,
-	113, 114, 115, 116, 117, 118, 119, 120, 
-	121, 122, 123, 124, 125, 126, 127, 128, 
-	129, 130, 131, 132, 133, 134, 135, 136, 
-	137, 138, 139, 140, 141, 142, 143, 144, 
-	145, 146, 147, 148, 149, 150, 151, 152
-};
+static const s32 mgSprHideTbl[65] = { 7, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+    113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141,
+    142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152 };
 
 static void HideMG(omObjData *object)
 {

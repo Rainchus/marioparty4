@@ -495,7 +495,7 @@ s16 Hu3DParticleCreate(AnimData *arg0, s16 arg1) {
 
     temp_r25 = Hu3DHookFuncCreate((void*) &_Hu3DParticleAttrReset);
     temp_r28 = &Hu3DData[temp_r25];
-    Hu3DModelAttrSet(temp_r25, 0x20);
+    Hu3DModelAttrSet(temp_r25, HU3D_ATTR_PARTICLE_KILL);
     temp_r31 = HuMemDirectMallocNum(HEAP_DATA, sizeof(ParticleData), temp_r28->unk_48);
     temp_r28->unk_120 = temp_r31;
     temp_r31->unk_44 = arg0;

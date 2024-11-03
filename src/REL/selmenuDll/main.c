@@ -576,11 +576,11 @@ static void SMCharUpdate(omObjData *object)
     s16 num_players;
 
     for (i = 0; i < 8; i++) {
-        Hu3DModelAttrSet(charModelID[i], 0x1);
+        Hu3DModelAttrSet(charModelID[i], HU3D_ATTR_DISPOFF);
     }
     for (i = 0; i < 4; i++) {
         if (!smPlayerCfg[i].iscom) {
-            Hu3DModelAttrReset(charModelID[smPlayerCfg[i].character], 0x1);
+            Hu3DModelAttrReset(charModelID[smPlayerCfg[i].character], HU3D_ATTR_DISPOFF);
             Hu3DModelCameraSet(charModelID[smPlayerCfg[i].character], cameraMaskTbl[i]);
         }
     }
