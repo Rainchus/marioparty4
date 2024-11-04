@@ -135,7 +135,7 @@ void fn_1_3400(omObjData *object)
     Hu3DModelLayerSet(object->model[3], 3);
     object->model[2] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M417, 2));
     Hu3DModelLayerSet(object->model[2], 5);
-    Hu3DModelAttrSet(object->model[2], 0x40000001);
+    Hu3DModelAttrSet(object->model[2], HU3D_MOTATTR_LOOP);
     Hu3DMotionSpeedSet(object->model[2], 0.7f);
     object->data = fn_1_3574(object, 5, 3);
     HuAudFXPlay(1480);

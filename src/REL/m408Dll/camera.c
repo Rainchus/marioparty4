@@ -191,8 +191,8 @@ void fn_1_8FAC(omObjData *object)
         Center.z + (cosd(CRot.y) * cosd(CRot.x) * CZoom));
     fn_1_BDE0();
     if (lbl_1_bss_10C == 5) {
-        Hu3DModelAttrSet(object->model[0], 1);
-        Hu3DModelAttrSet(object->model[1], 1);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
         lbl_1_bss_10C = 5;
         object->func = fn_1_9514;
     }
@@ -208,7 +208,7 @@ void fn_1_9514(omObjData *object)
         object->work[2] = 0;
     }
     if (fn_1_6878() >= 4) {
-        Hu3DModelAttrReset(object->model[0], 1);
+        Hu3DModelAttrReset(object->model[0], HU3D_ATTR_DISPOFF);
     }
     omSetTra(object, Center.x + (sind(CRot.y) * cosd(CRot.x) * CZoom), Center.y + (-sind(CRot.x) * CZoom) - 1000,
         Center.z + (cosd(CRot.y) * cosd(CRot.x) * CZoom));
@@ -235,7 +235,7 @@ void fn_1_9770(omObjData *object)
     object->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(Work99C8), MEMORY_DEFAULT_NUM);
     temp_r31 = object->data;
     object->model[0] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M408, 0x0A));
-    Hu3DModelAttrSet(object->model[0], 0x40000001);
+    Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
     Hu3DMotionSpeedSet(object->model[0], 3.0f);
     Hu3DModelShadowSet(object->model[0]);
     object->func = fn_1_99C8;
@@ -429,8 +429,8 @@ void fn_1_99C8(omObjData *object)
 
 void fn_1_A334(omObjData *object)
 {
-    Hu3DModelAttrSet(object->model[1], 1);
-    Hu3DModelAttrSet(object->model[0], 1);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
 }
 
 void fn_1_A37C(ModelData *model, ParticleData *particle, Mtx matrix)

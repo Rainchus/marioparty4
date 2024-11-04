@@ -1,5 +1,5 @@
-#include "REL/m403Dll.h"
 #include "REL/executor.h"
+#include "REL/m403Dll.h"
 #include "game/audio.h"
 #include "game/chrman.h"
 #include "game/data.h"
@@ -165,7 +165,8 @@ static Vec lbl_1_data_20_unused = { 0.0f, 4000.0f, -2000.0f };
 static Vec lbl_1_data_2C_unused = { 0.0f, 1.0f, 0.0f };
 static u8 lbl_1_data_38_unused[0xC] = { 0 };
 
-void ObjectSetup(void) {
+void ObjectSetup(void)
+{
     LightData *var_r28;
     Process *temp_r31;
     omObjData *var_r29;
@@ -218,12 +219,14 @@ void ObjectSetup(void) {
     }
 }
 
-static void fn_1_424(omObjData *arg0) {
+static void fn_1_424(omObjData *arg0)
+{
     lbl_1_bss_30 = 0;
     arg0->func = fn_1_444;
 }
 
-static void fn_1_444(omObjData *arg0) {
+static void fn_1_444(omObjData *arg0)
+{
     Vec sp2C;
     Vec sp20;
     Vec sp14;
@@ -296,18 +299,12 @@ static void fn_1_444(omObjData *arg0) {
 
 static s32 lbl_1_data_68 = -1;
 
-s32 lbl_1_data_6C[] = {
-    DATA_MAKE_NUM(DATADIR_MGCONST, 0),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 1),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 2),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 3),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 4),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 5),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 6),
-    DATA_MAKE_NUM(DATADIR_MGCONST, 7)
-};
+s32 lbl_1_data_6C[] = { DATA_MAKE_NUM(DATADIR_MGCONST, 0), DATA_MAKE_NUM(DATADIR_MGCONST, 1), DATA_MAKE_NUM(DATADIR_MGCONST, 2),
+    DATA_MAKE_NUM(DATADIR_MGCONST, 3), DATA_MAKE_NUM(DATADIR_MGCONST, 4), DATA_MAKE_NUM(DATADIR_MGCONST, 5), DATA_MAKE_NUM(DATADIR_MGCONST, 6),
+    DATA_MAKE_NUM(DATADIR_MGCONST, 7) };
 
-static void fn_1_82C(omObjData *arg0) {
+static void fn_1_82C(omObjData *arg0)
+{
     Vec sp1C;
     Vec sp10;
     float var_f31;
@@ -323,7 +320,8 @@ static void fn_1_82C(omObjData *arg0) {
                 lbl_1_bss_2A = 1800;
                 lbl_1_bss_2C = MGSeqStartCreate();
                 MGSeqPosSet(lbl_1_bss_2C, 320.0f, 240.0f);
-            } else if (MGSeqStatGet(lbl_1_bss_2C) == 0) {
+            }
+            else if (MGSeqStatGet(lbl_1_bss_2C) == 0) {
                 lbl_1_bss_2C = -1;
                 lbl_1_bss_30++;
                 lbl_1_bss_28 = 0;
@@ -357,10 +355,11 @@ static void fn_1_82C(omObjData *arg0) {
         case 6:
             var_r29 = 0;
             if (lbl_1_bss_2 != 0) {
-                if (((Unkm403Struct_01*) lbl_1_bss_34[lbl_1_bss_4]->data)->unk07 == 0 && fn_1_8264() == 0) {
+                if (((Unkm403Struct_01 *)lbl_1_bss_34[lbl_1_bss_4]->data)->unk07 == 0 && fn_1_8264() == 0) {
                     var_r29++;
                 }
-            } else if (lbl_1_data_0 <= 1 && fn_1_8264() == 0) {
+            }
+            else if (lbl_1_data_0 <= 1 && fn_1_8264() == 0) {
                 var_r29++;
             }
             if (lbl_1_bss_2 != 0) {
@@ -384,7 +383,7 @@ static void fn_1_82C(omObjData *arg0) {
                 if (lbl_1_bss_2 == 0) {
                     if (lbl_1_data_0 != 0) {
                         for (i = 0; i < 4; i++) {
-                            if (((Unkm403Struct_01*) lbl_1_bss_34[i]->data)->unk07 != 0) {
+                            if (((Unkm403Struct_01 *)lbl_1_bss_34[i]->data)->unk07 != 0) {
                                 break;
                             }
                         }
@@ -432,12 +431,13 @@ static void fn_1_82C(omObjData *arg0) {
                 if (lbl_1_data_0 == 0) {
                     lbl_1_bss_2C = MGSeqDrawCreate();
                     HuAudSStreamPlay(4);
-                } else {
+                }
+                else {
                     for (i = 0; i < 4; i++) {
                         sp8[i] = -1;
                     }
                     for (i = 0, var_r27 = 0; i < 4; i++) {
-                        if (((Unkm403Struct_01*) lbl_1_bss_34[i]->data)->unk07 != 0) {
+                        if (((Unkm403Struct_01 *)lbl_1_bss_34[i]->data)->unk07 != 0) {
                             GWPlayerCoinWinAdd(i, 10);
                             sp8[var_r27++] = GWPlayerCfg[i].character;
                         }
@@ -463,7 +463,8 @@ static void fn_1_82C(omObjData *arg0) {
     }
 }
 
-static void fn_1_1214(omObjData *arg0) {
+static void fn_1_1214(omObjData *arg0)
+{
     if (WipeStatGet() == 0) {
         fn_1_676C();
         CharModelKill(-1);
@@ -474,7 +475,8 @@ static void fn_1_1214(omObjData *arg0) {
     }
 }
 
-static void fn_1_1274(omObjData *arg0) {
+static void fn_1_1274(omObjData *arg0)
+{
     Hu3DLightAllKill();
     lbl_1_bss_18[0] = Hu3DGLightCreateV(&lbl_1_data_4, &lbl_1_data_10, &lbl_1_data_1C);
     Hu3DGLightStaticSet(lbl_1_bss_18[0], 1);
@@ -489,7 +491,8 @@ static void fn_1_1274(omObjData *arg0) {
     arg0->func = fn_1_1460;
 }
 
-static void fn_1_1460(omObjData *arg0) {
+static void fn_1_1460(omObjData *arg0)
+{
     s8 sp11[] = { 1, 0, 2, 1, 0, 3, 2, 1, 0 };
     s8 sp8[] = { 1, 1, 2, 2, 2, 3, 3, 3, 3 };
     s32 var_r30;
@@ -538,7 +541,8 @@ static void fn_1_1460(omObjData *arg0) {
     }
 }
 
-static void fn_1_16D8(omObjData *arg0) {
+static void fn_1_16D8(omObjData *arg0)
+{
     Unkm403Struct_00 *temp_r3;
 
     temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(*temp_r3), MEMORY_DEFAULT_NUM);
@@ -555,7 +559,8 @@ static void fn_1_16D8(omObjData *arg0) {
     arg0->func = fn_1_17DC;
 }
 
-static void fn_1_17DC(omObjData *arg0) {
+static void fn_1_17DC(omObjData *arg0)
+{
     Unkm403Struct_00 *temp_r31;
     float temp_f31;
 
@@ -572,7 +577,8 @@ static void fn_1_17DC(omObjData *arg0) {
             temp_r31->unk10.y = temp_r31->unk28.y + temp_f31 * (temp_r31->unk40.y - temp_r31->unk28.y);
             temp_r31->unk10.z = temp_r31->unk28.z + temp_f31 * (temp_r31->unk40.z - temp_r31->unk28.z);
             temp_r31->unk130 = temp_r31->unk134 + temp_f31 * (temp_r31->unk138 - temp_r31->unk134);
-        } else {
+        }
+        else {
             fn_1_57E0(2.0f * temp_f31, &temp_r31->unk04, temp_r31->unkF4, &temp_r31->unk64, temp_r31->unk88, 3);
             fn_1_57E0(2.0f * temp_f31, &temp_r31->unk10, temp_r31->unk100, &temp_r31->unkAC, temp_r31->unkD0, 3);
             temp_r31->unk130 = fn_1_52AC(2.0f * temp_f31, temp_r31->unk124, temp_r31->unk10C, temp_r31->unk118, 3);
@@ -587,7 +593,8 @@ static void fn_1_17DC(omObjData *arg0) {
     CZoom = temp_r31->unk130;
 }
 
-static void fn_1_1A50(float arg0, Vec *arg1, Vec *arg2, float arg3) {
+static void fn_1_1A50(float arg0, Vec *arg1, Vec *arg2, float arg3)
+{
     Unkm403Struct_00 *temp_r31;
 
     temp_r31 = lbl_1_bss_48->data;
@@ -606,7 +613,8 @@ static void fn_1_1A50(float arg0, Vec *arg1, Vec *arg2, float arg3) {
     temp_r31->unk138 = arg3;
 }
 
-static void fn_1_1AF0(float arg0, Vec *arg1, Vec *arg2, float arg3, Vec *arg4, Vec *arg5, float arg6) {
+static void fn_1_1AF0(float arg0, Vec *arg1, Vec *arg2, float arg3, Vec *arg4, Vec *arg5, float arg6)
+{
     Unkm403Struct_00 *temp_r31;
 
     temp_r31 = lbl_1_bss_48->data;
@@ -646,37 +654,26 @@ static void fn_1_1AF0(float arg0, Vec *arg1, Vec *arg2, float arg3, Vec *arg4, V
     fn_1_4FF4(temp_r31->unk124, temp_r31->unk10C, temp_r31->unk118, 3);
 }
 
-static void fn_1_1DA8(float arg0) {
+static void fn_1_1DA8(float arg0)
+{
     Unkm403Struct_00 *temp_r31;
 
     temp_r31 = lbl_1_bss_48->data;
     temp_r31->unk140 = arg0;
 }
 
-static s32 lbl_1_data_C4[] = {
-    0, 2, 3, 8, 10, 9, 23, 24
-};
+static s32 lbl_1_data_C4[] = { 0, 2, 3, 8, 10, 9, 23, 24 };
 
-static Vec lbl_1_data_E4[] = {
-    { -300.0f, 2200.0f, 0.0f },
-    { -100.0f, 2200.0f, 0.0f },
-    {  100.0f, 2200.0f, 0.0f },
-    {  300.0f, 2200.0f, 0.0f }
-};
+static Vec lbl_1_data_E4[] = { { -300.0f, 2200.0f, 0.0f }, { -100.0f, 2200.0f, 0.0f }, { 100.0f, 2200.0f, 0.0f }, { 300.0f, 2200.0f, 0.0f } };
 
-static float lbl_1_data_114[] = {
-    40.0f,  40.0f, 40.0f, 40.0f,
-    40.0f, 100.0f, 40.0f, 80.0f
-};
+static float lbl_1_data_114[] = { 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 100.0f, 40.0f, 80.0f };
 
-static float lbl_1_data_134[] = {
-    160.0f, 160.0f, 180.0f, 160.0f,
-    160.0f, 180.0f, 180.0f, 200.0f
-};
+static float lbl_1_data_134[] = { 160.0f, 160.0f, 180.0f, 160.0f, 160.0f, 180.0f, 180.0f, 200.0f };
 
 static u32 lbl_1_data_154 = 0x41C64E6D;
 
-static void fn_1_1DD0(omObjData *arg0) {
+static void fn_1_1DD0(omObjData *arg0)
+{
     Unkm403Struct_01 *temp_r3;
     s32 temp_r27;
     s32 i;
@@ -715,7 +712,7 @@ static void fn_1_1DD0(omObjData *arg0) {
     }
     temp_r28 = CharModelCreate(temp_r3->unk01, 4);
     arg0->model[0] = temp_r28;
-    Hu3DModelAttrSet(temp_r28, 0x40000001);
+    Hu3DModelAttrSet(temp_r28, HU3D_MOTATTR_LOOP);
     Hu3DModelShadowSet(temp_r28);
     for (i = 0; i < 8; i++) {
         arg0->motion[i] = CharModelMotionCreate(temp_r3->unk01, lbl_1_data_C4[i]);
@@ -730,7 +727,8 @@ static void fn_1_1DD0(omObjData *arg0) {
     arg0->func = fn_1_2158;
 }
 
-static void fn_1_2158(omObjData *arg0) {
+static void fn_1_2158(omObjData *arg0)
+{
     Unkm403Struct_01 *temp_r31;
     s32 sp8;
 
@@ -747,9 +745,9 @@ static void fn_1_2158(omObjData *arg0) {
             }
             /* fallthrough */
         case 1:
-                temp_r31->unk18 = 3;
-                temp_r31->unk48 = 0.0f;
-                temp_r31->unk0C = 0;
+            temp_r31->unk18 = 3;
+            temp_r31->unk48 = 0.0f;
+            temp_r31->unk0C = 0;
             break;
         case 5:
             arg0->func = fn_1_22A4;
@@ -763,7 +761,8 @@ static void fn_1_2158(omObjData *arg0) {
     fn_1_2FDC(arg0);
 }
 
-static void fn_1_22A4(omObjData *arg0) {
+static void fn_1_22A4(omObjData *arg0)
+{
     Unkm403Struct_01 *temp_r31;
     s32 temp_r29;
     s32 temp_r28;
@@ -774,13 +773,15 @@ static void fn_1_22A4(omObjData *arg0) {
         if (lbl_1_bss_30 == 6 && !(temp_r31->unk07 & 2)) {
             if (temp_r31->unk05 != 0) {
                 fn_1_2598(arg0);
-            } else {
+            }
+            else {
                 temp_r31->unk10 = HuPadStkX[temp_r31->unk04];
                 temp_r31->unk12 = HuPadStkY[temp_r31->unk04];
                 temp_r31->unk14 = HuPadBtnDown[temp_r31->unk04];
                 temp_r31->unk16 = HuPadBtn[temp_r31->unk04];
             }
-        } else {
+        }
+        else {
             temp_r31->unk10 = temp_r31->unk12 = 0;
             temp_r31->unk14 = temp_r31->unk16 = 0;
         }
@@ -807,7 +808,7 @@ static void fn_1_22A4(omObjData *arg0) {
                 HuAudFXPlay(0x523);
                 temp_r31->unk07 = 0;
                 Hu3DModelShadowReset(temp_r29);
-                Hu3DModelAttrSet(temp_r29, 1);
+                Hu3DModelAttrSet(temp_r29, HU3D_ATTR_DISPOFF);
                 lbl_1_data_0--;
                 temp_r28 = fn_1_400C(DATA_MAKE_NUM(DATADIR_M403, 19), 100, fn_1_40A8);
                 Hu3DModelPosSet(temp_r28, temp_r31->unk2C.x, temp_r31->unk2C.y, temp_r31->unk2C.z);
@@ -816,7 +817,8 @@ static void fn_1_22A4(omObjData *arg0) {
         }
         if (fn_1_8264() != 0) {
             temp_r31->unkA0 = 0;
-        } else if (!(temp_r31->unk07 & 2) && temp_r31->unkA0 == 0) {
+        }
+        else if (!(temp_r31->unk07 & 2) && temp_r31->unkA0 == 0) {
             omVibrate(temp_r31->unk00, 12, 6, 6);
             temp_r31->unkA0 = 1;
         }
@@ -824,7 +826,8 @@ static void fn_1_22A4(omObjData *arg0) {
     }
 }
 
-static void fn_1_2598(omObjData *arg0) {
+static void fn_1_2598(omObjData *arg0)
+{
     Vec sp38[6];
     Vec sp14;
     Vec sp8;
@@ -867,7 +870,7 @@ static void fn_1_2598(omObjData *arg0) {
             break;
         case 1:
             temp_r31->unk5C = 2;
-            temp_r31->unk5E = (s32) (60.0f * (1.2f - 0.2f * temp_r28) * (fn_1_4528() / 65536.0f));
+            temp_r31->unk5E = (s32)(60.0f * (1.2f - 0.2f * temp_r28) * (fn_1_4528() / 65536.0f));
             temp_r31->unk60 = 500.0f * ((fn_1_4528() - 0x8000) / 32768.0f);
             temp_r31->unk64 = 200.0f * ((fn_1_4528() - 0x8000) / 32768.0f);
             var_r27 = temp_r31->unk10;
@@ -880,10 +883,12 @@ static void fn_1_2598(omObjData *arg0) {
             var_f31 = fn_1_59F4(&sp8);
             if (var_f31 < 20.0f) {
                 temp_r31->unk5C = 3;
-            } else {
+            }
+            else {
                 if (var_f31 >= 100.0f) {
                     var_f28 = 0.8f;
-                } else {
+                }
+                else {
                     var_f28 = 0.4f;
                 }
                 var_f30 = fn_1_457C(temp_r31->unk3C, atan2d(sp8.x, sp8.z), var_f28);
@@ -895,16 +900,20 @@ static void fn_1_2598(omObjData *arg0) {
                     if (temp_r31->unk5E == 0) {
                         temp_r31->unk5E = -1;
                     }
-                } else if (temp_r31->unk5E >= 0) {
+                }
+                else if (temp_r31->unk5E >= 0) {
                     if (temp_r31->unk5E == 0) {
                         if (var_f31 < 150.0f && temp_r31->unk0E != 0) {
                             temp_r31->unk5C = 3;
-                        } else if ((s32) ((temp_r28 + 2) * (fn_1_4528() / 65536.0f)) != 0 && var_r22 == 0) {
+                        }
+                        else if ((s32)((temp_r28 + 2) * (fn_1_4528() / 65536.0f)) != 0 && var_r22 == 0) {
                             temp_r31->unk5C = 4;
-                        } else {
+                        }
+                        else {
                             temp_r31->unk5C = 1;
                         }
-                    } else {
+                    }
+                    else {
                         temp_r31->unk5E--;
                     }
                 }
@@ -916,16 +925,19 @@ static void fn_1_2598(omObjData *arg0) {
             sp8.z = temp_r31->unk64 - temp_r31->unk2C.z;
             if (fn_1_59F4(&sp8) >= 30.000002f && temp_r31->unk0E == 0) {
                 temp_r31->unk5C = 2;
-            } else if (fn_1_8264() == 0) {
+            }
+            else if (fn_1_8264() == 0) {
                 temp_r31->unk5C = 0;
-            } else {
+            }
+            else {
                 if (temp_r31->unk5E > 0) {
                     temp_r31->unk5E--;
                 }
                 if (temp_r31->unk5E == 0) {
-                    if ((s32) ((temp_r28 + 2) * (fn_1_4528() / 65536.0f)) != 0 && var_r22 == 0) {
+                    if ((s32)((temp_r28 + 2) * (fn_1_4528() / 65536.0f)) != 0 && var_r22 == 0) {
                         temp_r31->unk5C = 4;
-                    } else {
+                    }
+                    else {
                         temp_r31->unk5C = 1;
                     }
                 }
@@ -972,7 +984,8 @@ static void fn_1_2598(omObjData *arg0) {
     temp_r31->unk16 = var_r20;
 }
 
-static void fn_1_2FDC(omObjData *arg0) {
+static void fn_1_2FDC(omObjData *arg0)
+{
     float var_f29;
     Unkm403Struct_01 *temp_r31;
     s32 temp_r25;
@@ -1000,7 +1013,8 @@ static void fn_1_2FDC(omObjData *arg0) {
                 if (temp_r31->unk1C >= 6.0f) {
                     var_r28 = 2;
                     var_r27 = 1;
-                } else {
+                }
+                else {
                     var_r28 = 1;
                     var_r27 = 1;
                 }
@@ -1012,7 +1026,8 @@ static void fn_1_2FDC(omObjData *arg0) {
                     temp_r31->unk24 -= 0.5f * temp_r31->unk28;
                 }
                 temp_r31->unk1C *= 1.0 + 0.25 * cosd(90.0f * (temp_r31->unk24 / (0.5f * temp_r31->unk28)));
-            } else {
+            }
+            else {
                 temp_r31->unk24 = 0.0f;
                 temp_r31->unk1C = 0.0f;
                 var_r28 = 0;
@@ -1024,7 +1039,8 @@ static void fn_1_2FDC(omObjData *arg0) {
             var_r27 = 0;
             if (Hu3DData[temp_r25].unk_0C == -1 && CharModelMotionEndCheck(temp_r31->unk01)) {
                 temp_r31->unk48 += -2.4333334f;
-            } else {
+            }
+            else {
                 temp_r31->unk48 = 0.0f;
             }
             if (temp_r31->unk0C != 0) {
@@ -1033,7 +1049,8 @@ static void fn_1_2FDC(omObjData *arg0) {
                     temp_r31->unk0D = 0;
                     var_r28 = 5;
                     var_r27 = 0;
-                } else {
+                }
+                else {
                     temp_r31->unk48 *= -0.1f;
                     temp_r31->unk0C = 0;
                     var_r28 = 4;
@@ -1062,9 +1079,10 @@ static void fn_1_2FDC(omObjData *arg0) {
     }
     if (temp_r31->unk07 & 4) {
         if (temp_r31->unk0A & 2) {
-            Hu3DModelAttrSet(temp_r25, 1);
-        } else {
-            Hu3DModelAttrReset(temp_r25, 1);
+            Hu3DModelAttrSet(temp_r25, HU3D_ATTR_DISPOFF);
+        }
+        else {
+            Hu3DModelAttrReset(temp_r25, HU3D_ATTR_DISPOFF);
         }
         if (--temp_r31->unk0A == 0) {
             temp_r31->unk07 &= ~4;
@@ -1087,7 +1105,8 @@ static void fn_1_2FDC(omObjData *arg0) {
     omSetRot(arg0, temp_r31->unk38, temp_r31->unk3C, temp_r31->unk40);
 }
 
-static void fn_1_3800(void) {
+static void fn_1_3800(void)
+{
     s32 var_r29;
     s32 i;
     Unkm403Struct_01 *temp_r30;
@@ -1104,13 +1123,14 @@ static void fn_1_3800(void) {
     }
 }
 
-static s32 fn_1_3894(void) {
+static s32 fn_1_3894(void)
+{
     Vec sp14[4];
     Vec sp8;
     float var_f31;
     float var_f30;
     s32 var_r26;
-    omObjData* temp_r25;
+    omObjData *temp_r25;
     Unkm403Struct_01 *temp_r28;
     Unkm403Struct_01 *temp_r27;
     Unkm403Struct_01 *temp_r31;
@@ -1166,7 +1186,8 @@ static s32 fn_1_3894(void) {
     return var_r26;
 }
 
-static void fn_1_3B80(omObjData *arg0) {
+static void fn_1_3B80(omObjData *arg0)
+{
     s32 sp8[4];
     s32 var_r30;
     s32 i;
@@ -1178,22 +1199,24 @@ static void fn_1_3B80(omObjData *arg0) {
         for (i = 0; i < 4; i++) {
             fn_1_3E4C(lbl_1_bss_34[i]);
         }
-    } else {
+    }
+    else {
         for (i = 0, var_r30 = 0; i < 4; i++) {
-            ((Unkm403Struct_01*) lbl_1_bss_34[i]->data)->unk9C = 0;
-            if (((Unkm403Struct_01*) lbl_1_bss_34[i]->data)->unk07 != 0) {
+            ((Unkm403Struct_01 *)lbl_1_bss_34[i]->data)->unk9C = 0;
+            if (((Unkm403Struct_01 *)lbl_1_bss_34[i]->data)->unk07 != 0) {
                 sp8[var_r30++] = i;
             }
         }
         if (var_r30 != 0) {
-            i = sp8[(s32) (var_r30 * (fn_1_4528() / 65536.0f))];
-            ((Unkm403Struct_01*) lbl_1_bss_34[i]->data)->unk9C = 1;
+            i = sp8[(s32)(var_r30 * (fn_1_4528() / 65536.0f))];
+            ((Unkm403Struct_01 *)lbl_1_bss_34[i]->data)->unk9C = 1;
         }
     }
     fn_1_3800();
 }
 
-static void fn_1_3D6C(Vec *arg0, Vec *arg1) {
+static void fn_1_3D6C(Vec *arg0, Vec *arg1)
+{
     Vec sp18[6];
     Vec spC;
     float var_f31;
@@ -1214,7 +1237,8 @@ static void fn_1_3D6C(Vec *arg0, Vec *arg1) {
     }
 }
 
-static void fn_1_3E4C(omObjData *arg0) {
+static void fn_1_3E4C(omObjData *arg0)
+{
     Vec sp8;
     float var_f30;
     float var_f31;
@@ -1232,14 +1256,16 @@ static void fn_1_3E4C(omObjData *arg0) {
                 if (fn_1_86A0(&temp_r31->unk2C, &sp8) != 0) {
                     temp_r31->unk2C.x = sp8.x;
                     temp_r31->unk2C.z = sp8.z;
-                } else {
+                }
+                else {
                     if (fn_1_7F78(temp_r31->unk2C.x, temp_r31->unk2C.z) - 10.0f < 100.0f) {
                         temp_r31->unk07 |= 2;
                     }
                     var_f31 = var_f30 / lbl_1_data_134[temp_r31->unk01];
                 }
             }
-        } else {
+        }
+        else {
             var_f31 = var_f30 / lbl_1_data_134[temp_r31->unk01];
         }
         if (arg0->scale.y < var_f31) {
@@ -1249,7 +1275,8 @@ static void fn_1_3E4C(omObjData *arg0) {
     }
 }
 
-static s16 fn_1_400C(s32 arg0, s16 arg1, ParticleHook arg2) {
+static s16 fn_1_400C(s32 arg0, s16 arg1, ParticleHook arg2)
+{
     AnimData *var_r29;
     ParticleData *temp_r31;
     s32 temp_r30;
@@ -1263,7 +1290,8 @@ static s16 fn_1_400C(s32 arg0, s16 arg1, ParticleHook arg2) {
     return temp_r30;
 }
 
-static void fn_1_40A8(ModelData *model, ParticleData *particle, Mtx matrix) {
+static void fn_1_40A8(ModelData *model, ParticleData *particle, Mtx matrix)
+{
     float temp_f31;
     float temp_f30;
     float temp_f29;
@@ -1311,47 +1339,55 @@ static void fn_1_40A8(ModelData *model, ParticleData *particle, Mtx matrix) {
     DCFlushRange(particle->unk_48, particle->unk_30 * sizeof(HsfanimStruct01));
 }
 
-static s32 fn_1_4528(void) {
+static s32 fn_1_4528(void)
+{
     lbl_1_data_154 *= 0x41C64E6D;
     lbl_1_data_154 += 0x3039;
     return lbl_1_data_154 >> 16;
 }
 
-static float fn_1_457C(float arg0, float arg1, float arg2) {
+static float fn_1_457C(float arg0, float arg1, float arg2)
+{
     float var_f31;
 
     if (arg0 > 180.0f) {
         arg0 -= 360.0f;
-    } else if (arg0 <= -180.0f) {
+    }
+    else if (arg0 <= -180.0f) {
         arg0 += 360.0f;
     }
     if (arg1 > 180.0f) {
         arg1 -= 360.0f;
-    } else if (arg1 <= -180.0f) {
+    }
+    else if (arg1 <= -180.0f) {
         arg1 += 360.0f;
     }
     var_f31 = arg0 - arg1;
     if (var_f31 > 180.0f) {
         var_f31 -= 360.0f;
-    } else if (var_f31 <= -180.0f) {
+    }
+    else if (var_f31 <= -180.0f) {
         var_f31 += 360.0f;
     }
     arg0 = arg1 + var_f31 * arg2;
     if (arg0 > 180.0f) {
         arg0 -= 360.0f;
-    } else if (arg0 <= -180.0f) {
+    }
+    else if (arg0 <= -180.0f) {
         arg0 += 360.0f;
     }
     return arg0;
 }
 
-static void fn_1_46E4(Mtx arg0, float arg1, float arg2, float arg3) {
+static void fn_1_46E4(Mtx arg0, float arg1, float arg2, float arg3)
+{
     Mtx sp38;
     Mtx sp8;
 
     if (arg3 != 0.0f) {
         PSMTXRotRad(arg0, 'Z', MTXDegToRad(arg3));
-    } else {
+    }
+    else {
         PSMTXIdentity(arg0);
     }
     if (arg1 != 0.0f) {
@@ -1364,7 +1400,8 @@ static void fn_1_46E4(Mtx arg0, float arg1, float arg2, float arg3) {
     }
 }
 
-static void fn_1_4804(float *arg0, float *arg1) {
+static void fn_1_4804(float *arg0, float *arg1)
+{
     float temp_f29;
     float var_f28;
     double var_f30;
@@ -1374,7 +1411,8 @@ static void fn_1_4804(float *arg0, float *arg1) {
     temp_f29 = -arg0[2];
     if (1.0 - temp_f29 * temp_f29 < 0.0) {
         var_f30 = -(1.0 - temp_f29 * temp_f29);
-    } else {
+    }
+    else {
         var_f30 = 1.0 - temp_f29 * temp_f29;
     }
     var_f28 = sqrtf(var_f30);
@@ -1386,7 +1424,8 @@ static void fn_1_4804(float *arg0, float *arg1) {
     arg1[1] = atan2d(var_f28, temp_f29);
 }
 
-static float fn_1_4B10(float arg0, float arg1, float arg2, float arg3) {
+static float fn_1_4B10(float arg0, float arg1, float arg2, float arg3)
+{
     float temp_f31;
     float var_f30;
 
@@ -1395,7 +1434,8 @@ static float fn_1_4B10(float arg0, float arg1, float arg2, float arg3) {
     return var_f30;
 }
 
-static void fn_1_4B88(float *arg0, float *arg1, float *arg2, float *arg3, float arg4) {
+static void fn_1_4B88(float *arg0, float *arg1, float *arg2, float *arg3, float arg4)
+{
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -1403,12 +1443,14 @@ static void fn_1_4B88(float *arg0, float *arg1, float *arg2, float *arg3, float 
     }
 }
 
-static float fn_1_4CA4(float arg0, float arg1, float arg2, float arg3) {
+static float fn_1_4CA4(float arg0, float arg1, float arg2, float arg3)
+{
     float var_f31 = 2.0 * ((arg0 - 1.0) * arg1 + (1.0 - 2.0 * arg0) * arg2 + arg0 * arg3);
     return var_f31;
 }
 
-static void fn_1_4D1C(float *arg0, float *arg1, float *arg2, float *arg3, float arg4) {
+static void fn_1_4D1C(float *arg0, float *arg1, float *arg2, float *arg3, float arg4)
+{
     float spC[3];
     float var_f29;
     s32 i;
@@ -1422,14 +1464,16 @@ static void fn_1_4D1C(float *arg0, float *arg1, float *arg2, float *arg3, float 
         for (i = 0; i < 3; i++) {
             *(arg3++) = var_f29 * spC[i];
         }
-    } else {
+    }
+    else {
         *(arg3++) = 0.0f;
         *(arg3++) = 0.0f;
         *(arg3++) = 1.0f;
     }
 }
 
-static void fn_1_4FF4(float *arg0, float *arg1, float *arg2, s32 arg3) {
+static void fn_1_4FF4(float *arg0, float *arg1, float *arg2, s32 arg3)
+{
     float sp48[16];
     float sp8[16];
     double temp_f31;
@@ -1441,7 +1485,8 @@ static void fn_1_4FF4(float *arg0, float *arg1, float *arg2, s32 arg3) {
         sp48[i] = arg0[i + 1] - arg0[i];
         if (sp48[i] == 0.0f) {
             sp8[i + 1] = 0.0f;
-        } else {
+        }
+        else {
             sp8[i + 1] = (arg1[i + 1] - arg1[i]) / sp48[i];
         }
     }
@@ -1456,13 +1501,15 @@ static void fn_1_4FF4(float *arg0, float *arg1, float *arg2, s32 arg3) {
     for (i = arg3 - 2; i > 0; i--) {
         if (sp8[i] == 0.0f) {
             arg2[i] = 0.0f;
-        } else {
+        }
+        else {
             arg2[i] = (arg2[i] - sp48[i] * arg2[i + 1]) / sp8[i];
         }
     }
 }
 
-static float fn_1_52AC(float arg0, float *arg1, float *arg2, float *arg3, s32 arg4) {
+static float fn_1_52AC(float arg0, float *arg1, float *arg2, float *arg3, s32 arg4)
+{
     float temp_f31;
     float temp_f30;
     float var_f29;
@@ -1472,14 +1519,18 @@ static float fn_1_52AC(float arg0, float *arg1, float *arg2, float *arg3, s32 ar
     arg0 -= temp_r31;
     temp_f31 = arg1[temp_r31 + 1] - arg1[temp_r31];
     temp_f30 = temp_f31 * arg0;
-    var_f29 = arg2[temp_r31] + temp_f30 * (temp_f30 * (3.0f * arg3[temp_r31] + temp_f30 * (arg3[temp_r31 + 1] - arg3[temp_r31]) / temp_f31) + ((arg2[temp_r31 + 1] - arg2[temp_r31]) / temp_f31 - temp_f31 * (2.0f * arg3[temp_r31] + arg3[temp_r31 + 1])));
+    var_f29 = arg2[temp_r31]
+        + temp_f30
+            * (temp_f30 * (3.0f * arg3[temp_r31] + temp_f30 * (arg3[temp_r31 + 1] - arg3[temp_r31]) / temp_f31)
+                + ((arg2[temp_r31 + 1] - arg2[temp_r31]) / temp_f31 - temp_f31 * (2.0f * arg3[temp_r31] + arg3[temp_r31 + 1])));
     if (temp_f31 == 0.0f) {
         var_f29 = arg2[temp_r31];
     }
     return var_f29;
 }
 
-static void fn_1_5400(float *arg0, Vec *arg1, float arg2[][3], s32 arg3) {
+static void fn_1_5400(float *arg0, Vec *arg1, float arg2[][3], s32 arg3)
+{
     Vec sp8;
     float temp_f31;
     float spD4[16];
@@ -1494,7 +1545,7 @@ static void fn_1_5400(float *arg0, Vec *arg1, float arg2[][3], s32 arg3) {
     }
     for (j = 0; j < 3; j++) {
         for (i = 0; i < arg3; i++) {
-            spD4[i] = ((float*) &arg1[i])[j];
+            spD4[i] = ((float *)&arg1[i])[j];
         }
         fn_1_4FF4(arg0, spD4, sp94, arg3);
         for (i = 0; i < arg3; i++) {
@@ -1503,7 +1554,8 @@ static void fn_1_5400(float *arg0, Vec *arg1, float arg2[][3], s32 arg3) {
     }
 }
 
-static void fn_1_57E0(float arg0, Vec *arg1, float *arg2, Vec *arg3, float arg4[][3], s32 arg5) {
+static void fn_1_57E0(float arg0, Vec *arg1, float *arg2, Vec *arg3, float arg4[][3], s32 arg5)
+{
     float sp48[16];
     float sp8[16];
     s32 i;
@@ -1511,14 +1563,15 @@ static void fn_1_57E0(float arg0, Vec *arg1, float *arg2, Vec *arg3, float arg4[
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < arg5; j++) {
-            sp48[j] = ((float*) &arg3[j])[i];
+            sp48[j] = ((float *)&arg3[j])[i];
             sp8[j] = arg4[j][i];
         }
-        ((float*) arg1)[i] = fn_1_52AC(arg0, arg2, sp48, sp8, arg5);
+        ((float *)arg1)[i] = fn_1_52AC(arg0, arg2, sp48, sp8, arg5);
     }
 }
 
-static float fn_1_59F4(Vec *arg0) {
+static float fn_1_59F4(Vec *arg0)
+{
     float var_f30;
     float var_f29;
 
@@ -1529,31 +1582,36 @@ static float fn_1_59F4(Vec *arg0) {
         arg0->x *= var_f29;
         arg0->y *= var_f29;
         arg0->z *= var_f29;
-    } else {
+    }
+    else {
         arg0->x = arg0->y = arg0->z = 0.0f;
     }
     return var_f30;
 }
 
-static void fn_1_5B8C(Vec arg0, Vec arg1, Vec *arg2, float arg3) {
+static void fn_1_5B8C(Vec arg0, Vec arg1, Vec *arg2, float arg3)
+{
     if (arg3 <= 0.0f) {
         arg2->x = arg0.x;
         arg2->y = arg0.y;
         arg2->z = arg0.z;
         arg3 = 0.0f;
-    } else if (arg3 >= 1.0f) {
+    }
+    else if (arg3 >= 1.0f) {
         arg2->x = arg0.x + arg1.x;
         arg2->y = arg0.y + arg1.y;
         arg2->z = arg0.z + arg1.z;
         arg3 = 1.0f;
-    } else {
+    }
+    else {
         arg2->x = arg0.x + arg3 * arg1.x;
         arg2->y = arg0.y + arg3 * arg1.y;
         arg2->z = arg0.z + arg3 * arg1.z;
     }
 }
 
-static float fn_1_5C64(Vec arg0, Vec arg1, Vec arg2) {
+static float fn_1_5C64(Vec arg0, Vec arg1, Vec arg2)
+{
     float var_f31;
     float temp_f30;
 
@@ -1565,7 +1623,8 @@ static float fn_1_5C64(Vec arg0, Vec arg1, Vec arg2) {
     return var_f31;
 }
 
-static float fn_1_5D20(Vec *arg0, Vec *arg1, Vec *arg2) {
+static float fn_1_5D20(Vec *arg0, Vec *arg1, Vec *arg2)
+{
     Vec sp44;
     float var_f31;
 
@@ -1577,7 +1636,8 @@ static float fn_1_5D20(Vec *arg0, Vec *arg1, Vec *arg2) {
     return (arg0->x - sp44.x) * (arg0->x - sp44.x) + (arg0->y - sp44.y) * (arg0->y - sp44.y) + (arg0->z - sp44.z) * (arg0->z - sp44.z);
 }
 
-static float fn_1_605C(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4) {
+static float fn_1_605C(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4)
+{
     float var_f27;
 
     if (arg2->x * arg2->x + arg2->y * arg2->y + arg2->z * arg2->z == 0.0f) {

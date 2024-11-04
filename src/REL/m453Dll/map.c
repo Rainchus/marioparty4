@@ -472,10 +472,10 @@ void fn_1_6C74(omObjData *object)
     }
     for (var_r31 = 0; (u32)var_r31 < 0xC; var_r31++) {
         var_r29->unk_24[var_r31] = Hu3DModelCreateFile(lbl_1_data_A58[var_r31]);
-        Hu3DModelAttrSet(var_r29->unk_24[var_r31], 1);
+        Hu3DModelAttrSet(var_r29->unk_24[var_r31], HU3D_ATTR_DISPOFF);
     }
     object->model[0] = var_r29->unk_24[0];
-    Hu3DModelAttrReset(object->model[0], 1);
+    Hu3DModelAttrReset(object->model[0], HU3D_ATTR_DISPOFF);
     var_r29->unk_00_field0 = 0;
     var_r29->unk_04 = 4 - lbl_1_bss_A0;
     fn_1_6FC4(object);
@@ -587,12 +587,12 @@ void fn_1_6FC4(omObjData *object)
     memcpy(lbl_1_bss_60, &var_r30->unk_0C, 0x18);
     for (var_r31 = 0; var_r31 < 6; var_r31++) {
         if (object->model[var_r31 + 1] >= 0) {
-            Hu3DModelAttrSet(object->model[var_r31 + 1], 1);
+            Hu3DModelAttrSet(object->model[var_r31 + 1], HU3D_ATTR_DISPOFF);
         }
     }
     for (var_r31 = 0; var_r31 < 6; var_r31++) {
         object->model[var_r31 + 1] = var_r30->unk_24[var_r30->unk_0C[var_r31]];
-        Hu3DModelAttrReset(object->model[var_r31 + 1], 1);
+        Hu3DModelAttrReset(object->model[var_r31 + 1], HU3D_ATTR_DISPOFF);
     }
 }
 

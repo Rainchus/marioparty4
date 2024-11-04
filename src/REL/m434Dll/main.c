@@ -3,7 +3,9 @@
 #include "game/hsfmotion.h"
 #include "game/object.h"
 #include "game/objsub.h"
+#include "game/sprite.h"
 #include "game/wipe.h"
+
 
 #include "REL/m434Dll.h"
 #include "ext_math.h"
@@ -290,7 +292,7 @@ void fn_1_E44(omObjData *object)
     switch (lbl_1_bss_8[0]) {
         case 0:
             if (--lbl_1_bss_8[1] == 0) {
-                Hu3DModelAttrSet(object->model[0], 1);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
                 lbl_1_bss_8[0] = 1;
             }
             for (temp_r30 = 0; temp_r30 < 2u; temp_r30++) {
@@ -379,7 +381,8 @@ void fn_1_1150(omObjData *object)
                     break;
 
                 case 1:
-                    temp_r31->unk6[temp_r30] = espEntry((temp_r29 == 0) ? DATA_MAKE_NUM(DATADIR_MGCONST, 0x1B) : DATA_MAKE_NUM(DATADIR_MGCONST, 0x1C), 1, 0);
+                    temp_r31->unk6[temp_r30]
+                        = espEntry((temp_r29 == 0) ? DATA_MAKE_NUM(DATADIR_MGCONST, 0x1B) : DATA_MAKE_NUM(DATADIR_MGCONST, 0x1C), 1, 0);
                     espPriSet(temp_r31->unk6[temp_r30], 256);
                     break;
 
@@ -401,7 +404,7 @@ void fn_1_1150(omObjData *object)
             }
             espDispOff(temp_r31->unk6[temp_r30]);
             espDrawNoSet(temp_r31->unk6[temp_r30], 0);
-            espAttrSet(temp_r31->unk6[temp_r30], 1);
+            espAttrSet(temp_r31->unk6[temp_r30], HUSPR_ATTR_NOANIM);
             espPosSet(temp_r31->unk6[temp_r30], lbl_1_data_F0[temp_r29][0] + lbl_1_data_C0[temp_r30][0],
                 lbl_1_data_F0[temp_r29][1] + lbl_1_data_C0[temp_r30][1]);
         }

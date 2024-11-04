@@ -245,7 +245,7 @@ void fn_1_29C(omObjData *arg0)
         lbl_1_bss_88A[var_r31][7] = CharModelMotionCreate(chrIdx, lbl_1_data_0[7]);
         lbl_1_bss_88A[var_r31][0] = CharModelMotionCreate(chrIdx, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x4D));
         CharModelMotionSet(chrIdx, lbl_1_bss_88A[var_r31][0]);
-        Hu3DModelAttrSet(lbl_1_bss_98A[var_r31], 0x40000001U);
+        Hu3DModelAttrSet(lbl_1_bss_98A[var_r31], HU3D_MOTATTR_LOOP);
         Hu3DModelPosSet(lbl_1_bss_98A[var_r31], (var_r31 / 4 * 0xC8) - 100, 0.0f, -(var_r31 % 4) * 0x96);
         CharModelMotionDataClose(chrIdx);
     }
@@ -263,7 +263,7 @@ void fn_1_29C(omObjData *arg0)
     var_r31 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M407, 0x1E));
     temp_r27 = Hu3DJointMotion(var_r31, HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_M407, 0x2F), MEMORY_DEFAULT_NUM, 2));
     Hu3DMotionSet(var_r31, temp_r27);
-    Hu3DModelAttrSet(var_r31, 0x40000001U);
+    Hu3DModelAttrSet(var_r31, HU3D_MOTATTR_LOOP);
 
     for (var_r31 = 0; var_r31 < 10; ++var_r31) {
         if (var_r31 == 0) {
@@ -274,8 +274,8 @@ void fn_1_29C(omObjData *arg0)
         }
         Hu3DModelShadowSet(lbl_1_bss_664[var_r31]);
         Hu3DModelPosSet(lbl_1_bss_664[var_r31], (((var_r31 / 5) * 0x1F4) + 0xC8), 0.0f, (-(var_r31 % 5) * 0x12C));
-        Hu3DModelAttrSet(lbl_1_bss_664[var_r31], 0x4000U);
-        Hu3DModelAttrSet(lbl_1_bss_664[var_r31], 0x40000001U);
+        Hu3DModelAttrSet(lbl_1_bss_664[var_r31], HU3D_ATTR_NOCULL);
+        Hu3DModelAttrSet(lbl_1_bss_664[var_r31], HU3D_MOTATTR_LOOP);
     }
     temp_r29 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_SAF, 0x13), MEMORY_DEFAULT_NUM, 2);
     temp_r28 = HuSprAnimRead(temp_r29);

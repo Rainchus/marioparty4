@@ -1,5 +1,6 @@
 #include "game/audio.h"
 #include "game/esprite.h"
+#include "game/hsfman.h"
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/process.h"
@@ -109,7 +110,7 @@ void FadeSpriteWithMultiplier(s16 model, BOOL inF, float tpMultiplier, s32 durat
         work->tplvl = 1.0f;
     }
     Hu3DModelTPLvlSet(work->id, work->tplvl * work->tpMultiplier);
-    Hu3DModelAttrReset(work->id, 1);
+    Hu3DModelAttrReset(work->id, HU3D_ATTR_DISPOFF);
     process = HuPrcChildCreate(FadeModel, 100, 5376, 0, HuPrcCurrentGet());
     process->user_data = work;
 }
@@ -135,7 +136,7 @@ static void FadeModel(void)
     }
     Hu3DModelTPLvlSet(var_r31->id, var_r31->tplvl * var_r31->tpMultiplier);
     if (var_r31->speed < 0.0f) {
-        Hu3DModelAttrSet(var_r31->id, 1);
+        Hu3DModelAttrSet(var_r31->id, HU3D_ATTR_DISPOFF);
     }
     HuMemDirectFree(var_r31);
     HuPrcEnd();
