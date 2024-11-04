@@ -606,7 +606,7 @@ void fn_1_E18(omObjData *object)
         var_r30 = 1;
     }
     if (var_r30) {
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         HuAudSeqAllFadeOut(100);
         object->func = fn_1_DB8;
     }

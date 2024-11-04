@@ -202,7 +202,7 @@ void ObjectSetup(void)
         var_r29->work[1] = var_r30;
     }
     omGameSysInit(var_r31);
-    WipeCreate(1, 0, 0x3C);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     HuAudSndGrpSet(0x1C);
     lbl_1_bss_2[0] = 1;
     if (GWMGRecordGet(9) == 0) {
@@ -286,7 +286,7 @@ void fn_1_460(omObjData *object)
             break;
     }
     if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_FFC;
     }
 }
@@ -439,13 +439,13 @@ void fn_1_848(omObjData *object)
             break;
         case 11:
             if (--lbl_1_bss_32 == 0) {
-                WipeCreate(2, 0, 0x3C);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                 object->func = fn_1_FFC;
             }
             break;
     }
     if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_FFC;
     }
 }

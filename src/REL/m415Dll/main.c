@@ -106,7 +106,7 @@ void fn_1_43C(omObjData *object)
 
     var_r31 = &Hu3DCamera[0];
     lbl_1_bss_34A = 0;
-    WipeCreate(1, 0, 0x3C);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     var_r31->fov = 45.0f;
     object->func = fn_1_4B0;
 }
@@ -163,7 +163,7 @@ void fn_1_4B0(omObjData *object)
             break;
     }
     if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_14C0;
     }
 }
@@ -317,13 +317,13 @@ void fn_1_7D8(omObjData *object)
             break;
         case 9:
             if (--lbl_1_bss_342 == 0) {
-                WipeCreate(2, 0, 0x3C);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                 object->func = fn_1_14C0;
             }
             break;
     }
     if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_14C0;
     }
 }

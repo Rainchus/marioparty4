@@ -56,7 +56,7 @@ void fn_1_1C0(omObjData *object)
     if (omSysExitReq != 0) {
         HuAudFadeOut(0x3E8);
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, -1);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
         object->func = fn_1_188;
     }
 }

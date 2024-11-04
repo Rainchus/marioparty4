@@ -103,7 +103,7 @@ void ObjectSetup(void)
     Hu3DBGColorSet(0U, 0U, 0U);
     fn_1_8BC();
     HuPrcChildCreate(fn_1_B1C0, 0x1000U, 0x2000U, 0, HuPrcCurrentGet());
-    WipeCreate(1, 0, 0x3C);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
 }
 
 void *fn_1_6EC(f32 arg8, f32 arg9, f32 argA, s32 arg0)
@@ -2081,7 +2081,7 @@ void fn_1_B160(void)
         while (1) {
             if (omSysExitReq != 1)
                 break;
-            WipeCreate(2, 0, 0x3C);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
             HuAudFadeOut(0x3E8);
             HuPrcSleep(0x3C);
             MGSeqKillAll();
@@ -2178,7 +2178,7 @@ void fn_1_B1C0(void)
         temp_r30 = MGSeqCreate(3, 2);
     }
     HuPrcSleep(0xD2);
-    WipeCreate(2, 0, 0x3C);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
     HuPrcSleep(0x3C);
     HuAudFadeOut(1);
     MGSeqKillAll();

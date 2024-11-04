@@ -408,7 +408,7 @@ void ObjectSetup(void)
     fn_1_B4D8(var_r31);
     omGameSysInit(var_r31);
     HuAudSndGrpSet(0x40);
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     fn_1_7BBC();
     fn_1_E658(0x60, 0x40);
 }
@@ -478,7 +478,7 @@ void fn_1_4FC(omObjData *object)
             break;
     }
     if (omSysExitReq != 0 && WipeStatGet() == 0) {
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_1174;
     }
 }
@@ -621,12 +621,12 @@ void fn_1_974(omObjData *object)
             }
             break;
         case 11:
-            WipeCreate(2, 0, 0x3C);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
             object->func = fn_1_1174;
             break;
     }
     if (omSysExitReq != 0 && WipeStatGet() == 0) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_1174;
     }
 }
