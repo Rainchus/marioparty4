@@ -275,7 +275,7 @@ void fn_1_394(omObjData *object)
     lbl_1_bss_11F18 = -1;
     lbl_1_bss_11F16 = 0;
     lbl_1_bss_11EE8 = 0;
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     object->func = fn_1_448;
 }
 
@@ -369,7 +369,7 @@ void fn_1_448(omObjData *object)
             break;
         case 11:
             if (--lbl_1_bss_11F24 == 0) {
-                WipeCreate(2, 0, 0x3C);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                 object->func = fn_1_A30;
             }
             break;
@@ -382,7 +382,7 @@ void fn_1_448(omObjData *object)
         lbl_1_bss_11F16 = 0;
     }
     if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_A30;
     }
 }

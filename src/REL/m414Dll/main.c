@@ -1799,7 +1799,8 @@ void fn_1_6644(void)
                         var_r30 = HuPrcChildCreate(fn_1_6134, 8192, 8192, 0, HuPrcCurrentGet());
                         var_r30->user_data = var_r31;
                         if (lbl_1_bss_978 == lbl_1_bss_938[var_r29] && fn_1_65DC(var_r31, var_r29)) {
-                            Hu3DModelAttrReset(var_r31->unk_D4[var_r29], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV | HU3D_MOTATTR_SHAPE_PAUSE | HU3D_MOTATTR_SHAPE_REV);
+                            Hu3DModelAttrReset(
+                                var_r31->unk_D4[var_r29], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV | HU3D_MOTATTR_SHAPE_PAUSE | HU3D_MOTATTR_SHAPE_REV);
                             var_r30 = HuPrcChildCreate(fn_1_42AC, 8192, 8192, 0, HuPrcCurrentGet());
                             var_r30->user_data = &sp8C;
                             sp8C.unk_00 = var_r31;
@@ -1850,7 +1851,8 @@ void fn_1_6644(void)
                         var_r30 = HuPrcChildCreate(fn_1_6134, 8192, 8192, 0, HuPrcCurrentGet());
                         var_r30->user_data = var_r31;
                         if (lbl_1_bss_978 == lbl_1_bss_938[var_r29] && fn_1_65DC(var_r31, var_r29)) {
-                            Hu3DModelAttrReset(var_r31->unk_D4[var_r29], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV | HU3D_MOTATTR_SHAPE_PAUSE | HU3D_MOTATTR_SHAPE_REV);
+                            Hu3DModelAttrReset(
+                                var_r31->unk_D4[var_r29], HU3D_MOTATTR_PAUSE | HU3D_MOTATTR_REV | HU3D_MOTATTR_SHAPE_PAUSE | HU3D_MOTATTR_SHAPE_REV);
                             var_r30 = HuPrcChildCreate(fn_1_42AC, 8192, 8192, 0, HuPrcCurrentGet());
                             var_r30->user_data = &sp8C;
                             sp8C.unk_00 = var_r31;
@@ -2333,7 +2335,7 @@ void fn_1_8A70(void)
         var_r28 = MGSeqCreate(3, 2);
     }
     HuPrcSleep(210);
-    WipeCreate(2, 0, 60);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
     HuPrcSleep(60);
     HuAudFadeOut(1);
     MGSeqKillAll();

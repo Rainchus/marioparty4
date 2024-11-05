@@ -238,7 +238,7 @@ void fn_1_3384(void)
     fn_1_1B7D0(0x1E);
     HuAudFadeOut(0x3E8);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
 
     while (WipeStatGet() != 0) {
         fn_1_1B7D0(1);
@@ -265,7 +265,7 @@ void fn_1_33F8(void)
         espPosSet(var_r31, 288.0f, 240.0f);
         espAttrReset(var_r31, HUSPR_ATTR_DISPOFF);
         Hu3DBGColorSet(0, 0, 0);
-        WipeCreate(1, 0, 0xA);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
 
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
@@ -274,7 +274,7 @@ void fn_1_33F8(void)
         if (SLSave() == 0) {
             GWSystem.save_mode = 1;
         }
-        WipeCreate(2, 0, 0x14);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
 
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
@@ -289,7 +289,7 @@ void fn_1_3508(void)
     fn_1_1B7D0(0x1E);
     HuAudFadeOut(0x3E8);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
 
     while (WipeStatGet() != 0) {
         fn_1_1B7D0(1);
@@ -317,7 +317,7 @@ void fn_1_36A4(void)
     fn_1_1B7D0(0x1E);
     HuAudSStreamAllFadeOut(0x3E8);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_1B7D0(1);
     }
@@ -353,7 +353,7 @@ void fn_1_3758(s32 arg0, s32 arg1)
     HuAudSeqAllFadeOut(0x3E8);
     HuAudSStreamAllFadeOut(0x3E8);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_1B7D0(1);
     }
@@ -397,7 +397,7 @@ void fn_1_397C(void)
     if (omovlevtno != 2) {
         lbl_1_data_298 = HuAudSeqPlay(0x2E);
     }
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_1B7D0(1);
     }

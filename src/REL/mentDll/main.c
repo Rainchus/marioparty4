@@ -482,7 +482,7 @@ void fn_1_7304(void)
 void fn_1_7684(void)
 {
     s32 spC[7] = { 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F };
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -530,7 +530,7 @@ void fn_1_7858(void)
     for (var_r31 = 0; var_r31 < 5; var_r31++) {
         Hu3DModelAttrReset(lbl_1_bss_33AC[var_r31].unk_00->model[1], HU3D_ATTR_DISPOFF);
     }
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -690,7 +690,7 @@ void fn_1_81F0(void)
     HuAudSStreamPlay(0xC);
     OSReport("########### ME_MainProcFunc000\n");
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
 }
 
 void fn_1_824C(void)
@@ -713,7 +713,7 @@ void fn_1_824C(void)
     fn_1_5818(lbl_1_bss_35BC[0].unk_00, 2, 2, 0, 2);
     Hu3DModelAttrSet(lbl_1_bss_35BC[0].unk_00->model[2], HU3D_ATTR_DISPOFF);
     OSReport("########### ME_MainProcFunc400\n");
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -1939,7 +1939,7 @@ void fn_1_C174(s32 arg0)
         fn_1_4B0(0x3C);
         HuAudSeqFadeOut(lbl_1_bss_14[0], 0x3E8);
     }
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
 
     while (WipeStatGet() != 0) {
         fn_1_4D8();
@@ -2580,7 +2580,7 @@ void fn_1_E244(void)
 {
     lbl_1_bss_14[0] = HuAudSeqPlay(0x30);
     OSReport("########### ME_MainProcFunc200\n");
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -2604,7 +2604,7 @@ void fn_1_E3FC(void)
 {
     lbl_1_bss_14[0] = HuAudSeqPlay(6);
     OSReport("########### ME_MainProcFunc300\n");
-    WipeCreate(1, 0, -1);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -2647,7 +2647,7 @@ void fn_1_E654(s32 arg0)
 {
     fn_1_4B0(0x3C);
     HuAudSeqFadeOut(lbl_1_bss_14[0], 0x3E8);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -2668,7 +2668,7 @@ void fn_1_E71C(s32 arg0)
     s32 spC[7] = { 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F };
     fn_1_4B0(0x3C);
     HuAudSeqFadeOut(lbl_1_bss_14[0], 0x3E8);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -2855,7 +2855,7 @@ void fn_1_1053C(void)
 {
     fn_1_4B0(0x6E);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -2913,7 +2913,7 @@ void fn_1_10C5C(void)
 {
     fn_1_4B0(0x6E);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }
@@ -2989,7 +2989,7 @@ void fn_1_114A0(void)
 {
     fn_1_4B0(0x6E);
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, -1);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, -1);
     while (WipeStatGet() != 0) {
         fn_1_4D8();
     }

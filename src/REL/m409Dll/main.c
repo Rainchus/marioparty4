@@ -103,7 +103,7 @@ void fn_1_434(omObjData *object)
         HuAudFXListnerKill();
         fn_1_5F5C(lbl_1_bss_E0->model[0]);
         fn_1_5F5C(lbl_1_bss_E0->model[1]);
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 0x3C);
         MGSeqKillAll();
         object->func = fn_1_4DC;
     }
@@ -223,7 +223,7 @@ void fn_1_F70(omObjData *object)
         case 1:
             if (lbl_1_bss_6 == 0) {
                 lbl_1_bss_6 = 1;
-                WipeCreate(1, 0, 0x3C);
+                WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 0x3C);
             }
             if (WipeStatGet() == 0) {
                 fn_1_2414(7, 2);

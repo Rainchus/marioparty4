@@ -1,22 +1,22 @@
 #include "REL/m446Dll.h"
 #include "rel_sqrt_consts.h"
 
+#include "game/audio.h"
+#include "game/frand.h"
 #include "game/gamework_data.h"
 #include "game/hsfman.h"
-#include "game/audio.h"
 #include "game/jmp.h"
+#include "game/minigame_seq.h"
 #include "game/window.h"
 #include "game/wipe.h"
-#include "game/frand.h"
-#include "game/minigame_seq.h"
 
 // bss
 s32 lbl_1_bss_14;
 s32 lbl_1_bss_10;
-Process* lbl_1_bss_C;
+Process *lbl_1_bss_C;
 omObjData *lbl_1_bss_8;
 s32 lbl_1_bss_4;
-unkStruct* lbl_1_bss_0;
+unkStruct *lbl_1_bss_0;
 
 // data
 Vec lbl_1_data_0 = { 0.0f, 90.0f, 0.0f };
@@ -25,18 +25,13 @@ f32 lbl_1_data_18 = 1260.0f;
 Vec lbl_1_data_1C = { 0.0f, 90.0f, 0.0f };
 Vec lbl_1_data_28 = { -90.0f, 0.0f, 0.0f };
 f32 lbl_1_data_34 = 260.0f;
-Vec lbl_1_data_38[2] = {
-    { 0.0f, 100.0f, 120.0f },
-    { 0.0f, 100.0f, 120.0f }
-};
-Vec lbl_1_data_50[2] = {
-    { -30.0f, 0.0f, 0.0f },
-    { -30.0f, 0.0f, 0.0f }
-};
+Vec lbl_1_data_38[2] = { { 0.0f, 100.0f, 120.0f }, { 0.0f, 100.0f, 120.0f } };
+Vec lbl_1_data_50[2] = { { -30.0f, 0.0f, 0.0f }, { -30.0f, 0.0f, 0.0f } };
 f32 lbl_1_data_68[2] = { 600.0f, 600.0f };
 s32 lbl_1_data_70[2][2] = { { 0x46, 0x1A4 }, { 0x1F4, 0x3C } };
 
-void ObjectSetup(void) {
+void ObjectSetup(void)
+{
     lbl_1_bss_C = omInitObjMan(5, 0x2000);
     omGameSysInit(lbl_1_bss_C);
     lbl_1_bss_8 = omAddObjEx(lbl_1_bss_C, 0x3E8, 0x32U, 0x32U, 0, fn_1_13C);
@@ -44,7 +39,8 @@ void ObjectSetup(void) {
     lbl_1_bss_4 = 0;
 }
 
-void fn_1_13C(omObjData* arg0) {
+void fn_1_13C(omObjData *arg0)
+{
     switch (lbl_1_bss_4) {
         case 0:
             HuWinInit(1);
@@ -68,9 +64,10 @@ void fn_1_13C(omObjData* arg0) {
             fn_1_7350();
             fn_1_20D4();
             fn_1_68DC();
-            if (lbl_1_bss_0->unk0 != 5) break;
+            if (lbl_1_bss_0->unk0 != 5)
+                break;
             lbl_1_bss_4 = 3;
-            WipeCreate(2, 0, 0x3C);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         case 2:
             break;
         case 3:
@@ -92,9 +89,10 @@ void fn_1_13C(omObjData* arg0) {
     }
 }
 
-unkStruct* m446FlowCreate(void) {
+unkStruct *m446FlowCreate(void)
+{
     s32 var_r30;
-    unkStruct* temp_r3;
+    unkStruct *temp_r3;
 
     temp_r3 = HuMemDirectMallocNum(HEAP_SYSTEM, 0x9C, MEMORY_DEFAULT_NUM);
     if (temp_r3 == 0) {
@@ -108,14 +106,14 @@ unkStruct* m446FlowCreate(void) {
     temp_r3->unk10 = 0;
     temp_r3->unk98 = NULL;
     temp_r3->unk18 = -1;
-    
+
     for (var_r30 = 0; var_r30 < 23; var_r30++) {
         temp_r3->unk38[var_r30] = 0;
     }
     temp_r3->unk24 = m446StageCreate();
     temp_r3->unk20 = fn_1_39D0();
     lbl_1_bss_10 = 0;
-    
+
     for (var_r30 = 0; var_r30 < 2; var_r30++) {
         temp_r3->unk2C[var_r30] = m446PlayerCreate(var_r30, temp_r3->unk20);
         if (temp_r3->unk2C[var_r30]->unk68 != 0) {
@@ -123,11 +121,12 @@ unkStruct* m446FlowCreate(void) {
         }
     }
     temp_r3->unk28 = fn_1_3064();
-    WipeCreate(1, 0, 0x3C);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     return temp_r3;
 }
 
-void fn_1_3FC(unkStruct* arg0) {
+void fn_1_3FC(unkStruct *arg0)
+{
     s32 var_r30;
 
     if (arg0->unk98) {
@@ -139,7 +138,7 @@ void fn_1_3FC(unkStruct* arg0) {
     if (arg0->unk6 == -1) {
         MGSeqParamSet(arg0->unk6, 2, -1);
     }
-    
+
     for (var_r30 = 0; var_r30 < 2; var_r30++) {
         fn_1_509C(arg0->unk2C[var_r30]);
     }
@@ -149,9 +148,10 @@ void fn_1_3FC(unkStruct* arg0) {
     HuMemDirectFree(arg0);
 }
 
-m446Func1 lbl_1_data_A0[5] = {fn_1_53C, fn_1_B78, fn_1_CA0, fn_1_C0C, fn_1_958};
+m446Func1 lbl_1_data_A0[5] = { fn_1_53C, fn_1_B78, fn_1_CA0, fn_1_C0C, fn_1_958 };
 
-void fn_1_4B4(unkStruct* arg0) {
+void fn_1_4B4(unkStruct *arg0)
+{
     if (lbl_1_data_A0[arg0->unk0]) {
         lbl_1_data_A0[arg0->unk0](arg0);
     }
@@ -160,10 +160,11 @@ void fn_1_4B4(unkStruct* arg0) {
     }
 }
 
-void fn_1_53C(unkStruct* arg0) {
+void fn_1_53C(unkStruct *arg0)
+{
     s32 var_r30;
     s32 var_r29;
-    
+
     switch (arg0->unk10) {
         case 0:
             fn_1_6EA0(&lbl_1_data_0);
@@ -177,11 +178,13 @@ void fn_1_53C(unkStruct* arg0) {
             if (arg0->unk14 == 20) {
                 fn_1_84AC(arg0->unk24);
             }
-            if (arg0->unk14++ < 0xB4) break;
+            if (arg0->unk14++ < 0xB4)
+                break;
             arg0->unk18 = HuAudSeqPlay(0x3D);
             if (arg0->unk2C[1]->unk64 == 8) {
                 arg0->unk10 = 2;
-            } else {
+            }
+            else {
                 arg0->unk10 = 4;
             }
             break;
@@ -201,7 +204,8 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk10 = 5;
             break;
         case 5:
-            if (fn_1_708C()) break;
+            if (fn_1_708C())
+                break;
             fn_1_860C(arg0->unk24);
             for (var_r30 = 0; var_r30 < 2; var_r30++) {
                 fn_1_637C(arg0->unk2C[var_r30], 1);
@@ -214,13 +218,15 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk14 = 0;
             break;
         case 7:
-            if (arg0->unk14++ < 0x78) break;
+            if (arg0->unk14++ < 0x78)
+                break;
             fn_1_34A0(arg0->unk28, &arg0->unk38[0], arg0->unk94, 1);
             arg0->unk10 = 8;
             arg0->unk14 = 0;
             break;
         case 8:
-            if (arg0->unk14++ < 0x78) break;
+            if (arg0->unk14++ < 0x78)
+                break;
 
             for (var_r29 = 0; var_r29 < 2; var_r29++) {
                 for (var_r30 = 0; var_r30 < 3; var_r30++) {
@@ -233,10 +239,14 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk10 = 9;
             break;
         case 9:
-            if (arg0->unk34->unk70 != 0) break;
-            if (arg0->unk34->unk78 != 0) break;
-            if (arg0->unk34->unk74 != 0) break;
-            if (arg0->unk34->unk4 != 0) break;
+            if (arg0->unk34->unk70 != 0)
+                break;
+            if (arg0->unk34->unk78 != 0)
+                break;
+            if (arg0->unk34->unk74 != 0)
+                break;
+            if (arg0->unk34->unk4 != 0)
+                break;
 
             for (var_r29 = 0; var_r29 < 2; var_r29++) {
                 for (var_r30 = 0; var_r30 < 3; var_r30++) {
@@ -247,10 +257,14 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk10 = 10;
             break;
         case 10:
-            if (arg0->unk34->unk70 != 0) break;
-            if (arg0->unk34->unk78 != 0) break;
-            if (arg0->unk34->unk74 != 0) break;
-            if (arg0->unk34->unk4 != 0) break;
+            if (arg0->unk34->unk70 != 0)
+                break;
+            if (arg0->unk34->unk78 != 0)
+                break;
+            if (arg0->unk34->unk74 != 0)
+                break;
+            if (arg0->unk34->unk4 != 0)
+                break;
             fn_1_46AC(arg0->unk20);
 
             while (m446DeckPopCard(&arg0->unk28->unk0, &arg0->unk34) != 0) {
@@ -264,14 +278,16 @@ void fn_1_53C(unkStruct* arg0) {
             arg0->unk14 = 0;
             break;
         case 11:
-            if (arg0->unk14++ < 0x78) break;
+            if (arg0->unk14++ < 0x78)
+                break;
             arg0->unk0 = 1;
             arg0->unk10 = 0;
             break;
     }
 }
 
-void fn_1_958(unkStruct* arg0) {
+void fn_1_958(unkStruct *arg0)
+{
     s32 temp_r3;
     s32 temp_r3_2;
     s32 temp_r3_3;
@@ -300,20 +316,24 @@ void fn_1_958(unkStruct* arg0) {
                     if (arg0->unk2C[1]->unk64 == 8) {
                         fn_1_5B34(arg0->unk2C[1]);
                         HuAudSStreamPlay(3);
-                    } else {
+                    }
+                    else {
                         fn_1_5C10(arg0->unk2C[1]);
                         HuAudSStreamPlay(4);
                     }
-                } else if (arg0->unk2C[0]->unk24 != 0) {
+                }
+                else if (arg0->unk2C[0]->unk24 != 0) {
                     fn_1_5B34(arg0->unk2C[0]);
                     fn_1_5C10(arg0->unk2C[1]);
                     HuAudSStreamPlay(1);
-                } else if (arg0->unk2C[1]->unk24 != 0) {
+                }
+                else if (arg0->unk2C[1]->unk24 != 0) {
                     fn_1_5B34(arg0->unk2C[1]);
                     fn_1_5C10(arg0->unk2C[0]);
                     if (arg0->unk2C[1]->unk64 == 8) {
                         HuAudSStreamPlay(3);
-                    } else {
+                    }
+                    else {
                         HuAudSStreamPlay(1);
                     }
                 }
@@ -330,7 +350,8 @@ void fn_1_958(unkStruct* arg0) {
     }
 }
 
-void fn_1_B78(unkStruct* arg0) {
+void fn_1_B78(unkStruct *arg0)
+{
     switch (arg0->unk10) {
         case 0:
             arg0->unk18 = HuAudSeqPlay(0x3F);
@@ -348,7 +369,8 @@ void fn_1_B78(unkStruct* arg0) {
     }
 }
 
-void fn_1_C0C(unkStruct* arg0) {
+void fn_1_C0C(unkStruct *arg0)
+{
     switch (arg0->unk10) {
         case 0:
             HuAudSeqFadeOut(arg0->unk18, 0x64);
@@ -366,7 +388,8 @@ void fn_1_C0C(unkStruct* arg0) {
     }
 }
 
-void fn_1_CA0(unkStruct* arg0) {
+void fn_1_CA0(unkStruct *arg0)
+{
     s32 var_r29;
     unkStruct8 *var_r30;
 
@@ -390,7 +413,8 @@ void fn_1_CA0(unkStruct* arg0) {
                     arg0->unk10 = 3;
                     arg0->unk14 = 0;
                 }
-            } else {
+            }
+            else {
                 arg0->unk10 = 4;
             }
             break;
@@ -420,7 +444,9 @@ void fn_1_CA0(unkStruct* arg0) {
                 MGSeqPosSet(arg0->unk6, lbl_1_data_70[arg0->unk1C][0], lbl_1_data_70[arg0->unk1C][1]);
                 fn_1_4000(arg0->unk20, arg0->unk1C == 1 >> 5);
                 arg0->unk10 = 7;
-            } else break;
+            }
+            else
+                break;
         case 7:
             if (fn_1_4088(arg0->unk20, var_r30->unk64, var_r30->unk66, arg0->unk1C == 1, &arg0->unk34, 0) == 0) {
                 if ((--arg0->unkC % 60) == 0) {
@@ -433,7 +459,9 @@ void fn_1_CA0(unkStruct* arg0) {
                         arg0->unk14 = 0;
                         break;
                     }
-                } else break;
+                }
+                else
+                    break;
             }
             arg0->unk10 = 9;
             break;
@@ -455,7 +483,8 @@ void fn_1_CA0(unkStruct* arg0) {
             if (arg0->unk34->unk70 == 0 && arg0->unk34->unk78 == 0 && arg0->unk34->unk74 == 0 && arg0->unk34->unk4 == 0) {
                 if (arg0->unk34->unk0 == 4) {
                     arg0->unk10 = 13;
-                } else {
+                }
+                else {
                     m446PlayerAppendCard(var_r30, arg0->unk34, 4);
                     arg0->unk10 = 11;
                 }
@@ -465,7 +494,8 @@ void fn_1_CA0(unkStruct* arg0) {
             if (arg0->unk34->unk70 == 0 && arg0->unk34->unk78 == 0 && arg0->unk34->unk74 == 0 && arg0->unk34->unk4 == 0) {
                 if (var_r30->unk24 != 0) {
                     arg0->unk10 = 24;
-                } else {
+                }
+                else {
                     arg0->unk10 = 12;
                 }
             }
@@ -475,9 +505,11 @@ void fn_1_CA0(unkStruct* arg0) {
                 arg0->unk1C = 1;
                 arg0->unk10 = 25;
                 break;
-            } else if (arg0->unk1C == 0) {
+            }
+            else if (arg0->unk1C == 0) {
                 arg0->unk1C = 1;
-            } else {
+            }
+            else {
                 arg0->unk1C = 0;
             }
             arg0->unk10 = 1;
@@ -599,24 +631,29 @@ void fn_1_CA0(unkStruct* arg0) {
     }
 }
 
-s32 fn_1_17FC(unkStruct* arg0) {
+s32 fn_1_17FC(unkStruct *arg0)
+{
     return MGSeqStatGet(arg0->unk4) != 0;
 }
 
-void fn_1_183C(unkStruct* arg0) {
+void fn_1_183C(unkStruct *arg0)
+{
     MGSeqKill(arg0->unk4);
     arg0->unk4 = -1;
 }
 
-void fn_1_1874(unkStruct* arg0) {
+void fn_1_1874(unkStruct *arg0)
+{
     arg0->unk4 = MGSeqCreate(3, 0);
 }
 
-void fn_1_18B0(unkStruct* arg0) {
+void fn_1_18B0(unkStruct *arg0)
+{
     arg0->unk4 = MGSeqCreate(3, 1);
 }
 
-void fn_1_18EC(s16 arg0, s32 arg1) {
+void fn_1_18EC(s16 arg0, s32 arg1)
+{
     HuWinComKeyReset();
     if (lbl_1_bss_10 == 2) {
         HuWinComKeyWait(0x100, 0x100, 0x100, 0x100, arg1);
@@ -625,22 +662,23 @@ void fn_1_18EC(s16 arg0, s32 arg1) {
     HuWinMesWait(arg0);
 }
 
-s32 fn_1_1970(s16 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 fn_1_1970(s16 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
     if (lbl_1_bss_10 == 2) {
         HuPrcSleep(arg3);
         return arg2;
-    } else {
+    }
+    else {
         return HuWinChoiceGet(arg0, arg1);
     }
 }
 
-static const s32 lbl_1_rodata_18[12] = {
-    MAKE_MESSID(0x18, 0x03), MAKE_MESSID(0x18, 0x04), MAKE_MESSID(0x18, 0x05), MAKE_MESSID(0x18, 0x06),
-    MAKE_MESSID(0x18, 0x07), MAKE_MESSID(0x18, 0x08), MAKE_MESSID(0x18, 0x09), MAKE_MESSID(0x18, 0x0A),
-    MAKE_MESSID(0x18, 0x0B), MAKE_MESSID(0x18, 0x0C), MAKE_MESSID(0x18, 0x0D), 0
-};
+static const s32 lbl_1_rodata_18[12] = { MAKE_MESSID(0x18, 0x03), MAKE_MESSID(0x18, 0x04), MAKE_MESSID(0x18, 0x05), MAKE_MESSID(0x18, 0x06),
+    MAKE_MESSID(0x18, 0x07), MAKE_MESSID(0x18, 0x08), MAKE_MESSID(0x18, 0x09), MAKE_MESSID(0x18, 0x0A), MAKE_MESSID(0x18, 0x0B),
+    MAKE_MESSID(0x18, 0x0C), MAKE_MESSID(0x18, 0x0D), 0 };
 
-void fn_1_19D4(void) {
+void fn_1_19D4(void)
+{
     s16 temp_r3;
     s16 var_r30;
     s32 temp_r0;
@@ -658,7 +696,8 @@ void fn_1_19D4(void) {
         HuWinMesColSet(temp_r3, 0);
         HuWinMesSet(temp_r3, MAKE_MESSID(0x18, 0x02));
         var_r30 = fn_1_1970(temp_r3, 0, 1, 0x3C);
-    } else {
+    }
+    else {
         var_r30 = 1;
     }
     if (var_r30 == 0) {
@@ -668,7 +707,8 @@ void fn_1_19D4(void) {
             HuWinMesSet(temp_r3, temp_r27);
             fn_1_18EC(temp_r3, 0x3C);
         }
-    } else {
+    }
+    else {
         HuWinMesColSet(temp_r3, 0);
         HuWinMesSet(temp_r3, MAKE_MESSID(0x18, 0x0D));
         fn_1_18EC(temp_r3, 0x3C);

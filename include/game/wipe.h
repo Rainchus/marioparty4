@@ -3,6 +3,7 @@
 
 #include "dolphin.h"
 
+#define WIPE_TYPE_PREV -1
 #define WIPE_TYPE_NORMAL 0
 #define WIPE_TYPE_CROSS 1
 #define WIPE_TYPE_DUMMY 2

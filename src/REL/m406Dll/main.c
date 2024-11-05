@@ -136,7 +136,7 @@ void ObjectSetup(void)
     lbl_1_bss_10 = -1;
     lbl_1_bss_C = -1;
     lbl_1_bss_8 = 0;
-    WipeCreate(1, 0, 60);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     lbl_1_bss_8 = 0;
 }
 
@@ -185,7 +185,8 @@ void fn_1_40C(omObjData *object)
                 if (var_r31 & 16 && lbl_1_bss_C == -1) {
                     lbl_1_bss_C = HuAudSeqPlay(74);
                 }
-            } else {
+            }
+            else {
                 var_r31 = 0;
             }
             if (lbl_1_bss_24 == -1 || !var_r31) {
@@ -209,8 +210,9 @@ void fn_1_40C(omObjData *object)
                     Hu3DBGColorSet(0x40, 0x40, 0xFF);
                     lbl_1_bss_1C = 5;
                     lbl_1_bss_18 = 0;
-                } else {
-                    WipeCreate(2, 0, 30);
+                }
+                else {
+                    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
                     WipeColorSet(0xFF, 0xFF, 0xFF);
                     lbl_1_bss_8 = 1;
                     lbl_1_bss_1C = 9;
@@ -235,7 +237,7 @@ void fn_1_40C(omObjData *object)
                 var_f31 = 1.0f;
             }
             fn_1_183C(var_f31);
-            WipeCreate(2, 0, 30);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
             WipeColorSet(0xFF, 0xFF, 0xFF);
             lbl_1_bss_8 = 1;
             lbl_1_bss_1C = 7;
@@ -250,7 +252,7 @@ void fn_1_40C(omObjData *object)
             fn_1_183C(var_f31);
             if (!WipeStatGet() && (lbl_1_bss_24 == -1 || !MGSeqStatGet(lbl_1_bss_24))) {
                 lbl_1_bss_24 = -1;
-                WipeCreate(1, 0, 30);
+                WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
                 WipeColorSet(0xFF, 0xFF, 0xFF);
                 lbl_1_bss_8 = 0;
                 CRot.x = lbl_1_data_0.unk_54;
@@ -274,7 +276,7 @@ void fn_1_40C(omObjData *object)
         case 9:
             if (!WipeStatGet() && (lbl_1_bss_24 == -1 || !MGSeqStatGet(lbl_1_bss_24))) {
                 lbl_1_bss_24 = -1;
-                WipeCreate(1, 0, 30);
+                WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
                 WipeColorSet(0xFF, 0xFF, 0xFF);
                 lbl_1_bss_8 = 0;
                 CRot.x = lbl_1_data_0.unk_54;
@@ -311,7 +313,8 @@ void fn_1_40C(omObjData *object)
                 GWPlayerCoinWinAdd(lbl_1_bss_10, 10);
                 lbl_1_bss_1C = 13;
                 lbl_1_bss_18 = 0;
-            } else {
+            }
+            else {
                 lbl_1_bss_24 = MGSeqCreate(3, 2);
                 HuAudSStreamPlay(4);
                 lbl_1_bss_1C = 13;
@@ -321,7 +324,7 @@ void fn_1_40C(omObjData *object)
         case 13:
             if (++lbl_1_bss_18 >= 210.0f) {
                 lbl_1_bss_24 = -1;
-                WipeCreate(2, 0, 60);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                 lbl_1_bss_8 = 1;
                 lbl_1_bss_1C = 14;
                 lbl_1_bss_18 = 0;
@@ -369,7 +372,7 @@ void fn_1_1168(omObjData *object)
     }
     if (var_r30) {
         if (!lbl_1_bss_8) {
-            WipeCreate(2, 0, 60);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         }
         lbl_1_bss_8 = 1;
         HuAudStreamFadeOut(30);
@@ -410,7 +413,8 @@ void fn_1_12BC(void)
             lbl_1_bss_1C = 12;
             lbl_1_bss_18 = 0;
         }
-    } else if (lbl_1_bss_1C == 11) {
+    }
+    else if (lbl_1_bss_1C == 11) {
         lbl_1_bss_1C = 12;
         lbl_1_bss_18 = 0;
     }
@@ -498,18 +502,21 @@ float fn_1_1BA8(float arg8, float arg9)
 
     if (arg8 >= 360.0f) {
         arg8 -= 360.0f;
-    } else if (arg8 < 0.0f) {
+    }
+    else if (arg8 < 0.0f) {
         arg8 += 360.0f;
     }
     if (arg9 >= 360.0f) {
         arg9 -= 360.0f;
-    } else if (arg9 < 0.0f) {
+    }
+    else if (arg9 < 0.0f) {
         arg9 += 360.0f;
     }
     var_f31 = arg8 - arg9;
     if (var_f31 <= -180.0f) {
         var_f31 += 360.0f;
-    } else if (var_f31 >= 180.0f) {
+    }
+    else if (var_f31 >= 180.0f) {
         var_f31 -= 360.0f;
     }
     return var_f31;
@@ -522,12 +529,14 @@ float fn_1_1CC0(float arg8, float arg9, float argA)
 
     if (arg8 >= 360.0) {
         arg8 -= 360.0;
-    } else if (arg8 < 0.0) {
+    }
+    else if (arg8 < 0.0) {
         arg8 += 360.0;
     }
     if (arg9 >= 360.0) {
         arg9 -= 360.0;
-    } else if (arg9 < 0.0) {
+    }
+    else if (arg9 < 0.0) {
         arg9 += 360.0;
     }
     var_f30 = 360.0 + (arg8 - arg9);
@@ -537,18 +546,22 @@ float fn_1_1CC0(float arg8, float arg9, float argA)
     if (var_f30 < 180.0) {
         if (var_f30 <= argA) {
             var_f31 = var_f30;
-        } else {
+        }
+        else {
             var_f31 = argA;
         }
-    } else if (360.0 - var_f30 <= argA) {
+    }
+    else if (360.0 - var_f30 <= argA) {
         var_f31 = -(360.0 - var_f30);
-    } else {
+    }
+    else {
         var_f31 = -argA;
     }
     var_f31 += arg9;
     if (var_f31 >= 360.0) {
         var_f31 -= 360.0;
-    } else if (var_f31 < 0.0) {
+    }
+    else if (var_f31 < 0.0) {
         var_f31 += 360.0;
     }
     return var_f31;

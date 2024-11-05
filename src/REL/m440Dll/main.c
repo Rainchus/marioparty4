@@ -92,7 +92,7 @@ void ObjectSetup(void)
 void fn_1_3C4(omObjData *object)
 {
     if ((omSysExitReq != 0) || (lbl_1_bss_0 != 0)) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = &fn_1_434;
     }
 }
@@ -201,7 +201,7 @@ void fn_1_AE0(omObjData *arg0)
     switch (fn_1_23E4(7)) {
         case 1:
             if (lbl_1_bss_A == 0) {
-                WipeCreate(1, 0, 0x3C);
+                WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
                 lbl_1_bss_A = 1;
             }
             if (WipeStatGet() != 0)

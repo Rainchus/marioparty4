@@ -7278,7 +7278,7 @@ void fn_1_24620(omObjData *var_r31)
 
     if (omSysExitReq != 0) {
         fn_1_1F58(0x64);
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         var_r31->func = fn_1_298EC;
     }
     lbl_1_bss_308++;
@@ -7306,7 +7306,7 @@ void fn_1_24620(omObjData *var_r31)
                     fn_1_1F58(0x64);
                     lbl_1_bss_2FE = -1;
                     WipeColorSet(0, 0, 0);
-                    WipeCreate(2, 0, 0x3C);
+                    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                     var_r31->func = fn_1_298EC;
                 }
             }
@@ -7315,7 +7315,7 @@ void fn_1_24620(omObjData *var_r31)
             lbl_1_bss_128 += 1.0f;
             if (60.0f < lbl_1_bss_128) {
                 var_r31->work[0] += 1;
-                WipeCreate(1, 0, 0x3C);
+                WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
                 HuAudFXPlay(0x7B2);
             }
             break;
@@ -7644,7 +7644,7 @@ void fn_1_24620(omObjData *var_r31)
             if ((sp11C != 0) || (1200.0f < lbl_1_bss_128)) {
                 fn_1_1F58(0x64);
                 lbl_1_bss_2FE = -1;
-                WipeCreate(2, 0, 0x3C);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
                 var_r31->func = fn_1_298EC;
             }
             break;
