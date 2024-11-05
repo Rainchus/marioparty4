@@ -65,13 +65,13 @@ void ObjectSetup(void)
     lbl_1_bss_10 = 0;
     lbl_1_bss_4 = 0;
     _ClearFlag(0x1000C);
-    for (i = 0; HuSndGrpTbl[i].ovl != OVL_INVALID; i++) {
-        if (HuSndGrpTbl[i].ovl == mgInfoTbl[lbl_1_bss_14].ovl) {
+    for (i = 0; sndGrpTable[i].ovl != OVL_INVALID; i++) {
+        if (sndGrpTable[i].ovl == mgInfoTbl[lbl_1_bss_14].ovl) {
             break;
         }
     }
-    if (HuSndGrpTbl[i].ovl != OVL_INVALID) {
-        HuAudSndGrpSetSet(HuSndGrpTbl[i].grpset);
+    if (sndGrpTable[i].ovl != OVL_INVALID) {
+        HuAudSndGrpSetSet(sndGrpTable[i].grpSet);
     }
     if (mgInfoTbl[lbl_1_bss_14].ovl == OVL_M411) {
         if (GWMGTypeGet() == -1) {
