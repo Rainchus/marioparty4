@@ -1,4 +1,5 @@
 #include "game/hsfman.h"
+#include "game/hsfmotion.h"
 #include "game/minigame_seq.h"
 #include "game/object.h"
 #include "rel_sqrt_consts.h"
@@ -6,32 +7,21 @@
 #include "REL/m418Dll.h"
 
 // types
-typedef void (*M418DllFunc)(void);
-
-typedef struct M418DllUnkStruct {
-    M418DllFunc unk0;
-    Vec center;
-    char unk10[0xC];
-    Vec rot;
-    char unk28[0xC];
-    f32 zoom;
-    char unk38[0x4];
-    f32 unk3C[3];
-    char unk48[0x4];
-} M418DllUnkStruct; // sizeof 0x4C
+typedef struct M418DllUnkStruct2 {
+    char unk[0x4];
+    s32 unk4[3];
+    char unk10[0x4];
+} M418DllUnkStruct2;
 
 // bss
 M418DllUnkStruct lbl_1_bss_1F4;
+M418DllUnkStruct2 lbl_1_bss_1E0;
 s32 lbl_1_bss_8;
 s32 lbl_1_bss_4;
 Process* lbl_1_bss_0;
 
 // data
 s32 lbl_1_data_8 = -1;
-
-// protos
-void fn_1_B104(M418DllUnkStruct*, Vec, Vec);
-void fn_1_B41C(M418DllUnkStruct*);
 
 void fn_1_0(void) {
     Hu3DGLightCreate(-2500.0f, 5000.0f, 5000.0f, 0.0f, -1.0f, -1.0f, 0xFF, 0xD8, 0xA0);
@@ -160,4 +150,82 @@ void fn_1_780(void) {
             lbl_1_bss_8 = 0;
             break;
     }
+}
+
+s32 fn_1_950(s32 arg0) {
+    
+    if ((rand8() % arg0) == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void fn_1_998(omObjData* object) {
+    s32 var_r31;
+    M418DllUnkStruct2* var_r30 = &lbl_1_bss_1E0;
+
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        switch (var_r30->unk4[var_r31]) {
+            case 1:
+                fn_1_ABC4(object, var_r31 + 1, var_r31 + 1, 0, 2);
+                var_r30->unk4[var_r31] = 99;
+                break;
+            case 2:
+                fn_1_ABC4(object, var_r31 + 1, var_r31 + 1, 0, 0);
+                var_r30->unk4[var_r31] = 99;
+                break;
+            case 3:
+                HuAudFXPlay(0x5DD);
+                Hu3DModelAttrSet(object->model[var_r31 + 1], 0x40000004);
+                var_r30->unk4[var_r31] = 99;
+                break;
+        }
+    }
+}
+
+void fn_1_AA8(omObjData* object) {
+    Mtx sp10;
+    char* sp8[2] = { 0, 0 };
+    s32 var_r31;
+
+    for (var_r31 = 0; var_r31 < 2; var_r31++) {
+        Hu3DModelObjMtxGet(object->model[5], sp8[var_r31], sp10);
+        Hu3DModelPosSet(object->model[var_r31 + 6], sp10[0][3], sp10[1][3], sp10[2][3]);
+    }
+    object->func = fn_1_998;
+}
+
+void fn_1_B4C(omObjData* object) {
+    s32 sp8[3] = { 0x310021, 0x310022, 0x310023 };
+    s32 var_r30;
+
+    object->model[0] = Hu3DModelCreateFile(0x310011);
+    Hu3DModelShadowMapSet(object->model[0]);
+    
+    for (var_r30 = 1; var_r30 < 4; var_r30++) {
+        object->model[var_r30] = Hu3DModelCreateFile(sp8[var_r30 - 1]);
+        object->motion[var_r30] = Hu3DMotionIDGet(object->model[var_r30]);
+        Hu3DModelShadowMapSet(object->model[var_r30]);
+        Hu3DModelPosSet(object->model[var_r30], 0.0f, 0.0f, 0.0f);
+        fn_1_ABC4(object, var_r30, var_r30, 0, 2);
+    }
+    object->model[4] = Hu3DModelCreateFile(0x310016);
+    object->model[5] = Hu3DModelCreateFile(0x310018);
+    
+    for (var_r30 = 6; var_r30 < 8; var_r30++) {
+        object->model[var_r30] = Hu3DModelCreateFile(0x310026);
+        object->motion[var_r30] = Hu3DMotionIDGet(object->model[var_r30]);
+        Hu3DModelScaleSet(object->model[var_r30], 2.0f, 2.0f, 2.0f);
+        Hu3DModelLayerSet(object->model[var_r30], 1);
+        fn_1_ABC4(object, var_r30, var_r30, 0, 1);
+    }
+    
+    for (var_r30 = 8; var_r30 < 11; var_r30++) {
+        object->model[var_r30] = Hu3DModelCreateFile(0x31002A);
+        object->motion[var_r30] = Hu3DJointMotion(object->model[var_r30], HuDataSelHeapReadNum(0x31002E, MEMORY_DEFAULT_NUM, HEAP_DATA));
+        Hu3DModelPosSet(object->model[var_r30], -350.0f + 360.0f * (var_r30 - 8), -200.0f, -660.0f);
+        fn_1_ABC4(object, var_r30, var_r30, 0, 1);
+    }
+    object->func = fn_1_AA8;
 }

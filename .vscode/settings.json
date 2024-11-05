@@ -21,7 +21,8 @@
     ".clangd": "yaml",
     "m443dll.h": "c",
     "object.h": "c",
-    "m417dll.h": "c"
+    "m417dll.h": "c",
+    "m418dll.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {
