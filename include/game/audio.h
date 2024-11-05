@@ -3,40 +3,41 @@
 
 #include "dolphin.h"
 
-typedef struct hu_snd_grp_data {
-    /* 0x00 */ s16 ovl;
-    /* 0x02 */ s16 grpset;
-    /* 0x04 */ s32 auxANo;
-    /* 0x08 */ s32 auxBNo;
-    /* 0x0C */ s8 auxAVol;
-    /* 0x0D */ s8 auxBVol;
-} HuSndGrpData;
+typedef struct sndGrpTbl_s {
+    s16 ovl;
+    s16 grpSet;
+    s32 auxANo;
+    s32 auxBNo;
+    s8 auxAVol;
+    s8 auxBVol;
+} SNDGRPTBL;
+
 
 void HuAudInit(void);
-s32 HuAudStreamPlay(char *name, s32 arg1);
+s32 HuAudStreamPlay(char *name, BOOL flag);
 void HuAudStreamVolSet(s16 vol);
 void HuAudStreamPauseOn(void);
 void HuAudStreamPauseOff(void);
-void HuAudStreamFadeOut(s32 arg0);
+void HuAudStreamFadeOut(s32 streamNo);
 void HuAudAllStop(void);
-void HuAudFadeOut(s32 arg0);
-s32 HuAudFXPlay(s32 arg0);
-s32 HuAudFXPlayVol(s32 arg0, s16 arg1);
-s32 HuAudFXPlayVolPan(s32 arg0, s16 arg1, s16 arg2);
-void HuAudFXStop(s32 arg0);
+void HuAudFadeOut(s32 speed);
+int HuAudFXPlay(int seId);
+int HuAudFXPlayVol(int seId, s16 vol);
+int HuAudFXPlayVolPan(int seId, s16 vol, s16 pan);
+void HuAudFXStop(int seNo);
 void HuAudFXAllStop(void);
-void HuAudFXFadeOut(s32 arg0, s32 arg1);
-void HuAudFXPanning(s32 arg0, s16 arg1);
-void HuAudFXListnerSet(Vec* arg0, Vec* arg1, float arg2, float arg3);
-void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6);
+void HuAudFXFadeOut(int seNo, s32 speed);
+void HuAudFXPanning(int seNo, s16 pan);
+void HuAudFXListnerSet(Vec *pos, Vec *heading, float sndDist, float sndSpeed);
+void HuAudFXListnerSetEX(Vec *pos, Vec *heading, float sndDist, float sndSpeed, float startDis, float frontSurDis, float backSurDis);
 void HuAudFXListnerUpdate(Vec *arg0, Vec *arg1);
-s32 HuAudFXEmiterPlay(s32 arg0, Vec *arg1);
-void HuAudFXEmiterUpDate(s32 arg0, Vec *arg1);
+int HuAudFXEmiterPlay(int seId, Vec *pos);
+void HuAudFXEmiterUpDate(int seNo, Vec *pos);
 void HuAudFXListnerKill(void);
 void HuAudFXPauseAll(s32 arg0);
-s32 HuAudFXStatusGet(s32 arg0);
-s32 HuAudFXPitchSet(s32 arg0, s16 arg1);
-s32 HuAudFXVolSet(s32 arg0, s16 arg1);
+s32 HuAudFXStatusGet(int seNo);
+s32 HuAudFXPitchSet(int seNo, s16 pitch);
+s32 HuAudFXVolSet(int seNo, s16 vol);
 s32 HuAudSeqPlay(s16 arg0);
 void HuAudSeqStop(s32 arg0);
 void HuAudSeqFadeOut(s32 arg0, s32 arg1);
@@ -73,6 +74,6 @@ extern float Snd3DDistOffset;
 extern s32 musicOffF;
 extern u8 fadeStat;
 
-extern HuSndGrpData HuSndGrpTbl[];
+extern SNDGRPTBL sndGrpTable[];
 
 #endif

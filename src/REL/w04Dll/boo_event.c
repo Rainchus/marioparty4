@@ -1,6 +1,14 @@
 #include "REL/w04Dll.h"
 #include "game/audio.h"
+#include "game/board/audio.h"
+#include "game/board/main.h"
+#include "game/board/model.h"
+#include "game/board/player.h"
+#include "game/board/space.h"
+#include "game/board/ui.h"
+#include "game/board/window.h"
 #include "game/data.h"
+#include "game/frand.h"
 #include "game/gamework_data.h"
 #include "game/hsfanim.h"
 #include "game/hsfdraw.h"
@@ -12,14 +20,6 @@
 #include "game/process.h"
 #include "game/sprite.h"
 #include "game/window.h"
-#include "game/board/audio.h"
-#include "game/board/main.h"
-#include "game/board/model.h"
-#include "game/board/player.h"
-#include "game/board/space.h"
-#include "game/board/ui.h"
-#include "game/board/window.h"
-#include "game/frand.h"
 
 #include "dolphin.h"
 #include "ext_math.h"
@@ -94,50 +94,25 @@ static s16 lbl_1_bss_50;
 static AnimData *lbl_1_bss_4C;
 static Process *lbl_1_bss_48;
 
-static s32 lbl_1_data_2D0[8] = {
-    DATADIR_MARIOMOT,
-    DATADIR_LUIGIMOT,
-    DATADIR_PEACHMOT,
-    DATADIR_YOSHIMOT,
-    DATADIR_WARIOMOT,
-    DATADIR_DONKEYMOT,
-    DATADIR_DAISYMOT,
-    DATADIR_WALUIGIMOT
-};
+static s32 lbl_1_data_2D0[8] = { DATADIR_MARIOMOT, DATADIR_LUIGIMOT, DATADIR_PEACHMOT, DATADIR_YOSHIMOT, DATADIR_WARIOMOT, DATADIR_DONKEYMOT,
+    DATADIR_DAISYMOT, DATADIR_WALUIGIMOT };
 
 static s32 lbl_1_data_2F0 = 28;
 
-static s32 lbl_1_data_2F4[8] = {
-    DATA_MAKE_NUM(DATADIR_W04, 35),
-    DATA_MAKE_NUM(DATADIR_W04, 36),
-    DATA_MAKE_NUM(DATADIR_W04, 37),
-    DATA_MAKE_NUM(DATADIR_W04, 38),
-    DATA_MAKE_NUM(DATADIR_W04, 39),
-    DATA_MAKE_NUM(DATADIR_W04, 40),
-    DATA_MAKE_NUM(DATADIR_W04, 41),
-    DATA_MAKE_NUM(DATADIR_W04, 42)
-};
+static s32 lbl_1_data_2F4[8]
+    = { DATA_MAKE_NUM(DATADIR_W04, 35), DATA_MAKE_NUM(DATADIR_W04, 36), DATA_MAKE_NUM(DATADIR_W04, 37), DATA_MAKE_NUM(DATADIR_W04, 38),
+          DATA_MAKE_NUM(DATADIR_W04, 39), DATA_MAKE_NUM(DATADIR_W04, 40), DATA_MAKE_NUM(DATADIR_W04, 41), DATA_MAKE_NUM(DATADIR_W04, 42) };
 
-static s32 lbl_1_data_314[8] = {
-    DATA_MAKE_NUM(DATADIR_W04, 43),
-    DATA_MAKE_NUM(DATADIR_W04, 44),
-    DATA_MAKE_NUM(DATADIR_W04, 45),
-    DATA_MAKE_NUM(DATADIR_W04, 46),
-    DATA_MAKE_NUM(DATADIR_W04, 47),
-    DATA_MAKE_NUM(DATADIR_W04, 48),
-    DATA_MAKE_NUM(DATADIR_W04, 49),
-    DATA_MAKE_NUM(DATADIR_W04, 50)
-};
+static s32 lbl_1_data_314[8]
+    = { DATA_MAKE_NUM(DATADIR_W04, 43), DATA_MAKE_NUM(DATADIR_W04, 44), DATA_MAKE_NUM(DATADIR_W04, 45), DATA_MAKE_NUM(DATADIR_W04, 46),
+          DATA_MAKE_NUM(DATADIR_W04, 47), DATA_MAKE_NUM(DATADIR_W04, 48), DATA_MAKE_NUM(DATADIR_W04, 49), DATA_MAKE_NUM(DATADIR_W04, 50) };
 
-static char *lbl_1_data_348[] = {
-    "kan1", "kan2", "kan3", "kan4"
-};
+static char *lbl_1_data_348[] = { "kan1", "kan2", "kan3", "kan4" };
 
-static float lbl_1_data_358[] = {
-    -150.00001f, -170.00001f, -30.0f, -220.0f
-};
+static float lbl_1_data_358[] = { -150.00001f, -170.00001f, -30.0f, -220.0f };
 
-static void fn_1_20EC(void) {
+static void fn_1_20EC(void)
+{
     Vec sp20;
     Vec sp14;
     Vec sp8;
@@ -258,7 +233,8 @@ static void fn_1_20EC(void) {
     HuPrcEnd();
 }
 
-static void fn_1_28BC(void) {
+static void fn_1_28BC(void)
+{
     Vec sp20;
     Vec sp14;
     Vec sp8;
@@ -273,7 +249,7 @@ static void fn_1_28BC(void) {
 
     var_r27 = HuPrcChildCreate(fn_1_45A8, 0x2001, 0x800, 0, boardMainProc);
     HuPrcDestructorSet2(var_r27, fn_1_4630);
-    var_r26 = (float*) &var_r27->user_data;
+    var_r26 = (float *)&var_r27->user_data;
     lbl_1_bss_C2 = fn_1_4680(lbl_1_bss_78);
     var_r29 = 0;
     while (var_r29 == 0) {
@@ -318,7 +294,8 @@ static void fn_1_28BC(void) {
     }
 }
 
-static void fn_1_2B8C(void) {
+static void fn_1_2B8C(void)
+{
     s32 i;
 
     while (fn_1_2F54(4) == 0 || lbl_1_bss_7C != 0) {
@@ -331,7 +308,8 @@ static void fn_1_2B8C(void) {
     }
 }
 
-static void fn_1_2C10(void) {
+static void fn_1_2C10(void)
+{
     Vec sp8;
     BssE4Data *temp_r31;
     s32 i;
@@ -356,8 +334,9 @@ static void fn_1_2C10(void) {
         temp_r31->unk0C = 0;
         if (i == 0) {
             temp_r31->unk0A = lbl_1_bss_FA;
-        } else {
-            temp_r31->unk0A = ((BssE4Data*) lbl_1_bss_E4[i - 1]->user_data)->unk04;
+        }
+        else {
+            temp_r31->unk0A = ((BssE4Data *)lbl_1_bss_E4[i - 1]->user_data)->unk04;
         }
         lbl_1_bss_E4[i] = HuPrcChildCreate(fn_1_30A4, 0x2003, 0x1000, 0, boardMainProc);
         lbl_1_bss_E4[i]->user_data = temp_r31;
@@ -366,7 +345,8 @@ static void fn_1_2C10(void) {
     }
 }
 
-static void fn_1_2E60(s16 arg0) {
+static void fn_1_2E60(s16 arg0)
+{
     BssE4Data *temp_r3;
 
     temp_r3 = fn_1_2FBC(arg0);
@@ -376,7 +356,8 @@ static void fn_1_2E60(s16 arg0) {
     HuMemDirectFree(lbl_1_bss_E4[arg0]->user_data);
 }
 
-static void fn_1_2EE8(s32 arg0) {
+static void fn_1_2EE8(s32 arg0)
+{
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -386,7 +367,8 @@ static void fn_1_2EE8(s32 arg0) {
     }
 }
 
-static s32 fn_1_2F54(u32 arg0) {
+static s32 fn_1_2F54(u32 arg0)
+{
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -396,16 +378,19 @@ static s32 fn_1_2F54(u32 arg0) {
     }
     if (i != 4) {
         return 0;
-    } else {
+    }
+    else {
         return 1;
     }
 }
 
-static BssE4Data *fn_1_2FBC(s16 arg0) {
+static BssE4Data *fn_1_2FBC(s16 arg0)
+{
     return lbl_1_bss_E4[arg0]->user_data;
 }
 
-static void fn_1_2FDC(void) {
+static void fn_1_2FDC(void)
+{
     Vec sp8;
     BssE4Data *temp_r31;
 
@@ -423,7 +408,8 @@ static void fn_1_2FDC(void) {
     }
 }
 
-static void fn_1_30A4(void) {
+static void fn_1_30A4(void)
+{
     Vec sp20;
     Vec sp14;
     float temp_f31;
@@ -451,7 +437,8 @@ static void fn_1_30A4(void) {
                 if (temp_r31->unk06 == 0) {
                     BoardPlayerPosGet(GWSystem.player_curr, &temp_r31->unk20);
                     temp_r31->unk20.y += 65.0f;
-                } else {
+                }
+                else {
                     temp_r31->unk20 = fn_1_2FBC(temp_r31->unk06 - 1)->unk20;
                     temp_r31->unk20.z -= 300.0f;
                 }
@@ -513,7 +500,8 @@ static void fn_1_30A4(void) {
                 }
                 if (temp_r31->unk06 == 0) {
                     BoardModelPosGet(lbl_1_bss_FA, &temp_r31->unk20);
-                } else {
+                }
+                else {
                     BoardModelPosGet(fn_1_2FBC(temp_r31->unk06 - 1)->unk04, &temp_r31->unk20);
                 }
                 temp_r31->unk00 = 0;
@@ -565,7 +553,8 @@ static void fn_1_30A4(void) {
                 temp_r31->unk0E = temp_r31->unk0C;
                 if (temp_r31->unk06 == 0) {
                     temp_r31->unk0C = lbl_1_bss_74;
-                } else {
+                }
+                else {
                     temp_r31->unk0C = fn_1_2FBC(temp_r31->unk06 - 1)->unk0E;
                 }
                 BoardModelPosSetV(temp_r31->unk04, &temp_r31->unk20);
@@ -574,14 +563,16 @@ static void fn_1_30A4(void) {
                 }
                 if (temp_r31->unk06 == 0) {
                     BoardModelPosGet(lbl_1_bss_FA, &temp_r31->unk20);
-                } else {
+                }
+                else {
                     BoardModelPosGet(fn_1_2FBC(temp_r31->unk06 - 1)->unk04, &temp_r31->unk20);
                 }
                 if (var_r29 != 0) {
                     BoardModelVisibilitySet(temp_r31->unk04, 0);
                     temp_r31->unk02 = 0;
                     temp_r31->unk00 = 4;
-                } else {
+                }
+                else {
                     temp_r31->unk00 = 0;
                 }
                 break;
@@ -590,7 +581,8 @@ static void fn_1_30A4(void) {
     }
 }
 
-static void fn_1_38D8(void) {
+static void fn_1_38D8(void)
+{
     Vec sp24;
     Vec sp18;
     Vec spC;
@@ -640,7 +632,8 @@ static void fn_1_38D8(void) {
     HuPrcEnd();
 }
 
-static s32 fn_1_3C9C(void) {
+static s32 fn_1_3C9C(void)
+{
     Vec sp50;
     Vec sp44;
     Vec sp38;
@@ -731,17 +724,20 @@ static s32 fn_1_3C9C(void) {
                 var_r19 = 0;
                 if (var_r21 != 0) {
                     var_r21--;
-                } else {
+                }
+                else {
                     var_r21 = frandmod(10) + 15;
                     if (frandBool() || var_r18 == 3) {
                         var_r19 = 0x100;
-                    } else {
+                    }
+                    else {
                         OSReport("com sel chg: %d \n", var_r29);
                         var_r18++;
                         var_r23 = frandmod(var_r29);
                     }
                 }
-            } else {
+            }
+            else {
                 var_r26 = HuPadStkX[temp_r20];
                 var_r25 = HuPadStkY[temp_r20];
                 var_r19 = HuPadBtnDown[temp_r20];
@@ -783,7 +779,8 @@ static s32 fn_1_3C9C(void) {
                     if (var_f31 > 180.0f) {
                         var_f31 -= 180.0f;
                     }
-                } else {
+                }
+                else {
                     sp38.x = sp38.y = sp38.z = 1.8f;
                 }
                 BoardModelScaleSetV(lbl_1_bss_F4[i], &sp38);
@@ -798,7 +795,8 @@ static s32 fn_1_3C9C(void) {
         var_r24 = sp20[var_r27];
         lbl_1_bss_70 = sp18[var_r27];
         lbl_1_bss_C2 = fn_1_4680(var_r24);
-    } else if (lbl_1_bss_70 != 0) {
+    }
+    else if (lbl_1_bss_70 != 0) {
         i = BoardSpaceLinkTargetListGet(0, lbl_1_bss_78, sp10);
         for (i--; i >= 0; i--) {
             var_r28 = BoardSpaceGet(0, sp10[i]);
@@ -807,7 +805,8 @@ static s32 fn_1_3C9C(void) {
             }
         }
         var_r24 = sp10[i];
-    } else {
+    }
+    else {
         for (i = 0; i < temp_r30->link_cnt; i++) {
             var_r28 = BoardSpaceGet(0, temp_r30->link[i]);
             if (var_r28->flag & 0x200) {
@@ -819,12 +818,13 @@ static s32 fn_1_3C9C(void) {
     return var_r24;
 }
 
-static void fn_1_45A8(void) {
+static void fn_1_45A8(void)
+{
     float *temp_r30;
     s32 var_r31;
 
     var_r31 = 15;
-    temp_r30 = (float*) &HuPrcCurrentGet()->user_data;
+    temp_r30 = (float *)&HuPrcCurrentGet()->user_data;
     while (TRUE) {
         if (var_r31 == 0) {
             BoardCameraMoveSet(0);
@@ -842,7 +842,8 @@ static void fn_1_45A8(void) {
     }
 }
 
-static void fn_1_4630(void) {
+static void fn_1_4630(void)
+{
     BoardCameraMoveSet(0);
     BoardCameraTargetPlayerSet(GWSystem.player_curr);
     BoardCameraViewSet(2);
@@ -850,7 +851,8 @@ static void fn_1_4630(void) {
     BoardCameraMoveSet(1);
 }
 
-static s32 fn_1_4680(s16 arg0) {
+static s32 fn_1_4680(s16 arg0)
+{
     BoardSpace *var_r30;
     BoardSpace *var_r29;
     s16 sp8[4];
@@ -880,7 +882,8 @@ static s32 fn_1_4680(s16 arg0) {
                 }
             }
             arg0 = sp8[i];
-        } else {
+        }
+        else {
             for (i = 0; i < var_r30->link_cnt; i++) {
                 var_r29 = BoardSpaceGet(0, var_r30->link[i]);
                 if (var_r29->flag & 0x200) {
@@ -897,7 +900,8 @@ static s32 fn_1_4680(s16 arg0) {
     return var_r27;
 }
 
-static void fn_1_4848(void) {
+static void fn_1_4848(void)
+{
     Vec sp20;
     Vec sp14;
     float temp_f28;
@@ -905,7 +909,7 @@ static void fn_1_4848(void) {
     s32 temp_r30;
     s32 i;
 
-    temp_r30 = (s32) HuPrcCurrentGet()->user_data;
+    temp_r30 = (s32)HuPrcCurrentGet()->user_data;
     BoardPlayerPosGet(temp_r30, &sp20);
     BoardPlayerMotBlendSet(temp_r30, BoardModelRotYGet(lbl_1_bss_FA) - 180.0f, 0xA);
     while (!BoardPlayerMotBlendCheck(temp_r30)) {
@@ -981,7 +985,8 @@ block_A:
     HuPrcEnd();
 }
 
-static void fn_1_5018(void) {
+static void fn_1_5018(void)
+{
     Vec sp18;
     Vec spC;
     float var_f29;
@@ -995,13 +1000,14 @@ static void fn_1_5018(void) {
         if (var_f29 < 900.0f && lbl_1_bss_B2[lbl_1_bss_BA[i]] == 0) {
             temp_r3 = HuPrcChildCreate(fn_1_4848, 0x2003, 0x2000, 0, boardMainProc);
             lbl_1_bss_D4[lbl_1_bss_BA[i]] = temp_r3;
-            temp_r3->user_data = (u8*) lbl_1_bss_BA[i];
+            temp_r3->user_data = (u8 *)lbl_1_bss_BA[i];
             lbl_1_bss_B2[lbl_1_bss_BA[i]] = 1;
         }
     }
 }
 
-static void fn_1_52A0(s16 arg0, Vec *arg1) {
+static void fn_1_52A0(s16 arg0, Vec *arg1)
+{
     Vec sp40[4];
     Vec sp10[4];
     BssE4Data *var_r30;
@@ -1060,11 +1066,13 @@ static void fn_1_52A0(s16 arg0, Vec *arg1) {
     BoardSpacePosGet(0, lbl_1_bss_B0, &arg1[GWSystem.player_curr]);
 }
 
-static void fn_1_55A0(void) {
+static void fn_1_55A0(void)
+{
     lbl_1_bss_48 = NULL;
 }
 
-void fn_1_55B4(void) {
+void fn_1_55B4(void)
+{
     s32 sp8;
 
     sp8 = GWSystem.player_curr;
@@ -1075,7 +1083,8 @@ void fn_1_55B4(void) {
     }
 }
 
-static void fn_1_5648(void) {
+static void fn_1_5648(void)
+{
     ParticleData *var_r30;
     s32 i;
 
@@ -1087,13 +1096,14 @@ static void fn_1_5648(void) {
         Hu3DParticleScaleSet(lbl_1_bss_C4[i]->model[0], 5.0f);
         Hu3DParticleHookSet(lbl_1_bss_C4[i]->model[0], fn_1_5A2C);
         Hu3DParticleBlendModeSet(lbl_1_bss_C4[i]->model[0], 1);
-        Hu3DModelAttrSet(lbl_1_bss_C4[i]->model[0], 1);
+        Hu3DModelAttrSet(lbl_1_bss_C4[i]->model[0], HU3D_ATTR_DISPOFF);
         var_r30 = Hu3DData[lbl_1_bss_C4[i]->model[0]].unk_120;
         var_r30->unk_1C = lbl_1_bss_C4[i];
     }
 }
 
-static void fn_1_5828(void) {
+static void fn_1_5828(void)
+{
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -1102,7 +1112,8 @@ static void fn_1_5828(void) {
     }
 }
 
-static s16 fn_1_58A4(Vec *arg0) {
+static s16 fn_1_58A4(Vec *arg0)
+{
     s16 i;
 
     for (i = 0; i < 4; i++) {
@@ -1117,22 +1128,25 @@ static s16 fn_1_58A4(Vec *arg0) {
     return -1;
 }
 
-static void fn_1_5980(s16 arg0) {
+static void fn_1_5980(s16 arg0)
+{
     lbl_1_bss_C4[arg0]->work[1] = 1;
     lbl_1_bss_C4[arg0]->work[2] = 0;
 }
 
-static void fn_1_59C4(omObjData *arg0) {
+static void fn_1_59C4(omObjData *arg0)
+{
     if (arg0->work[0] != 0) {
-        Hu3DModelAttrReset(arg0->model[0], 1);
+        Hu3DModelAttrReset(arg0->model[0], HU3D_ATTR_DISPOFF);
     }
     if (arg0->work[2] != 0) {
         arg0->work[0] = 0;
-        Hu3DModelAttrSet(arg0->model[0], 1);
+        Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF);
     }
 }
 
-static void fn_1_5A2C(ModelData *model, ParticleData *particle, Mtx matrix) {
+static void fn_1_5A2C(ModelData *model, ParticleData *particle, Mtx matrix)
+{
     s32 var_r26;
     s32 i;
     s32 j;
@@ -1188,7 +1202,8 @@ static void fn_1_5A2C(ModelData *model, ParticleData *particle, Mtx matrix) {
             if (var_r31->unk08.z <= 0.0f) {
                 var_r31->unk08.z = 0.0f;
             }
-        } else {
+        }
+        else {
             var_r26++;
         }
     }

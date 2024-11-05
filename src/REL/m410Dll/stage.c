@@ -22,9 +22,9 @@ void fn_1_31FC(omObjData *object)
     object->model[1] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M410, 14));
     object->model[2] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M410, 15));
     object->model[3] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M410, 16));
-    Hu3DModelAttrSet(object->model[3], 0x40000001);
+    Hu3DModelAttrSet(object->model[3], HU3D_MOTATTR_LOOP);
     object->model[4] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M410, 17));
-    Hu3DModelAttrSet(object->model[4], 0x40000001);
+    Hu3DModelAttrSet(object->model[4], HU3D_MOTATTR_LOOP);
     object->model[5] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M410, 18));
     object->func = fn_1_3350;
 }

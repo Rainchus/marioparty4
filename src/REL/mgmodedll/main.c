@@ -5,8 +5,8 @@
 #include "ext_math.h"
 
 typedef struct {
-    /* 0x00 */ omObjData* unk00;
-    /* 0x04 */ void (*unk04)(omObjData*, ...);
+    /* 0x00 */ omObjData *unk00;
+    /* 0x04 */ void (*unk04)(omObjData *, ...);
     /* 0x08 */ s32 unk08[4];
     /* 0x18 */ char unk18[4];
     /* 0x1C */ s32 unk1C[4];
@@ -41,32 +41,32 @@ typedef struct {
     /* 0x2C */ float unk2C;
 } StructBss3CC; // Size 0x30
 
-void fn_1_19A30(StructBss8* arg0);
+void fn_1_19A30(StructBss8 *arg0);
 void fn_1_19B8C(void);
 void fn_1_19D00(void);
 void fn_1_19E94(void);
-void fn_1_19F5C(omObjData* arg0);
+void fn_1_19F5C(omObjData *arg0);
 void fn_1_1A564(void);
 void fn_1_1A6A0(void);
 void fn_1_1A8E8(void);
 void fn_1_1AA28(void);
 void fn_1_1AB58(void);
-void fn_1_1AC88(StructBss2050* arg0, s32 arg1, s32 arg2, s32 arg3);
+void fn_1_1AC88(StructBss2050 *arg0, s32 arg1, s32 arg2, s32 arg3);
 void fn_1_1B260(s32 arg0);
 void fn_1_1BCEC(void);
 void fn_1_1BECC(void);
-void fn_1_1C09C(StructBss2050* arg0, s32 arg1, s32 arg2, s32 arg3);
+void fn_1_1C09C(StructBss2050 *arg0, s32 arg1, s32 arg2, s32 arg3);
 void fn_1_1CB4C(void);
-void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1);
-void fn_1_1D49C(StructBss8_24* arg0);
-s32 fn_1_1D688(StructBss8_24* arg0);
-void fn_1_1DD74(s32 arg0, StructBss8_24* arg1);
-void fn_1_1E608(StructBss8_24* arg0);
-void fn_1_1EB20(StructBss8_24* arg0);
+void fn_1_1CEB0(omObjData *arg0, StructBss8_24 *arg1);
+void fn_1_1D49C(StructBss8_24 *arg0);
+s32 fn_1_1D688(StructBss8_24 *arg0);
+void fn_1_1DD74(s32 arg0, StructBss8_24 *arg1);
+void fn_1_1E608(StructBss8_24 *arg0);
+void fn_1_1EB20(StructBss8_24 *arg0);
 void fn_1_1EBE8(void);
 void fn_1_1ED20(void);
-void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct* arg1);
-void fn_1_1F32C(omObjData* arg0);
+void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct *arg1);
+void fn_1_1F32C(omObjData *arg0);
 void fn_1_1FABC(void);
 void fn_1_1FC44(s32 arg0);
 void fn_1_20728(void);
@@ -78,8 +78,8 @@ s32 fn_1_214A4(void);
 s32 fn_1_21CA4(void);
 s32 fn_1_2228C(s32 arg0);
 void fn_1_22728(void);
-void fn_1_22C08(omObjData* arg0);
-void fn_1_231F0(omObjData* arg0);
+void fn_1_22C08(omObjData *arg0);
+void fn_1_231F0(omObjData *arg0);
 float fn_1_240E4(float arg0, float arg1, float arg2, float arg3);
 float fn_1_2410C(float arg0, float arg1, float arg2);
 float fn_1_2412C(float arg0, float arg1, float arg2, float arg3);
@@ -105,15 +105,16 @@ void fn_1_26790(s32 arg0, s32 arg1, float arg2, float arg3);
 char lbl_1_bss_209C_pad[8]; // Could be part of StructBss2050.
 StructBss2050 lbl_1_bss_2050;
 StructBss8_24 lbl_1_bss_1E10[4];
-omObjData* lbl_1_bss_1E0C;
+omObjData *lbl_1_bss_1E0C;
 StructBss3CC lbl_1_bss_3CC[140];
 s32 lbl_1_bss_3C8;
-StructBss8* lbl_1_bss_3C4;
-Process* lbl_1_bss_3C0;
+StructBss8 *lbl_1_bss_3C4;
+Process *lbl_1_bss_3C0;
 
 s32 lbl_1_data_1E0 = 1; // Unused.
 
-void fn_1_18DF8(Process* arg0, StructBss8* arg1) {
+void fn_1_18DF8(Process *arg0, StructBss8 *arg1)
+{
     s32 i;
 
     lbl_1_bss_3C0 = arg0;
@@ -138,7 +139,8 @@ void fn_1_18DF8(Process* arg0, StructBss8* arg1) {
     }
 }
 
-void fn_1_19018(void) {
+void fn_1_19018(void)
+{
     Vec sp14 = { 0.0f, 0.0f, 640.0f };
     float temp_f31;
     s32 temp_r30;
@@ -146,7 +148,7 @@ void fn_1_19018(void) {
 
     fn_1_243B0();
     for (i = 1; i < 140; i++) {
-        Hu3DModelAttrReset(lbl_1_bss_1E0C->model[i], 1);
+        Hu3DModelAttrReset(lbl_1_bss_1E0C->model[i], HU3D_ATTR_DISPOFF);
     }
     WipeColorSet(0xFF, 0xFF, 0xFF);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, -1);
@@ -182,7 +184,8 @@ void fn_1_19018(void) {
     fn_1_24388(60);
 }
 
-s32 fn_1_194C8(s32 arg0) {
+s32 fn_1_194C8(s32 arg0)
+{
     s32 var_r30;
     s32 var_r29;
     s32 var_r28;
@@ -202,13 +205,16 @@ s32 fn_1_194C8(s32 arg0) {
             }
             if (i != 4) {
                 var_r29 = 2;
-            } else {
+            }
+            else {
                 var_r29 = 1;
             }
-        } else {
+        }
+        else {
             var_r29 = 3;
         }
-    } else {
+    }
+    else {
         lbl_1_bss_3C4->unk1C = arg0;
         fn_1_19B8C();
     }
@@ -239,9 +245,11 @@ s32 fn_1_194C8(s32 arg0) {
                         case 3:
                             if (lbl_1_bss_3C4->unk1C == 0 || lbl_1_bss_3C4->unk1C == 3) {
                                 var_r29 = 5;
-                            } else if (lbl_1_bss_3C4->unk1C == 2) {
+                            }
+                            else if (lbl_1_bss_3C4->unk1C == 2) {
                                 var_r29 = fn_1_21CA4();
-                            } else {
+                            }
+                            else {
                                 var_r29 = fn_1_2228C(var_r28);
                                 var_r28 = 0;
                             }
@@ -250,7 +258,8 @@ s32 fn_1_194C8(s32 arg0) {
                     if (var_r29 == 0) {
                         var_r30 = 10;
                         break;
-                    } else if (var_r29 == 5) {
+                    }
+                    else if (var_r29 == 5) {
                         var_r30 = 99;
                         break;
                     }
@@ -264,7 +273,8 @@ s32 fn_1_194C8(s32 arg0) {
     }
     if (var_r30 == -99) {
         var_r30 = 0;
-    } else {
+    }
+    else {
         for (i = 0; i < 4; i++) {
             lbl_1_bss_3C4->unk24[i].unk5C = lbl_1_bss_1E10[i].unk5C;
             lbl_1_bss_3C4->unk24[i].unk60 = lbl_1_bss_1E10[i].unk60;
@@ -292,7 +302,8 @@ s32 fn_1_194C8(s32 arg0) {
                     lbl_1_bss_3C4->unk24[2].unk5C = lbl_1_bss_3C4->unk24[3].unk5C = 1;
                     break;
             }
-        } else if (lbl_1_bss_3C4->unk1C == 2) {
+        }
+        else if (lbl_1_bss_3C4->unk1C == 2) {
             switch (lbl_1_bss_2050.unk1C[0]) {
                 case 0:
                     lbl_1_bss_3C4->unk20 = 3;
@@ -314,7 +325,8 @@ s32 fn_1_194C8(s32 arg0) {
     return var_r30;
 }
 
-void fn_1_19A30(StructBss8* arg0) {
+void fn_1_19A30(StructBss8 *arg0)
+{
     s32 i;
 
     OSReport("\n\n>>>>>>>>>>>>>>>>>>>> ENTRANCE HELP\n\n");
@@ -337,12 +349,14 @@ void fn_1_19A30(StructBss8* arg0) {
     }
     OSReport("\nNO) GRP:COM:DIF:CHR:PAD\n");
     for (i = 0; i < 4; i++) {
-        OSReport("%2d) %3d:%3d:%3d:%3d:%3d\n", i, arg0->unk24[i].unk5C, arg0->unk24[i].unk60, arg0->unk24[i].unk64, arg0->unk24[i].unk68, arg0->unk24[i].unk6C);
+        OSReport("%2d) %3d:%3d:%3d:%3d:%3d\n", i, arg0->unk24[i].unk5C, arg0->unk24[i].unk60, arg0->unk24[i].unk64, arg0->unk24[i].unk68,
+            arg0->unk24[i].unk6C);
     }
     OSReport("\n>>>>>>>>>>>>>>>>>>>> ENTRANCE HELP\n\n");
 }
 
-void fn_1_19B8C(void) {
+void fn_1_19B8C(void)
+{
     s32 i;
     s32 j;
 
@@ -365,8 +379,9 @@ void fn_1_19B8C(void) {
     }
 }
 
-void fn_1_19D00(void) {
-    omObjData* temp_r30;
+void fn_1_19D00(void)
+{
+    omObjData *temp_r30;
     s32 temp_r31;
 
     temp_r31 = lbl_1_bss_3C8++;
@@ -390,8 +405,9 @@ void fn_1_19D00(void) {
     }
 }
 
-void fn_1_19E94(void) {
-    omObjData* temp_r3;
+void fn_1_19E94(void)
+{
+    omObjData *temp_r3;
 
     temp_r3 = omAddObjEx(lbl_1_bss_3C0, 0x100, 16, 16, -1, NULL);
     lbl_1_bss_2050.unk00 = temp_r3;
@@ -406,40 +422,22 @@ void fn_1_19E94(void) {
     }
 }
 
-s32 lbl_1_data_32C[][4] = {
-    { 177, 104, 120,  55 },
-    { 251, 104, 458,  55 },
-    { 325, 104, 120, 142 },
-    { 399, 104, 458, 142 }
-};
+s32 lbl_1_data_32C[][4] = { { 177, 104, 120, 55 }, { 251, 104, 458, 55 }, { 325, 104, 120, 142 }, { 399, 104, 458, 142 } };
 
-s32 lbl_1_data_36C[][6] = {
-    { 168,  90, 120,  51, 112,  55 },
-    { 248, 190, 458,  51, 466,  55 },
-    { 328,  90, 120, 222, 112, 282 },
-    { 408, 190, 458, 222, 466, 282 }
-};
+s32 lbl_1_data_36C[][6]
+    = { { 168, 90, 120, 51, 112, 55 }, { 248, 190, 458, 51, 466, 55 }, { 328, 90, 120, 222, 112, 282 }, { 408, 190, 458, 222, 466, 282 } };
 
 s32 lbl_1_data_3CC[] = { 224, 456, 272, 292, 468, 282 };
 
-float lbl_1_data_3E4[][5] = {
-    { 262.0f, 119.0f,  1.3f, 227.0f, 455.0f },
-    { 314.0f, 168.0f, 0.75f, 265.0f, 416.0f },
-    { 366.0f, 204.0f, 0.75f, 230.0f, 450.0f },
-    { 418.0f, 240.0f, 0.75f, 300.0f, 381.0f },
-    {  -1.0f, 289.0f,  1.3f, 220.0f, 460.0f }
-};
+float lbl_1_data_3E4[][5] = { { 262.0f, 119.0f, 1.3f, 227.0f, 455.0f }, { 314.0f, 168.0f, 0.75f, 265.0f, 416.0f },
+    { 366.0f, 204.0f, 0.75f, 230.0f, 450.0f }, { 418.0f, 240.0f, 0.75f, 300.0f, 381.0f }, { -1.0f, 289.0f, 1.3f, 220.0f, 460.0f } };
 
-s32 lbl_1_data_448[][4] = {
-    { 262, 262, 262, 262 },
-    { 314, 307, 373, 373 },
-    { 366, 373, 307, 418 },
-    { 418, 418, 418, 307 }
-};
+s32 lbl_1_data_448[][4] = { { 262, 262, 262, 262 }, { 314, 307, 373, 373 }, { 366, 373, 307, 418 }, { 418, 418, 418, 307 } };
 
 s32 lbl_1_data_488 = -1;
 
-void fn_1_19F5C(omObjData* arg0) {
+void fn_1_19F5C(omObjData *arg0)
+{
     float var_f30;
     float var_f31;
     s32 temp_r28;
@@ -470,20 +468,24 @@ void fn_1_19F5C(omObjData* arg0) {
         if (HuPadStkX[lbl_1_bss_1E10->unk6C] >= 5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 2)) {
             var_r29++;
             var_r26 = 1;
-        } else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
+        }
+        else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
             var_r29--;
             var_r26 = -1;
         }
-    } else {
+    }
+    else {
         fn_1_1AB58();
     }
     if (var_r29 < 1) {
         var_r29 = var_r27;
-    } else if (var_r29 > var_r27) {
+    }
+    else if (var_r29 > var_r27) {
         if (var_r26 == 0) {
             var_r29 = var_r27;
             var_r25 = 1;
-        } else {
+        }
+        else {
             var_r29 = 1;
         }
     }
@@ -494,13 +496,15 @@ void fn_1_19F5C(omObjData* arg0) {
             if (i <= 5) {
                 var_f30 = fn_1_24204(0.0f, 10.0f, i, 5.0f);
                 var_f31 = fn_1_24204(1.0f, 0.0f, i, 5.0f);
-            } else {
+            }
+            else {
                 var_f30 = fn_1_24204(10.0f, 0.0f, i - 5, 5.0f);
                 var_f31 = fn_1_24204(0.0f, 1.0f, i - 5, 5.0f);
             }
             if (var_r26 == 1) {
                 HuSprPosSet(temp_r28, 9, lbl_1_data_32C[3][0] + 50 + var_f30, lbl_1_data_32C[0][1]);
-            } else if (var_r26 == -1) {
+            }
+            else if (var_r26 == -1) {
                 HuSprPosSet(temp_r28, 8, lbl_1_data_32C[0][0] - 50 - var_f30, lbl_1_data_32C[0][1]);
             }
             for (j = 0; j < 4; j++) {
@@ -511,7 +515,8 @@ void fn_1_19F5C(omObjData* arg0) {
                     if (i == 5) {
                         HuSprBankSet(temp_r28, j, 0);
                     }
-                } else if (j >= var_r29 && lbl_1_bss_1E10[j].unk60 == 0) {
+                }
+                else if (j >= var_r29 && lbl_1_bss_1E10[j].unk60 == 0) {
                     lbl_1_bss_1E10[j].unk70[3] = 1;
                     HuSprScaleSet(temp_r28, j, var_f31, 1.0f);
                     HuSprScaleSet(temp_r28, j + 4, var_f31, 1.0f);
@@ -525,7 +530,8 @@ void fn_1_19F5C(omObjData* arg0) {
         for (j = 0; j < 4; j++) {
             if (j < var_r29) {
                 lbl_1_bss_1E10[j].unk60 = 0;
-            } else {
+            }
+            else {
                 lbl_1_bss_1E10[j].unk60 = 1;
             }
         }
@@ -533,7 +539,8 @@ void fn_1_19F5C(omObjData* arg0) {
     lbl_1_bss_2050.unk1C[0] = 0;
 }
 
-void fn_1_1A564(void) {
+void fn_1_1A564(void)
+{
     s32 temp_r30;
     s32 i;
 
@@ -555,7 +562,8 @@ void fn_1_1A564(void) {
     HuSprGrpPosSet(temp_r30, 0.0f, -500.0f);
 }
 
-void fn_1_1A6A0(void) {
+void fn_1_1A6A0(void)
+{
     float var_f31;
     s32 temp_r28;
     s32 i;
@@ -566,14 +574,16 @@ void fn_1_1A6A0(void) {
         fn_1_243B0();
         if (i <= 50) {
             var_f31 = fn_1_24204(-500.0f, 10.0f, i, 50.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_2412C(10.0f, 2.06f, i - 50, 10.0f);
         }
         HuSprGrpPosSet(temp_r28, 0.0f, var_f31);
     }
 }
 
-void fn_1_1A8E8(void) {
+void fn_1_1A8E8(void)
+{
     float var_f31;
     s32 spC;
     s32 sp8;
@@ -587,7 +597,8 @@ void fn_1_1A8E8(void) {
         fn_1_243B0();
         if (i <= 10) {
             var_f31 = fn_1_24204(2.06f, 10.0f, i, 10.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_2412C(10.0f, -500.0f, i - 10, 50.0f);
         }
         HuSprGrpPosSet(temp_r30, 0.0f, var_f31);
@@ -595,7 +606,8 @@ void fn_1_1A8E8(void) {
     fn_1_1B260(0);
 }
 
-void fn_1_1AA28(void) {
+void fn_1_1AA28(void)
+{
     s32 temp_r31;
 
     temp_r31 = lbl_1_bss_2050.unk34;
@@ -605,7 +617,8 @@ void fn_1_1AA28(void) {
     HuSprPosSet(temp_r31, 9, lbl_1_data_32C[3][0] + 50, lbl_1_data_32C[0][1]);
 }
 
-void fn_1_1AB58(void) {
+void fn_1_1AB58(void)
+{
     s32 temp_r31;
 
     temp_r31 = lbl_1_bss_2050.unk34;
@@ -615,9 +628,10 @@ void fn_1_1AB58(void) {
     HuSprPosSet(temp_r31, 9, lbl_1_data_32C[3][0] + 50, lbl_1_data_32C[0][1]);
 }
 
-void fn_1_1AC88(StructBss2050* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    AnimData* temp_r26;
-    AnimData* temp_r25;
+void fn_1_1AC88(StructBss2050 *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+    AnimData *temp_r26;
+    AnimData *temp_r25;
     s32 var_r29;
     s32 var_r28;
     s32 i;
@@ -660,7 +674,8 @@ void fn_1_1AC88(StructBss2050* arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_1_1A564();
 }
 
-void fn_1_1B260(s32 arg0) {
+void fn_1_1B260(s32 arg0)
+{
     s32 temp_r30;
     s32 i;
 
@@ -672,16 +687,15 @@ void fn_1_1B260(s32 arg0) {
         if (lbl_1_bss_1E10[i].unk60 != 0) {
             HuSprAttrSet(temp_r30, 16 + lbl_1_bss_1E10[i].unk58, HUSPR_ATTR_DISPOFF);
             HuSprAttrSet(temp_r30, 20 + lbl_1_bss_1E10[i].unk58, HUSPR_ATTR_DISPOFF);
-        } else {
+        }
+        else {
             HuSprAttrReset(temp_r30, 16 + lbl_1_bss_1E10[i].unk58, HUSPR_ATTR_DISPOFF);
             HuSprAttrReset(temp_r30, 20 + lbl_1_bss_1E10[i].unk58, HUSPR_ATTR_DISPOFF);
         }
-        HuSprPosSet(temp_r30, 16 + lbl_1_bss_1E10[i].unk58,
-            lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 % 4][0],
-            lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 / 4][1]);
-        HuSprPosSet(temp_r30, 20 + lbl_1_bss_1E10[i].unk58,
-            lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 % 4][0],
-            lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 / 4][1]);
+        HuSprPosSet(
+            temp_r30, 16 + lbl_1_bss_1E10[i].unk58, lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 % 4][0], lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 / 4][1]);
+        HuSprPosSet(
+            temp_r30, 20 + lbl_1_bss_1E10[i].unk58, lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 % 4][0], lbl_1_data_36C[lbl_1_bss_1E10[i].unk68 / 4][1]);
     }
     for (i = 0; i < 8; i++) {
         HuSprBankSet(temp_r30, i, 0);
@@ -715,7 +729,8 @@ void fn_1_1B260(s32 arg0) {
             HuSprPosSet(temp_r30, 65 + i, lbl_1_data_3E4[i][0] + 1.0f, lbl_1_data_3CC[2] + 2);
         }
         HuWinDispOn(lbl_1_bss_2050.unk44[0]);
-    } else if (arg0 == 2) {
+    }
+    else if (arg0 == 2) {
         HuSprAttrSet(temp_r30, 40, HUSPR_ATTR_DISPOFF);
         HuSprAttrReset(temp_r30, 53, HUSPR_ATTR_DISPOFF);
         HuSprAttrReset(temp_r30, 56, HUSPR_ATTR_DISPOFF);
@@ -733,7 +748,8 @@ void fn_1_1B260(s32 arg0) {
     HuSprGrpPosSet(temp_r30, 0.0f, -500.0f);
 }
 
-void fn_1_1BCEC(void) {
+void fn_1_1BCEC(void)
+{
     float var_f31;
     s32 sp8;
     s32 i;
@@ -743,7 +759,8 @@ void fn_1_1BCEC(void) {
         fn_1_243B0();
         if (i <= 50) {
             var_f31 = fn_1_24204(-500.0f, 10.0f, i, 50.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_2412C(10.0f, 2.06f, i - 50, 10.0f);
         }
         HuSprGrpPosSet(lbl_1_bss_2050.unk30, 0.0f, var_f31);
@@ -752,7 +769,8 @@ void fn_1_1BCEC(void) {
     }
 }
 
-void fn_1_1BECC(void) {
+void fn_1_1BECC(void)
+{
     float var_f31;
     s32 i;
 
@@ -760,7 +778,8 @@ void fn_1_1BECC(void) {
         fn_1_243B0();
         if (i <= 10) {
             var_f31 = fn_1_24204(2.06f, 10.0f, i, 10.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_2412C(10.0f, -500.0f, i - 10, 50.0f);
         }
         HuSprGrpPosSet(lbl_1_bss_2050.unk30, 0.0f, var_f31);
@@ -769,12 +788,13 @@ void fn_1_1BECC(void) {
     }
 }
 
-void fn_1_1C09C(StructBss2050* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    AnimData* temp_r28;
-    AnimData* temp_r26;
-    AnimData* temp_r25;
-    AnimData* temp_r24;
-    AnimData* temp_r23;
+void fn_1_1C09C(StructBss2050 *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+    AnimData *temp_r28;
+    AnimData *temp_r26;
+    AnimData *temp_r25;
+    AnimData *temp_r24;
+    AnimData *temp_r23;
     s32 var_r29;
     s32 var_r30;
     s32 i;
@@ -878,8 +898,9 @@ void fn_1_1C09C(StructBss2050* arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_1_1B260(0);
 }
 
-void fn_1_1CB4C(void) {
-    StructBss8_24* temp_r30;
+void fn_1_1CB4C(void)
+{
+    StructBss8_24 *temp_r30;
     float temp_f31;
     float temp_f30;
     s32 temp_r29;
@@ -913,7 +934,8 @@ void fn_1_1CB4C(void) {
     }
 }
 
-void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1) {
+void fn_1_1CEB0(omObjData *arg0, StructBss8_24 *arg1)
+{
     float temp_f31;
     float temp_f30;
     s32 temp_r25;
@@ -937,14 +959,16 @@ void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1) {
             HuSprBankSet(temp_r25, 16 + arg1->unk58, 1);
             HuSprBankSet(temp_r25, 20 + arg1->unk58, 1);
             HuAudFXPlay(0x6D + arg1->unk68);
-        } else {
+        }
+        else {
             if (HuPadStkX[arg1->unk6C] >= 5 || (HuPadBtn[arg1->unk6C] & 2)) {
                 var_r30++;
                 var_r27 = 1;
                 if (var_r30 > 3) {
                     var_r30 = 3;
                 }
-            } else if (HuPadStkX[arg1->unk6C] <= -5 || (HuPadBtn[arg1->unk6C] & 1)) {
+            }
+            else if (HuPadStkX[arg1->unk6C] <= -5 || (HuPadBtn[arg1->unk6C] & 1)) {
                 var_r30--;
                 var_r27 = -1;
                 if (var_r30 < 0) {
@@ -957,7 +981,8 @@ void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1) {
                 if (var_r29 > 1) {
                     var_r29 = 1;
                 }
-            } else if (HuPadStkY[arg1->unk6C] >= 5 || (HuPadBtn[arg1->unk6C] & 8)) {
+            }
+            else if (HuPadStkY[arg1->unk6C] >= 5 || (HuPadBtn[arg1->unk6C] & 8)) {
                 var_r29--;
                 var_r26 = -1;
                 if (var_r29 < 0) {
@@ -965,7 +990,8 @@ void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1) {
                 }
             }
         }
-    } else if (HuPadBtnDown[arg1->unk6C] & 0x200) {
+    }
+    else if (HuPadBtnDown[arg1->unk6C] & 0x200) {
         arg1->unk70[0] = 0;
         HuSprBankSet(temp_r25, arg1->unk68, 0);
         HuSprBankSet(temp_r25, 16 + arg1->unk58, 0);
@@ -979,20 +1005,25 @@ void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1) {
                     if (var_r27 == 0 || var_r26 == 0) {
                         if (var_r30 + var_r27 > 3 || var_r30 + var_r27 < 0) {
                             var_r30 = temp_r24;
-                        } else {
+                        }
+                        else {
                             var_r30 += var_r27;
                         }
                         if (var_r29 + var_r26 > 1 || var_r29 + var_r26 < 0) {
                             var_r29 = temp_r23;
-                        } else {
+                        }
+                        else {
                             var_r29 += var_r26;
                         }
-                    } else {
+                    }
+                    else {
                         if (var_r30 + var_r27 <= 3 && var_r30 + var_r27 >= 0) {
                             var_r30 += var_r27;
-                        } else if (var_r29 + var_r26 <= 1 && var_r29 + var_r26 >= 0) {
+                        }
+                        else if (var_r29 + var_r26 <= 1 && var_r29 + var_r26 >= 0) {
                             var_r29 += var_r26;
-                        } else {
+                        }
+                        else {
                             var_r30 = temp_r24;
                             var_r29 = temp_r23;
                         }
@@ -1015,7 +1046,8 @@ void fn_1_1CEB0(omObjData* arg0, StructBss8_24* arg1) {
     }
 }
 
-void fn_1_1D49C(StructBss8_24* arg0) {
+void fn_1_1D49C(StructBss8_24 *arg0)
+{
     s32 temp_r30;
 
     temp_r30 = lbl_1_bss_2050.unk30;
@@ -1027,7 +1059,8 @@ void fn_1_1D49C(StructBss8_24* arg0) {
     HuSprAttrReset(temp_r30, 36 + arg0->unk58, HUSPR_ATTR_DISPOFF);
 }
 
-s32 fn_1_1D688(StructBss8_24* arg0) {
+s32 fn_1_1D688(StructBss8_24 *arg0)
+{
     float var_f31;
     s32 i;
     s32 temp_r29;
@@ -1048,32 +1081,37 @@ s32 fn_1_1D688(StructBss8_24* arg0) {
                 if (arg0->unk64 > 3) {
                     arg0->unk64 = 0;
                 }
-            } else {
+            }
+            else {
                 arg0->unk64++;
                 var_r28 = 1;
                 if (arg0->unk64 > 2) {
                     arg0->unk64 = 0;
                 }
             }
-        } else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
+        }
+        else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
             if (GWGameStat.field10E_bit4 == 1) {
                 arg0->unk64--;
                 var_r28 = -1;
                 if (arg0->unk64 < 0) {
                     arg0->unk64 = 3;
                 }
-            } else {
+            }
+            else {
                 arg0->unk64--;
                 var_r28 = -1;
                 if (arg0->unk64 < 0) {
                     arg0->unk64 = 2;
                 }
             }
-        } else if (HuPadBtnDown[0] & 0x100) {
+        }
+        else if (HuPadBtnDown[0] & 0x100) {
             var_r27 = 1;
             HuAudFXPlay(2);
             break;
-        } else if (HuPadBtnDown[0] & 0x200) {
+        }
+        else if (HuPadBtnDown[0] & 0x200) {
             var_r27 = 0;
             HuAudFXPlay(3);
             break;
@@ -1104,7 +1142,8 @@ s32 fn_1_1D688(StructBss8_24* arg0) {
     return var_r27;
 }
 
-void fn_1_1DD74(s32 arg0, StructBss8_24* arg1) {
+void fn_1_1DD74(s32 arg0, StructBss8_24 *arg1)
+{
     float temp_f31;
     float var_f30;
     s32 temp_r27;
@@ -1131,14 +1170,16 @@ void fn_1_1DD74(s32 arg0, StructBss8_24* arg1) {
             HuSprBankSet(temp_r27, 28 + arg1->unk58, 1);
             HuAudFXPlay(0x6D + arg1->unk68);
             fn_1_1D49C(arg1);
-        } else {
+        }
+        else {
             if (HuPadStkX[lbl_1_bss_1E10->unk6C] >= 5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 2)) {
                 var_r30++;
                 var_r26 = 1;
                 if (var_r30 > 3) {
                     var_r30 = 3;
                 }
-            } else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
+            }
+            else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
                 var_r30--;
                 var_r26 = -1;
                 if (var_r30 < 0) {
@@ -1151,7 +1192,8 @@ void fn_1_1DD74(s32 arg0, StructBss8_24* arg1) {
                 if (var_r29 > 1) {
                     var_r29 = 1;
                 }
-            } else if (HuPadStkY[lbl_1_bss_1E10->unk6C] >= 5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 8)) {
+            }
+            else if (HuPadStkY[lbl_1_bss_1E10->unk6C] >= 5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 8)) {
                 var_r29--;
                 var_r25 = -1;
                 if (var_r29 < 0) {
@@ -1159,7 +1201,8 @@ void fn_1_1DD74(s32 arg0, StructBss8_24* arg1) {
                 }
             }
         }
-    } else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
+    }
+    else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
         arg1->unk70[0] = arg1->unk70[2] = 0;
         HuSprBankSet(temp_r27, arg1->unk68, 0);
         HuSprBankSet(temp_r27, 24 + arg1->unk58, 0);
@@ -1177,20 +1220,25 @@ void fn_1_1DD74(s32 arg0, StructBss8_24* arg1) {
                 if (var_r26 == 0 || var_r25 == 0) {
                     if (var_r30 + var_r26 > 3 || var_r30 + var_r26 < 0) {
                         var_r30 = temp_r23;
-                    } else {
+                    }
+                    else {
                         var_r30 += var_r26;
                     }
                     if (var_r29 + var_r25 > 1 || var_r29 + var_r25 < 0) {
                         var_r29 = temp_r22;
-                    } else {
+                    }
+                    else {
                         var_r29 += var_r25;
                     }
-                } else {
+                }
+                else {
                     if (var_r30 + var_r26 <= 3 && var_r30 + var_r26 >= 0) {
                         var_r30 += var_r26;
-                    } else if (var_r29 + var_r25 <= 1 && var_r29 + var_r25 >= 0) {
+                    }
+                    else if (var_r29 + var_r25 <= 1 && var_r29 + var_r25 >= 0) {
                         var_r29 += var_r25;
-                    } else {
+                    }
+                    else {
                         var_r30 = temp_r23;
                         var_r29 = temp_r22;
                     }
@@ -1214,7 +1262,8 @@ void fn_1_1DD74(s32 arg0, StructBss8_24* arg1) {
     }
 }
 
-void fn_1_1E608(StructBss8_24* arg0) {
+void fn_1_1E608(StructBss8_24 *arg0)
+{
     s32 temp_r30;
     s32 i;
 
@@ -1249,7 +1298,8 @@ void fn_1_1E608(StructBss8_24* arg0) {
     HuSprAttrSet(temp_r30, 49 + arg0->unk58, HUSPR_ATTR_DISPOFF);
 }
 
-void fn_1_1EB20(StructBss8_24* arg0) {
+void fn_1_1EB20(StructBss8_24 *arg0)
+{
     s32 temp_r30;
 
     temp_r30 = lbl_1_bss_2050.unk30;
@@ -1261,7 +1311,8 @@ void fn_1_1EB20(StructBss8_24* arg0) {
     HuSprAttrSet(temp_r30, 49 + arg0->unk58, HUSPR_ATTR_DISPOFF);
 }
 
-void fn_1_1EBE8(void) {
+void fn_1_1EBE8(void)
+{
     s32 temp_r30;
     s32 i;
 
@@ -1273,7 +1324,8 @@ void fn_1_1EBE8(void) {
     }
 }
 
-void fn_1_1ED20(void) {
+void fn_1_1ED20(void)
+{
     s32 temp_r30;
     s32 i;
 
@@ -1285,7 +1337,8 @@ void fn_1_1ED20(void) {
     }
 }
 
-void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct* arg1) {
+void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct *arg1)
+{
     float var_f31;
     float var_f30;
     s32 temp_r29;
@@ -1304,7 +1357,8 @@ void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct* arg1) {
         if (arg1->unk1C > 2) {
             arg1->unk1C = 0;
         }
-    } else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
+    }
+    else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
         var_r28 = -1;
         arg1->unk1C--;
         if (arg1->unk1C < 0) {
@@ -1319,14 +1373,16 @@ void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct* arg1) {
             if (i <= 5) {
                 var_f31 = fn_1_24204(0.0f, 10.0f, i, 5.0f);
                 var_f30 = fn_1_24204(1.0f, 0.0f, i, 5.0f);
-            } else {
+            }
+            else {
                 var_f31 = fn_1_24204(10.0f, 0.0f, i - 5, 5.0f);
                 var_f30 = fn_1_24204(0.0f, 1.0f, i - 5, 5.0f);
             }
             if (var_r28 == 1) {
                 HuSprPosSet(temp_r29, 55, lbl_1_data_3CC[4] + var_f31, lbl_1_data_3CC[2]);
                 HuSprPosSet(temp_r29, 56, 380.0f + var_f31, lbl_1_data_3CC[2]);
-            } else {
+            }
+            else {
                 HuSprPosSet(temp_r29, 54, lbl_1_data_3CC[3] - var_f31, lbl_1_data_3CC[2]);
                 HuSprPosSet(temp_r29, 56, 380.0f - var_f31, lbl_1_data_3CC[2]);
             }
@@ -1339,7 +1395,8 @@ void fn_1_1EE58(s32 arg0, UnkFunc1EE58Struct* arg1) {
     lbl_1_bss_2050.unk1C[3] = 0;
 }
 
-void fn_1_1F32C(omObjData* arg0) {
+void fn_1_1F32C(omObjData *arg0)
+{
     float var_f31;
     float var_f30;
     s32 temp_r29;
@@ -1354,7 +1411,8 @@ void fn_1_1F32C(omObjData* arg0) {
     var_r28 = lbl_1_bss_2050.unk1C[0] - var_r27;
     if (var_r28 > 3) {
         var_r28 = 0;
-    } else if (var_r28 < 0) {
+    }
+    else if (var_r28 < 0) {
         var_r28 = 3;
     }
     if (HuPadStkX[lbl_1_bss_1E10->unk6C] >= 5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 2)) {
@@ -1365,7 +1423,8 @@ void fn_1_1F32C(omObjData* arg0) {
         if (lbl_1_bss_2050.unk1C[0] > 3) {
             lbl_1_bss_2050.unk1C[0] = 1;
         }
-    } else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
+    }
+    else if (HuPadStkX[lbl_1_bss_1E10->unk6C] <= -5 || (HuPadBtn[lbl_1_bss_1E10->unk6C] & 1)) {
         var_r27 = -1;
         lbl_1_bss_2050.unk1C[3] = 1;
         HuAudFXPlay(0);
@@ -1380,28 +1439,33 @@ void fn_1_1F32C(omObjData* arg0) {
             if (i <= 5) {
                 var_f31 = fn_1_24204(0.0f, 10.0f, i, 5.0f);
                 var_f30 = fn_1_24204(1.0f, 0.0f, i, 5.0f);
-            } else {
+            }
+            else {
                 var_f31 = fn_1_24204(10.0f, 0.0f, i - 5, 5.0f);
                 var_f30 = fn_1_24204(0.0f, 1.0f, i - 5, 5.0f);
             }
             if (var_r27 == 1) {
                 HuSprPosSet(temp_r29, 55, lbl_1_data_3CC[1] + var_f31, lbl_1_data_3CC[2]);
-            } else {
+            }
+            else {
                 HuSprPosSet(temp_r29, 54, lbl_1_data_3CC[0] - var_f31, lbl_1_data_3CC[2]);
             }
             if (lbl_1_bss_2050.unk1C[0] != 0) {
                 var_f30 = fn_1_24204(0.0f, 1.0f, i, 10.0f);
-            } else {
+            }
+            else {
                 var_f30 = fn_1_24204(1.0f, 0.0f, i, 10.0f);
             }
             HuSprScaleSet(temp_r29, 85, var_f30, var_f30);
             for (j = 0; j < 4; j++) {
-                var_f31 = fn_1_24204(lbl_1_data_448[lbl_1_bss_1E10[j].unk58][var_r28], lbl_1_data_448[lbl_1_bss_1E10[j].unk58][lbl_1_bss_2050.unk1C[0]], i, 10.0f);
+                var_f31 = fn_1_24204(
+                    lbl_1_data_448[lbl_1_bss_1E10[j].unk58][var_r28], lbl_1_data_448[lbl_1_bss_1E10[j].unk58][lbl_1_bss_2050.unk1C[0]], i, 10.0f);
                 HuSprPosSet(temp_r29, 57 + lbl_1_bss_1E10[j].unk68, var_f31, lbl_1_data_3CC[2]);
                 HuSprPosSet(temp_r29, 65 + j, var_f31 + 1.0f, lbl_1_data_3CC[2] + 2);
                 if (lbl_1_bss_1E10[j].unk60 != 0) {
                     HuSprPosSet(temp_r29, 77 + j, var_f31, lbl_1_data_3CC[2] + 21);
-                } else {
+                }
+                else {
                     HuSprPosSet(temp_r29, 73 + j, var_f31 - 8.0f, lbl_1_data_3CC[2] - 21);
                 }
             }
@@ -1410,7 +1474,8 @@ void fn_1_1F32C(omObjData* arg0) {
     lbl_1_bss_2050.unk1C[3] = 0;
 }
 
-void fn_1_1FABC(void) {
+void fn_1_1FABC(void)
+{
     s32 temp_r30;
     s32 i;
 
@@ -1428,7 +1493,8 @@ void fn_1_1FABC(void) {
     }
 }
 
-void fn_1_1FC44(s32 arg0) {
+void fn_1_1FC44(s32 arg0)
+{
     float var_f31;
     float var_f30;
     s32 temp_r30;
@@ -1448,7 +1514,8 @@ void fn_1_1FC44(s32 arg0) {
         HuSprPosSet(temp_r30, 57 + lbl_1_bss_1E10[i].unk68, lbl_1_data_3E4[lbl_1_bss_1E10[i].unk58][0], lbl_1_data_3CC[2]);
         if (arg0 == 0) {
             HuSprScaleSet(temp_r30, 57 + lbl_1_bss_1E10[i].unk68, 0.0f, 1.0f);
-        } else {
+        }
+        else {
             HuSprScaleSet(temp_r30, 57 + lbl_1_bss_1E10[i].unk68, 1.0f, 1.0f);
         }
         if (lbl_1_bss_1E10[i].unk60 != 0) {
@@ -1457,16 +1524,19 @@ void fn_1_1FC44(s32 arg0) {
             HuSprPosSet(temp_r30, 77 + i, lbl_1_data_3E4[lbl_1_bss_1E10[i].unk58][0], lbl_1_data_3CC[2] + 21);
             if (arg0 == 0) {
                 HuSprScaleSet(temp_r30, 77 + i, 0.0f, 1.0f);
-            } else {
+            }
+            else {
                 HuSprScaleSet(temp_r30, 77 + i, 1.0f, 1.0f);
             }
-        } else {
+        }
+        else {
             HuSprAttrReset(temp_r30, 73 + i, HUSPR_ATTR_DISPOFF);
             HuSprBankSet(temp_r30, 73 + i, lbl_1_bss_1E10[i].unk58);
             HuSprPosSet(temp_r30, 73 + i, lbl_1_data_3E4[lbl_1_bss_1E10[i].unk58][0] - 8.0f, lbl_1_data_3CC[2] - 21);
             if (arg0 == 0) {
                 HuSprScaleSet(temp_r30, 73 + i, 0.0f, 1.0f);
-            } else {
+            }
+            else {
                 HuSprScaleSet(temp_r30, 73 + i, 1.0f, 1.0f);
             }
         }
@@ -1477,14 +1547,16 @@ void fn_1_1FC44(s32 arg0) {
     if (arg0 == 0) {
         lbl_1_bss_2050.unk1C[0] = 1;
         var_r27 = 0;
-    } else {
+    }
+    else {
         var_r27 = lbl_1_bss_2050.unk1C[0];
         lbl_1_bss_2050.unk1C[0] = 0;
     }
     for (i = 0; i <= 10; i++) {
         if (i <= 5) {
             var_f31 = fn_1_24204(1.0f, 0.0f, i, 5.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_24204(0.0f, 1.0f, i - 5, 5.0f);
         }
         for (j = 0; j < 4; j++) {
@@ -1493,24 +1565,29 @@ void fn_1_1FC44(s32 arg0) {
                 HuSprScaleSet(temp_r30, 57 + lbl_1_bss_1E10[j].unk68, var_f31, 1.0f);
                 if (lbl_1_bss_1E10[j].unk60 != 0) {
                     HuSprScaleSet(temp_r30, 77 + j, var_f31, 1.0f);
-                } else {
+                }
+                else {
                     HuSprScaleSet(temp_r30, 73 + j, var_f31, 1.0f);
                 }
-            } else {
+            }
+            else {
                 HuSprScaleSet(temp_r30, 81 + j, var_f31, 1.0f);
             }
-            var_f30 = fn_1_24204(lbl_1_data_448[lbl_1_bss_1E10[j].unk58][var_r27], lbl_1_data_448[lbl_1_bss_1E10[j].unk58][lbl_1_bss_2050.unk1C[0]], i, 10.0f);
+            var_f30 = fn_1_24204(
+                lbl_1_data_448[lbl_1_bss_1E10[j].unk58][var_r27], lbl_1_data_448[lbl_1_bss_1E10[j].unk58][lbl_1_bss_2050.unk1C[0]], i, 10.0f);
             HuSprPosSet(temp_r30, 57 + lbl_1_bss_1E10[j].unk68, var_f30, lbl_1_data_3CC[2]);
             HuSprPosSet(temp_r30, 65 + j, var_f30 + 1.0f, lbl_1_data_3CC[2] + 2);
             if (lbl_1_bss_1E10[j].unk60 != 0) {
                 HuSprPosSet(temp_r30, 77 + j, var_f30, lbl_1_data_3CC[2] + 21);
-            } else {
+            }
+            else {
                 HuSprPosSet(temp_r30, 73 + j, var_f30 - 8.0f, lbl_1_data_3CC[2] - 21);
             }
         }
         if (lbl_1_bss_2050.unk1C[0] != 0) {
             var_f31 = fn_1_24204(0.0f, 1.0f, i, 10.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_24204(1.0f, 0.0f, i, 10.0f);
         }
         HuSprScaleSet(temp_r30, 85, var_f31, var_f31);
@@ -1522,18 +1599,21 @@ void fn_1_1FC44(s32 arg0) {
         for (i = 0; i < 2; i++) {
             HuSprAttrReset(temp_r30, 54 + i, HUSPR_ATTR_DISPOFF);
         }
-    } else {
+    }
+    else {
         for (i = 0; i < 2; i++) {
             HuSprAttrSet(temp_r30, 54 + i, HUSPR_ATTR_DISPOFF);
         }
     }
 }
 
-void fn_1_20728(void) {
+void fn_1_20728(void)
+{
     fn_1_1A6A0();
 }
 
-s32 fn_1_20970(void) {
+s32 fn_1_20970(void)
+{
     s32 var_r23;
     s32 temp_r26;
     s32 temp_r28;
@@ -1556,7 +1636,7 @@ s32 fn_1_20970(void) {
     HuSprPosSet(temp_r28, 8, lbl_1_data_32C[0][0] - 50, lbl_1_data_32C[0][1]);
     HuSprAttrReset(temp_r28, 9, HUSPR_ATTR_DISPOFF);
     HuSprPosSet(temp_r28, 9, lbl_1_data_32C[3][0] + 50, lbl_1_data_32C[0][1]);
-    lbl_1_bss_2050.unk04 = (void*) fn_1_19F5C;
+    lbl_1_bss_2050.unk04 = (void *)fn_1_19F5C;
     var_r24 = 99;
     var_r23 = 0;
     while (TRUE) {
@@ -1590,13 +1670,15 @@ s32 fn_1_20970(void) {
                     if (HuPadStatGet(i) != -1) {
                         var_r30++;
                         lbl_1_bss_1E10[i].unk60 = 0;
-                    } else {
+                    }
+                    else {
                         lbl_1_bss_1E10[i].unk60 = 1;
                     }
                 }
             }
             break;
-        } else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
+        }
+        else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
             var_r29 = -99;
             HuAudFXPlay(3);
             break;
@@ -1619,14 +1701,16 @@ s32 fn_1_20970(void) {
         }
         if (var_r30 == 0) {
             var_r29 = 2;
-        } else {
+        }
+        else {
             var_r29 = 1;
         }
     }
     return var_r29;
 }
 
-void fn_1_20E84(s32 arg0) {
+void fn_1_20E84(s32 arg0)
+{
     float var_f31;
     s32 sp10;
     s32 spC;
@@ -1640,7 +1724,8 @@ void fn_1_20E84(s32 arg0) {
         fn_1_243B0();
         if (i <= 10) {
             var_f31 = fn_1_24204(2.06f, 10.0f, i, 10.0f);
-        } else {
+        }
+        else {
             var_f31 = fn_1_2412C(10.0f, -500.0f, i - 10, 50.0f);
         }
         HuSprGrpPosSet(temp_r30, 0.0f, var_f31);
@@ -1650,11 +1735,13 @@ void fn_1_20E84(s32 arg0) {
     fn_1_1B260(arg0);
 }
 
-void fn_1_20FD4(s32 arg0) {
-   fn_1_1BCEC();
+void fn_1_20FD4(s32 arg0)
+{
+    fn_1_1BCEC();
 }
 
-s32 fn_1_211B4(void) {
+s32 fn_1_211B4(void)
+{
     s32 var_r27;
     s32 sp8;
     s32 var_r29;
@@ -1674,7 +1761,7 @@ s32 fn_1_211B4(void) {
     fn_1_25CA8(MAKE_MESSID(26, 32));
     for (i = 0; i < 4; i++) {
         if (lbl_1_bss_1E10[i].unk60 == 0) {
-            lbl_1_bss_1E10[i].unk4 = (void*) fn_1_1CEB0;
+            lbl_1_bss_1E10[i].unk4 = (void *)fn_1_1CEB0;
         }
     }
     while (TRUE) {
@@ -1688,7 +1775,8 @@ s32 fn_1_211B4(void) {
             HuAudFXPlay(3);
             var_r30 = 0;
             break;
-        } else {
+        }
+        else {
             for (i = 0; i < 4; i++) {
                 if (lbl_1_bss_1E10[i].unk60 == 0 && lbl_1_bss_1E10[i].unk70[0] != 1) {
                     break;
@@ -1715,16 +1803,19 @@ s32 fn_1_211B4(void) {
         }
         if (var_r29 == 0) {
             var_r30 = 3;
-        } else {
+        }
+        else {
             var_r30 = 2;
         }
-    } else {
+    }
+    else {
         var_r30 = 0;
     }
     return var_r30;
 }
 
-s32 fn_1_214A4(void) {
+s32 fn_1_214A4(void)
+{
     s32 var_r30;
     s32 var_r24;
     s32 var_r23;
@@ -1764,7 +1855,7 @@ s32 fn_1_214A4(void) {
                 var_r30 = i;
                 lbl_1_bss_1E10[i].unk70[1] = var_r24;
                 fn_1_1E608(&lbl_1_bss_1E10[i]);
-                lbl_1_bss_1E10[i].unk4 = (void*) fn_1_1DD74;
+                lbl_1_bss_1E10[i].unk4 = (void *)fn_1_1DD74;
                 break;
             }
         }
@@ -1775,11 +1866,13 @@ s32 fn_1_214A4(void) {
                 if (var_r24 == -1) {
                     var_r29 = 0;
                     break;
-                } else {
+                }
+                else {
                     var_r29 = 1;
                     break;
                 }
-            } else if (lbl_1_bss_1E10[var_r30].unk70[0] == 1) {
+            }
+            else if (lbl_1_bss_1E10[var_r30].unk70[0] == 1) {
                 for (i = 0; i < 4; i++) {
                     if (lbl_1_bss_1E10[i].unk70[0] == 0) {
                         lbl_1_bss_1E10[i].unk68 = 0;
@@ -1793,7 +1886,8 @@ s32 fn_1_214A4(void) {
                     lbl_1_bss_1E10[var_r30].unk70[2] = 1;
                     var_r29 = 4;
                     var_r24 = var_r30;
-                } else {
+                }
+                else {
                     lbl_1_bss_1E10[var_r30].unk70[2] = 0;
                     var_r29 = 4;
                     lbl_1_bss_1E10[var_r30].unk70[0] = 0;
@@ -1814,14 +1908,16 @@ s32 fn_1_214A4(void) {
         if (i == 4) {
             var_r29 = 3;
             break;
-        } else {
+        }
+        else {
             if (var_r29 == 1) {
                 fn_1_1E608(&lbl_1_bss_1E10[var_r30]);
                 fn_1_1EB20(&lbl_1_bss_1E10[var_r30]);
                 fn_1_1E608(&lbl_1_bss_1E10[lbl_1_bss_1E10[var_r30].unk70[1]]);
                 var_r24 = lbl_1_bss_1E10[lbl_1_bss_1E10[var_r30].unk70[1]].unk70[1];
                 lbl_1_bss_1E10[lbl_1_bss_1E10[var_r30].unk70[1]].unk70[0] = 0;
-            } else if (var_r29 != 4) {
+            }
+            else if (var_r29 != 4) {
                 if (var_r29 == 0) {
                     fn_1_1EB20(&lbl_1_bss_1E10[var_r30]);
                 }
@@ -1841,14 +1937,16 @@ s32 fn_1_214A4(void) {
         }
         if (var_r28 != 0) {
             var_r29 = 1;
-        } else {
+        }
+        else {
             var_r29 = 0;
         }
     }
     return var_r29;
 }
 
-s32 fn_1_21CA4(void) {
+s32 fn_1_21CA4(void)
+{
     s32 sp8;
     s32 temp_r27;
     s32 var_r22;
@@ -1864,7 +1962,7 @@ s32 fn_1_21CA4(void) {
     fn_1_243B0();
     fn_1_25CA8(MAKE_MESSID(26, 33));
     fn_1_1EBE8();
-    lbl_1_bss_2050.unk04 = (void*) fn_1_1EE58;
+    lbl_1_bss_2050.unk04 = (void *)fn_1_1EE58;
     var_r22 = 99;
     while (TRUE) {
         fn_1_243B0();
@@ -1880,7 +1978,8 @@ s32 fn_1_21CA4(void) {
             var_r28 = 5;
             HuAudFXPlay(2);
             break;
-        } else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
+        }
+        else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
             var_r28 = -99;
             HuAudFXPlay(3);
             for (i = 0; i < 4; i++) {
@@ -1909,14 +2008,16 @@ s32 fn_1_21CA4(void) {
         }
         if (j == 0) {
             var_r28 = 1;
-        } else {
+        }
+        else {
             var_r28 = 2;
         }
     }
     return var_r28;
 }
 
-s32 fn_1_2228C(s32 arg0) {
+s32 fn_1_2228C(s32 arg0)
+{
     s32 sp8;
     s32 temp_r30;
     s32 var_r26;
@@ -1932,7 +2033,7 @@ s32 fn_1_2228C(s32 arg0) {
     fn_1_243B0();
     fn_1_25CA8(MAKE_MESSID(26, 33));
     fn_1_1FC44(0);
-    lbl_1_bss_2050.unk04 = (void*) fn_1_1F32C;
+    lbl_1_bss_2050.unk04 = (void *)fn_1_1F32C;
     var_r26 = 99;
     while (TRUE) {
         fn_1_243B0();
@@ -1964,7 +2065,8 @@ s32 fn_1_2228C(s32 arg0) {
             var_r27 = 5;
             HuAudFXPlay(2);
             break;
-        } else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
+        }
+        else if (HuPadBtnDown[lbl_1_bss_1E10->unk6C] & 0x200) {
             var_r27 = -99;
             HuAudFXPlay(3);
             fn_1_1FC44(1);
@@ -1993,14 +2095,16 @@ s32 fn_1_2228C(s32 arg0) {
         }
         if (j == 0) {
             var_r27 = 1;
-        } else {
+        }
+        else {
             var_r27 = 2;
         }
     }
     return var_r27;
 }
 
-void fn_1_22728(void) {
+void fn_1_22728(void)
+{
     s32 i;
     s32 j;
 
@@ -2019,7 +2123,8 @@ void fn_1_22728(void) {
     }
 }
 
-void fn_1_22C08(omObjData* arg0) {
+void fn_1_22C08(omObjData *arg0)
+{
     float var_f31;
     s32 i;
 
@@ -2033,7 +2138,8 @@ void fn_1_22C08(omObjData* arg0) {
             }
             var_f31 = fn_1_2412C(lbl_1_bss_3CC[i].unk10, 1000.0f, lbl_1_bss_3CC[i].unk00++, lbl_1_bss_3CC[i].unk04);
             Hu3DData[arg0->model[i]].pos.y = fn_1_2410C(Hu3DData[arg0->model[i]].pos.y, var_f31, 30.0f);
-            Hu3DData[arg0->model[i]].pos.x = fn_1_2410C(Hu3DData[arg0->model[i]].pos.x, lbl_1_bss_3CC[i].unk18 + Hu3DData[arg0->model[i]].pos.x, 5.0f);
+            Hu3DData[arg0->model[i]].pos.x
+                = fn_1_2410C(Hu3DData[arg0->model[i]].pos.x, lbl_1_bss_3CC[i].unk18 + Hu3DData[arg0->model[i]].pos.x, 5.0f);
         }
     }
     for (i = 10; i < 140; i++) {
@@ -2043,10 +2149,12 @@ void fn_1_22C08(omObjData* arg0) {
         }
     }
     for (i = 10; i < 140; i++) {
-        if (0.0f == lbl_1_bss_3CC[i].unk24 && lbl_1_bss_3CC[i].unk14 > CZoom - 400.0f && lbl_1_bss_3CC[i].unk0C < 200.0f && lbl_1_bss_3CC[i].unk0C > -200.0f) {
+        if (0.0f == lbl_1_bss_3CC[i].unk24 && lbl_1_bss_3CC[i].unk14 > CZoom - 400.0f && lbl_1_bss_3CC[i].unk0C < 200.0f
+            && lbl_1_bss_3CC[i].unk0C > -200.0f) {
             if (0.0f >= lbl_1_bss_3CC[i].unk0C) {
                 lbl_1_bss_3CC[i].unk24 = -300.0f;
-            } else {
+            }
+            else {
                 lbl_1_bss_3CC[i].unk24 = 300.0f;
             }
         }
@@ -2056,12 +2164,13 @@ void fn_1_22C08(omObjData* arg0) {
     }
     if (arg0->work[0] == 1) {
         for (i = 10; i < 140; i++) {
-            Hu3DModelAttrSet(arg0->model[i], 1);
+            Hu3DModelAttrSet(arg0->model[i], HU3D_ATTR_DISPOFF);
         }
     }
 }
 
-void fn_1_231F0(omObjData* arg0) {
+void fn_1_231F0(omObjData *arg0)
+{
     float temp_f31;
     float temp_f30;
     float temp_f29;
@@ -2137,13 +2246,15 @@ void fn_1_231F0(omObjData* arg0) {
         lbl_1_bss_3CC[i].unk14 = lbl_1_bss_3CC[i].unk20 = Hu3DData[arg0->model[i]].pos.z;
         if (rand8() % 2 == 0) {
             lbl_1_bss_3CC[i].unk18 += rand8() % 30;
-        } else {
+        }
+        else {
             lbl_1_bss_3CC[i].unk18 -= rand8() % 30;
         }
         lbl_1_bss_3CC[i].unk1C += rand8() % 30 + 10;
         if (rand8() % 2 == 0) {
             lbl_1_bss_3CC[i].unk20 += rand8() % 30;
-        } else {
+        }
+        else {
             lbl_1_bss_3CC[i].unk20 -= rand8() % 30;
         }
         lbl_1_bss_3CC[i].unk24 = lbl_1_bss_3CC[i].unk28 = lbl_1_bss_3CC[i].unk2C = 0.0f;
@@ -2151,58 +2262,67 @@ void fn_1_231F0(omObjData* arg0) {
         lbl_1_bss_3CC[i].unk00 = rand8();
     }
     for (i = 1; i < 140; i++) {
-        Hu3DModelAttrSet(arg0->model[i], 1);
+        Hu3DModelAttrSet(arg0->model[i], HU3D_ATTR_DISPOFF);
     }
     arg0->func = fn_1_22C08;
 }
 
-float fn_1_240E4(float arg0, float arg1, float arg2, float arg3) {
+float fn_1_240E4(float arg0, float arg1, float arg2, float arg3)
+{
     if (arg3 <= arg2) {
         return arg1;
     }
     return arg0 + (arg2 / arg3) * (arg1 - arg0);
 }
 
-float fn_1_2410C(float arg0, float arg1, float arg2) {
+float fn_1_2410C(float arg0, float arg1, float arg2)
+{
     return (arg1 + arg0 * (arg2 - 1.0f)) / arg2;
 }
 
-float fn_1_2412C(float arg0, float arg1, float arg2, float arg3) {
+float fn_1_2412C(float arg0, float arg1, float arg2, float arg3)
+{
     if (arg2 >= arg3) {
         return arg1;
     }
     return arg0 + (arg1 - arg0) * (1.0 - cosd((90.0f / arg3) * arg2));
 }
 
-float fn_1_24204(float arg0, float arg1, float arg2, float arg3) {
+float fn_1_24204(float arg0, float arg1, float arg2, float arg3)
+{
     if (arg2 >= arg3) {
         return arg1;
     }
     return arg0 + (arg1 - arg0) * sind((90.0f / arg3) * arg2);
 }
 
-float fn_1_242CC(float arg0, float arg1, float arg2, float arg3) {
+float fn_1_242CC(float arg0, float arg1, float arg2, float arg3)
+{
     if (arg2 >= arg3) {
         return arg0;
     }
     return arg0 + (arg1 - arg0) * sind((360.0f / arg3) * arg2);
 }
 
-void fn_1_24388(s32 arg0) {
+void fn_1_24388(s32 arg0)
+{
     HuPrcSleep(arg0);
 }
 
-void fn_1_243B0(void) {
+void fn_1_243B0(void)
+{
     HuPrcVSleep();
 }
 
-void fn_1_243D0(void) {
+void fn_1_243D0(void)
+{
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void fn_1_243E4(void) {
+void fn_1_243E4(void)
+{
     s32 var_r31;
 
     var_r31 = 0;
@@ -2211,7 +2331,8 @@ void fn_1_243E4(void) {
     Hu3DGLightInfinitytSet(var_r31);
 }
 
-void fn_1_244C0(s32 arg0) {
+void fn_1_244C0(s32 arg0)
+{
     Vec sp24 = { 0.0f, 3000.0f, 800.0f };
     Vec sp18 = { 0.0f, 0.0f, 640.0f };
     Vec spC = { 0.0f, 1.0f, 0.0f };
@@ -2224,12 +2345,14 @@ void fn_1_244C0(s32 arg0) {
     Hu3DShadowPosSet(&sp24, &spC, &sp18);
 }
 
-void fn_1_245A8(void) {
+void fn_1_245A8(void)
+{
     HuWinInit(1);
 }
 
-void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3) {
-    WindowData* temp_r29;
+void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3)
+{
+    WindowData *temp_r29;
     float temp_f29;
     float temp_f28;
     float temp_f25;
@@ -2253,10 +2376,12 @@ void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3) {
     temp_f27 = 4.0f / temp_f25;
     if (var_f31 + 4.0f - (temp_f29 + temp_f25) >= 0.0f) {
         var_f31 = temp_f29 + temp_f25 - 4.0f;
-    } else {
+    }
+    else {
         if (temp_f29 - (var_f31 - 2.0f) >= 0.0f) {
             var_f31 = temp_f29;
-        } else {
+        }
+        else {
             var_f31 = var_f31 - 2.0f;
         }
     }
@@ -2264,10 +2389,12 @@ void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3) {
     temp_f26 = 4.0f / temp_f24;
     if (var_f30 + 4.0f - (temp_f28 + temp_f24) >= 0.0f) {
         var_f30 = temp_f28 + temp_f24 - 4.0f;
-    } else {
+    }
+    else {
         if (temp_f28 - (var_f30 - 2.0f) >= 0.0f) {
             var_f30 = temp_f28;
-        } else {
+        }
+        else {
             var_f30 = var_f30 - 2.0f;
         }
     }
@@ -2278,7 +2405,8 @@ void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3) {
         var_f21 = temp_f27;
         var_f22 = var_f30;
         var_f20 = temp_f26;
-    } else {
+    }
+    else {
         HuWinPosSet(arg0, temp_f29, temp_f28);
         HuWinScaleSet(arg0, 1.0f, 1.0f);
         var_f23 = temp_f29;
@@ -2293,15 +2421,18 @@ void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3) {
             if (i <= 10) {
                 var_f23 = fn_1_24204(var_f31, temp_f29, i, 10.0f);
                 var_f21 = fn_1_24204(temp_f27, 1.0f, i, 10.0f);
-            } else {
+            }
+            else {
                 var_f22 = fn_1_24204(var_f30, temp_f28, i - 10, 5.0f);
                 var_f20 = fn_1_24204(temp_f26, 1.0f, i - 10, 5.0f);
             }
-        } else {
+        }
+        else {
             if (i <= 10) {
                 var_f22 = fn_1_24204(temp_f28, var_f30, i, 10.0f);
                 var_f20 = fn_1_24204(1.0f, temp_f26, i, 10.0f);
-            } else {
+            }
+            else {
                 var_f23 = fn_1_24204(temp_f29, var_f31, i - 10, 5.0f);
                 var_f21 = fn_1_24204(1.0f, temp_f27, i - 10, 5.0f);
             }
@@ -2312,14 +2443,16 @@ void fn_1_245CC(s32 arg0, float arg1, float arg2, s32 arg3) {
     if (arg3 != 0) {
         HuWinPosSet(arg0, temp_f29, temp_f28);
         HuWinScaleSet(arg0, 1.0f, 1.0f);
-    } else {
+    }
+    else {
         HuWinPosSet(arg0, var_f31, var_f30);
         HuWinScaleSet(arg0, temp_f27, temp_f26);
     }
     HuPrcVSleep();
 }
 
-s32 fn_1_25014(s32 arg0, s32 arg1, s32 arg2, s32 arg3, float arg4, float arg5, s32 arg6, s32 arg7, s32 arg8) {
+s32 fn_1_25014(s32 arg0, s32 arg1, s32 arg2, s32 arg3, float arg4, float arg5, s32 arg6, s32 arg7, s32 arg8)
+{
     float sp14[2];
     s32 temp_r30;
 
@@ -2338,7 +2471,8 @@ s32 fn_1_25014(s32 arg0, s32 arg1, s32 arg2, s32 arg3, float arg4, float arg5, s
                 arg0 = 556.0f - arg2;
                 break;
         }
-    } else {
+    }
+    else {
         HuWinMesMaxSizeGet(1, sp14, arg8);
         arg2 = sp14[0];
         arg3 = sp14[1];
@@ -2355,22 +2489,26 @@ s32 fn_1_25014(s32 arg0, s32 arg1, s32 arg2, s32 arg3, float arg4, float arg5, s
     return temp_r30;
 }
 
-s32 fn_1_2530C(s32 arg0, s32 arg1, s32 arg2) {
+s32 fn_1_2530C(s32 arg0, s32 arg1, s32 arg2)
+{
     return fn_1_25014(arg0, 0, 21, 2, 0.5f, 0.5f, 0, 0, 0);
 }
 
-void fn_1_25524(s32 arg0, float arg1, float arg2) {
+void fn_1_25524(s32 arg0, float arg1, float arg2)
+{
     HuWinMesSet(arg0, MAKE_MESSID(37, 4));
     HuPrcVSleep();
     fn_1_245CC(arg0, arg1, arg2, 0);
     HuWinExCleanup(arg0);
 }
 
-void fn_1_25584(s32 arg0) {
+void fn_1_25584(s32 arg0)
+{
     fn_1_25524(arg0, 0.5f, 0.5f);
 }
 
-void fn_1_255EC(s32 arg0, s32 arg1) {
+void fn_1_255EC(s32 arg0, s32 arg1)
+{
     if (arg1 == -999 || arg1 == 0) {
         return;
     }
@@ -2389,7 +2527,8 @@ void fn_1_255EC(s32 arg0, s32 arg1) {
     HuWinComKeyReset();
 }
 
-void fn_1_2567C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void fn_1_2567C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
     s32 i;
     s32 temp_r28;
     s32 var_r30;
@@ -2415,13 +2554,15 @@ void fn_1_2567C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             if (var_r30 != 0) {
                 if (var_r30 == 1 && HuWinStatGet(arg0) != 1) {
                     var_r30 = 2;
-                } else if (var_r30 == 2) {
+                }
+                else if (var_r30 == 2) {
                     HuPrcSleep(arg3);
                     HuWinAttrReset(arg0, 0x400);
                     HuWinKeyWaitEntry(arg0);
                     break;
                 }
-            } else if (HuWinStatGet(arg0) != 1) {
+            }
+            else if (HuWinStatGet(arg0) != 1) {
                 break;
             }
         }
@@ -2430,7 +2571,8 @@ void fn_1_2567C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     HuWinComKeyReset();
 }
 
-s32 fn_1_257B0(s32 arg0) {
+s32 fn_1_257B0(s32 arg0)
+{
     s32 temp_r31;
 
     HuWinComKeyReset();
@@ -2439,25 +2581,30 @@ s32 fn_1_257B0(s32 arg0) {
     return temp_r31;
 }
 
-void fn_1_257F8(s32 arg0, s32 arg1, s32 arg2) {
+void fn_1_257F8(s32 arg0, s32 arg1, s32 arg2)
+{
     HuWinInsertMesSet(arg0, arg1, arg2);
 }
 
-void fn_1_25838(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void fn_1_25838(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
     if (arg3 == -999) {
         HuWinMesSpeedSet(arg0, 0);
-    } else {
+    }
+    else {
         HuWinMesSpeedSet(arg0, 1);
     }
     HuWinMesSet(arg0, arg1);
     if (arg2 == -1) {
         fn_1_255EC(arg0, arg3);
-    } else {
+    }
+    else {
         fn_1_2567C(arg0, arg1, arg2, arg3);
     }
 }
 
-s32 fn_1_2592C(s32 arg0, s32 arg1, s32 arg2) {
+s32 fn_1_2592C(s32 arg0, s32 arg1, s32 arg2)
+{
     s32 var_r25;
     s32 temp_r27;
 
@@ -2469,7 +2616,8 @@ s32 fn_1_2592C(s32 arg0, s32 arg1, s32 arg2) {
     return var_r25;
 }
 
-s32 fn_1_25CA8(s32 arg0) {
+s32 fn_1_25CA8(s32 arg0)
+{
     float sp8[2];
     float temp_f31;
     float temp_f30;
@@ -2484,7 +2632,8 @@ s32 fn_1_25CA8(s32 arg0) {
     temp_f28 = 385.0f - temp_f30;
     if (lbl_1_data_488 == -1) {
         var_r31 = lbl_1_data_488 = HuWinExCreateStyled(temp_f29, temp_f28, temp_f31, temp_f30, -1, 1);
-    } else {
+    }
+    else {
         fn_1_25E74(lbl_1_data_488);
         var_r31 = lbl_1_data_488 = HuWinExCreateStyled(temp_f29, temp_f28, temp_f31, temp_f30, -1, 1);
     }
@@ -2495,14 +2644,16 @@ s32 fn_1_25CA8(s32 arg0) {
     return lbl_1_data_488;
 }
 
-void fn_1_25E74(s32 arg0) {
+void fn_1_25E74(s32 arg0)
+{
     if (lbl_1_data_488 != -1) {
         HuWinExCleanup(lbl_1_data_488);
         lbl_1_data_488 = -1;
     }
 }
 
-void fn_1_25EC8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void fn_1_25EC8(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
     switch (arg3) {
         case 0:
             Hu3DMotionShiftSet(arg0, arg1, 0.0f, arg2, HU3D_MOTATTR_NONE);
@@ -2516,7 +2667,8 @@ void fn_1_25EC8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5, s32 arg6) {
+void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5, s32 arg6)
+{
     Vec sp4C;
     Vec sp40;
     Vec sp34;
@@ -2543,12 +2695,14 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
     sp10.z = 0.0f;
     if (sp34.x - sp40.x >= 0.0f) {
         var_r30 = 1;
-    } else {
+    }
+    else {
         var_r30 = 0;
     }
     if (sp34.z - sp40.z >= 0.0f) {
         var_r29 = 1;
-    } else {
+    }
+    else {
         var_r29 = 0;
     }
     while (arg5 != 0) {
@@ -2556,7 +2710,8 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
         sp28.y = -(atan2d(sp34.z - sp40.z, sp34.x - sp40.x) - 90.0);
         if (sp28.y < 0.0f) {
             sp28.y += 360.0f;
-        } else if (sp28.y >= 360.0f) {
+        }
+        else if (sp28.y >= 360.0f) {
             sp28.y -= 360.0f;
         }
         if (arg6 != 0) {
@@ -2567,7 +2722,8 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
                 if (sp1C.y - sp28.y < -180.0f) {
                     sp1C.y += 360.0f;
                 }
-            } else {
+            }
+            else {
                 if (sp1C.y - sp28.y > 180.0f) {
                     sp1C.y -= 360.0f;
                 }
@@ -2583,7 +2739,8 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
                 sp4C.x = sp40.x = sp34.x;
                 var_r30 = 2;
             }
-        } else if (var_r30 == 0) {
+        }
+        else if (var_r30 == 0) {
             if (sp40.x <= sp34.x) {
                 sp4C.x = sp40.x = sp34.x;
                 var_r30 = 2;
@@ -2594,7 +2751,8 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
                 sp4C.z = sp40.z = sp34.z;
                 var_r29 = 2;
             }
-        } else if (var_r29 == 0) {
+        }
+        else if (var_r29 == 0) {
             if (sp40.z <= sp34.z) {
                 sp4C.z = sp40.z = sp34.z;
                 var_r29 = 2;
@@ -2620,7 +2778,8 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
                 if (sp1C.y - sp10.y < -180.0f) {
                     sp1C.y += 360.0f;
                 }
-            } else {
+            }
+            else {
                 if (sp1C.y - sp10.y > 180.0f) {
                     sp1C.y -= 360.0f;
                 }
@@ -2634,6 +2793,7 @@ void fn_1_26004(s32 arg0, Vec arg1, float arg2, float arg3, float arg4, s32 arg5
     }
 }
 
-void fn_1_26790(s32 arg0, s32 arg1, float arg2, float arg3) {
+void fn_1_26790(s32 arg0, s32 arg1, float arg2, float arg3)
+{
     HuSprPosSet(arg0, arg1, arg2, arg3 + 0.5f);
 }

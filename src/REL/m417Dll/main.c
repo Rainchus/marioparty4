@@ -212,7 +212,7 @@ void fn_1_EA8(omObjData *object)
 
     fn_1_5B0(object);
     if (!WipeStatGet()) {
-        WipeCreate(2, 0, 60);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         var_r27->unk_08 = 0;
         fn_1_800(object);
     }
@@ -483,7 +483,8 @@ void fn_1_310C(float arg8, float arg9, float argA, float *arg0, float *arg1, flo
 
     if (arg8 != 0.0f) {
         PSMTXRotRad(sp38, 88, 0.017453292f * arg8);
-    } else {
+    }
+    else {
         PSMTXIdentity(sp38);
     }
     if (arg9 != 0.0f) {

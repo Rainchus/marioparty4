@@ -1,17 +1,17 @@
 #include "game/board/roll.h"
 #include "game/audio.h"
-#include "game/gamework_data.h"
-#include "game/hsfanim.h"
-#include "game/object.h"
-#include "game/pad.h"
-#include "game/disp.h"
-#include "game/process.h"
-#include "game/window.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/pause.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
+#include "game/disp.h"
+#include "game/gamework_data.h"
+#include "game/hsfanim.h"
+#include "game/object.h"
+#include "game/pad.h"
+#include "game/process.h"
+#include "game/window.h"
 
 #include "ext_math.h"
 
@@ -41,7 +41,6 @@ typedef struct {
     s16 unk04[2];
     float unk08;
 } DiceDigitWork;
-
 
 static void RollMain(void);
 static void DiceCreate(s32 arg0);
@@ -84,46 +83,17 @@ static omObjData *diceObj[3] = { NULL, NULL, NULL };
 static omObjData *diceDigitObj[3] = { NULL, NULL, NULL };
 static s32 diceSndStatus[3] = { -1, -1, -1 };
 
-static HsfanimStruct00 diceEffParam = {
-    0x0096,
-    { 0x00, 0x00 }, // padding?
-    50.0f,
-     0.0f,
-    65.0f,
-    { 0.0f, -0.195f, 0.0f },
-    100.0f,
-    0.99f,
-    40.0f,
-    0.999f,
-    0x0004,
-    {
-        { 0xFF, 0xFF, 0x20, 0xFF },
-        { 0xFF, 0xFF, 0x00, 0xFF },
-        { 0xFF, 0xFF, 0x80, 0xFF },
-        { 0xFF, 0xFF, 0xFF, 0xFF }
-    },
-    {
-        { 0xFF, 0xFF, 0xFF, 0x00 },
-        { 0xFF, 0xFF, 0xFF, 0x00 },
-        { 0xFF, 0xFF, 0xFF, 0x00 },
-        { 0xFF, 0xFF, 0xFF, 0x00 }
-    }
-};
+static HsfanimStruct00 diceEffParam = { 0x0096, { 0x00, 0x00 }, // padding?
+    50.0f, 0.0f, 65.0f, { 0.0f, -0.195f, 0.0f }, 100.0f, 0.99f, 40.0f, 0.999f, 0x0004,
+    { { 0xFF, 0xFF, 0x20, 0xFF }, { 0xFF, 0xFF, 0x00, 0xFF }, { 0xFF, 0xFF, 0x80, 0xFF }, { 0xFF, 0xFF, 0xFF, 0xFF } },
+    { { 0xFF, 0xFF, 0xFF, 0x00 }, { 0xFF, 0xFF, 0xFF, 0x00 }, { 0xFF, 0xFF, 0xFF, 0x00 }, { 0xFF, 0xFF, 0xFF, 0x00 } } };
 
-static s32 diceDigitMdlTbl[10] = {
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x0C),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x0D),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x0E),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x0F),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x10),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x11),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x12),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x13),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x14),
-    DATA_MAKE_NUM(DATADIR_BOARD, 0x15)
-};
+static s32 diceDigitMdlTbl[10] = { DATA_MAKE_NUM(DATADIR_BOARD, 0x0C), DATA_MAKE_NUM(DATADIR_BOARD, 0x0D), DATA_MAKE_NUM(DATADIR_BOARD, 0x0E),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x0F), DATA_MAKE_NUM(DATADIR_BOARD, 0x10), DATA_MAKE_NUM(DATADIR_BOARD, 0x11), DATA_MAKE_NUM(DATADIR_BOARD, 0x12),
+    DATA_MAKE_NUM(DATADIR_BOARD, 0x13), DATA_MAKE_NUM(DATADIR_BOARD, 0x14), DATA_MAKE_NUM(DATADIR_BOARD, 0x15) };
 
-s32 BoardRollExec(s32 arg0) {
+s32 BoardRollExec(s32 arg0)
+{
     rollPlayer = arg0;
     inputTimer = 0;
     numDice = 1;
@@ -146,7 +116,8 @@ s32 BoardRollExec(s32 arg0) {
     if (BoardPlayerSizeGet(arg0) == 1) {
         diceSize = 1;
         maxRoll = 5;
-    } else if (BoardPlayerSizeGet(arg0) == 2) {
+    }
+    else if (BoardPlayerSizeGet(arg0) == 2) {
         diceSize = 2;
         maxRoll = 10;
         if (BoardMegaDoubleDiceCheck() != 0) {
@@ -168,7 +139,8 @@ s32 BoardRollExec(s32 arg0) {
     return destMode;
 }
 
-void BoardRollKill(void) {
+void BoardRollKill(void)
+{
     if (rollProc) {
         HuPrcKill(rollProc);
     }
@@ -176,7 +148,8 @@ void BoardRollKill(void) {
     DiceKill();
 }
 
-void BoardRollUPauseSet(s32 arg0) {
+void BoardRollUPauseSet(s32 arg0)
+{
     if (!rollProc) {
         return;
     }
@@ -189,18 +162,21 @@ void BoardRollUPauseSet(s32 arg0) {
     DiceHideEffect(2, arg0);
 }
 
-void BoardRollWinDispSet(s32 arg0) {
+void BoardRollWinDispSet(s32 arg0)
+{
     if (rollWin == -1) {
         return;
     }
     if (arg0 != 0) {
         HuWinDispOn(rollWin);
-    } else {
+    }
+    else {
         HuWinDispOff(rollWin);
     }
 }
 
-static void RollMain(void) {
+static void RollMain(void)
+{
     float sp8[2];
     float var_f31;
     float var_f30;
@@ -228,7 +204,8 @@ static void RollMain(void) {
             }
             if (BoardItemPrevGet() != -1 || var_r27 == 0 || _CheckFlag(FLAG_ID_MAKE(1, 9)) || BoardMegaDoubleDiceCheck()) {
                 var_r29 = MAKE_MESSID(0x09, 0x04);
-            } else {
+            }
+            else {
                 var_r29 = MAKE_MESSID(0x09, 0x02);
             }
             if (inputTimer != 0) {
@@ -240,10 +217,10 @@ static void RollMain(void) {
                     var_f31 = -10000.0f;
                     break;
                 case 1:
-                    var_f31 = HU_DISP_CENTERX- (sp8[0] / 2 - 16.0f);
+                    var_f31 = HU_DISP_CENTERX - (sp8[0] / 2 - 16.0f);
                     break;
             }
-            var_f30 = HU_DISP_HEIGHT-176;
+            var_f30 = HU_DISP_HEIGHT - 176;
             rollWin = HuWinCreate(var_f31, var_f30, sp8[0], sp8[1], 0);
             HuWinBGTPLvlSet(rollWin, 0.0f);
             HuWinMesSpeedSet(rollWin, 0);
@@ -306,19 +283,16 @@ static void RollMain(void) {
     HuPrcEnd();
 }
 
-static void DiceCreate(s32 arg0) {
+static void DiceCreate(s32 arg0)
+{
     Vec sp1C;
     float temp_f30;
     float var_f31;
     omObjData *temp_r31;
     DiceWork *temp_r30;
     s32 sp8;
-    s32 spC[4] = {
-        DATA_MAKE_NUM(DATADIR_BOARD, 0x18),
-        DATA_MAKE_NUM(DATADIR_BOARD, 0x19),
-        DATA_MAKE_NUM(DATADIR_BOARD, 0x1A),
-        DATA_MAKE_NUM(DATADIR_BOARD, 0x1B)
-    };
+    s32 spC[4] = { DATA_MAKE_NUM(DATADIR_BOARD, 0x18), DATA_MAKE_NUM(DATADIR_BOARD, 0x19), DATA_MAKE_NUM(DATADIR_BOARD, 0x1A),
+        DATA_MAKE_NUM(DATADIR_BOARD, 0x1B) };
 
     sp8 = 0;
     diceMdl[arg0] = BoardModelCreate(spC[diceSize], NULL, 0);
@@ -342,7 +316,8 @@ static void DiceCreate(s32 arg0) {
     var_f31 = 250.0f;
     if (diceSize == 2) {
         var_f31 = 625.0f;
-    } else if (GWPlayer[rollPlayer].bowser_suit != 0) {
+    }
+    else if (GWPlayer[rollPlayer].bowser_suit != 0) {
         var_f31 = 575.0f;
     }
     sp1C.y += var_f31;
@@ -355,7 +330,8 @@ static void DiceCreate(s32 arg0) {
     sp1C.z += 70.0f;
 }
 
-static void DoInput(s32 arg0) {
+static void DoInput(s32 arg0)
+{
     s32 var_r31;
     s32 var_r30;
     u16 sp8[1];
@@ -393,7 +369,8 @@ static void DoInput(s32 arg0) {
                 if (_CheckFlag(FLAG_ID_MAKE(1, 9)) && GWBoardGet() == BOARD_ID_MAIN6 && *sp8 == 0x200 && var_r31 != 0) {
                     HuAudFXPlay(4);
                 }
-            } else if (*sp8 == 0x200) {
+            }
+            else if (*sp8 == 0x200) {
                 destMode = -2;
                 HuAudFXPlay(3);
                 BoardPauseDisableSet(1);
@@ -403,7 +380,8 @@ static void DoInput(s32 arg0) {
     }
 }
 
-static void DiceWaitFull(s32 arg0) {
+static void DiceWaitFull(s32 arg0)
+{
     DiceWork *temp_r31 = OM_GET_WORK_PTR(diceObj[arg0], DiceWork);
 
     while (temp_r31->unk00_field2 != 1) {
@@ -411,20 +389,22 @@ static void DiceWaitFull(s32 arg0) {
     }
 }
 
-static void DiceSetHit(s32 arg0) {
+static void DiceSetHit(s32 arg0)
+{
     DiceWork *temp_r30 = OM_GET_WORK_PTR(diceObj[arg0], DiceWork);
 
     temp_r30->unk00_field2 = 2;
     temp_r30->unk04 = 0;
     BoardModelMotionSpeedSet(diceMdl[arg0], 0.0f);
-    diceValue[arg0] = (s32) BoardModelMotionTimeGet(diceMdl[arg0]) + 1;
+    diceValue[arg0] = (s32)BoardModelMotionTimeGet(diceMdl[arg0]) + 1;
     if (tutorialRollF != 0 && tutorialRoll[arg0] != -1) {
         BoardModelMotionTimeSet(diceMdl[arg0], tutorialRoll[arg0] - 1);
         diceValue[arg0] = tutorialRoll[arg0];
     }
 }
 
-static void RollDestroy(void) {
+static void RollDestroy(void)
+{
     if (rollWin != -1) {
         HuWinKill(rollWin);
         rollWin = -1;
@@ -438,7 +418,8 @@ static void RollDestroy(void) {
     rollProc = NULL;
 }
 
-static void DiceMain(omObjData *arg0) {
+static void DiceMain(omObjData *arg0)
+{
     DiceWork *temp_r29 = OM_GET_WORK_PTR(arg0, DiceWork);
     float temp_f29;
     float var_f28;
@@ -470,7 +451,8 @@ static void DiceMain(omObjData *arg0) {
                 temp_r29->unk00_field2 = 1;
                 arg0->scale.x = arg0->scale.y = arg0->scale.z = 1.0f;
                 arg0->rot.y = temp_r29->unk04 = 0;
-            } else {
+            }
+            else {
                 if (temp_r29->unk04 == 0 && diceSndStatus[temp_r29->unk00_field3] == -1) {
                     diceSndStatus[temp_r29->unk00_field3] = HuAudFXPlay(0x300);
                 }
@@ -479,17 +461,19 @@ static void DiceMain(omObjData *arg0) {
                 if (temp_r29->unk04 < 0xB4) {
                     var_f27 = 0.0f;
                     var_f28 = 1.0f;
-                } else {
+                }
+                else {
                     var_f27 = 1.0f;
                     var_f28 = 0.5f;
                 }
-                arg0->scale.x = var_f27 + var_f28 * sind((float) (temp_r29->unk04 % 180));
+                arg0->scale.x = var_f27 + var_f28 * sind((float)(temp_r29->unk04 % 180));
                 arg0->scale.y = arg0->scale.x;
                 arg0->scale.z = arg0->scale.x;
                 if (temp_r29->unk04 <= 360) {
                     if (temp_r29->unk04 < 0xB4) {
                         temp_r29->unk04 += 6;
-                    } else {
+                    }
+                    else {
                         temp_r29->unk04 += 0x12;
                     }
                     if (temp_r29->unk04 > 360) {
@@ -521,14 +505,16 @@ static void DiceMain(omObjData *arg0) {
                 diceEff[temp_r29->unk00_field3] = BoardDiceEffectCreate();
                 Hu3DParManPosSet(diceEff[temp_r29->unk00_field3], arg0->trans.x, arg0->trans.y, arg0->trans.z);
                 BoardModelVisibilitySet(diceMdl[temp_r29->unk00_field3], 0);
-            } else {
+            }
+            else {
                 OSs16tof32(&temp_r29->unk04, &temp_f29);
                 if (temp_r29->unk04 < 4) {
                     arg0->trans.y += 10.0f + (0.5f * temp_f29);
                     arg0->scale.x += 0.1f * sind(4.0f * temp_f29);
                     arg0->scale.y = arg0->scale.x;
                     arg0->scale.z = arg0->scale.x;
-                } else {
+                }
+                else {
                     BoardModelAlphaSet(diceMdl[temp_r29->unk00_field3], 0xFF - (temp_r29->unk04 << 5));
                 }
                 arg0->trans.y += -0.49f * temp_f29 * temp_f29;
@@ -556,7 +542,8 @@ static void DiceMain(omObjData *arg0) {
     BoardModelScaleSet(diceMdl[temp_r29->unk00_field3], arg0->scale.x, arg0->scale.y, arg0->scale.z);
 }
 
-static void DicePause(s32 arg0) {
+static void DicePause(s32 arg0)
+{
     omObjData *temp_r31 = diceObj[arg0];
 
     if (temp_r31) {
@@ -564,13 +551,15 @@ static void DicePause(s32 arg0) {
     }
 }
 
-static void DicePauseAll(void) {
+static void DicePauseAll(void)
+{
     DicePause(0);
     DicePause(1);
     DicePause(2);
 }
 
-s16 BoardDiceEffectCreate(void) {
+s16 BoardDiceEffectCreate(void)
+{
     s16 temp_r31;
     s16 temp_r30;
     AnimData *temp_r29;
@@ -589,7 +578,8 @@ s16 BoardDiceEffectCreate(void) {
     return temp_r31;
 }
 
-static void DiceHideEffect(s32 arg0, s32 arg1) {
+static void DiceHideEffect(s32 arg0, s32 arg1)
+{
     s16 temp_r31;
 
     if (diceEff[arg0] == -1) {
@@ -597,13 +587,15 @@ static void DiceHideEffect(s32 arg0, s32 arg1) {
     }
     temp_r31 = Hu3DParManModelIDGet(diceEff[arg0]);
     if (arg1 != 0) {
-        Hu3DModelAttrReset(temp_r31, 1);
-    } else {
-        Hu3DModelAttrSet(temp_r31, 1);
+        Hu3DModelAttrReset(temp_r31, HU3D_ATTR_DISPOFF);
+    }
+    else {
+        Hu3DModelAttrSet(temp_r31, HU3D_ATTR_DISPOFF);
     }
 }
 
-void BoardDicePauseAll(void) {
+void BoardDicePauseAll(void)
+{
     DiceDigitWork *temp_r30;
     s32 i;
 
@@ -617,7 +609,8 @@ void BoardDicePauseAll(void) {
     }
 }
 
-BOOL BoardDiceDoneCheck(void) {
+BOOL BoardDiceDoneCheck(void)
+{
     DiceDigitWork *temp_r30;
     s32 i;
 
@@ -632,7 +625,8 @@ BOOL BoardDiceDoneCheck(void) {
     return TRUE;
 }
 
-void BoardDiceStop(s32 arg0) {
+void BoardDiceStop(s32 arg0)
+{
     DiceDigitWork *temp_r31;
 
     if (!diceDigitObj[arg0]) {
@@ -642,7 +636,8 @@ void BoardDiceStop(s32 arg0) {
     temp_r31->unk00_field0 = 1;
 }
 
-void BoardDiceVisibleSet(s32 arg0, s32 arg1) {
+void BoardDiceVisibleSet(s32 arg0, s32 arg1)
+{
     DiceDigitWork *temp_r31;
 
     if (!diceDigitObj[arg0]) {
@@ -651,13 +646,15 @@ void BoardDiceVisibleSet(s32 arg0, s32 arg1) {
     temp_r31 = OM_GET_WORK_PTR(diceDigitObj[arg0], DiceDigitWork);
     if ((temp_r31->unk01 / 10) == 0) {
         BoardModelVisibilitySet(temp_r31->unk04[1], 0);
-    } else {
+    }
+    else {
         BoardModelVisibilitySet(temp_r31->unk04[1], arg1);
     }
     BoardModelVisibilitySet(temp_r31->unk04[0], arg1);
 }
 
-void BoardDiceValueSet(s32 arg0, s32 arg1) {
+void BoardDiceValueSet(s32 arg0, s32 arg1)
+{
     omObjData *temp_r27;
     DiceDigitWork *temp_r31;
     Vec spC;
@@ -696,7 +693,8 @@ void BoardDiceValueSet(s32 arg0, s32 arg1) {
     diceDigitObj[arg0] = temp_r27;
 }
 
-static void DiceDigitMain(omObjData *arg0) {
+static void DiceDigitMain(omObjData *arg0)
+{
     DiceDigitWork *temp_r31 = OM_GET_WORK_PTR(arg0, DiceDigitWork);
 
     if (temp_r31->unk00_field0 != 0 || BoardIsKill()) {
@@ -709,7 +707,8 @@ static void DiceDigitMain(omObjData *arg0) {
     DiceDigitRotate(temp_r31, temp_r31->unk00_field1);
 }
 
-static void DiceDigitKill(DiceDigitWork *arg0) {
+static void DiceDigitKill(DiceDigitWork *arg0)
+{
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -719,7 +718,8 @@ static void DiceDigitKill(DiceDigitWork *arg0) {
     }
 }
 
-static void DiceKill(void) {
+static void DiceKill(void)
+{
     DiceDigitWork *temp_r29;
     s32 i;
 
@@ -731,22 +731,18 @@ static void DiceKill(void) {
     }
 }
 
-static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1) {
+static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1)
+{
     s32 sp8 = 0;
     Vec sp30;
     Vec sp24;
     Vec sp54[2];
-    Vec sp18 = { (HU_DISP_WIDTH/2), (HU_DISP_HEIGHT*155)/480, 240.0f };
-    Vec sp3C[2] = {
-        { (HU_DISP_WIDTH*1)/4, (HU_DISP_HEIGHT*155)/480, 240.0f },
-        { (HU_DISP_WIDTH*3)/4, (HU_DISP_HEIGHT*155)/480, 240.0f }
-    };
-    Vec sp6C[3] = {
-        { (HU_DISP_WIDTH*1)/4, (HU_DISP_HEIGHT*155)/480, 240.0f },
-        { (HU_DISP_WIDTH*3)/4, (HU_DISP_HEIGHT*155)/480, 240.0f },
-        { (HU_DISP_WIDTH/2), (HU_DISP_HEIGHT*155)/480, 240.0f }
-    };
-    Vec spC = { (HU_DISP_WIDTH/2), (HU_DISP_HEIGHT*176)/480, 240.0f };
+    Vec sp18 = { (HU_DISP_WIDTH / 2), (HU_DISP_HEIGHT * 155) / 480, 240.0f };
+    Vec sp3C[2]
+        = { { (HU_DISP_WIDTH * 1) / 4, (HU_DISP_HEIGHT * 155) / 480, 240.0f }, { (HU_DISP_WIDTH * 3) / 4, (HU_DISP_HEIGHT * 155) / 480, 240.0f } };
+    Vec sp6C[3] = { { (HU_DISP_WIDTH * 1) / 4, (HU_DISP_HEIGHT * 155) / 480, 240.0f },
+        { (HU_DISP_WIDTH * 3) / 4, (HU_DISP_HEIGHT * 155) / 480, 240.0f }, { (HU_DISP_WIDTH / 2), (HU_DISP_HEIGHT * 155) / 480, 240.0f } };
+    Vec spC = { (HU_DISP_WIDTH / 2), (HU_DISP_HEIGHT * 176) / 480, 240.0f };
     Vec *var_r29;
     float var_f31;
     s16 var_r27;
@@ -756,7 +752,8 @@ static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1) {
     if (arg1 != 0) {
         var_r29 = &spC;
         var_f31 = -20.0f * arg0->unk00_field3;
-    } else {
+    }
+    else {
         switch (numDice) {
             case 1:
                 var_r29 = &sp18;
@@ -773,9 +770,11 @@ static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1) {
     for (i = 0; i < 2; i++) {
         if (var_r27 == 0) {
             sp54[i].x = var_r29->x;
-        } else if (i != 0) {
+        }
+        else if (i != 0) {
             sp54[i].x = var_r29->x - 30.0f;
-        } else {
+        }
+        else {
             sp54[i].x = var_r29->x + 30.0f;
         }
         sp54[i].y = var_r29->y;
@@ -790,7 +789,8 @@ static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1) {
             if (arg1 != 0 && arg0->unk00_field3 != 0) {
                 BoardModelVisibilitySet(arg0->unk04[i], 0);
             }
-        } else {
+        }
+        else {
             arg0->unk00_field2 = 1;
         }
         VECScale(&sp24, &sp24, arg0->unk08);
@@ -799,7 +799,8 @@ static void DiceDigitMove(DiceDigitWork *arg0, s32 arg1) {
     }
 }
 
-static void DiceDigitRotate(DiceDigitWork *arg0, s32 arg1) {
+static void DiceDigitRotate(DiceDigitWork *arg0, s32 arg1)
+{
     float var_f30;
     s32 i;
 
@@ -808,7 +809,8 @@ static void DiceDigitRotate(DiceDigitWork *arg0, s32 arg1) {
         if (arg0->unk02 >= 360) {
             arg0->unk02 = 360;
         }
-    } else {
+    }
+    else {
         arg0->unk02 -= 0x12;
         if (arg0->unk02 <= 0) {
             arg0->unk02 = 0;
@@ -822,7 +824,8 @@ static void DiceDigitRotate(DiceDigitWork *arg0, s32 arg1) {
     }
 }
 
-static void SameRollExec(void) {
+static void SameRollExec(void)
+{
     Vec sp8;
     float var_f31;
     s32 var_r28;
@@ -838,7 +841,8 @@ static void SameRollExec(void) {
         case 2:
             if (diceValue[0] == 7) {
                 var_r31 = 0x1E;
-            } else {
+            }
+            else {
                 var_r31 = 0xA;
             }
             break;
@@ -846,9 +850,11 @@ static void SameRollExec(void) {
             if (diceValue[0] == 7) {
                 var_r31 = 0x32;
                 var_r28 = 0x118;
-            } else if (diceValue[0] & 1) {
+            }
+            else if (diceValue[0] & 1) {
                 var_r31 = 0x1E;
-            } else {
+            }
+            else {
                 var_r31 = 0xA;
             }
             break;
@@ -860,7 +866,8 @@ static void SameRollExec(void) {
     if (BoardPlayerSizeGet(rollPlayer) == 2 || GWPlayer[rollPlayer].bowser_suit != 0) {
         sp8.y += 700.0f;
         var_f31 = 450.0f;
-    } else {
+    }
+    else {
         sp8.y += 600.0f;
         var_f31 = 300.0f;
     }
@@ -878,9 +885,11 @@ static void SameRollExec(void) {
     BoardWinKill();
     if (var_r31 >= 0x32) {
         var_r29 = 1;
-    } else if (var_r31 >= 0x14) {
+    }
+    else if (var_r31 >= 0x14) {
         var_r29 = 3;
-    } else {
+    }
+    else {
         var_r29 = 6;
     }
     for (i = 0; i < var_r31; i++) {
@@ -893,7 +902,8 @@ static void SameRollExec(void) {
     BoardPauseDisableSet(0);
 }
 
-static s32 GetBtnRoll(s32 arg0) {
+static s32 GetBtnRoll(s32 arg0)
+{
     s32 var_r31 = 0;
     s32 var_r29;
 
@@ -917,7 +927,8 @@ static s32 GetBtnRoll(s32 arg0) {
     return var_r31;
 }
 
-static s32 GetComBtnRoll(s32 arg0) {
+static s32 GetComBtnRoll(s32 arg0)
+{
     if (BoardItemPrevGet() != -1 || BoardPlayerItemCount(arg0) == 0 || BoardMegaDoubleDiceCheck() || _CheckFlag(FLAG_ID_MAKE(1, 9))) {
         return 0x100;
     }
@@ -927,7 +938,8 @@ static s32 GetComBtnRoll(s32 arg0) {
     return 0x100;
 }
 
-void BoardRollTutorialSet(s16 *arg0) {
+void BoardRollTutorialSet(s16 *arg0)
+{
     s32 i;
 
     for (i = 0; i < 3; i++) {

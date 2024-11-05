@@ -13,10 +13,10 @@
 #include "game/board/ui.h"
 #include "game/board/view.h"
 #include "game/chrman.h"
+#include "game/disp.h"
 #include "game/hsfman.h"
 #include "game/objsub.h"
 #include "game/pad.h"
-#include "game/disp.h"
 
 #include "math.h"
 #include "stdlib.h"
@@ -2133,7 +2133,7 @@ static void UpdateRollSprite(omObjData *arg0)
 {
     Vec sp1C;
     s32 sp14[2];
-    f32 spC[2] = { HU_DISP_CENTERX+32, HU_DISP_CENTERX-32 };
+    f32 spC[2] = { HU_DISP_CENTERX + 32, HU_DISP_CENTERX - 32 };
     s32 var_r30;
     s32 temp_r29;
     bitcopy3 *temp_r31;
@@ -2155,10 +2155,11 @@ static void UpdateRollSprite(omObjData *arg0)
         else {
             if ((sp14[1] == 0) && (var_r30 == 0)) {
                 sp1C.x = HU_DISP_CENTERX;
-            } else {
+            }
+            else {
                 sp1C.x = spC[var_r30];
             }
-            sp1C.y = (HU_DISP_HEIGHTF*176)/480;
+            sp1C.y = (HU_DISP_HEIGHTF * 176) / 480;
             HuSprAttrReset(temp_r31->unk_04, var_r30, 4);
             HuSprBankSet(temp_r31->unk_04, var_r30, sp14[var_r30]);
             HuSprPosSet(temp_r31->unk_04, var_r30, sp1C.x, sp1C.y);
@@ -2681,7 +2682,7 @@ void BoardPlayerResizeAnimExec(s32 player, s32 size)
     frame_data[8] = steps[3];
     model = BoardPlayerModelGet(player);
     modelid = BoardModelIDGet(model);
-    Hu3DModelAttrSet(modelid, 0x40000002);
+    Hu3DModelAttrSet(modelid, HU3D_MOTATTR_PAUSE);
     frame = 0;
     for (j = 0; j < 9; j++) {
         float size_vel;
@@ -2692,7 +2693,7 @@ void BoardPlayerResizeAnimExec(s32 player, s32 size)
             HuPrcVSleep();
         }
     }
-    Hu3DModelAttrReset(modelid, 0x40000002);
+    Hu3DModelAttrReset(modelid, HU3D_MOTATTR_PAUSE);
     BoardPlayerSizeSet(player, size);
 }
 

@@ -74,9 +74,8 @@ Vec lbl_1_data_7F0[] = { { -300, 270, 0 }, { -100, 180, 500 }, { 100, 90, 500 },
 
 s16 lbl_1_data_820[] = { -284, 148, -84, 233, 116, 318, 316, 403 };
 
-s32 lbl_1_data_830[] = { DATA_MAKE_NUM(DATADIR_RESULT, 0x08), DATA_MAKE_NUM(DATADIR_RESULT, 0x09),
-    DATA_MAKE_NUM(DATADIR_RESULT, 0x0A), DATA_MAKE_NUM(DATADIR_RESULT, 0x0A)
-};
+s32 lbl_1_data_830[] = { DATA_MAKE_NUM(DATADIR_RESULT, 0x08), DATA_MAKE_NUM(DATADIR_RESULT, 0x09), DATA_MAKE_NUM(DATADIR_RESULT, 0x0A),
+    DATA_MAKE_NUM(DATADIR_RESULT, 0x0A) };
 
 float lbl_1_data_840[] = { 130, 150, 170, 150, 150, 130, 170, 190 };
 
@@ -269,7 +268,7 @@ void fn_1_6824(void)
         }
         Hu3DAnimCreate(anim, lbl_1_bss_1A9C[i + 4], "ys22_a0");
         Hu3DAnimCreate(anim2, lbl_1_bss_1A9C[i + 4], "ys22_a1");
-        Hu3DModelAttrSet(lbl_1_bss_1A9C[i + 4], 0x40000002);
+        Hu3DModelAttrSet(lbl_1_bss_1A9C[i + 4], HU3D_MOTATTR_PAUSE);
     }
     anim = HuSprAnimRead(HuDataReadNum(DATA_MAKE_NUM(DATADIR_RESULT, 0x3D), MEMORY_DEFAULT_NUM));
     anim2 = HuSprAnimRead(HuDataReadNum(DATA_MAKE_NUM(DATADIR_RESULT, 0x3B), MEMORY_DEFAULT_NUM));
@@ -306,7 +305,7 @@ void fn_1_6824(void)
     }
     (void)anim3;
     Hu3DMotionSet(lbl_1_bss_1A9C[8], lbl_1_bss_1A5C[9]);
-    Hu3DModelAttrSet(lbl_1_bss_1A9C[8], 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_1A9C[8], HU3D_MOTATTR_LOOP);
     Hu3DModelShadowSet(lbl_1_bss_1A9C[8]);
     for (i = 0; i < 180; i++) {
         if (i == 0) {
@@ -316,7 +315,7 @@ void fn_1_6824(void)
             lbl_1_bss_1828[i] = Hu3DModelLink(lbl_1_bss_1828[0]);
         }
         Hu3DModelScaleSet(lbl_1_bss_1828[i], 0.5f, 0.5f, 0.5f);
-        Hu3DModelAttrSet(lbl_1_bss_1828[i], 1);
+        Hu3DModelAttrSet(lbl_1_bss_1828[i], HU3D_ATTR_DISPOFF);
     }
     fn_1_8658();
     anim = HuSprAnimRead(HuAR_ARAMtoMRAMFileRead(DATA_MAKE_NUM(DATADIR_EFFECT, 4), MEMORY_DEFAULT_NUM, HEAP_DATA));
@@ -338,7 +337,7 @@ void fn_1_6824(void)
         CharModelVoiceEnableSet(character, lbl_1_bss_1990[player][1], 0);
         CharModelMotionSet(character, lbl_1_bss_1990[player][0]);
         Hu3DModelPosSet(char_mdl, lbl_1_data_7F0[i].x, lbl_1_data_7F0[lbl_1_bss_19E8[i]].y, 0);
-        Hu3DModelAttrSet(char_mdl, 0x40000001);
+        Hu3DModelAttrSet(char_mdl, HU3D_MOTATTR_LOOP);
         Hu3DModelShadowSet(char_mdl);
     }
     CharModelDataClose(-1);
@@ -363,7 +362,7 @@ void fn_1_7544(void)
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
-        Hu3DModelAttrReset(lbl_1_bss_1A9C[i + 4], 0x40000002);
+        Hu3DModelAttrReset(lbl_1_bss_1A9C[i + 4], HU3D_MOTATTR_PAUSE);
         Hu3DMotionSpeedSet(lbl_1_bss_1A9C[i + 4], 1.5f);
     }
     HuPrcSleep(35);
@@ -423,11 +422,11 @@ void fn_1_7544(void)
             HuPrcVSleep();
         }
         HuAudFXPlay(828);
-        Hu3DModelAttrReset(lbl_1_bss_1A9C[10], 0x40000002);
+        Hu3DModelAttrReset(lbl_1_bss_1A9C[10], HU3D_MOTATTR_PAUSE);
         Hu3DModelPosSet(lbl_1_bss_1A9C[10], 0, 0, 200);
         for (i = 0; i < Hu3DMotionMaxTimeGet(lbl_1_bss_1A9C[10]); i++) {
             if (i > 10) {
-                Hu3DModelAttrSet(lbl_1_bss_1A9C[8], 1);
+                Hu3DModelAttrSet(lbl_1_bss_1A9C[8], HU3D_ATTR_DISPOFF);
             }
             Center.x = lbl_1_data_8B8[(i / 2) & 0x7].x;
             Center.y = 330.0f + lbl_1_data_8B8[(i / 2) & 0x7].y;
@@ -598,7 +597,7 @@ void fn_1_86DC(s16 player)
     lbl_1_bss_194[i].unk10.y = frandmod(20) - 10.0f;
     lbl_1_bss_194[i].unk10.z = 0;
     lbl_1_bss_194[i].unk1C = 10.0f;
-    Hu3DModelAttrReset(lbl_1_bss_1828[i], 1);
+    Hu3DModelAttrReset(lbl_1_bss_1828[i], HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(lbl_1_bss_1828[i], 0, 100, 0);
     Hu3DModelRotSet(lbl_1_bss_1828[i], 0, 0, 0);
 }
@@ -628,7 +627,7 @@ void fn_1_8998(void)
                 CharModelCoinEffectCreate(1, &pos);
                 lbl_1_bss_194[i].unk0 = -1;
                 HuAudFXPlay(7);
-                Hu3DModelAttrSet(lbl_1_bss_1828[i], 1);
+                Hu3DModelAttrSet(lbl_1_bss_1828[i], HU3D_ATTR_DISPOFF);
             }
         }
         HuPrcVSleep();

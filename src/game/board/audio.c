@@ -23,7 +23,7 @@ void BoardMusStartBoard(void) {
 
 void BoardMusStart(s32 arg0, s32 arg1, s8 arg2, u16 arg3) {
     s16 *temp_r31 = boardSeq[arg0];
-    UnkMsmStruct_03 sp8;
+    MSM_MUSPARAM param;
 
     if (arg1 == temp_r31[1]) {
         return;
@@ -31,18 +31,18 @@ void BoardMusStart(s32 arg0, s32 arg1, s8 arg2, u16 arg3) {
     if (temp_r31[0] != -1) {
         BoardAudSeqFadeOutFast(temp_r31[0]);
     }
-    sp8.unk00 = 1;
+    param.flag = MSM_MUSPARAM_CHAN;
     if (arg3 != 0) {
-        sp8.unk00 |= 8;
+        param.flag |= MSM_MUSPARAM_FADESPEED;
     }
     if (arg2 < 0) {
-        sp8.unk00 |= 2;
+        param.flag |= MSM_MUSPARAM_VOL;
         arg2 = 0x7F;
     }
-    sp8.unk06 = arg3;
-    sp8.unk05 = arg2;
-    sp8.unk04 = arg0;
-    temp_r31[0] = msmMusPlay(arg1, &sp8);
+    param.fadeSpeed = arg3;
+    param.vol = arg2;
+    param.chan = arg0;
+    temp_r31[0] = msmMusPlay(arg1, &param);
     temp_r31[1] = arg1;
 }
 
@@ -68,21 +68,21 @@ void BoardMusLoudSet(s32 arg0, s32 arg1) {
     }
 }
 
-void BoardMusVolPanSet(s32 arg0, s8 arg1, u16 arg2) {
+void BoardMusVolPanSet(s32 arg0, s8 vol, u16 fadeSpeed) {
     s16 *temp_r31 = boardSeq[arg0];
-    UnkMsmStruct_04 sp10;
+    MSM_MUSPARAM param;
 
     if (temp_r31[0] == -1) {
         return;
     }
-    sp10.unk00 = 1;
-    sp10.unk00 |= 2;
-    if (arg1 < 0) {
-        arg1 = 0x7F;
+    param.flag = MSM_MUSPARAM_CHAN;
+    param.flag |= MSM_MUSPARAM_VOL;
+    if (vol < 0) {
+        vol = 0x7F;
     }
-    sp10.unk06 = arg2;
-    sp10.unk05 = arg1;
-    msmMusSetParam(temp_r31[0], &sp10);
+    param.fadeSpeed = fadeSpeed;
+    param.vol = vol;
+    msmMusSetParam(temp_r31[0], &param);
 }
 
 void BoardAudSeqPause(s32 arg0, s32 arg1, u16 arg2) {

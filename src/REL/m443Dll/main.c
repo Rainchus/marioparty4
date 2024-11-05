@@ -8,6 +8,7 @@
 #include "game/minigame_seq.h"
 #include "game/object.h"
 #include "game/objsub.h"
+#include "game/sprite.h"
 #include "game/wipe.h"
 #include "math.h"
 #include "rel_sqrt_consts.h"
@@ -205,7 +206,7 @@ void fn_1_584(omObjData *object)
     if (var_r31->unk_08 == 0) {
         switch (var_r31->unk_00) {
             case 0:
-                WipeCreate(1, 0, 0x3C);
+                WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
                 lbl_1_bss_14.unk_00 = 1;
                 var_r31->unk_00 = 1;
                 var_r31->unk_10 = 0;
@@ -251,7 +252,7 @@ void fn_1_9B0(omObjData *object)
     fn_1_4E4(object);
 
     if (WipeStatGet() == 0) {
-        WipeCreate(2, 0, 0x3C);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         if (lbl_1_bss_8 >= 0) {
             HuAudFXStop(lbl_1_bss_8);
             lbl_1_bss_8 = -1;
@@ -431,7 +432,7 @@ void fn_1_17D8(omObjData *object)
         }
         if ((MGSeqStatGet(lbl_1_bss_58) == 0) && (var_r27->unk_58 == 0x1111) && (var_r25 != 0)) {
             if (var_r27->unk_08 == 0) {
-                WipeCreate(2, 0, 0x3C);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
             }
             var_r27->unk_14 = 4;
             var_r27->unk_18 = 0;
@@ -530,7 +531,7 @@ omObjFunc fn_1_2490(Process *process, omObjData *object)
     M443DllWork *var_r30 = object->data;
 
     if (var_r30->unk_08 == 0) {
-        WipeCreate(1, 0, 0x3C);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     }
     fn_1_3FE8(1);
     var_r31 = fn_1_4148(0);
@@ -630,7 +631,7 @@ void fn_1_2DD8(M443DllUnkStruct *arg0)
         arg0->unk_1C[var_r30] = -1;
         if (lbl_1_data_108[var_r30].unk_00 != 0) {
             arg0->unk_1C[var_r30] = espEntry(lbl_1_data_108[var_r30].unk_00, lbl_1_data_108[var_r30].unk_04, 0);
-            espAttrSet(arg0->unk_1C[var_r30], 8);
+            espAttrSet(arg0->unk_1C[var_r30], HUSPR_ATTR_LINEAR);
             espDispOff(arg0->unk_1C[var_r30]);
         }
     }
@@ -840,10 +841,10 @@ void fn_1_3770(omObjData *arg0)
                 break;
         }
         if (var_r24 != 0) {
-            Hu3DModelAttrReset(arg0->model[0], 1);
+            Hu3DModelAttrReset(arg0->model[0], HU3D_ATTR_DISPOFF);
         }
         else {
-            Hu3DModelAttrSet(arg0->model[0], 1);
+            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF);
         }
         for (var_r30 = 0; var_r30 < 4; var_r30++) {
             sp30[var_r30] = var_r28[var_r30 + 6].unk_04;

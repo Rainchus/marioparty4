@@ -1202,7 +1202,7 @@ config.libs = [
     Rel(
         "m450Dll",  # The Final Battle!
         objects={
-            Object(NonMatching, "REL/m450Dll/main.c"),
+            Object(Matching, "REL/m450Dll/main.c"),
         },
     ),
     Rel(

@@ -4,8 +4,8 @@
 #include "game/hsfdraw.h"
 #include "game/hsfex.h"
 #include "game/hsfman.h"
-#include "game/wipe.h"
 #include "game/window.h"
+#include "game/wipe.h"
 
 #include "REL/present.h"
 
@@ -392,7 +392,7 @@ omObjData *PresentCreate(void)
         work->object[i] = omAddObjEx(presentObjMan, 1003, 1, 0, 1, NULL);
         work->object[i]->model[0] = Hu3DModelCreateFile(presentMdlTbl[i]);
         Hu3DModelLayerSet(work->object[i]->model[0], 0);
-        Hu3DModelAttrSet(work->object[i]->model[0], 1);
+        Hu3DModelAttrSet(work->object[i]->model[0], HU3D_ATTR_DISPOFF);
     }
 
     for (j = 0; j < 8; j++) {
@@ -886,39 +886,39 @@ static void ShowHidePresents(omObjData *object)
     s32 character;
     s32 i;
 
-    Hu3DModelAttrReset(work->object[0]->model[0], 1);
+    Hu3DModelAttrReset(work->object[0]->model[0], HU3D_ATTR_DISPOFF);
 
     for (character = 0; character < NUM_CHARACTERS; character++) {
         s32 j;
         if (UnlockedPresents(object, roomIdxTbl2[character]) > 0) {
-            Hu3DModelAttrReset(work->object[character + 109]->model[0], 1);
+            Hu3DModelAttrReset(work->object[character + 109]->model[0], HU3D_ATTR_DISPOFF);
         }
 
         for (j = 0, i = 0; i < PRESENT_COUNT_CHAR_ROOM; i++) {
             if (PresentUnlocked(object, roomIdxTbl2[character], i)) {
-                Hu3DModelAttrReset(work->object[character * PRESENT_COUNT_CHAR_ROOM * 2 + 2 + i]->model[0], 1);
-                Hu3DModelAttrReset(work->object[character * PRESENT_COUNT_CHAR_ROOM * 2 + 8 + i]->model[0], 1);
+                Hu3DModelAttrReset(work->object[character * PRESENT_COUNT_CHAR_ROOM * 2 + 2 + i]->model[0], HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrReset(work->object[character * PRESENT_COUNT_CHAR_ROOM * 2 + 8 + i]->model[0], HU3D_ATTR_DISPOFF);
                 j++;
             }
         }
         if (j >= 6) {
-            Hu3DModelAttrReset(work->object[character + 118]->model[0], 1);
+            Hu3DModelAttrReset(work->object[character + 118]->model[0], HU3D_ATTR_DISPOFF);
         }
     }
     if (UnlockedPresents(object, ROOM_MG) > 0) {
-        Hu3DModelAttrReset(work->object[117]->model[0], 1);
+        Hu3DModelAttrReset(work->object[117]->model[0], HU3D_ATTR_DISPOFF);
     }
     for (i = 0; i < PRESENT_COUNT_MG_ROOM; i++) {
         if (PresentUnlocked(object, ROOM_MG, i)) {
-            Hu3DModelAttrReset(work->object[i + 98]->model[0], 1);
+            Hu3DModelAttrReset(work->object[i + 98]->model[0], HU3D_ATTR_DISPOFF);
         }
     }
     if (PresentUnlocked(object, ROOM_TROPHY, 0)) {
-        Hu3DModelAttrReset(work->object[1]->model[0], 1);
+        Hu3DModelAttrReset(work->object[1]->model[0], HU3D_ATTR_DISPOFF);
     }
     for (i = 0; i < NUM_CHARACTERS; i++) {
         if (PresentUnlocked(object, roomIdxTbl2[i], PRESENT_CONSTELLATION)) {
-            Hu3DModelAttrReset(work->object[i + 126]->model[0], 1);
+            Hu3DModelAttrReset(work->object[i + 126]->model[0], HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -1075,9 +1075,9 @@ static void ExecPresentGet(omObjData *object)
             rot = 36.0f * work->room;
             SetCameraRot(object, rot, 1);
             RotateCamera(object);
-            Hu3DModelAttrSet(work->object[work->idxInRoom + lbl_1_rodata_B18[work->room]]->model[0], 1);
-            Hu3DModelAttrSet(work->object[roofIdxTbl[work->room]]->model[0], 1);
-            Hu3DModelAttrSet(work->object[constellationIdxTbl[work->room]]->model[0], 1);
+            Hu3DModelAttrSet(work->object[work->idxInRoom + lbl_1_rodata_B18[work->room]]->model[0], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(work->object[roofIdxTbl[work->room]]->model[0], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(work->object[constellationIdxTbl[work->room]]->model[0], HU3D_ATTR_DISPOFF);
             work->presentFallingTime = 0.0f;
             work->presentFallingSpeed = 1.0f / 360.0f;
             object->unk10 = 1;

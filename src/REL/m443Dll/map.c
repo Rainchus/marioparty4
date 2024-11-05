@@ -29,7 +29,7 @@ void fn_1_4AB4(omObjData *object)
     Hu3DModelLayerSet(object->model[0], 2);
     object->model[2] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M443, 2));
     Hu3DModelLayerSet(object->model[2], 2);
-    Hu3DModelAttrSet(object->model[2], 1);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF);
     object->model[3] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_M443, 4));
     Hu3DModelLayerSet(object->model[3], 2);
     Hu3DMotionSpeedSet(object->model[3], 0.0f);
@@ -148,7 +148,7 @@ void fn_1_4D14(omObjData *object)
                 }
                 Hu3DMotionSpeedSet(object->model[var_r29 + 9], 0.95f);
                 if (var_r28 == 0) {
-                    Hu3DModelAttrSet(object->model[var_r29 + 9], 1);
+                    Hu3DModelAttrSet(object->model[var_r29 + 9], HU3D_ATTR_DISPOFF);
                 }
             }
         }
@@ -172,10 +172,10 @@ void fn_1_4D14(omObjData *object)
             Hu3DMotionSpeedSet(object->model[3], 1.0f);
         }
         else if (fn_1_42E4() == 5) {
-            Hu3DModelAttrSet(object->model[3], 1);
+            Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
         }
         if (fn_1_42E4() == 5) {
-            Hu3DModelAttrReset(object->model[2], 1);
+            Hu3DModelAttrReset(object->model[2], HU3D_ATTR_DISPOFF);
             Hu3DModelShadowMapSet(object->model[0]);
             Hu3DModelShadowMapSet(object->model[2]);
         }
