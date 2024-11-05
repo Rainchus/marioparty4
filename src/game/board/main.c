@@ -2169,14 +2169,14 @@ static void TauntUpdate(omObjData *object)
 		port = GWPlayer[i].port & 0x3;
 		character = GWPlayer[i].character & 0x7;
 		if(tauntActiveFXTbl[port] >= 0) {
-			UnkMsmStruct_01 param;
+			MSM_SEPARAM param;
 			float vol, pan;
 			vol = (64.0f*(HuPadSubStkX[port]/59.0f))+64.0f;
 			pan = 8191.0f*(HuPadSubStkY[port]/59.0f);
-			memset(&param, 0, sizeof(UnkMsmStruct_01));
-			param.unk00 = 6;
-			OSf32tos8(&vol, &param.unk05);
-			OSf32tos16(&pan, &param.unk06);
+			memset(&param, 0, sizeof(MSM_SEPARAM));
+			param.flag = MSM_SEPARAM_PITCH|MSM_SEPARAM_PAN;
+			OSf32tos8(&vol, &param.pan);
+			OSf32tos16(&pan, &param.pitch);
 			msmSeSetParam(tauntActiveFXTbl[port], &param);
 		} else {
 			if(HuPadBtnDown[port] & PAD_TRIGGER_L) {

@@ -65,7 +65,7 @@ omObjData *PresentGuideCreate(void)
     Hu3DModelShadowSet(object->model[0]);
     PresentGuideExecModeSet(object, PRESENT_GUIDE_MODE_NONE);
     UpdateGuide(object);
-    Hu3DModelAttrSet(object->model[0], 1);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
 
     return object;
 }
@@ -109,7 +109,7 @@ static void ExecGuideEnter(omObjData *object)
 
     switch (object->unk10) {
         case 0:
-            Hu3DModelAttrReset(object->model[0], 1);
+            Hu3DModelAttrReset(object->model[0], HU3D_ATTR_DISPOFF);
             work->pos.x = -300.0f;
             work->pos.z = -180.0f;
             work->time = 0.0f;
@@ -156,7 +156,7 @@ static void ExecGuideLeave(omObjData *object)
         case 0:
             work->time = 0.0f;
             work->speed = 0.025f;
-            Hu3DModelAttrReset(object->model[0], 1);
+            Hu3DModelAttrReset(object->model[0], HU3D_ATTR_DISPOFF);
             object->unk10 = 1;
         case 1:
             weight = sind(90.0f * work->time);
@@ -168,7 +168,7 @@ static void ExecGuideLeave(omObjData *object)
             }
             object->unk10 = 2;
         case 2:
-            Hu3DModelAttrSet(object->model[0], 1);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
             PresentGuideExecModeSet(object, PRESENT_GUIDE_MODE_NONE);
             break;
         default:

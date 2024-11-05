@@ -177,7 +177,7 @@ void fn_1_1E64(omObjData *object)
     temp_r26 = HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_M434, 0x0B));
     object->model[10] = Hu3DParticleCreate(temp_r26, 100);
     Hu3DParticleHookSet(object->model[10], fn_1_443C);
-    Hu3DModelAttrSet(object->model[10], 1);
+    Hu3DModelAttrSet(object->model[10], HU3D_ATTR_DISPOFF);
     Hu3DModelLayerSet(object->model[10], 4);
     Hu3DModelCameraSet(object->model[10], 8);
     object->func = fn_1_26A4;
@@ -602,5 +602,5 @@ void fn_1_443C(ModelData *model, ParticleData *particle, Mtx matrix)
 void fn_1_47EC(Vec *arg0)
 {
     Hu3DModelPosSet(lbl_1_bss_5868->model[10], arg0->x, arg0->y, arg0->z);
-    Hu3DModelAttrReset(lbl_1_bss_5868->model[10], 1);
+    Hu3DModelAttrReset(lbl_1_bss_5868->model[10], HU3D_ATTR_DISPOFF);
 }

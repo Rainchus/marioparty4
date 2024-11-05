@@ -52,7 +52,7 @@ void fn_1_118(void)
     while (omSysExitReq == 0) {
         HuPrcVSleep();
     }
-    WipeCreate(2, 0, 0x3C);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -83,11 +83,11 @@ s32 fn_1_198(void)
         sp8[var_r31] = 0;
     }
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        switch(GWPlayerCfg[var_r31].group) {
+        switch (GWPlayerCfg[var_r31].group) {
             case 0:
                 lbl_1_bss_18[0] = fn_1_1B8C(var_r31, 0);
                 break;
-            
+
             default:
                 do {
                     var_r30 = fn_1_8944() % 3;
@@ -122,7 +122,7 @@ void fn_1_43C(void)
     s32 var_r30;
 
     lbl_1_bss_C = 0;
-    WipeCreate(1, 0, 0x3C);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 0x3C);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();

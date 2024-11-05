@@ -1,6 +1,7 @@
 #include "REL/w01Dll.h"
 #include "game/audio.h"
 #include "game/data.h"
+#include "game/frand.h"
 #include "game/gamework_data.h"
 #include "game/hsfanim.h"
 #include "game/hsfdraw.h"
@@ -12,15 +13,14 @@
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/sprite.h"
-#include "game/frand.h"
 
-#include "game/window.h"
 #include "game/board/audio.h"
 #include "game/board/main.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/ui.h"
 #include "game/board/window.h"
+#include "game/window.h"
 
 #include "dolphin.h"
 #include "ext_math.h"
@@ -83,46 +83,21 @@ static s16 lbl_1_bss_7A8;
 static s32 lbl_1_bss_7A4;
 static AnimData *lbl_1_bss_7A0;
 
-static s32 lbl_1_data_F08[] = {
-    DATA_MAKE_NUM(DATADIR_BOARD, 109),
-    DATA_MAKE_NUM(DATADIR_BOARD, 110),
-    DATA_MAKE_NUM(DATADIR_BOARD, 111),
-    DATA_MAKE_NUM(DATADIR_BOARD, 112),
-    DATA_MAKE_NUM(DATADIR_BOARD, 113),
-    DATA_MAKE_NUM(DATADIR_BOARD, 114),
-    DATA_MAKE_NUM(DATADIR_BOARD, 115),
-    DATA_MAKE_NUM(DATADIR_BOARD, 116),
-    DATA_MAKE_NUM(DATADIR_BOARD, 118),
-    DATA_MAKE_NUM(DATADIR_BOARD, 119),
-    DATA_MAKE_NUM(DATADIR_BOARD, 120),
-    DATA_MAKE_NUM(DATADIR_BOARD, 121),
-    DATA_MAKE_NUM(DATADIR_BOARD, 122),
-    DATA_MAKE_NUM(DATADIR_BOARD, 123)
-};
+static s32 lbl_1_data_F08[] = { DATA_MAKE_NUM(DATADIR_BOARD, 109), DATA_MAKE_NUM(DATADIR_BOARD, 110), DATA_MAKE_NUM(DATADIR_BOARD, 111),
+    DATA_MAKE_NUM(DATADIR_BOARD, 112), DATA_MAKE_NUM(DATADIR_BOARD, 113), DATA_MAKE_NUM(DATADIR_BOARD, 114), DATA_MAKE_NUM(DATADIR_BOARD, 115),
+    DATA_MAKE_NUM(DATADIR_BOARD, 116), DATA_MAKE_NUM(DATADIR_BOARD, 118), DATA_MAKE_NUM(DATADIR_BOARD, 119), DATA_MAKE_NUM(DATADIR_BOARD, 120),
+    DATA_MAKE_NUM(DATADIR_BOARD, 121), DATA_MAKE_NUM(DATADIR_BOARD, 122), DATA_MAKE_NUM(DATADIR_BOARD, 123) };
 
-static s32 lbl_1_data_F40[8] = {
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 23),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 23),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 23),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 23),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 23),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 23),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 23),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 23)
-};
+static s32 lbl_1_data_F40[8] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 23), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 23), DATA_MAKE_NUM(DATADIR_PEACHMOT, 23),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 23), DATA_MAKE_NUM(DATADIR_WARIOMOT, 23), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 23),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 23), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 23) };
 
-static s32 lbl_1_data_F60[8] = {
-    DATA_MAKE_NUM(DATADIR_MARIOMOT, 64),
-    DATA_MAKE_NUM(DATADIR_LUIGIMOT, 64),
-    DATA_MAKE_NUM(DATADIR_PEACHMOT, 64),
-    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 64),
-    DATA_MAKE_NUM(DATADIR_WARIOMOT, 64),
-    DATA_MAKE_NUM(DATADIR_DONKEYMOT, 64),
-    DATA_MAKE_NUM(DATADIR_DAISYMOT, 64),
-    DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 64)
-};
+static s32 lbl_1_data_F60[8] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 64), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 64), DATA_MAKE_NUM(DATADIR_PEACHMOT, 64),
+    DATA_MAKE_NUM(DATADIR_YOSHIMOT, 64), DATA_MAKE_NUM(DATADIR_WARIOMOT, 64), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 64),
+    DATA_MAKE_NUM(DATADIR_DAISYMOT, 64), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 64) };
 
-void fn_1_D740(s16 *arg0) {
+void fn_1_D740(s16 *arg0)
+{
     s16 sp10[14];
     s16 sp8[4];
     float temp_f30;
@@ -170,14 +145,14 @@ void fn_1_D740(s16 *arg0) {
             Hu3DData[lbl_1_bss_7FC[i]->model[1]].unk_F0[1][3] = -50.0f;
         }
         if (lbl_1_bss_7FC[i]->work[1] == 11) {
-            Hu3DModelAttrSet(lbl_1_bss_7FC[i]->model[1], 0x40000001);
+            Hu3DModelAttrSet(lbl_1_bss_7FC[i]->model[1], HU3D_MOTATTR_LOOP);
         }
         if (lbl_1_bss_7FC[i]->work[1] == 4) {
             Hu3DMotionSpeedSet(lbl_1_bss_7FC[i]->model[1], 0.0f);
         }
-        Hu3DModelAttrReset(sp8[i], 1);
-        Hu3DModelAttrSet(lbl_1_bss_7FC[i]->model[1], 1);
-        Hu3DModelAttrSet(lbl_1_bss_7FC[i]->model[1], 0x40000002);
+        Hu3DModelAttrReset(sp8[i], HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(lbl_1_bss_7FC[i]->model[1], HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(lbl_1_bss_7FC[i]->model[1], HU3D_MOTATTR_PAUSE);
         omSetTra(lbl_1_bss_7FC[i], lbl_1_bss_80C.x, lbl_1_bss_80C.y + 66.0f, lbl_1_bss_80C.z);
         var_f31 = 90.0f - 90.0f * i + 360.0f * (temp_f30 / temp_f29);
         if (var_f31 >= 360.0f) {
@@ -196,13 +171,15 @@ void fn_1_D740(s16 *arg0) {
     }
 }
 
-void fn_1_DD84(void) {
+void fn_1_DD84(void)
+{
     s32 i;
 
     for (i = 0; i < 4; i++) {
         if (i != 0) {
             Hu3DModelKill(lbl_1_bss_7FC[i]->model[0]);
-        } else {
+        }
+        else {
             BoardModelVisibilitySet(lbl_1_bss_6C4[19], 0);
             Hu3DAnimKill(lbl_1_bss_7FC[i]->work[0]);
         }
@@ -215,7 +192,8 @@ void fn_1_DD84(void) {
     }
 }
 
-void fn_1_DE94(void) {
+void fn_1_DE94(void)
+{
     s32 i;
 
     BoardModelPosGet(lbl_1_bss_6C4[16], &lbl_1_bss_80C);
@@ -237,14 +215,16 @@ void fn_1_DE94(void) {
     lbl_1_bss_7B4 = 0;
 }
 
-static void fn_1_E100(void) {
+static void fn_1_E100(void)
+{
     lbl_1_bss_7AA = 1;
     BoardMGExit();
     HuAudFXPlay(0x40F);
     BoardModelMotionStart(lbl_1_bss_6C4[21], 0, 0x40000004);
 }
 
-static void fn_1_E154(void) {
+static void fn_1_E154(void)
+{
     fn_1_DD84();
     BoardPlayerMotionKill(lbl_1_bss_7E4, lbl_1_bss_7BC);
     BoardPlayerMotionKill(lbl_1_bss_7E4, lbl_1_bss_7B8);
@@ -252,18 +232,18 @@ static void fn_1_E154(void) {
     BoardMGDoneFlagSet(0);
 }
 
-static void fn_1_E2B8(omObjData *arg0) {
+static void fn_1_E2B8(omObjData *arg0)
+{
     if (lbl_1_bss_7AA == 1 && BoardMGDoneFlagGet() == 1) {
         fn_1_E154();
         omDelObjEx(HuPrcCurrentGet(), arg0);
     }
 }
 
-static char *lbl_1_data_F9C[] = {
-    "uma1", "uma2", "uma3", "uma4"
-};
+static char *lbl_1_data_F9C[] = { "uma1", "uma2", "uma3", "uma4" };
 
-static void fn_1_E44C(omObjData *arg0) {
+static void fn_1_E44C(omObjData *arg0)
+{
     Vec sp18;
     Vec spC;
     float temp_f27;
@@ -318,7 +298,8 @@ static void fn_1_E44C(omObjData *arg0) {
     BoardModelMotionSpeedSet(lbl_1_bss_6C4[17], lbl_1_bss_7EC);
 }
 
-static void fn_1_E914(omObjData *arg0) {
+static void fn_1_E914(omObjData *arg0)
+{
     Vec spC;
     s32 i;
 
@@ -346,7 +327,8 @@ static void fn_1_E914(omObjData *arg0) {
     BoardPlayerPosSetV(lbl_1_bss_7E4, &spC);
 }
 
-static void fn_1_ECD4(omObjData *arg0) {
+static void fn_1_ECD4(omObjData *arg0)
+{
     lbl_1_bss_7EC *= 1.05f;
     lbl_1_bss_7E8 *= 1.05f;
     if (lbl_1_bss_7EC > 2.0f) {
@@ -368,16 +350,19 @@ static void fn_1_ECD4(omObjData *arg0) {
     fn_1_10CF0(arg0->work[2]);
 }
 
-static void fn_1_EEA0(omObjData *arg0, u16 *arg1) {
+static void fn_1_EEA0(omObjData *arg0, u16 *arg1)
+{
     *arg1 = 0;
     if (arg0->work[3] != 0) {
         arg0->work[3]--;
-    } else {
+    }
+    else {
         *arg1 |= 0x100;
     }
 }
 
-static void fn_1_EED8(omObjData *arg0) {
+static void fn_1_EED8(omObjData *arg0)
+{
     s16 temp_r29;
     u16 var_r30;
 
@@ -391,7 +376,8 @@ static void fn_1_EED8(omObjData *arg0) {
     }
     if (GWPlayerCfg[lbl_1_bss_7E4].iscom == 1) {
         fn_1_EEA0(arg0, &var_r30);
-    } else {
+    }
+    else {
         var_r30 = HuPadBtnDown[temp_r29];
     }
     if (lbl_1_bss_7D2 < 0 || (var_r30 & 0x100)) {
@@ -402,7 +388,8 @@ static void fn_1_EED8(omObjData *arg0) {
     }
 }
 
-static void fn_1_F09C(omObjData *arg0) {
+static void fn_1_F09C(omObjData *arg0)
+{
     float temp_f31;
     float var_f30;
 
@@ -424,8 +411,10 @@ static void fn_1_F09C(omObjData *arg0) {
         BoardModelMotionTimeSet(lbl_1_bss_6C4[18], var_f30);
         arg0->work[0] = fn_1_1001C(arg0->work[2]);
         BoardModelVisibilitySet(lbl_1_bss_6C4[20], 1);
-        BoardModelPosSet(lbl_1_bss_6C4[20], lbl_1_bss_7FC[arg0->work[0]]->trans.x, lbl_1_bss_7FC[arg0->work[0]]->trans.y + 1.0f, lbl_1_bss_7FC[arg0->work[0]]->trans.z);
-        BoardModelRotSet(lbl_1_bss_6C4[20], lbl_1_bss_7FC[arg0->work[0]]->rot.x, lbl_1_bss_7FC[arg0->work[0]]->rot.y + 1.0f, lbl_1_bss_7FC[arg0->work[0]]->rot.z);
+        BoardModelPosSet(lbl_1_bss_6C4[20], lbl_1_bss_7FC[arg0->work[0]]->trans.x, lbl_1_bss_7FC[arg0->work[0]]->trans.y + 1.0f,
+            lbl_1_bss_7FC[arg0->work[0]]->trans.z);
+        BoardModelRotSet(
+            lbl_1_bss_6C4[20], lbl_1_bss_7FC[arg0->work[0]]->rot.x, lbl_1_bss_7FC[arg0->work[0]]->rot.y + 1.0f, lbl_1_bss_7FC[arg0->work[0]]->rot.z);
         arg0->work[1] = 60;
         BoardAudSeqFadeOut(1, 100);
         arg0->func = fn_1_F348;
@@ -433,10 +422,12 @@ static void fn_1_F09C(omObjData *arg0) {
     }
 }
 
-static void fn_1_F348(omObjData *arg0) {
+static void fn_1_F348(omObjData *arg0)
+{
     if ((arg0->work[1] / 4) & 1) {
         BoardModelVisibilitySet(lbl_1_bss_6C4[20], 0);
-    } else {
+    }
+    else {
         BoardModelVisibilitySet(lbl_1_bss_6C4[20], 1);
     }
     if ((arg0->work[1] -= 1) == 0) {
@@ -447,7 +438,8 @@ static void fn_1_F348(omObjData *arg0) {
     }
 }
 
-static void fn_1_F3F8(omObjData *arg0) {
+static void fn_1_F3F8(omObjData *arg0)
+{
     Vec sp18;
     Vec spC;
 
@@ -472,7 +464,8 @@ static void fn_1_F3F8(omObjData *arg0) {
     arg0->func = fn_1_F6E8;
 }
 
-static void fn_1_F6E8(omObjData *arg0) {
+static void fn_1_F6E8(omObjData *arg0)
+{
     Vec sp8;
 
     BoardPlayerPosGet(lbl_1_bss_7E4, &sp8);
@@ -489,7 +482,8 @@ static void fn_1_F6E8(omObjData *arg0) {
     BoardPlayerPosSetV(lbl_1_bss_7E4, &sp8);
 }
 
-static void fn_1_F890(omObjData *arg0) {
+static void fn_1_F890(omObjData *arg0)
+{
     Vec sp8;
 
     BoardPlayerRotGet(lbl_1_bss_7E4, &sp8);
@@ -498,23 +492,28 @@ static void fn_1_F890(omObjData *arg0) {
         lbl_1_bss_7F0->work[0] = 0;
         lbl_1_bss_7F0->func = fn_1_10820;
         arg0->func = fn_1_FA1C;
-    } else if (sp8.y > 180.0f) {
+    }
+    else if (sp8.y > 180.0f) {
         if (360.0f - sp8.y < 3.0f) {
             sp8.y = 0.0f;
-        } else {
+        }
+        else {
             sp8.y += 3.0f;
         }
-    } else {
+    }
+    else {
         if (sp8.y < 3.0f) {
             sp8.y = 0.0f;
-        } else {
+        }
+        else {
             sp8.y -= 3.0f;
         }
     }
     BoardPlayerRotSetV(lbl_1_bss_7E4, &sp8);
 }
 
-static void fn_1_FA1C(omObjData *arg0) {
+static void fn_1_FA1C(omObjData *arg0)
+{
     if (lbl_1_bss_7F0->work[0] == 1) {
         BoardPlayerMotionShiftSet(lbl_1_bss_7E4, lbl_1_bss_7BC, 0.0f, 10.0f, HU3D_MOTATTR_NONE);
         arg0->work[0] = 30;
@@ -523,7 +522,8 @@ static void fn_1_FA1C(omObjData *arg0) {
     }
 }
 
-static void fn_1_FABC(omObjData *arg0) {
+static void fn_1_FABC(omObjData *arg0)
+{
     Process *var_r30;
 
     if (arg0->work[0] == 0) {
@@ -533,12 +533,14 @@ static void fn_1_FABC(omObjData *arg0) {
             BoardAudSeqPause(0, 0, 1000);
             arg0->func = NULL;
         }
-    } else {
+    }
+    else {
         arg0->work[0]--;
     }
 }
 
-static void fn_1_FB58(void) {
+static void fn_1_FB58(void)
+{
     omObjData *temp_r31;
 
     BoardWinCreate(2, MAKE_MESSID(10, 6), 0);
@@ -558,7 +560,8 @@ static void fn_1_FB58(void) {
     }
 }
 
-static void fn_1_FC3C(omObjData *arg0) {
+static void fn_1_FC3C(omObjData *arg0)
+{
     Process *var_r31;
 
     if (lbl_1_bss_7F0->work[0] == 1) {
@@ -570,7 +573,8 @@ static void fn_1_FC3C(omObjData *arg0) {
     }
 }
 
-static void fn_1_FCEC(void) {
+static void fn_1_FCEC(void)
+{
     omObjData *var_r31;
 
     BoardWinCreate(2, MAKE_MESSID(10, 7), 0);
@@ -584,7 +588,8 @@ static void fn_1_FCEC(void) {
     }
 }
 
-static void fn_1_FD3C(omObjData *arg0) {
+static void fn_1_FD3C(omObjData *arg0)
+{
     BoardStatusShowSetAll(1);
     BoardCameraTargetModelSet(lbl_1_bss_6C4[21]);
     BoardCameraOffsetSet(0.0f, 0.0f, 0.0f);
@@ -597,7 +602,8 @@ static void fn_1_FD3C(omObjData *arg0) {
     arg0->func = fn_1_FE44;
 }
 
-static void fn_1_FE44(omObjData *arg0) {
+static void fn_1_FE44(omObjData *arg0)
+{
     if (BoardStatusStopCheck(lbl_1_bss_7E4) && BoardCameraMotionIsDone()) {
         lbl_1_bss_7AA = 1;
         BoardMGExit();
@@ -607,7 +613,8 @@ static void fn_1_FE44(omObjData *arg0) {
     }
 }
 
-static void fn_1_FED0(omObjData *arg0) {
+static void fn_1_FED0(omObjData *arg0)
+{
     float temp_f30;
     float var_f31;
     float var_f29;
@@ -624,7 +631,8 @@ static void fn_1_FED0(omObjData *arg0) {
     omSetRot(arg0, 0.0f, var_f31, 0.0f);
 }
 
-static s16 fn_1_1001C(u32 arg0) {
+static s16 fn_1_1001C(u32 arg0)
+{
     float var_f29;
     float var_f28;
     float temp_f27;
@@ -649,7 +657,8 @@ static s16 fn_1_1001C(u32 arg0) {
     return var_f31;
 }
 
-static void fn_1_101B8(s16 arg0) {
+static void fn_1_101B8(s16 arg0)
+{
     omObjData *var_r31;
     float *var_r30;
     float var_f27;
@@ -661,7 +670,7 @@ static void fn_1_101B8(s16 arg0) {
 
     var_r31 = lbl_1_bss_7F0 = omAddObjEx(boardObjMan, 0x165, 3, 0, -1, fn_1_10664);
     var_r31->model[0] = lbl_1_bss_7FC[arg0]->model[1];
-    Hu3DModelAttrReset(var_r31->model[0], 1);
+    Hu3DModelAttrReset(var_r31->model[0], HU3D_ATTR_DISPOFF);
     lbl_1_bss_7F0->work[1] = lbl_1_bss_7FC[arg0]->work[1];
     lbl_1_bss_7F0->data = HuMemDirectMallocNum(HEAP_SYSTEM, 3 * sizeof(float), MEMORY_DEFAULT_NUM);
     var_r30 = lbl_1_bss_7F0->data;
@@ -696,7 +705,8 @@ static void fn_1_101B8(s16 arg0) {
     lbl_1_bss_7AC = HuAudFXPlay(0x35F);
 }
 
-static void fn_1_10664(omObjData *arg0) {
+static void fn_1_10664(omObjData *arg0)
+{
     float *temp_r31;
     float var_f31;
 
@@ -705,7 +715,8 @@ static void fn_1_10664(omObjData *arg0) {
     if (arg0->work[0] == 0) {
         if (var_f31 > 1.0f) {
             var_f31 = 1.0f;
-        } else {
+        }
+        else {
             temp_r31[0] += 0.025f;
         }
         arg0->trans.y += temp_r31[2];
@@ -714,7 +725,8 @@ static void fn_1_10664(omObjData *arg0) {
             arg0->work[0] = 1;
         }
         omSetSca(arg0, var_f31, var_f31, var_f31);
-    } else {
+    }
+    else {
         arg0->trans.y += sind(temp_r31[1]);
         temp_r31[1] += 4.0f;
         if (temp_r31[1] >= 360.0f) {
@@ -723,7 +735,8 @@ static void fn_1_10664(omObjData *arg0) {
     }
 }
 
-static void fn_1_10820(omObjData *arg0) {
+static void fn_1_10820(omObjData *arg0)
+{
     Vec sp24;
     Vec sp18;
     Vec spC;
@@ -744,7 +757,8 @@ static void fn_1_10820(omObjData *arg0) {
             arg0->trans.x = sp24.x;
             arg0->trans.z = sp24.z;
             arg0->work[0] = 1;
-        } else {
+        }
+        else {
             arg0->trans.x += 8.0f * spC.x;
             arg0->trans.z += 8.0f * spC.z;
         }
@@ -756,7 +770,8 @@ static void fn_1_10820(omObjData *arg0) {
     }
 }
 
-static void fn_1_10AE8(omObjData *arg0) {
+static void fn_1_10AE8(omObjData *arg0)
+{
     float *temp_r31;
 
     temp_r31 = arg0->data;
@@ -772,7 +787,8 @@ static void fn_1_10AE8(omObjData *arg0) {
     omSetSca(arg0, temp_r31[0], temp_r31[0], temp_r31[0]);
 }
 
-static float fn_1_10BB0(u32 arg0) {
+static float fn_1_10BB0(u32 arg0)
+{
     float var_f30;
     float temp_f29;
     float var_f31;
@@ -793,7 +809,8 @@ static float fn_1_10BB0(u32 arg0) {
     return var_f31;
 }
 
-static void fn_1_10CF0(u32 arg0) {
+static void fn_1_10CF0(u32 arg0)
+{
     float var_f30;
     float temp_f29;
     float var_f31;
@@ -818,28 +835,32 @@ static void fn_1_10CF0(u32 arg0) {
     BoardPlayerRotSet(lbl_1_bss_7E4, 0.0f, var_f28, 0.0f);
 }
 
-static float fn_1_10EB8(Vec *arg0) {
+static float fn_1_10EB8(Vec *arg0)
+{
     float var_f31;
 
     if (arg0->x || arg0->z) {
         if (arg0->x == 0.0f) {
             if (arg0->z > 0.0f) {
                 return 0.0f;
-            } else {
+            }
+            else {
                 return 180.0f;
             }
         }
         if (arg0->z == 0.0f) {
             if (arg0->x > 0.0f) {
                 return 90.0f;
-            } else {
+            }
+            else {
                 return 270.0f;
             }
         }
         var_f31 = atan2d(arg0->z, arg0->x);
         if (arg0->z < 0.0f) {
             var_f31 = 90.0f - var_f31;
-        } else {
+        }
+        else {
             var_f31 = 90.0f - var_f31;
             if (var_f31 < 0.0f) {
                 var_f31 += 360.0f;
@@ -850,7 +871,8 @@ static float fn_1_10EB8(Vec *arg0) {
     return -1.0f;
 }
 
-static void fn_1_11064(ModelData *model, ParticleData *particle, Mtx matrix) {
+static void fn_1_11064(ModelData *model, ParticleData *particle, Mtx matrix)
+{
     HsfanimStruct01 *var_r31;
     float temp_f30;
     float temp_f29;
@@ -898,7 +920,8 @@ static void fn_1_11064(ModelData *model, ParticleData *particle, Mtx matrix) {
     }
 }
 
-static void fn_1_11484(ModelData *model, ParticleData *particle, Mtx matrix) {
+static void fn_1_11484(ModelData *model, ParticleData *particle, Mtx matrix)
+{
     HsfanimStruct01 *var_r31;
     float temp_f29;
     float temp_f30;

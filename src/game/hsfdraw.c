@@ -2435,7 +2435,7 @@ static void MDObjMesh(HsfData *arg0, HsfObject *arg1) {
     var_r28 = temp_r29->data;
     if (arg1->flags & 4) {
         Hu3DObjInfoP->flags |= 0x400;
-        Hu3DModelAttrSet(curModelID, 4);
+        Hu3DModelAttrSet(curModelID, HU3D_ATTR_SHADOW);
     }
     if (arg1->flags & 8) {
         Hu3DObjInfoP->flags |= 8;

@@ -326,7 +326,7 @@ void fn_1_88D8(omObjData *object)
         case 1:
             if (fn_1_2834() == 1) {
                 Hu3DModelHookReset(object->model[0]);
-                Hu3DModelAttrSet(object->model[1], 1);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
                 if ((1 << object->work[0]) & fn_1_2864()) {
                     fn_1_9E0C(object, 8);
                 }
@@ -597,7 +597,7 @@ void fn_1_96F4(omObjData *object)
         if (var_r31->unk_14 && var_r31->unk_28) {
             var_r31->unk_14 = 0;
             var_r31->unk_28 = 0;
-            Hu3DModelAttrReset(object->model[1], 1);
+            Hu3DModelAttrReset(object->model[1], HU3D_ATTR_DISPOFF);
             var_r31->unk_36 = 0;
             var_r31->unk_70.x = object->trans.x;
             var_r31->unk_70.y = 100.0f + object->trans.y;
@@ -647,7 +647,7 @@ s32 fn_1_9A90(omObjData *object)
         return var_r29;
     }
     if (!var_r31->unk_18) {
-        Hu3DModelAttrSet(object->model[1], 1);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
     }
     if (var_r31->unk_18 && !var_r31->unk_1C && var_r31->unk_2C) {
         var_r31->unk_1C = 1;
@@ -695,7 +695,7 @@ s32 fn_1_9C84(omObjData *object)
     var_r31 = object->data;
     var_r29 = 0;
     if (!var_r31->unk_18) {
-        Hu3DModelAttrSet(object->model[1], 1);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF);
     }
     if (!var_r31->unk_20 && var_r31->unk_18 && !var_r31->unk_1C && var_r31->unk_30) {
         fn_1_9E0C(object, 3);

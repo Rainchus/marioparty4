@@ -98,7 +98,7 @@ void fn_1_414(void)
 			HuSprPosSet(group, 0, 288, 240);
 			HuSprDrawNoSet(group, 0, 127);
 			HuPrcSleep(2);
-			espAttrSet(lbl_1_bss_152[0], 4);
+			espAttrSet(lbl_1_bss_152[0], HUSPR_ATTR_DISPOFF);
 			HuAudFXStop(lbl_1_data_100);
 			while(!HuTHPEndCheck()) {
 				HuPrcVSleep();
@@ -107,7 +107,7 @@ void fn_1_414(void)
 			HuSprGrpKill(group);
 		}
 	}
-	espAttrReset(lbl_1_bss_152[9], 4);
+	espAttrReset(lbl_1_bss_152[9], HUSPR_ATTR_DISPOFF);
 	espDrawNoSet(lbl_1_bss_152[9], 127);
 	{
 		s16 result = fn_1_2490();

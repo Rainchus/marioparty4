@@ -79,7 +79,7 @@ static void ExecState(omObjData *object)
             object->unk10 = 1;
             /* fallthrough */
         case 1:
-            WipeCreate(WIPE_MODE_IN, -1, 60);
+            WipeCreate(WIPE_MODE_IN, WIPE_TYPE_PREV, 60);
             object->unk10 = 2;
             break;
         case 2:

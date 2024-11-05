@@ -395,7 +395,7 @@ void fn_1_B78(void)
             lbl_1_bss_5C[character][j] = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_RESULT, 0x00) + j);
             Hu3DModelScaleSet(lbl_1_bss_5C[character][j], 1.1f, 1.1f, 1.1f);
             Hu3DAnimCreate(lbl_1_bss_E4[character][0], lbl_1_bss_5C[character][j], "ys22");
-            Hu3DModelAttrSet(lbl_1_bss_5C[character][j], 1);
+            Hu3DModelAttrSet(lbl_1_bss_5C[character][j], HU3D_ATTR_DISPOFF);
         }
     }
     for (i = 0; i < 4; i++) {
@@ -411,7 +411,7 @@ void fn_1_B78(void)
         character = GWPlayerCfg[lbl_1_bss_4A[i]].character;
         Hu3D2Dto3D(&lbl_1_data_408[i], 1, &pos);
         Hu3DModelPosSetV(lbl_1_bss_5C[character][lbl_1_bss_42[i]], &pos);
-        Hu3DModelAttrReset(lbl_1_bss_5C[character][lbl_1_bss_42[i]], 1);
+        Hu3DModelAttrReset(lbl_1_bss_5C[character][lbl_1_bss_42[i]], HU3D_ATTR_DISPOFF);
     }
     for (i = 4; i <= 11; i++) {
         Hu3D2Dto3D(&lbl_1_data_0[i].pos, 1, &pos);
@@ -430,7 +430,7 @@ void fn_1_B78(void)
         Hu3DModelPosSetV(j, &pos);
         Hu3DModelScaleSet(j, 1.5f, 1.5f, 1.5f);
     }
-    Hu3DModelAttrSet(model, 1);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF);
     model = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_RESULT, 0x07));
     for (i = 0; i < 8; i++) {
         j = Hu3DModelLink(model);
@@ -443,7 +443,7 @@ void fn_1_B78(void)
         Hu3DModelPosSetV(j, &pos);
         Hu3DModelScaleSet(j, 1.5f, 1.5f, 1.5f);
     }
-    Hu3DModelAttrSet(model, 1);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF);
     lbl_1_bss_E0 = HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_RESULT, 0x1C));
     lbl_1_bss_9C = HuSprGrpCreate(4);
     for (i = 0; i < 4; i++) {
@@ -662,12 +662,12 @@ void fn_1_2ADC(void)
         Hu3D2Dto3D(&lbl_1_data_408[i], 1, &sp48);
         Hu3DModelPosSetV(lbl_1_bss_A[i], &sp48);
         if (sp30[i] == lbl_1_bss_4A[i] && sp18[i] == lbl_1_bss_42[i]) {
-            Hu3DModelAttrSet(lbl_1_bss_5C[temp_r30][sp18[i]], 1);
-            Hu3DModelAttrReset(lbl_1_bss_A[i], 1);
+            Hu3DModelAttrSet(lbl_1_bss_5C[temp_r30][sp18[i]], HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrReset(lbl_1_bss_A[i], HU3D_ATTR_DISPOFF);
             Hu3DModelScaleSet(lbl_1_bss_A[i], 1.1f, 1.1f, 1.1f);
         }
         else {
-            Hu3DModelAttrSet(lbl_1_bss_A[i], 1);
+            Hu3DModelAttrSet(lbl_1_bss_A[i], HU3D_ATTR_DISPOFF);
         }
     }
     for (i = 0; i < 4; i++) {
@@ -702,9 +702,9 @@ void fn_1_2ADC(void)
                     }
                     else {
                         temp_r30 = GWPlayerCfg[sp28[i]].character;
-                        Hu3DModelAttrSet(lbl_1_bss_5C[temp_r30][sp18[i]], 1);
+                        Hu3DModelAttrSet(lbl_1_bss_5C[temp_r30][sp18[i]], HU3D_ATTR_DISPOFF);
                         temp_r30 = GWPlayerCfg[lbl_1_bss_4A[i]].character;
-                        Hu3DModelAttrReset(lbl_1_bss_A[i], 1);
+                        Hu3DModelAttrReset(lbl_1_bss_A[i], HU3D_ATTR_DISPOFF);
                         Hu3DModelScaleSet(lbl_1_bss_A[i], 1.1f, 1.1f, 1.1f);
                         fn_1_3B50(lbl_1_bss_CE[(i * 2)], GWStarsGet(lbl_1_bss_4A[i]));
                         fn_1_3B50(lbl_1_bss_CE[(i * 2) + 1], BoardPlayerCoinsGet(lbl_1_bss_4A[i]));
@@ -997,7 +997,7 @@ void fn_1_461C(void)
     HuPrcVSleep();
     sprite = espEntry(0x860020, 5000, 0);
     espPosSet(sprite, 288.0, 240.0);
-    espAttrReset(sprite, 4);
+    espAttrReset(sprite, HUSPR_ATTR_DISPOFF);
     Hu3DBGColorSet(0, 0, 0);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 20);
     while (WipeStatGet()) {
@@ -1064,26 +1064,26 @@ void fn_1_47FC(void)
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
-    espAttrSet(lbl_1_bss_1A1A[0], 4);
-    espAttrSet(lbl_1_bss_1A1A[1], 4);
+    espAttrSet(lbl_1_bss_1A1A[0], HUSPR_ATTR_DISPOFF);
+    espAttrSet(lbl_1_bss_1A1A[1], HUSPR_ATTR_DISPOFF);
     for (temp_r31 = 0; temp_r31 < 2; temp_r31++) {
-        Hu3DModelAttrSet(lbl_1_bss_1A9C[temp_r31 + 6], 1);
-        Hu3DModelAttrSet(lbl_1_bss_1A9C[temp_r31 + 10], 1);
+        Hu3DModelAttrSet(lbl_1_bss_1A9C[temp_r31 + 6], HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(lbl_1_bss_1A9C[temp_r31 + 10], HU3D_ATTR_DISPOFF);
     }
     for (temp_r31 = 0; temp_r31 < 4; temp_r31++) {
-        espAttrSet(lbl_1_bss_1A1A[temp_r31 + 6], 4);
+        espAttrSet(lbl_1_bss_1A1A[temp_r31 + 6], HUSPR_ATTR_DISPOFF);
     }
     for (temp_r31 = 4; temp_r31 < 8; temp_r31++) {
-        Hu3DModelAttrSet(lbl_1_bss_158[temp_r31], 1);
+        Hu3DModelAttrSet(lbl_1_bss_158[temp_r31], HU3D_ATTR_DISPOFF);
     }
     for (temp_r31 = 4; temp_r31 < 8; temp_r31++) {
         HuSprGrpTPLvlSet(lbl_1_bss_CE[temp_r31], 0.0f);
     }
     for (temp_r31 = 0; temp_r31 < 4; temp_r31++) {
         for (temp_r19 = 0; temp_r19 < 4; temp_r19++) {
-            Hu3DModelAttrSet(lbl_1_bss_5C[GWPlayerCfg[temp_r31].character][temp_r19], 1);
+            Hu3DModelAttrSet(lbl_1_bss_5C[GWPlayerCfg[temp_r31].character][temp_r19], HU3D_ATTR_DISPOFF);
         }
-        Hu3DModelAttrSet(lbl_1_bss_54[temp_r31], 1);
+        Hu3DModelAttrSet(lbl_1_bss_54[temp_r31], HU3D_ATTR_DISPOFF);
     }
     HuSprGrpKill(lbl_1_bss_9C);
     HuSprGrpKill(lbl_1_bss_52);
@@ -1159,7 +1159,7 @@ void fn_1_47FC(void)
         }
         temp_r18 = lbl_1_bss_5C[sp2C[temp_r31]][sp10];
         Hu3DAnimCreate(lbl_1_bss_E4[sp2C[temp_r31]][0], temp_r18, "ys22");
-        Hu3DModelAttrReset(temp_r18, 1);
+        Hu3DModelAttrReset(temp_r18, HU3D_ATTR_DISPOFF);
         Hu3D2Dto3D(&lbl_1_data_488[temp_r31], 1, &sp40);
         Hu3DModelPosSetV(temp_r18, &sp40);
         Hu3DModelRotSet(temp_r18, 0, 0, 0);

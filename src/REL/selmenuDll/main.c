@@ -553,7 +553,7 @@ static void SMCharInit(omObjData *object)
         void *data = HuDataSelHeapReadNum(charMdlTbl[i], MEMORY_DEFAULT_NUM, HEAP_DATA);
         charModelID[i] = Hu3DModelCreate(data);
         Hu3DModelPosSet(charModelID[i], 0.0f, 0.0f, 0.0f);
-        Hu3DModelAttrSet(charModelID[i], 0x40000001);
+        Hu3DModelAttrSet(charModelID[i], HU3D_MOTATTR_LOOP);
         Hu3DMotionSet(charModelID[i], Hu3DJointMotionFile(charModelID[i], charMdlMotTbl[i]));
     }
     for (i = 0; i < 4; i++) {
@@ -576,11 +576,11 @@ static void SMCharUpdate(omObjData *object)
     s16 num_players;
 
     for (i = 0; i < 8; i++) {
-        Hu3DModelAttrSet(charModelID[i], 0x1);
+        Hu3DModelAttrSet(charModelID[i], HU3D_ATTR_DISPOFF);
     }
     for (i = 0; i < 4; i++) {
         if (!smPlayerCfg[i].iscom) {
-            Hu3DModelAttrReset(charModelID[smPlayerCfg[i].character], 0x1);
+            Hu3DModelAttrReset(charModelID[smPlayerCfg[i].character], HU3D_ATTR_DISPOFF);
             Hu3DModelCameraSet(charModelID[smPlayerCfg[i].character], cameraMaskTbl[i]);
         }
     }

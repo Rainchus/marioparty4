@@ -1366,7 +1366,7 @@ void CharModelItemHookCreate(s16 character, char *arg1)
         Hu3DModelHookObjReset(temp_r31->unk00, arg1);
         var_r26 = CharModelItemHookCreateInlineFunc();
         if (!var_r26) {
-            Hu3DModelAttrSet(temp_r29, 1);
+            Hu3DModelAttrSet(temp_r29, HU3D_ATTR_DISPOFF);
             return;
         }
         var_r26->user_data = temp_r27 = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(UnkProcessData), MEMORY_DEFAULT_NUM);
@@ -1410,7 +1410,7 @@ static void UpdateItemHook(void)
     sp8.x = PGMinPos.x + (PGMaxPos.x - PGMinPos.x) / 2;
     sp8.y = PGMinPos.y + (PGMaxPos.y - PGMinPos.y) / 2;
     sp8.z = PGMinPos.z + (PGMaxPos.z - PGMinPos.z) / 2;
-    Hu3DModelAttrSet(temp_r31->unk02, 1);
+    Hu3DModelAttrSet(temp_r31->unk02, HU3D_ATTR_DISPOFF);
     effectDustParam.unk0C.x = 0.0f;
     effectDustParam.unk0C.y = 0.0f;
     effectDustParam.unk0C.z = 0.0f;

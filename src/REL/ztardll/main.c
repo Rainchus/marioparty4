@@ -146,7 +146,7 @@ block_7:
         HuSprTPLvlSet(lbl_1_bss_4C[1], 2, 0.5f);
     }
     if (var_r26 == 0) {
-        WipeCreate(1, 0, 0x1E);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
         HuPrcSleep(0xA);
         sp2C.x = 510.0f;
         sp2C.y = 80.0f;
@@ -185,7 +185,7 @@ block_7:
         HuSprGrpPosSet(lbl_1_bss_50, 288.0f, 80.0f);
         HuSprGrpPosSet(lbl_1_bss_4C[0], 138.0f, 240.0f);
         HuSprGrpPosSet(lbl_1_bss_4C[1], 438.0f, 240.0f);
-        WipeCreate(1, 0, 0x14);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 20);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -341,7 +341,7 @@ loop_19:
     }
     fn_1_111E0();
     fn_1_1190C();
-    WipeCreate(2, 0, 0x14);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -435,7 +435,7 @@ void fn_1_1774(void)
     lbl_1_bss_3E[0] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 1));
     lbl_1_bss_3E[1] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 2));
     Hu3DMotionSet(lbl_1_bss_42, lbl_1_bss_3E[0]);
-    Hu3DModelAttrSet(lbl_1_bss_42, 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_42, HU3D_MOTATTR_LOOP);
     Hu3DModelPosSet(lbl_1_bss_42, 0.0f, 1000.0f, 0.0f);
     lbl_1_bss_8 = HuPrcChildCreate(fn_1_1CF0, 0x64, 0x2000, 0, lbl_1_bss_68);
 }
@@ -554,7 +554,7 @@ void fn_1_2350(void)
         }
         HuSprBankSet(lbl_1_bss_50, 1, mgBattleStarMax);
         HuSprScaleSet(lbl_1_bss_50, 1, 1.0f, 1.0f);
-        WipeCreate(1, 0, 0x14);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 20);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -595,7 +595,7 @@ void fn_1_2350(void)
                     fn_1_11264(MAKE_MESSID(0x33, 0x29), 0, 0);
                 }
                 fn_1_111E0();
-                WipeCreate(2, 0, 0x1E);
+                WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
                 while (WipeStatGet() != 0) {
                     HuPrcVSleep();
                 }
@@ -617,14 +617,14 @@ void fn_1_2350(void)
             Hu3DMotionShiftSet(lbl_1_bss_36[1], lbl_1_bss_E[1][4], 0.0f, 10.0f, HU3D_MOTATTR_NONE);
             HuPrcSleep(0xB4);
             WipeColorSet(0, 0, 0);
-            WipeCreate(2, 0, 0x1E);
+            WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
             while (WipeStatGet() != 0) {
                 HuPrcVSleep();
             }
         }
     }
     else {
-        WipeCreate(1, 0, 0x14);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 20);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -688,7 +688,7 @@ void fn_1_2350(void)
         HuAudFXPlay(3);
         fn_1_1190C();
         WipeColorSet(0, 0, 0);
-        WipeCreate(2, 0, 0x14);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
@@ -802,7 +802,7 @@ void fn_1_33B0(void)
     lbl_1_bss_42 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_ZTAR, 0));
     lbl_1_bss_3E[0] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 1));
     lbl_1_bss_3E[1] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 2));
-    Hu3DModelAttrSet(lbl_1_bss_42, 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_42, HU3D_MOTATTR_LOOP);
     Hu3DModelPosSetV(lbl_1_bss_42, &sp2C);
     Hu3DModelRotSet(lbl_1_bss_42, 0.0f, -10.0f, -15.0f);
     Hu3DMotionSet(lbl_1_bss_42, lbl_1_bss_3E[0]);
@@ -845,7 +845,7 @@ void fn_1_33B0(void)
                 Hu3DModelScaleSet(lbl_1_bss_36[var_r31], 0.8f, 0.8f, 0.8f);
             }
             Hu3DMotionSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][0]);
-            Hu3DModelAttrSet(lbl_1_bss_36[var_r31], 0x40000001);
+            Hu3DModelAttrSet(lbl_1_bss_36[var_r31], HU3D_MOTATTR_LOOP);
             Hu3DModelPosSet(lbl_1_bss_36[var_r31], var_r26, 0.0f, 0.0f);
             Hu3DModelShadowSet(lbl_1_bss_36[var_r31]);
             var_r26 += 0x96;
@@ -927,7 +927,7 @@ void fn_1_4374(void)
         spC[sp8[GWPlayerCfg[var_r31].group]++] = var_r31;
     }
     fn_1_4948();
-    WipeCreate(1, 0, 0x14);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 20);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -980,7 +980,7 @@ void fn_1_4374(void)
     HuAudFXPlay(3);
     fn_1_1190C();
     WipeColorSet(0, 0, 0);
-    WipeCreate(2, 0, 0x14);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 20);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1048,7 +1048,7 @@ void fn_1_4948(void)
     lbl_1_bss_42 = Hu3DModelCreateFile(DATA_MAKE_NUM(DATADIR_ZTAR, 0));
     lbl_1_bss_3E[0] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 1));
     lbl_1_bss_3E[1] = Hu3DJointMotionFile(lbl_1_bss_42, DATA_MAKE_NUM(DATADIR_ZTAR, 2));
-    Hu3DModelAttrSet(lbl_1_bss_42, 0x40000001);
+    Hu3DModelAttrSet(lbl_1_bss_42, HU3D_MOTATTR_LOOP);
     Hu3DModelPosSetV(lbl_1_bss_42, &sp2C);
     Hu3DModelRotSet(lbl_1_bss_42, 0.0f, -10.0f, -15.0f);
     Hu3DMotionSet(lbl_1_bss_42, lbl_1_bss_3E[0]);
@@ -1073,7 +1073,7 @@ void fn_1_4948(void)
             Hu3DModelScaleSet(lbl_1_bss_36[var_r31], 0.8f, 0.8f, 0.8f);
         }
         Hu3DMotionSet(lbl_1_bss_36[var_r31], lbl_1_bss_E[var_r31][0]);
-        Hu3DModelAttrSet(lbl_1_bss_36[var_r31], 0x40000001);
+        Hu3DModelAttrSet(lbl_1_bss_36[var_r31], HU3D_MOTATTR_LOOP);
         Hu3DModelPosSet(lbl_1_bss_36[var_r31], var_r28, 0.0f, 0.0f);
         Hu3DModelShadowSet(lbl_1_bss_36[var_r31]);
         var_r28 += 0x96;
@@ -1100,7 +1100,7 @@ void fn_1_51BC(s16 arg0)
     omOvlHisData *var_r31;
 
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, 0x3C);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
     HuAudSeqAllFadeOut(0x3E8);
 
     while (WipeStatGet() != 0) {
@@ -1389,7 +1389,7 @@ void fn_1_66F8(void)
         HuPrcVSleep();
     }
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(2, 0, 60);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

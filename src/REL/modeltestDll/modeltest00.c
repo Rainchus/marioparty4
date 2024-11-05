@@ -199,7 +199,7 @@ void fn_1_46F0(void)
         Hu3DModelShadowSet(lbl_1_bss_9EC[var_r31]);
         lbl_1_bss_9AC[var_r31][0] = CharModelMotionCreate(var_r30, DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x02));
         CharModelMotionSet(var_r30, lbl_1_bss_9AC[var_r31][0]);
-        Hu3DModelAttrSet(lbl_1_bss_9EC[var_r31], 0x40000001U);
+        Hu3DModelAttrSet(lbl_1_bss_9EC[var_r31], HU3D_MOTATTR_LOOP);
         Hu3DModelCameraSet(lbl_1_bss_9EC[var_r31], lbl_1_data_358[var_r31]);
         Hu3DModelPosSet(lbl_1_bss_9EC[var_r31], ((( var_r31 / 4) * 200) - 100), 0.0f, (-( var_r31 % 4) * 150));
         Hu3DModelPosSet(lbl_1_bss_9EC[var_r31], 0.0f, 0.0f, 0.0f);

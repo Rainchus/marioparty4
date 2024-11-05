@@ -363,7 +363,7 @@ void fn_1_64C(omObjData *arg0)
     Hu3DModelShadowSet(arg0->model[1]);
     CharModelMotionDataClose(temp_r31->unk_01);
     CharModelMotionSet(temp_r31->unk_01, arg0->motion[1]);
-    Hu3DModelAttrSet(arg0->model[0], 0x40000001);
+    Hu3DModelAttrSet(arg0->model[0], HU3D_MOTATTR_LOOP);
     Hu3DModelHookSet(arg0->model[0], lbl_1_data_13C[temp_r31->unk_01], arg0->model[1]);
     temp_r31->unk_10 = (600.0f - (400.0f * temp_r29));
     temp_r31->unk_14 = 0.0f;
