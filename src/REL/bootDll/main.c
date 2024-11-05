@@ -502,13 +502,13 @@ static BOOL TitleProc(void)
 {
     float scale;
     float scale_time;
-    s32 y_offset[32];
+    int seNo[32];
     s16 i;
     Hu3DModelAttrReset(titleModel[0], HU3D_ATTR_DISPOFF);
     Hu3DModelAttrReset(titleModel[1], HU3D_ATTR_DISPOFF);
     HuSprAttrReset(titleGroup, 0, HUSPR_ATTR_DISPOFF);
     HuSprAttrReset(titleGroup, 1, HUSPR_ATTR_DISPOFF);
-    OSReport(">>>>>>>>MSM_SE_SEL_01 %d\n", msmSeGetEntryID(2092, y_offset));
+    OSReport(">>>>>>>>MSM_SE_SEL_01 %d\n", msmSeGetEntryID(2092, seNo));
     OSReport(">>>>>>>>SE Num %d\n", msmSeGetNumPlay(0));
     HuAudSStreamPlay(20);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);

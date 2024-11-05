@@ -235,7 +235,7 @@ static void fn_1_D0DC(void) {
 }
 
 static void fn_1_D174(omObjData *arg0) {
-    UnkMsmStruct_03 sp8;
+    MSM_MUSPARAM musParam;
 
     if (arg0->work[0] == 0) {
         arg0->work[0] = MGSeqCreate(3, 0);
@@ -243,11 +243,11 @@ static void fn_1_D174(omObjData *arg0) {
         return;
     }
     if (MGSeqStatGet(arg0->work[0]) == 0) {
-        sp8.unk00 = 1;
-        sp8.unk06 = 0;
-        sp8.unk05 = 0x7F;
-        sp8.unk04 = 1;
-        lbl_1_data_588 = msmMusPlay(0x1D, &sp8);
+        musParam.flag = MSM_MUSPARAM_CHAN;
+        musParam.fadeSpeed = 0;
+        musParam.vol = 0x7F;
+        musParam.chan = 1;
+        lbl_1_data_588 = msmMusPlay(0x1D, &musParam);
         arg0->func = fn_1_D230;
     }
 }

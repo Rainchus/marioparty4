@@ -2196,10 +2196,10 @@ void fn_1_79FC(Mtx arg0, Mtx arg1)
     arg1[2][3] = 0;
 }
 
-s32 fn_1_7A78(s32 arg0, s16 arg1)
+s32 fn_1_7A78(s32 arg0, s16 vol)
 {
-    UnkMsmStruct_01 sp10;
-    sp10.unk00 = 1;
-    sp10.unk04 = arg1;
-    return msmSeSetParam(arg0, &sp10);
+    MSM_SEPARAM seParam;
+    seParam.flag = MSM_SEPARAM_VOL;
+    seParam.vol = vol;
+    return msmSeSetParam(arg0, &seParam);
 }

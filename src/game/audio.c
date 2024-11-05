@@ -5,7 +5,7 @@
 #include "game/wipe.h"
 #include "game/gamework_data.h"
 
-static s32 HuSePlay(s32 arg0, UnkMsmStruct_01 *arg1);
+static int HuSePlay(int seId, MSM_SEPARAM *param);
 
 extern s16 omSysExitReq;
 
@@ -32,29 +32,34 @@ static char *lbl_8012E9AC[] = {
     ""
 };
 
-void HuAudInit(void) {
-    UnkMsmStruct_00 sp8;
-    s32 temp_r3;
+
+void HuAudInit(void)
+{
+    MSM_INIT msmInit;
+    MSM_ARAM msmAram;
+
+    s32 result;
     s16 i;
 
-    sp8.unk20 = HuMemDirectMalloc(HEAP_MUSIC, 0x13FC00);
-    sp8.unk24 = 0x13FC00;
-    sp8.unk0C = "/sound/mpgcsnd.msm";
-    sp8.unk10 = "/sound/mpgcstr.pdt";
-    sp8.unk14 = 0;
-    sp8.unk18 = 0;
-    sp8.unk1C = 0;
-    sp8.unk00 = 1;
-    sp8.unk04 = 0x808000;
-    temp_r3 = msmSysInit(&sp8.unk0C, &sp8);
-    if (temp_r3 < 0) {
-        OSReport("MSM(Sound Manager) Error:Error Code %d\n", temp_r3);
+    msmInit.heap = HuMemDirectMalloc(HEAP_MUSIC, 0x13FC00);
+    msmInit.heapSize = 0x13FC00;
+    msmInit.msmPath = "/sound/mpgcsnd.msm";
+    msmInit.pdtPath = "/sound/mpgcstr.pdt";
+    msmInit.open = NULL;
+    msmInit.read = NULL;
+    msmInit.close = NULL;
+    msmAram.skipARInit = TRUE;
+    msmAram.aramEnd = 0x808000;
+    result = msmSysInit(&msmInit, &msmAram);
+
+    if (result < 0) {
+        OSReport("MSM(Sound Manager) Error:Error Code %d\n", result);
         while (1);
     }
-    if (OSGetSoundMode() == 0) {
-        msmSysSetOutputMode(0);
+    if (OSGetSoundMode() == OS_SOUND_MODE_MONO) {
+        msmSysSetOutputMode(SND_OUTPUTMODE_MONO);
     } else {
-        msmSysSetOutputMode(2);
+        msmSysSetOutputMode(SND_OUTPUTMODE_SURROUND);
     }
     for (i = 0; i < 64; i++) {
         sndFXBuf[i][0] = -1;
@@ -68,7 +73,7 @@ void HuAudInit(void) {
     musicOffF = 0;
 }
 
-s32 HuAudStreamPlay(char *name, s32 arg1) {
+s32 HuAudStreamPlay(char *name, BOOL flag) {
     return 0;
 }
 
@@ -101,115 +106,122 @@ void HuAudFadeOut(s32 arg0) {
     HuAudSStreamAllFadeOut(arg0);
 }
 
-s32 HuAudFXPlay(s32 arg0) {
+int HuAudFXPlay(int seId)
+{
     WipeState *wipe = &wipeData;
 
     if (omSysExitReq != 0 || (wipeData.mode == WIPE_MODE_OUT && wipe->time / wipe->duration > 0.5)) {
         return 0;
     }
-    return HuAudFXPlayVolPan(arg0, 0x7F, 0x40);
+    return HuAudFXPlayVolPan(seId, MSM_VOL_MAX, MSM_PAN_CENTER);
 }
 
-s32 HuAudFXPlayVol(s32 arg0, s16 arg1) {
+int HuAudFXPlayVol(int seId, s16 vol) {
     if (omSysExitReq != 0) {
         return 0;
     }
-    return HuAudFXPlayVolPan(arg0, arg1, 0x40);
+    return HuAudFXPlayVolPan(seId, vol, MSM_PAN_CENTER);
 }
 
-s32 HuAudFXPlayVolPan(s32 arg0, s16 arg1, s16 arg2) {
-    UnkMsmStruct_01 sp10;
+int HuAudFXPlayVolPan(int seId, s16 vol, s16 pan)
+{
+    MSM_SEPARAM seParam;
 
     if (omSysExitReq != 0) {
         return 0;
     }
-    sp10.unk00 = 3;
-    sp10.unk04 = arg1;
-    sp10.unk05 = arg2;
-    return HuSePlay(arg0, &sp10);
+    seParam.flag = MSM_SEPARAM_VOL|MSM_SEPARAM_PAN;
+    seParam.vol = vol;
+    seParam.pan = pan;
+    return HuSePlay(seId, &seParam);
 }
 
-void HuAudFXStop(s32 arg0) {
-    msmSeStop(arg0, 0);
+void HuAudFXStop(int seNo) {
+    msmSeStop(seNo, 0);
 }
 
 void HuAudFXAllStop(void) {
     msmSeStopAll(0, 0);
 }
 
-void HuAudFXFadeOut(s32 arg0, s32 arg1) {
-    msmSeStop(arg0, arg1);
+void HuAudFXFadeOut(int seNo, s32 speed) {
+    msmSeStop(seNo, speed);
 }
 
-void HuAudFXPanning(s32 arg0, s16 arg1) {
-    UnkMsmStruct_01 sp10;
+void HuAudFXPanning(int seNo, s16 pan) {
+    MSM_SEPARAM seParam;
 
     if (omSysExitReq == 0) {
-        sp10.unk00 = 2;
-        sp10.unk05 = arg1;
-        msmSeSetParam(arg0, &sp10);
+        seParam.flag = MSM_SEPARAM_PAN;
+        seParam.pan = pan;
+        msmSeSetParam(seNo, &seParam);
     }
 }
 
-void HuAudFXListnerSet(Vec* arg0, Vec* arg1, float arg2, float arg3) {
+void HuAudFXListnerSet(Vec *pos, Vec *heading, float sndDist, float sndSpeed)
+{
+    if(omSysExitReq) {
+      return;
+    }
+    HuAudFXListnerSetEX(pos, heading,
+        sndDist + Snd3DDistOffset,
+        sndSpeed + Snd3DSpeedOffset,
+        Snd3DStartDisOffset,
+        Snd3DFrontSurDisOffset + (0.25 * sndDist + Snd3DStartDisOffset),
+        Snd3DBackSurDisOffset + (0.25 * sndDist + Snd3DStartDisOffset));
+}
+
+void HuAudFXListnerSetEX(Vec *pos, Vec *heading, float sndDist, float sndSpeed, float startDis, float frontSurDis, float backSurDis)
+{
+    MSM_SELISTENER listener;
+    if(omSysExitReq) {
+      return;
+    }
+    listener.flag = MSM_LISTENER_STARTDIS|MSM_LISTENER_FRONTSURDIS|MSM_LISTENER_BACKSURDIS;
+    listener.startDis = startDis + Snd3DStartDisOffset;
+    listener.frontSurDis = frontSurDis + Snd3DFrontSurDisOffset;
+    listener.backSurDis = backSurDis + Snd3DBackSurDisOffset;
+    msmSeSetListener(pos, heading, sndDist + Snd3DDistOffset, sndSpeed + Snd3DSpeedOffset, &listener);
+    OSReport("//////////////////////////////////\n");
+    OSReport("sndDist %f\n", sndDist);
+    OSReport("sndSpeed %f\n", sndSpeed);
+    OSReport("startDis %f\n", listener.startDis);
+    OSReport("frontSurDis %f\n", listener.frontSurDis);
+    OSReport("backSurDis %f\n", listener.backSurDis);
+    OSReport("//////////////////////////////////\n");
+}
+
+void HuAudFXListnerUpdate(Vec *pos, Vec *heading)
+{
     if (omSysExitReq == 0) {
-        HuAudFXListnerSetEX(arg0, arg1,
-            arg2 + Snd3DDistOffset,
-            arg3 + Snd3DSpeedOffset,
-            Snd3DStartDisOffset,
-            Snd3DFrontSurDisOffset + (0.25 * arg2 + Snd3DStartDisOffset),
-            Snd3DBackSurDisOffset + (0.25 * arg2 + Snd3DStartDisOffset));
+        msmSeUpdataListener(pos, heading);
     }
 }
 
-void HuAudFXListnerSetEX(Vec* arg0, Vec* arg1, float sndDist, float sndSpeed, float arg4, float arg5, float arg6) {
-    UnkMsmStruct_02 sp1C;
-
-    if (omSysExitReq == 0) {
-        sp1C.unk00 = 7;
-        sp1C.startDis = arg4 + Snd3DStartDisOffset;
-        sp1C.frontSurDis = arg5 + Snd3DFrontSurDisOffset;
-        sp1C.backSurDis = arg6 + Snd3DBackSurDisOffset;
-        msmSeSetListener(arg0, arg1, sndDist + Snd3DDistOffset, sndSpeed + Snd3DSpeedOffset, &sp1C);
-        OSReport("//////////////////////////////////\n");
-        OSReport("sndDist %f\n", sndDist);
-        OSReport("sndSpeed %f\n", sndSpeed);
-        OSReport("startDis %f\n", sp1C.startDis);
-        OSReport("frontSurDis %f\n", sp1C.frontSurDis);
-        OSReport("backSurDis %f\n", sp1C.backSurDis);
-        OSReport("//////////////////////////////////\n");
+int HuAudFXEmiterPlay(int seId, Vec *pos)
+{
+    MSM_SEPARAM seParam;
+    if(omSysExitReq) {
+      return 0;
     }
+    seParam.flag = MSM_SEPARAM_POS;
+    seParam.pos.x = pos->x;
+    seParam.pos.y = pos->y;
+    seParam.pos.z = pos->z;
+    return HuSePlay(seId, &seParam);
 }
 
-void HuAudFXListnerUpdate(Vec *arg0, Vec *arg1) {
-    if (omSysExitReq == 0) {
-        msmSeUpdataListener(arg0, arg1);
+void HuAudFXEmiterUpDate(int seNo, Vec *pos)
+{
+    MSM_SEPARAM param;
+    if(omSysExitReq) {
+        return;
     }
-}
-
-s32 HuAudFXEmiterPlay(s32 arg0, Vec *arg1) {
-    UnkMsmStruct_01 spC;
-
-    if (omSysExitReq != 0) {
-        return 0;
-    }
-    spC.unk00 = 0x40;
-    spC.unk10.x = arg1->x;
-    spC.unk10.y = arg1->y;
-    spC.unk10.z = arg1->z;
-    return HuSePlay(arg0, &spC);
-}
-
-void HuAudFXEmiterUpDate(s32 arg0, Vec *arg1) {
-    UnkMsmStruct_01 spC;
-
-    if (omSysExitReq == 0) {
-        spC.unk00 = 0x40;
-        spC.unk10.x = arg1->x;
-        spC.unk10.y = arg1->y;
-        spC.unk10.z = arg1->z;
-        msmSeSetParam(arg0, &spC);
-    }
+    param.flag = MSM_SEPARAM_POS;
+    param.pos.x = pos->x;
+    param.pos.y = pos->y;
+    param.pos.z = pos->z;
+    msmSeSetParam(seNo, &param);
 }
 
 void HuAudFXListnerKill(void) {
@@ -220,30 +232,31 @@ void HuAudFXPauseAll(s32 arg0) {
     msmSePauseAll(arg0, 0x64);
 }
 
-s32 HuAudFXStatusGet(s32 arg0) {
-    return msmSeGetStatus(arg0);
+s32 HuAudFXStatusGet(int seNo) {
+    return msmSeGetStatus(seNo);
 }
 
-s32 HuAudFXPitchSet(s32 arg0, s16 arg1) {
-    UnkMsmStruct_01 sp10;
-
-    if (omSysExitReq != 0) {
+s32 HuAudFXPitchSet(int seNo, s16 pitch)
+{
+    MSM_SEPARAM param;
+    if(omSysExitReq) {
         return 0;
     }
-    sp10.unk00 = 4;
-    sp10.unk06 = arg1;
-    return msmSeSetParam(arg0, &sp10);
+    param.flag = MSM_SEPARAM_PITCH;
+    param.pitch = pitch;
+    return msmSeSetParam(seNo, &param);
 }
 
-s32 HuAudFXVolSet(s32 arg0, s16 arg1) {
-    UnkMsmStruct_01 sp10;
+s32 HuAudFXVolSet(int seNo, s16 vol)
+{
+    MSM_SEPARAM param;
 
-    if (omSysExitReq != 0) {
+    if(omSysExitReq) {
         return 0;
     }
-    sp10.unk00 = 1;
-    sp10.unk04 = arg1;
-    return msmSeSetParam(arg0, &sp10);
+    param.flag = MSM_SEPARAM_VOL;
+    param.vol = vol;
+    return msmSeSetParam(seNo, &param);
 }
 
 s32 HuAudSeqPlay(s16 arg0) {
@@ -301,16 +314,16 @@ s32 HuAudSeqMidiCtrlGet(s32 arg0, s8 arg1, s8 arg2) {
     return msmMusGetMidiCtrl(arg0, arg1, arg2);
 }
 
-s32 HuAudSStreamPlay(s16 arg0) {
-    s32 spC;
-    s32 temp_r31;
+s32 HuAudSStreamPlay(s16 streamId) {
+    MSM_STREAMPARAM param;
+    s32 result;
 
     if (musicOffF != 0 || omSysExitReq != 0) {
         return 0;
     }
-    spC = 0;
-    temp_r31 = msmStreamPlay(arg0, &spC);
-    return temp_r31;
+    param.flag = MSM_STREAMPARAM_NONE ;
+    result = msmStreamPlay(streamId, &param);
+    return result;
 }
 
 void HuAudSStreamStop(s32 arg0) {
@@ -326,18 +339,18 @@ void HuAudSStreamFadeOut(s32 arg0, s32 arg1) {
 }
 
 void HuAudSStreamAllFadeOut(s32 arg0) {
-    msmStreamPauseAll(arg0);
+    msmStreamStopAll(arg0);
 }
 
 void HuAudSStreamAllStop(void) {
-    msmStreamPauseAll(0);
+    msmStreamStopAll(0);
 }
 
 s32 HuAudSStreamStatGet(s32 arg0) {
     return msmStreamGetStatus(arg0);
 }
 
-HuSndGrpData HuSndGrpTbl[] = {
+SNDGRPTBL sndGrpTable[] = {
     { OVL_BOOT, -1, 0,  1, -1, -1 },
     { OVL_INST, -1, 0,  1, -1, -1 },
     { OVL_M401, 18, 0,  2, 64, 64 },
@@ -432,13 +445,13 @@ HuSndGrpData HuSndGrpTbl[] = {
 };
 
 void HuAudDllSndGrpSet(u16 ovl) {
-    HuSndGrpData *var_r31;
+    SNDGRPTBL *var_r31;
     s16 var_r29;
 
-    var_r31 = HuSndGrpTbl;
+    var_r31 = sndGrpTable;
     while (1) {
         if (var_r31->ovl == ovl) {
-            var_r29 = var_r31->grpset;
+            var_r29 = var_r31->grpSet;
             break;
         }
         if (var_r31->ovl == OVL_INVALID) {
@@ -540,7 +553,7 @@ void HuAudAUXVolSet(s8 arg0, s8 arg1) {
 }
 
 void HuAudVoiceInit(s16 ovl) {
-    HuSndGrpData *var_r29;
+    SNDGRPTBL *var_r29;
     OSTick temp_r23;
     s16 temp_r26;
     s16 temp_r25;
@@ -550,9 +563,9 @@ void HuAudVoiceInit(s16 ovl) {
     s16 i;
 
     if (ovl != OVL_INVALID) {
-        var_r29 = HuSndGrpTbl;
+        var_r29 = sndGrpTable;
         while (1) {
-            if (var_r29->ovl == ovl && var_r29->grpset == -1) {
+            if (var_r29->ovl == ovl && var_r29->grpSet == -1) {
                 return;
             }
             if (var_r29->ovl == OVL_INVALID) {
@@ -615,65 +628,67 @@ void HuAudPlayerVoicePlayEntry(s16 arg0, s16 arg1) {
     HuAudCharVoicePlayEntry(temp_r31, arg1);
 }
 
-s32 HuAudCharVoicePlay(s16 arg0, s16 arg1) {
-    UnkMsmStruct_01 spC;
+s32 HuAudCharVoicePlay(s16 charNo, s16 seId)
+{
+    MSM_SEPARAM param;
 
     if (omSysExitReq != 0) {
         return 0;
     }
-    arg1 += (arg0 << 6);
-    spC.unk00 = 0;
+    seId += (charNo << 6);
+    param.flag = MSM_SEPARAM_NONE;
     if (HuAuxAVol != -1) {
-        spC.unk00 |= 0x10;
+        param.flag |= MSM_SEPARAM_AUXVOLA;
     }
     if (HuAuxBVol != -1) {
-        spC.unk00 |= 0x20;
+        param.flag |= MSM_SEPARAM_AUXVOLB;
     }
-    spC.unk09 = HuAuxAVol;
-    spC.unk0A = HuAuxBVol;
-    return HuSePlay(arg1, &spC);
+    param.auxAVol = HuAuxAVol;
+    param.auxBVol = HuAuxBVol;
+    return HuSePlay(seId, &param);
 }
 
-s32 HuAudCharVoicePlayPos(s16 arg0, s16 arg1, Vec *arg2) {
-    UnkMsmStruct_01 spC;
+s32 HuAudCharVoicePlayPos(s16 charNo, s16 seId, Vec *pos) {
+    MSM_SEPARAM param;
 
     if (omSysExitReq != 0) {
         return 0;
     }
-    arg1 += (arg0 << 6);
-    spC.unk00 = 0x40;
+    seId += (charNo << 6);
+    param.flag = MSM_SEPARAM_POS;
     if (HuAuxAVol != -1) {
-        spC.unk00 |= 0x10;
+        param.flag |= MSM_SEPARAM_AUXVOLA;
     }
     if (HuAuxBVol != -1) {
-        spC.unk00 |= 0x20;
+        param.flag |= MSM_SEPARAM_AUXVOLB;
     }
-    spC.unk09 = HuAuxAVol;
-    spC.unk0A = HuAuxBVol;
-    spC.unk10.x = arg2->x;
-    spC.unk10.y = arg2->y;
-    spC.unk10.z = arg2->z;
-    return HuSePlay(arg1, &spC);
+    param.auxAVol = HuAuxAVol;
+    param.auxBVol = HuAuxBVol;
+    param.pos.x = pos->x;
+    param.pos.y = pos->y;
+    param.pos.z = pos->z;
+    return HuSePlay(seId, &param);
 }
 
-void HuAudCharVoicePlayEntry(s16 arg0, s16 arg1) {
-    s32 spC[30]; // size unknown (min: 30, max: 33)
+void HuAudCharVoicePlayEntry(s16 charNo, s16 seId) {
+    int spC[MSM_ENTRY_SENO_MAX]; // size unknown (min: 30, max: 33)
     u16 temp_r29;
     u16 i;
 
-    arg1 += (arg0 << 6);
-    temp_r29 = msmSeGetEntryID(arg1, spC);
+    seId += (charNo << 6);
+    temp_r29 = msmSeGetEntryID(seId, spC);
     for (i = 0; i < temp_r29; i++) {
         msmSeStop(spC[i], 0);
     }
 }
 
-static s32 HuSePlay(s32 arg0, UnkMsmStruct_01 *arg1) {
-    s32 temp_r3;
+static int HuSePlay(int seId, MSM_SEPARAM *param)
+{
+    s32 result;
 
-    temp_r3 = msmSePlay(arg0, arg1);
-    if (temp_r3 < 0) {
-        OSReport("#########SE Entry Error<SE %d:ErrorNo %d>\n", arg0, temp_r3);
+    result = msmSePlay(seId, param);
+    if (result < 0) {
+        OSReport("#########SE Entry Error<SE %d:ErrorNo %d>\n", seId, result);
     }
-    return temp_r3;
+    return result;
 }

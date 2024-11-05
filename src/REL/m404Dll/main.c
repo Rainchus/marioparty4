@@ -972,13 +972,13 @@ void fn_1_3F30(omObjData *object)
     }
 }
 
-void fn_1_445C(s32 arg0, s16 arg1)
+void fn_1_445C(int seId, s16 vol)
 {
-    UnkMsmStruct_01 sp8;
+    MSM_SEPARAM param;
 
-    sp8.unk00 = 1;
-    sp8.unk04 = arg1;
-    msmSeSetParam(arg0, &sp8);
+    param.flag = MSM_SEPARAM_VOL;
+    param.vol = vol;
+    msmSeSetParam(seId, &param);
 }
 
 void fn_1_44A0(omObjData *object)
