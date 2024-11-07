@@ -53,7 +53,7 @@ void msmMemFree(void* arg0) {
     }
 }
 
-void* msmMemAlloc(s32 arg0) {
+void* msmMemAlloc(u32 arg0) {
     unkMemStruct* memC;
     s32 temp_r0;
     u32 var_r5;
@@ -87,7 +87,7 @@ void* msmMemAlloc(s32 arg0) {
     if (var_r5 != 0) {
         var_r5 -= 0x20;
     }
-    temp_r5 = (void*)((u32)var_r8->unk10 + var_r5);
+    temp_r5 = (void*)((u32)var_r8->unk10 + (var_r5));
     temp_r9 = var_r8->next;
     if ((mem.unk0 > temp_r5) || ((void*)((u32)mem.unk0 + (u32)mem.unk4) <= temp_r5)) {
         return NULL;
