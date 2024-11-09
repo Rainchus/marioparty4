@@ -5,7 +5,7 @@
 #include "game/pad.h"
 #include "game/process.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
+#include "math.h"
 
 #include "REL/present.h"
 

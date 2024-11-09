@@ -8,7 +8,7 @@
 #include "game/gamework_data.h"
 #include "game/flag.h"
 #include "game/chrman.h"
-#include "rel_sqrt_consts.h"
+#include "math.h"
 #include "REL/executor.h"
 #include "game/board/main.h"
 

@@ -1089,7 +1089,7 @@ config.libs = [
         "m435Dll",  # Darts of Doom
         objects={
             Object(NonMatching, "REL/m435Dll/main.c"),
-            Object(Matching, "REL/m435Dll/sequence.c"),
+            Object(NonMatching, "REL/m435Dll/sequence.c"),
         },
     ),
     Rel(
@@ -1103,7 +1103,7 @@ config.libs = [
         "m437Dll",  # Balloon of Doom
         objects={
             Object(NonMatching, "REL/m437Dll/main.c"),
-            Object(Matching, "REL/m437Dll/sequence.c"),
+            Object(NonMatching, "REL/m437Dll/sequence.c"),
         },
     ),
     Rel(
@@ -1230,7 +1230,7 @@ config.libs = [
         "m456Dll",  # Take a Breather
         objects={
             Object(NonMatching, "REL/m456Dll/main.c"),
-            Object(Matching, "REL/m456Dll/stage.c"),
+            Object(NonMatching, "REL/m456Dll/stage.c"),
         },
     ),
     Rel(

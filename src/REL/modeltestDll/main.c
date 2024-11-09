@@ -14,6 +14,7 @@
 #include "math.h"
 
 #include "REL/modeltestDll.h"
+#include "math.h"
 
 // -------------------------------------------------------------------------- //
 
@@ -28,8 +29,6 @@ s32 lbl_1_data_0[8] = {
     DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x04),
 };
 
-const f64 unk_rodata_0 = 0.5;
-const f64 unk_rodata_8 = 3.0;
 omObjData *lbl_1_bss_9A4;
 omObjData *lbl_1_bss_9A0;
 

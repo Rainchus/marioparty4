@@ -9,7 +9,7 @@
 #include "game/window.h"
 #include "game/wipe.h"
 
-#include "rel_sqrt_consts.h"
+#include "math.h"
 
 typedef struct StaffData {
     /* 0x00 */ u32 unk_00;
