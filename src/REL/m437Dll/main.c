@@ -16,7 +16,7 @@
 #include "game/wipe.h"
 
 #include "dolphin.h"
-#include "rel_sqrt_consts.h"
+#include "math.h"
 #include "string.h"
 
 typedef struct {

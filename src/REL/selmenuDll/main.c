@@ -14,8 +14,8 @@
 #include "game/pad.h"
 #include "game/printfunc.h"
 #include "game/wipe.h"
+#include "math.h"
 
-#include "rel_sqrt_consts.h"
 
 // MSM Definitions
 static s8 *msmSeGetIndexPtr(s16 datano);
