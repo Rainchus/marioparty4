@@ -303,7 +303,7 @@ config.rel_empty_file = "REL/empty.c"
 def DolphinLib(lib_name, objects):
     return {
         "lib": lib_name,
-        "mw_version": "GC/2.6",
+        "mw_version": "GC/1.2.5n",
         "cflags": cflags_base,
         "host": False,
         "objects": objects,
@@ -442,7 +442,7 @@ config.libs = [
     DolphinLib(
         "base",
         [
-            Object(NonMatching, "dolphin/PPCArch.c"),
+            Object(Matching, "dolphin/PPCArch.c"),
         ],
     ),
     DolphinLib(
@@ -477,7 +477,7 @@ config.libs = [
     DolphinLib(
         "db",
         [
-            Object(NonMatching, "dolphin/db.c"),
+            Object(Matching, "dolphin/db.c"),
         ],
     ),
     DolphinLib(
@@ -527,7 +527,7 @@ config.libs = [
     DolphinLib(
         "ai",
         [
-            Object(NonMatching, "dolphin/ai.c"),
+            Object(Matching, "dolphin/ai.c"),
         ],
     ),
     DolphinLib(

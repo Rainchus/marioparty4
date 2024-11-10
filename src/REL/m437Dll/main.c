@@ -1716,7 +1716,6 @@ void fn_1_6580(s32 arg0, s32 arg1, s32 arg2)
 
 float lbl_1_data_188 = -1.0f;
 
-// TODO: https://decomp.me/scratch/dek39
 void fn_1_65E0(omObjData *arg0)
 {
     Mtx sp60;
