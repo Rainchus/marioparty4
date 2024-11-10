@@ -1102,8 +1102,8 @@ config.libs = [
     Rel(
         "m437Dll",  # Balloon of Doom
         objects={
-            Object(NonMatching, "REL/m437Dll/main.c"),
-            Object(NonMatching, "REL/m437Dll/sequence.c"),
+            Object(Matching, "REL/m437Dll/main.c"),
+            Object(Matching, "REL/m437Dll/sequence.c"),
         },
     ),
     Rel(
