@@ -6,7 +6,6 @@
 #include "game/sprite.h"
 #include "game/window.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
 
 #include "REL/E3SetupDLL.h"
 

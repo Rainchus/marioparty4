@@ -7,7 +7,6 @@
 #include "game/pad.h"
 #include "game/printfunc.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
 
 #include "REL/m420dll.h"
 

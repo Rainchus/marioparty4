@@ -22,7 +22,6 @@
 #include "game/sprite.h"
 
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 #undef ABS
 #define ABS(x) ((0 > (x)) ? -(x) : (x))
@@ -702,7 +701,7 @@ void fn_1_2DC8(WorkPlayerOld *player, s32 count, Vec *data)
 void fn_1_2DD4(WorkPlayerOld *player)
 {
     omSetTra(player->unk0, player->unk6C.x, player->unk6C.y, player->unk6C.z);
-    omSetRot(player->unk0, 0, player->unk9C, 0);
+    omSetRot(player->unk0, 0.0f, player->unk9C, 0.0f);
 }
 
 void fn_1_2E34(WorkPlayerOld *player)
@@ -840,12 +839,7 @@ void fn_1_3C74(WorkPlayerOld *player, s32 *state, u32 *motAttr)
     }
     
     if(player->unk14[3] >= 0 && (player->unk28 & 0x100)) {
-        player->unk38 = 1;
-        player->unk84.y = 26.766666f;
-        player->unkA4 = 1;
-        if(player->unk3C & 0x2) {
-            player->unk3C &= ~0x2;
-        }
+        fn_1_2BD0(player, 26.766666f, 1.0f);
         *motAttr = HU3D_MOTATTR_NONE;
         *state = 3;
     }
@@ -868,7 +862,7 @@ void fn_1_3D4C(WorkPlayerOld *player, s32 *state, u32 *motAttr)
     player->unk84.y += -2.4333334f;
     if(player->unk14[5] >= 0 && (player->unk28 & 0x140)) {
         player->unk38 = 3;
-        player->unk84.y = 0;
+        player->unk84.y = 0.0f;
         player->unk3C &= ~0x3;
         player->unk3C |= 0x4;
         *motAttr = HU3D_MOTATTR_NONE;
@@ -895,12 +889,7 @@ void fn_1_3E60(WorkPlayerOld *player, s32 *state, u32 *motAttr)
 void fn_1_3F18(WorkPlayerOld *player, s32 *state, u32 *motAttr)
 {
     if(Hu3DMotionShiftIDGet(player->unk0->model[0]) < 0 && Hu3DMotionEndCheck(player->unk0->model[0])) {
-        player->unk38 = 1;
-        player->unk84.y = 0;
-        player->unkA4 = 0;
-        if(player->unk3C & 0x2) {
-            player->unk3C &= ~0x2;
-        }
+        fn_1_2BD0(player, 0.0f, 0.0f);
     }
 }
 

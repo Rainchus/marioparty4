@@ -17,8 +17,6 @@
 #include "ext_math.h"
 #include "math.h"
 
-#include "rel_sqrt_consts.h"
-
 float lbl_2_data_0 = -7.1875f;
 
 s16 lbl_2_data_4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
