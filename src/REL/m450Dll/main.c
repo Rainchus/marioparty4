@@ -930,7 +930,7 @@ void fn_1_2C1C(WorkPlayerOld *player, omObjData *obj, s32 arg2, s32 arg3, s32 *a
     player->unk_10 = NULL;
     player->unk_50 = NULL;
     player->unk_64 = 0;
-    player->unk_68 = 0;
+    player->unk_68 = NULL;
     player->unk_38 = 0;
     player->unk_3C = 0;
     player->unk_44 = arg5;
@@ -978,7 +978,7 @@ void fn_1_2DC8(WorkPlayerOld *player, s32 count, Vec *data)
 void fn_1_2DD4(WorkPlayerOld *player)
 {
     omSetTra(player->unk_00, player->unk_6C.x, player->unk_6C.y, player->unk_6C.z);
-    omSetRot(player->unk_00, 0, player->unk_9C, 0);
+    omSetRot(player->unk_00, 0.0f, player->unk_9C, 0.0f);
 }
 
 void fn_1_2E34(WorkPlayerOld *player)
@@ -1123,12 +1123,7 @@ void fn_1_3CE0(WorkPlayerOld *player, s32 *state, u32 *motAttr)
     }
 
     if (player->unk_14[3] >= 0 && (player->unk_28 & 0x100)) {
-        player->unk_38 = 1;
-        player->unk_84.y = 26.766666f;
-        player->unk_A4 = 1;
-        if (player->unk_3C & 0x2) {
-            player->unk_3C &= ~0x2;
-        }
+        fn_1_2BD0(player, 26.766666f, 1.0f);
         *motAttr = HU3D_MOTATTR_NONE;
         *state = 3;
     }
@@ -1181,12 +1176,7 @@ void fn_1_3ECC(WorkPlayerOld *player, s32 *state, u32 *motAttr)
 void fn_1_3F84(WorkPlayerOld *player, s32 *state, u32 *motAttr)
 {
     if (Hu3DMotionShiftIDGet(player->unk_00->model[0]) < 0 && Hu3DMotionEndCheck(player->unk_00->model[0])) {
-        player->unk_38 = 1;
-        player->unk_84.y = 0;
-        player->unk_A4 = 0;
-        if (player->unk_3C & 0x2) {
-            player->unk_3C &= ~0x2;
-        }
+        fn_1_2BD0(player, 0.0f, 0.0f);
     }
 }
 
@@ -1352,12 +1342,8 @@ void fn_1_40C0(WorkPlayerOld *player)
                 player->unk_3C |= 0x800;
             }
             else {
-                player->unk_38 = 1;
-                player->unk_84.y = 0.0f;
-                player->unk_A4 = 0.0f;
-                if ((player->unk_3C & 2) != 0) {
-                    player->unk_3C &= ~2;
-                }
+                fn_1_2BD0(player, 0.0f, 0.0f);
+
                 motAttr = HU3D_MOTATTR_NONE;
                 state = 3;
             }
@@ -6582,12 +6568,7 @@ s32 fn_1_1C898(UnkM450Struct5 *var_r31, omObjData *var_r30)
         HuAudCharVoicePlay(var_r31->unk_11C, 0x123);
         var_r31->unk_FC |= 0x10;
         var_r31->unk_00.unk_3C |= 0x210;
-        var_r31->unk_00.unk_38 = 1;
-        var_r31->unk_00.unk_84.y = 48.179996f;
-        var_r31->unk_00.unk_A4 = 0.0f;
-        if (var_r31->unk_00.unk_3C & 2) {
-            var_r31->unk_00.unk_3C &= ~0x2;
-        }
+        fn_1_2BD0(&var_r31->unk_00, 48.179996f, 0.0f);
         Hu3DMotionShiftSet(var_r30->model[0], var_r30->motion[8], 0.0f, 8.0f, 0);
         if (fn_1_125C0(0, 1) <= 0) {
             var_r31->unk_FC |= 0x80000;
@@ -6599,12 +6580,7 @@ s32 fn_1_1C898(UnkM450Struct5 *var_r31, omObjData *var_r30)
         HuAudCharVoicePlay(var_r31->unk_11C, 0x123);
         var_r31->unk_FC |= 0x100;
         var_r31->unk_00.unk_3C |= 0x210;
-        var_r31->unk_00.unk_38 = 1;
-        var_r31->unk_00.unk_84.y = 0.0f;
-        var_r31->unk_00.unk_A4 = 0.0f;
-        if (var_r31->unk_00.unk_3C & 2) {
-            var_r31->unk_00.unk_3C &= ~0x2;
-        }
+        fn_1_2BD0(&var_r31->unk_00, 0.0f, 0.0f);
         if (fn_1_125C0(0, 1) <= 0) {
             var_r31->unk_FC |= 0x80000;
         }
@@ -6715,12 +6691,7 @@ void fn_1_1E150(omObjData *var_r29)
         HuAudCharVoicePlay(var_r31->unk_11C, 0x123);
         var_r31->unk_FC |= 0x800000;
         var_r31->unk_118 = 0x7EB;
-        var_r31->unk_00.unk_38 = 1;
-        var_r31->unk_00.unk_84.y = 53.533333f;
-        var_r31->unk_00.unk_A4 = 0.0f;
-        if (var_r31->unk_00.unk_3C & 2) {
-            var_r31->unk_00.unk_3C &= ~0x2;
-        }
+        fn_1_2BD0(&var_r31->unk_00, 53.533333f, 0.0f);
         Hu3DMotionSet(var_r29->model[0], var_r29->motion[8]);
         Hu3DModelAttrReset(var_r29->model[0], HU3D_ATTR_DISPOFF);
         fn_1_125C0(0, 0);
@@ -7129,12 +7100,7 @@ void fn_1_20170(omObjData *var_r30)
                 var_r29->unk_00.unk_A8 = MapPos(
                     var_r29->unk_00.unk_6C.x, var_r29->unk_00.unk_6C.y, var_r29->unk_00.unk_6C.z, var_r29->unk_00.unk_C0, &var_r29->unk_00.unk_AC);
                 if (var_r29->unk_00.unk_A8 > var_r29->unk_00.unk_6C.y) {
-                    var_r31->unk_00.unk_38 = 1;
-                    var_r31->unk_00.unk_84.y = 53.533333f;
-                    var_r31->unk_00.unk_A4 = 0.0f;
-                    if (var_r31->unk_00.unk_3C & 2) {
-                        var_r31->unk_00.unk_3C &= ~2;
-                    }
+                    fn_1_2BD0(&var_r31->unk_00, 53.533333f, 0.0f);
                 }
                 var_f31 = var_r29->unk_00.unk_6C.x;
                 var_f30 = var_r29->unk_00.unk_6C.z;
