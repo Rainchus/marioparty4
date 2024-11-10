@@ -1065,7 +1065,7 @@ config.libs = [
     Rel(
         "m432Dll",  # Dungeon Duos
         objects={
-            Object(NonMatching, "REL/m432Dll/main.c"),
+            Object(Matching, "REL/m432Dll/main.c"),
         },
     ),
     Rel(
