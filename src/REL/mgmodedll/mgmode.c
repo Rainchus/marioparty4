@@ -6,7 +6,6 @@
 #include "game/wipe.h"
 
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 typedef struct camera_view_params {
     Vec rot;

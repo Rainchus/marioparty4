@@ -19,8 +19,6 @@
 #include "ext_math.h"
 #include "math.h"
 
-#include "rel_sqrt_consts.h"
-
 typedef struct camera_view_params {
     Vec rot;
     Vec pos;

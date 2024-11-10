@@ -17,8 +17,6 @@
 
 #include "game/gamework_data.h"
 
-#include "rel_sqrt_consts.h"
-
 typedef struct bss_348_data {
     s16 unk0[5];
     s16 unkA;

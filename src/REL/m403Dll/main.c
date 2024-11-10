@@ -17,7 +17,6 @@
 #include "game/wipe.h"
 
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 typedef struct {
     /* 0x000 */ u8 unk00;

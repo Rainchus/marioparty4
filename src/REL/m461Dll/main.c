@@ -22,7 +22,6 @@
 #include "game/sprite.h"
 
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 #undef ABS
 #define ABS(x) ((0 > (x)) ? -(x) : (x))

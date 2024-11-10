@@ -13,7 +13,6 @@
 #include "game/saveload.h"
 #include "game/window.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
 
 #include "math.h"
 

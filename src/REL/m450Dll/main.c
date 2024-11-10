@@ -31,7 +31,6 @@
 #include "game/sprite.h"
 
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 #include "game/window.h"
 #include "string.h"

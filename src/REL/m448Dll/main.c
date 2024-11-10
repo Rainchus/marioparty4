@@ -20,7 +20,6 @@
 
 #include "dolphin.h"
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 typedef struct {
     /* 0x00 */ s32 unk00;

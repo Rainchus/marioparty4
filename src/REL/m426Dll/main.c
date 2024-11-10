@@ -10,7 +10,6 @@
 #include "game/pad.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
 
 typedef struct UnkM426Struct {
     /* 0x00 */ s32 unk_00;

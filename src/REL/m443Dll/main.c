@@ -11,7 +11,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "math.h"
-#include "rel_sqrt_consts.h"
+
 #include "string.h"
 
 #ifndef __MWERKS__
