@@ -1835,7 +1835,8 @@ void fn_1_65E0(omObjData *arg0)
             break;
     }
     if ((temp_r31->unk0C == 4 || temp_r31->unk0C == 7) && temp_r31->unk10 == 0) {
-        Hu3DModelObjMtxGet(lbl_1_bss_8FC.unk00->model[0], "m437a01-chara-point", sp60);
+        StructBss8FC *temp = &lbl_1_bss_8FC;
+        Hu3DModelObjMtxGet(temp->unk00->model[0], "m437a01-chara-point", sp60);
         arg0->trans.y = sp60[1][3];
     }
 }
