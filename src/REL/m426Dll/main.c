@@ -10,6 +10,7 @@
 #include "game/pad.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
+#include "string.h"
 
 typedef struct UnkM426Struct {
     /* 0x00 */ s32 unk_00;
@@ -676,7 +677,7 @@ void fn_1_117C(omObjData *object)
     fn_1_16F8(var_r31->unk_04[0]);
 }
 
-void fn_1_11EC(omObjData *object) // TODO this probably gets inlined
+void fn_1_11EC(omObjData *object)
 {
     s32 var_r30;
     UnkM426Struct *var_r29;
@@ -778,6 +779,7 @@ void fn_1_125C(omObjData *object)
     object->func = NULL;
 }
 
+// TODO https://decomp.me/scratch/1aZdv
 void fn_1_16F8(omObjData *object)
 {
     s32 spA8[3];
@@ -824,7 +826,7 @@ void fn_1_16F8(omObjData *object)
     }
     if (var_r31->unk_14) {
         sp20 = sp1C = 0.0f;
-        sp10 = var_r21 = 0;
+        sp10 = 0;
         fn_1_2F5C(object, &sp20, &sp1C, &sp10);
     }
     else {
@@ -848,7 +850,7 @@ void fn_1_16F8(omObjData *object)
                     if (!lbl_1_bss_40) {
                         sp20 = sp1C = 0.0f;
 
-                        sp10 = var_r21 = 0;
+                        sp10 = 0;
                     }
                     if (fabs(sp20) > 8.0) {
                         var_f30 = 0.25f * sp20;
@@ -957,7 +959,6 @@ void fn_1_16F8(omObjData *object)
                     else {
                         if (fabs(sp20) > 8.0 || fabs(sp1C) > 8.0) {
                             var_f26 = atan2d(sp20, -sp1C);
-                            var_f26 = var_f26;
                         }
                         else {
                             var_f26 = object->rot.y;
@@ -1123,7 +1124,7 @@ void fn_1_16F8(omObjData *object)
                 var_r31->unk_34 = var_r31->unk_34 ^ 1;
             }
         }
-        if (((var_r21 = var_r31->unk_24) == 0 || var_r31->unk_24 == 1 || var_r31->unk_24 == 2) && var_r31->unk_30) {
+        if ((var_r31->unk_24 == 0 || var_r31->unk_24 == 1 || var_r31->unk_24 == 2) && var_r31->unk_30) {
             if (var_r31->unk_30) {
                 var_r31->unk_30 = var_r31->unk_30 - 1;
             }
@@ -1136,6 +1137,7 @@ void fn_1_16F8(omObjData *object)
         }
         Hu3DModelTPLvlSet(var_r24, 1.0f);
     }
+    (void)var_r21;
 }
 
 Vec lbl_1_data_200[2] = {
@@ -1202,22 +1204,10 @@ void fn_1_2AC8(omObjData *object)
 
 void fn_1_2ADC(void)
 {
-    omObjData *var_r31;
     s32 var_r30;
-    s32 var_r29;
-    UnkM426Struct *var_r27;
-    omObjData *var_r28;
 
     for (var_r30 = 0; var_r30 < 2; var_r30++) {
-        var_r31 = lbl_1_bss_8C[var_r30];
-        var_r27 = var_r31->data;
-        for (var_r29 = 0; var_r29 < 2; var_r29++) {
-            var_r28 = var_r27->unk_04[var_r29];
-            var_r28->data = 0;
-            var_r28->func = 0;
-        }
-        var_r31->data = NULL;
-        var_r31->func = NULL;
+        fn_1_11EC(lbl_1_bss_8C[var_r30]);
     }
 }
 
@@ -1741,8 +1731,7 @@ void fn_1_3EFC(omObjData *object)
 void fn_1_45FC(omObjData *object)
 {
     fn_1_8E10(lbl_1_bss_24);
-    object->data = NULL;
-    object->func = NULL;
+    fn_1_2AC8(object);
 }
 
 void fn_1_4644(void)
@@ -2133,20 +2122,17 @@ void fn_1_5134(omObjData *object)
 
 void fn_1_5B34(omObjData *object)
 {
-    object->data = NULL;
-    object->func = NULL;
+    fn_1_2AC8(object);
 }
 
 void fn_1_5B48(void)
 {
-    omObjData *var_r31;
-
-    var_r31 = lbl_1_bss_74;
-    fn_1_5B34(var_r31);
+    fn_1_5B34(lbl_1_bss_74);
     lbl_1_bss_74 = NULL;
 }
 
-void fn_1_5B88(s32 arg0) // probably gets inlined
+// unused
+void fn_1_5B88(s32 arg0)
 {
     UnkM426Struct4 *var_r31;
     s32 var_r28;
