@@ -484,11 +484,11 @@ config.libs = [
         "mtx",
         [
             Object(NonMatching, "dolphin/mtx/mtx.c"),
-            Object(NonMatching, "dolphin/mtx/mtxvec.c"),
-            Object(NonMatching, "dolphin/mtx/mtx44.c"),
+            Object(Matching, "dolphin/mtx/mtxvec.c"),
+            Object(Matching, "dolphin/mtx/mtx44.c"),
             Object(NonMatching, "dolphin/mtx/vec.c"),
             Object(NonMatching, "dolphin/mtx/quat.c"),
-            Object(NonMatching, "dolphin/mtx/psmtx.c"),
+            Object(Matching, "dolphin/mtx/psmtx.c"),
         ],
     ),
     DolphinLib(
@@ -521,7 +521,7 @@ config.libs = [
         "pad",
         [
             Object(NonMatching, "dolphin/pad/Padclamp.c"),
-            Object(NonMatching, "dolphin/pad/Pad.c"),
+            Object(Matching, "dolphin/pad/Pad.c"),
         ],
     ),
     DolphinLib(
