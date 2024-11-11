@@ -6,7 +6,6 @@
 #include <dolphin/os/OSBootInfo.h>
 
 typedef void (*stateFunc)(DVDCommandBlock *block);
-stateFunc LastState;
 
 extern OSThreadQueue __DVDThreadQueue;
 
@@ -34,6 +33,7 @@ static DVDCommandBlock DummyCommandBlock;
 static OSAlarm ResetAlarm;
 
 static BOOL DVDInitialized = FALSE;
+static stateFunc LastState;
 
 /* States */
 static void stateReadingFST();
@@ -734,41 +734,6 @@ static void stateBusy(DVDCommandBlock *block)
             DVDLowInquiry(block->addr, cbForStateBusy);
             break;
     }
-}
-
-// removing these matches DVDCancelAsync and DVDCheckDisk
-static u32 ImmCommand[] = { 0xffffffff, 0xffffffff, 0xffffffff };
-static u32 DmaCommand[] = { 0xffffffff };
-
-inline static BOOL IsImmCommandWithResult(u32 command)
-{
-    u32 i;
-
-    if (command == 9 || command == 10 || command == 11 || command == 12) {
-        return TRUE;
-    }
-
-    for (i = 0; i < sizeof(ImmCommand) / sizeof(ImmCommand[0]); i++) {
-        if (command == ImmCommand[i])
-            return TRUE;
-    }
-
-    return FALSE;
-}
-
-inline static BOOL IsDmaCommand(u32 command)
-{
-    u32 i;
-
-    if (command == 1 || command == 4 || command == 5 || command == 14)
-        return TRUE;
-
-    for (i = 0; i < sizeof(DmaCommand) / sizeof(DmaCommand[0]); i++) {
-        if (command == DmaCommand[i])
-            return TRUE;
-    }
-
-    return FALSE;
 }
 
 void cbForStateBusy(u32 intType)
