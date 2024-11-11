@@ -680,12 +680,12 @@ dolphin/mtx/vec.c:
 	.sdata2     start:0x801D6380 end:0x801D6390
 
 dolphin/mtx/quat.c:
-	.text       start:0x800BC2C4 end:0x800BC710
+	.text       start:0x800BC2C4 end:0x800BC884
 	.rodata     start:0x8011E430 end:0x8011E440
 	.sdata2     start:0x801D6390 end:0x801D63B8
 
 dolphin/mtx/psmtx.c:
-	.text       start:0x800BC710 end:0x800BC9E8
+	.text       start:0x800BC884 end:0x800BC9E8
 
 dolphin/dvd/dvdlow.c:
 	.text       start:0x800BC9E8 end:0x800BD83C
@@ -742,7 +742,7 @@ dolphin/demo/DEMOPuts.c:
 
 dolphin/demo/DEMOStats.c:
 	.text       start:0x800C2F84 end:0x800C3CDC
-	.data       start:0x8013D5E0 end:0x8013D748
+	.data       start:0x8013D5E0 end:0x8013D738
 	.sdata      start:0x801D3908 end:0x801D3910
 	.sbss       start:0x801D4488 end:0x801D44E8
 	.sdata2     start:0x801D63D8 end:0x801D63E8
@@ -753,6 +753,7 @@ dolphin/pad/Padclamp.c:
 
 dolphin/pad/Pad.c:
 	.text       start:0x800C3F14 end:0x800C59DC
+	.data       start:0x8013D738 end:0x8013D748
 	.bss        start:0x801A61B0 end:0x801A6200
 	.sdata      start:0x801D3918 end:0x801D3938
 	.sbss       start:0x801D44E8 end:0x801D4510
