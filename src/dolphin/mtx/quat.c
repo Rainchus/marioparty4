@@ -1,5 +1,9 @@
 #include "dolphin/mtx.h"
-#include "math.h"
+
+float acosf(float x);
+
+float sinf(float x);
+float cosf(float x);
 
 void PSQUATMultiply(register const Quaternion *a, register const Quaternion *b, register Quaternion *ab)
 {
