@@ -210,6 +210,12 @@ cflags_runtime = [
     "-inline auto,deferred",
 ]
 
+# Dolphin library flags
+cflags_dolphin = [
+    *cflags_base,
+    "-fp_contract off",
+]
+
 # Metrowerks library flags
 cflags_msl = [
     *cflags_base,
@@ -304,7 +310,7 @@ def DolphinLib(lib_name, objects):
     return {
         "lib": lib_name,
         "mw_version": "GC/1.2.5n",
-        "cflags": cflags_base,
+        "cflags": cflags_dolphin,
         "host": False,
         "objects": objects,
     }
@@ -496,7 +502,7 @@ config.libs = [
         [
             Object(Matching, "dolphin/dvd/dvdlow.c"),
             Object(Matching, "dolphin/dvd/dvdfs.c"),
-            Object(NonMatching, "dolphin/dvd/dvd.c"),
+            Object(Matching, "dolphin/dvd/dvd.c"),
             Object(Matching, "dolphin/dvd/dvdqueue.c"),
             Object(Matching, "dolphin/dvd/dvderror.c"),
             Object(Matching, "dolphin/dvd/fstload.c"),
