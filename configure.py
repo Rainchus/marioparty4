@@ -760,11 +760,11 @@ config.libs = [
     ),
     {
         "lib": "OdemuExi2",
-        "mw_version": config.linker_version,
+        "mw_version": "GC/1.2.5",
         "cflags": cflags_odemuexi,
         "host": False,
         "objects": [
-            Object(NonMatching, "OdemuExi2/DebuggerDriver.c"),
+            Object(Matching, "OdemuExi2/DebuggerDriver.c"),
         ],
     },
     {
@@ -773,7 +773,7 @@ config.libs = [
         "cflags": cflags_amcstub,
         "host": False,
         "objects": [
-            Object(NonMatching, "amcstubs/AmcExi2Stubs.c"),
+            Object(Matching, "amcstubs/AmcExi2Stubs.c"),
         ],
     },
     {
@@ -782,7 +782,7 @@ config.libs = [
         "cflags": cflags_odenotstub,
         "host": False,
         "objects": [
-            Object(NonMatching, "odenotstub/odenotstub.c"),
+            Object(Matching, "odenotstub/odenotstub.c"),
         ],
     },
     {
