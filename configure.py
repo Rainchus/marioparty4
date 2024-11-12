@@ -216,6 +216,10 @@ cflags_dolphin = [
     "-fp_contract off",
 ]
 
+cflags_thp = [
+    *cflags_base,
+]
+
 # Metrowerks library flags
 cflags_msl = [
     *cflags_base,
@@ -574,21 +578,21 @@ config.libs = [
     DolphinLib(
         "card",
         [
-            Object(NonMatching, "dolphin/card/CARDBios.c"),
-            Object(NonMatching, "dolphin/card/CARDUnlock.c"),
-            Object(NonMatching, "dolphin/card/CARDRdwr.c"),
-            Object(NonMatching, "dolphin/card/CARDBlock.c"),
-            Object(NonMatching, "dolphin/card/CARDDir.c"),
-            Object(NonMatching, "dolphin/card/CARDCheck.c"),
-            Object(NonMatching, "dolphin/card/CARDMount.c"),
-            Object(NonMatching, "dolphin/card/CARDFormat.c"),
-            Object(NonMatching, "dolphin/card/CARDOpen.c"),
-            Object(NonMatching, "dolphin/card/CARDCreate.c"),
-            Object(NonMatching, "dolphin/card/CARDRead.c"),
-            Object(NonMatching, "dolphin/card/CARDWrite.c"),
-            Object(NonMatching, "dolphin/card/CARDDelete.c"),
-            Object(NonMatching, "dolphin/card/CARDStat.c"),
-            Object(NonMatching, "dolphin/card/CARDNet.c"),
+            Object(Matching, "dolphin/card/CARDBios.c"),
+            Object(Matching, "dolphin/card/CARDUnlock.c"),
+            Object(Matching, "dolphin/card/CARDRdwr.c"),
+            Object(Matching, "dolphin/card/CARDBlock.c"),
+            Object(Matching, "dolphin/card/CARDDir.c"),
+            Object(Matching, "dolphin/card/CARDCheck.c"),
+            Object(Matching, "dolphin/card/CARDMount.c"),
+            Object(Matching, "dolphin/card/CARDFormat.c"),
+            Object(Matching, "dolphin/card/CARDOpen.c"),
+            Object(Matching, "dolphin/card/CARDCreate.c"),
+            Object(Matching, "dolphin/card/CARDRead.c"),
+            Object(Matching, "dolphin/card/CARDWrite.c"),
+            Object(Matching, "dolphin/card/CARDDelete.c"),
+            Object(Matching, "dolphin/card/CARDStat.c"),
+            Object(Matching, "dolphin/card/CARDNet.c"),
         ],
     ),
     DolphinLib(
@@ -605,13 +609,16 @@ config.libs = [
             Object(Matching, "dolphin/si/SISamplingRate.c"),
         ],
     ),
-    DolphinLib(
-        "thp",
-        [
-            Object(NonMatching, "dolphin/thp/THPDec.c"),
-            Object(NonMatching, "dolphin/thp/THPAudio.c"),
+    {
+        "lib": "thp",
+        "mw_version": "GC/1.2.5",
+        "cflags": cflags_thp,
+        "host": False,
+        "objects": [
+            Object(Matching, "thp/THPDec.c"),
+            Object(NonMatching, "thp/THPAudio.c"),
         ],
-    ),
+    },
     {
         "lib": "Runtime.PPCEABI.H",
         "mw_version": config.linker_version,
