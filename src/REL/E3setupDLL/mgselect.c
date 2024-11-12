@@ -142,8 +142,6 @@ static float cursorYOfsTbl[] = { -100.0f, -50.0f, 0.0f, 50.0f, 100.0f };
 
 static s32 mgPicTbl[] = { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 };
 
-static char startText[] = "\013\016\r PRESS START";
-
 static void StartMGSelect(omObjData *object)
 {
     HuAudSeqPlay(0x2B);
@@ -490,12 +488,12 @@ static void CreateMGInterface(omObjData *object)
     index = HuSprCreate(temp_r3_2, 0x271A, 0);
     HuSprGrpMemberSet(group, 0, index);
     index2++;
-    HuWinMesMaxSizeGet(1, sp8, &startText);
+    HuWinMesMaxSizeGet(1, sp8, "\013\016\r PRESS START");
     index = HuWinCreate(340.0f, 362.0f, sp8[0], sp8[1], 0);
     unkStruct->unk_2C = index;
     HuWinMesColSet(index, 0);
     HuWinBGTPLvlSet(index, 0.0f);
     HuWinMesSpeedSet(index, 0);
-    HuWinMesSet(index, MAKE_MESSID_PTR(startText));
+    HuWinMesSet(index, MAKE_MESSID_PTR("\013\016\r PRESS START"));
     object->func = UpdateMGInterface;
 }

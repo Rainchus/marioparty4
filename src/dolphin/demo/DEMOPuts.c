@@ -37,22 +37,22 @@ void DEMOSetFontType(DMFontType attr)
 
 void DEMOLoadFont(enum _GXTexMapID texMap, enum _GXTexMtx texMtx, DMTexFlt texFlt)
 {
-    // float fontTMtx[3][4];
-    // unsigned short width;
-    // unsigned short height;
+    float fontTMtx[3][4];
+    unsigned short width;
+    unsigned short height;
 
-    // width = 64;
-    // height = 0x1800 / width;
-    // GXInitTexObj(&fontTexObj, (void *)DEMOFontBitmap, width, (u16)height, 0, 0, 0, 0);
-    // if (texFlt == 0) {
-    //     GXInitTexObjLOD(&fontTexObj, 0, 0, 0, 0, 0, 0.0f, 0.0f, 0.0f);
-    //     fontShift = 0;
-    // }
-    // GXLoadTexObj(&fontTexObj, texMap);
-    // MTXScale(fontTMtx, 1.0f / (width - fontShift), 1.0f / ((u16)height - !fontShift), 1.0f);
-    // GXLoadTexMtxImm(fontTMtx, texMtx, 1);
-    // GXSetNumTexGens(1);
-    // GXSetTexCoordGen(0, 1, 4, texMtx);
+    width = 64;
+    height = 0x1800 / width;
+    GXInitTexObj(&fontTexObj, (void *)DEMOFontBitmap, width, (u16)height, 0, 0, 0, 0);
+    if (texFlt == 0) {
+        GXInitTexObjLOD(&fontTexObj, 0, 0, 0, 0, 0, 0.0f, 0.0f, 0.0f);
+        fontShift = 0;
+    }
+    GXLoadTexObj(&fontTexObj, texMap);
+    MTXScale(fontTMtx, 1.0f / width, 1.0f / height, 1.0f);
+    GXLoadTexMtxImm(fontTMtx, texMtx, 1);
+    GXSetNumTexGens(1);
+    GXSetTexCoordGen(0, 1, 4, texMtx);
 }
 
 void DEMOSetupScrnSpc(long width, long height, float depth)
