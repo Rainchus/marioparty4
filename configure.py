@@ -615,8 +615,8 @@ config.libs = [
         "cflags": cflags_thp,
         "host": False,
         "objects": [
-            Object(Matching, "thp/THPDec.c"),
-            Object(NonMatching, "thp/THPAudio.c"),
+            Object(Matching, "dolphin/thp/THPDec.c"),
+            Object(NonMatching, "dolphin/thp/THPAudio.c"),
         ],
     },
     {
