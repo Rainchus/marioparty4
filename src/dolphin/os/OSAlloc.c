@@ -461,7 +461,9 @@ long OSCheckHeap(int heap)
         ASSERTREPORT(0x39A, cell->next == NULL || cell->next->prev == cell);
         ASSERTREPORT(0x39B, MINOBJSIZE <= cell->size);
         ASSERTREPORT(0x39C, OFFSET(cell->size, ALIGNMENT) == 0);
-        ASSERTREPORT(0x39D, cell->next == NULL || (char *)cell + cell->size < (char *)cell->next);
+        /* clang-format off*/
+        ASSERTREPORT(0x39D, cell->next == NULL || (char*) cell + cell->size < (char*) cell->next);
+        /* clang-format on*/
         total += cell->size;
         free = (cell->size + free);
         free -= HEADERSIZE;
