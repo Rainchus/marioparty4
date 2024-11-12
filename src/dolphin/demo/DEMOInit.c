@@ -5,7 +5,7 @@
 #include <dolphin/vi.h>
 #include "game/init.h"
 
-#include <dolphin/demotypes.h>
+#include <dolphin/demoPriv.h>
 
 extern unsigned char DemoStatEnable; // size: 0x1, address: 0x0
 

@@ -1,5 +1,5 @@
-#ifndef _DOLPHIN_DEMOTYPES
-#define _DOLPHIN_DEMOTYPES
+#ifndef _DOLPHIN_DEMOPRIV
+#define _DOLPHIN_DEMOPRIV
 
 #include <dolphin/demo.h>
 

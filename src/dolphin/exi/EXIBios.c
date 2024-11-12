@@ -21,6 +21,8 @@
 #define CPR_CS(x) ((1u << (x)) << 7)
 #define CPR_CLK(x) ((x) << 4)
 
+static BOOL __EXIProbe(s32 chan);
+
 typedef struct EXIControl {
     EXICallback exiCallback;
     EXICallback tcCallback;

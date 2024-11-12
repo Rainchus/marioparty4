@@ -4,7 +4,7 @@
 #include <dolphin/demo.h>
 #include <dolphin/gx.h>
 
-#include <dolphin/demotypes.h>
+#include <dolphin/demoPriv.h>
 
 unsigned char DemoStatEnable = 0;
 static DemoStatData *DemoStat;
