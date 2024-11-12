@@ -23,7 +23,7 @@ static u8 SendCount = 0x80;
 #define IS_FALSE(x) !IS_TRUE(x)
 #define ROUND_UP(x, align) (((x) + (align)-1) & (-(align)))
 
-// TODO this matches, but there are probably no inline flags used, so the order of functions would be different that way
+// TODO
 
 void DBGEXIInit()
 {

@@ -242,7 +242,7 @@ cflags_trk = [
 
 cflags_odemuexi = [
     *cflags_base,
-    "-inline auto,deferred",
+    # TODO figure out flags
 ]
 
 cflags_amcstub = [
@@ -764,7 +764,7 @@ config.libs = [
         "cflags": cflags_odemuexi,
         "host": False,
         "objects": [
-            Object(Matching, "OdemuExi2/DebuggerDriver.c"),
+            Object(NonMatching, "OdemuExi2/DebuggerDriver.c"),
         ],
     },
     {
