@@ -517,10 +517,10 @@ config.libs = [
     DolphinLib(
         "demo",
         [
-            Object(NonMatching, "dolphin/demo/DEMOInit.c"),
-            Object(NonMatching, "dolphin/demo/DEMOFont.c"),
+            Object(Matching, "dolphin/demo/DEMOInit.c"),
+            Object(Matching, "dolphin/demo/DEMOFont.c"),
             Object(NonMatching, "dolphin/demo/DEMOPuts.c"),
-            Object(NonMatching, "dolphin/demo/DEMOStats.c"),
+            Object(Matching, "dolphin/demo/DEMOStats.c"),
         ],
     ),
     DolphinLib(
@@ -546,9 +546,9 @@ config.libs = [
     DolphinLib(
         "dsp",
         [
-            Object(NonMatching, "dolphin/dsp/dsp.c"),
-            Object(NonMatching, "dolphin/dsp/dsp_debug.c"),
-            Object(NonMatching, "dolphin/dsp/dsp_task.c"),
+            Object(Matching, "dolphin/dsp/dsp.c"),
+            Object(Matching, "dolphin/dsp/dsp_debug.c"),
+            Object(Matching, "dolphin/dsp/dsp_task.c"),
         ],
     ),
     DolphinLib(
@@ -594,15 +594,15 @@ config.libs = [
     DolphinLib(
         "exi",
         [
-            Object(NonMatching, "dolphin/exi/EXIBios.c"),
-            Object(NonMatching, "dolphin/exi/EXIUart.c"),
+            Object(Matching, "dolphin/exi/EXIBios.c"),
+            Object(Matching, "dolphin/exi/EXIUart.c"),
         ],
     ),
     DolphinLib(
         "si",
         [
-            Object(NonMatching, "dolphin/si/SIBios.c"),
-            Object(NonMatching, "dolphin/si/SISamplingRate.c"),
+            Object(Matching, "dolphin/si/SIBios.c"),
+            Object(Matching, "dolphin/si/SISamplingRate.c"),
         ],
     ),
     DolphinLib(
