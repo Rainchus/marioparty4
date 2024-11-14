@@ -242,7 +242,7 @@ cflags_trk = [
 
 cflags_odemuexi = [
     *cflags_base,
-    "-inline auto,deferred",
+    # TODO figure out flags
 ]
 
 cflags_amcstub = [
@@ -460,7 +460,7 @@ config.libs = [
         [
             Object(Matching, "dolphin/os/OS.c"),
             Object(Matching, "dolphin/os/OSAlarm.c"),
-            Object(NonMatching, "dolphin/os/OSAlloc.c"),
+            Object(Matching, "dolphin/os/OSAlloc.c"),
             Object(Matching, "dolphin/os/OSArena.c"),
             Object(Matching, "dolphin/os/OSAudioSystem.c"),
             Object(Matching, "dolphin/os/OSCache.c"),
@@ -760,7 +760,7 @@ config.libs = [
     ),
     {
         "lib": "OdemuExi2",
-        "mw_version": config.linker_version,
+        "mw_version": "GC/1.2.5",
         "cflags": cflags_odemuexi,
         "host": False,
         "objects": [
@@ -773,7 +773,7 @@ config.libs = [
         "cflags": cflags_amcstub,
         "host": False,
         "objects": [
-            Object(NonMatching, "amcstubs/AmcExi2Stubs.c"),
+            Object(Matching, "amcstubs/AmcExi2Stubs.c"),
         ],
     },
     {
@@ -782,7 +782,7 @@ config.libs = [
         "cflags": cflags_odenotstub,
         "host": False,
         "objects": [
-            Object(NonMatching, "odenotstub/odenotstub.c"),
+            Object(Matching, "odenotstub/odenotstub.c"),
         ],
     },
     {
