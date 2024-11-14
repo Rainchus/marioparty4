@@ -23,26 +23,26 @@ extern "C" {
 #endif
 typedef s64 OSTime;
 typedef u32 OSTick;
-u32 __OSBusClock AT_ADDRESS(OS_BASE_CACHED | 0x00F8);  // sync with OSLoMem.h
+u32 __OSBusClock AT_ADDRESS(OS_BASE_CACHED | 0x00F8); // sync with OSLoMem.h
 u32 __OSCoreClock AT_ADDRESS(OS_BASE_CACHED | 0x00FC); // sync with OSLoMem.h
-#define OS_BUS_CLOCK (u32)__OSBusClock
+#define OS_BUS_CLOCK (u32) __OSBusClock
 #define OS_CORE_CLOCK __OSCoreClock
 #define OS_TIMER_CLOCK (OS_BUS_CLOCK / 4)
 
 #ifndef _DEBUG
-#define OSPhysicalToCached(paddr) ((void*)((u32)(paddr) + OS_BASE_CACHED))
-#define OSPhysicalToUncached(paddr) ((void*)((u32)(paddr) + OS_BASE_UNCACHED))
-#define OSCachedToPhysical(caddr) ((u32)((u8*)(caddr)-OS_BASE_CACHED))
-#define OSUncachedToPhysical(ucaddr) ((u32)((u8*)(ucaddr)-OS_BASE_UNCACHED))
-#define OSCachedToUncached(caddr) ((void*)((u8*)(caddr) + (OS_BASE_UNCACHED - OS_BASE_CACHED)))
-#define OSUncachedToCached(ucaddr) ((void*)((u8*)(ucaddr) - (OS_BASE_UNCACHED - OS_BASE_CACHED)))
+#define OSPhysicalToCached(paddr) ((void *)((u32)(paddr) + OS_BASE_CACHED))
+#define OSPhysicalToUncached(paddr) ((void *)((u32)(paddr) + OS_BASE_UNCACHED))
+#define OSCachedToPhysical(caddr) ((u32)((u8 *)(caddr)-OS_BASE_CACHED))
+#define OSUncachedToPhysical(ucaddr) ((u32)((u8 *)(ucaddr)-OS_BASE_UNCACHED))
+#define OSCachedToUncached(caddr) ((void *)((u8 *)(caddr) + (OS_BASE_UNCACHED - OS_BASE_CACHED)))
+#define OSUncachedToCached(ucaddr) ((void *)((u8 *)(ucaddr) - (OS_BASE_UNCACHED - OS_BASE_CACHED)))
 #else
-u32 OSPhysicalToCached(void* paddr);
-u32 OSPhysicalToUncached(void* paddr);
-u32 OSCachedToPhysical(void* caddr);
-u32 OSUncachedToPhysical(void* ucaddr);
-u32 OSCachedToUncached(void* caddr);
-u32 OSUncachedToCached(void* ucaddr);
+u32 OSPhysicalToCached(void *paddr);
+u32 OSPhysicalToUncached(void *paddr);
+u32 OSCachedToPhysical(void *caddr);
+u32 OSUncachedToPhysical(void *ucaddr);
+u32 OSCachedToUncached(void *caddr);
+u32 OSUncachedToCached(void *ucaddr);
 #endif
 
 #define OSTicksToCycles(ticks) (((ticks) * ((OS_CORE_CLOCK * 2) / OS_TIMER_CLOCK)) / 2)
@@ -50,7 +50,7 @@ u32 OSUncachedToCached(void* ucaddr);
 #define OSTicksToMilliseconds(ticks) ((ticks) / (OS_TIMER_CLOCK / 1000))
 #define OSTicksToMicroseconds(ticks) (((ticks)*8) / (OS_TIMER_CLOCK / 125000))
 #define OSTicksToNanoseconds(ticks) (((ticks)*8000) / (OS_TIMER_CLOCK / 125000))
-#define OSSecondsToTicks(sec) ((sec)*OS_TIMER_CLOCK) 
+#define OSSecondsToTicks(sec) ((sec)*OS_TIMER_CLOCK)
 #define OSMillisecondsToTicks(msec) ((msec) * (OS_TIMER_CLOCK / 1000))
 #define OSMicrosecondsToTicks(usec) (((usec) * (OS_TIMER_CLOCK / 125000)) / 8)
 #define OSNanosecondsToTicks(nsec) (((nsec) * (OS_TIMER_CLOCK / 125000)) / 8000)
@@ -60,52 +60,44 @@ u32 OSUncachedToCached(void* ucaddr);
 #define OSRoundUp32B(v) (((u32)(v + 31) & ~31))
 #define OSRoundDown32B(x) (((u32)(x)) & ~31)
 
-void* OSGetArenaHi(void);
-void* OSGetArenaLo(void);
-void OSSetArenaHi(void* newHi);
-void OSSetArenaLo(void* newLo);
-
-void* OSAllocFromArenaLo(u32 size, u32 align);
-void* OSAllocFromArenaHi(u32 size, u32 align);
-
 void OSInit();
 
 OSTime OSGetTime();
 OSTick OSGetTick();
 
 typedef struct OSCalendarTime {
-  int sec;  // seconds after the minute [0, 61]
-  int min;  // minutes after the hour [0, 59]
-  int hour; // hours since midnight [0, 23]
-  int mday; // day of the month [1, 31]
-  int mon;  // month since January [0, 11]
-  int year; // years in AD [1, ...]
-  int wday; // days since Sunday [0, 6]
-  int yday; // days since January 1 [0, 365]
+    int sec; // seconds after the minute [0, 61]
+    int min; // minutes after the hour [0, 59]
+    int hour; // hours since midnight [0, 23]
+    int mday; // day of the month [1, 31]
+    int mon; // month since January [0, 11]
+    int year; // years in AD [1, ...]
+    int wday; // days since Sunday [0, 6]
+    int yday; // days since January 1 [0, 365]
 
-  int msec; // milliseconds after the second [0,999]
-  int usec; // microseconds after the millisecond [0,999]
+    int msec; // milliseconds after the second [0,999]
+    int usec; // microseconds after the millisecond [0,999]
 } OSCalendarTime;
 
-OSTime OSCalendarTimeToTicks(OSCalendarTime* td);
-void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime* td);
+OSTime OSCalendarTimeToTicks(OSCalendarTime *td);
+void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
 
 typedef struct OSStopwatch {
-	char* name;
-	OSTime total;
-	u32 hits;
-	OSTime min;
-	OSTime max;
-	OSTime last;
-	BOOL running;
+    char *name;
+    OSTime total;
+    u32 hits;
+    OSTime min;
+    OSTime max;
+    OSTime last;
+    BOOL running;
 } OSStopwatch;
 
-void OSInitStopwatch(OSStopwatch* sw, char* name);
-void OSStartStopwatch(OSStopwatch* sw);
-void OSStopStopwatch(OSStopwatch* sw);
-OSTime OSCheckStopwatch(OSStopwatch* sw);
-void OSResetStopwatch(OSStopwatch* sw);
-void OSDumpStopwatch(OSStopwatch* sw);
+void OSInitStopwatch(OSStopwatch *sw, char *name);
+void OSStartStopwatch(OSStopwatch *sw);
+void OSStopStopwatch(OSStopwatch *sw);
+OSTime OSCheckStopwatch(OSStopwatch *sw);
+void OSResetStopwatch(OSStopwatch *sw);
+void OSDumpStopwatch(OSStopwatch *sw);
 
 #define OS_CONSOLE_MASK 0xf0000000
 #define OS_CONSOLE_RETAIL 0x00000000
@@ -159,7 +151,7 @@ void OSSetLanguage(u8 language);
 u32 OSGetEuRgb60Mode(void);
 void OSSetEuRgb60Mode(u32 on);
 
-void OSRegisterVersion(const char* id);
+void OSRegisterVersion(const char *id);
 
 BOOL OSDisableInterrupts(void);
 BOOL OSEnableInterrupts(void);
@@ -174,8 +166,7 @@ BOOL OSRestoreInterrupts(BOOL level);
 #endif
 
 #ifndef ASSERTMSG
-#if defined(__STDC_VERSION__) && (199901L <= __STDC_VERSION__) || defined(__MWERKS__) ||           \
-    defined(__SN__)
+#if defined(__STDC_VERSION__) && (199901L <= __STDC_VERSION__) || defined(__MWERKS__) || defined(__SN__)
 #define ASSERTMSG(exp, ...) (void)((exp) || (OSPanic(__FILE__, __LINE__, __VA_ARGS__), 0))
 #else
 #define ASSERTMSG(exp, msg) (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg)), 0))
@@ -183,23 +174,20 @@ BOOL OSRestoreInterrupts(BOOL level);
 #endif
 
 #ifndef ASSERTMSG1
-#define ASSERTMSG1(exp, msg, param1)                                                               \
-  (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1)), 0))
+#define ASSERTMSG1(exp, msg, param1) (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1)), 0))
 #endif
 
 #ifndef ASSERTMSG2
-#define ASSERTMSG2(exp, msg, param1, param2)                                                       \
-  (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1), (param2)), 0))
+#define ASSERTMSG2(exp, msg, param1, param2) (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1), (param2)), 0))
 #endif
 
 #ifndef ASSERTMSG3
-#define ASSERTMSG3(exp, msg, param1, param2, param3)                                               \
-  (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1), (param2), (param3)), 0))
+#define ASSERTMSG3(exp, msg, param1, param2, param3) (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1), (param2), (param3)), 0))
 #endif
 
 #ifndef ASSERTMSG4
-#define ASSERTMSG4(exp, msg, param1, param2, param3, param4)                                       \
-  (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1), (param2), (param3), (param4)), 0))
+#define ASSERTMSG4(exp, msg, param1, param2, param3, param4)                                                                                         \
+    (void)((exp) || (OSPanic(__FILE__, __LINE__, (msg), (param1), (param2), (param3), (param4)), 0))
 #endif
 
 #else // _DEBUG
@@ -209,8 +197,7 @@ BOOL OSRestoreInterrupts(BOOL level);
 #endif
 
 #ifndef ASSERTMSG
-#if defined(__STDC_VERSION__) && (199901L <= __STDC_VERSION__) || defined(__MWERKS__) ||           \
-    defined(__SN__)
+#if defined(__STDC_VERSION__) && (199901L <= __STDC_VERSION__) || defined(__MWERKS__) || defined(__SN__)
 #define ASSERTMSG(exp, ...) ((void)0)
 #else
 #define ASSERTMSG(exp, msg) ((void)0)
@@ -232,9 +219,9 @@ BOOL OSRestoreInterrupts(BOOL level);
 
 #endif // _DEBUG
 
-void OSReport(const char* msg, ...);
-void OSPanic(const char* file, int line, const char* msg, ...);
-void OSFatal(GXColor fg, GXColor bg, const char* msg);
+void OSReport(const char *msg, ...);
+void OSPanic(const char *file, int line, const char *msg, ...);
+void OSFatal(GXColor fg, GXColor bg, const char *msg);
 
 u32 OSGetPhysicalMemSize(void);
 u32 OSGetConsoleSimulatedMemSize(void);
@@ -253,6 +240,7 @@ u32 OSGetConsoleSimulatedMemSize(void);
 #include <dolphin/os/OSExpansion.h>
 #include <dolphin/os/OSFastCast.h>
 #include <dolphin/os/OSFont.h>
+#include <dolphin/os/OSIC.h>
 #include <dolphin/os/OSInterrupt.h>
 #include <dolphin/os/OSMemory.h>
 #include <dolphin/os/OSMessage.h>

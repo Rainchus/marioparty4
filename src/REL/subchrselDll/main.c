@@ -5,7 +5,7 @@
 #include "game/pad.h"
 #include "game/wipe.h"
 
-#include "rel_sqrt_consts.h"
+#include "math.h"
 
 static void SubchrMain(void);
 

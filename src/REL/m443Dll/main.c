@@ -11,7 +11,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "math.h"
-#include "rel_sqrt_consts.h"
+
 #include "string.h"
 
 #ifndef __MWERKS__
@@ -806,7 +806,6 @@ void fn_1_3770(omObjData *arg0)
     s32 var_r30;
     s32 var_r29;
     M443DllCameraStruct *var_r28;
-    omObjData *var_r27;
     s32 var_r26;
     u32 var_r25;
     s32 var_r24;

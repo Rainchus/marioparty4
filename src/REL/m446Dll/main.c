@@ -1,5 +1,5 @@
 #include "REL/m446Dll.h"
-#include "rel_sqrt_consts.h"
+#include "math.h"
 
 #include "game/audio.h"
 #include "game/frand.h"

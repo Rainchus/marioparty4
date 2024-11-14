@@ -3,7 +3,7 @@
 #include "game/gamework_data.h"
 #include "game/printfunc.h"
 #include "game/pad.h"
-#include "rel_sqrt_consts.h"
+#include "math.h"
 
 s32 lbl_1_data_0 = 100;
 s32 lbl_1_bss_0[192];

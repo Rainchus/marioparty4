@@ -12,7 +12,7 @@
 #include "game/pad.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
+
 #include "string.h"
 
 #include "REL/m453Dll.h"

@@ -16,8 +16,6 @@
 
 #include "REL/m431Dll.h"
 
-#include "rel_sqrt_consts.h"
-
 typedef struct bss_5C_struct {
     s16 unk0[6];
     s16 unkC[2];

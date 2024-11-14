@@ -14,8 +14,6 @@
 
 #include "ext_math.h"
 
-#include "rel_sqrt_consts.h"
-
 typedef struct struct_bss_2A6C StructBss2A6C;
 
 typedef struct struct_sp_14C8 StructSp14C8;

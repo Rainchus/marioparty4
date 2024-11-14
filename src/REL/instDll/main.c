@@ -21,8 +21,6 @@
 #include "ext_math.h"
 #include "math.h"
 
-#include "rel_sqrt_consts.h"
-
 #include "REL/instDll.h"
 
 static s16 lbl_1_data_0 = 1;
