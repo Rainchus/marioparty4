@@ -20,8 +20,6 @@
 
 #include "ext_math.h"
 
-#include "rel_sqrt_consts.h"
-
 #include "REL/m439data.h"
 
 typedef struct camera_params {

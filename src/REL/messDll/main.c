@@ -9,9 +9,8 @@
 
 #include "dolphin.h"
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
-extern s32 sprintf(char*, const char*, s32);
+extern s32 sprintf(char *, const char *, s32);
 
 static void fn_1_2BC(omObjData *arg0);
 static void fn_1_300(omObjData *arg0);
@@ -27,7 +26,8 @@ static u8 lbl_1_bss_4_pad[4];
 static s16 lbl_1_bss_2;
 static s16 lbl_1_bss_0;
 
-void ObjectSetup(void) {
+void ObjectSetup(void)
+{
     OSReport("******* SAFObjectSetup *********\n");
     lbl_1_bss_34 = omInitObjMan(0x32, 0x2000);
     CRot.x = -20.0f;
@@ -46,12 +46,14 @@ void ObjectSetup(void) {
     lbl_1_bss_8 = HuPrcChildCreate(fn_1_E88, 100, 0x3000, 0, lbl_1_bss_34);
 }
 
-static void fn_1_2BC(omObjData *arg0) {
+static void fn_1_2BC(omObjData *arg0)
+{
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 10);
     arg0->func = fn_1_300;
 }
 
-static void fn_1_300(omObjData *arg0) {
+static void fn_1_300(omObjData *arg0)
+{
     Vec sp2C;
     Vec sp20;
     Vec sp14;
@@ -79,14 +81,14 @@ static void fn_1_300(omObjData *arg0) {
     sp14.z = cosd(CRot.y) * sind(CRot.x);
     temp_f31 = CRot.z;
     sp8.x = sp14.x * (sp20.x * sp20.x + (1.0f - sp20.x * sp20.x) * cosd(temp_f31))
-          + sp14.y * (sp20.x * sp20.y * (1.0 - cosd(temp_f31)) - sp20.z * sind(temp_f31))
-          + sp14.z * (sp20.x * sp20.z * (1.0 - cosd(temp_f31)) + sp20.y * sind(temp_f31));
+        + sp14.y * (sp20.x * sp20.y * (1.0 - cosd(temp_f31)) - sp20.z * sind(temp_f31))
+        + sp14.z * (sp20.x * sp20.z * (1.0 - cosd(temp_f31)) + sp20.y * sind(temp_f31));
     sp8.y = sp14.x * (sp20.x * sp20.y * (1.0 - cosd(temp_f31)) + sp20.z * sind(temp_f31))
-          + sp14.y * (sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cosd(temp_f31))
-          + sp14.z * (sp20.y * sp20.z * (1.0 - cosd(temp_f31)) - sp20.x * sind(temp_f31));
+        + sp14.y * (sp20.y * sp20.y + (1.0f - sp20.y * sp20.y) * cosd(temp_f31))
+        + sp14.z * (sp20.y * sp20.z * (1.0 - cosd(temp_f31)) - sp20.x * sind(temp_f31));
     sp8.z = sp14.x * (sp20.x * sp20.z * (1.0 - cosd(temp_f31)) - sp20.y * sind(temp_f31))
-          + sp14.y * (sp20.y * sp20.z * (1.0 - cosd(temp_f31)) + sp20.x * sind(temp_f31))
-          + sp14.z * (sp20.z * sp20.z + (1.0f - sp20.z * sp20.z) * cosd(temp_f31));
+        + sp14.y * (sp20.y * sp20.z * (1.0 - cosd(temp_f31)) + sp20.x * sind(temp_f31))
+        + sp14.z * (sp20.z * sp20.z + (1.0f - sp20.z * sp20.z) * cosd(temp_f31));
     VECCrossProduct(&sp14, &sp20, &sp20);
     VECNormalize(&sp20, &sp20);
     temp_r31 = HuPadSubStkX[0] & 0xF8;
@@ -104,69 +106,19 @@ static void fn_1_300(omObjData *arg0) {
     }
 }
 
-static char *lbl_1_data_32C[] = {
-    "001_Character_Name_ss",
-    "002_Hidden_Block",
-    "003_Battle_M",
-    "004_Bowser_M",
-    "005_Warp_M",
-    "006_Mushroom_M",
-    "007_Lot_house",
-    "008_Boo_house",
-    "009_ItemName",
-    "010_Bord",
-    "011_RoundItem",
-    "012_Spaceamida",
-    "013_Star_M",
-    "014_RollerCoaster",
-    "015_Last5",
-    "016_ItemShop",
-    "017_System",
-    "018_ModeSelect",
-    "019_Item",
-    "020_Map2_event",
-    "021_Lucky_Minigame",
-    "022_Bord_Start",
-    "023_Map3_event",
-    "024_Minigame_Name",
-    "025_mg_446",
-    "026_debugmes",
-    "027_Party_Mode",
-    "028_SETUP",
-    "029_Miracle",
-    "030_mg_kuppa",
-    "031_Story_Mode",
-    "032_Bowser_Story",
-    "033_Map4_event",
-    "034_mg_inst",
-    "035_E3_only",
-    "036_saf",
-    "037_Mg_inst_sys_",
-    "038_Bord_Results",
-    "039_Bord_Results2",
-    "040_Map5_event",
-    "041_Mg_Mode",
-    "042_mg_445",
-    "043_mg_447",
-    "044_mg_448",
-    "045_mg_449",
-    "046_mg_450",
-    "047_tutorial",
-    "048_Option_Rooml",
-    "049_Map6_event",
-    "050_charley",
-    "051_Present_Room",
-    "052_Extra_Room",
-    "053_Staff_Post",
-    "054_Staff_Name",
-    "055_Opening_Demo",
-    "056_mgex_inst",
-    NULL
-};
+static char *lbl_1_data_32C[]
+    = { "001_Character_Name_ss", "002_Hidden_Block", "003_Battle_M", "004_Bowser_M", "005_Warp_M", "006_Mushroom_M", "007_Lot_house", "008_Boo_house",
+          "009_ItemName", "010_Bord", "011_RoundItem", "012_Spaceamida", "013_Star_M", "014_RollerCoaster", "015_Last5", "016_ItemShop", "017_System",
+          "018_ModeSelect", "019_Item", "020_Map2_event", "021_Lucky_Minigame", "022_Bord_Start", "023_Map3_event", "024_Minigame_Name", "025_mg_446",
+          "026_debugmes", "027_Party_Mode", "028_SETUP", "029_Miracle", "030_mg_kuppa", "031_Story_Mode", "032_Bowser_Story", "033_Map4_event",
+          "034_mg_inst", "035_E3_only", "036_saf", "037_Mg_inst_sys_", "038_Bord_Results", "039_Bord_Results2", "040_Map5_event", "041_Mg_Mode",
+          "042_mg_445", "043_mg_447", "044_mg_448", "045_mg_449", "046_mg_450", "047_tutorial", "048_Option_Rooml", "049_Map6_event", "050_charley",
+          "051_Present_Room", "052_Extra_Room", "053_Staff_Post", "054_Staff_Name", "055_Opening_Demo", "056_mgex_inst", NULL };
 
 static s16 lbl_1_data_410 = -1;
 
-static void fn_1_E88(void) {
+static void fn_1_E88(void)
+{
     s16 sp10[256]; // unknown size
     char spC[4];
     char sp8[4];
@@ -192,7 +144,7 @@ static void fn_1_E88(void) {
         var_r30 = (var_r28 << 16);
         var_r25 = 0;
         while (1) {
-            if ((s32) MessData_MesPtrGet(messDataPtr, var_r30 + var_r25) == 0) {
+            if ((s32)MessData_MesPtrGet(messDataPtr, var_r30 + var_r25) == 0) {
                 break;
             }
             sp10[var_r28]++;
@@ -226,13 +178,15 @@ static void fn_1_E88(void) {
                 var_r31 = 0;
             }
             var_r30 = 0;
-        } else if (temp_r3_2 & 0x40) {
+        }
+        else if (temp_r3_2 & 0x40) {
             var_r31--;
             if (var_r31 < 0) {
                 var_r31 = var_r27 - 1;
             }
             var_r30 = 0;
-        } else if (temp_r3_2 & 0x200) {
+        }
+        else if (temp_r3_2 & 0x200) {
             var_r30--;
             if (var_r30 < 0) {
                 var_r31--;
@@ -241,7 +195,8 @@ static void fn_1_E88(void) {
                 }
                 var_r30 = sp10[var_r31] - 1;
             }
-        } else {
+        }
+        else {
             var_r30++;
             if (var_r30 >= sp10[var_r31]) {
                 var_r31++;
@@ -255,18 +210,10 @@ static void fn_1_E88(void) {
     }
 }
 
-static char *lbl_1_data_440[] = {
-    "]1^",
-    "]2^",
-    "]3^",
-    "]4^",
-    "]5^",
-    "]6^",
-    "]7^",
-    "]8^"
-};
+static char *lbl_1_data_440[] = { "]1^", "]2^", "]3^", "]4^", "]5^", "]6^", "]7^", "]8^" };
 
-static s32 fn_1_11B0(s16 arg0, s16 arg1) {
+static s32 fn_1_11B0(s16 arg0, s16 arg1)
+{
     WindowData *temp_r30;
     float spC[2];
     s32 temp_r28;
@@ -285,7 +232,7 @@ static s32 fn_1_11B0(s16 arg0, s16 arg1) {
     }
     temp_r28 = MAKE_MESSID(arg0, arg1);
     for (i = 0; i < 8; i++) {
-        HuWinInsertMesSizeGet(MAKE_MESSID_PTR(lbl_1_data_440[i]), (s16) i);
+        HuWinInsertMesSizeGet(MAKE_MESSID_PTR(lbl_1_data_440[i]), (s16)i);
     }
     HuWinMesMaxSizeGet(1, &spC[0], temp_r28);
     if (spC[0] <= 16.0f) {
@@ -293,7 +240,7 @@ static s32 fn_1_11B0(s16 arg0, s16 arg1) {
     }
     lbl_1_data_410 = HuWinCreate(-10000.0f, -10000.0f, spC[0], spC[1], 0);
     for (i = 0; i < 8; i++) {
-        HuWinInsertMesSet(lbl_1_data_410, MAKE_MESSID_PTR(lbl_1_data_440[i]), (s16) i);
+        HuWinInsertMesSet(lbl_1_data_410, MAKE_MESSID_PTR(lbl_1_data_440[i]), (s16)i);
     }
     temp_r30 = &winData[lbl_1_data_410];
     temp_r30->push_key |= 0x360;

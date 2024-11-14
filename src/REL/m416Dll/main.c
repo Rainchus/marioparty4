@@ -17,8 +17,6 @@
 
 #include "REL/m416Dll.h"
 
-#include "rel_sqrt_consts.h"
-
 typedef struct camera_view_params {
     float zoom;
     Vec pos;

@@ -3,7 +3,6 @@
 #include "game/hsfdraw.h"
 #include "game/minigame_seq.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
 
 #include "REL/m417Dll.h"
 

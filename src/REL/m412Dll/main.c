@@ -12,7 +12,6 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "math.h"
-#include "rel_sqrt_consts.h"
 
 // bss
 s16 lbl_1_bss_7A0;

@@ -13,9 +13,6 @@
 #include "game/wipe.h"
 #include "math.h"
 
-
-#include "rel_sqrt_consts.h"
-
 Process *lbl_1_bss_0;
 // TODO: unknown type
 extern s32 lbl_1_bss_A8[];

@@ -6,14 +6,11 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 
-
 #include "REL/m434Dll.h"
 #include "ext_math.h"
 #include "game/gamework_data.h"
 #include "game/minigame_seq.h"
 #include "math.h"
-
-#include "rel_sqrt_consts.h"
 
 typedef struct camera_view {
     float zoom;

@@ -11,7 +11,7 @@
 #include "game/window.h"
 #include "game/wipe.h"
 
-#include "rel_sqrt_consts.h"
+#include "math.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;

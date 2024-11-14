@@ -4,7 +4,7 @@
 #include "dolphin/DVDPriv.h"
 #include "dolphin/types.h"
 
-typedef struct OSBootInfo {
+typedef struct OSBootInfo_s {
   DVDDiskID DVDDiskID;
   u32 magic;
   u32 version;

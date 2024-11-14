@@ -9,7 +9,6 @@
 #include "game/pad.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
-#include "rel_sqrt_consts.h"
 
 #include "REL/m438Dll.h"
 

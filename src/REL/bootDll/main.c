@@ -15,7 +15,6 @@
 #include "game/wipe.h"
 #include "math.h"
 
-#include "rel_sqrt_consts.h"
 
 #include "data_num/title.h"
 

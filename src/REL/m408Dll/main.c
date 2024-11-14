@@ -19,8 +19,6 @@
 #include "ext_math.h"
 #include "math.h"
 
-#include "rel_sqrt_consts.h"
-
 s32 lbl_1_data_0[] = {
     DATA_MAKE_NUM(DATADIR_MGCONST, 0x00),
     DATA_MAKE_NUM(DATADIR_MGCONST, 0x01),

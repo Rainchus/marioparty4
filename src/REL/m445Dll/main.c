@@ -18,7 +18,6 @@
 
 #include "dolphin.h"
 #include "ext_math.h"
-#include "rel_sqrt_consts.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;
