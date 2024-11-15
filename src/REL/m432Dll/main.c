@@ -1579,7 +1579,7 @@ void fn_1_6F28(UnkBss0Struct *arg0)
             fn_1_40C0(&var_r30->unk_00);
             var_f23 = var_r30->unk_00.unk_6C.y - arg0->unk_19C.y;
             arg0->unk_190.y += 0.03f * var_f23;
-            if (50.0f > (0.0f > var_f23 ? -var_f23 : var_f23)) {
+            if (50.0f > ABS(var_f23)) {
                 arg0->unk_1B4++;
                 arg0->unk_1A8 = arg0->unk_1C0;
                 arg0->unk_1A8.y += 900.0f;
@@ -1684,7 +1684,7 @@ void fn_1_7C1C(UnkBss0Struct *var_r31, UnkM432DllStruct *var_r30, UnkM432DllStru
         var_f30 = var_r31->unk_1EC / var_r31->unk_1E8;
         if (265.0f > var_f30) {
             var_f31 = 0.2f * (265.0f - var_f30);
-            if (1.0f <= (0.0f > var_f31 ? -var_f31 : var_f31)) {
+            if (1.0f <= ABS(var_f31)) {
                 var_r31->unk_28.z -= var_f31;
             }
         }
@@ -2808,7 +2808,7 @@ void fn_1_ED0C(omObjData *object)
     if ((var_r31->unk_180 == 0x7D3) && ((var_r31->unk_13C.x != 0.0f) || (var_r31->unk_13C.z != 0.0f))) {
         var_f30 = var_r31->unk_13C.x - var_r31->unk_00.unk_6C.x;
         var_f31 = var_r31->unk_13C.z - var_r31->unk_00.unk_6C.z;
-        if (var_r31->unk_00.unk_BC < (0.0f > var_f31 ? -var_f31 : var_f31)) {
+        if (var_r31->unk_00.unk_BC < ABS(var_f31)) {
             var_f30 = 0.0f;
         }
         var_f26 = sqrtf((var_f30 * var_f30) + (var_f31 * var_f31));
@@ -2969,8 +2969,8 @@ void fn_1_10250(omObjData *object)
         case 0x7DB:
             var_f31 = var_r31->unk_13C.x - var_r31->unk_00.unk_6C.x;
             var_f30 = var_r31->unk_13C.z - var_r31->unk_00.unk_6C.z;
-            if (1.0f > (0.0f > var_f31 ? -var_f31 : var_f31)) {
-                if (1.0f > (0.0f > var_f30 ? -var_f30 : var_f30)) {
+            if (1.0f > ABS(var_f31)) {
+                if (1.0f > ABS(var_f30)) {
                     var_r31->unk_180++;
                     var_r31->unk_160 = 0.0f;
                     var_r31->unk_164 = var_r31->unk_00.unk_6C.y;
@@ -2978,7 +2978,7 @@ void fn_1_10250(omObjData *object)
                     break;
                 }
             }
-            if (1.0f < (0.0f > var_f31 ? -var_f31 : var_f31)) {
+            if (1.0f < ABS(var_f31)) {
                 var_f30 = 0.0f;
             }
             var_f24 = sqrtf((var_f31 * var_f31) + (var_f30 * var_f30));
