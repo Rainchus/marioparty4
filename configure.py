@@ -1387,6 +1387,12 @@ config.libs = [
         },
     ),
     Rel(
+        "nisDll",
+        objects={
+            Object(Matching, "REL/nisDll/main.c")
+        },
+    ),
+    Rel(
         "option",
         objects={
             Object(Matching, "REL/option/scene.c"),
