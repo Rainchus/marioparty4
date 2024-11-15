@@ -18,6 +18,7 @@ This repository does **not** contain any game assets or assembly whatsoever. An 
 Supported versions:
 
 - `GMPE01_00`: Rev 0 (USA)
+- `GMPE01_01`: Rev 1 (USA)
 
 Dependencies
 ============
@@ -69,7 +70,7 @@ Building
   git submodule update --init --recursive
   ```
 
-- Copy your game's disc image to `orig/GMPE01_00`.
+- Copy your game's disc image to `orig/[GAMEID]`. The supported game IDs are listed above.
   - Supported formats: ISO (GCM), RVZ, WIA, WBFS, CISO, NFS, GCZ, TGC
   - After the initial build, the disc image can be deleted to save space.
 
@@ -77,6 +78,8 @@ Building
   ```
   python configure.py
   ```
+
+  To choose a version other than the USA Rev 0 one, add `--version [GAMEID]` to the command. 
 
 - Build:
   ```

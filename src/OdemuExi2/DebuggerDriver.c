@@ -2,7 +2,6 @@
 #include <dolphin/hw_regs.h>
 #include <dolphin/os.h>
 
-
 typedef void (*MTRCallbackType)(int);
 
 static MTRCallbackType MTRCallback;
@@ -268,8 +267,13 @@ u32 DBQueryData(void)
     if (!RecvDataLeng) {
         interrupts = OSDisableInterrupts();
         CheckMailBox();
+#if VERSION > 0
+        OSRestoreInterrupts(interrupts);
+    }
+#else
     }
     OSRestoreInterrupts(interrupts);
+#endif
     return RecvDataLeng;
 }
 
