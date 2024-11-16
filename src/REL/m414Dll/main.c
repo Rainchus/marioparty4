@@ -1582,7 +1582,7 @@ void fn_1_5A3C(void)
                 var_f31 = Hu3DMotionMaxTimeGet(var_r31->unk_00->unk_00[var_r29])
                     - (var_f27 / var_f29) * Hu3DMotionMaxTimeGet(var_r31->unk_00->unk_00[var_r29]);
             }
-            Hu3DMotionTimeSet(var_r31->unk_00->unk_00[var_r29], var_f31 >= 0.0f ? var_f31 : -var_f31);
+            Hu3DMotionTimeSet(var_r31->unk_00->unk_00[var_r29], ABS_INV(var_f31));
         }
         HuPrcVSleep();
     }
@@ -1597,7 +1597,7 @@ void fn_1_5A3C(void)
                 var_f31 = Hu3DMotionMaxTimeGet(var_r31->unk_00->unk_00[var_r29])
                     - (var_f27 / var_f29) * Hu3DMotionMaxTimeGet(var_r31->unk_00->unk_00[var_r29]);
             }
-            Hu3DMotionTimeSet(var_r31->unk_00->unk_00[var_r29], var_f31 >= 0.0f ? var_f31 : -var_f31);
+            Hu3DMotionTimeSet(var_r31->unk_00->unk_00[var_r29], ABS_INV(var_f31));
         }
         HuPrcVSleep();
     }
