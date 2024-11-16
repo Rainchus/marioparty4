@@ -30,6 +30,7 @@ from tools.project import (
 DEFAULT_VERSION = 0
 VERSIONS = [
     "GMPE01_00",  # USA 1.0
+    "GMPE01_01",  # USA 1.1
 ]
 
 parser = argparse.ArgumentParser()
@@ -244,6 +245,9 @@ cflags_odemuexi = [
     *cflags_base,
     # TODO figure out flags
 ]
+
+if version_num > 0:
+    cflags_odemuexi.append("-inline auto,deferred")
 
 cflags_amcstub = [
     *cflags_base,
@@ -760,11 +764,11 @@ config.libs = [
     ),
     {
         "lib": "OdemuExi2",
-        "mw_version": "GC/1.2.5",
+        "mw_version": "GC/1.2.5" if version_num == 0 else "GC/1.2.5n",
         "cflags": cflags_odemuexi,
         "host": False,
         "objects": [
-            Object(NonMatching, "OdemuExi2/DebuggerDriver.c"),
+            Object(MatchingFor("GMPE01_01"), "OdemuExi2/DebuggerDriver.c"),
         ],
     },
     {
@@ -844,7 +848,7 @@ config.libs = [
         "instDll",
         objects={
             Object(Matching, "REL/instDll/main.c"),
-            Object(NonMatching, "REL/instDll/font.c"),
+            Object(Matching, "REL/instDll/font.c"),
         },
     ),
     Rel(
@@ -1380,6 +1384,12 @@ config.libs = [
             Object(NonMatching, "REL/mstoryDll/mg_clear.c"),
             Object(NonMatching, "REL/mstoryDll/mg_miss.c"),
             Object(NonMatching, "REL/mstoryDll/save.c"),
+        },
+    ),
+    Rel(
+        "nisDll",
+        objects={
+            Object(Matching, "REL/nisDll/main.c")
         },
     ),
     Rel(

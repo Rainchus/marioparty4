@@ -714,6 +714,14 @@ float fn_1_CB70(Vec *arg0, Vec *arg1, Vec *arg2);
 
 s16 fn_1_B1E8(Vec *arg0, Vec *arg1, s16 arg2)
 {
+    Vec sp4C;
+    Vec sp40;
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    s32 spC;
+
     float temp_f31;
     float temp_f30;
     float temp_f28;
@@ -724,17 +732,8 @@ s16 fn_1_B1E8(Vec *arg0, Vec *arg1, s16 arg2)
     s32 temp_r27;
     Vec *temp_r25;
     u8 temp_r24;
-    s16 temp_r23;
-    Vec sp4C;
 
-    Vec sp40;
-    Vec sp34;
-    Vec sp28;
-    Vec sp1C;
-    Vec sp10;
-    s32 spC;
-
-    temp_r23 = -1;
+    s16 temp_r23 = -1;
     spC = 1;
     temp_f28 = VECMag(arg1);
     sp1C = *arg1;
@@ -845,6 +844,12 @@ s16 fn_1_B1E8(Vec *arg0, Vec *arg1, s16 arg2)
                 if (temp_f31 < 0.0f) {
                     temp_f28 -= temp_f31;
                     temp_f31 = ABS(temp_f31);
+#if VERSION > 0
+                    if (temp_f31 == 0.0) {
+                        sp1C.x = sp1C.y = sp1C.z = 0.0f;
+                        break;
+                    }
+#endif
                 }
                 sp34 = sp40;
                 sp34.z = 1;
@@ -881,6 +886,13 @@ s16 fn_1_B1E8(Vec *arg0, Vec *arg1, s16 arg2)
         }
     }
     temp_f31 = VECMag(arg1);
+#if VERSION > 0
+    if (VECMag(&sp1C) == 0.0) {
+        sp1C.x = 0.0f;
+        sp1C.y = 1.0f;
+        sp1C.z = 0.0f;
+    }
+#endif
     VECNormalize(&sp1C, &sp1C);
     VECScale(&sp1C, arg1, temp_f31);
     if (temp_r27 != 0) {
@@ -894,12 +906,16 @@ s16 fn_1_B1E8(Vec *arg0, Vec *arg1, s16 arg2)
         VECSubtract(temp_r28, arg0, &sp34);
         temp_f30 = VECMag(&sp34);
         if (temp_f30 < 3.0f && VECMag(arg1) < 1.0f) {
-            arg1->x = arg1->y = arg1->z = 0;
+            arg1->x = arg1->y = arg1->z = 0.0f;
             *arg0 = *temp_r28;
             temp_r23 = temp_r30;
             break;
         }
-        if (temp_f30 < 20.0f) {
+        if (temp_f30 < 20.0f
+#if VERSION > 0
+            && !(temp_f30 < 0.000001)
+#endif
+        ) {
             VECScale(arg1, arg1, 0.9f);
             VECNormalize(&sp34, &sp34);
             VECScale(&sp34, &sp34, 0.1 * (20.0f - temp_f30));
@@ -909,6 +925,11 @@ s16 fn_1_B1E8(Vec *arg0, Vec *arg1, s16 arg2)
     }
     if (temp_r30 == lbl_1_data_3A4[arg2]) {
         arg1->y += 0.3;
+#if VERSION > 0
+        if (VECMag((Vec *)&arg1) < 0.000001) {
+            arg1->y += 0.3;
+        }
+#endif
     }
     if (arg0->x >= lbl_1_bss_77C.x - 13.0f) {
         arg0->x = lbl_1_bss_77C.x - 13.0f - 1.0f;
