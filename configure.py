@@ -821,7 +821,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/executor.c"),
+            Object(Matching, "REL/executor.c"),
             Object(Matching, "REL/empty.c"),  # Must be marked as matching
             Object(Matching, "REL/board_executor.c"),
         ],
@@ -995,11 +995,11 @@ config.libs = [
     Rel(
         "m420dll",  # Fish n' Drips
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m420dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m420dll/camera.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m420dll/player.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m420dll/map.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m420dll/rand.c"),
+            Object(Matching, "REL/m420dll/main.c"),
+            Object(Matching, "REL/m420dll/camera.c"),
+            Object(Matching, "REL/m420dll/player.c"),
+            Object(Matching, "REL/m420dll/map.c"),
+            Object(Matching, "REL/m420dll/rand.c"),
         },
     ),
     Rel(
@@ -1063,7 +1063,7 @@ config.libs = [
     Rel(
         "m429Dll",  # Team Treasure Trek
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m429Dll/main.c"),
+            Object(Matching, "REL/m429Dll/main.c"),
         },
     ),
     Rel(
@@ -1077,8 +1077,8 @@ config.libs = [
     Rel(
         "m431Dll",  # Order Up
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m431Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m431Dll/object.c"),
+            Object(Matching, "REL/m431Dll/main.c"),
+            Object(Matching, "REL/m431Dll/object.c"),
         },
     ),
     Rel(
@@ -1221,7 +1221,7 @@ config.libs = [
     Rel(
         "m450Dll",  # The Final Battle!
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m450Dll/main.c"),
+            Object(Matching, "REL/m450Dll/main.c"),
         },
     ),
     Rel(
@@ -1397,15 +1397,15 @@ config.libs = [
     Rel(
         "option",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/scene.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/camera.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/room.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/guide.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/state.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/rumble.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/sound.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/record.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/option/window.c"),
+            Object(Matching, "REL/option/scene.c"),
+            Object(Matching, "REL/option/camera.c"),
+            Object(Matching, "REL/option/room.c"),
+            Object(Matching, "REL/option/guide.c"),
+            Object(Matching, "REL/option/state.c"),
+            Object(Matching, "REL/option/rumble.c"),
+            Object(Matching, "REL/option/sound.c"),
+            Object(Matching, "REL/option/record.c"),
+            Object(Matching, "REL/option/window.c"),
         },
     ),
     Rel(
@@ -1498,7 +1498,7 @@ config.libs = [
         objects={
             Object(Matching, "REL/w05Dll/main.c"),
             Object(Matching, "REL/w05Dll/hotel.c"),
-            Object(Matching,"REL/w05Dll/monkey.c"),
+            Object(Matching, "REL/w05Dll/monkey.c"),
             Object(Matching, "REL/w05Dll/dolphin.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w05Dll/mg_item.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w05Dll/mg_coin.c"),
