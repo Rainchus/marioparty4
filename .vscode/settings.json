@@ -22,7 +22,10 @@
     "m443dll.h": "c",
     "object.h": "c",
     "m417dll.h": "c",
-    "m418dll.h": "c"
+    "m418dll.h": "c",
+    "hsfman.h": "c",
+    "math.h": "c",
+    "corecrt_math.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {

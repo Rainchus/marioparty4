@@ -1,9 +1,10 @@
+#include "math.h"
+#include "ext_math.h"
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 #include "game/minigame_seq.h"
 #include "game/object.h"
 #include "game/objsub.h"
-#include "rel_sqrt_consts.h"
 
 #include "REL/m418Dll.h"
 
@@ -27,7 +28,7 @@ typedef struct M418DllUnkStruct4 {
     s32 unkC;
     s32 unk10;
     f32 unk14;
-    char unk18[0x4];
+    f32 unk18;
 } M418DllUnkStruct4; // sizeof 0x1C
 
 typedef struct M418DllUnkStruct5 {
@@ -54,7 +55,11 @@ s32 lbl_1_bss_4;
 Process* lbl_1_bss_0;
 
 // data
+s32 lbl_1_data_0[2] = { -1, -1 };
 s32 lbl_1_data_8 = -1;
+
+// protos
+void fn_1_AD14(omObjData*, s32, s32, s32, s32);
 
 void fn_1_0(void) {
     Hu3DGLightCreate(-2500.0f, 5000.0f, 5000.0f, 0.0f, -1.0f, -1.0f, 0xFF, 0xD8, 0xA0);
@@ -410,5 +415,193 @@ void fn_1_18AC(omObjData* object) {
     var_r31 = &lbl_1_bss_11C[object->work[0]];
     if (var_r31->unk14 == 0.0f) {
         var_r31->unk14 = 1.0f;
+    }
+}
+
+s32 fn_1_18FC(omObjData* object, Vec arg1, f32 arg8, f32 arg9) {
+    M418DllUnkStruct4* temp_r30;
+    s32 var_r28;
+    f32 var_f31;
+    f32 var_f30;
+    f32 var_f27;
+    f32 var_f26;
+    f32 var_f24;
+    f32 var_f20;
+
+    var_r28 = 0;
+    temp_r30 = &lbl_1_bss_11C[object->work[0]];
+    var_f31 = arg1.x - object->trans.x;
+    var_f30 = object->trans.z - arg1.z;
+    var_f26 = 90.0 + atan2d(var_f30, var_f31);
+    var_f27 = sqrtf((var_f31 * var_f31) + (var_f30 * var_f30));
+    if (var_f27 <= 15.0f) {
+        var_f31 = var_f30 = 0.0f;
+    } else {
+        var_f31 = 55.0f * (var_f31 / var_f27);
+        var_f30 = 55.0f * (var_f30 / var_f27);
+    }
+    if (temp_r30->unk14 == 1.0f) {
+        temp_r30->unk18 = -1.47f;
+    }
+    var_f27 = arg9 * (sqrtf((var_f31 * var_f31) + (var_f30 * var_f30)) / 72.0f);
+    if (var_f27 >= arg9) {
+        var_f27 = arg9;
+    } else if (var_f27 <= 1.0f) {
+            var_f31 = var_f30 = var_f27 = 0.0f;
+            var_r28 = 1;
+    }
+    if (var_f31 != 0.0f || var_f30 != 0.0f || arg8 >= 0.0f) {
+        if (arg8 >= 0.0f && var_f31 == 0.0f && var_f30 == 0.0f) {
+            var_f26 = arg8;
+        }
+        if (var_f26 >= 180.0f) {
+            if (object->rot.y - var_f26 >= 180.0f) {
+                object->rot.y -= 360.0f;
+            }
+            if (object->rot.y - var_f26 < -180.0f) {
+                object->rot.y += 360.0f;
+            }
+        } else {
+            if (object->rot.y - var_f26 > 180.0f) {
+                object->rot.y -= 360.0f;
+            }
+            if (object->rot.y - var_f26 <= -180.0f) {
+                object->rot.y += 360.0f;
+            }
+        }
+        object->rot.y = (((9.0f * object->rot.y) + var_f26) / 10.0f);
+    }
+    object->trans.x += var_f27 * sind(object->rot.y);
+    object->trans.z += var_f27 * cosd(object->rot.y);
+    if (temp_r30->unk14) {
+        temp_r30->unk14 = 2.0f;
+        if (temp_r30->unk18 > 1.7f) {
+            temp_r30->unk18 = 1.7f;
+        }
+        var_f20 = (temp_r30->unk18 * temp_r30->unk18) * (temp_r30->unk18 >= 0.0f ? -3.5f : 3.5f);
+        object->trans.y += var_f20;
+        if (object->trans.y <= arg1.y) {
+            object->trans.y = arg1.y;
+            temp_r30->unk14 = temp_r30->unk18 = 0.0f;
+            var_r28 = 2;
+        }
+        temp_r30->unk18 += 0.11f;
+    }
+    if (var_f27 > 0.0f) {
+        fn_1_AD14(object, 0, 1, 10, 1);
+    } else {
+        fn_1_AD14(object, 0, 0, 10, 1);
+    }
+    return var_r28;
+}
+
+s32 fn_1_20B0(omObjData* object, Vec arg1, f32 arg8, f32 arg9, s32 arg2) {
+    if (arg2 == 1) fn_1_18AC(object);
+    return fn_1_18FC(object, arg1, arg9, arg8);
+}
+
+Vec lbl_1_data_8C[9] = {
+    {  140.0f,    0.0f,  -90.0f },
+    { -200.0f,    0.0f,   50.0f },
+    { -300.0f,    0.0f, -150.0f },
+    { -250.0f,    0.0f, -500.0f },
+    {    0.0f,    0.0f,  150.0f },
+    {  700.0f,    0.0f,   50.0f },
+    { 1000.0f,  -50.0f,  500.0f },
+    { 1000.0f, -100.0f,  500.0f },
+    { 1000.0f, -150.0f,  500.0f }
+};
+
+s32 fn_1_2178(omObjData* object) {
+    s32 var_r30;
+    
+    switch (object->work[1]) {
+        case 1:
+            object->work[2] = 0;
+            object->work[1] = 10;
+        case 10:
+            fn_1_20B0(object, lbl_1_data_8C[1], 0.0f, 25.0f, 0);
+            if (object->work[2]++ >= 15) {
+                object->work[1] = 11;
+                object->work[2] = 0;
+            }
+            break;
+        case 11:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[1], 6.0f, -1.0f, 0);
+            if (var_r30 != 0) {
+                object->work[1] = 12;
+                object->work[2] = 0;
+            }
+            break;
+        case 12:
+            fn_1_20B0(object, lbl_1_data_8C[1], 0.0f, 0.0f, 0);
+            if (object->work[2]++ >= 15) {
+                object->work[1] = 13;
+                object->work[2] = 0;
+            }
+            break;
+            
+        case 2:
+            object->work[2] = 0;
+            object->work[1] = 0x14;
+        case 20:
+            fn_1_20B0(object, lbl_1_data_8C[0], 0.0f, 25.0f, 0);
+            if (object->work[2]++ >= 15) {
+                object->work[1] = 21;
+                object->work[2] = 0;
+            }
+            break;
+        case 21:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[4], 6.0f, -1.0f, 0);
+            if (var_r30 != 0) {
+                object->work[1] = 22;
+                object->work[2] = 0;
+            }
+            break;
+        case 22:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[0], 6.0f, 0.0f, 0);
+            if (var_r30 != 0) {
+                object->work[1] = 24;
+                object->work[2] = 0;
+            }
+            break;
+        case 23:
+            fn_1_20B0(object, lbl_1_data_8C[1], 0.0f, 0.0f, 0);
+            if (object->work[2]++ >= 30) {
+                object->work[1] = 24;
+                object->work[2] = 0;
+            }
+            break;
+        case 3:
+            object->work[2] = 0;
+            object->work[1] = 30;
+        case 30:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[5], 6.0f, -1.0f, 0);
+            if (var_r30 == 1) {
+                object->work[1] = 31;
+                object->work[2] = 0;
+            }
+            break;
+        case 31:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[6], 6.0f, -1.0f, 1);
+            if (var_r30 != 0) {
+                object->work[1] = 32;
+                object->work[2] = 0;
+            }
+            break;
+        case 32:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[7], 6.0f, -1.0f, 1);
+            if (var_r30 != 0) {
+                object->work[1] = 33;
+                object->work[2] = 0;
+            }
+            break;
+        case 33:
+            var_r30 = fn_1_20B0(object, lbl_1_data_8C[8], 6.0f, -1.0f, 1);
+            if (var_r30 != 0) {
+                object->work[1] = 34;
+                object->work[2] = 0;
+            }
+            break;
     }
 }
