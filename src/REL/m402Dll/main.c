@@ -22,6 +22,7 @@
 
 #include "dolphin.h"
 #include "ext_math.h"
+#include "version.h"
 
 #undef ABS
 #define ABS(x) ((0 > (x)) ? -(x) : (x))
@@ -1671,7 +1672,7 @@ static void fn_1_8218(omObjData *arg0)
             }
             break;
         case 1006:
-            MGSeqParamSet(lbl_1_bss_1A8, 1, (lbl_1_bss_1B0 + 59) / 60);
+            MGSeqParamSet(lbl_1_bss_1A8, 1, (lbl_1_bss_1B0 + REFRESH_RATE - 1) / REFRESH_RATE);
             lbl_1_bss_1B0--;
             if (lbl_1_bss_1B0 < 0 || lbl_1_bss_26 >= 0) {
                 lbl_1_bss_1B0 = 1800;

@@ -1121,8 +1121,8 @@ config.libs = [
     Rel(
         "m437Dll",  # Balloon of Doom
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m437Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m437Dll/sequence.c"),
+            Object(Matching, "REL/m437Dll/main.c"),
+            Object(Matching, "REL/m437Dll/sequence.c"),
         },
     ),
     Rel(

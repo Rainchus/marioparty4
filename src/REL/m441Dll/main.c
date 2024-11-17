@@ -21,6 +21,7 @@
 #include "game/sprite.h"
 
 #include "ext_math.h"
+#include "version.h"
 
 #undef ABS
 #define ABS(x) ((0 > (x)) ? -(x) : (x))
@@ -1876,7 +1877,7 @@ void fn_1_8D58(omObjData *object)
             break;
 
         case 1004:
-            MGSeqParamSet(lbl_1_bss_19C, 1, (lbl_1_bss_1A4 + 59) / 60);
+            MGSeqParamSet(lbl_1_bss_19C, 1, (lbl_1_bss_1A4 + REFRESH_RATE - 1) / REFRESH_RATE);
             lbl_1_bss_1A4--;
             if (lbl_1_bss_1A4 < 0) {
                 object->work[0] = 1005;
