@@ -11,6 +11,7 @@
 #include "game/gamework_data.h"
 #include "game/minigame_seq.h"
 #include "math.h"
+#include "version.h"
 
 typedef struct camera_view {
     float zoom;
@@ -127,9 +128,9 @@ void fn_1_558(omObjData *object)
     switch (fn_1_1D54()) {
         case 0:
             lbl_1_bss_3C2 = 60;
-            lbl_1_bss_3C0 = 60;
+            lbl_1_bss_3C0 = REFRESH_RATE;
             fn_1_1D64(1);
-            lbl_1_bss_10[1] = 60;
+            lbl_1_bss_10[1] = REFRESH_RATE;
             WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
             HuAudFXPlay(1736);
             break;
@@ -160,7 +161,7 @@ void fn_1_558(omObjData *object)
             if (--lbl_1_bss_3C0 == 0) {
                 lbl_1_bss_3C2--;
                 MGSeqParamSet(lbl_1_bss_3B8, 1, lbl_1_bss_3C2);
-                lbl_1_bss_3C0 = 60;
+                lbl_1_bss_3C0 = REFRESH_RATE;
             }
             if (!lbl_1_bss_3C2 || lbl_1_bss_3A8 == 1) {
                 fn_1_1D64(3);
@@ -178,7 +179,7 @@ void fn_1_558(omObjData *object)
             }
             if (MGSeqStatGet(lbl_1_bss_3BC) == 0) {
                 fn_1_1D64(4);
-                lbl_1_bss_10[1] = 60;
+                lbl_1_bss_10[1] = REFRESH_RATE;
             }
             break;
 
@@ -215,7 +216,7 @@ void fn_1_558(omObjData *object)
                         break;
                 }
                 fn_1_1D64(5);
-                lbl_1_bss_10[1] = 210;
+                lbl_1_bss_10[1] = 3.5 * REFRESH_RATE;
             }
             break;
 

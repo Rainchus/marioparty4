@@ -1084,7 +1084,7 @@ config.libs = [
     Rel(
         "m432Dll",  # Dungeon Duos
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m432Dll/main.c"),
+            Object(Matching, "REL/m432Dll/main.c"),
         },
     ),
     Rel(
@@ -1098,10 +1098,10 @@ config.libs = [
     Rel(
         "m434Dll",  # Cheep Cheep Sweep
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m434Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m434Dll/map.c"),
+            Object(Matching, "REL/m434Dll/main.c"),
+            Object(Matching, "REL/m434Dll/map.c"),
             Object(NonMatching, "REL/m434Dll/player.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m434Dll/fish.c"),
+            Object(Matching, "REL/m434Dll/fish.c"),
         },
     ),
     Rel(

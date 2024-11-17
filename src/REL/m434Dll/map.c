@@ -14,6 +14,7 @@
 #include "game/gamework_data.h"
 #include "game/minigame_seq.h"
 #include "math.h"
+#include "version.h"
 
 typedef struct bss_2468_data {
     Vec unk0;
@@ -531,8 +532,8 @@ void fn_1_3CC8(ModelData *model, Mtx mtx)
         if (temp_r31->unkC == 0) {
             continue;
         }
-        temp_f31 = (0.2f + cosd((90.0f * temp_r31->unkC) / 60.0f)) * 128.0f;
-        lbl_1_data_174.a = 255.0f * sind((90.0f * temp_r31->unkC) / 60.0f);
+        temp_f31 = (0.2f + cosd((90.0f * temp_r31->unkC) / REFRESH_RATE)) * 128.0f;
+        lbl_1_data_174.a = 255.0f * sind((90.0f * temp_r31->unkC) / REFRESH_RATE);
         GXSetChanMatColor(GX_COLOR0A0, lbl_1_data_174);
         MTXScale(sp14, 0.5f * temp_f31, 0.5f * temp_f31, 1.0f);
         mtxTransCat(sp14, (200.0f * (600.0f + temp_r31->unk0.x)) / 1200.0f, (200.0f * (600.0f + temp_r31->unk0.z)) / 1200.0f, 0);
@@ -550,7 +551,7 @@ void fn_1_43AC(Vec *arg0)
         temp_r31->unk0.x = arg0->x;
         temp_r31->unk0.y = arg0->y;
         temp_r31->unk0.z = arg0->z;
-        temp_r31->unkC = 60;
+        temp_r31->unkC = REFRESH_RATE;
         lbl_1_bss_2464 = (lbl_1_bss_2464 + 1) % 64;
         return;
     }

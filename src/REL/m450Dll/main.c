@@ -836,6 +836,12 @@ s32 lbl_1_bss_8;
 s32 lbl_1_bss_4;
 s32 lbl_1_bss_0;
 
+#if VERSION_NTSC
+#define _1606_BY_REFRESH_RATE 26.766666f
+#else
+#define _1606_BY_REFRESH_RATE 32.120003f
+#endif
+
 void fn_1_23B4(WorkPlayerOld *player)
 {
     s32 i;
@@ -1019,7 +1025,7 @@ void fn_1_2E34(WorkPlayerOld *player)
                     player->unk_3C |= 0x100;
                     player->unk_A4 = 0;
                     if (!(player2->unk_3C & 0x100)) {
-                        player->unk_84.y = VERSION_NTSC ? 26.766666f : 32.120003f;
+                        player->unk_84.y = _1606_BY_REFRESH_RATE;
                     }
                 }
                 if (state == 3) {
@@ -1123,7 +1129,7 @@ void fn_1_3CE0(WorkPlayerOld *player, s32 *state, u32 *motAttr)
     }
 
     if (player->unk_14[3] >= 0 && (player->unk_28 & 0x100)) {
-        fn_1_2BD0(player, VERSION_NTSC ? 26.766666f : 32.120003f, 1.0f);
+        fn_1_2BD0(player, _1606_BY_REFRESH_RATE, 1.0f);
         *motAttr = HU3D_MOTATTR_NONE;
         *state = 3;
     }

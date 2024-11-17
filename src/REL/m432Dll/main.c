@@ -26,6 +26,7 @@
 #include "ext_math.h"
 
 #include "string.h"
+#include "version.h"
 
 #ifndef __MWERKS__
 #include "game/audio.h"
@@ -75,6 +76,12 @@ s32 lbl_1_bss_56C;
 float lbl_1_bss_568;
 s32 lbl_1_bss_528[16];
 UnkBss428Struct lbl_1_bss_428[32];
+
+#if VERSION_NTSC
+#define _1606_BY_REFRESH_RATE 26.766666f
+#else
+#define _1606_BY_REFRESH_RATE 32.120003f
+#endif
 
 void fn_1_0(void)
 {
@@ -738,7 +745,7 @@ void fn_1_2E34(WorkPlayerOld *player)
                     player->unk_3C |= 0x100;
                     player->unk_A4 = 0;
                     if (!(player2->unk_3C & 0x100)) {
-                        player->unk_84.y = 26.766666f;
+                        player->unk_84.y = _1606_BY_REFRESH_RATE;
                     }
                 }
                 if (state == 3) {
@@ -842,7 +849,7 @@ void fn_1_3CE0(WorkPlayerOld *player, s32 *state, u32 *motAttr)
     }
 
     if (player->unk_14[3] >= 0 && (player->unk_28 & 0x100)) {
-        fn_1_2BD0(player, 26.766666f, 1);
+        fn_1_2BD0(player, _1606_BY_REFRESH_RATE, 1);
         *motAttr = HU3D_MOTATTR_NONE;
         *state = 3;
     }
@@ -857,14 +864,14 @@ void fn_1_3DB8(WorkPlayerOld *player, s32 *state, u32 *motAttr)
                 player->unk_A4 = 0;
             }
             else {
-                player->unk_84.y += 3.65f;
+                player->unk_84.y += 219.0f / REFRESH_RATE;
             }
         }
         else {
             player->unk_A4 = 0;
         }
     }
-    player->unk_84.y += -2.4333334f;
+    player->unk_84.y += -146.0f / REFRESH_RATE;
     if (player->unk_14[5] >= 0 && (player->unk_28 & 0x140)) {
         player->unk_38 = 3;
         player->unk_84.y = 0;
@@ -1317,7 +1324,7 @@ void fn_1_52B8(UnkM432DllBss0SubStruct *arg0, Vec *arg1)
 void fn_1_5364(s32 arg0, omObjData *object)
 {
     if (lbl_1_bss_0[arg0].unk_1D8 >= 0) {
-        lbl_1_bss_0[arg0].unk_1DC -= 0.016666668f;
+        lbl_1_bss_0[arg0].unk_1DC -= 1.0f / REFRESH_RATE;
         if (0.0f >= lbl_1_bss_0[arg0].unk_1DC) {
             HuAudFXStop(lbl_1_bss_0[arg0].unk_1D8);
             lbl_1_bss_0[arg0].unk_1D8 = -1;
@@ -2241,7 +2248,7 @@ void fn_1_B234(void)
     u32 var_r28;
 
     if (HuPadBtn[0] & 2) {
-        lbl_1_bss_57C = 0x4650;
+        lbl_1_bss_57C = 300 * REFRESH_RATE;
     }
     print8(0x18, 0x20, 1.5f, "COUNT:%d MODE:%d MES:%d", lbl_1_bss_580, lbl_1_bss_41C->work[0], lbl_1_bss_576);
     print8(0x18, 0x30, 1.5f, "%f %f %f %f", lbl_1_bss_0[0].unk_64, lbl_1_bss_0[0].unk_68, lbl_1_bss_0[0].unk_6C, lbl_1_bss_0[0].unk_28.z);
@@ -2487,7 +2494,7 @@ void fn_1_C724(UnkM432DllStruct *var_r31, omObjData *var_r25, omObjData *var_r24
     var_r30 = &lbl_1_bss_0[var_r31->unk_184 >> 1];
     fn_1_BF9C(var_r31);
     if (fn_1_BF08(var_r31) == 0x7D4) {
-        var_r30->unk_1D4 += 1.0f - (2.0f * (var_r31->unk_14C / 60.0f));
+        var_r30->unk_1D4 += 1.0f - (2.0f * (var_r31->unk_14C / REFRESH_RATE));
         if (0.0f > var_r30->unk_1D4) {
             var_r30->unk_1D4 = 0.0f;
         }
@@ -2502,7 +2509,7 @@ void fn_1_C724(UnkM432DllStruct *var_r31, omObjData *var_r25, omObjData *var_r24
     }
     else {
         var_r31->unk_14C += 1.0f;
-        var_r30->unk_1D4 -= 0.016666668f;
+        var_r30->unk_1D4 -= 1.0f / REFRESH_RATE;
         if (0.0f > var_r30->unk_1D4) {
             var_r30->unk_1D4 = 0.0f;
         }
@@ -2538,7 +2545,7 @@ void fn_1_D0E0(UnkM432DllStruct *arg0, omObjData *arg1, omObjData *arg2)
 {
     fn_1_BF9C(arg0);
     if (fn_1_BF08(arg0) == 0x7D5) {
-        lbl_1_bss_0[arg0->unk_184 >> 1].unk_1DC += 1.0f - (2.0f * (arg0->unk_14C / 60.0f));
+        lbl_1_bss_0[arg0->unk_184 >> 1].unk_1DC += 1.0f - (2.0f * (arg0->unk_14C / REFRESH_RATE));
         if (0.0f > lbl_1_bss_0[arg0->unk_184 >> 1].unk_1DC) {
             lbl_1_bss_0[arg0->unk_184 >> 1].unk_1DC = 0.0f;
         }
@@ -2705,7 +2712,7 @@ void fn_1_E9E4(UnkM432DllStruct *arg0)
             var_f28 = 100.0f;
         }
         if ((arg0->unk_C8->unk_2C.y + var_f28) > arg0->unk_00.unk_6C.y) {
-            arg0->unk_00.unk_84.y = 26.766666f;
+            arg0->unk_00.unk_84.y = _1606_BY_REFRESH_RATE;
             arg0->unk_00.unk_A4 = 1.0f;
             return;
         }
@@ -2938,7 +2945,7 @@ void fn_1_10250(omObjData *object)
             var_r31->unk_00.unk_2C = 0x100;
             fn_1_40C0(&var_r31->unk_00);
             if (200.0f > var_r31->unk_00.unk_6C.y) {
-                var_r31->unk_00.unk_84.y = 26.766666f;
+                var_r31->unk_00.unk_84.y = _1606_BY_REFRESH_RATE;
                 var_r31->unk_00.unk_A4 = 1.0f;
             }
             else {
@@ -3296,6 +3303,7 @@ void fn_1_128C8(omObjData *object)
                 lbl_1_bss_0[var_r31].unk_1F0[1] = 0.0f;
             }
         }
+#if VERSION_NTSC
         if (lbl_1_bss_41C->work[0] >= 0x3EC) {
             for (var_r31 = 0; var_r31 < 2; var_r31++) {
                 if (lbl_1_bss_0[var_r31].unk_1CC >= 0) {
@@ -3312,6 +3320,7 @@ void fn_1_128C8(omObjData *object)
                 lbl_1_bss_0[var_r31].unk_1D8 = -1;
             }
         }
+#endif
     }
 }
 
@@ -3416,16 +3425,16 @@ void fn_1_131A8(omObjData *var_r28)
         case 0x3EB:
             lbl_1_bss_57C++;
             if (lbl_1_bss_574 >= 0) {
-                MGSeqParamSet(lbl_1_bss_574, 1, (0x468B - lbl_1_bss_57C) / 60);
+                MGSeqParamSet(lbl_1_bss_574, 1, (300 * REFRESH_RATE + REFRESH_RATE - 1 - lbl_1_bss_57C) / REFRESH_RATE);
             }
-            else if (lbl_1_bss_57C > 0x3F48) {
-                lbl_1_bss_574 = MGSeqCreate(1, (0x468B - lbl_1_bss_57C) / 60, -1, -1);
+            else if (lbl_1_bss_57C > 270 * REFRESH_RATE) {
+                lbl_1_bss_574 = MGSeqCreate(1, (300 * REFRESH_RATE + REFRESH_RATE - 1 - lbl_1_bss_57C) / REFRESH_RATE, -1, -1);
                 MGSeqPosSet(lbl_1_bss_574, 288.0f, 400.0f);
             }
             fn_1_580(lbl_1_bss_528, 0, lbl_1_bss_57C);
 
             fn_1_12EA8();
-            if ((lbl_1_bss_57C >= 0x4650) || (lbl_1_bss_3FC >= 0)) {
+            if ((lbl_1_bss_57C >= 300 * REFRESH_RATE) || (lbl_1_bss_3FC >= 0)) {
                 var_r28->work[0] = 0x3EC;
                 lbl_1_bss_3F0 = 0.0f;
             }
@@ -3453,7 +3462,7 @@ void fn_1_131A8(omObjData *var_r28)
                 lbl_1_bss_3F0 += 1.0f;
                 if ((var_r17 >= 4) && (60.0f <= lbl_1_bss_3F0) && (MGSeqStatGet(lbl_1_bss_576) == 0)) {
                     var_r28->work[0] = 0x3EE;
-                    if ((lbl_1_bss_3FC >= 0) && (lbl_1_bss_57C < 0x1518)) {
+                    if ((lbl_1_bss_3FC >= 0) && (lbl_1_bss_57C < (VERSION_NTSC ? 5400 : 5250))) {
                         if (GWPlayerCfg[fn_1_51A8(lbl_1_bss_3FC)->unk_188].iscom != 0) {
                             if (GWPlayerCfg[fn_1_51A8(lbl_1_bss_3FC + 1)->unk_188].iscom == 0) {
                                 goto block_81;
@@ -3535,17 +3544,17 @@ void fn_1_131A8(omObjData *var_r28)
         case 0x3F0:
             var_r29 = &lbl_1_bss_0[lbl_1_bss_3FC >> 1];
             lbl_1_bss_3F0 += 1.0f;
-            var_f31 = lbl_1_bss_3F0 / 180.0f;
+            var_f31 = lbl_1_bss_3F0 / (3.0f * REFRESH_RATE);
             var_f30 = sind((90.0f * var_f31)) * sind((90.0f * var_f31));
             var_r29->unk_28.y = var_r29->unk_4C.y + (var_f30 * (var_r29->unk_58.y - var_r29->unk_4C.y));
             var_r29->unk_1C.y = var_r29->unk_34.y + (var_f30 * (var_r29->unk_40.y - var_r29->unk_34.y));
-            if (90.0f < lbl_1_bss_3F0) {
-                var_f31 = (lbl_1_bss_3F0 - 90.0f) / 90.0f;
+            if ((1.5f * REFRESH_RATE) < lbl_1_bss_3F0) {
+                var_f31 = (lbl_1_bss_3F0 - 1.5f * REFRESH_RATE) / (1.5f * REFRESH_RATE);
                 var_f30 = sind((90.0f * var_f31)) * sind((90.0f * var_f31));
                 var_r29->unk_1C.z = var_r29->unk_34.z + (var_f30 * (var_r29->unk_40.z - var_r29->unk_34.z));
             }
             Hu3DCameraPosSetV(lbl_1_data_A0[lbl_1_bss_3FC >> 1], &var_r29->unk_1C, &lbl_1_data_C8, &var_r29->unk_28);
-            if (180.0f <= lbl_1_bss_3F0) {
+            if ((3 * REFRESH_RATE) <= lbl_1_bss_3F0) {
                 var_r28->work[0]++;
                 lbl_1_bss_3F0 = 0.0f;
             }
@@ -3654,7 +3663,7 @@ void ObjectSetup(void)
     lbl_1_bss_578 = GWMGRecordGet(3);
     lbl_1_bss_568 = -1.0f;
     if (lbl_1_bss_578 == 0) {
-        lbl_1_bss_578 = 0x1C20;
+        lbl_1_bss_578 = 120 * REFRESH_RATE;
     }
     fn_1_414();
     for (var_r30 = 0; var_r30 < 2; var_r30++) {
