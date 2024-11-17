@@ -8,6 +8,12 @@
 #include "game/pad.h"
 #include "math.h"
 #include "string.h"
+#include "version.h"
+
+
+#ifdef __MWERKS__
+#include "game/audio.h"
+#endif
 
 
 // bss
@@ -78,7 +84,7 @@ void fn_1_AEE4(omObjData *arg0)
     temp_r31->unk30.x = temp_r31->unk30.y = temp_r31->unk30.z = 0.0f;
     temp_r31->unk3C.y = 90.0f;
     temp_r31->unkC = 0;
-    temp_r31->unkE = 0x78;
+    temp_r31->unkE = 2 * REFRESH_RATE_F;
     temp_r31->unk10 = temp_r31->unk12 = temp_r31->unk14 = 0;
     if (temp_r31->unk8 == 5) {
         var_f31 = 350.0f;
@@ -173,7 +179,7 @@ void fn_1_B3A4(omObjData *arg0)
                     var_r31->unk18.y = 0.0f;
                     var_r31->unk18.z = var_r31->unk24.z + (lbl_1_bss_88[var_r28].z - var_r31->unk24.z) * var_f31;
                     var_r31->unk14++;
-                    var_f31 = var_r31->unk14 / 20.0f;
+                    var_f31 = var_r31->unk14 / (REFRESH_RATE_F / 3.0f);
                     if (var_f31 >= 1.0f) {
                         var_f31 = 1.0f;
                     }
@@ -181,7 +187,7 @@ void fn_1_B3A4(omObjData *arg0)
                     break;
                 case 7:
                     var_r31->unkC++;
-                    var_f31 = (f32)var_r31->unkC / 40.0f;
+                    var_f31 = (f32)var_r31->unkC / (2.0f * REFRESH_RATE_F / 3);
                     if (var_f31 >= 1.0f) {
                         var_f31 = 1.0f;
                         var_r31->unkC = 0;
@@ -239,7 +245,7 @@ void fn_1_B884(omObjData *arg0, unkObjStruct *arg1)
 
     switch (lbl_1_bss_74) {
         case 0:
-            lbl_1_data_250 -= 0.5f;
+            lbl_1_data_250 -= (REFRESH_RATE_F / 120);
             if (lbl_1_data_250 <= 45.0f) {
                 lbl_1_data_250 = 45.0f;
                 lbl_1_bss_74++;
@@ -258,14 +264,14 @@ void fn_1_B884(omObjData *arg0, unkObjStruct *arg1)
             return;
         case 1:
             arg1->unkE++;
-            var_f31 = arg1->unkE / 10.0f;
+            var_f31 = arg1->unkE / (REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
             }
             var_f30 = 225.0f;
             arg1->unk30.y = arg1->unk68 + (var_f31 * (var_f30 - arg1->unk68));
             arg1->unkC++;
-            var_f31 = arg1->unkC / 50.0f;
+            var_f31 = arg1->unkC / (5.0f * REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
                 arg1->unkC = arg1->unkE = 0;
@@ -294,7 +300,7 @@ void fn_1_B884(omObjData *arg0, unkObjStruct *arg1)
             }
             break;
         case 2:
-            lbl_1_data_250++;
+            lbl_1_data_250 += REFRESH_RATE_F / 60.0f;
             if (lbl_1_data_250 >= lbl_1_data_0[arg1->unk60]) {
                 lbl_1_data_250 = lbl_1_data_0[arg1->unk60];
                 lbl_1_bss_74++;
@@ -309,7 +315,7 @@ void fn_1_B884(omObjData *arg0, unkObjStruct *arg1)
                 var_f30 += 360.0f;
             }
             arg1->unkC++;
-            var_f31 = arg1->unkC / 10.0f;
+            var_f31 = arg1->unkC / (REFRESH_RATE_F / 6.0f);
             if (var_f31 < 1.0f) {
                 arg1->unk30.y = arg1->unk68 + (var_f31 * (var_f30 - arg1->unk68));
             }
@@ -320,7 +326,7 @@ void fn_1_B884(omObjData *arg0, unkObjStruct *arg1)
             return;
         case 3:
             arg1->unkE++;
-            var_f31 = arg1->unkE / 10.0f;
+            var_f31 = arg1->unkE / (REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
                 arg1->unkC = arg1->unkE = 0;
@@ -332,7 +338,7 @@ void fn_1_B884(omObjData *arg0, unkObjStruct *arg1)
             arg1->unk30.y = fn_1_927C(arg1->unk6C, var_f30, var_f31);
             return;
         case 4:
-            if (++arg1->unkC > 15) {
+            if (++arg1->unkC > (REFRESH_RATE / 4)) {
                 lbl_1_bss_74++;
             }
             break;
@@ -443,7 +449,7 @@ void fn_1_C1D4(omObjData *arg0, unkObjStruct *arg1)
             if (var_f30 < 5.0f) {
                 if (arg1->unk5A != 0) {
                     arg1->unk56++;
-                    var_f31 = arg1->unk56 / 40.0f;
+                    var_f31 = arg1->unk56 / (2.0f * REFRESH_RATE_F / 3.0f);
                     if (var_f31 > 1.0f) {
                         var_f31 = 1.0f;
                         arg1->unk5A = 0;
@@ -523,7 +529,7 @@ void fn_1_C944(omObjData *arg0, unkObjStruct *arg1)
             }
         }
         if ((arg1->unk48 & 1) != 0) {
-            arg1->unk68 -= 1.0f;
+            arg1->unk68 -= REFRESH_RATE_F / 60.0f;
             if ((var_r30 != -1) && (lbl_1_data_0[var_r30] > arg1->unk68)) {
                 arg1->unk68 = lbl_1_data_0[var_r30];
                 arg1->unk4A = var_r30;
@@ -531,7 +537,7 @@ void fn_1_C944(omObjData *arg0, unkObjStruct *arg1)
             }
         }
         else if ((arg1->unk48 & 2) != 0) {
-            arg1->unk68++;
+            arg1->unk68 += REFRESH_RATE_F / 60.0f;
             if ((var_r30 != -1) && (lbl_1_data_0[var_r30] < arg1->unk68)) {
                 arg1->unk68 = lbl_1_data_0[var_r30];
                 arg1->unk4A = var_r30;
@@ -659,7 +665,7 @@ void fn_1_D24C(unkObjStruct *arg0, f32 arg1, f32 arg2)
     f32 var_f30;
     f32 var_f31;
 
-    var_f28 = 10.0f;
+    var_f28 = REFRESH_RATE_F / 6.0f;
     arg0->unk6C = arg1;
     arg0->unk70 = arg2;
     var_f31 = ABS(arg1 - arg2);
@@ -702,7 +708,7 @@ void fn_1_D34C(omObjData *arg0, unkObjStruct *arg1)
                 arg1->unk6C = 0.0f;
                 arg1->unk48 = 0;
                 lbl_1_data_14[arg1->unk4A] = 0;
-                if (fn_1_17CC() < 270.0f) {
+                if (fn_1_17CC() < (4.5f * REFRESH_RATE)) {
                     fn_1_1708();
                 }
                 fn_1_F4D4(arg1, 15, 4);
@@ -793,7 +799,7 @@ void fn_1_D7F8(omObjData *arg0, unkObjStruct *arg1)
             }
             break;
         case 1:
-            if (++arg1->unkC > 0xA) {
+            if (++arg1->unkC > (REFRESH_RATE / 6)) {
                 arg1->unkC = 0;
                 Hu3DMotionSpeedSet(arg0->model[0], 2.0f);
                 if ((arg1->unk6C - arg1->unk68) > 0.0f) {
@@ -808,7 +814,7 @@ void fn_1_D7F8(omObjData *arg0, unkObjStruct *arg1)
             break;
         case 2:
             arg1->unkC++;
-            var_f31 = arg1->unkC / 30.0f;
+            var_f31 = arg1->unkC / (0.5f * REFRESH_RATE_F);
             arg1->unk18.x = ((410.0f + (var_f31 * (arg1->unk5C - 410.0f))) * cosd(lbl_1_data_0[arg1->unk4A]));
             arg1->unk18.z = ((410.0f + (var_f31 * (arg1->unk5C - 410.0f))) * sind(lbl_1_data_0[arg1->unk4A]));
             if (var_f31 >= 1.0f) {
@@ -825,7 +831,7 @@ void fn_1_D7F8(omObjData *arg0, unkObjStruct *arg1)
             arg1->unk30.y = fn_1_927C(arg1->unk68, arg1->unk6C, var_f31);
             break;
         case 3:
-            if (++arg1->unkC > 0x3C) {
+            if (++arg1->unkC > (s32)REFRESH_RATE_F) {
                 if (fn_1_4E54(arg1->unk4A) == 0) {
                     fn_1_4EEC(7U, 3U);
                 }
@@ -852,7 +858,7 @@ void fn_1_D7F8(omObjData *arg0, unkObjStruct *arg1)
             break;
     }
     if (fn_1_17F4() >= 0) {
-        if (fn_1_17CC() < 270.0f) {
+        if (fn_1_17CC() < (4.5f * REFRESH_RATE)) {
             fn_1_1708();
             return;
         }
@@ -874,7 +880,11 @@ void fn_1_E034(omObjData *arg0, unkObjStruct *arg1)
     switch (arg1->unk60) {
         case 0:
             lbl_1_bss_84 = lbl_1_data_0[arg1->unk4A];
+#if VERSION_NTSC
             Hu3DMotionShiftSet(arg0->model[0], arg0->motion[4], 0.0f, 7.0f, HU3D_MOTATTR_LOOP);
+#else
+            Hu3DMotionSet(arg0->model[0], arg0->motion[4]);
+#endif
             HuAudCharVoicePlay(arg1->unk8, 0x125);
             arg1->unk60++;
             break;
@@ -898,7 +908,7 @@ void fn_1_E034(omObjData *arg0, unkObjStruct *arg1)
             }
             break;
         case 2:
-            lbl_1_bss_84++;
+            lbl_1_bss_84 += REFRESH_RATE_F / 60.0f;
             if (lbl_1_bss_84 >= 135.0f) {
                 lbl_1_bss_84 = 135.0f;
                 arg1->unkE = arg1->unk10 = 0;
@@ -915,7 +925,7 @@ void fn_1_E034(omObjData *arg0, unkObjStruct *arg1)
                 var_f30 += 360.0f;
             }
             arg1->unkC++;
-            var_f31 = arg1->unkC / 10.0f;
+            var_f31 = arg1->unkC / (REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
             }
@@ -924,14 +934,14 @@ void fn_1_E034(omObjData *arg0, unkObjStruct *arg1)
             break;
         case 3:
             arg1->unkE++;
-            var_f31 = arg1->unkE / 10.0f;
+            var_f31 = arg1->unkE / (REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
             }
             var_f30 = 315.0f;
             arg1->unk30.y = arg1->unk6C + (var_f31 * (var_f30 - arg1->unk6C));
             arg1->unk10++;
-            var_f31 = arg1->unk10 / 50.0f;
+            var_f31 = arg1->unk10 / (5.0f * REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
                 arg1->unkC = arg1->unkE = arg1->unk10 = 0;
@@ -953,12 +963,12 @@ void fn_1_E034(omObjData *arg0, unkObjStruct *arg1)
             }
             break;
         case 4:
-            lbl_1_bss_84 -= 0.5f;
+            lbl_1_bss_84 -= REFRESH_RATE_F / 120;
             if (lbl_1_bss_84 <= 110.0f) {
                 lbl_1_bss_84 = 110.0f;
                 arg1->unk60 = 0;
                 arg1->unkC = 0;
-                arg1->unkE = (3 - lbl_1_data_1D8) * 0x1E;
+                arg1->unkE = (3 - lbl_1_data_1D8) * (s32)(0.5f * REFRESH_RATE_F);
                 arg1->unk14 = 0;
                 arg1->unk3C.y = 90.0f;
                 fn_1_F4D4(arg1, 15, 1);
@@ -973,7 +983,7 @@ void fn_1_E034(omObjData *arg0, unkObjStruct *arg1)
                 var_f30 += 360.0f;
             }
             arg1->unk10++;
-            var_f31 = arg1->unk10 / 10.0f;
+            var_f31 = arg1->unk10 / (REFRESH_RATE_F / 6.0f);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
             }
@@ -1025,7 +1035,7 @@ u8 fn_1_E8AC(omObjData *arg0, unkObjStruct *arg1)
         case 2:
             arg1->unkC++;
             arg1->unk68 += 40.0f;
-            var_f31 = arg1->unkC / 90.0f;
+            var_f31 = arg1->unkC / (1.5f * REFRESH_RATE_F);
             if (var_f31 >= 1.0f) {
                 var_f31 = 1.0f;
                 arg1->unk60++;
@@ -1165,7 +1175,7 @@ void fn_1_F228(void)
                 temp_r31->unkA--;
                 temp_r31->unk24 = temp_r31->unk18;
                 temp_r31->unkC = 0;
-                temp_r31->unkE = 0x1E;
+                temp_r31->unkE = (s32)(0.5f * REFRESH_RATE_F);
                 temp_r31->unk14 = 0;
                 fn_1_F4D4(temp_r31, 15, 1);
             }

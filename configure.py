@@ -1142,8 +1142,8 @@ config.libs = [
     Rel(
         "m440Dll",  # Bowser's Bigger Blast
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m440Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m440Dll/object.c"),
+            Object(Matching, "REL/m440Dll/main.c"),
+            Object(Matching, "REL/m440Dll/object.c"),
         },
     ),
     Rel(
