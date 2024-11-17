@@ -13,6 +13,7 @@
 #include "game/gamework_data.h"
 #include "game/minigame_seq.h"
 #include "math.h"
+#include "version.h"
 
 
 typedef struct data_224_struct {
@@ -54,15 +55,15 @@ Vec lbl_1_data_1E4[2] = { { -550, 0, 550 }, { 550, 0, 550 } };
 u32 lbl_1_data_1FC[10] = { 0, 2, 23, 133, 0x41000E, 0x410016, 0x41001E, 0x410026, 0x41002E, 0x410036 };
 
 Data224Struct lbl_1_data_224[9] = {
-    { 0, 4, 12, 0, HU3D_MOTATTR_LOOP },
-    { 1, 6, 6, 0, HU3D_MOTATTR_LOOP },
-    { 0, 8, 6, 0, HU3D_MOTATTR_NONE },
-    { 0, 5, 6, 0, HU3D_MOTATTR_LOOP },
-    { 1, 5, 6, 0, HU3D_MOTATTR_LOOP },
-    { 0, 8, 6, 30, HU3D_MOTATTR_NONE },
-    { 0, 9, 6, 0, HU3D_MOTATTR_NONE },
-    { 2, 0, 12, 0, HU3D_MOTATTR_NONE },
-    { 3, 0, 12, 0, HU3D_MOTATTR_NONE },
+    { 0, 4, 0.2f * REFRESH_RATE, 0, HU3D_MOTATTR_LOOP },
+    { 1, 6, 0.1f * REFRESH_RATE, 0, HU3D_MOTATTR_LOOP },
+    { 0, 8, 0.1f * REFRESH_RATE, 0, HU3D_MOTATTR_NONE },
+    { 0, 5, 0.1f * REFRESH_RATE, 0, HU3D_MOTATTR_LOOP },
+    { 1, 5, 0.1f * REFRESH_RATE, 0, HU3D_MOTATTR_LOOP },
+    { 0, 8, 0.1f * REFRESH_RATE, 0.5f * REFRESH_RATE, HU3D_MOTATTR_NONE },
+    { 0, 9, 0.1f * REFRESH_RATE, 0, HU3D_MOTATTR_NONE },
+    { 2, 0, 0.2f * REFRESH_RATE, 0, HU3D_MOTATTR_NONE },
+    { 3, 0, 0.2f * REFRESH_RATE, 0, HU3D_MOTATTR_NONE },
 };
 
 void fn_1_4988(omObjData *object);
@@ -254,8 +255,8 @@ void fn_1_4E50(omObjData *object)
             if (temp_r31->unk1C > spC[temp_r31->unk24]) {
                 temp_r31->unk24 = 1;
                 temp_r31->unk44 = temp_r31->unk20;
-                temp_r31->unk94.x += 225.0f * (temp_r31->unk1C * sind(temp_r31->unk20)) * (1.0f / 60.0f);
-                temp_r31->unk94.z += 225.0f * (temp_r31->unk1C * cosd(temp_r31->unk20)) * (1.0f / 60.0f);
+                temp_r31->unk94.x += 225.0f * (temp_r31->unk1C * sind(temp_r31->unk20)) * (1.0f / REFRESH_RATE);
+                temp_r31->unk94.z += 225.0f * (temp_r31->unk1C * cosd(temp_r31->unk20)) * (1.0f / REFRESH_RATE);
                 temp_r31->unk48 = 0.2f;
                 temp_r31->unk4C = 0;
                 if (CharModelMotionShiftIDGet(temp_r31->unk8) < 0) {
@@ -296,7 +297,7 @@ void fn_1_4E50(omObjData *object)
                 temp_r31->unk3A = 0;
                 temp_r31->unk3C++;
             }
-            else if (temp_r31->unk3C == 1 && temp_r31->unk3A > 30.0f) {
+            else if (temp_r31->unk3C == 1 && temp_r31->unk3A > (0.5f * REFRESH_RATE)) {
                 if (temp_r31->unk54 < 3) {
                     temp_r28 = fn_1_8884(&temp_r31->unk88, 20, 150, temp_r31->unk40, -30, 30, 1, object->work[0]);
                     if (temp_r28 >= 0) {
@@ -352,7 +353,7 @@ void fn_1_4E50(omObjData *object)
                 }
             }
             else {
-                if (temp_r31->unk3A > 30.0f) {
+                if (temp_r31->unk3A > (0.5f * REFRESH_RATE)) {
                     temp_r31->unk38 = 0;
                 }
             }
@@ -376,7 +377,7 @@ void fn_1_4E50(omObjData *object)
                 temp_r31->unk3C++;
             }
             if (temp_r31->unk3E) {
-                if (temp_r31->unk3A > 36.0f) {
+                if (temp_r31->unk3A > (VERSION_NTSC ? 36.0f : 30.000002f)) {
                     for (temp_r29 = 0; temp_r29 < temp_r31->unk54; temp_r29++) {
                         fn_1_8B58(temp_r31->unk58[temp_r29]);
                     }
@@ -384,7 +385,7 @@ void fn_1_4E50(omObjData *object)
                     temp_r31->unk3E = 0;
                 }
             }
-            if (temp_r31->unk3A > 60.0f) {
+            if (temp_r31->unk3A > 1.0f * REFRESH_RATE) {
                 temp_r31->unk38 = 0;
             }
             break;
@@ -514,7 +515,7 @@ void fn_1_5C98(omObjData *object)
                     }
                     else {
                         temp_r31->unk80++;
-                        if (temp_r30 || temp_r31->unk80 > 60.0f) {
+                        if (temp_r30 || temp_r31->unk80 > (1.0f * REFRESH_RATE)) {
                             if (temp_r30 || frandmod(1000) < 10) {
                                 temp_r31->unk70 = fn_1_8FA0(&temp_r31->unk88);
                                 fn_1_8E2C(temp_r31->unk70, &temp_r31->unk74);
@@ -532,7 +533,7 @@ void fn_1_5C98(omObjData *object)
 
         case 2:
             temp_r31->unk80++;
-            if (temp_r31->unk80 < 120 * temp_r31->unk64) {
+            if (temp_r31->unk80 < (2 * REFRESH_RATE) * temp_r31->unk64) {
                 temp_r31->unk1C = 0.4f;
                 temp_r31->unk20 = temp_r31->unk40 + 10.0f;
                 temp_r31->unk14 = temp_r31->unk18 = PAD_BUTTON_A;

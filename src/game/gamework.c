@@ -57,7 +57,7 @@ void GWInit(void)
     InitPlayerConfig();
 #if VERSION_JAP
     GWGameStat.language = 0;
-#elif VERSION_NTSC
+#elif VERSION_ENG
     GWGameStat.language = 1;
 #else
     GWLanguageSet(GwLanguage);
@@ -134,7 +134,7 @@ void GWGameStatReset(void)
     game_stat->unk_00 = 0;
 #if VERSION_JAP
     game_stat->language = 0;
-#elif VERSION_NTSC
+#elif VERSION_ENG
     game_stat->language = 1;
 #else
     game_stat->language = GwLanguage;

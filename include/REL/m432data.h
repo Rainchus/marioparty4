@@ -4,6 +4,7 @@
 #include "datadir_enum.h"
 #include "dolphin.h"
 #include "game/hsfanim.h"
+#include "version.h"
 
 typedef struct UnkM432DllBss0SubStruct {
     char *unk_00;
@@ -1202,10 +1203,10 @@ UnkM432DllBss0SubStruct lbl_1_data_EDC[0x1F] = {
     },
 };
 
-UnkM432DllData1794Struct lbl_1_data_1794 = { 6300.0f, 0.7f, 10.0f, 0.4f, 1.0f, 0, 2, 6 };
-UnkM432DllData1794Struct lbl_1_data_17B4 = { 5700.0f, 0.8f, 8.0f, 0.6f, 1.0f, 0, 4, 5 };
-UnkM432DllData1794Struct lbl_1_data_17D4 = { 5100.0f, 0.9f, 6.0f, 0.8f, 1.0f, 0, 6, 4 };
-UnkM432DllData1794Struct lbl_1_data_17F4 = { 4500.0f, 1.0f, 4.0f, 1.0f, 1.0f, 0, 8, 3 };
+UnkM432DllData1794Struct lbl_1_data_1794 = { 105.0f * REFRESH_RATE, 0.7f, 10.0f, 0.4f, 1.0f, 0, 2, 6 };
+UnkM432DllData1794Struct lbl_1_data_17B4 = { 95.0f * REFRESH_RATE, 0.8f, 8.0f, 0.6f, 1.0f, 0, 4, 5 };
+UnkM432DllData1794Struct lbl_1_data_17D4 = { 85.0f * REFRESH_RATE, 0.9f, 6.0f, 0.8f, 1.0f, 0, 6, 4 };
+UnkM432DllData1794Struct lbl_1_data_17F4 = { 75.0f * REFRESH_RATE, 1.0f, 4.0f, 1.0f, 1.0f, 0, 8, 3 };
 HsfanimStruct00 lbl_1_data_1814 = {
     0x1E,
     { 0, 0 },

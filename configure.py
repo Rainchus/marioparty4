@@ -402,7 +402,7 @@ config.libs = [
             Object(Matching, "game/frand.c"),
             Object(Matching, "game/audio.c"),
             Object(Matching, "game/EnvelopeExec.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "game/minigame_seq.c"),
+            Object(Matching, "game/minigame_seq.c"),
             Object(Matching, "game/ovllist.c"),
             Object(Matching, "game/esprite.c"),
             Object(Matching, "game/code_8003FF68.c"),
@@ -1084,7 +1084,7 @@ config.libs = [
     Rel(
         "m432Dll",  # Dungeon Duos
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m432Dll/main.c"),
+            Object(Matching, "REL/m432Dll/main.c"),
         },
     ),
     Rel(
@@ -1098,10 +1098,10 @@ config.libs = [
     Rel(
         "m434Dll",  # Cheep Cheep Sweep
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m434Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m434Dll/map.c"),
+            Object(Matching, "REL/m434Dll/main.c"),
+            Object(Matching, "REL/m434Dll/map.c"),
             Object(NonMatching, "REL/m434Dll/player.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m434Dll/fish.c"),
+            Object(Matching, "REL/m434Dll/fish.c"),
         },
     ),
     Rel(
@@ -1114,15 +1114,15 @@ config.libs = [
     Rel(
         "m436Dll",  # Fruits of Doom
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m436Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m436Dll/sequence.c"),
+            Object(Matching, "REL/m436Dll/main.c"),
+            Object(Matching, "REL/m436Dll/sequence.c"),
         },
     ),
     Rel(
         "m437Dll",  # Balloon of Doom
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m437Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m437Dll/sequence.c"),
+            Object(Matching, "REL/m437Dll/main.c"),
+            Object(Matching, "REL/m437Dll/sequence.c"),
         },
     ),
     Rel(
@@ -1136,7 +1136,7 @@ config.libs = [
     Rel(
         "m439Dll",  # Paths of Peril
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m439Dll/main.c"),
+            Object(Matching, "REL/m439Dll/main.c"),
         },
     ),
     Rel(

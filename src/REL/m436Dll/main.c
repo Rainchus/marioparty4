@@ -14,6 +14,7 @@
 #include "game/wipe.h"
 
 #include "ext_math.h"
+#include "version.h"
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
@@ -650,7 +651,7 @@ void fn_1_27C8(s32 arg0)
 {
     if (lbl_1_bss_10 == 0) {
         lbl_1_bss_10 = 1;
-        lbl_1_bss_C = arg0 * 60;
+        lbl_1_bss_C = arg0 * REFRESH_RATE;
     }
 }
 
@@ -679,14 +680,14 @@ void fn_1_285C(omObjData *arg0)
     switch (lbl_1_bss_10) {
         case 1:
             if (lbl_1_data_16C == -1) {
-                lbl_1_data_16C = MGSeqCreate(1, lbl_1_bss_C / 60, -1, -1);
+                lbl_1_data_16C = MGSeqCreate(1, lbl_1_bss_C / REFRESH_RATE, -1, -1);
             }
             lbl_1_bss_10 = 2;
             break;
         case 2:
             lbl_1_bss_C--;
             if (lbl_1_data_16C != -1) {
-                MGSeqParamSet(lbl_1_data_16C, 1, (lbl_1_bss_C + 59) / 60);
+                MGSeqParamSet(lbl_1_data_16C, 1, (lbl_1_bss_C + REFRESH_RATE - 1) / REFRESH_RATE);
             }
             if (lbl_1_bss_C <= 0) {
                 lbl_1_bss_C = 30;
@@ -1789,9 +1790,9 @@ void fn_1_77F0(void)
     HuAudFXPlay(0x6D2);
     var_r30->unk00->work[3] = 3;
     fn_1_2744(var_r31, MAKE_MESSID(29, 3));
-    fn_1_24D0(var_r31, 60);
+    fn_1_24D0(var_r31, REFRESH_RATE);
     lbl_1_bss_4 = 2;
-    fn_1_24D0(var_r31, 60);
+    fn_1_24D0(var_r31, REFRESH_RATE);
     var_r30->unk00->work[3] = 2;
     fn_1_2468(var_r31);
     lbl_1_bss_4 = 1;
@@ -1901,17 +1902,17 @@ void fn_1_A5A8(void)
     var_r28->unk00->work[3] = 2;
     var_r28->unk00->work[3] = 1;
     fn_1_2744(var_r31, MAKE_MESSID(29, 21));
-    fn_1_24D0(var_r31, 180);
+    fn_1_24D0(var_r31, 3 * REFRESH_RATE);
     var_r28->unk00->work[3] = 2;
     sp68->unk00->work[0] = 10;
     fn_1_2744(var_r31, MAKE_MESSID(29, 22));
-    fn_1_24D0(var_r31, 60);
+    fn_1_24D0(var_r31, REFRESH_RATE);
     var_r28->unk00->work[3] = 4;
     fn_1_2A90(var_r31);
     fn_1_2D94(var_r31);
     fn_1_3020();
     var_r28->unk00->work[3] = 2;
-    HuPrcSleep(120);
+    HuPrcSleep(2 * REFRESH_RATE);
     var_r28->unk00->work[3] = 1;
     fn_1_2744(var_r31, MAKE_MESSID(29, 37));
     fn_1_24D0(var_r31, 0);
@@ -2153,7 +2154,7 @@ s32 fn_1_C090(s32 arg0, s32 arg1, s32 arg2)
         if (arg2 % 27 == 2 && temp_r31->unk24 == 0) {
             switch (temp_r31->unk10) {
                 case 0:
-                    if (arg2 <= 120) {
+                    if (arg2 <= 2 * REFRESH_RATE) {
                         var_r29 = 0;
                     }
                     else if (var_r28->unk04 <= 3) {
@@ -2164,7 +2165,7 @@ s32 fn_1_C090(s32 arg0, s32 arg1, s32 arg2)
                     }
                     break;
                 case 1:
-                    if (arg2 <= 120) {
+                    if (arg2 <= 2 * REFRESH_RATE) {
                         var_r29 = 0;
                     }
                     else if (var_r28->unk04 <= 6) {
@@ -2175,7 +2176,7 @@ s32 fn_1_C090(s32 arg0, s32 arg1, s32 arg2)
                     }
                     break;
                 case 2:
-                    if (arg2 <= 60) {
+                    if (arg2 <= REFRESH_RATE) {
                         var_r29 = 0;
                     }
                     else if (var_r28->unk04 <= 9) {
@@ -2186,7 +2187,7 @@ s32 fn_1_C090(s32 arg0, s32 arg1, s32 arg2)
                     }
                     break;
                 case 3:
-                    if (arg2 <= 60) {
+                    if (arg2 <= REFRESH_RATE) {
                         var_r29 = 0;
                     }
                     else if (var_r28->unk04 <= 12) {
@@ -2339,14 +2340,14 @@ void fn_1_C90C(void)
     s32 sp3C[] = { MAKE_MESSID(29, 31), MAKE_MESSID(29, 32), MAKE_MESSID(29, 33) };
 
     var_r28 = rand8() % 3;
-    HuPrcSleep(70);
+    HuPrcSleep(REFRESH_RATE + 10);
     fn_1_26D4(sp28, sp3C[var_r28]);
     var_r31 = fn_1_2230((580.0f - sp28[0]) / 2, 60.0f, sp28[0], sp28[1], 2);
     var_r27->unk00->work[2] = 1;
     HuAudFXPlay(0x6D2);
     HuAudFXPlay(0x6E3);
     fn_1_2744(var_r31, sp3C[var_r28]);
-    fn_1_24D0(var_r31, 120);
+    fn_1_24D0(var_r31, 2 * REFRESH_RATE);
     fn_1_2468(var_r31);
     lbl_1_bss_4 = 1;
     HuPrcEnd();
@@ -2367,7 +2368,7 @@ void fn_1_CCA4(void)
     HuAudFXPlay(0x6D9);
     HuAudSeqAllFadeOut(100);
     fn_1_2744(var_r31, sp24[var_r28]);
-    fn_1_24D0(var_r31, 120);
+    fn_1_24D0(var_r31, 2 * REFRESH_RATE);
     fn_1_2468(var_r31);
     lbl_1_bss_4 = 1;
     HuPrcEnd();
@@ -2385,7 +2386,7 @@ void fn_1_D018(void)
     HuAudFXPlay(0x6D9);
     HuAudSeqAllFadeOut(100);
     fn_1_2744(var_r31, MAKE_MESSID(29, 36));
-    fn_1_24D0(var_r31, 120);
+    fn_1_24D0(var_r31, 2 * REFRESH_RATE);
     fn_1_2468(var_r31);
     lbl_1_bss_4 = 1;
     HuPrcEnd();
@@ -2645,7 +2646,7 @@ s32 fn_1_DEB0(void)
         Hu3DModelScaleSet(var_r29->unk00->model[temp_r31->unk1C + 1], 1.0f, 1.0f, 1.0f);
         var_r30->unk0C = temp_r31->unk20 = 1;
     }
-    if (temp_r31->unk20 == 1 && temp_r31->unk24++ >= 60) {
+    if (temp_r31->unk20 == 1 && temp_r31->unk24++ >= REFRESH_RATE) {
         temp_r26 = &Hu3DData[var_r29->unk00->model[temp_r31->unk1C + 1]];
         var_r28->unk00->work[1] = 3;
         temp_r26->pos.y = temp_r27->pos.y;
