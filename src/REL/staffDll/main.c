@@ -178,9 +178,32 @@ static StaffData staffData[] = {
     { 0x0035005F, 2, 0.0f, 0, 0, 0 },
     { 0x00350060, 2, 0.0f, 0, 0, 0 },
     { -3, 0, 48.0f, 0, 0, 0 },
+    #if VERSION_PAL
+    { 0x00340026, 0, 0.0f, 0, 0, 0 },
+    { -3, 0, 24.0f, 0, 0, 0 },
+    { 0x00340027, 1, 0.0f, 0, 0, 0 },
+    { -3, 0, 24.0f, 0, 0, 0 },
+    { 0x00340028, 1, 0.0f, 0, 0, 0 },
+    { 0x00350061, 2, 0.0f, 0, 0, 0 },
+    { -3, 0, 24.0f, 0, 0, 0 },
+    { 0x00340029, 1, 0.0f, 0, 0, 0 },
+    { 0x0034002A, 1, 0.0f, 0, 0, 0 },
+    { 0x00350062, 2, 0.0f, 0, 0, 0 },
+    { 0x0034002B, 1, 0.0f, 0, 0, 0 },
+    { 0x00350063, 2, 0.0f, 0, 0, 0 },
+    { 0x0034002C, 1, 0.0f, 0, 0, 0 },
+    { 0x00350064, 2, 0.0f, 0, 0, 0 },
+    { 0x0034002D, 1, 0.0f, 0, 0, 0 },
+    { 0x00350065, 2, 0.0f, 0, 0, 0 },
+    { -3, 0, 24.0f, 0, 0, 0 },
+    { 0x0034002E, 1, 0.0f, 0, 0, 0 },
+    { -3, 0, 72.0f, 0, 0, 0 },
+    #endif
     { 0x00340016, 0, 0.0f, 0, 0, 0 },
     { 0x00350044, 2, 0.0f, 0, 0, 0 },
+    #if VERSION_NTSC
     { 0x00350045, 2, 0.0f, 0, 0, 0 },
+    #endif
     { -3, 0, 24.0f, 0, 0, 0 },
     { 0x00350046, 2, 0.0f, 0, 0, 0 },
     { 0x00350047, 2, 0.0f, 0, 0, 0 },
@@ -216,7 +239,11 @@ static StaffData staffData[] = {
     { -1, 0, 0.0f, 0, 0, 0 },
 };
 
+#if VERSION_NTSC
 static float staffLogoPosTbl[] = { 460.0f, 293.0f, 293.0f };
+#else
+static float staffLogoPosTbl[] = { 460.0f, 290.0f, 293.0f };
+#endif
 
 static void MainProc(void);
 static void CreateStaff(void);
@@ -305,7 +332,36 @@ static void CreateStaff(void)
     }
 
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        int languageNo;
+        #if VERSION_NTSC
         var_r29 = HuDataSelHeapReadNum(var_r31 + DATA_MAKE_NUM(DATADIR_STAFF, 0x1A), MEMORY_DEFAULT_NUM, HEAP_DATA);
+        #else
+        if(var_r31 == 2) {
+            switch(GWGameStat.language) {
+                case 1:
+                    languageNo = 0;
+                    break;
+                
+                case 2:
+                    languageNo = 1;
+                    break;
+                
+                case 4:
+                    languageNo = 3;
+                    break;
+                
+                default:
+                    languageNo = 2;
+                    break;
+                    
+            }
+            
+            var_r29 = HuDataSelHeapReadNum(var_r31 + DATA_MAKE_NUM(DATADIR_STAFF, 0x1A) + languageNo, MEMORY_DEFAULT_NUM, HEAP_DATA);
+        } else {
+            var_r29 = HuDataSelHeapReadNum(var_r31 + DATA_MAKE_NUM(DATADIR_STAFF, 0x1A), MEMORY_DEFAULT_NUM, HEAP_DATA);
+        }
+        #endif
+        
         var_r28 = HuSprAnimRead(var_r29);
         var_r30 = HuSprCreate(var_r28, 256, 0);
         staffLogoGroup[var_r31] = HuSprGrpCreate(1);
@@ -319,7 +375,11 @@ static void CreateStaff(void)
     HuSprGrpPosSet(thpGroup, 280.0f, 200.0f);
     HuSprAttrSet(thpGroup, 0, HUSPR_ATTR_DISPOFF);
     HuTHPStop();
+    #if VERSION_NTSC
     var_r29 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_STAFF, 0x1D), MEMORY_DEFAULT_NUM, HEAP_DATA);
+    #else
+    var_r29 = HuDataSelHeapReadNum(DATA_MAKE_NUM(DATADIR_STAFF, 0x20), MEMORY_DEFAULT_NUM, HEAP_DATA);
+    #endif
     var_r28 = HuSprAnimRead(var_r29);
     var_r30 = HuSprCreate(var_r28, 16385, 0);
     thpCoverGroup = HuSprGrpCreate(1);
@@ -462,12 +522,19 @@ static void ShowPicture(void)
     HuSprTPLvlSet(imgGroup[currImg], 0, 1.0f);
 
     while (TRUE) {
+        #if VERSION_NTSC
         if (currImg >= 24) {
             HuPrcSleep(430);
-        }
-        else {
+        } else {
             HuPrcSleep(550);
         }
+        #else
+        if (currImg >= 24) {
+            HuPrcSleep(480);
+        } else {
+            HuPrcSleep(600);
+        }
+        #endif
         if (currImg >= 25) {
             break;
         }
@@ -548,7 +615,11 @@ static void MainProc(void)
         HuPrcVSleep();
     }
     HuSprGrpPosSet(staffLogoGroup[1], var_f29, 400.0f);
+    #if VERSION_NTSC
     HuPrcSleep(240);
+    #else
+    HuPrcSleep(60);
+    #endif
     HuSprAttrReset(thpGroup, 0, HUSPR_ATTR_DISPOFF);
     HuSprAttrReset(thpCoverGroup, 0, HUSPR_ATTR_DISPOFF);
     HuTHPRestart();
@@ -579,15 +650,20 @@ static void MainProc(void)
     HuSprAttrSet(staffLogoGroup[1], 0, HUSPR_ATTR_DISPOFF);
     HuPrcSleep(120);
     HuSprAttrReset(staffLogoGroup[2], 0, HUSPR_ATTR_DISPOFF);
+    #if VERSION_NTSC
     HuSprGrpPosSet(staffLogoGroup[2], 280.0f, 240.0f);
-
+    #else
+    HuSprGrpPosSet(staffLogoGroup[2], 275.0f, 240.0f);
+    #endif
     for (var_r31 = 0, var_f31 = 0.0f; var_r31 < 30; var_r31++, var_f31 += 1.0f / 30.0f) {
         HuSprTPLvlSet(staffLogoGroup[2], 0, var_f31);
         HuPrcVSleep();
     }
-
+    #if VERSION_NTSC
     HuPrcSleep(600);
-
+    #else
+    HuPrcSleep(480);
+    #endif
     while (TRUE) {
         for (var_r31 = 0; var_r31 < 4; var_r31++) {
             if (HuPadBtn[var_r31] & PAD_BUTTON_START) {

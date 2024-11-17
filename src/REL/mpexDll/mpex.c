@@ -1606,7 +1606,7 @@ void fn_1_9988(s32 arg0)
     u32 var_r29;
 
     fn_1_1B834();
-    if (((mgRecordExtra == 0) && (arg0 != 4)) || ((mgRecordExtra >= 0x8CA0) && (arg0 == 4))) {
+    if (((mgRecordExtra == 0) && (arg0 != 4)) || ((mgRecordExtra >= 600*REFRESH_RATE) && (arg0 == 4))) {
         HuAudFXPlay(0x4A);
         fn_1_25C4(lbl_1_bss_2D8[1].unk_00, 1, 3, 0xF, 1);
         fn_1_1BA78(arg0 + 0x330096, -1, -1);
@@ -1615,23 +1615,23 @@ void fn_1_9988(s32 arg0)
     else {
         if ((arg0 == 4) || (arg0 == 8)) {
             var_r31 = mgRecordExtra;
-            var_r30 = var_r31 / 36000;
-            var_r31 -= var_r30 * 36000;
-            var_r29 = var_r31 / 3600;
-            var_r31 -= var_r29 * 3600;
+            var_r30 = var_r31 / (600*REFRESH_RATE);
+            var_r31 -= var_r30 * (600*REFRESH_RATE);
+            var_r29 = var_r31 / (60*REFRESH_RATE);
+            var_r31 -= var_r29 * (60*REFRESH_RATE);
             sprintf(lbl_1_bss_120, "%d", var_r29);
             fn_1_1BB4C((u32)&lbl_1_bss_120, 0);
-            var_r30 = var_r31 / 600;
-            var_r31 -= var_r30 * 600;
-            var_r29 = var_r31 / 60;
-            var_r31 -= var_r29 * 60;
+            var_r30 = var_r31 / (10*REFRESH_RATE);
+            var_r31 -= var_r30 * (10*REFRESH_RATE);
+            var_r29 = var_r31 / REFRESH_RATE;
+            var_r31 -= var_r29 * REFRESH_RATE;
             sprintf(lbl_1_bss_118, "%d%d", var_r30, var_r29);
             fn_1_1BB4C((u32)lbl_1_bss_118, 1);
             if (arg0 == 8) {
-                var_r31 = 1.6916666666666667 * (float)var_r31;
+                var_r31 = (101.5/REFRESH_RATE) * (float)var_r31;
             }
             else {
-                var_r31 = 1.6666666666666667 * (float)var_r31;
+                var_r31 = (100.0/REFRESH_RATE) * (float)var_r31;
             }
             var_r30 = var_r31 / 10;
             var_r31 -= var_r30 * 0xA;
@@ -1856,12 +1856,21 @@ void fn_1_AD34(void)
     HuAudFXPlay(0x9E);
     fn_1_1B7D0(0xA5);
     lbl_1_bss_1B8[0].unk_04 = (MpexDllUnkFunc2)fn_1_A0E4;
-    if (((mgRecordExtra == 0) && (lbl_1_bss_1B0 != 4)) || ((mgRecordExtra >= 0x8CA0) && (lbl_1_bss_1B0 == 4))) {
+    #if VERSION_NTSC
+    if (((mgRecordExtra == 0) && (lbl_1_bss_1B0 != 4)) || ((mgRecordExtra >= 600*REFRESH_RATE) && (lbl_1_bss_1B0 == 4))) {
         fn_1_25C4(lbl_1_bss_1B8[0].unk_00, 1, 5, 0xF, 0);
     }
     else {
         fn_1_25C4(lbl_1_bss_1B8[0].unk_00, 1, 4, 0xF, 0);
     }
+    #else
+    if (((mgRecordExtra == 0) && (lbl_1_bss_1B0 != 4)) || ((mgRecordExtra >= 500*REFRESH_RATE) && (lbl_1_bss_1B0 == 4))) {
+        fn_1_25C4(lbl_1_bss_1B8[0].unk_00, 1, 5, 0xF, 0);
+    }
+    else {
+        fn_1_25C4(lbl_1_bss_1B8[0].unk_00, 1, 4, 0xF, 0);
+    } 
+    #endif
     fn_1_BC18();
     fn_1_1B7D0(1);
     HuAudFXPlay(0x9F);
@@ -2232,6 +2241,7 @@ void fn_1_C860(void)
 
 s32 fn_1_C898(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 {
+    #if VERSION_NTSC
     s32 sp88[5][9] = {
         { 0x64, 0xC8, 0x12C, 0x136, 0x140, 0x14A, 0x154, 0x15E, 0x168 },
         { 0x05, 0x0A, 0x0F, 0x14, 0x19, 0x1E, 0x23, 0x28, 0x32 },
@@ -2244,6 +2254,21 @@ s32 fn_1_C898(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
         { 0x4650, 0x3840, 0x2A30, 0x1C20, 0x1770, 0x12C0, 0x0E10, 0, 0 },
         { 0x4650, 0x3840, 0x2A30, 0x2328, 0x1C20, 0x19C8, 0x1770, 0x1644, 0x1518 },
     };
+    #else
+    s32 sp88[5][9] = {
+        { 0x32, 0x64, 0xC8, 0x12C, 0x136, 0x140, 0x14A, 0x154, 0x15E },
+        { 0x05, 0x0A, 0x0F, 0x14, 0x19, 0x1E, 0x23, 0x28, 0x32 },
+        { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 },
+        { 60*REFRESH_RATE, 120*REFRESH_RATE, 180*REFRESH_RATE, 240*REFRESH_RATE, 300*REFRESH_RATE,
+            360*REFRESH_RATE, 420*REFRESH_RATE, 480*REFRESH_RATE, 540*REFRESH_RATE },
+        { 0x0A, 0xF, 0x14, 0x19, 0x1E, 0x23, 0x28, 0x2B, 0x2D },
+    };
+    s32 sp1C[3][9] = {
+        { 300*REFRESH_RATE, 240*REFRESH_RATE, 180*REFRESH_RATE, 120*REFRESH_RATE, 60*REFRESH_RATE, 0, 0, 0, 0 },
+        { 300*REFRESH_RATE, 240*REFRESH_RATE, 180*REFRESH_RATE, 120*REFRESH_RATE, 110*REFRESH_RATE, 100*REFRESH_RATE, 90*REFRESH_RATE, 0, 0 },
+        { 300*REFRESH_RATE, 240*REFRESH_RATE, 180*REFRESH_RATE, 170*REFRESH_RATE, 124*REFRESH_RATE, 150*REFRESH_RATE, 140*REFRESH_RATE, 130*REFRESH_RATE, 120*REFRESH_RATE },
+    };
+    #endif
     s32 sp10[3];
     s32 var_r31;
     s32 var_r30;
@@ -2324,6 +2349,7 @@ void fn_1_CA98(s32 arg0, u32 arg1)
         case 3:
             OSReport("#################### HI-SCORE(%d) : %d\n", arg1, GWGameStat.mg_record[sp8[arg1]]);
             var_r31 = GWGameStat.mg_record[sp8[arg1]];
+            #if VERSION_NTSC
             if (var_r31 < 0xA) {
                 sprintf(lbl_1_bss_FC, "  %d", var_r31);
             }
@@ -2333,28 +2359,31 @@ void fn_1_CA98(s32 arg0, u32 arg1)
             else {
                 sprintf(lbl_1_bss_FC, "%d", var_r31);
             }
+            #else
+            sprintf(lbl_1_bss_FC, " %d", var_r31);
+            #endif
             HuWinInsertMesSet(arg0, (u32)lbl_1_bss_FC, 0);
             break;
         case 8:
             OSReport("#################### HI-SCORE(%d) : %d\n", arg1, GWGameStat.mg_record[sp8[arg1]]);
             var_r31 = GWGameStat.mg_record[sp8[arg1]];
-            var_r29 = var_r31 / 36000;
-            var_r31 -= var_r29 * 36000;
-            var_r28 = var_r31 / 3600;
-            var_r31 -= var_r28 * 3600;
+            var_r29 = var_r31 / (600 *REFRESH_RATE);
+            var_r31 -= var_r29 * (600 *REFRESH_RATE);
+            var_r28 = var_r31 / (60 *REFRESH_RATE);
+            var_r31 -= var_r28 * (60 *REFRESH_RATE);
             sprintf(lbl_1_bss_F4, " %d", var_r28);
             HuWinInsertMesSet(arg0, (u32)lbl_1_bss_F4, 0);
-            var_r29 = var_r31 / 600;
-            var_r31 -= var_r29 * 600;
-            var_r28 = var_r31 / 60;
-            var_r31 -= var_r28 * 60;
+            var_r29 = var_r31 / (10 *REFRESH_RATE);
+            var_r31 -= var_r29 * (10 *REFRESH_RATE);
+            var_r28 = var_r31 / REFRESH_RATE;
+            var_r31 -= var_r28 * REFRESH_RATE;
             sprintf(lbl_1_bss_EC, "%d%d", var_r29, var_r28);
             HuWinInsertMesSet(arg0, (u32)lbl_1_bss_EC, 1);
-            var_r31 = 1.6916666666666667 * (float)var_r31;
+            var_r31 = (101.5/REFRESH_RATE) * (float)var_r31;
             var_r29 = var_r31 / 10;
             var_r31 -= var_r29 * 0xA;
             var_r28 = var_r31;
-            if (GWGameStat.mg_record[sp8[arg1]] >= 0x8C9F) {
+            if (GWGameStat.mg_record[sp8[arg1]] >= ((600*REFRESH_RATE)-1)) {
                 sprintf(lbl_1_bss_E4, "99");
             }
             else {
@@ -2678,24 +2707,24 @@ void fn_1_E568(void)
             HuSprPosSet(var_r29, 0x0D + var_r28 + (var_r31 * 7), (var_r28 * 0x14) + 0x512, (var_r31 * 0x38) + 0xBA);
         }
         var_r30 = GWGameStat.mg_record[var_r31 + 6];
-        var_r27 = var_r30 / 36000;
-        var_r30 -= var_r27 * 36000;
-        var_r26 = var_r30 / 3600;
-        var_r30 -= var_r26 * 3600;
+        var_r27 = var_r30 / (600*REFRESH_RATE);
+        var_r30 -= var_r27 * (600*REFRESH_RATE);
+        var_r26 = var_r30 / (60*REFRESH_RATE);
+        var_r30 -= var_r26 * (60*REFRESH_RATE);
         HuSprBankSet(var_r29, (var_r31 * 7) + 0xD, var_r26);
         HuSprBankSet(var_r29, (var_r31 * 7) + 0xE, 0xA);
-        var_r27 = var_r30 / 600;
-        var_r30 -= var_r27 * 600;
-        var_r26 = var_r30 / 60;
-        var_r30 -= var_r26 * 60;
+        var_r27 = var_r30 / (10*REFRESH_RATE);
+        var_r30 -= var_r27 * (10*REFRESH_RATE);
+        var_r26 = var_r30 / REFRESH_RATE;
+        var_r30 -= var_r26 * REFRESH_RATE;
         HuSprBankSet(var_r29, (var_r31 * 7) + 0xF, var_r27);
         HuSprBankSet(var_r29, (var_r31 * 7) + 0x10, var_r26);
         HuSprBankSet(var_r29, (var_r31 * 7) + 0x11, 0xB);
-        var_r30 = 1.6666666666666667 * (float)var_r30;
+        var_r30 = (100.0/REFRESH_RATE) * (float)var_r30;
         var_r27 = var_r30 / 10;
         var_r30 -= var_r27 * 0xA;
         var_r26 = var_r30;
-        if (GWGameStat.mg_record[var_r31 + 6] == 0x8C9F) {
+        if (GWGameStat.mg_record[var_r31 + 6] == ((600*REFRESH_RATE)-1)) {
             HuSprBankSet(var_r29, (var_r31 * 7) + 0x12, 9);
             HuSprBankSet(var_r29, (var_r31 * 7) + 0x13, 9);
         }
@@ -3426,26 +3455,38 @@ void fn_1_121E8(void)
     else if (GWGameStat.mg_record[9] >= 0x63) {
         GWGameStat.mg_record[9] = 0x63;
     }
+    #if VERSION_NTSC
     OSReport("HIScore 451A(0-35999):%d\n", GWGameStat.mg_record[6]);
+    #else
+    OSReport("HIScore 451A(0-29999):%d\n", GWGameStat.mg_record[6]);
+    #endif
     if (GWGameStat.mg_record[6] == 0) {
         GWGameStat.mg_record[6] = 0;
     }
-    else if (GWGameStat.mg_record[6] >= 0x8C9F) {
-        GWGameStat.mg_record[6] = 0x8C9F;
+    else if (GWGameStat.mg_record[6] >= ((REFRESH_RATE*600)-1)) {
+        GWGameStat.mg_record[6] = ((REFRESH_RATE*600)-1);
     }
+    #if VERSION_NTSC
     OSReport("HIScore 451B(0-35999):%d\n", GWGameStat.mg_record[7]);
+    #else
+    OSReport("HIScore 451B(0-29999):%d\n", GWGameStat.mg_record[7]);
+    #endif
     if (GWGameStat.mg_record[7] == 0) {
         GWGameStat.mg_record[7] = 0;
     }
-    else if (GWGameStat.mg_record[7] >= 0x8C9F) {
-        GWGameStat.mg_record[7] = 0x8C9F;
+    else if (GWGameStat.mg_record[7] >= ((REFRESH_RATE*600)-1)) {
+        GWGameStat.mg_record[7] = ((REFRESH_RATE*600)-1);
     }
+    #if VERSION_NTSC
     OSReport("HIScore 451C(0-35999):%d\n", GWGameStat.mg_record[8]);
+    #else
+    OSReport("HIScore 451C(0-29999):%d\n", GWGameStat.mg_record[8]);
+    #endif
     if (GWGameStat.mg_record[8] == 0) {
         GWGameStat.mg_record[8] = 0;
     }
-    else if (GWGameStat.mg_record[8] >= 0x8C9F) {
-        GWGameStat.mg_record[8] = 0x8C9F;
+    else if (GWGameStat.mg_record[8] >= ((REFRESH_RATE*600)-1)) {
+        GWGameStat.mg_record[8] = ((REFRESH_RATE*600)-1);
     }
     OSReport("HIScore 442(0-999):%d\n", GWGameStat.mg_record[4]);
     if (GWGameStat.mg_record[4] == 0) {
@@ -3468,12 +3509,16 @@ void fn_1_121E8(void)
     else if (GWGameStat.mg_record[0xC] >= 0x63) {
         GWGameStat.mg_record[0xC] = 0x63;
     }
-    OSReport("HIScore 461(0-35999):%d\n", GWGameStat.mg_record[0xD]);
+    #if VERSION_NTSC
+    OSReport("HIScore 461(0-35999):%d\n", GWGameStat.mg_record[13]);
+    #else
+    OSReport("HIScore 461(0-29999):%d\n", GWGameStat.mg_record[13]);
+    #endif
     if (GWGameStat.mg_record[0xD] == 0) {
         GWGameStat.mg_record[0xD] = 0;
     }
-    else if (GWGameStat.mg_record[0xD] >= 0x8C9F) {
-        GWGameStat.mg_record[0xD] = 0x8C9F;
+    else if (GWGameStat.mg_record[0xD] >= ((REFRESH_RATE*600)-1)) {
+        GWGameStat.mg_record[0xD] = ((REFRESH_RATE*600)-1);
     }
     OSReport("HIScore 462(0-99):%d\n", GWGameStat.mg_record[0xE]);
     if (GWGameStat.mg_record[0xE] == 0) {

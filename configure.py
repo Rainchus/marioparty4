@@ -856,8 +856,8 @@ config.libs = [
     Rel(
         "m401Dll",  # Manta Rings
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m401Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m401Dll/main_ex.c"),
+            Object(Matching, "REL/m401Dll/main.c"),
+            Object(Matching, "REL/m401Dll/main_ex.c"),
         },
     ),
     Rel(
@@ -1326,9 +1326,9 @@ config.libs = [
     Rel(
         "modeltestDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/modeltestDll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/modeltestDll/modeltest00.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/modeltestDll/modeltest01.c"),
+            Object(Matching, "REL/modeltestDll/main.c"),
+            Object(Matching, "REL/modeltestDll/modeltest00.c"),
+            Object(Matching, "REL/modeltestDll/modeltest01.c"),
         },
     ),
     Rel(
@@ -1343,9 +1343,9 @@ config.libs = [
     Rel(
         "mpexDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/mpexDll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/mpexDll/mpex.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/mpexDll/charsel.c"),
+            Object(Matching, "REL/mpexDll/main.c"),
+            Object(Matching, "REL/mpexDll/mpex.c"),
+            Object(Matching, "REL/mpexDll/charsel.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/mpexDll/mgname.c"),
         },
     ),
@@ -1411,37 +1411,37 @@ config.libs = [
     Rel(
         "present",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/present/init.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/present/camera.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/present/present.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/present/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/present/common.c"),
+            Object(Matching, "REL/present/init.c"),
+            Object(Matching, "REL/present/camera.c"),
+            Object(Matching, "REL/present/present.c"),
+            Object(Matching, "REL/present/main.c"),
+            Object(Matching, "REL/present/common.c"),
         },
     ),
     Rel(
         "resultDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/resultDll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/resultDll/battle.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/resultDll/datalist.c"),
+            Object(Matching, "REL/resultDll/main.c"),
+            Object(Matching, "REL/resultDll/battle.c"),
+            Object(Matching, "REL/resultDll/datalist.c"),
         },
     ),
     Rel(
         "safDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/safDll/main.c"),
+            Object(Matching, "REL/safDll/main.c"),
         },
     ),
     Rel(
         "selmenuDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/selmenuDll/main.c"),
+            Object(Matching, "REL/selmenuDll/main.c"),
         },
     ),
     Rel(
         "staffDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/staffDll/main.c"),
+            Object(Matching, "REL/staffDll/main.c"),
         },
     ),
     Rel(
