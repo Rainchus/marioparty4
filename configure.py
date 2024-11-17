@@ -1114,8 +1114,8 @@ config.libs = [
     Rel(
         "m436Dll",  # Fruits of Doom
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m436Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m436Dll/sequence.c"),
+            Object(Matching, "REL/m436Dll/main.c"),
+            Object(Matching, "REL/m436Dll/sequence.c"),
         },
     ),
     Rel(
