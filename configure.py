@@ -1136,7 +1136,7 @@ config.libs = [
     Rel(
         "m439Dll",  # Paths of Peril
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m439Dll/main.c"),
+            Object(Matching, "REL/m439Dll/main.c"),
         },
     ),
     Rel(
