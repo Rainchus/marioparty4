@@ -402,7 +402,7 @@ config.libs = [
             Object(Matching, "game/frand.c"),
             Object(Matching, "game/audio.c"),
             Object(Matching, "game/EnvelopeExec.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "game/minigame_seq.c"),
+            Object(Matching, "game/minigame_seq.c"),
             Object(Matching, "game/ovllist.c"),
             Object(Matching, "game/esprite.c"),
             Object(Matching, "game/code_8003FF68.c"),
