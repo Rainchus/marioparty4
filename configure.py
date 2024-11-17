@@ -409,7 +409,7 @@ config.libs = [
             Object(Matching, "game/ClusterExec.c"),
             Object(Matching, "game/ShapeExec.c"),
             Object(Matching, "game/wipe.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "game/window.c"),
+            Object(Matching, "game/window.c"),
             Object(Matching, "game/messdata.c"),
             Object(Matching, "game/card.c"),
             Object(Matching, "game/armem.c"),
