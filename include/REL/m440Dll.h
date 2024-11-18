@@ -4,6 +4,8 @@
 #include "dolphin/types.h"
 #include "game/hsfman.h"
 
+#include "version.h"
+
 #include "game/object.h"
 extern s32 rand8(void);
 
