@@ -872,7 +872,7 @@ void fn_1_3404(Work53E8 *arg0)
             }
             arg0->unk94 = 1;
             arg0->unk8C = arg0->unk0[1] + ((frandf() * arg0->unk0[1]) / 2);
-            temp_f25 = 1.0f - (lbl_1_bss_1A4 / 3600.0f);
+            temp_f25 = 1.0f - (lbl_1_bss_1A4 / (60.0f * REFRESH_RATE));
             if (0.25f < temp_f25) {
                 arg0->unk8C *= arg0->unk90 / (arg0->unk0[2] * temp_f25);
             }
@@ -1491,7 +1491,7 @@ void fn_1_5C04(omObjData *object)
         if (2.0f > temp_f23) {
             temp_r31->unk24.x--;
             if (0.0f > temp_r31->unk24.x) {
-                temp_r31->unk24.x = 60.0f;
+                temp_r31->unk24.x = 1.0f * REFRESH_RATE;
                 if (frandmod(100) > 50) {
                     temp_r31->unk24.y = (frandf() * 220.0f) + 80.0f;
                 }
@@ -1619,7 +1619,7 @@ void fn_1_74F4(s32 arg0)
     work->unk18.z = 0;
     work->unk38 = 0;
     work->unk18.y = 2;
-    work->unk24.x = (frandf() * 180.0f) + 180.0f;
+    work->unk24.x = (frandf() * (3.0f * REFRESH_RATE)) + (3.0f * REFRESH_RATE);
     if (arg0) {
         work->unk18.y = 3;
         work->unk18.x = 180.0f - (frandf() * 120.0f);
@@ -1821,7 +1821,7 @@ void fn_1_8D58(omObjData *object)
         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
         object->func = fn_1_AA4C;
     }
-    lbl_1_bss_24 += (1.0f / 60.0f);
+    lbl_1_bss_24 += (1.0f / REFRESH_RATE);
     if (360.0f <= lbl_1_bss_24) {
         lbl_1_bss_24 -= 360.0f;
     }
@@ -1850,8 +1850,8 @@ void fn_1_8D58(omObjData *object)
 
         case 1002:
             lbl_1_bss_28++;
-            fn_1_13DC(lbl_1_bss_28 / 180.0f, &lbl_1_data_40);
-            if (180.0f <= lbl_1_bss_28) {
+            fn_1_13DC(lbl_1_bss_28 / (3.0f * REFRESH_RATE), &lbl_1_data_40);
+            if ((3.0f * REFRESH_RATE) <= lbl_1_bss_28) {
                 object->work[0]++;
                 fn_1_1350(&lbl_1_data_34, &lbl_1_data_40, &lbl_1_data_4C);
             }
@@ -1869,8 +1869,8 @@ void fn_1_8D58(omObjData *object)
                 }
                 if (!MGSeqStatGet(lbl_1_bss_19E)) {
                     object->work[0]++;
-                    lbl_1_bss_1A4 = 3600;
-                    lbl_1_bss_19C = MGSeqTimerCreate(lbl_1_bss_1A4 / 60);
+                    lbl_1_bss_1A4 = 60 * REFRESH_RATE;
+                    lbl_1_bss_19C = MGSeqTimerCreate(lbl_1_bss_1A4 / REFRESH_RATE);
                     lbl_1_bss_19E = -1;
                 }
             }
@@ -1881,7 +1881,7 @@ void fn_1_8D58(omObjData *object)
             lbl_1_bss_1A4--;
             if (lbl_1_bss_1A4 < 0) {
                 object->work[0] = 1005;
-                lbl_1_bss_1A4 = 3600;
+                lbl_1_bss_1A4 = 60 * REFRESH_RATE;
                 lbl_1_bss_28 = 0;
             }
             break;
@@ -1913,9 +1913,9 @@ void fn_1_8D58(omObjData *object)
 
         case 1006:
             lbl_1_bss_28++;
-            fn_1_13DC(lbl_1_bss_28 / 120.0f, &lbl_1_data_64);
-            if (120.0f <= lbl_1_bss_28) {
-                lbl_1_bss_28 = 120.0f;
+            fn_1_13DC(lbl_1_bss_28 / (2.0f * REFRESH_RATE), &lbl_1_data_64);
+            if ((2.0f * REFRESH_RATE) <= lbl_1_bss_28) {
+                lbl_1_bss_28 = 2.0f * REFRESH_RATE;
                 for (i = 0; i < 4; i++) {
                     float temp;
                     if (OM_GET_DATA_PTR(lbl_1_bss_48[i], Work53E8)->unk98 != 2010) {

@@ -1142,20 +1142,20 @@ config.libs = [
     Rel(
         "m440Dll",  # Bowser's Bigger Blast
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m440Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m440Dll/object.c"),
+            Object(Matching, "REL/m440Dll/main.c"),
+            Object(Matching, "REL/m440Dll/object.c"),
         },
     ),
     Rel(
         "m441Dll",  # Butterfly Blitz
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m441Dll/main.c"),
+            Object(Matching, "REL/m441Dll/main.c"),
         },
     ),
     Rel(
         "m442Dll",  # Barrel Baron
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m442Dll/main.c"),
+            Object(Matching, "REL/m442Dll/main.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m442Dll/score.c"),
         },
     ),
