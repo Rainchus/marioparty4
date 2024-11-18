@@ -454,7 +454,7 @@ void fn_1_6EA8(void)
     temp_f29 = -0.04f;
     temp_f30 = (sp20.y - sp2C.y) / (REFRESH_RATE/2);
     temp_r29 = 0;
-    HuAudFXFadeOut(lbl_1_bss_D8, (VERSION_PAL) ? 416 : 500);
+    HuAudFXFadeOut(lbl_1_bss_D8, (((REFRESH_RATE*500)+30)/60)-1);
     while (!temp_r29) {
         sp2C.y += temp_f30;
         temp_f31 += temp_f29;
