@@ -1155,7 +1155,7 @@ config.libs = [
     Rel(
         "m442Dll",  # Barrel Baron
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m442Dll/main.c"),
+            Object(Matching, "REL/m442Dll/main.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m442Dll/score.c"),
         },
     ),
