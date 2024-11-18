@@ -20,6 +20,10 @@ modules:
   symbols: config/GMPP01_00/rels/bootDll/symbols.txt
   splits: config/GMPP01_00/rels/bootDll/splits.txt
   links: []
+  extract:
+  - symbol: nintendoData
+    binary: nintendoData.bin
+    header: nintendoData.inc
 - object: files/dll/instDll.rel
   hash: eef3ac50923ab2f20d588ef10ae15f3bc739f2b8  
   symbols: config/GMPP01_00/rels/instDll/symbols.txt
