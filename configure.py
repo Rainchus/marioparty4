@@ -1454,8 +1454,8 @@ config.libs = [
         "w01Dll",  # Toad's Midway Madness
         objects={
             Object(Matching, "REL/w01Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w01Dll/mg_coin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w01Dll/mg_item.c"),
+            Object(Matching, "REL/w01Dll/mg_coin.c"),
+            Object(Matching, "REL/w01Dll/mg_item.c"),
         },
     ),
     Rel(
@@ -1464,8 +1464,8 @@ config.libs = [
             Object(Matching, "REL/w02Dll/main.c"),
             Object(Matching, "REL/w02Dll/gendice.c"),
             Object(Matching, "REL/w02Dll/gamble.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w02Dll/mg_coin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w02Dll/mg_item.c"),
+            Object(Matching, "REL/w02Dll/mg_coin.c"),
+            Object(Matching, "REL/w02Dll/mg_item.c"),
             Object(Matching, "REL/w02Dll/shuffleboard.c"),
             Object(Matching, "REL/w02Dll/roulette.c"),
         },
@@ -1489,8 +1489,8 @@ config.libs = [
             Object(Matching, "REL/w04Dll/bridge.c"),
             Object(Matching, "REL/w04Dll/boo_event.c"),
             Object(Matching, "REL/w04Dll/big_boo.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w04Dll/mg_item.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w04Dll/mg_coin.c"),
+            Object(Matching, "REL/w04Dll/mg_item.c"),
+            Object(Matching, "REL/w04Dll/mg_coin.c"),
         },
     ),
     Rel(
@@ -1500,8 +1500,8 @@ config.libs = [
             Object(Matching, "REL/w05Dll/hotel.c"),
             Object(Matching, "REL/w05Dll/monkey.c"),
             Object(Matching, "REL/w05Dll/dolphin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w05Dll/mg_item.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/w05Dll/mg_coin.c"),
+            Object(Matching, "REL/w05Dll/mg_item.c"),
+            Object(Matching, "REL/w05Dll/mg_coin.c"),
         },
     ),
     Rel(

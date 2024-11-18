@@ -130,9 +130,9 @@ void fn_1_A1F0(void) {
     BoardAudSeqPause(0, 1, 1000);
     BoardModelMotionTimeSet(lbl_1_bss_14[6], 0.0f);
     BoardModelAttrReset(lbl_1_bss_14[6], 0x40000002);
-    HuPrcSleep(20);
+    HuPrcSleep((REFRESH_RATE+2)/3);
     HuAudFXPlay(0x469);
-    HuPrcSleep(50);
+    HuPrcSleep(((REFRESH_RATE*5)+3)/6);
     BoardMusStart(1, 0x1E, 0x7F, 0);
     HuAudFXPlay(0x46C);
     while (BoardModelMotionTimeGet(lbl_1_bss_14[6]) < 202.0f) {
@@ -349,7 +349,7 @@ static void fn_1_A7E8(void) {
     }
     BoardModelHookSet(lbl_1_bss_14[6], lbl_1_data_51C[1], lbl_1_bss_298[temp_r29]);
     BoardModelAttrReset(lbl_1_bss_14[6], 0x40000002);
-    HuPrcSleep(30);
+    HuPrcSleep(REFRESH_RATE/2);
     HuAudFXPlay(0x310);
     while (BoardModelMotionTimeGet(lbl_1_bss_14[6]) < BoardModelMotionMaxTimeGet(lbl_1_bss_14[6])) {
         HuPrcVSleep();
@@ -471,7 +471,7 @@ static void fn_1_A7E8(void) {
         HuPrcVSleep();
     }
     BoardModelRotYSet(lbl_1_bss_14[10], 0.0f);
-    HuPrcSleep(30);
+    HuPrcSleep(REFRESH_RATE/2);
     while (HuAudSStreamStatGet(sp8) != 0) {
         HuPrcVSleep();
     }

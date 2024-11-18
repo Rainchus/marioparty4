@@ -342,7 +342,7 @@ static void fn_1_ECD4(omObjData *arg0)
         lbl_1_bss_7E8 = 4.0f;
         arg0->func = fn_1_EED8;
         lbl_1_bss_7D2 = 5;
-        lbl_1_bss_7D0 = 60;
+        lbl_1_bss_7D0 = REFRESH_RATE;
         lbl_1_bss_7D4 = MGSeqTimerCreateXY(lbl_1_bss_7D2, 288, 64);
     }
     BoardModelMotionSpeedSet(lbl_1_bss_6C4[17], lbl_1_bss_7EC);
@@ -368,11 +368,11 @@ static void fn_1_EED8(omObjData *arg0)
 
     fn_1_10CF0(arg0->work[2]);
     temp_r29 = GWPlayer[lbl_1_bss_7E4].port;
-    if ((lbl_1_bss_7D0 -= 1) == 0) {
-        if ((lbl_1_bss_7D2 -= 1) >= 0) {
+    if ((--lbl_1_bss_7D0) == 0) {
+        if ((--lbl_1_bss_7D2) >= 0) {
             MGSeqParamSet(lbl_1_bss_7D4, 1, lbl_1_bss_7D2);
         }
-        lbl_1_bss_7D0 = 60;
+        lbl_1_bss_7D0 = REFRESH_RATE;
     }
     if (GWPlayerCfg[lbl_1_bss_7E4].iscom == 1) {
         fn_1_EEA0(arg0, &var_r30);

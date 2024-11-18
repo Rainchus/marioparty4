@@ -273,7 +273,7 @@ static void fn_1_D2A4(omObjData *arg0) {
     sp8 = BoardModelRotYGet(lbl_1_bss_14[9]);
     BoardModelPosGet(lbl_1_bss_14[9], &spC);
     if (arg0->scale.x != 0.0f) {
-        arg0->scale.x -= 8.5f;
+        arg0->scale.x -= 510.0f/REFRESH_RATE;
         if (arg0->scale.x < 0.0f) {
             arg0->scale.x = 0.0f;
         }
@@ -294,7 +294,7 @@ static void fn_1_D2A4(omObjData *arg0) {
             Hu3DMotionExec(BoardModelIDGet(lbl_1_bss_2F8), temp_r30->unk_08, temp_r30->unk_64, 0);
         }
         lbl_1_bss_31C->work[0] = 60;
-        lbl_1_bss_31C->unk10 = frandmod(40) + 10;
+        lbl_1_bss_31C->unk10 = frandmod((REFRESH_RATE*2)/3) + (REFRESH_RATE/6);
         lbl_1_bss_31C->work[1] = arg0->work[1];
         lbl_1_bss_31C->func = fn_1_E18C;
     }
@@ -304,7 +304,7 @@ static void fn_1_D554(omObjData *arg0) {
     float sp8;
 
     sp8 = BoardModelRotYGet(lbl_1_bss_14[9]);
-    arg0->scale.x += 8.5f;
+    arg0->scale.x += 510.0f/REFRESH_RATE;
     if (arg0->scale.x > 255.0f) {
         arg0->scale.x = 255.0f;
     }
@@ -567,7 +567,7 @@ static void fn_1_E4C0(omObjData *arg0) {
     sp14.z = arg0->scale.z;
     sp20.x = arg0->trans.x;
     sp20.z = arg0->trans.z;
-    sp20.y = arg0->trans.y - arg0->rot.x * arg0->rot.x * 0.25f * 0.075f;
+    sp20.y = arg0->trans.y - arg0->rot.x * arg0->rot.x * 0.25f * ((VERSION_PAL) ? 0.1125f : 0.075f);
     arg0->rot.x += 1.0f;
     VECAdd(&sp2C, &sp20, &sp2C);
     sp8 = sp2C;

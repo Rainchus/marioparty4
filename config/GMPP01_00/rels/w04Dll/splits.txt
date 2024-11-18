@@ -42,6 +42,6 @@ REL/w04Dll/mg_item.c:
 
 REL/w04Dll/mg_coin.c:
 	.text       start:0x0000C784 end:0x0000E9F0
-	.rodata     start:0x000003A0 end:0x00000428
+	.rodata     start:0x000003A0 end:0x0000042C
 	.data       start:0x00000588 end:0x0000063F
 	.bss        start:0x000002B0 end:0x00000328
