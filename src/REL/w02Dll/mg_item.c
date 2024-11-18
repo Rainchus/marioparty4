@@ -92,11 +92,11 @@ void fn_1_5D28(void)
         HuPrcVSleep();
     }
     BoardPlayerIdleSet(lbl_1_bss_196);
-    HuPrcSleep(120);
+    HuPrcSleep(REFRESH_RATE*2);
     BoardAudSeqPause(0, 1, 1000);
     HuAudFXPlay(781);
     fn_1_8570();
-    HuPrcSleep(60);
+    HuPrcSleep(REFRESH_RATE);
     lbl_1_bss_104 = omAddObjEx(boardObjMan, 257, 0, 0, -1, fn_1_5F08);
     lbl_1_bss_108 = omAddObjEx(boardObjMan, 257, 0, 0, -1, fn_1_606C);
     lbl_1_bss_10C = omAddObjEx(boardObjMan, 257, 0, 0, -1, NULL);
@@ -155,7 +155,7 @@ void fn_1_606C(omObjData *object)
     temp_r31->unk44[1].x += lbl_1_bss_110;
     BoardModelPosGet(lbl_1_bss_18A[1], &temp_r31->unk44[2]);
     BoardMusStart(1, 19, 127, 0);
-    object->work[0] = 300;
+    object->work[0] = REFRESH_RATE*5;
     object->work[1] = 0;
     object->func = fn_1_6248;
 }
@@ -199,7 +199,7 @@ void fn_1_6248(omObjData *object)
                 temp_r31->unk2A[1] = temp_r31->unk24[1];
                 sp28 = lbl_1_bss_160[0];
                 sp34 = lbl_1_bss_160[1];
-                temp_f31 = 15;
+                temp_f31 = (VERSION_PAL) ? 13 : 15;
                 break;
 
             case 1:
@@ -207,13 +207,13 @@ void fn_1_6248(omObjData *object)
                 temp_r31->unk2A[1] = temp_r31->unk24[2];
                 sp28 = lbl_1_bss_160[1];
                 sp34 = lbl_1_bss_160[2];
-                temp_f31 = 15;
+                temp_f31 = (VERSION_PAL) ? 13 : 15;
                 break;
 
             case 2:
                 temp_r31->unk2A[0] = temp_r31->unk24[0];
                 temp_r31->unk2A[1] = temp_r31->unk24[2];
-                temp_f31 = 22.5f;
+                temp_f31 = (VERSION_PAL) ? 19.5f : 22.5f;
                 break;
         }
         temp_r31->unk68 = temp_r28;
@@ -429,8 +429,8 @@ void fn_1_6EA8(void)
     sp20.y = sp2C.y = 0;
     VECSubtract(&sp20, &sp2C, &sp14);
     temp_f30 = VECMag(&sp14);
-    VECScale(&sp14, &sp14, 1.0f / 60.0f);
-    for (temp_r30 = 0; temp_r30 < 60; temp_r30++) {
+    VECScale(&sp14, &sp14, 1.0f / REFRESH_RATE);
+    for (temp_r30 = 0; temp_r30 < REFRESH_RATE; temp_r30++) {
         BoardModelPosGet(lbl_1_bss_184[temp_r31], &sp2C);
         VECAdd(&sp2C, &sp14, &sp2C);
         BoardModelPosSetV(lbl_1_bss_184[temp_r31], &sp2C);
@@ -452,9 +452,9 @@ void fn_1_6EA8(void)
     BoardModelScaleGet(lbl_1_bss_184[temp_r31], &sp8);
     temp_f31 = sp8.x;
     temp_f29 = -0.04f;
-    temp_f30 = (sp20.y - sp2C.y) / 30.0f;
+    temp_f30 = (sp20.y - sp2C.y) / (REFRESH_RATE/2);
     temp_r29 = 0;
-    HuAudFXFadeOut(lbl_1_bss_D8, 499);
+    HuAudFXFadeOut(lbl_1_bss_D8, (VERSION_PAL) ? 416 : 500);
     while (!temp_r29) {
         sp2C.y += temp_f30;
         temp_f31 += temp_f29;
@@ -476,7 +476,7 @@ void fn_1_6EA8(void)
     while (!BoardPlayerMotionEndCheck(lbl_1_bss_196)) {
         HuPrcVSleep();
     }
-    HuPrcSleep(30);
+    HuPrcSleep(REFRESH_RATE/2);
     while (HuAudSStreamStatGet(temp_r28)) {
         HuPrcVSleep();
     }
@@ -505,7 +505,7 @@ void fn_1_732C(s32 arg0)
 void fn_1_7358(WorkMGItem *arg0)
 {
     if (--arg0->unk2 == 0) {
-        arg0->unk2 = 60;
+        arg0->unk2 = REFRESH_RATE;
         if (--arg0->unk0 >= 0) {
             MGSeqParamSet(arg0->unk4, 1, arg0->unk0);
         }
@@ -520,7 +520,7 @@ void fn_1_73C8(omObjData *object)
     WorkMGItem *temp_r31;
     temp_r31 = object->data;
     temp_r31->unk0 = 5;
-    temp_r31->unk2 = 60;
+    temp_r31->unk2 = REFRESH_RATE;
     temp_r31->unk4 = MGSeqTimerCreateXY(temp_r31->unk0, 288, 64);
     HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(0x13, 0x1B));
     temp_r31->unk6 = HuWinCreate(-10000, 368, sp8[0], sp8[1], 0);
@@ -564,14 +564,14 @@ void fn_1_74E4(omObjData *object)
     else if (spC & PAD_BUTTON_LEFT) {
         if (temp_r31->unk8 != 0) {
             temp_r31->unk8--;
-            BoardPlayerPosLerpStart(lbl_1_bss_196, &lbl_1_bss_DC[temp_r31->unk8 + 1], &lbl_1_bss_DC[temp_r31->unk8], 12);
+            BoardPlayerPosLerpStart(lbl_1_bss_196, &lbl_1_bss_DC[temp_r31->unk8 + 1], &lbl_1_bss_DC[temp_r31->unk8], REFRESH_RATE/5);
             object->func = fn_1_7750;
         }
     }
     else if (spC & PAD_BUTTON_RIGHT) {
         if (temp_r31->unk8 != 2) {
             temp_r31->unk8++;
-            BoardPlayerPosLerpStart(lbl_1_bss_196, &lbl_1_bss_DC[temp_r31->unk8 - 1], &lbl_1_bss_DC[temp_r31->unk8], 12);
+            BoardPlayerPosLerpStart(lbl_1_bss_196, &lbl_1_bss_DC[temp_r31->unk8 - 1], &lbl_1_bss_DC[temp_r31->unk8], REFRESH_RATE/5);
             object->func = fn_1_7750;
         }
     }
