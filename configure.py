@@ -1149,7 +1149,7 @@ config.libs = [
     Rel(
         "m441Dll",  # Butterfly Blitz
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m441Dll/main.c"),
+            Object(Matching, "REL/m441Dll/main.c"),
         },
     ),
     Rel(
