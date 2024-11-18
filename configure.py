@@ -835,8 +835,8 @@ config.libs = [
     Rel(
         "bootDll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/bootDll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/bootDll/nintendo_data.c"),
+            Object(Matching, "REL/bootDll/main.c"),
+            Object(Matching, "REL/bootDll/language.c"),
         },
     ),
     Rel(
