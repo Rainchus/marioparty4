@@ -14,6 +14,7 @@
 #include "math.h"
 
 #include "string.h"
+#include "version.h"
 
 // bss
 omObjData *lbl_1_bss_6C;
@@ -117,7 +118,7 @@ s32 fn_1_4A4(void)
     var_r31 = &lbl_1_data_78[0];
     var_r30 = 0;
     lbl_1_bss_4++;
-    var_f31 = lbl_1_bss_4 / 120.0f;
+    var_f31 = lbl_1_bss_4 / (2 * REFRESH_RATE_F);
     if (var_f31 > 1.0f) {
         lbl_1_bss_4 = 0;
         var_f31 = 1.0f;
@@ -144,7 +145,7 @@ s32 fn_1_6C8(void)
     var_r31 = &lbl_1_data_78[1];
     var_r30 = 0;
     lbl_1_bss_4++;
-    var_f31 = lbl_1_bss_4 / 120.0f;
+    var_f31 = lbl_1_bss_4 / (2 * REFRESH_RATE_F);
     if (var_f31 > 1.0f) {
         lbl_1_bss_4 = 0;
         var_f31 = 1.0f;
@@ -173,7 +174,7 @@ void fn_1_8F0(omObjData *arg0)
     temp_r31->unk0 = 1;
     temp_r31->unk4 = -1;
     temp_r31->unk8 = -1;
-    temp_r31->unk6 = 0x12C;
+    temp_r31->unk6 = 5 * REFRESH_RATE;
     temp_r31->unkA = 0;
     temp_r31->unkC = -1;
 
@@ -215,7 +216,7 @@ void fn_1_AE0(omObjData *arg0)
             break;
         case 3:
             if (temp_r31->unk8 != -1) {
-                MGSeqParamSet(temp_r31->unk8, 1, ((temp_r31->unk6 + 0x3B) / 60));
+                MGSeqParamSet(temp_r31->unk8, 1, ((temp_r31->unk6 + REFRESH_RATE - 1) / REFRESH_RATE));
             }
             if ((temp_r31->unkC < 0) && ((MGSeqStatGet(temp_r31->unk4) & 0x10) != 0)) {
                 temp_r31->unkC = HuAudSeqPlay(0x49);
@@ -226,7 +227,7 @@ void fn_1_AE0(omObjData *arg0)
                     temp_f31 = (((rand8() << 8) | rand8()) % 361);
                     Center.x = (lbl_1_data_78[1].center.x + (10.0 * sind(temp_f31)));
                     Center.y = (lbl_1_data_78[1].center.y + (10.0 * cosd(temp_f31)));
-                    if (temp_r31->unkA > 0x28) {
+                    if (temp_r31->unkA > (2 * REFRESH_RATE / 3)) {
                         temp_r31->unkA = 0;
                         return;
                     }
@@ -265,7 +266,7 @@ u8 fn_1_E14(omObjData *arg0)
             lbl_1_bss_6++;
             break;
         case 1:
-            if (++lbl_1_bss_8 > 0x1E) {
+            if (++lbl_1_bss_8 > (s16)(0.5f * REFRESH_RATE_F)) {
                 fn_1_F168();
                 lbl_1_bss_8 = 0;
                 lbl_1_bss_6++;
@@ -275,7 +276,7 @@ u8 fn_1_E14(omObjData *arg0)
             var_r31 = lbl_1_data_78;
             var_r30 = 0;
             lbl_1_bss_4++;
-            var_f31 = lbl_1_bss_4 / 120.0f;
+            var_f31 = lbl_1_bss_4 / (2 * REFRESH_RATE_F);
             if (var_f31 > 1.0f) {
                 lbl_1_bss_4 = 0;
                 var_f31 = 1.0f;
@@ -319,7 +320,7 @@ u8 fn_1_1138(omObjData *object)
                 temp_r30->unk40 = temp_r30->unk34;
             }
             lbl_1_bss_8++;
-            var_f30 = lbl_1_bss_8 / 30.0f;
+            var_f30 = lbl_1_bss_8 / (0.5f * REFRESH_RATE_F);
             if (var_f30 >= 1.0f) {
                 var_f30 = 1.0f;
                 if (lbl_1_bss_B == 0) {
@@ -331,7 +332,7 @@ u8 fn_1_1138(omObjData *object)
             var_r31 = &lbl_1_data_78[1]; // could be fn_1_6C8
             var_r28 = 0;
             lbl_1_bss_4++;
-            var_f31 = lbl_1_bss_4 / 120.0f;
+            var_f31 = lbl_1_bss_4 / (2 * REFRESH_RATE_F);
             if (var_f31 > 1.0f) {
                 lbl_1_bss_4 = 0;
                 var_f31 = 1.0f;
@@ -357,7 +358,7 @@ u8 fn_1_1138(omObjData *object)
             lbl_1_bss_8 = 0;
             break;
         case 2:
-            if (++lbl_1_bss_8 > 210.0f) {
+            if (++lbl_1_bss_8 > (3.5f * REFRESH_RATE)) {
                 lbl_1_bss_6 = 0;
                 return 1;
             }
@@ -392,7 +393,7 @@ void fn_1_1768(void)
 
     temp_r31 = (unkStruct2 *)lbl_1_bss_6C->data;
     if (temp_r31->unk8 == -1) {
-        temp_r31->unk6 = 0x12C;
+        temp_r31->unk6 = 5 * REFRESH_RATE;
         temp_r31->unk8 = MGSeqCreate(1, 5, -1, -1);
     }
 }
@@ -695,7 +696,7 @@ void fn_1_2B04(omObjData *object)
     switch (lbl_1_data_E4[0]) {
         case 0:
             lbl_1_data_E8[0]++;
-            temp_f31 = lbl_1_data_E8[0] / 360.0f;
+            temp_f31 = lbl_1_data_E8[0] / (6 * REFRESH_RATE_F);
             if (temp_f31 > 1.0f) {
                 temp_f31 = 1.0f;
                 Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
@@ -752,15 +753,15 @@ void fn_1_2D28(omObjData *object)
             break;
         case 0x1:
             lbl_1_data_F0[0]++;
-            var_f31 = lbl_1_data_F0[0] / 120.0f;
+            var_f31 = lbl_1_data_F0[0] / (2 * REFRESH_RATE_F);
             if (var_f31 > 1.0f) {
                 var_f31 = 1.0f;
                 lbl_1_data_F0[0] = 0;
-                lbl_1_data_F0[1] = 0xF;
+                lbl_1_data_F0[1] = REFRESH_RATE / 4;
                 lbl_1_data_EC[1] = (lbl_1_data_EC[0] + 1);
                 lbl_1_data_EC[0] = 0x63;
             }
-            if (110.0f == lbl_1_data_F0[0]) {
+            if ((11 * REFRESH_RATE_F / 6) == lbl_1_data_F0[0]) {
                 HuAudFXPlay(0x70A);
             }
             var_f31 = sin((M_PI * (90.0f * var_f31)) / 180.0);
@@ -771,11 +772,11 @@ void fn_1_2D28(omObjData *object)
                 HuAudFXPlay(0x713);
             }
             lbl_1_data_F0[0]++;
-            var_f31 = lbl_1_data_F0[0] / 60.0f;
+            var_f31 = lbl_1_data_F0[0] / REFRESH_RATE_F;
             if (var_f31 > 1.0f) {
                 var_f31 = 1.0f;
                 lbl_1_data_F0[0] = 0;
-                lbl_1_data_F0[1] = 0xF;
+                lbl_1_data_F0[1] = REFRESH_RATE / 4;
                 lbl_1_data_EC[1] = lbl_1_data_EC[0] + 1;
                 lbl_1_data_EC[0] = 0x63;
                 HuAudFXPlay(0x714);
@@ -788,7 +789,7 @@ void fn_1_2D28(omObjData *object)
             if (lbl_1_data_F0[0] == 0) {
                 HuAudFXPlay(0x711);
             }
-            if (++lbl_1_data_F0[0] > 12.0) {
+            if (++lbl_1_data_F0[0] > (0.2 * REFRESH_RATE)) {
                 if (fn_1_4EA8(0x40) != 0) {
                     fn_1_4EEC(0x40, 0);
                     fn_1_F228();
@@ -801,7 +802,7 @@ void fn_1_2D28(omObjData *object)
             break;
         case 0x4:
             lbl_1_data_F0[0]++;
-            var_f31 = lbl_1_data_F0[0] / 360.0f;
+            var_f31 = lbl_1_data_F0[0] / (6 * REFRESH_RATE_F);
             if (var_f31 > 1.0f) {
                 var_f31 = 1.0f;
                 Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF);
@@ -1021,7 +1022,7 @@ void fn_1_46E0(omObjData *object)
             break;
         case 0x1:
             lbl_1_data_108[0]++;
-            var_f31 = lbl_1_data_108[0] / 60.0f;
+            var_f31 = lbl_1_data_108[0] / REFRESH_RATE_F;
             if (var_f31 > 1.0f) {
                 var_f31 = 1.0f;
                 lbl_1_data_108[0] = 0;
@@ -1083,7 +1084,7 @@ void fn_1_4B44(omObjData *object)
     switch (lbl_1_data_104[0]) {
         case 0:
             lbl_1_data_108[0]++;
-            var_f31 = lbl_1_data_108[0] / 60.0f;
+            var_f31 = lbl_1_data_108[0] / REFRESH_RATE_F;
             if (var_f31 > 1.0f) {
                 var_f31 = 1.0f;
                 lbl_1_data_108[0] = 0;
@@ -1094,7 +1095,7 @@ void fn_1_4B44(omObjData *object)
             break;
         case 1:
             lbl_1_data_108[0]++;
-            var_f31 = (lbl_1_data_108[0] / 30.0f);
+            var_f31 = (lbl_1_data_108[0] / (0.5f * REFRESH_RATE_F));
             if (var_f31 >= 1.0f) {
                 lbl_1_data_108[0] = 0;
                 lbl_1_data_104[0] = 0;
@@ -1301,7 +1302,7 @@ void fn_1_57B4(unkStruct6 *arg0)
         }
     }
     if ((arg0->unk2 & 4) != 0) {
-        if (++arg0->unk3E > 0x50) {
+        if (++arg0->unk3E > (4 * REFRESH_RATE / 3)) {
             arg0->unk3C = ((arg0->unk3C - 10) < 0) ? 0 : arg0->unk3C - 10;
         }
     }

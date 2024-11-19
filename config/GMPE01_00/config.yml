@@ -19,9 +19,9 @@ modules:
   splits: config/GMPE01_00/rels/bootDll/splits.txt
   links: []
   extract:
-  - symbol: logoNintendoData
-    binary: logoNintendoData.bin
-    header: logoNintendoData.inc
+  - symbol: nintendoData
+    binary: nintendoData.bin
+    header: nintendoData.inc
 - object: files/dll/instDll.rel
   hash: f09399fee83c63abfe2adb25341152adad959a93
   symbols: config/GMPE01_00/rels/instDll/symbols.txt
@@ -566,6 +566,3 @@ extract:
 - symbol: wrongdisc_en
   binary: wrongdisc_en.bin
   header: wrongdisc_en.inc
-- symbol: DEMOFontBitmap
-  binary: DEMOFontBitmap.bin
-  header: DEMOFontBitmap.inc

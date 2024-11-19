@@ -20,6 +20,7 @@
 
 #include "dolphin.h"
 #include "ext_math.h"
+#include "version.h"
 
 typedef struct {
     /* 0x00 */ s32 unk00;
@@ -1431,7 +1432,7 @@ void fn_1_7148(omObjData *arg0)
         case 1005:
             lbl_1_bss_84++;
             if (lbl_1_data_19A != -1) {
-                MGSeqParamSet(lbl_1_data_19A, 1, ((lbl_1_bss_0 < 0 ? 0 : lbl_1_bss_0) + 59) / 60);
+                MGSeqParamSet(lbl_1_data_19A, 1, ((lbl_1_bss_0 < 0 ? 0 : lbl_1_bss_0) + REFRESH_RATE - 1) / REFRESH_RATE);
                 lbl_1_bss_0--;
                 if (lbl_1_bss_0 <= -30) {
                     MGSeqParamSet(lbl_1_data_19A, 2, -1);

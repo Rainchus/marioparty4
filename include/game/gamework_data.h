@@ -3,6 +3,7 @@
 
 #include "dolphin.h"
 #include "game/flag.h"
+#include "version.h"
 
 //HACK: to prevent prototype errors
 extern void HuPadRumbleAllStop(void);
@@ -143,6 +144,9 @@ typedef struct game_stat {
 /* 0x110 */ PauseBackupConfig party_pause; 
 } GameStat;
 
+extern s16 GwLanguage;
+extern s16 GwLanguageSave;
+
 extern PlayerConfig GWPlayerCfg[4];
 extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
@@ -166,6 +170,11 @@ static inline void GWMGTypeSet(s32 type)
 static inline s32 GWPartyGet(void)
 {
     return GWSystem.party;
+}
+
+static inline void GWLanguageSet(s16 language)
+{
+    GWGameStat.language = language;
 }
 
 static inline s32 GWLanguageGet(void)
@@ -235,6 +244,7 @@ static inline s32 GWMessSpeedGet(void)
 
 static inline void GWMessSpeedSet(s32 value)
 {
+    #if VERSION_NTSC
 	GWSystem.mess_speed = value;
 	switch(value) {
 		case 0:
@@ -249,6 +259,26 @@ static inline void GWMessSpeedSet(s32 value)
 			GWSystem.mess_delay = 32;
 			break;
 	}
+    #else
+    GWSystem.mess_speed = value;
+	switch(value) {
+		case 0:
+			GWSystem.mess_delay = 32;
+			break;
+			
+        case 2:
+			GWSystem.mess_delay = 64;
+			break;
+            
+		case 1:
+			GWSystem.mess_delay = 48;
+			break;
+			
+		default:
+			GWSystem.mess_delay = 120;
+			break;
+	}
+    #endif
 }
 
 static inline void GWSaveModeSet(s32 value)

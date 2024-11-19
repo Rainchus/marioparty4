@@ -6,7 +6,9 @@
 #include "math.h"
 
 s32 lbl_1_data_0 = 100;
+#if VERSION_NTSC
 s32 lbl_1_bss_0[192];
+#endif
 
 void fn_1_0(void)
 {
