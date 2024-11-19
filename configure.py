@@ -1273,10 +1273,10 @@ config.libs = [
     Rel(
         "m460Dll",  # Doors of Doom
         objects={
-            Object(NonMatching, "REL/m460Dll/main.c"),
-            Object(NonMatching, "REL/m460Dll/player.c"),
-            Object(NonMatching, "REL/m460Dll/map.c"),
-            Object(NonMatching, "REL/m460Dll/score.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m460Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m460Dll/player.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m460Dll/map.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m460Dll/score.c"),
         },
     ),
     Rel(
