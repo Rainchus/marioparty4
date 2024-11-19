@@ -17,7 +17,9 @@ typedef struct M418DllUnkStruct {
     char unk48[0x4];
 } M418DllUnkStruct; // sizeof 0x4C
 
+f32 fn_1_A920(f32, f32, f32);
 void fn_1_ABC4(omObjData*, s32, s32, s32, s32);
+void fn_1_AD14(omObjData*, s32, s32, s32, s32);
 void fn_1_B104(M418DllUnkStruct*, Vec, Vec);
 void fn_1_B41C(M418DllUnkStruct*);
 
