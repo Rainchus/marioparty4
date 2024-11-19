@@ -32,7 +32,7 @@ typedef struct M460DllCameraStruct {
     float unk_90;
     s32 unk_94;
     char unk98[0xC];
-} M460DllCameraStruct; /* size = 0xA4 */ // same as M443DllCameraStruct // TODO does this have to be here?
+} M460DllCameraStruct; /* size = 0xA4 */ // same as M443DllCameraStruct
 
 void fn_1_3E68(u32 arg0);
 M460DllCameraStruct *fn_1_3E90(s32 arg0);

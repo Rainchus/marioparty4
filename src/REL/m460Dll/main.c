@@ -168,30 +168,30 @@ void ObjectSetup(void)
 
 void fn_1_4C8(omObjData *var_r30)
 {
-    M460DllWork *var_r31;
+    M460DllWork *work;
 
     var_r30->data = HuMemDirectMallocNum(HEAP_SYSTEM, sizeof(M460DllWork), MEMORY_DEFAULT_NUM);
-    var_r31 = var_r30->data;
-    memset(var_r31, 0, sizeof(M460DllWork));
-    var_r31->unk_00 = 0;
-    var_r31->unk_04 = 0;
-    var_r31->unk_0C = 0;
-    var_r31->unk_10 = 0;
-    var_r31->unk_14 = 0;
-    var_r31->unk_18 = 0;
-    var_r31->unk_4C = 0;
-    var_r31->unk_50 = 0;
-    var_r31->unk_08 = 0;
-    var_r31->unk_88 = 0;
-    var_r31->unk_74 = var_r31->unk_78 = var_r31->unk_7C = var_r31->unk_80 = -1;
-    var_r31->unk_8C = 0;
-    var_r31->unk_94 = 0;
-    var_r31->unk_30 = 0;
-    var_r31->unk_30 = GWMGRecordGet(0xC);
-    var_r31->unk_28 = (var_r31->unk_30 >> 0x10) & 0xFF;
-    var_r31->unk_24 = (var_r31->unk_30 >> 0x18) & 0xFF;
-    var_r31->unk_30 = (u16)var_r31->unk_30;
-    fn_1_8CAC(lbl_1_bss_30, var_r31->unk_30);
+    work = var_r30->data;
+    memset(work, 0, sizeof(M460DllWork));
+    work->unk_00 = 0;
+    work->unk_04 = 0;
+    work->unk_0C = 0;
+    work->unk_10 = 0;
+    work->unk_14 = 0;
+    work->unk_18 = 0;
+    work->unk_4C = 0;
+    work->unk_50 = 0;
+    work->unk_08 = 0;
+    work->unk_88 = 0;
+    work->unk_74 = work->unk_78 = work->unk_7C = work->unk_80 = -1;
+    work->unk_8C = 0;
+    work->unk_94 = 0;
+    work->unk_30 = 0;
+    work->unk_30 = GWMGRecordGet(0xC);
+    work->unk_28 = (work->unk_30 >> 0x10) & 0xFF;
+    work->unk_24 = (work->unk_30 >> 0x18) & 0xFF;
+    work->unk_30 = (u16)work->unk_30;
+    fn_1_8CAC(lbl_1_bss_30, work->unk_30);
     var_r30->func = fn_1_948;
 }
 
@@ -200,15 +200,15 @@ void fn_1_5F0(omObjData *var_r29)
     Vec sp14;
     Vec sp8;
     M460DllCameraStruct *var_r31;
-    M460DllWork *var_r30;
+    M460DllWork *work;
 
-    var_r30 = var_r29->data;
-    var_r30->unk_04++;
-    var_r30->unk_10++;
-    var_r30->unk_18++;
-    var_r30->unk_50++;
-    if ((omSysExitReq != 0) && (var_r30->unk_00 != 5)) {
-        var_r30->unk_00 = 4;
+    work = var_r29->data;
+    work->unk_04++;
+    work->unk_10++;
+    work->unk_18++;
+    work->unk_50++;
+    if ((omSysExitReq != 0) && (work->unk_00 != 5)) {
+        work->unk_00 = 4;
         fn_1_7FC(var_r29);
     }
     var_r31 = fn_1_3F2C(1);
@@ -293,26 +293,26 @@ void fn_1_11EC(omObjData *object)
 
 void fn_1_1548(omObjData *object)
 {
-    M460DllWork *var_r28 = object->data;
+    M460DllWork *work = object->data;
     fn_1_5F0(object);
-    switch (var_r28->unk_14) {
+    switch (work->unk_14) {
         case 0:
-            var_r28->unk_1C = 0x3C;
-            var_r28->unk_20 = 0x3C;
+            work->unk_1C = 0x3C;
+            work->unk_20 = 0x3C;
             lbl_1_bss_18 = MGSeqCreate(3, 0);
             MGSeqPosSet(lbl_1_bss_18, 320.0f, 240.0f);
-            var_r28->unk_14 = 1;
-            var_r28->unk_18 = 0;
+            work->unk_14 = 1;
+            work->unk_18 = 0;
             break;
         case 1:
             if ((lbl_1_bss_8 < 0) && ((MGSeqStatGet(lbl_1_bss_18) & 0x10) != 0)) {
                 lbl_1_bss_8 = HuAudSeqPlay(0x49);
             }
             if (MGSeqStatGet(lbl_1_bss_18) == 0) {
-                var_r28->unk_2C = 0;
-                var_r28->unk_44 = 0;
-                if (var_r28->unk_08 == 0) {
-                    var_r28->unk_18 = 0;
+                work->unk_2C = 0;
+                work->unk_44 = 0;
+                if (work->unk_08 == 0) {
+                    work->unk_18 = 0;
                     object->func = fn_1_197C;
                 }
             }
@@ -322,36 +322,36 @@ void fn_1_1548(omObjData *object)
 
 void fn_1_197C(omObjData *object)
 {
-    M460DllWork *var_r31 = object->data;
+    M460DllWork *work = object->data;
     s32 var_r26 = 0;
     s32 sp8 = 0;
     fn_1_5F0(object);
-    switch (var_r31->unk_14) {
+    switch (work->unk_14) {
         case 1:
             if (WipeStatGet() == 0) {
-                var_r31->unk_38 = 3;
-                var_r31->unk_3C = 0;
-                var_r31->unk_40 = 0;
-                var_r31->unk_1C = 0x3C;
-                var_r31->unk_20 = 0x3C;
-                var_r31->unk_14 = 2;
-                var_r31->unk_18 = 0;
+                work->unk_38 = 3;
+                work->unk_3C = 0;
+                work->unk_40 = 0;
+                work->unk_1C = 0x3C;
+                work->unk_20 = 0x3C;
+                work->unk_14 = 2;
+                work->unk_18 = 0;
             }
             break;
         case 2:
-            if (var_r31->unk_38 == 3) {
-                if ((--var_r31->unk_20) == 0) {
-                    var_r31->unk_20 = 0x3C;
-                    var_r31->unk_1C--;
-                    if (var_r31->unk_1C == 0) {
-                        var_r31->unk_44 = 1;
+            if (work->unk_38 == 3) {
+                if ((--work->unk_20) == 0) {
+                    work->unk_20 = 0x3C;
+                    work->unk_1C--;
+                    if (work->unk_1C == 0) {
+                        work->unk_44 = 1;
                         fn_1_42BC(frandmod(2));
                     }
                 }
-                if ((lbl_1_bss_16 < 0) && (var_r31->unk_1C < 0xA)) {
-                    lbl_1_bss_16 = MGSeqCreate(1, var_r31->unk_1C, -1, -1);
+                if ((lbl_1_bss_16 < 0) && (work->unk_1C < 0xA)) {
+                    lbl_1_bss_16 = MGSeqCreate(1, work->unk_1C, -1, -1);
                 }
-                MGSeqParamSet(lbl_1_bss_16, 1, var_r31->unk_1C);
+                MGSeqParamSet(lbl_1_bss_16, 1, work->unk_1C);
             }
             else {
                 if (lbl_1_bss_16 >= 0) {
@@ -359,65 +359,65 @@ void fn_1_197C(omObjData *object)
                     lbl_1_bss_16 = -1;
                 }
                 if (frandmod(0x3E8) < 0x1F4) {
-                    var_r31->unk_44 = 1;
+                    work->unk_44 = 1;
                 }
-                if (var_r31->unk_2C >= 0x1E) {
-                    var_r31->unk_44 = 1;
+                if (work->unk_2C >= 0x1E) {
+                    work->unk_44 = 1;
                 }
-                if (var_r31->unk_44 != 0) {
-                    var_r31->unk_44 = 1;
-                    var_r31->unk_88 = 1;
+                if (work->unk_44 != 0) {
+                    work->unk_44 = 1;
+                    work->unk_88 = 1;
                 }
-                var_r31->unk_14 = 3;
-                var_r31->unk_18 = 0;
+                work->unk_14 = 3;
+                work->unk_18 = 0;
             }
             break;
         case 3:
             if (fn_1_4358() != 0) {
-                if (var_r31->unk_44 != 0) {
+                if (work->unk_44 != 0) {
                     var_r26 = 1;
                 }
-                else if (var_r31->unk_18 > 60.0f) {
-                    if (var_r31->unk_08 == 0) {
+                else if (work->unk_18 > 60.0f) {
+                    if (work->unk_08 == 0) {
                         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 0x1E);
                         WipeColorSet(0, 0, 0);
                     }
-                    var_r31->unk_14 = 4;
-                    var_r31->unk_18 = 0;
+                    work->unk_14 = 4;
+                    work->unk_18 = 0;
                 }
             }
             else {
-                var_r31->unk_18 = 0;
+                work->unk_18 = 0;
             }
             break;
         case 4:
             if (WipeStatGet() == 0) {
-                var_r31->unk_2C++;
-                if (var_r31->unk_08 == 0) {
+                work->unk_2C++;
+                if (work->unk_08 == 0) {
                     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 0x1E);
                 }
-                var_r31->unk_14 = 1;
-                var_r31->unk_18 = 0;
+                work->unk_14 = 1;
+                work->unk_18 = 0;
             }
             break;
     }
     if (var_r26 != 0) {
         lbl_1_bss_14 = MGSeqCreate(3, 1);
         HuAudSeqFadeOut(lbl_1_bss_8, 0x64);
-        var_r31->unk_24++;
-        if (var_r31->unk_24 > 0xFF) {
-            var_r31->unk_24 = 0xFF;
+        work->unk_24++;
+        if (work->unk_24 > 0xFF) {
+            work->unk_24 = 0xFF;
         }
-        if (var_r31->unk_2C > var_r31->unk_30) {
-            var_r31->unk_28 = var_r31->unk_24;
-            var_r31->unk_30 = var_r31->unk_2C;
-            var_r31->unk_48 = 1;
-            GWMGRecordSet(0xC, var_r31->unk_30);
+        if (work->unk_2C > work->unk_30) {
+            work->unk_28 = work->unk_24;
+            work->unk_30 = work->unk_2C;
+            work->unk_48 = 1;
+            GWMGRecordSet(0xC, work->unk_30);
         }
-        mgRecordExtra = var_r31->unk_2C;
-        var_r31->unk_14 = 5;
-        var_r31->unk_18 = 0;
-        if (var_r31->unk_08 == 0) {
+        mgRecordExtra = work->unk_2C;
+        work->unk_14 = 5;
+        work->unk_18 = 0;
+        if (work->unk_08 == 0) {
             object->func = fn_1_201C;
         }
     }
@@ -425,7 +425,7 @@ void fn_1_197C(omObjData *object)
 
 void fn_1_201C(omObjData *object)
 {
-    M460DllWork *var_r26 = object->data;
+    M460DllWork *work = object->data;
 
     if (lbl_1_bss_16 >= 0) {
         MGSeqParamSet(lbl_1_bss_16, 2, -1);
@@ -433,13 +433,13 @@ void fn_1_201C(omObjData *object)
     }
     fn_1_5F0(object);
     if (MGSeqStatGet(lbl_1_bss_14) == 0) {
-        if (var_r26->unk_48 != 0) {
+        if (work->unk_48 != 0) {
             fn_1_8FAC(1);
-            lbl_1_bss_12 = MGSeqCreate(0xE, var_r26->unk_30);
-            var_r26->unk_48 = 0;
+            lbl_1_bss_12 = MGSeqCreate(0xE, work->unk_30);
+            work->unk_48 = 0;
         }
-        var_r26->unk_14 = 6;
-        var_r26->unk_18 = 0;
+        work->unk_14 = 6;
+        work->unk_18 = 0;
         fn_1_7FC(object);
     }
 }
@@ -460,11 +460,11 @@ void fn_1_2564(omObjData *object)
 {
     Vec sp20;
     M460DllCameraStruct *var_r26;
-    M460DllWork *var_r25;
+    M460DllWork *work;
     s32 var_r24;
     float var_f31;
 
-    var_r25 = object->data;
+    work = object->data;
     fn_1_5F0(object);
     object->work[0]++;
     var_f31 = lbl_1_data_AC[object->work[1]];
@@ -499,11 +499,11 @@ void fn_1_2564(omObjData *object)
             fn_1_8BA0(lbl_1_data_A0[object->work[1]]);
         }
         if (lbl_1_data_AC[object->work[1]] == 0) {
-            var_r25->unk_0C = 2;
+            work->unk_0C = 2;
             fn_1_7FC(object);
         }
         else if (lbl_1_data_AC[object->work[1] + 1] == 0) {
-            var_r25->unk_0C = 1;
+            work->unk_0C = 1;
         }
     }
 }
@@ -515,7 +515,7 @@ omObjFunc fn_1_2D64(Process *process, omObjData *object)
 
 void fn_1_2D70(omObjData *object)
 {
-    M460DllWork *var_r26 = object->data;
+    M460DllWork *work = object->data;
     s32 var_r23 = 1;
     fn_1_5F0(object);
     if (lbl_1_bss_12 >= 0) {
@@ -526,21 +526,21 @@ void fn_1_2D70(omObjData *object)
             lbl_1_bss_12 = -1;
         }
     }
-    if (var_r26->unk_8C != 1) {
+    if (work->unk_8C != 1) {
         var_r23 = 0;
     }
     if (var_r23 != 0) {
-        var_r26->unk_4C = 1;
+        work->unk_4C = 1;
         if (lbl_1_bss_4 < 0) {
             lbl_1_bss_4 = HuAudSStreamPlay(4);
         }
-        if (var_r26->unk_50 >= 210.0f) {
-            var_r26->unk_4C = 2;
+        if (work->unk_50 >= 210.0f) {
+            work->unk_4C = 2;
             fn_1_7FC(object);
         }
     }
     else {
-        var_r26->unk_50 = 0;
+        work->unk_50 = 0;
     }
 }
 
@@ -569,7 +569,7 @@ void fn_1_337C(omObjData *object)
 
     object->data = HuMemDirectMallocNum(HEAP_SYSTEM, 10 * sizeof(M460DllCameraStruct), MEMORY_DEFAULT_NUM);
     var_r28 = object->data;
-    memset(var_r28, 0, 0x668);
+    memset(var_r28, 0, 10 * sizeof(M460DllCameraStruct));
     object->model[0] = Hu3DHookFuncCreate(fn_1_3BC0);
     Hu3DModelLayerSet(object->model[0], 0);
     Hu3DModelCameraSet(object->model[0], 0x1E);
@@ -879,9 +879,9 @@ s32 fn_1_419C(void)
 
 void fn_1_41B4(s32 arg0, s32 arg1, s32 arg2)
 {
-    M460DllWork *var_r31 = lbl_1_bss_2C->data;
-    var_r31->unk_64[arg0 &= 3] = arg1;
-    var_r31->unk_54[arg0] = arg2;
+    M460DllWork *work = lbl_1_bss_2C->data;
+    work->unk_64[arg0 &= 3] = arg1;
+    work->unk_54[arg0] = arg2;
 }
 
 void fn_1_41F4(s32 arg0)
@@ -906,9 +906,9 @@ s32 fn_1_4284(void)
 
 void fn_1_42BC(u32 arg0)
 {
-    M460DllWork *var_r31 = lbl_1_bss_2C->data;
-    if (var_r31->unk_38 == 3) {
-        var_r31->unk_38 = arg0;
+    M460DllWork *work = lbl_1_bss_2C->data;
+    if (work->unk_38 == 3) {
+        work->unk_38 = arg0;
     }
 }
 
