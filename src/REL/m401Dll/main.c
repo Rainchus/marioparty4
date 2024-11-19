@@ -2769,7 +2769,11 @@ void fn_2_C130(omObjData *object)
         case 0:
             if (!MGSeqStatGet(lbl_2_bss_C0)) {
                 object->work[0] = 1;
+                #if VERSION_NTSC
                 HuAudFXStop(lbl_2_bss_11C);
+                #else
+                HuAudFXFadeOut(lbl_2_bss_11C, 500);
+                #endif
                 WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
                 WipeColorSet(255, 255, 255);
             }

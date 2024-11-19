@@ -80,7 +80,7 @@ void fn_1_6B7C(void)
     BoardModelAttrReset(lbl_1_bss_14[0], 0x40000002);
     BoardMusStart(1, 0x22, 0x7F, 0);
     BoardPlayerMotionShiftSet(lbl_1_bss_B6, lbl_1_bss_9E[0], 0.0f, 30.0f, HU3D_MOTATTR_LOOP);
-    HuPrcSleep(0x1E);
+    HuPrcSleep(REFRESH_RATE/2);
     BoardModelVisibilitySet(lbl_1_bss_A2, 1);
     BoardModelHookSet(BoardPlayerModelGet(lbl_1_bss_B6), "a-itemhook-r", lbl_1_bss_A2);
     Hu3DModelObjPosGet(BoardModelIDGet(*lbl_1_bss_14), "chara1", &sp10);
@@ -353,7 +353,7 @@ void fn_1_799C(void)
     while (BoardPlayerMotionEndCheck(lbl_1_bss_B6) == 0) {
         HuPrcVSleep();
     }
-    HuPrcSleep(0x1E);
+    HuPrcSleep(REFRESH_RATE/2);
 
     while (HuAudSStreamStatGet(temp_r27) != 0) {
         HuPrcVSleep();
@@ -605,10 +605,10 @@ void fn_1_896C(void)
         }
     }
     if ((temp_r30 & 0x80) != 0) {
-        HuPrcSleep(0x19);
+        HuPrcSleep(((REFRESH_RATE*5)+6)/12);
     }
     else {
-        HuPrcSleep(0xF);
+        HuPrcSleep((REFRESH_RATE+2)/4);
     }
     spC.x = spC.y = spC.z = 0.0f;
 
@@ -706,7 +706,7 @@ void fn_1_896C(void)
     for (var_r31 = 0; var_r31 < 3; var_r31++) {
         BoardModelMotionStartEndSet(lbl_1_bss_AA[var_r31], 0x28, 0x46);
     }
-    HuPrcSleep(13);
+    HuPrcSleep((REFRESH_RATE*2)/9);
     var_f31 = -8.0f;
     while (1) {
         for (var_r28 = 0, var_r31 = 0; var_r31 < 3; var_r31++) {

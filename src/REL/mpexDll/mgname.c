@@ -13,7 +13,7 @@
 
 #include "REL/mpexDll.h"
 
-s32 lbl_1_data_788[0xC6] = {
+static s32 fontDataTbl[0xC6] = {
     0,
     0,
     0,
@@ -229,7 +229,7 @@ s32 fn_1_1CB80(SeqWork *arg0, u8 *arg1, s16 arg2)
     s16 var_r20;
     s16 var_r19;
 
-    var_r27 = lbl_1_data_788;
+    var_r27 = fontDataTbl;
 
     for (var_r23 = 0; var_r23 < 0x10; var_r23++) {
         if (arg0->spr_grp[var_r23] == -1) {

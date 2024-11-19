@@ -4,6 +4,8 @@
 #include "dolphin/types.h"
 #include "game/hsfman.h"
 
+#include "version.h"
+
 #include "game/object.h"
 extern s32 rand8(void);
 
@@ -240,6 +242,11 @@ typedef struct _unkObjStruct {
     f32 unk70;
 } unkObjStruct;
 
+#if VERSION_NTSC
+#define REFRESH_RATE_F 60.0f
+#else
+#define REFRESH_RATE_F 49.998f
+#endif
 
 ////// BSS //////
 extern omObjData* lbl_1_bss_C0[4];

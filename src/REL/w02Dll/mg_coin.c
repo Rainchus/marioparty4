@@ -253,7 +253,7 @@ void fn_1_4378(omObjData *object)
                         HuAudFXPlay(1067);
                         object->work[0] &= ~temp_r28;
                         temp_r31->unkC[temp_r30] = 0;
-                        lbl_1_bss_A8->work[2] = 60;
+                        lbl_1_bss_A8->work[2] = REFRESH_RATE;
                         if (temp_r30 != 2) {
                             lbl_1_bss_A8->func = fn_1_5290;
                         }
@@ -468,7 +468,7 @@ void fn_1_5290(omObjData *object)
     if (object->work[2] == 0) {
         temp_r31 = object->data;
         temp_r31->unk18 = 5;
-        temp_r31->unk1A = 60;
+        temp_r31->unk1A = REFRESH_RATE;
         temp_r31->unk1C = MGSeqTimerCreateXY(temp_r31->unk18, 288, 64);
         HuWinMesMaxSizeGet(1, sp8, MAKE_MESSID(0x13, 0x15));
         temp_r31->unk1E = HuWinCreate(-10000, 400, sp8[0], sp8[1], 0);
@@ -495,7 +495,7 @@ void fn_1_53B8(omObjData *object)
     temp_r31 = object->data;
     temp_r28 = GWPlayer[lbl_1_bss_86].port;
     if (--temp_r31->unk1A == 0) {
-        temp_r31->unk1A = 60;
+        temp_r31->unk1A = REFRESH_RATE;
         if (--temp_r31->unk18 >= 0) {
             MGSeqParamSet(temp_r31->unk1C, 1, temp_r31->unk18);
         }

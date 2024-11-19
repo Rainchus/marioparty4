@@ -11,6 +11,7 @@
 #include "game/gamework_data.h"
 #include "game/minigame_seq.h"
 #include "math.h"
+#include "version.h"
 
 
 typedef struct bss_7480_struct {
@@ -246,16 +247,16 @@ void fn_1_6DBC(omObjData *object)
                     temp_r31->unk34.y += (75.0f - temp_r31->unk34.y) * 0.02f;
                 }
                 temp_r31->unk34.x += (temp_r31->unk34.y - temp_r31->unk34.x) * 0.2f;
-                temp_r31->unk1C.x += sind(temp_r31->unk34.z) * ((1.0f / 60.0f) * temp_r31->unk34.x);
-                temp_r31->unk1C.z += cosd(temp_r31->unk34.z) * ((1.0f / 60.0f) * temp_r31->unk34.x);
-                temp_r31->unk40.y += (1.0f / 60.0f) * temp_r31->unk34.x;
+                temp_r31->unk1C.x += sind(temp_r31->unk34.z) * ((1.0f / REFRESH_RATE) * temp_r31->unk34.x);
+                temp_r31->unk1C.z += cosd(temp_r31->unk34.z) * ((1.0f / REFRESH_RATE) * temp_r31->unk34.x);
+                temp_r31->unk40.y += (1.0f / REFRESH_RATE) * temp_r31->unk34.x;
                 temp_r31->unk18 = fn_1_8254(temp_r31->unk18, &temp_r31->unk1C);
                 Hu3DModelPosSetV(temp_r31->unk2, &temp_r31->unk1C);
                 Hu3DModelRotSet(temp_r31->unk2, 0, temp_r31->unk34.z, 0);
                 break;
 
             case 1:
-                temp_r31->unk34.z += 3.0000002f;
+                temp_r31->unk34.z += 1.0f / REFRESH_RATE * 180.0f;
                 Hu3DModelPosSetV(temp_r31->unk2, &temp_r31->unk1C);
                 Hu3DModelRotSet(temp_r31->unk2, 0, temp_r31->unk34.z, 0);
                 if (fn_1_1D54() == 4) {
@@ -274,9 +275,9 @@ void fn_1_6DBC(omObjData *object)
                         }
                         VECSubtract(&sp8, &temp_r31->unk1C, &sp8);
                         temp_r31->unk40.x = temp_r31->unk34.z = atan2d(sp8.x, sp8.z);
-                        temp_r31->unk28.x = (1.0f / 60.0f) * sp8.x;
-                        temp_r31->unk28.y = 6.666667f;
-                        temp_r31->unk28.z = (1.0f / 60.0f) * sp8.z;
+                        temp_r31->unk28.x = (1.0f / REFRESH_RATE) * sp8.x;
+                        temp_r31->unk28.y = VERSION_NTSC ? 6.666667f : 8.0f;
+                        temp_r31->unk28.z = (1.0f / REFRESH_RATE) * sp8.z;
                         temp_r31->unk8++;
                         HuAudFXPlay(1734);
                     }
@@ -284,7 +285,7 @@ void fn_1_6DBC(omObjData *object)
                     if (temp_r31->unk1C.y <= -15.000001f) {
                         temp_r29 = 1;
                     }
-                    temp_r31->unk28.y += -0.27222225f;
+                    temp_r31->unk28.y += VERSION_NTSC ? -0.27222225f : -0.392f;
                     VECAdd(&temp_r31->unk1C, &temp_r31->unk28, &temp_r31->unk1C);
                     if (!temp_r29 && temp_r31->unk1C.y <= -15.000001f) {
                         fn_1_43AC(&temp_r31->unk1C);
@@ -345,9 +346,9 @@ void fn_1_6DBC(omObjData *object)
                 temp_r31->unk34.z = fn_1_6690(temp_r31->unk34.z, temp_r31->unk40.x, 0.07f);
                 temp_r31->unk34.y += (50.0f - temp_r31->unk34.y) * 0.02f;
                 temp_r31->unk34.x += (temp_r31->unk34.y - temp_r31->unk34.x) * 0.2f;
-                temp_r31->unk1C.x += sind(temp_r31->unk34.z) * ((1.0f / 60.0f) * temp_r31->unk34.x);
-                temp_r31->unk1C.z += cosd(temp_r31->unk34.z) * ((1.0f / 60.0f) * temp_r31->unk34.x);
-                temp_r31->unk40.y += (1.0f / 60.0f) * temp_r31->unk34.x;
+                temp_r31->unk1C.x += sind(temp_r31->unk34.z) * ((1.0f / REFRESH_RATE) * temp_r31->unk34.x);
+                temp_r31->unk1C.z += cosd(temp_r31->unk34.z) * ((1.0f / REFRESH_RATE) * temp_r31->unk34.x);
+                temp_r31->unk40.y += (1.0f / REFRESH_RATE) * temp_r31->unk34.x;
                 Hu3DModelPosSetV(temp_r31->unk2, &temp_r31->unk1C);
                 Hu3DModelRotSet(temp_r31->unk2, 0, temp_r31->unk34.z, 0);
 
@@ -363,16 +364,16 @@ void fn_1_6DBC(omObjData *object)
                     }
                     VECSubtract(&sp8, &temp_r31->unk1C, &sp8);
                     temp_r31->unk40.x = temp_r31->unk34.z = atan2d(sp8.x, sp8.z);
-                    temp_r31->unk28.x = (1.0f / 60.0f) * sp8.x;
-                    temp_r31->unk28.y = 6.666667f;
-                    temp_r31->unk28.z = (1.0f / 60.0f) * sp8.z;
+                    temp_r31->unk28.x = (1.0f / REFRESH_RATE) * sp8.x;
+                    temp_r31->unk28.y = VERSION_NTSC ? 6.666667f : 8.0f;
+                    temp_r31->unk28.z = (1.0f / REFRESH_RATE) * sp8.z;
                     temp_r31->unk8++;
                 }
                 temp_r29 = temp_r25 = 0;
                 if (temp_r31->unk1C.y <= -15.000001f) {
                     temp_r29 = 1;
                 }
-                temp_r31->unk28.y += -0.27222225f;
+                temp_r31->unk28.y += VERSION_NTSC ? -0.27222225f : -0.392f;
                 VECAdd(&temp_r31->unk1C, &temp_r31->unk28, &temp_r31->unk1C);
                 if (temp_r31->unk1C.y <= -15.000001f) {
                     temp_r25 = 1;
@@ -689,8 +690,8 @@ void fn_1_8C14(s32 arg0, Vec *arg1, float arg2)
     temp_r31 = lbl_1_bss_7480;
     for (temp_r30 = 0; temp_r30 < 32; temp_r30++, temp_r31++) {
         if (!temp_r31->unk0) {
-            temp_r31->unk4 = 30;
-            temp_r31->unk0 = (60.0f * (3.0f * arg2)) + 150.0f;
+            temp_r31->unk4 = 0.5 * REFRESH_RATE;
+            temp_r31->unk0 = (REFRESH_RATE * (3.0f * arg2)) + 2.5f * REFRESH_RATE;
             temp_r31->unk8 = arg0;
             temp_r31->unk14 = *arg1;
             temp_r31->unkC = 0;

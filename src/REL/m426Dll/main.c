@@ -11,6 +11,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "string.h"
+#include "version.h"
 
 typedef struct UnkM426Struct {
     /* 0x00 */ s32 unk_00;
@@ -457,7 +458,7 @@ void fn_1_330(omObjData *object)
                 }
                 break;
             case 5:
-                var_r25 = (lbl_1_bss_58 + 59) / 60;
+                var_r25 = (lbl_1_bss_58 + REFRESH_RATE - 1) / REFRESH_RATE;
                 if (var_r25 < 0) {
                     var_r25 = 0;
                 }

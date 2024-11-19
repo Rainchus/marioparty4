@@ -248,7 +248,7 @@ void fn_1_9DD8(void)
     }
     lbl_1_bss_72C = 0;
     lbl_1_bss_74C = 5;
-    lbl_1_bss_748 = 0x3C;
+    lbl_1_bss_748 = REFRESH_RATE;
     lbl_1_bss_72A = 0;
     fn_1_CEC4();
     lbl_1_bss_788 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_W01, 17), NULL, 0);
@@ -566,11 +566,11 @@ static void fn_1_B478(omObjData *arg0)
     u16 var_r29;
 
     temp_r31 = arg0->data;
-    if ((lbl_1_bss_748 -= 1) == 0) {
-        if ((lbl_1_bss_74C -= 1) >= 0) {
+    if ((--lbl_1_bss_748) == 0) {
+        if ((--lbl_1_bss_74C) >= 0) {
             MGSeqParamSet(lbl_1_bss_744, 1, lbl_1_bss_74C);
         }
-        lbl_1_bss_748 = 60;
+        lbl_1_bss_748 = REFRESH_RATE;
     }
     if (GWPlayerCfg[lbl_1_bss_798].iscom == 1) {
         fn_1_B1CC(arg0, &var_r29, &var_r27);

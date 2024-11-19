@@ -21,6 +21,7 @@
 #include "ext_math.h"
 
 #include "REL/m439data.h"
+#include "version.h"
 
 typedef struct camera_params {
     float zoom;
@@ -28,34 +29,12 @@ typedef struct camera_params {
     Vec rot;
 } CameraViewParams;
 
-CameraViewParams lbl_1_data_741C[] = { {
-                                           4775,
-                                           -2800,
-                                           0,
-                                           -7700,
-                                           343,
-                                           20,
-                                           0,
-                                       },
-    {
-        5000,
-        0,
-        0,
-        0,
-        290,
-        0,
-        0,
-    },
-    {
-        2800,
-        0,
-        0,
-        -7600,
-        347,
-        0,
-        0,
-    },
-    { 2800, 0, 0, -7600, 290, 0, 0 } };
+CameraViewParams lbl_1_data_741C[] = {
+    { VERSION_NTSC ? 4775.0f : 4500.0f, -2800.0f, 0.0f, -7700.0f, 343.0f, 20.0f, 0.0f },
+    { 5000.0f, 0.f, 0.0f, 0.0f, 290.0f, 0.0f, 0.0f },
+    { 2800.0f, 0.f, 0.0f, -7600.0f, 347.0f, 0.0f, 0.0f },
+    { 2800.0f, 0.f, 0.0f, -7600.0f, 290.0f, 0.0f, 0.0f },
+};
 
 typedef struct struct_data_748C {
     s32 unk0;
@@ -162,9 +141,9 @@ void fn_1_408(omObjData *object);
 void fn_1_384(omObjData *object)
 {
     fn_1_364(0);
-    lbl_1_bss_14C = 60;
+    lbl_1_bss_14C = REFRESH_RATE;
     lbl_1_bss_12E = 60;
-    lbl_1_bss_12C = 60;
+    lbl_1_bss_12C = REFRESH_RATE;
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 60);
     object->func = fn_1_408;
 }
@@ -181,12 +160,12 @@ void fn_1_408(omObjData *object)
 {
     switch (fn_1_374()) {
         case 0:
-            if (lbl_1_bss_14C == 60) {
+            if (lbl_1_bss_14C == REFRESH_RATE) {
                 HuAudFXPlay(1797);
             }
             if (--lbl_1_bss_14C == 0) {
                 fn_1_364(1);
-                lbl_1_bss_14C = 120;
+                lbl_1_bss_14C = 2 * REFRESH_RATE;
             }
             break;
 
@@ -227,7 +206,7 @@ void fn_1_408(omObjData *object)
             if (--lbl_1_bss_12C == 0) {
                 lbl_1_bss_12E--;
                 MGSeqParamSet(lbl_1_bss_30, 1, lbl_1_bss_12E);
-                lbl_1_bss_12C = 60;
+                lbl_1_bss_12C = REFRESH_RATE;
             }
             if (lbl_1_bss_130 >= 3 || lbl_1_bss_12E == 0) {
                 fn_1_364(6);
@@ -243,7 +222,7 @@ void fn_1_408(omObjData *object)
             }
             if (!MGSeqStatGet(lbl_1_bss_32)) {
                 fn_1_364(7);
-                lbl_1_bss_14C = 60;
+                lbl_1_bss_14C = REFRESH_RATE;
             }
             break;
 
@@ -257,7 +236,7 @@ void fn_1_408(omObjData *object)
                 else {
                     HuAudSStreamPlay(4);
                 }
-                lbl_1_bss_14C = 210;
+                lbl_1_bss_14C = 3.5f * REFRESH_RATE;
             }
             break;
 
@@ -823,7 +802,7 @@ void fn_1_2C84(omObjData *object)
     if (fn_1_374() >= 6 && !temp_r31->unk0_field2) {
         temp_r31->unk0_field7 = 1;
         temp_r31->unk12 = 2;
-        temp_r31->unk3E = 120;
+        temp_r31->unk3E = 2 * REFRESH_RATE;
         object->func = fn_1_3C1C;
         return;
     }
@@ -852,18 +831,18 @@ void fn_1_2C84(omObjData *object)
                 if (temp_f26 > 72) {
                     temp_f26 = 72;
                 }
-                temp_f23 = (10.0f * temp_f26) / 72.0f;
+                temp_f23 = ((600.0f / REFRESH_RATE) * temp_f26) / 72.0f;
                 temp_r31->unk20.x = temp_f31 * temp_f23;
                 temp_r31->unk20.z = temp_f30 * temp_f23;
                 temp_r31->unk14.y = temp_f23;
                 object->rot.y = fn_1_1024(object->rot.y, atan2d(temp_r31->unk20.x, temp_r31->unk20.z), 0.2f);
-                if (temp_r31->unk14.y < 7.5f) {
+                if (temp_r31->unk14.y < (450.0f / REFRESH_RATE)) {
                     temp_r28 = 1;
-                    temp_f25 = temp_r31->unk14.y / 7.5f;
+                    temp_f25 = temp_r31->unk14.y / (450.0f / REFRESH_RATE);
                 }
                 else {
                     temp_r28 = 2;
-                    temp_f25 = temp_r31->unk14.y / 10.0f;
+                    temp_f25 = temp_r31->unk14.y / (600.0f / REFRESH_RATE);
                 }
             }
             else {
@@ -900,7 +879,7 @@ void fn_1_2C84(omObjData *object)
                 temp_r31->unk50.z = object->trans.z;
                 temp_r31->unk68.y = -2000;
                 temp_r31->unk12 = 2;
-                temp_r31->unk3E = 12;
+                temp_r31->unk3E = 0.2f * REFRESH_RATE;
                 temp_r23 = Hu3DData[object->model[2]].unk_120;
                 temp_r23->unk_00 = 0;
                 VECSubtract(&temp_r31->unk5C, &object->trans, &temp_r23->unk_04);
@@ -933,7 +912,7 @@ void fn_1_2C84(omObjData *object)
                     temp_r31->unk0_field4 = 01;
                     if (temp_r29 > 1 && temp_r29 < 6) {
                         temp_r31->unk12++;
-                        temp_r31->unk3E = 30;
+                        temp_r31->unk3E = 0.5f * REFRESH_RATE;
                         temp_r31->unk48 = CenterM[temp_r31->unk2].z;
                         temp_r31->unk4C = object->trans.z - 350.0f;
                         temp_r31->unk40 = lbl_1_data_75CC[temp_r31->unk46 - 1];
@@ -946,7 +925,7 @@ void fn_1_2C84(omObjData *object)
             if (--temp_r31->unk3E == 0) {
                 temp_r31->unk12 = 0;
             }
-            CenterM[temp_r31->unk2].z = temp_r31->unk48 + ((temp_r31->unk4C - temp_r31->unk48) * cosd((temp_r31->unk3E * 90.0f) / 30.0f));
+            CenterM[temp_r31->unk2].z = temp_r31->unk48 + ((temp_r31->unk4C - temp_r31->unk48) * cosd((temp_r31->unk3E * 90.0f) / (0.5f * REFRESH_RATE)));
             temp_r28 = 0;
             temp_f25 = 1;
             break;
@@ -957,7 +936,7 @@ void fn_1_2C84(omObjData *object)
             temp_r24 = temp_r27->data;
             switch (temp_r24->unk4) {
                 case 1:
-                    temp_f28 = 1.0f - (temp_r24->unk24 / 90.0f);
+                    temp_f28 = 1.0f - (temp_r24->unk24 / (1.5f * REFRESH_RATE));
                     object->trans.x = temp_r31->unk50.x + (temp_f28 * (temp_r31->unk5C.x - temp_r31->unk50.x));
                     object->trans.y = 100 + (-2000.0f * (temp_f28 - 0.1f)) * (temp_f28 - 0.1f);
                     object->trans.z = temp_r31->unk50.z + (temp_f28 * (temp_r31->unk5C.z - temp_r31->unk50.z));
@@ -978,7 +957,7 @@ void fn_1_2C84(omObjData *object)
                         if (temp_r31->unk3E) {
                             temp_r31->unk3E--;
                         }
-                        temp_f28 = sind((temp_r31->unk3E / 30.0f) * 90.0f);
+                        temp_f28 = sind((temp_r31->unk3E / (0.5f * REFRESH_RATE)) * 90.0f);
                         object->trans.x = temp_r31->unk74.x - (temp_f28 * (temp_r31->unk74.x - temp_r31->unk68.x));
                         object->trans.y = temp_r31->unk74.y - (temp_f28 * (temp_r31->unk74.y - temp_r31->unk68.y));
                         object->trans.z = temp_r31->unk74.z - (temp_f28 * (temp_r31->unk74.z - temp_r31->unk68.z));
@@ -1032,7 +1011,7 @@ void fn_1_3C1C(omObjData *object)
     switch (temp_r31->unk12) {
         case 0:
             if (object->trans.z > -7600.0f) {
-                object->trans.z -= 3.75f;
+                object->trans.z -= 225.0f / REFRESH_RATE;
             }
             else {
                 temp_r31->unk12++;
@@ -1113,11 +1092,11 @@ void fn_1_4528(ModelData *model, ParticleData *particle, Mtx matrix)
             temp_r31->unk34.x = 100.0f * (0.2f * sind(temp_f31));
             temp_r31->unk34.y = 0;
             temp_r31->unk34.z = 100.0f * (0.2f * cosd(temp_f31));
-            temp_f30 = ((frand8() * 2.5f) / 256.0f) + (5.0f / 3.0f);
+            temp_f30 = ((frand8() * (150.0f / REFRESH_RATE)) / 256.0f) + (100.0f / REFRESH_RATE);
             temp_f31 = temp_f29 + (30.0f * (((s32)frand() & 0x1FF) - 256.0f) / 256.0f);
             temp_r31->unk08.x = temp_f30 * sind(temp_f31);
             temp_r31->unk08.z = temp_f30 * cosd(temp_f31);
-            temp_r31->unk08.y = (frand8() * (50.0f / 3.0f)) / 256.0f;
+            temp_r31->unk08.y = (frand8() * (1000.0f / REFRESH_RATE)) / 256.0f;
             temp_r31->unk40.r = temp_r31->unk40.g = temp_r31->unk40.b = temp_r31->unk40.a = 255;
         }
     }
@@ -1128,7 +1107,7 @@ void fn_1_4528(ModelData *model, ParticleData *particle, Mtx matrix)
             temp_r28++;
         }
         else {
-            temp_r31->unk08.y += -0.50000006f;
+            temp_r31->unk08.y += VERSION_NTSC ? -0.50000006f : -0.6f; // -3.0f / REFRESH_RATE
             temp_r31->unk34.x += temp_r31->unk08.x;
             temp_r31->unk34.y += temp_r31->unk08.y;
             temp_r31->unk34.z += temp_r31->unk08.z;
@@ -1193,7 +1172,7 @@ void fn_1_4AA8(omObjData *object)
     }
     Hu3DMotionSet(object->model[0], object->motion[0]);
     Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_LOOP);
-    object->trans.y = 500;
+    object->trans.y = 500.0f;
     object->scale.x = object->scale.y = object->scale.z = 0.25f;
     if (work->unk2 == 0) {
         object->trans.x = -1800;
@@ -1202,7 +1181,7 @@ void fn_1_4AA8(omObjData *object)
         object->rot.y = -90;
         object->func = fn_1_4CC0;
         Hu3DMotionSpeedSet(object->model[0], 2.0f);
-        work->unk24 = 60;
+        work->unk24 = REFRESH_RATE;
     }
     else {
         object->func = fn_1_4F54;
@@ -1218,11 +1197,11 @@ void fn_1_4CC0(omObjData *object)
     Work4AA8 *work = object->data;
     float pan;
     Vec pos2D;
-    if (42.0f == work->unk24) {
+    if ((VERSION_NTSC ? 42.0f : 35.0f) == work->unk24) {
         HuAudFXPlay(1795);
     }
     if (work->unk24 == 0) {
-        object->trans.x -= 25.0f;
+        object->trans.x -= 1500.0f / REFRESH_RATE;
     }
     else {
         if (--work->unk24 == 0) {
@@ -1273,7 +1252,7 @@ void fn_1_4F54(omObjData *object)
         case 0:
             if (object->work[3]) {
                 work->unk4++;
-                work->unk24 = work->unk26 = 90;
+                work->unk24 = work->unk26 = 1.5f * REFRESH_RATE;
                 temp_r29 = omGetGroupMemberListEx(HuPrcCurrentGet(), 0);
                 object->trans.x = work->unk28.x = temp_r29[work->unk2]->trans.x;
                 object->trans.y = work->unk28.y = 2000;
@@ -1301,11 +1280,11 @@ void fn_1_4F54(omObjData *object)
             if (--work->unk24 == 0) {
                 work->unk0 = 1;
                 work->unk4++;
-                work->unk24 = 90;
+                work->unk24 = 1.5f * REFRESH_RATE;
                 work->unk10 = (200.0f - object->trans.y) / work->unk24;
                 object->rot.x = 0;
             }
-            if (60.0f == work->unk24) {
+            if (1.0f * REFRESH_RATE == work->unk24) {
                 HuAudFXPlay(1796);
             }
             break;
@@ -1314,7 +1293,7 @@ void fn_1_4F54(omObjData *object)
             object->trans.y += work->unk10;
             if (--work->unk24 == 0) {
                 work->unk4++;
-                work->unk24 = work->unk26 = 48;
+                work->unk24 = work->unk26 = 0.8f * REFRESH_RATE;
                 work->unk28.x = object->trans.x;
                 work->unk28.y = object->trans.y;
                 work->unk28.z = object->trans.z;
@@ -1350,7 +1329,7 @@ void fn_1_4F54(omObjData *object)
                 object->work[3] = 0;
                 Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF);
             }
-            if (work->unk24 == (int)(work->unk26 - 12.0f)) {
+            if (work->unk24 == (int)(work->unk26 - (0.2f * REFRESH_RATE))) {
                 work->unk0 = 0;
                 temp_r29 = omGetGroupMemberListEx(HuPrcCurrentGet(), 0);
                 temp_r28 = temp_r29[work->unk2]->data;
@@ -1686,7 +1665,7 @@ void fn_1_6DEC(omObjData *object)
     switch (object->work[0]) {
         case 0:
             if (fn_1_374() <= 3) {
-                CRotM[0].y -= 10.0f / 60.0f;
+                CRotM[0].y -= 10.0f / REFRESH_RATE;
             }
             if (fn_1_374() == 3) {
                 Hu3DCameraCreate(15);
