@@ -87,7 +87,7 @@ typedef struct M453DllWork2 {
     M453DllUnkStruct unk_5C;
     u8 unk_9C;
     s32 unk_A0;
-} M453DllWork2; /* size 0xA4 */
+} M453DllWork2; /* size 0xA4 */ // same as Unkm403Struct_01
 
 void fn_1_440(omObjData *object);
 void fn_1_460(omObjData *object);
