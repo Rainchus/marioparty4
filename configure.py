@@ -149,7 +149,7 @@ config.binutils_tag = "2.42-1"
 config.compilers_tag = "20240706"
 config.dtk_tag = "v1.1.4"
 config.objdiff_tag = "v2.3.3"
-config.sjiswrap_tag = "v1.1.1"
+config.sjiswrap_tag = "v1.2.0"
 config.wibo_tag = "0.6.11"
 
 # Project
@@ -631,13 +631,13 @@ config.libs = [
         "cflags": cflags_runtime,
         "host": False,
         "objects": [
-            Object(NonMatching, "Runtime.PPCEABI.H/__va_arg.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "Runtime.PPCEABI.H/__va_arg.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "Runtime.PPCEABI.H/global_destructor_chain.c"),
-            Object(NonMatching, "Runtime.PPCEABI.H/__mem.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "Runtime.PPCEABI.H/__mem.c"),
             Object(NonMatching, "Runtime.PPCEABI.H/New.cp"),
             Object(NonMatching, "Runtime.PPCEABI.H/NewMore.cp"),
             Object(NonMatching, "Runtime.PPCEABI.H/NMWException.cp"),
-            Object(NonMatching, "Runtime.PPCEABI.H/runtime.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "Runtime.PPCEABI.H/runtime.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
             Object(NonMatching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp"),
             Object(NonMatching, "Runtime.PPCEABI.H/GCN_mem_alloc.c"),
