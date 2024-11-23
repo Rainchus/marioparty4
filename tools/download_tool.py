@@ -20,8 +20,6 @@ import urllib.request
 import zipfile
 from typing import Callable, Dict
 from pathlib import Path
-import certifi
-import ssl
 
 
 def binutils_url(tag):
@@ -106,7 +104,7 @@ def main() -> None:
 
     print(f"Downloading {url} to {output}")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, context=ssl.create_default_context(cafile=certifi.where())) as response:
+    with urllib.request.urlopen(req) as response:
         if url.endswith(".zip"):
             data = io.BytesIO(response.read())
             with zipfile.ZipFile(data) as f:
