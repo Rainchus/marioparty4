@@ -4,7 +4,9 @@
 #include "dolphin.h"
 
 typedef void (*M418DllFunc)(void);
-typedef s32 (*M418DllS7Func)(void);
+typedef s32 (*M418DllRetFunc)(void);
+typedef void (*M418DllInFunc)(s32);
+typedef s32 (*M418DllInRetFunc)(s32);
 
 typedef struct M418DllUnkStruct {
     M418DllFunc unk0;
@@ -21,19 +23,13 @@ typedef struct M418DllUnkStruct {
 typedef struct M418DllUnkStruct7 {
     char unk[0x10];
     M418DllFunc unk10;
-    M418DllS7Func unk14;
+    M418DllRetFunc unk14;
 } M418DllUnkStruct7; // sizeof 0x18
 
 typedef struct M418DllUnkStruct8 {
-    s32 unk0;
-    s32 unk4;
+    M418DllInFunc unk0;
+    M418DllInRetFunc unk4;
     s32 unk8;
-    s32 unkC;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    s32 unk20;
 } M418DllUnkStruct8; // sizeof 0x24
 
 f32 fn_1_A920(f32, f32, f32);
@@ -41,6 +37,7 @@ f32 fn_1_A940(f32, f32, f32, f32);
 f32 fn_1_AA30(f32, f32, f32, f32);
 void fn_1_ABC4(omObjData*, s32, s32, s32, s32);
 void fn_1_AD14(omObjData*, s32, s32, s32, s32);
+void fn_1_AEDC(M418DllUnkStruct7*, M418DllUnkStruct8**);
 s32 fn_1_AF38(M418DllUnkStruct7*);
 s32 fn_1_B034(M418DllUnkStruct7*, s32);
 s32 fn_1_B0C8(M418DllUnkStruct7*, s32);
