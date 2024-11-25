@@ -126,3 +126,65 @@ game/hsfmotion.c:
 	.bss        start:0x8018D070 end:0x8018D870
 	.sbss       start:0x801D3920 end:0x801D3928
 	.sdata2     start:0x801D47D0 end:0x801D4820
+
+game/hsfanim.c:
+	.text       start:0x80028B04 end:0x8002CB74
+	.data       start:0x8012D418 end:0x8012D4D8
+	.bss        start:0x8018D870 end:0x8018F430
+	.sdata2     start:0x801D4820 end:0x801D48A8
+
+game/hsfex.c:
+	.text       start:0x8002CB74 end:0x8002E74C
+	.data       start:0x8012D4D8 end:0x8012D4F8
+	.sdata2     start:0x801D48A8 end:0x801D4938
+
+game/perf.c:
+	.text       start:0x8002E74C end:0x8002EBD8
+	.bss        start:0x8018F430 end:0x8018F7D8
+	.sdata      start:0x801D3128 end:0x801D3138
+	.sbss       start:0x801D3928 end:0x801D3980
+
+game/objmain.c:
+	.text       start:0x8002EBD8 end:0x8002FF4C
+	.data       start:0x8012D4F8 end:0x8012D8A8
+	.bss        start:0x8018F7D8 end:0x8018F898
+	.sdata      start:0x801D3138 end:0x801D3140
+	.sbss       start:0x801D3980 end:0x801D39B0
+	.sdata2     start:0x801D4938 end:0x801D4960
+
+game/fault.c:
+	.text       start:0x8002FF4C end:0x800308B8
+	.data       start:0x8012D8A8 end:0x8012E0D0
+	.bss        start:0x8018F898 end:0x8018F8B0
+	.sdata      start:0x801D3140 end:0x801D3150
+	.sbss       start:0x801D39B0 end:0x801D39C0
+
+game/gamework.c:
+	.text       start:0x800308B8 end:0x800315BC
+	.rodata     start:0x8011D910 end:0x8011D930
+	.bss        start:0x8018F8B0 end:0x8018FCA8
+
+game/objsysobj.c:
+	.text       start:0x800315BC end:0x80031DB4
+	.bss        start:0x8018FCA8 end:0x8018FE80
+	.sbss       start:0x801D39C0 end:0x801D39C8
+	.sdata2     start:0x801D4960 end:0x801D4970
+
+game/objdll.c:
+	.text       start:0x80031DB4 end:0x800325F4
+	.data       start:0x8012E0D0 end:0x8012E568
+	.bss        start:0x8018FE80 end:0x8018FED0
+	.sbss       start:0x801D39C8 end:0x801D39D0
+
+game/frand.c:
+	.text       start:0x800325F4 end:0x80032830
+	.sbss       start:0x801D39D0 end:0x801D39D8
+	.sdata2     start:0x801D4970 end:0x801D4980
+
+game/audio.c:
+	.text       start:0x80032830 end:0x80033EEC
+	.data       start:0x8012E568 end:0x8012ED10
+	.bss        start:0x8018FED0 end:0x801900F0
+	.sdata      start:0x801D3150 end:0x801D3158
+	.sbss       start:0x801D39D8 end:0x801D3A08
+	.sdata2     start:0x801D4980 end:0x801D4990

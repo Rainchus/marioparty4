@@ -545,3 +545,6 @@ extract:
 - symbol: hiliteData4
   binary: hiliteData4.anm
   header: hiliteData4.inc
+- symbol: Ascii8x8_1bpp
+  binary: Ascii8x8_1bpp.bin
+  header: Ascii8x8_1bpp.inc
