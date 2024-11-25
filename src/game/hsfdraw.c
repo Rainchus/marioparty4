@@ -8,17 +8,8 @@
 #include "ext_math.h"
 #include "string.h"
 
-typedef struct hsf_draw_object {
-    /* 0x00 */ ModelData *model;
-    /* 0x04 */ HsfObject *object;
-    /* 0x08 */ float z;
-    /* 0x0C */ Mtx matrix;
-    /* 0x3C */ Vec scale;
-} HsfDrawObject;
-
 static void objCall(ModelData *arg0, HsfObject *arg1);
 static void objMesh(ModelData *arg0, HsfObject *arg1);
-static void FaceDraw(HsfDrawObject *arg0, HsfFace *arg1);
 static s32 SetTevStageNoTex(HsfDrawObject *arg0, HsfMaterial *arg1);
 static void SetTevStageTex(HsfDrawObject *arg0, HsfMaterial *arg1);
 static GXTevKColorSel SetKColor(GXTevStageID arg0, u8 arg1);
