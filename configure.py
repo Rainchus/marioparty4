@@ -1005,9 +1005,9 @@ config.libs = [
     Rel(
         "m421Dll",  # Hop or Pop
         objects={
-            Object(NonMatching, "REL/m421Dll/main.c"),
-            Object(NonMatching, "REL/m421Dll/player.c"),
-            Object(NonMatching, "REL/m421Dll/map.c"),
+            Object(Matching, "REL/m421Dll/main.c"),
+            Object(Matching, "REL/m421Dll/player.c"),
+            Object(Matching, "REL/m421Dll/map.c"),
         },
     ),
     Rel(
