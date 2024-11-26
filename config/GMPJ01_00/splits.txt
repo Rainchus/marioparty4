@@ -188,3 +188,16 @@ game/audio.c:
 	.sdata      start:0x801D3150 end:0x801D3158
 	.sbss       start:0x801D39D8 end:0x801D3A08
 	.sdata2     start:0x801D4980 end:0x801D4990
+
+game/EnvelopeExec.c:
+	.text       start:0x80033EEC end:0x800353AC
+	.sbss       start:0x801D3A08 end:0x801D3A38
+	.sdata2     start:0x801D4990 end:0x801D49A8
+
+game/minigame_seq.c:
+	.text       start:0x800353AC end:0x8003F690
+	.data       start:0x8012ED10 end:0x8012F378
+	.bss        start:0x801900F0 end:0x80190500
+	.sdata      start:0x801D3158 end:0x801D3258
+	.sbss       start:0x801D3A38 end:0x801D3A58
+	.sdata2     start:0x801D49A8 end:0x801D4B60

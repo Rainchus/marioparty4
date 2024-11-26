@@ -33,69 +33,55 @@ typedef struct seq_info {
     s32 time_max;
 } SeqInfo;
 
-static s32 SeqInitTimer(SeqWork *work, va_list params);
-static s32 SeqUpdateTimer(SeqWork *work);
-
-static s32 SeqInitType2(SeqWork *work, va_list params);
-static s32 SeqUpdateType2(SeqWork *work);
-
-static s32 SeqInitMGBasic(SeqWork *work, va_list params);
-static s32 SeqUpdateMGBasic(SeqWork *work);
-static s32 SeqInitMGCommon(SeqWork *work, va_list params);
-static s32 SeqUpdateMG1vs3(SeqWork *work);
-static s32 SeqUpdateMGBattle(SeqWork *work);
-static s32 SeqUpdateMGStory(SeqWork *work);
-static s32 SeqUpdateMG2vs2(SeqWork *work);
-static s32 SeqUpdateMGBowser(SeqWork *work);
-
-static s32 SeqInitWin(SeqWork *work, va_list params);
-static s32 SeqUpdateWin(SeqWork *work);
-static s32 SeqInitDraw(SeqWork *work, va_list params);
-static s32 SeqUpdateDraw(SeqWork *work);
-static s32 SeqInitRecord(SeqWork *work, va_list params);
-static s32 SeqUpdateRecord(SeqWork *work);
-
-static s32 SeqInitFlip(SeqWork *work, va_list params);
-static s32 SeqUpdateFlip(SeqWork *work);
-
 OverlayID mgSeqOvlPrev = OVL_INVALID;
 
 static SeqInfo seqInfoTbl[] = {
     { NULL, NULL, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
-    { SeqInitTimer, SeqUpdateTimer, HU_DISP_CENTERX + 4, 64.0f, 1.0f, 1.0f, 60 },
-    { SeqInitType2, SeqUpdateType2, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 0.5f, 0.5f, 60 },
-    { SeqInitMGBasic, SeqUpdateMGBasic, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitMGCommon, SeqUpdateMG1vs3, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitWin, SeqUpdateWin, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitMGCommon, SeqUpdateMGBattle, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitMGCommon, SeqUpdateMGStory, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitMGBasic, SeqUpdateMGBasic, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitMGCommon, SeqUpdateMG2vs2, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitFlip, SeqUpdateFlip, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitMGCommon, SeqUpdateMGBowser, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitWin, SeqUpdateWin, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
-    { SeqInitDraw, SeqUpdateDraw, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
-    { SeqInitRecord, SeqUpdateRecord, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitTimer, MGSeqUpdateTimer, HU_DISP_CENTERX + 4, 64.0f, 1.0f, 1.0f, 60 },
+    { MGSeqInitType2, MGSeqUpdateType2, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 0.5f, 0.5f, 60 },
+    { MGSeqInitMGBasic, MGSeqUpdateMGBasic, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitMGCommon, MGSeqUpdateMG1vs3, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitWin, MGSeqUpdateWin, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitMGCommon, MGSeqUpdateMGBattle, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitMGCommon, MGSeqUpdateMGStory, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitMGBasic, MGSeqUpdateMGBasic, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitMGCommon, MGSeqUpdateMG2vs2, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitFlip, MGSeqUpdateFlip, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitMGCommon, MGSeqUpdateMGBowser, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitWin, MGSeqUpdateWin, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
+    { MGSeqInitDraw, MGSeqUpdateDraw, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
+    { MGSeqInitRecord, MGSeqUpdateRecord, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 180 },
     { NULL, NULL, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
     { NULL, NULL, HU_DISP_CENTERX + 4, HU_DISP_CENTERY, 1.0f, 1.0f, 60 },
 };
 
 static s32 seqType2SprTbl[6] = { 0, 0, 0, 0, 0, 0 };
 
-static s16 mgSeqTypeTbl[9] = { MG_SEQ_TYPE_4P, MG_SEQ_TYPE_1VS3, MG_SEQ_TYPE_2VS2, MG_SEQ_TYPE_BOWSER, MG_SEQ_TYPE_BATTLE, MG_SEQ_TYPE_PINBALL,
-    MG_SEQ_TYPE_STORY, MG_SEQ_TYPE_BOWSER, MG_SEQ_TYPE_STORY };
+static s16 mgSeqTypeTbl[9] = {
+    MG_SEQ_TYPE_4P,
+    MG_SEQ_TYPE_1VS3,
+    MG_SEQ_TYPE_2VS2,
+    MG_SEQ_TYPE_BOWSER,
+    MG_SEQ_TYPE_BATTLE,
+    MG_SEQ_TYPE_PINBALL,
+    MG_SEQ_TYPE_STORY,
+    MG_SEQ_TYPE_BOWSER,
+    MG_SEQ_TYPE_STORY,
+};
 
-static char lbl_8012F336[] = { "ｱｲｳｴｵｶｷｸ"
-                               "ｹｺｻｼｽｾｿﾀ"
-                               "ﾁﾂﾃﾄﾅﾆﾇﾈ"
-                               "ﾉﾊﾋﾌﾍﾎﾏﾐ"
-                               "ﾑﾒﾓﾔﾕﾖﾗﾘ"
-                               "ﾙﾚﾛﾜｦﾝｧｨ"
-                               "ｩｪｫｬｭｮｯｶ"
-                               "ｷｸｺｻｼｽｾｿ"
-                               "ﾀﾁﾂﾃﾄﾊﾋﾌ"
-                               "ﾍﾎﾊﾋﾌﾍﾎ"
-                               "!?ｰ" };
+static char lbl_8012F336[] = {
+    "ｱｲｳｴｵｶｷｸ"
+    "ｹｺｻｼｽｾｿﾀ"
+    "ﾁﾂﾃﾄﾅﾆﾇﾈ"
+    "ﾉﾊﾋﾌﾍﾎﾏﾐ"
+    "ﾑﾒﾓﾔﾕﾖﾗﾘ"
+    "ﾙﾚﾛﾜｦﾝｧｨ"
+    "ｩｪｫｬｭｮｯｶ"
+    "ｷｸｺｻｼｽｾｿ"
+    "ﾀﾁﾂﾃﾄﾊﾋﾌ"
+    "ﾍﾎﾊﾋﾌﾍﾎ"
+    "!?ｰ",
+};
 
 static char lbl_8012F389[] = "x first\n";
 static char lbl_8012F392[] = "y first\n";
@@ -339,7 +325,7 @@ static void *SeqReadFile(s32 file)
     return HuAR_ARAMtoMRAMFileRead(file, MEMORY_DEFAULT_NUM, HEAP_DATA);
 }
 
-static s32 SeqInitTimer(SeqWork *work, va_list params)
+s32 MGSeqInitTimer(SeqWork *work, va_list params)
 {
     AnimData *spr_anim;
     s16 sprite;
@@ -401,7 +387,7 @@ static s32 SeqInitTimer(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateTimer(SeqWork *work)
+s32 MGSeqUpdateTimer(SeqWork *work)
 {
     float scale;
     float tp_lvl;
@@ -558,7 +544,7 @@ static s32 SeqUpdateTimer(SeqWork *work)
     }
 }
 
-static s32 SeqInitType2(SeqWork *work, va_list params)
+s32 MGSeqInitType2(SeqWork *work, va_list params)
 {
     s16 spr_idx;
     s16 spr_grp;
@@ -667,7 +653,7 @@ static s32 SeqInitType2(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateType2(SeqWork *work)
+s32 MGSeqUpdateType2(SeqWork *work)
 {
     float tp_lvl;
     s16 spr_grp;
@@ -818,14 +804,20 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags);
 
 static s32 SeqMakeWord(SeqWork *work, char *str, s16 flags)
 {
+    s16 len;
+    s16 x;
+    s16 i;
+    s16 grp_idx;
+#if VERSION_JAP
+    char *str_ptr;
+    AnimData **char_anim;
+    s16 *char_pos;
+#else
+    AnimData **char_anim;
     s16 *char_pos;
     char *str_ptr;
+#endif
     s16 spr_grp;
-    s16 i;
-    s16 x;
-    s16 grp_idx;
-    s16 len;
-    AnimData **char_anim;
     for (grp_idx = 0; grp_idx < 16; grp_idx++) {
         if (work->spr_grp[grp_idx] == -1) {
             break;
@@ -839,13 +831,27 @@ static s32 SeqMakeWord(SeqWork *work, char *str, s16 flags)
     str_ptr = str;
     x = 0;
     len = 0;
-    while (*str_ptr != 0) {
+    while (*str_ptr != '\0') {
+#if VERSION_JAP
+        if (*str_ptr == ' ') {
+            x += 56;
+        }
+        else {
+            char_anim[len] = SeqLoadFontChar(str_ptr, flags);
+            if (char_anim[len]) {
+                char_pos[len] = x;
+                x += 56;
+                len++;
+            }
+        }
+#else
         char_anim[len] = SeqLoadFontChar(str_ptr, flags);
         if (char_anim[len]) {
             char_pos[len] = x;
             x += 56;
             len++;
         }
+#endif
         str_ptr++;
     }
     work->spr_grp[grp_idx] = spr_grp = HuSprGrpCreate(len);
@@ -870,24 +876,26 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
     if (c == 222 || c == 223) {
         return NULL;
     }
+#if !VERSION_JAP
     if (c == 32) {
         return HuSprAnimRead(SeqReadFile(DATA_MAKE_NUM(DATADIR_GAMEMES, 10)));
     }
+#endif
     for (id = 0, list = seqFontAlphaTbl; *list != 0; id++, list++) {
         if (*list == c) {
-            data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + 21);
+            data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + (VERSION_JAP ? 20 : 21));
             return HuSprAnimRead(SeqReadFile(data_num));
         }
     }
     for (id = 0, list = seqFontNumTbl; *list != 0; id++, list++) {
         if (*list == c) {
-            data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + 11);
+            data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + (VERSION_JAP ? 10 : 11));
             return HuSprAnimRead(SeqReadFile(data_num));
         }
     }
     for (id = 0, list = seqPunctTbl; *list != 0; id++, list++) {
         if (*list == c) {
-            data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + 154);
+            data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + (VERSION_JAP ? 153 : 154));
             return HuSprAnimRead(SeqReadFile(data_num));
         }
     }
@@ -908,10 +916,10 @@ static AnimData *SeqLoadFontChar(char *str, s16 flags)
     while (*list != 0) {
         if (*list == c) {
             if (flags & 0x1) {
-                data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + 156);
+                data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + (VERSION_JAP ? 155 : 156));
             }
             else {
-                data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + 73);
+                data_num = DATA_MAKE_NUM(DATADIR_GAMEMES, id + (VERSION_JAP ? 72 : 73));
             }
             return HuSprAnimRead(SeqReadFile(data_num));
         }
@@ -928,14 +936,14 @@ static float ForceDefine480()
 
 static void SeqPlayStartFX(void);
 
-static s32 SeqInitMGBasic(SeqWork *work, va_list params)
+s32 MGSeqInitMGBasic(SeqWork *work, va_list params)
 {
     s16 i;
     s16 word_grp;
 
     work->state = va_arg(params, int);
     if (work->state == 2) {
-        return SeqInitDraw(work, params);
+        return MGSeqInitDraw(work, params);
     }
     work->type = 0;
     work->angle = 0;
@@ -978,7 +986,7 @@ static s32 SeqInitMGBasic(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateMGBasic(SeqWork *work)
+s32 MGSeqUpdateMGBasic(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -1147,7 +1155,7 @@ static s32 SeqUpdateMGBasic(SeqWork *work)
     return 1;
 }
 
-static s32 SeqInitMGCommon(SeqWork *work, va_list params)
+s32 MGSeqInitMGCommon(SeqWork *work, va_list params)
 {
     s16 i;
     float tp_lvl;
@@ -1156,7 +1164,7 @@ static s32 SeqInitMGCommon(SeqWork *work, va_list params)
 
     work->state = va_arg(params, int);
     if (work->state == 2) {
-        return SeqInitDraw(work, params);
+        return MGSeqInitDraw(work, params);
     }
     work->type = 0;
     work->angle = 0;
@@ -1226,7 +1234,7 @@ static s32 SeqInitMGCommon(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateMGBattle(SeqWork *work)
+s32 MGSeqUpdateMGBattle(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -1465,7 +1473,7 @@ static s32 SeqUpdateMGBattle(SeqWork *work)
     return 1;
 }
 
-static s32 SeqUpdateMG1vs3(SeqWork *work)
+s32 MGSeqUpdateMG1vs3(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -1678,7 +1686,7 @@ static s32 SeqUpdateMG1vs3(SeqWork *work)
     return 1;
 }
 
-static s32 SeqUpdateMGStory(SeqWork *work)
+s32 MGSeqUpdateMGStory(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -1889,7 +1897,7 @@ static s32 SeqUpdateMGStory(SeqWork *work)
     return 1;
 }
 
-static s32 SeqUpdateMG2vs2(SeqWork *work)
+s32 MGSeqUpdateMG2vs2(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -2062,14 +2070,14 @@ static s32 SeqUpdateMG2vs2(SeqWork *work)
     return 1;
 }
 
-static s32 SeqInitFlip(SeqWork *work, va_list params)
+s32 MGSeqInitFlip(SeqWork *work, va_list params)
 {
     s16 i;
     s16 word_grp;
     s16 word_ofs;
     work->state = va_arg(params, int);
     if (work->state == 2) {
-        return SeqInitDraw(work, params);
+        return MGSeqInitDraw(work, params);
     }
     work->type = 0;
     work->angle = 0;
@@ -2148,7 +2156,7 @@ static s32 SeqInitFlip(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateFlip(SeqWork *work)
+s32 MGSeqUpdateFlip(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -2321,7 +2329,7 @@ static s32 SeqUpdateFlip(SeqWork *work)
     return 1;
 }
 
-static s32 SeqUpdateMGBowser(SeqWork *work)
+s32 MGSeqUpdateMGBowser(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -2545,7 +2553,7 @@ static s32 SeqUpdateMGBowser(SeqWork *work)
     return 1;
 }
 
-static s32 SeqInitDraw(SeqWork *work, va_list params)
+s32 MGSeqInitDraw(SeqWork *work, va_list params)
 {
     s16 word_grp;
     work->state = 2;
@@ -2576,7 +2584,7 @@ static s32 SeqInitDraw(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateDraw(SeqWork *work)
+s32 MGSeqUpdateDraw(SeqWork *work)
 {
     s16 idx;
     float scale;
@@ -2665,22 +2673,54 @@ static s32 SeqUpdateDraw(SeqWork *work)
     return 1;
 }
 
-static char *winCharNameTbl[]
-    = { "ﾏﾘｵ", "MARIO", "ﾙｲｰｼﾞ", "LUIGI", "ﾋﾟｰﾁ", "PEACH", "ﾖｯｼｰ", "YOSHI", "ﾜﾘｵ", "WARIO", "ﾄﾞﾝｷｰ", " DK ", "ﾃﾞｲｼﾞｰ", "DAISY", "ﾜﾙｲｰｼﾞ", "WALUIGI",
-          "ｸｯﾊﾟ", "BOWSER", "ｷﾉﾋﾟｵ", "TOAD", "ﾍｲﾎｰ", "SHY GUY", "ﾃﾚｻ", "BOO", "ﾉｺﾉｺ", "KOOPA", "ﾐﾆｸｯﾊﾟ", VERSION_NTSC ? "KOOPA KID" : "MINI BOWSER", "ｸﾘﾎﾞｰ", "GOOMBA" };
+static char *winCharNameTbl[] = {
+    "ﾏﾘｵ",
+    "MARIO",
+    "ﾙｲｰｼﾞ",
+    "LUIGI",
+    "ﾋﾟｰﾁ",
+    "PEACH",
+    "ﾖｯｼｰ",
+    "YOSHI",
+    "ﾜﾘｵ",
+    "WARIO",
+    "ﾄﾞﾝｷｰ",
+    VERSION_JAP ? "DK" : " DK ",
+    "ﾃﾞｲｼﾞｰ",
+    "DAISY",
+    "ﾜﾙｲｰｼﾞ",
+    "WALUIGI",
+    "ｸｯﾊﾟ",
+    "BOWSER",
+    "ｷﾉﾋﾟｵ",
+    "TOAD",
+    "ﾍｲﾎｰ",
+    VERSION_JAP ? "HEHOH" : "SHY GUY",
+    "ﾃﾚｻ",
+    VERSION_JAP ? "TERETHA" : "BOO",
+    "ﾉｺﾉｺ",
+    VERSION_JAP ? "NOKONOKO" : "KOOPA",
+    "ﾐﾆｸｯﾊﾟ",
+    VERSION_NTSC ? (VERSION_ENG ? "KOOPA KID" : "BABYBOWSER") : "MINI BOWSER",
+    "ｸﾘﾎﾞｰ",
+    VERSION_JAP ? "KURIBO" : "GOOMBA",
+};
 
 static char *winWordTbl[] = { "ｶﾁ", "WON!", "ﾊｲﾎﾞｸ", "LOSE", "ﾕｳｼｮｳ!", "CHAMPION!" };
 
-static s16 winPosOfs[][5][2]
-    = { { { 114, 0 }, { -144, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } }, { { 0, 35 }, { -144, -35 }, { 144, -35 }, { 0, 0 }, { 0, 0 } },
-          { { 0, 105 }, { 0, -105 }, { -144, 0 }, { 144, 0 }, { 0, 0 } }, { { 0, 105 }, { -144, -105 }, { 144, -105 }, { -144, 0 }, { 144, 0 } } };
+static s16 winPosOfs[][5][2] = {
+    { { VERSION_JAP ? 144 : 114, 0 }, { -144, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
+    { { 0, 35 }, { -144, -35 }, { 144, -35 }, { 0, 0 }, { 0, 0 } },
+    { { 0, 105 }, { 0, -105 }, { -144, 0 }, { 144, 0 }, { 0, 0 } },
+    { { 0, 105 }, { -144, -105 }, { 144, -105 }, { -144, 0 }, { 144, 0 } },
+};
 
 static s16 winnerNameW[8];
 
 #define GET_LANG_IDX() ((seqLanguage == 0) ? 0 : 1)
 #define GET_WIN_KANAF() ((seqLanguage == 0) ? 1 : 0)
 
-static s32 SeqInitWin(SeqWork *work, va_list params)
+s32 MGSeqInitWin(SeqWork *work, va_list params)
 {
     int win_type = va_arg(params, int);
     s16 word_idx;
@@ -2705,13 +2745,17 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
         }
     }
     word_grp = SeqMakeWord(work, winWordTbl[word_idx], GET_WIN_KANAF());
-    winnerNameW[0] = work->word_len * 50;
+    winnerNameW[0] = work->word_len * (VERSION_JAP ? 56 : 50);
+#if !VERSION_JAP
     for (i = 0; i < work->word_len; i++) {
         HuSprPosSet(work->spr_grp[word_grp], i, 25.0f + ((i * 50) - (0.5f * (work->word_len * 50))), 0.0f);
         HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
     }
+#endif
     num_winners = 0;
+#if !VERSION_JAP
     work->win_scale = 1.0f;
+#endif
     for (j = 0; j < 4; j++) {
         int winner = va_arg(params, int);
         (void)winner; // to match PAL
@@ -2719,7 +2763,7 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
             continue;
         }
         word_grp = SeqMakeWord(work, winCharNameTbl[(winner * 2) + GET_LANG_IDX()], 0);
-#if VERSION_NTSC
+#if VERSION_ENG
         if (seqLanguage != 0) {
             char *name = winCharNameTbl[(winner * 2) + GET_LANG_IDX()];
             word_w = 0.0f;
@@ -2751,21 +2795,19 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
             }
             winnerNameW[num_winners + 1] = word_w;
         }
-        else {
-            if (winner == 7 || winner == 13) {
-                for (i = 0; i < work->word_len; i++) {
-                    HuSprPosSet(work->spr_grp[word_grp], i, 26.0f + ((i * 52) - (0.5f * (work->word_len * 52))), 0.0f);
-                    HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
-                }
-                work->win_scale = 0.8f;
-                winnerNameW[num_winners + 1] = work->word_len * 52;
+        else if (winner == 7 || winner == 13) {
+            for (i = 0; i < work->word_len; i++) {
+                HuSprPosSet(work->spr_grp[word_grp], i, 26.0f + ((i * 52) - (0.5f * (work->word_len * 52))), 0.0f);
+                HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
             }
-            else {
-                work->win_scale = 1.0f;
-                winnerNameW[num_winners + 1] = work->word_len * 56;
-            }
+            work->win_scale = 0.8f;
+            winnerNameW[num_winners + 1] = work->word_len * 52;
         }
-#else
+        else {
+            work->win_scale = 1.0f;
+            winnerNameW[num_winners + 1] = work->word_len * 56;
+        }
+#elif VERSION_PAL
         for (i = 0; i < work->word_len; i++) {
             HuSprPosSet(work->spr_grp[word_grp], i, 25.0f + ((i * 50) - (0.5f * (work->word_len * 50))), 0.0f);
             HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
@@ -2780,6 +2822,27 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
             work->win_scale = 0.75f;
         }
         winnerNameW[num_winners + 1] = work->word_len * 50;
+#else
+        if (seqLanguage != 0) {
+            for (i = 0; i < work->word_len; i++) {
+                HuSprPosSet(work->spr_grp[word_grp], i, 25.0f + (i * 50 - (0.5f * (work->word_len * 50))), 0.0f);
+                HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
+            }
+            work->win_scale = 0.75f;
+            winnerNameW[num_winners + 1] = work->word_len * 50;
+        }
+        else if (winner == 7 || winner == 13) {
+            for (i = 0; i < work->word_len; i++) {
+                HuSprPosSet(work->spr_grp[word_grp], i, 26.0f + ((i * 52) - (0.5f * (work->word_len * 52))), 0.0f);
+                HuSprAttrSet(work->spr_grp[word_grp], i, HUSPR_ATTR_LINEAR);
+            }
+            work->win_scale = 0.8f;
+            winnerNameW[num_winners + 1] = work->word_len * 52;
+        }
+        else {
+            work->win_scale = 1.0f;
+            winnerNameW[num_winners + 1] = work->word_len * 56;
+        }
 #endif
         num_winners++;
     }
@@ -2792,7 +2855,11 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
     work->type = 0;
     for (j = 0; j < num_winners + 1; j++) {
         if (num_winners == 1) {
+#if VERSION_JAP
+            word_x = 32 + (winnerNameW[1] + winnerNameW[0]);
+#else
             word_x = 32.0f + ((float)winnerNameW[0] + (winnerNameW[1] * work->win_scale));
+#endif
             if (j == 0) {
                 word_x = (((HU_DISP_WIDTH - word_x) / 2.0f) + (word_x - (winnerNameW[0] / 2))) - HU_DISP_CENTERX;
             }
@@ -2802,7 +2869,7 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
         }
         else {
             if (abs(winPosOfs[num_winners - 1][j][0]) == 144.0f) {
-#if VERSION_NTSC
+#if VERSION_ENG
                 if (winnerNameW[j] + 32 < HU_DISP_CENTERX) {
                     word_x = 176.0f;
                 }
@@ -2815,9 +2882,19 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
                 else {
                     word_x = (HU_DISP_WIDTH - word_x) - HU_DISP_CENTERX;
                 }
-#else
+#elif VERSION_PAL
                 if (32.0f + (work->win_scale * winnerNameW[j]) < HU_DISP_CENTERX) {
                     word_x = 32.0f + ((winnerNameW[j] * work->win_scale) / 2.0f);
+                }
+                else {
+                    word_x = 120.0f;
+                }
+                if (winPosOfs[num_winners - 1][j][0] < 0) {
+                    word_x = -word_x;
+                }
+#else
+                if (32 + winnerNameW[j] < HU_DISP_CENTERX) {
+                    word_x = 32 + winnerNameW[j] / 2;
                 }
                 else {
                     word_x = 120.0f;
@@ -2846,7 +2923,7 @@ static s32 SeqInitWin(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateWin(SeqWork *work)
+s32 MGSeqUpdateWin(SeqWork *work)
 {
     s32 idx;
     float tp_lvl;
@@ -2923,15 +3000,15 @@ static s32 SeqUpdateWin(SeqWork *work)
                         else {
                             if (abs(winPosOfs[work->word_len - 2][idx][0]) == 144.0f) {
                                 if (winnerNameW[idx] + 32 < HU_DISP_CENTERX) {
-                                    pos_x = VERSION_NTSC ? 176.0f : winnerNameW[idx] / 2 + 32;
+                                    pos_x = VERSION_ENG ? 176.0f : winnerNameW[idx] / 2 + 32;
                                 }
                                 else {
-                                    pos_x = VERSION_NTSC ? 32.0f + ((winnerNameW[idx] * work->win_scale) / 2.0f) : 128.0f;
+                                    pos_x = VERSION_ENG ? 32.0f + ((winnerNameW[idx] * work->win_scale) / 2.0f) : 128.0f;
                                 }
                                 if (winPosOfs[work->word_len - 2][idx][0] < 0) {
-                                    pos_x = VERSION_NTSC ? -(HU_DISP_CENTERX - pos_x) : -pos_x;
+                                    pos_x = VERSION_ENG ? -(HU_DISP_CENTERX - pos_x) : -pos_x;
                                 }
-#if VERSION_NTSC
+#if VERSION_ENG
                                 else {
                                     pos_x = (HU_DISP_WIDTH - pos_x) - HU_DISP_CENTERX;
                                 }
@@ -2974,7 +3051,7 @@ static s32 SeqUpdateWin(SeqWork *work)
     return 1;
 }
 
-static s32 SeqInitRecord(SeqWork *work, va_list params)
+s32 MGSeqInitRecord(SeqWork *work, va_list params)
 {
     AnimData *spr_data;
     s16 spr_grp;
@@ -3093,7 +3170,7 @@ static s32 SeqInitRecord(SeqWork *work, va_list params)
     return 1;
 }
 
-static s32 SeqUpdateRecord(SeqWork *work)
+s32 MGSeqUpdateRecord(SeqWork *work)
 {
     s16 group;
     if (_CheckFlag(FLAG_ID_MAKE(1, 12))) {
