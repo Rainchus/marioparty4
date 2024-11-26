@@ -237,7 +237,7 @@ game/wipe.c:
 game/window.c:
 	.text       start:0x80041E54 end:0x80047E88
 	.data       start:0x8012FD20 end:0x80130268
-	.bss        start:0x80192060 end:0x80196470
+	.bss        start:0x80192060 end:0x80196480
 	.sdata      start:0x801D3280 end:0x801D3288
 	.sbss       start:0x801D3A70 end:0x801D3AB8
 	.sdata2     start:0x801D4BC0 end:0x801D4C58
@@ -249,3 +249,61 @@ game/card.c:
 	.text       start:0x80047F70 end:0x80048574
 	.data       start:0x80130268 end:0x801302B8
 	.sbss       start:0x801D3AB8 end:0x801D3AC0
+
+game/armem.c:
+	.text       start:0x80048574 end:0x800493E0
+	.data       start:0x801302B8 end:0x801303A8
+	.bss        start:0x80196480 end:0x80196B60
+	.sbss       start:0x801D3AC0 end:0x801D3AD0
+
+game/chrman.c:
+	.text       start:0x800493E0 end:0x8005074C
+	.data       start:0x801303A8 end:0x80130DC8
+	.bss        start:0x80196B60 end:0x801972F0
+	.sdata      start:0x801D3288 end:0x801D32D0
+	.sbss       start:0x801D3AD0 end:0x801D3AD8
+	.sdata2     start:0x801D4C58 end:0x801D4D90
+
+game/mapspace.c:
+	.text       start:0x8005074C end:0x800544F0
+	.bss        start:0x801972F0 end:0x80197760
+	.sbss       start:0x801D3AD8 end:0x801D3AF8
+	.sdata2     start:0x801D4D90 end:0x801D4DC0
+
+game/THPSimple.c:
+	.text       start:0x800544F0 end:0x800565F4
+	.data       start:0x80130DC8 end:0x80130EC8
+	.bss        start:0x80197760 end:0x80197E40
+	.sdata      start:0x801D32D0 end:0x801D32D8
+	.sbss       start:0x801D3AF8 end:0x801D3B18
+	.sdata2     start:0x801D4DC0 end:0x801D4DC8
+
+game/THPDraw.c:
+	.text       start:0x800565F4 end:0x80056F4C
+	.sdata2     start:0x801D4DC8 end:0x801D4DE0
+
+game/thpmain.c:
+	.text       start:0x80056F4C end:0x80057914
+	.rodata     start:0x8011D930 end:0x8011D940
+	.data       start:0x80130EC8 end:0x80130F30
+	.bss        start:0x80197E40 end:0x80197E80
+	.sbss       start:0x801D3B18 end:0x801D3B40
+	.sdata2     start:0x801D4DE0 end:0x801D4DF8
+
+game/objsub.c:
+	.text       start:0x80057914 end:0x80057B00
+	.data       start:0x80130F30 end:0x80131D30
+	.bss        start:0x80197E80 end:0x801980B0
+	.sbss       start:0x801D3B40 end:0x801D3B68
+
+game/flag.c:
+	.text       start:0x80057B00 end:0x80057D18
+	.bss        start:0x801980B0 end:0x801980C0
+
+game/saveload.c:
+	.text       start:0x80057D18 end:0x8005A324
+	.data       start:0x80131D30 end:0x80131DE8
+	.bss        start:0x801980C0 end:0x8019C0E0
+	.sdata      start:0x801D32D8 end:0x801D32F0
+	.sbss       start:0x801D3B68 end:0x801D3B78
+	.sdata2     start:0x801D4DF8 end:0x801D4E08
