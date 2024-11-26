@@ -465,7 +465,7 @@ config.libs = [
     DolphinLib(
         "os",
         [
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OS.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "dolphin/os/OS.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OSAlarm.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OSAlloc.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OSArena.c"),
@@ -487,7 +487,7 @@ config.libs = [
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OSSync.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OSThread.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/OSTime.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/__start.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "dolphin/os/__start.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/os/__ppc_eabi_init.c"),
         ],
     ),
@@ -837,7 +837,7 @@ config.libs = [
         "bootDll",
         objects={
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/bootDll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/bootDll/nintendo_data.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/bootDll/language.c"),
         },
     ),
     Rel(
@@ -1163,9 +1163,9 @@ config.libs = [
     Rel(
         "m443Dll",  # Mario Speedwagons
         objects={
-            Object(Matching, "REL/m443Dll/main.c"),
-            Object(Matching, "REL/m443Dll/map.c"),
-            Object(Matching, "REL/m443Dll/player.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m443Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m443Dll/map.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m443Dll/player.c"),
         },
     ),
     Rel(
