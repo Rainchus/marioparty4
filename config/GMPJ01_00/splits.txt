@@ -307,3 +307,28 @@ game/saveload.c:
 	.sdata      start:0x801D32D8 end:0x801D3300
 	.sbss       start:0x801D3B68 end:0x801D3B78
 	.sdata2     start:0x801D4DF8 end:0x801D4E08
+
+game/sreset.c:
+	.text       start:0x8005A324 end:0x8005AD7C
+	.data       start:0x80131E00 end:0x80139438
+	.bss        start:0x8019C0E0 end:0x8019D480
+	.sdata      start:0x801D3300 end:0x801D3318
+	.sbss       start:0x801D3B78 end:0x801D3B90
+
+game/board/main.c:
+	.text       start:0x8005AD7C end:0x80061BB4
+	.rodata     start:0x8011D940 end:0x8011D970
+	.data       start:0x80139438 end:0x80139538
+	.bss        start:0x8019D480 end:0x8019D608
+	.sdata      start:0x801D3318 end:0x801D3328
+	.sbss       start:0x801D3B90 end:0x801D3BE0
+	.sdata2     start:0x801D4E08 end:0x801D4EB8
+
+game/board/player.c:
+	.text       start:0x80061BB4 end:0x8006CEF8
+	.rodata     start:0x8011D970 end:0x8011DA40
+	.data       start:0x80139538 end:0x80139740
+	.bss        start:0x8019D608 end:0x8019D638
+	.sdata      start:0x801D3328 end:0x801D3388
+	.sbss       start:0x801D3BE0 end:0x801D3C18
+	.sdata2     start:0x801D4EB8 end:0x801D4FC0

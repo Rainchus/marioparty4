@@ -548,3 +548,21 @@ extract:
 - symbol: Ascii8x8_1bpp
   binary: Ascii8x8_1bpp.bin
   header: Ascii8x8_1bpp.inc
+- symbol: coveropen_jp
+  binary: coveropen_jp.bin
+  header: coveropen_jp.inc
+- symbol: fatalerror_jp
+  binary: fatalerror_jp.bin
+  header: fatalerror_jp.inc
+- symbol: loading_jp
+  binary: loading_jp.bin
+  header: loading_jp.inc
+- symbol: nodisc_jp
+  binary: nodisc_jp.bin
+  header: nodisc_jp.inc
+- symbol: retryerror_jp
+  binary: retryerror_jp.bin
+  header: retryerror_jp.inc
+- symbol: wrongdisc_jp
+  binary: wrongdisc_jp.bin
+  header: wrongdisc_jp.inc
