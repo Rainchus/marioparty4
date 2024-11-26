@@ -1,15 +1,15 @@
 #include "game/gamework_data.h"
 
-#include "game/window.h"
-#include "game/sprite.h"
-#include "game/data.h"
-#include "game/dvd.h"
-#include "game/memory.h"
-#include "game/process.h"
-#include "game/pad.h"
 #include "game/armem.h"
 #include "game/audio.h"
+#include "game/data.h"
 #include "game/disp.h"
+#include "game/dvd.h"
+#include "game/memory.h"
+#include "game/pad.h"
+#include "game/process.h"
+#include "game/sprite.h"
+#include "game/window.h"
 
 #include "ext_math.h"
 #include "stdarg.h"
@@ -75,169 +75,74 @@ static s16 comKeyIdx;
 static u8 LanguageNo;
 AnimData *fontAnim;
 
-static spcFontTblData spcFontTbl[] = {
-    {   &iconAnim,  0, 20, 24,  10, 12 },
-    {   &iconAnim,  1, 20, 24,  10, 12 },
-    {   &iconAnim,  2, 20, 24,  10, 12 },
-    {   &iconAnim,  3, 20, 24,  10, 12 },
-    {   &iconAnim,  4, 20, 24,  10, 12 },
-    {   &iconAnim,  5, 20, 24,  10, 12 },
-    {   &iconAnim,  6, 20, 24,  10, 12 },
-    {   &iconAnim,  7, 20, 24,  10, 12 },
-    {   &iconAnim,  8, 20, 24,  10, 12 },
-    {   &iconAnim,  9, 20, 24,  10, 12 },
-    {   &iconAnim, 10, 20, 24,  10, 12 },
-    {   &iconAnim, 11, 30, 24,  15, 12 },
-    {   &iconAnim, 12, 20, 24,  10, 12 },
-    {   &iconAnim, 13, 20, 24,  10, 12 },
-    {   &iconAnim, 14, 20, 24,  10, 12 },
-    {   &iconAnim, 15, 20, 24,  10, 12 },
-    {   &iconAnim, 16, 20, 24,  10, 12 },
-    {   &iconAnim, 17, 20, 24,  10, 12 },
-    {   &iconAnim, 18, 20, 24,  10, 12 },
-    {   &iconAnim, 19, 24, 24,  12, 12 },
-    { &cursorAnim,  0, 40, 32, -15, 18 },
-    {  &cardAnimA,  0, 32, 32,  16, 16 },
-    {  &cardAnimB,  0, 32, 32,  16, 16 }
-};
+static spcFontTblData spcFontTbl[] = { { &iconAnim, 0, 20, 24, 10, 12 }, { &iconAnim, 1, 20, 24, 10, 12 }, { &iconAnim, 2, 20, 24, 10, 12 },
+    { &iconAnim, 3, 20, 24, 10, 12 }, { &iconAnim, 4, 20, 24, 10, 12 }, { &iconAnim, 5, 20, 24, 10, 12 }, { &iconAnim, 6, 20, 24, 10, 12 },
+    { &iconAnim, 7, 20, 24, 10, 12 }, { &iconAnim, 8, 20, 24, 10, 12 }, { &iconAnim, 9, 20, 24, 10, 12 }, { &iconAnim, 10, 20, 24, 10, 12 },
+    { &iconAnim, 11, 30, 24, 15, 12 }, { &iconAnim, 12, 20, 24, 10, 12 }, { &iconAnim, 13, 20, 24, 10, 12 }, { &iconAnim, 14, 20, 24, 10, 12 },
+    { &iconAnim, 15, 20, 24, 10, 12 }, { &iconAnim, 16, 20, 24, 10, 12 }, { &iconAnim, 17, 20, 24, 10, 12 }, { &iconAnim, 18, 20, 24, 10, 12 },
+    { &iconAnim, 19, 24, 24, 12, 12 }, { &cursorAnim, 0, 40, 32, -15, 18 }, { &cardAnimA, 0, 32, 32, 16, 16 }, { &cardAnimB, 0, 32, 32, 16, 16 } };
 
-#if VERSION_NTSC
-u8 charWETbl[] = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-     8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    20,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 18, 20, 12, 12, 11, 14,
-     8, 13, 12, 12, 12, 12, 12, 12, 12,  9, 11, 12, 11, 15, 12, 13,
-    12, 13, 12, 12, 11, 12, 11, 15, 12, 13, 11, 12,  6,  8,  8, 12,
-    20, 12, 11, 12, 11, 11,  9, 12, 11,  4,  8, 11,  4, 14, 11, 12,
-    11, 12,  9, 11,  9, 11, 11, 15, 11, 11, 11,  4, 13,  8, 14, 12,
-     9,  8,  8,  8, 20,  4, 12, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 12, 12, 12, 12, 12, 12, 12, 12,  8,  8, 12, 12, 12, 12, 16,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    12, 12,  7, 14, 17, 13, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 16, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
-};
+#if VERSION_ENG
+u8 charWETbl[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 18, 20, 12, 12, 11, 14, 8, 13, 12, 12, 12, 12, 12, 12, 12, 9, 11, 12, 11, 15, 12, 13, 12,
+    13, 12, 12, 11, 12, 11, 15, 12, 13, 11, 12, 6, 8, 8, 12, 20, 12, 11, 12, 11, 11, 9, 12, 11, 4, 8, 11, 4, 14, 11, 12, 11, 12, 9, 11, 9, 11, 11, 15,
+    11, 11, 11, 4, 13, 8, 14, 12, 9, 8, 8, 8, 20, 4, 12, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 12, 12, 12, 12, 12, 12, 12, 12, 8, 8, 12, 12, 12, 12,
+    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 12, 12, 7, 14,
+    17, 13, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 16, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
+#elif VERSION_JPN
+u8 charWETbl[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 13, 8, 11, 12, 13, 12, 11, 11, 12, 11, 18, 20, 12, 12, 11, 14, 8, 13, 12, 12, 12, 12, 12, 12, 12, 9, 11, 12, 11, 15, 12, 13, 12,
+    13, 12, 12, 11, 12, 11, 15, 12, 13, 11, 12, 6, 8, 8, 12, 20, 12, 11, 12, 11, 11, 9, 12, 11, 4, 8, 11, 4, 14, 11, 12, 11, 12, 9, 11, 9, 11, 11, 15,
+    11, 11, 11, 4, 13, 8, 14, 12, 9, 8, 8, 8, 20, 4, 12, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 12, 12, 12, 12, 12, 12, 12, 12, 8, 8, 12, 12, 12, 12,
+    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 12, 12, 7, 14,
+    17, 13, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 16, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
 
 #else
-u8 charWETbl[] = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-     8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    20,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 18, 20, 12, 12, 11, 14,
-     8, 13, 12, 12, 12, 12, 12, 12, 12,  9, 11, 12, 11, 15, 12, 13,
-    12, 13, 12, 12, 11, 12, 11, 15, 12, 13, 11, 12,  6,  8,  8, 12,
-    20, 12, 11, 12, 11, 11,  9, 12, 11,  4,  8, 11,  4, 14, 11, 12,
-    11, 12,  9, 11,  9, 11, 11, 15, 11, 11, 11,  4, 13,  8, 14, 12,
-     9,  8,  8,  8, 20,  4, 12, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 12, 12, 12, 12, 12, 12, 12, 12,  8,  8, 12, 12, 12, 12, 12,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    13, 13,  6, 12, 18, 14, 14, 8, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 10, 10, 10, 12, 12, 12, 12, 12, 10, 10, 12, 12, 10, 10, 10,
-    10, 7, 7, 12, 12, 10, 12, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 16, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
-};
+u8 charWETbl[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 18, 20, 12, 12, 11, 14, 8, 13, 12, 12, 12, 12, 12, 12, 12, 9, 11, 12, 11, 15, 12, 13, 12,
+    13, 12, 12, 11, 12, 11, 15, 12, 13, 11, 12, 6, 8, 8, 12, 20, 12, 11, 12, 11, 11, 9, 12, 11, 4, 8, 11, 4, 14, 11, 12, 11, 12, 9, 11, 9, 11, 11, 15,
+    11, 11, 11, 4, 13, 8, 14, 12, 9, 8, 8, 8, 20, 4, 12, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 12, 12, 12, 12, 12, 12, 12, 12, 8, 8, 12, 12, 12, 12,
+    12, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 13, 13, 6, 12,
+    18, 14, 14, 8, 20, 20, 20, 20, 20, 20, 20, 20, 20, 10, 10, 10, 12, 12, 12, 12, 12, 10, 10, 12, 12, 10, 10, 10, 10, 7, 7, 12, 12, 10, 12, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 16, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
 
 #endif
 
-u8 charWJTbl[] = {
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,  0, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-     0,  0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
-};
+u8 charWJTbl[] = { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 0, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 0, 0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
 
-static u8 ATTRIBUTE_ALIGN(32) charColPal[2*3*10] = {
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0xFF,
-    0xFF, 0x00, 0x00,
-    0xFF, 0x00, 0xFF,
-    0x00, 0xFF, 0x00,
-    0x00, 0xFF, 0xFF,
-    0xFF, 0xA0, 0x00,
-    0xFF, 0xFF, 0xFF,
-    0x60, 0x60, 0x60,
-    0x90, 0x90, 0x90,
-    0x00, 0x00, 0x00,
-    0x60, 0xB0, 0xFF,
-    0xFF, 0x40, 0x80,
-    0xFF, 0x00, 0xFF,
-    0x00, 0xFF, 0x00,
-    0x00, 0xFF, 0xFF,
-    0xFF, 0xFF, 0x00,
-    0xFF, 0xFF, 0xFF,
-    0x60, 0x60, 0x60,
-    0x90, 0x90, 0x90
-};
+static u8 ATTRIBUTE_ALIGN(32) charColPal[2 * 3 * 10] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+    0x00, 0xFF, 0xFF, 0xFF, 0xA0, 0x00, 0xFF, 0xFF, 0xFF, 0x60, 0x60, 0x60, 0x90, 0x90, 0x90, 0x00, 0x00, 0x00, 0x60, 0xB0, 0xFF, 0xFF, 0x40, 0x80,
+    0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0xFF, 0xFF, 0x60, 0x60, 0x60, 0x90, 0x90, 0x90 };
 
-static s32 frameFileTbl[] = {
-    WIN_FRAME1_ANM,
-    WIN_FRAME2_ANM,
-    WIN_FRAME3_ANM,
-    WIN_FRAME1_ANM
-};
+static s32 frameFileTbl[] = { WIN_FRAME1_ANM, WIN_FRAME2_ANM, WIN_FRAME3_ANM, WIN_FRAME1_ANM };
 
 #if VERSION_NTSC
-static char *mesDataTbl[] = {
-    "mess/mini.dat",
-    "mess/board.dat",
-    "mess/mini_e.dat",
-    "mess/board_e.dat"
-};
+static char *mesDataTbl[] = { "mess/mini.dat", "mess/board.dat", "mess/mini_e.dat", "mess/board_e.dat" };
 #else
-static char *mesDataTbl[] = {
-    "mess/mini.dat",
-    "mess/board.dat",
-    "mess/mini_e.dat",
-    "mess/board_e.dat",
-    "mess/mini_g.dat",
-    "mess/board_g.dat",
-    "mess/mini_f.dat",
-    "mess/board_f.dat",
-    "mess/mini_i.dat",
-    "mess/board_i.dat",
-    "mess/mini_s.dat",
-    "mess/board_s.dat"
-};
+static char *mesDataTbl[] = { "mess/mini.dat", "mess/board.dat", "mess/mini_e.dat", "mess/board_e.dat", "mess/mini_g.dat", "mess/board_g.dat",
+    "mess/mini_f.dat", "mess/board_f.dat", "mess/mini_i.dat", "mess/board_i.dat", "mess/mini_s.dat", "mess/board_s.dat" };
 #endif
 
-static s32 winVoiceTbl[] = {
-    0x37, 0x36, 0x38, 0x44,
-    0x43, 0x45, 0x41, 0x40,
-    0x42, 0x4C, 0x4B, 0x4D,
-    0x47, 0x46, 0x48, 0x3E,
-    0x3E, 0x3F, 0x49, 0x49,
-    0x49
-};
+static s32 winVoiceTbl[]
+    = { 0x37, 0x36, 0x38, 0x44, 0x43, 0x45, 0x41, 0x40, 0x42, 0x4C, 0x4B, 0x4D, 0x47, 0x46, 0x48, 0x3E, 0x3E, 0x3F, 0x49, 0x49, 0x49 };
 
 static s16 winPrio = 1000;
 
-void HuWindowInit(void) {
+void HuWindowInit(void)
+{
     s16 i;
 
     winAMemP = HuAR_DVDtoARAM(DATADIR_WIN);
@@ -248,7 +153,8 @@ void HuWindowInit(void) {
     winPrio = 1000;
 }
 
-void HuWinInit(s32 mess_data_no) {
+void HuWinInit(s32 mess_data_no)
+{
     s16 i;
     void *anim_data;
 
@@ -266,7 +172,8 @@ void HuWinInit(s32 mess_data_no) {
         if (!fontAnim) {
             if (LanguageNo == 0) {
                 anim_data = HuDataReadNum(WIN_FONTJ_ANM, MEMORY_DEFAULT_NUM);
-            } else {
+            }
+            else {
                 anim_data = HuDataReadNum(WIN_FONTE_ANM, MEMORY_DEFAULT_NUM);
             }
             fontAnim = HuSprAnimRead(anim_data);
@@ -297,7 +204,8 @@ void HuWinInit(s32 mess_data_no) {
     }
 }
 
-s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
+s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame)
+{
     AnimData *bg_anim;
     WindowData *window;
     HuSprite *sprite_ptr;
@@ -324,12 +232,14 @@ s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     h = (h + 15) & 0xFFF0;
     if (x == -10000.0f) {
         window->pos_x = (HU_DISP_WIDTHF - w) / 2;
-    } else {
+    }
+    else {
         window->pos_x = x;
     }
     if (y == -10000.0f) {
         window->pos_y = (HU_DISP_HEIGHTF - h) / 2;
-    } else {
+    }
+    else {
         window->pos_y = y;
     }
     HuSprGrpCenterSet(group, w / 2, h / 2);
@@ -347,7 +257,11 @@ s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     sprite_ptr->work[0] = window_id;
     HuSprGrpMemberSet(group, 1, sprite);
     window->num_chars = 0;
+#if VERSION_JPN
+    window->max_chars = (w / 20) * (h / 24) * 3;
+#else
     window->max_chars = (w / 8) * (h / 24) * 4;
+#endif
     window->char_data = HuMemDirectMalloc(HEAP_SYSTEM, window->max_chars * sizeof(WinChar));
     window->attr = 0;
     window->stat = 0;
@@ -376,10 +290,13 @@ s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     window->scissor_h = 0x1E0;
     window->tab_w = 24;
     window->push_key = 0x300;
+#if !VERSION_JPN
     window->key_auto = 0;
+#endif
     if (frame == 0 || frame == 2) {
         memcpy(&window->mess_pal, &charColPal[30], 30);
-    } else {
+    }
+    else {
         memcpy(&window->mess_pal, charColPal, 30);
         window->mess_shadow_color = 9;
     }
@@ -400,7 +317,8 @@ s16 HuWinCreate(float x, float y, s16 w, s16 h, s16 frame) {
     return window_id;
 }
 
-void HuWinKill(s16 window) {
+void HuWinKill(s16 window)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
@@ -416,7 +334,8 @@ void HuWinKill(s16 window) {
     }
 }
 
-void HuWinAllKill(void) {
+void HuWinAllKill(void)
+{
     s16 i;
 
     for (i = 0; i < 32; i++) {
@@ -455,7 +374,8 @@ void HuWinAllKill(void) {
     HuDataDirClose(DATADIR_WIN);
 }
 
-static void MesDispFunc(HuSprite *sprite) {
+static void MesDispFunc(HuSprite *sprite)
+{
     WindowData *window = &winData[sprite->work[0]];
     HuSprGrp *group;
     float uv_maxx;
@@ -505,12 +425,16 @@ static void MesDispFunc(HuSprite *sprite) {
         MTXConcat(*sprite->group_mtx, modelview, modelview);
         GXLoadPosMtxImm(modelview, 0);
         GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
-        HuSprTexLoad(fontAnim, 0, 0, GX_CLAMP, GX_CLAMP, GX_LINEAR);
+        HuSprTexLoad(fontAnim, 0, 0, GX_CLAMP, GX_CLAMP, VERSION_JPN ? GX_NEAR : GX_LINEAR);
         GXBegin(GX_QUADS, GX_VTXFMT0, window->num_chars * 4);
-        char_uv_h = (LanguageNo == 0) ? (24.0f/408.0f) : (24.0f/312.0f);
+        char_uv_h = (LanguageNo == 0) ? (24.0f / 408.0f) : (24.0f / 312.0f);
         for (i = 0; i < window->num_chars; i++) {
             char_w = fontWidthP[window->char_data[i].character + 48];
-            uv_minx = (20.0f/320.0f) * (window->char_data[i].character % 16);
+#if VERSION_JPN
+            uv_minx = 0.003125 + (20.0f / 320.0f) * (window->char_data[i].character % 16);
+#else
+            uv_minx = (20.0f / 320.0f) * (window->char_data[i].character % 16);
+#endif
             uv_miny = char_uv_h * (window->char_data[i].character / 16);
             uv_maxx = uv_minx + (char_w / 320.0);
             uv_maxy = uv_miny + char_uv_h;
@@ -519,7 +443,8 @@ static void MesDispFunc(HuSprite *sprite) {
             color = window->char_data[i].color;
             if (window->speed != 0) {
                 alpha = window->char_data[i].fade * 8;
-            } else {
+            }
+            else {
                 alpha = 255;
             }
             alpha = 255;
@@ -544,7 +469,8 @@ static void MesDispFunc(HuSprite *sprite) {
     }
 }
 
-static u8 winBGMake(AnimData *bg, AnimData *frame) {
+static u8 winBGMake(AnimData *bg, AnimData *frame)
+{
     AnimBmpData *bmp;
     s16 block_h;
     s16 h;
@@ -565,29 +491,37 @@ static u8 winBGMake(AnimData *bg, AnimData *frame) {
             for (j = 0; j < w; j++) {
                 if (j == 0) {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0;
-                } else if (j == w-1) {
+                }
+                else if (j == w - 1) {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x10;
-                } else {
+                }
+                else {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x70;
                 }
             }
-        } else if (i == h-1) {
+        }
+        else if (i == h - 1) {
             for (j = 0; j < w; j++) {
                 if (j == 0) {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x20;
-                } else if (j == w - 1) {
+                }
+                else if (j == w - 1) {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x30;
-                } else {
+                }
+                else {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x60;
                 }
             }
-        } else {
+        }
+        else {
             for (j = 0; j < w; j++) {
                 if (j == 0) {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x40;
-                } else if (j == w-1) {
+                }
+                else if (j == w - 1) {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x50;
-                } else {
+                }
+                else {
                     bmp_data[(j & 7) + ((j >> 3) << 5) + (i >> 2) * (block_w * 4) + (i & 3) * 8] = 0x80;
                 }
             }
@@ -606,7 +540,8 @@ static u8 winBGMake(AnimData *bg, AnimData *frame) {
     return w;
 }
 
-static void HuWinProc(void) {
+static void HuWinProc(void)
+{
     WindowData *window;
     s16 i;
 
@@ -638,23 +573,25 @@ static void HuWinProc(void) {
     }
 }
 
-static inline void charEntry(s16 window, s16 x, s16 y, s16 char_idx, s16 color) {
+static inline void charEntry(s16 window, s16 x, s16 y, s16 char_idx, s16 color)
+{
     WindowData *window_ptr = &winData[window];
     WinChar *win_char = window_ptr->char_data;
 
     win_char = &window_ptr->char_data[window_ptr->num_chars];
     win_char->x = x - window_ptr->w / 2;
     win_char->y = y - window_ptr->h / 2;
-    win_char->character = char_idx-48;
+    win_char->character = char_idx - 48;
     win_char->color = color;
     win_char->fade = 0;
     window_ptr->num_chars++;
     if (window_ptr->num_chars >= window_ptr->max_chars) {
-        window_ptr->num_chars = window_ptr->max_chars-1;
+        window_ptr->num_chars = window_ptr->max_chars - 1;
     }
 }
 
-static void HuWinDrawMes(s16 window) {
+static void HuWinDrawMes(s16 window)
+{
     WindowData *window_ptr = &winData[window];
     HuSprGrp *group = &HuSprGrpData[window_ptr->group];
     s16 i;
@@ -668,12 +605,16 @@ static void HuWinDrawMes(s16 window) {
     s16 color;
     s16 mess_w;
 
-    window_ptr->mess_time += 3;
+    window_ptr->mess_time += VERSION_JPN ? 1 : 3;
     while (window_ptr->mess_time >= window_ptr->speed || (window_ptr->attr & 0x2000)) {
+#if VERSION_JPN
+        window_ptr->mess_time = 0;
+#else
         window_ptr->mess_time -= window_ptr->speed;
-        if(window_ptr->mess_time < 0) {
+        if (window_ptr->mess_time < 0) {
             window_ptr->mess_time = 0;
         }
+#endif
         char_w = window_ptr->spacing_x + fontWidthP[window_ptr->mess[0]];
         mess_end = 0;
         if (window_ptr->mess[0] != 0 && (window_ptr->attr & 4)) {
@@ -684,7 +625,7 @@ static void HuWinDrawMes(s16 window) {
             switch (window_ptr->mess[0]) {
                 case 0:
                     if (window_ptr->mess_stackptr == 0) {
-                        for (i=0; i<16; i++) {
+                        for (i = 0; i < 16; i++) {
                             window_ptr->choice_disable[i] = 0;
                         }
                         window_ptr->stat = 0;
@@ -693,9 +634,11 @@ static void HuWinDrawMes(s16 window) {
                     }
                     window_ptr->mess_stackptr--;
                     window_ptr->mess = window_ptr->mess_stack[window_ptr->mess_stackptr];
+#if !VERSION_JPN
                     window_ptr->mess_time = 0;
+#endif
                     break;
-                    
+
                 case 31:
                     window_ptr->mess++;
                     insert_mess = window_ptr->mess[0] - 1;
@@ -708,30 +651,31 @@ static void HuWinDrawMes(s16 window) {
                         }
                     }
                     break;
-                    
+
                 case 11:
                     window_ptr->attr &= ~0x2200;
                     _HuWinHomeClear(window_ptr);
                     if (window_ptr->attr & 0x800) {
                         mess_w = GetMesMaxSizeSub2(window_ptr, window_ptr->mess + 1);
                         window_ptr->mess_x = (window_ptr->mess_rect_w - mess_w) / 2;
-                    } else if (window_ptr->attr & 0x1000) {
+                    }
+                    else if (window_ptr->attr & 0x1000) {
                         mess_w = GetMesMaxSizeSub2(window_ptr, window_ptr->mess + 1);
                         window_ptr->mess_x = window_ptr->mess_rect_w - mess_w;
                     }
                     break;
-                    
+
                 case 30:
                     window_ptr->mess++;
                     if (!(window_ptr->attr & 0x80)) {
                         window_ptr->mess_color = window_ptr->mess[0] - 1;
                     }
                     break;
-                    
+
                 case 29:
                     window_ptr->attr ^= 1;
                     break;
-                    
+
                 case 10:
                     window_ptr->attr &= ~0x2020;
                     if (window_ptr->attr & 0x200) {
@@ -745,30 +689,31 @@ static void HuWinDrawMes(s16 window) {
                             if (window_ptr->attr & 0x800) {
                                 mess_w = GetMesMaxSizeSub2(window_ptr, window_ptr->mess + 1);
                                 window_ptr->mess_x = (window_ptr->mess_rect_w - mess_w) / 2;
-                            } else if (window_ptr->attr & 0x1000) {
+                            }
+                            else if (window_ptr->attr & 0x1000) {
                                 mess_w = GetMesMaxSizeSub2(window_ptr, window_ptr->mess + 1);
                                 window_ptr->mess_x = window_ptr->mess_rect_w - mess_w;
                             }
                             break;
                         }
                         char_w = fontWidthP[16] + window_ptr->spacing_x;
-                        /* fallthrough */
-                case 16:
-                case 32:
-                        window_ptr->attr |= 0x200;
-                        if (window_ptr->mess_x + char_w > window_ptr->mess_rect_w) {
-                            if (HuWinCR(window_ptr) != 0) {
-                                window_ptr->mess++;
-                                HuWinKeyWaitEntry(window);
-                                window_ptr->attr |= 2;
-                                return;
+                            /* fallthrough */
+                        case 16:
+                        case 32:
+                            window_ptr->attr |= 0x200;
+                            if (window_ptr->mess_x + char_w > window_ptr->mess_rect_w) {
+                                if (HuWinCR(window_ptr) != 0) {
+                                    window_ptr->mess++;
+                                    HuWinKeyWaitEntry(window);
+                                    window_ptr->attr |= 2;
+                                    return;
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        window_ptr->mess_x += char_w;
+                            window_ptr->mess_x += char_w;
                     }
                     break;
-                    
+
                 case 14:
                     window_ptr->attr |= 0x200;
                     window_ptr->mess++;
@@ -779,29 +724,31 @@ static void HuWinDrawMes(s16 window) {
                         window_ptr->attr |= 2;
                         return;
                     }
-                    HuWinSpcFontEntry(window_ptr, window_ptr->mess[0] - 1, window_ptr->mess_rect_x + window_ptr->mess_x, window_ptr->mess_rect_y + window_ptr->mess_y);
+                    HuWinSpcFontEntry(window_ptr, window_ptr->mess[0] - 1, window_ptr->mess_rect_x + window_ptr->mess_x,
+                        window_ptr->mess_rect_y + window_ptr->mess_y);
                     window_ptr->mess_x += tab_w;
                     mess_end = 1;
                     break;
-                    
+
                 case 28:
                     window_ptr->mess++;
                     HuAudFXPlay(winVoiceTbl[window_ptr->mess[0] - 1]);
                     break;
-                    
+
                 case 255:
                     window_ptr->mess++;
                     HuWinKeyWaitEntry(window);
                     window_ptr->attr |= 4;
                     window_ptr->attr &= ~0x200;
                     return;
-                    
+
                 case 15:
                     window_ptr->attr |= 0x2000;
                     if (window_ptr->choice_disable[window_ptr->num_choices] != 0) {
                         window_ptr->attr |= 0x20;
                         window_ptr->choice_data[window_ptr->num_choices].stat |= 1;
-                    } else {
+                    }
+                    else {
                         window_ptr->choice_data[window_ptr->num_choices].stat &= ~1;
                     }
 
@@ -809,7 +756,7 @@ static void HuWinDrawMes(s16 window) {
                     window_ptr->choice_data[window_ptr->num_choices].y = window_ptr->mess_y + window_ptr->mess_rect_x;
                     window_ptr->num_choices++;
                     break;
-                    
+
                 case 12:
                     window_ptr->attr |= 0x200;
                     tab_w = window_ptr->tab_w * ((window_ptr->mess_x + window_ptr->tab_w) / window_ptr->tab_w) - window_ptr->mess_x;
@@ -820,7 +767,8 @@ static void HuWinDrawMes(s16 window) {
                             window_ptr->attr |= 2;
                             return;
                         }
-                    } else {
+                    }
+                    else {
                         window_ptr->mess_x += tab_w;
                     }
                     break;
@@ -839,41 +787,48 @@ static void HuWinDrawMes(s16 window) {
             }
             c = window_ptr->mess[0];
             window_ptr->attr |= 0x200;
-            #if VERSION_NTSC
+#if VERSION_NTSC
             if (window_ptr->mess[1] == 128) {
                 if (c >= 150 && c <= 164) {
-                    c = c+106;
-                } else if (c >= 170 && c <= 174) {
-                    c = c+101;
-                } else if (c >= 214 && c <= 228) {
-                    c = c+67;
-                } else if (c >= 234 && c <= 238) {
-                    c = c+62;
+                    c = c + 106;
                 }
-                window_ptr->mess++;
-            } else if (window_ptr->mess[1] == 129) {
-                if (c >= 170 && c <= 174) {
-                    c = c+106;
-                } else if (c >= 234 && c <= 238) {
-                    c = c+67;
+                else if (c >= 170 && c <= 174) {
+                    c = c + 101;
+                }
+                else if (c >= 214 && c <= 228) {
+                    c = c + 67;
+                }
+                else if (c >= 234 && c <= 238) {
+                    c = c + 62;
                 }
                 window_ptr->mess++;
             }
-            #endif
+            else if (window_ptr->mess[1] == 129) {
+                if (c >= 170 && c <= 174) {
+                    c = c + 106;
+                }
+                else if (c >= 234 && c <= 238) {
+                    c = c + 67;
+                }
+                window_ptr->mess++;
+            }
+#endif
             color = (window_ptr->attr & 0x20) ? 8 : window_ptr->mess_color;
             if (window_ptr->attr & 1) {
                 shadow_color = 0;
                 if (window_ptr->mess_color == 0 || window_ptr->mess_color == 1) {
                     shadow_color = 8;
                 }
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x+2, window_ptr->mess_rect_y+window_ptr->mess_y, c, shadow_color);
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x-2, window_ptr->mess_rect_y+window_ptr->mess_y, c, shadow_color);
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x, window_ptr->mess_rect_y+window_ptr->mess_y+2, c, shadow_color);
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x, window_ptr->mess_rect_y+window_ptr->mess_y-2, c, shadow_color);
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x, window_ptr->mess_rect_y+window_ptr->mess_y, c, color);
-            } else {
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x+2, window_ptr->mess_rect_y+window_ptr->mess_y+2, c, window_ptr->mess_shadow_color);
-                charEntry(window, window_ptr->mess_rect_x+window_ptr->mess_x, window_ptr->mess_rect_y+window_ptr->mess_y, c, color);
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x + 2, window_ptr->mess_rect_y + window_ptr->mess_y, c, shadow_color);
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x - 2, window_ptr->mess_rect_y + window_ptr->mess_y, c, shadow_color);
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x, window_ptr->mess_rect_y + window_ptr->mess_y + 2, c, shadow_color);
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x, window_ptr->mess_rect_y + window_ptr->mess_y - 2, c, shadow_color);
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x, window_ptr->mess_rect_y + window_ptr->mess_y, c, color);
+            }
+            else {
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x + 2, window_ptr->mess_rect_y + window_ptr->mess_y + 2, c,
+                    window_ptr->mess_shadow_color);
+                charEntry(window, window_ptr->mess_rect_x + window_ptr->mess_x, window_ptr->mess_rect_y + window_ptr->mess_y, c, color);
             }
             window_ptr->mess_x += char_w;
             window_ptr->mess++;
@@ -881,19 +836,22 @@ static void HuWinDrawMes(s16 window) {
     }
 }
 
-static s32 HuWinCR(WindowData *window) {
+static s32 HuWinCR(WindowData *window)
+{
     if (window->mess_y + 48 > window->mess_rect_h) {
         window->mess_y = 0;
         window->mess_x = 0;
         return 1;
-    } else {
+    }
+    else {
         window->mess_y += window->spacing_y + 24;
         window->mess_x = 0;
         return 0;
     }
 }
 
-static void _HuWinHomeClear(WindowData *window) {
+static void _HuWinHomeClear(WindowData *window)
+{
     s16 i;
 
     window->num_chars = 0;
@@ -901,29 +859,33 @@ static void _HuWinHomeClear(WindowData *window) {
     window->num_choices = 0;
     HuWinSpcFontClear(window);
     window->attr &= ~0x2020;
-    for (i=0; i<16; i++) {
+    for (i = 0; i < 16; i++) {
         window->choice_data[i].stat = 0;
     }
 }
 
-void HuWinHomeClear(s16 window) {
+void HuWinHomeClear(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
     _HuWinHomeClear(window_ptr);
 }
 
-void HuWinKeyWaitEntry(s16 window) {
+void HuWinKeyWaitEntry(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
     if (window_ptr->attr & 0x400) {
         window_ptr->stat = 0;
-    } else {
+    }
+    else {
         window_ptr->stat = 2;
         window_ptr->advance_sprite = HuWinSpcFontEntry(window_ptr, 19, window_ptr->mess_rect_w - 20, window_ptr->mess_rect_h - 24);
     }
 }
 
-static void HuWinKeyWait(s16 window) {
+static void HuWinKeyWait(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
     if (window_ptr->push_key & HuWinActivePadGet(window_ptr)) {
@@ -938,16 +900,17 @@ static void HuWinKeyWait(s16 window) {
     }
 }
 
-static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y) {
+static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y)
+{
     HuSprGrp *group = &HuSprGrpData[window->group];
     s16 sprite;
     s16 i;
     AnimData *anim;
 
-    for (i=10; i<30; i++) {
+    for (i = 10; i < 30; i++) {
         if (window->sprite_id[i] == -1) {
             anim = *spcFontTbl[entry].anim;
-            window->sprite_id[i] = sprite = HuSprCreate(anim, window->prio-1, spcFontTbl[entry].bank);
+            window->sprite_id[i] = sprite = HuSprCreate(anim, window->prio - 1, spcFontTbl[entry].bank);
             HuSprGrpMemberSet(window->group, i, sprite);
             HuSprPosSet(window->group, i, x + spcFontTbl[entry].center_x - window->w / 2, y + spcFontTbl[entry].center_y - window->h / 2);
             break;
@@ -956,16 +919,18 @@ static s16 HuWinSpcFontEntry(WindowData *window, s16 entry, s16 x, s16 y) {
     return i;
 }
 
-static void HuWinSpcFontPosSet(WindowData *window, s16 index, s16 x, s16 y) {
+static void HuWinSpcFontPosSet(WindowData *window, s16 index, s16 x, s16 y)
+{
     HuSprGrp *group = &HuSprGrpData[window->group];
 
     HuSprPosSet(window->group, index, x - window->w / 2, y - window->h / 2);
 }
 
-static void HuWinSpcFontClear(WindowData *window) {
+static void HuWinSpcFontClear(WindowData *window)
+{
     s16 i;
 
-    for (i=10; i<30; i++) {
+    for (i = 10; i < 30; i++) {
         if (window->sprite_id[i] != -1) {
             HuSprGrpMemberKill(window->group, i);
             window->sprite_id[i] = -1;
@@ -973,7 +938,8 @@ static void HuWinSpcFontClear(WindowData *window) {
     }
 }
 
-static void HuWinChoice(WindowData *window) {
+static void HuWinChoice(WindowData *window)
+{
     WinChoice *choice;
     float choice_dist;
     float min_choice_dist_x;
@@ -1019,7 +985,8 @@ static void HuWinChoice(WindowData *window) {
             }
             if (i != choice_max) {
                 for (i = 0, choice = window->choice_data; i < choice_max; i++, choice++) {
-                    if (i != choice_curr && !(choice->stat & 1) && choice->y == choice_curr_y && choice->x < choice_curr_x && choice_dist > choice_curr_x - choice->x) {
+                    if (i != choice_curr && !(choice->stat & 1) && choice->y == choice_curr_y && choice->x < choice_curr_x
+                        && choice_dist > choice_curr_x - choice->x) {
                         choice_dist = choice_curr_x - choice->x;
                         choice_next = i;
                     }
@@ -1050,7 +1017,8 @@ static void HuWinChoice(WindowData *window) {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 choice_y = -1000;
                 for (i = 0, choice = window->choice_data; i < choice_max; i++, choice++) {
                     if (i != choice_curr && !(choice->stat & 1) && choice->y > choice_y) {
@@ -1080,7 +1048,8 @@ static void HuWinChoice(WindowData *window) {
             }
             if (i != choice_max) {
                 for (i = 0, choice = window->choice_data; i < choice_max; i++, choice++) {
-                    if (i != choice_curr && !(choice->stat & 1) && choice->y == choice_curr_y && choice->x > choice_curr_x && choice_dist > choice->x - choice_curr_x) {
+                    if (i != choice_curr && !(choice->stat & 1) && choice->y == choice_curr_y && choice->x > choice_curr_x
+                        && choice_dist > choice->x - choice_curr_x) {
                         choice_dist = choice->x - choice_curr_x;
                         choice_next = i;
                     }
@@ -1111,7 +1080,8 @@ static void HuWinChoice(WindowData *window) {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 choice_y = 1000;
                 for (i = 0, choice = window->choice_data; i < choice_max; i++, choice++) {
                     if (i != choice_curr && !(choice->stat & 1) && choice->y < choice_y) {
@@ -1137,25 +1107,33 @@ static void HuWinChoice(WindowData *window) {
     if (window->choice != choice_next) {
         window->choice = choice_next;
         HuAudFXPlay(0);
-    } else if (key & (window->key_auto | PAD_BUTTON_A)) {
+    }
+    else if (key & (VERSION_JPN ? PAD_BUTTON_A : (window->key_auto | PAD_BUTTON_A))) {
         HuAudFXPlay(2);
         window->key_down = key;
         window->stat = 0;
-    } else if ((key & PAD_BUTTON_B) && !(window->attr & 0x10)) {
+    }
+    else if ((key & PAD_BUTTON_B) && !(window->attr & 0x10)) {
         HuAudFXPlay(3);
+#if !VERSION_JPN
         window->key_down = key;
+#else
+        (void)key; // hack to match Japanese version
+#endif
         window->choice = -1;
         window->stat = 0;
     }
-    HuWinSpcFontPosSet(window, window->cursor_sprite, window->choice_data[choice_next].x + spcFontTbl[20].center_x, window->choice_data[choice_next].y + spcFontTbl[20].center_y);
+    HuWinSpcFontPosSet(window, window->cursor_sprite, window->choice_data[choice_next].x + spcFontTbl[20].center_x,
+        window->choice_data[choice_next].y + spcFontTbl[20].center_y);
 }
 
-u32 HuWinActivePadGet(WindowData *window) {
+u32 HuWinActivePadGet(WindowData *window)
+{
     s32 win_key;
     u32 i;
 
     win_key = 0;
-    for (i=0; i<4; i++) {
+    for (i = 0; i < 4; i++) {
         if (window->active_pad & (1 << i)) {
             win_key |= winKey[i];
         }
@@ -1163,7 +1141,8 @@ u32 HuWinActivePadGet(WindowData *window) {
     return win_key;
 }
 
-u32 HuWinActiveKeyGetX(WindowData *window) {
+u32 HuWinActiveKeyGetX(WindowData *window)
+{
     u32 button;
     u32 i;
     u32 j;
@@ -1173,7 +1152,7 @@ u32 HuWinActiveKeyGetX(WindowData *window) {
     active_pad = (window->active_pad & ~window->player_disable);
     for (i = 0; i < 4; i++) {
         if (active_pad & (1 << i)) {
-            for (j=0; j<4; j++) {
+            for (j = 0; j < 4; j++) {
                 if (i == GWPlayerCfg[j].pad_idx) {
                     break;
                 }
@@ -1186,7 +1165,8 @@ u32 HuWinActiveKeyGetX(WindowData *window) {
     return button;
 }
 
-void HuWinPosSet(s16 window, float x, float y) {
+void HuWinPosSet(s16 window, float x, float y)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->pos_x = x;
@@ -1194,7 +1174,8 @@ void HuWinPosSet(s16 window, float x, float y) {
     HuSprGrpPosSet(window_ptr->group, x, y);
 }
 
-void HuWinScaleSet(s16 window, float x, float y) {
+void HuWinScaleSet(s16 window, float x, float y)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->scale_x = x;
@@ -1202,38 +1183,43 @@ void HuWinScaleSet(s16 window, float x, float y) {
     HuSprGrpScaleSet(window_ptr->group, x, y);
 }
 
-void HuWinZRotSet(s16 window, float z_rot) {
+void HuWinZRotSet(s16 window, float z_rot)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->z_rot = z_rot;
     HuSprGrpZRotSet(window_ptr->group, z_rot);
 }
 
-void HuWinCenterPosSet(s16 window, float x, float y) {
+void HuWinCenterPosSet(s16 window, float x, float y)
+{
     WindowData *window_ptr = &winData[window];
 
     HuSprGrpCenterSet(window_ptr->group, window_ptr->w / 2.0f - x, window_ptr->h / 2.0f - y);
 }
 
-void HuWinDrawNoSet(s16 window, s16 draw_no) {
+void HuWinDrawNoSet(s16 window, s16 draw_no)
+{
     WindowData *window_ptr = &winData[window];
 
     HuSprGrpDrawNoSet(window_ptr->group, draw_no);
 }
 
-void HuWinScissorSet(s16 window, s16 x, s16 y, s16 w, s16 h) {
+void HuWinScissorSet(s16 window, s16 x, s16 y, s16 w, s16 h)
+{
     WindowData *window_ptr = &winData[window];
 
     HuSprGrpScissorSet(window_ptr->group, x, y, w, h);
 }
 
-void HuWinPriSet(s16 window, s16 prio) {
+void HuWinPriSet(s16 window, s16 prio)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
     HuSprPriSet(window_ptr->group, 0, prio);
     HuSprPriSet(window_ptr->group, 1, prio);
-    for (i=2; i<30; i++) {
+    for (i = 2; i < 30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
             HuSprPriSet(window_ptr->group, i, prio - 1);
         }
@@ -1241,32 +1227,37 @@ void HuWinPriSet(s16 window, s16 prio) {
     window_ptr->prio = prio;
 }
 
-void HuWinAttrSet(s16 window, u32 attr) {
+void HuWinAttrSet(s16 window, u32 attr)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->attr |= attr;
 }
 
-void HuWinAttrReset(s16 window, u32 attr) {
+void HuWinAttrReset(s16 window, u32 attr)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->attr &= ~attr;
 }
 
-s16 HuWinStatGet(s16 window) {
+s16 HuWinStatGet(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
     return window_ptr->stat;
 }
 
-void HuWinMesColSet(s16 window, u8 color) {
+void HuWinMesColSet(s16 window, u8 color)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->mess_color = color;
     window_ptr->attr |= 0x80;
 }
 
-void HuWinMesPalSet(s16 window, u8 index, u8 r, u8 g, u8 b) {
+void HuWinMesPalSet(s16 window, u8 index, u8 r, u8 g, u8 b)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->mess_pal[index][0] = r;
@@ -1274,48 +1265,54 @@ void HuWinMesPalSet(s16 window, u8 index, u8 r, u8 g, u8 b) {
     window_ptr->mess_pal[index][2] = b;
 }
 
-void HuWinBGTPLvlSet(s16 window, float tp_level) {
+void HuWinBGTPLvlSet(s16 window, float tp_level)
+{
     WindowData *window_ptr = &winData[window];
 
     HuSprTPLvlSet(window_ptr->group, 0, tp_level);
 }
 
-void HuWinBGColSet(s16 window, GXColor *bg_color) {
+void HuWinBGColSet(s16 window, GXColor *bg_color)
+{
     WindowData *window_ptr = &winData[window];
 
     HuSprColorSet(window_ptr->group, 0, bg_color->r, bg_color->g, bg_color->b);
 }
 
-void HuWinMesSpeedSet(s16 window, s16 speed) {
+void HuWinMesSpeedSet(s16 window, s16 speed)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->speed = speed;
 }
 
-void HuWinMesRead(s32 mess_data_no) {
+void HuWinMesRead(s32 mess_data_no)
+{
     void *dvd_mess;
     char *mess_path;
 
-    if(messDataPtr) {
+    if (messDataPtr) {
         HuMemDirectFree(messDataPtr);
     }
     messDataNo = mess_data_no;
-    #if VERSION_NTSC
+#if VERSION_NTSC
     if (LanguageNo == 0) {
         mess_path = mesDataTbl[messDataNo];
-    } else {
+    }
+    else {
         mess_path = mesDataTbl[messDataNo + 2];
     }
-    #else
-    mess_path = mesDataTbl[messDataNo+(LanguageNo*2)];
-    #endif
+#else
+    mess_path = mesDataTbl[messDataNo + (LanguageNo * 2)];
+#endif
     dvd_mess = HuDvdDataRead(mess_path);
     messDataPtr = HuMemDirectMalloc(HEAP_SYSTEM, DirDataSize);
     memcpy(messDataPtr, dvd_mess, DirDataSize);
     HuMemDirectFree(dvd_mess);
 }
 
-void HuWinMesSet(s16 window, u32 mess) {
+void HuWinMesSet(s16 window, u32 mess)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->stat = 1;
@@ -1327,19 +1324,25 @@ void HuWinMesSet(s16 window, u32 mess) {
         window_ptr->mess = MessData_MesPtrGet(messDataPtr, mess);
         if (window_ptr->mess == 0) {
             OSReport("Error: No Message data\n");
+#if !VERSION_JPN
             HuWinMesSet(window, 0);
             return;
+#endif
         }
-    } else {
+    }
+    else {
         window_ptr->mess = (u8 *)mess;
     }
     if (!(window_ptr->attr & 0x80)) {
         window_ptr->mess_color = 7;
+#if !VERSION_JPN
         window_ptr->mess_time = 0;
+#endif
     }
 }
 
-void HuWinInsertMesSet(s16 window, u32 mess, s16 index) {
+void HuWinInsertMesSet(s16 window, u32 mess, s16 index)
+{
     WindowData *window_ptr = &winData[window];
 
     if (!(mess & 0x80000000)) {
@@ -1351,12 +1354,14 @@ void HuWinInsertMesSet(s16 window, u32 mess, s16 index) {
         if (window_ptr->insert_mess[index] == 0) {
             OSReport("Error: No Message data\n");
         }
-    } else {
+    }
+    else {
         window_ptr->insert_mess[index] = (u8 *)mess;
     }
 }
 
-s16 HuWinChoiceGet(s16 window, s16 start_choice) {
+s16 HuWinChoiceGet(s16 window, s16 start_choice)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->attr |= 0x40;
@@ -1387,50 +1392,57 @@ s16 HuWinChoiceGet(s16 window, s16 start_choice) {
     return window_ptr->choice;
 }
 
-s16 HuWinChoiceNumGet(s16 window) {
+s16 HuWinChoiceNumGet(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
     return window_ptr->num_choices;
 }
 
-void HuWinChoiceDisable(s16 window, s16 choice) {
+void HuWinChoiceDisable(s16 window, s16 choice)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->choice_disable[choice] = 1;
 }
 
-s16 HuWinChoiceNowGet(s16 window) {
+s16 HuWinChoiceNowGet(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
     if (window_ptr->stat == 3) {
         return window_ptr->choice;
-    } else {
+    }
+    else {
         return -1;
     }
 }
 
-void HuWinMesWait(s16 window) {
+void HuWinMesWait(s16 window)
+{
     WindowData *window_ptr = &winData[window];
 
-    while(window_ptr->stat != 0) {
+    while (window_ptr->stat != 0) {
         HuPrcVSleep();
     }
 }
 
-s16 HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y) {
+s16 HuWinAnimSet(s16 window, AnimData *anim, s16 bank, float x, float y)
+{
     WindowData *window_ptr = &winData[window];
     s16 sprite;
 
-    sprite = HuSprCreate(anim, window_ptr->prio-1, bank);
+    sprite = HuSprCreate(anim, window_ptr->prio - 1, bank);
     return HuWinSprSet(window, sprite, x, y);
 }
 
-s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
+s16 HuWinSprSet(s16 window, s16 sprite, float x, float y)
+{
     WindowData *window_ptr = &winData[window];
     HuSprGrp *group = &HuSprGrpData[window_ptr->group];
     s16 i;
 
-    for (i=2; i<=9; i++) {
+    for (i = 2; i <= 9; i++) {
         if (window_ptr->sprite_id[i] == -1) {
             window_ptr->sprite_id[i] = sprite;
             HuSprGrpMemberSet(window_ptr->group, i, sprite);
@@ -1441,38 +1453,43 @@ s16 HuWinSprSet(s16 window, s16 sprite, float x, float y) {
     return i;
 }
 
-void HuWinSprPosSet(s16 window, s16 index, float x, float y) {
+void HuWinSprPosSet(s16 window, s16 index, float x, float y)
+{
     WindowData *window_ptr = &winData[window];
     HuSprGrp *group = &HuSprGrpData[window_ptr->group];
 
     HuSprPosSet(window_ptr->group, index, x - group->center_x, y - group->center_y);
 }
 
-void HuWinSprPriSet(s16 window, s16 index, s16 prio) {
+void HuWinSprPriSet(s16 window, s16 index, s16 prio)
+{
     WindowData *window_ptr = &winData[window];
     HuSprGrp *group = &HuSprGrpData[window_ptr->group];
 
     HuSprPriSet(window_ptr->group, index, prio);
 }
 
-s16 HuWinSprIDGet(s16 window, s16 index) {
+s16 HuWinSprIDGet(s16 window, s16 index)
+{
     WindowData *window_ptr = &winData[window];
 
     return window_ptr->sprite_id[index];
 }
 
-void HuWinSprKill(s16 window, s16 index) {
+void HuWinSprKill(s16 window, s16 index)
+{
     WindowData *window_ptr = &winData[window];
 
     HuSprGrpMemberKill(window_ptr->group, index);
     window_ptr->sprite_id[index] = -1;
 }
 
-void HuWinDispOff(s16 window) {
+void HuWinDispOff(s16 window)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
-    for(i=0; i<30; i++) {
+    for (i = 0; i < 30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
             HuSprAttrSet(window_ptr->group, i, HUSPR_ATTR_DISPOFF);
         }
@@ -1480,11 +1497,12 @@ void HuWinDispOff(s16 window) {
     window_ptr->attr |= 8;
 }
 
-void HuWinDispOn(s16 window) {
+void HuWinDispOn(s16 window)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
-    for (i=0; i<30; i++) {
+    for (i = 0; i < 30; i++) {
         if (window_ptr->sprite_id[i] != -1) {
             HuSprAttrReset(window_ptr->group, i, HUSPR_ATTR_DISPOFF);
         }
@@ -1492,7 +1510,8 @@ void HuWinDispOn(s16 window) {
     window_ptr->attr = window_ptr->attr & ~8;
 }
 
-void HuWinComKeyWait(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16 delay) {
+void HuWinComKeyWait(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16 delay)
+{
     s32 wait_input_p4;
     s32 wait_input_p3;
     s32 wait_input_p2;
@@ -1500,33 +1519,39 @@ void HuWinComKeyWait(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16
 
     if (player_4 == -1) {
         wait_input_p4 = -1;
-    } else {
+    }
+    else {
         wait_input_p4 = 0;
     }
     if (player_3 == -1) {
         wait_input_p3 = -1;
-    } else {
+    }
+    else {
         wait_input_p3 = 0;
     }
     if (player_2 == -1) {
         wait_input_p2 = -1;
-    } else {
+    }
+    else {
         wait_input_p2 = 0;
     }
     if (player_1 == -1) {
         wait_input_p1 = -1;
-    } else {
+    }
+    else {
         wait_input_p1 = 0;
     }
     _HuWinComKeySet(wait_input_p1, wait_input_p2, wait_input_p3, wait_input_p4, delay);
     _HuWinComKeySet(player_1, player_2, player_3, player_4, 1);
 }
 
-void HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4) {
+void HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4)
+{
     _HuWinComKeySet(player_1, player_2, player_3, player_4, 1);
 }
 
-void _HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16 delay) {
+void _HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16 delay)
+{
     winComKeyBuf[comKeyIdx].player[0] = player_1;
     winComKeyBuf[comKeyIdx].player[1] = player_2;
     winComKeyBuf[comKeyIdx].player[2] = player_3;
@@ -1536,25 +1561,29 @@ void _HuWinComKeySet(s32 player_1, s32 player_2, s32 player_3, s32 player_4, s16
     comKeyIdx &= 0xFF;
 }
 
-void HuWinComKeyGet(s16 window, u32 *data) {
+void HuWinComKeyGet(s16 window, u32 *data)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
     if (comKeyIdx == comKeyIdxNow) {
-        for (i=0; i<4; i++) {
+        for (i = 0; i < 4; i++) {
             if (!(window_ptr->player_disable & (1 << i))) {
                 data[i] = HuPadDStkRep[i] | HuPadBtnDown[i];
-            } else {
+            }
+            else {
                 data[i] = 0;
             }
         }
-    } else {
-        for (i=0; i<4; i++) {
+    }
+    else {
+        for (i = 0; i < 4; i++) {
             data[i] = winComKeyBuf[comKeyIdxNow].player[i];
             if (data[i] == 0xFFFFFFFF) {
                 if (!(window_ptr->player_disable & (1 << i))) {
                     data[i] = HuPadDStkRep[i] | HuPadBtnDown[i];
-                } else {
+                }
+                else {
                     data[i] = 0;
                 }
             }
@@ -1567,11 +1596,13 @@ void HuWinComKeyGet(s16 window, u32 *data) {
     }
 }
 
-void HuWinComKeyReset(void) {
+void HuWinComKeyReset(void)
+{
     comKeyIdx = comKeyIdxNow = 0;
 }
 
-void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...) {
+void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...)
+{
     s16 i;
     u32 mess;
     va_list list;
@@ -1579,11 +1610,11 @@ void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...) {
     winInsertF = 0;
     va_start(list, size);
     winMaxWidth = winMaxHeight = 0;
-    for(i=0; i<mess_num; i++) {
+    for (i = 0; i < mess_num; i++) {
         mess = va_arg(list, u32);
         GetMesMaxSizeSub(mess);
     }
-    for(i=0; i<8; i++) {
+    for (i = 0; i < 8; i++) {
         mesWInsert[i] = 0;
     }
     winTabSize = 24;
@@ -1593,29 +1624,33 @@ void HuWinMesMaxSizeGet(s16 mess_num, float *size, ...) {
     va_end(list);
 }
 
-void HuWinInsertMesSizeGet(u32 mess, s16 index) {
+void HuWinInsertMesSizeGet(u32 mess, s16 index)
+{
     winInsertF = 1;
     winMaxWidth = winMaxHeight = 0;
     GetMesMaxSizeSub(mess);
     mesWInsert[index] = winMaxWidth;
 }
 
-void HuWinMesSizeCancelCRSet(s32 cancel_cr) {
+void HuWinMesSizeCancelCRSet(s32 cancel_cr)
+{
     cancelCRF = cancel_cr;
 }
 
-void HuWinMesMaxSizeBetGet(float *size, u32 start, u32 end) {
+void HuWinMesMaxSizeBetGet(float *size, u32 start, u32 end)
+{
     u32 i;
 
     if (end < start) {
         size[0] = size[1] = 100.0f;
-    } else {
+    }
+    else {
         winInsertF = 0;
         winMaxWidth = winMaxHeight = 0;
-        for (i=start; i<=end; i++) {
+        for (i = start; i <= end; i++) {
             GetMesMaxSizeSub(i);
         }
-        for (i=0; i<8; i++) {
+        for (i = 0; i < 8; i++) {
             mesWInsert[i] = 0;
         }
         winTabSize = 24;
@@ -1625,7 +1660,8 @@ void HuWinMesMaxSizeBetGet(float *size, u32 start, u32 end) {
     }
 }
 
-static void GetMesMaxSizeSub(u32 mess) {
+static void GetMesMaxSizeSub(u32 mess)
+{
     s16 line_h;
     s16 char_w;
     s16 line_w;
@@ -1640,7 +1676,8 @@ static void GetMesMaxSizeSub(u32 mess) {
     if (mess > 0x80000000) {
         from_messdata = 0;
         mess_data = (u8 *)mess;
-    } else {
+    }
+    else {
         from_messdata = 1;
         mess_data = mess_start = MessData_MesPtrGet(messDataPtr, mess);
     }
@@ -1667,7 +1704,8 @@ static void GetMesMaxSizeSub(u32 mess) {
                         if (mess_data[1] != 0) {
                             char_h = 26;
                         }
-                    } else {
+                    }
+                    else {
                         char_w = fontWidthP[16] + 1;
                     }
                 }
@@ -1708,15 +1746,15 @@ static void GetMesMaxSizeSub(u32 mess) {
                 char_w = mesWInsert[*mess_data - 1];
                 break;
         }
-        #if VERSION_NTSC
+#if VERSION_NTSC
         if ((*mess_data != 255 && *mess_data >= 32) || *mess_data == 16) {
             cr_flag = 1;
         }
-        #else
+#else
         if ((*mess_data != 255 && *mess_data >= 32) || *mess_data == 16 || mess_data[-1] == 31) {
             cr_flag = 1;
         }
-        #endif
+#endif
         line_w += char_w;
         line_h += char_h;
         mess_data++;
@@ -1729,7 +1767,8 @@ static void GetMesMaxSizeSub(u32 mess) {
     }
 }
 
-static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data) {
+static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data)
+{
     s32 sp8;
     u8 mess_finish;
     s16 mess_h;
@@ -1752,14 +1791,14 @@ static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data) {
             case 16:
             case 32:
                 break;
-                
+
             case 10:
                 if (mess_end != 0 && !(window->attr & 0x100)) {
                     char_w = 0;
                     mess_finish = 1;
                 }
                 break;
-                
+
             case 255:
                 mess_w += char_w;
                 /* fallthrough */
@@ -1769,7 +1808,7 @@ static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data) {
                 char_h = 0;
                 mess_w = char_w = 0;
                 break;
-                
+
             case 28:
             case 30:
                 mess++;
@@ -1778,16 +1817,16 @@ static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data) {
             case 29:
                 char_w = 0;
                 break;
-                
+
             case 12:
                 char_w = winTabSize * ((mess_w + winTabSize) / winTabSize) - mess_w;
                 break;
-                
+
             case 14:
                 mess++;
                 char_w = spcFontTbl[*mess - 1].w + 1;
                 break;
-                
+
             case 31:
                 mess++;
                 break;
@@ -1802,13 +1841,15 @@ static s32 GetMesMaxSizeSub2(WindowData *window, u8 *mess_data) {
     return mess_w;
 }
 
-s16 HuWinKeyWaitNumGet(u32 mess) {
+s16 HuWinKeyWaitNumGet(u32 mess)
+{
     s16 wait_num;
     u8 *mess_data;
 
     if (mess > 0x80000000) {
         mess_data = (u8 *)mess;
-    } else {
+    }
+    else {
         mess_data = MessData_MesPtrGet(messDataPtr, mess);
     }
     for (wait_num = 0; *mess_data != 0; mess_data++) {
@@ -1819,51 +1860,39 @@ s16 HuWinKeyWaitNumGet(u32 mess) {
     return wait_num;
 }
 
-void HuWinPushKeySet(s16 window, s16 push_key) {
+void HuWinPushKeySet(s16 window, s16 push_key)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->push_key = push_key;
 }
 
-void HuWinDisablePlayerSet(s16 window, u8 player) {
+void HuWinDisablePlayerSet(s16 window, u8 player)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->player_disable |= player;
 }
 
-void HuWinDisablePlayerReset(s16 window, u8 player) {
+void HuWinDisablePlayerReset(s16 window, u8 player)
+{
     WindowData *window_ptr = &winData[window];
 
     window_ptr->player_disable &= ~(int)player;
 }
 
-static s32 winPortraitTbl[] = {
-    WIN_TOAD_TALK_ANM,
-    WIN_BOBOMB_TALK_ANM,
-    WIN_SHYGUY_TALK_ANM,
-    WIN_BOO_TALK_ANM,
-    WIN_GOOMBA_TALK_ANM,
-    WIN_BOWSER_TALK_ANM,
-    WIN_KKID_TALK_ANM,
-    WIN_KOOPA_TALK_ANM,
-    WIN_CONDOR_TALK_ANM,
-    WIN_BOO_BLUE_TALK_ANM,
-    WIN_DOLPHIN_TALK_ANM,
-    WIN_BOO_RED_TALK_ANM,
-    WIN_THWOMP_TALK_ANM,
-    WIN_W01_HOST_TALK_ANM,
-    WIN_W02_HOST_TALK_ANM,
-    WIN_W03_HOST_TALK_ANM,
-    WIN_W04_HOST_TALK_ANM,
-    WIN_W05_HOST_TALK_ANM,
-    WIN_W06_HOST_TALK_ANM
-};
+static s32 winPortraitTbl[]
+    = { WIN_TOAD_TALK_ANM, WIN_BOBOMB_TALK_ANM, WIN_SHYGUY_TALK_ANM, WIN_BOO_TALK_ANM, WIN_GOOMBA_TALK_ANM, WIN_BOWSER_TALK_ANM, WIN_KKID_TALK_ANM,
+          WIN_KOOPA_TALK_ANM, WIN_CONDOR_TALK_ANM, WIN_BOO_BLUE_TALK_ANM, WIN_DOLPHIN_TALK_ANM, WIN_BOO_RED_TALK_ANM, WIN_THWOMP_TALK_ANM,
+          WIN_W01_HOST_TALK_ANM, WIN_W02_HOST_TALK_ANM, WIN_W03_HOST_TALK_ANM, WIN_W04_HOST_TALK_ANM, WIN_W05_HOST_TALK_ANM, WIN_W06_HOST_TALK_ANM };
 
-s16 HuWinExCreate(float x, float y, s16 w, s16 h, s16 portrait) {
+s16 HuWinExCreate(float x, float y, s16 w, s16 h, s16 portrait)
+{
     return HuWinExCreateStyled(x, y, w, h, portrait, 0);
 }
 
-static void HuWinExCreatePortrait(s16 window, s16 portrait, float x, float y) {
+static void HuWinExCreatePortrait(s16 window, s16 portrait, float x, float y)
+{
     s16 sprite;
     AnimData *anim;
     WindowData *window_ptr;
@@ -1876,7 +1905,8 @@ static void HuWinExCreatePortrait(s16 window, s16 portrait, float x, float y) {
     HuWinSprSet(window, sprite, x, y);
 }
 
-s16 HuWinExCreateStyled(float x, float y, s16 w, s16 h, s16 portrait, s16 frame) {
+s16 HuWinExCreateStyled(float x, float y, s16 w, s16 h, s16 portrait, s16 frame)
+{
     WindowData *window_ptr;
     s16 window;
 
@@ -1895,7 +1925,8 @@ s16 HuWinExCreateStyled(float x, float y, s16 w, s16 h, s16 portrait, s16 frame)
     return window;
 }
 
-void HuWinExAnimIn(s16 window) {
+void HuWinExAnimIn(s16 window)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
@@ -1903,19 +1934,21 @@ void HuWinExAnimIn(s16 window) {
     if (window_ptr->sprite_id[2] == -1) {
         HuSprScaleSet(window_ptr->group, 0, 1.0f, 0.0f);
         HuWinDispOn(window);
-        for (i=0; i<=10; i++) {
+        for (i = 0; i <= 10; i++) {
             HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0 - 1.1 * cosd(9.0f * i));
             HuPrcVSleep();
         }
         HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0f);
-    } else {
+    }
+    else {
         HuSprScaleSet(window_ptr->group, 0, 1.0f, 0.0f);
         HuSprScaleSet(window_ptr->group, 2, 1.0f, 0.0f);
         HuWinDispOn(window);
-        for (i=0; i<=20; i++) {
+        for (i = 0; i <= 20; i++) {
             if (i <= 10) {
                 HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.1 * (1.0 - cosd(9.0f * i)));
-            } else {
+            }
+            else {
                 HuSprScaleSet(window_ptr->group, 0, 1.0f, 1.0f);
             }
             if (i > 10) {
@@ -1928,19 +1961,21 @@ void HuWinExAnimIn(s16 window) {
     }
 }
 
-void HuWinExAnimOut(s16 window) {
+void HuWinExAnimOut(s16 window)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
     _HuWinHomeClear(window_ptr);
     if (window_ptr->sprite_id[2] == -1) {
-        for (i=0; i<=10; i++) {
+        for (i = 0; i <= 10; i++) {
             HuSprScaleSet(window_ptr->group, 0, 1.0f, cosd(9.0f * i));
             HuPrcVSleep();
         }
         HuWinDispOff(window);
-    } else {
-        for (i=0; i<=15; i++) {
+    }
+    else {
+        for (i = 0; i <= 15; i++) {
             if (i <= 10) {
                 HuSprScaleSet(window_ptr->group, 2, 1.0f, cosd(9.0f * i));
             }
@@ -1954,21 +1989,23 @@ void HuWinExAnimOut(s16 window) {
     }
 }
 
-void HuWinExCleanup(s16 window) {
+void HuWinExCleanup(s16 window)
+{
     HuWinKill(window);
 }
 
-void HuWinExAnimPopIn(s16 window, s16 portrait) {
+void HuWinExAnimPopIn(s16 window, s16 portrait)
+{
     WindowData *window_ptr = &winData[window];
     s16 i;
 
-    for (i=0; i<=10; i++) {
+    for (i = 0; i <= 10; i++) {
         HuSprScaleSet(window_ptr->group, 2, 1.0f, cosd(9.0f * i));
         HuPrcVSleep();
     }
     HuWinSprKill(window, 2);
     HuWinExCreatePortrait(window, portrait, 48.0f, 48.0f);
-    for (i=0; i<=10; i++) {
+    for (i = 0; i <= 10; i++) {
         HuSprScaleSet(window_ptr->group, 2, 1.0f, sind(9.0f * i));
         HuPrcVSleep();
     }

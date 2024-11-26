@@ -1,3 +1,5 @@
+#include "version.h"
+
 OVL_DEFINE(OVL__MINI, "dll/_minigameDLL.rel")
 OVL_DEFINE(OVL_BOOT, "dll/bootdll.rel")
 OVL_DEFINE(OVL_E3SETUP, "dll/e3setupDLL.rel")
@@ -69,10 +71,17 @@ OVL_DEFINE(OVL_M461, "dll/m461dll.rel")
 OVL_DEFINE(OVL_M462, "dll/m462dll.rel")
 OVL_DEFINE(OVL_M463, "dll/m463dll.rel")
 OVL_DEFINE(OVL_MENT, "dll/mentdll.rel")
+#if VERSION_JPN
+OVL_DEFINE(OVL_MGMODE, "dll/mgmodedll.rel")
+OVL_DEFINE(OVL_MODELTEST, "dll/modeltestdll.rel")
+OVL_DEFINE(OVL_MODESEL, "dll/modeseldll.rel")
+OVL_DEFINE(OVL_MOVIE, "dll/moviedll.rel")
+#else
 OVL_DEFINE(OVL_MESS, "dll/messdll.rel")
 OVL_DEFINE(OVL_MGMODE, "dll/mgmodedll.rel")
 OVL_DEFINE(OVL_MODELTEST, "dll/modeltestdll.rel")
 OVL_DEFINE(OVL_MODESEL, "dll/modeseldll.rel")
+#endif
 OVL_DEFINE(OVL_MPEX, "dll/mpexdll.rel")
 OVL_DEFINE(OVL_MSETUP, "dll/msetupdll.rel")
 OVL_DEFINE(OVL_MSTORY2, "dll/mstory2dll.rel")

@@ -1,15 +1,15 @@
 #include "game/saveload.h"
-#include "game/data.h"
-#include "game/pad.h"
-#include "game/window.h"
-#include "game/flag.h"
-#include "game/card.h"
-#include "game/sprite.h"
-#include "game/gamework_data.h"
 #include "data_num/win.h"
+#include "game/card.h"
+#include "game/data.h"
+#include "game/flag.h"
+#include "game/gamework_data.h"
+#include "game/pad.h"
+#include "game/sprite.h"
+#include "game/window.h"
 
-#include "string.h"
 #include "stddef.h"
+#include "string.h"
 
 #if VERSION_ENG
 #define SAVE_WRITE_BEGIN _SetFlag(FLAG_ID_MAKE(3, 0));
@@ -19,12 +19,11 @@
 #define SAVE_WRITE_END
 #endif
 
-#define SAVE_GET_PLAYER(player_idx) &saveBuf.buf[((player_idx)*sizeof(PlayerState))+offsetof(SaveBufData, player)]
-#define SAVE_GET_PLAYER_STORY(player_idx) &saveBuf.buf[((player_idx)*sizeof(PlayerState))+offsetof(SaveBufData, playerStory)]
+#define SAVE_GET_PLAYER(player_idx) &saveBuf.buf[((player_idx) * sizeof(PlayerState)) + offsetof(SaveBufData, player)]
+#define SAVE_GET_PLAYER_STORY(player_idx) &saveBuf.buf[((player_idx) * sizeof(PlayerState)) + offsetof(SaveBufData, playerStory)]
 
 static s16 SLCreateSaveWin(void);
 static void SLKillSaveWin(void);
-
 
 extern u8 UnMountCnt;
 
@@ -36,27 +35,28 @@ s32 saveExecF;
 u8 curBoxNo;
 s16 curSlotNo;
 
-static u8 commentTbl[2][32] = {
-    "Mario Party 4",
-    "File 0  00/00/0000"
-};
+#if VERSION_JPN
+static u8 commentTbl[2][32] = { "マリオパーティ４", "？？月？？日　データ？です。" };
+static u8 sjisNumTbl[20] = "０１２３４５６７８９";
+#else
+static u8 commentTbl[2][32] = { "Mario Party 4", "File 0  00/00/0000" };
+#endif
 
-char *SaveFileNameTbl[] = {
-    "MARIPA4BOX0",
-    "MARIPA4BOX1",
-    "MARIPA4BOX2"
-};
+char *SaveFileNameTbl[] = { "MARIPA4BOX0", "MARIPA4BOX1", "MARIPA4BOX2" };
 
 s32 SaveEnableF = 1;
 
-static char *SlotNameTbl[] = {
-    "A",
-    "B"
-};
+static char *SlotNameTbl[] = { "A", "B" };
+
+#if VERSION_JPN
+static char *slotIconMesTbl[] = { "\x0E\x16", "\x0E\x17" };
+static u8 sjisSpace[] = "　";
+#endif
 
 static s32 saveMessWin = -1;
 
-s32 SLFileOpen(char *fileName) {
+s32 SLFileOpen(char *fileName)
+{
     s32 result;
 
     if (SaveEnableF == 0) {
@@ -64,7 +64,7 @@ s32 SLFileOpen(char *fileName) {
     }
     while (1) {
         result = SLCardMount(curSlotNo);
-        if(result < 0) {
+        if (result < 0) {
             return result;
         }
         result = HuCardOpen(curSlotNo, fileName, &curFileInfo);
@@ -96,16 +96,19 @@ s32 SLFileOpen(char *fileName) {
                 if (result != 0) {
                     return result;
                 }
-            } else {
+            }
+            else {
                 return CARD_RESULT_NOFILE;
             }
-        } else {
+        }
+        else {
             return CARD_RESULT_READY;
         }
     }
 }
 
-s32 SLFileCreate(char *fileName, u32 size, void *addr) {
+s32 SLFileCreate(char *fileName, u32 size, void *addr)
+{
     float winSize[2];
     u32 byteNotUsed;
     u32 filesNotUsed;
@@ -184,7 +187,8 @@ s32 SLFileCreate(char *fileName, u32 size, void *addr) {
     return 0;
 }
 
-s32 SLFileWrite(s32 length, void *addr) {
+s32 SLFileWrite(s32 length, void *addr)
+{
     float winSize[2];
     s32 window;
     s32 result;
@@ -210,7 +214,8 @@ s32 SLFileWrite(s32 length, void *addr) {
     return result;
 }
 
-s32 SLFileRead(s32 length, void *addr) {
+s32 SLFileRead(s32 length, void *addr)
+{
     s32 result;
 
     if (SaveEnableF == 0) {
@@ -219,13 +224,15 @@ s32 SLFileRead(s32 length, void *addr) {
     result = HuCardRead(&curFileInfo, addr, length, 0);
     if (result == CARD_RESULT_NOCARD) {
         SLMessOut(0);
-    } else if (result < 0) {
+    }
+    else if (result < 0) {
         SLMessOut(1);
     }
     return result;
 }
 
-s32 SLFileClose(void) {
+s32 SLFileClose(void)
+{
     s32 result;
 
     if (SaveEnableF == 0) {
@@ -235,15 +242,18 @@ s32 SLFileClose(void) {
     return result;
 }
 
-void SLCurSlotNoSet(s16 slotno) {
+void SLCurSlotNoSet(s16 slotno)
+{
     curSlotNo = slotno;
 }
 
-void SLCurBoxNoSet(s16 boxno) {
+void SLCurBoxNoSet(s16 boxno)
+{
     curBoxNo = boxno;
 }
 
-void SLSaveFlagSet(s32 flag) {
+void SLSaveFlagSet(s32 flag)
+{
     if (flag == 0) {
         GWGameStat.party_continue = 0;
         GWGameStat.story_continue = 0;
@@ -251,11 +261,13 @@ void SLSaveFlagSet(s32 flag) {
     SaveEnableF = flag;
 }
 
-s32 SLSaveFlagGet(void) {
+s32 SLSaveFlagGet(void)
+{
     return SaveEnableF;
 }
 
-void SLSaveDataMake(s32 erase, OSTime *time) {
+void SLSaveDataMake(s32 erase, OSTime *time)
+{
     AnimData *anim_data;
     u8 *buf;
     s32 i;
@@ -270,24 +282,25 @@ void SLSaveDataMake(s32 erase, OSTime *time) {
         buf[i] = (&commentTbl[0][0])[i];
     }
     for (i = 0; i < 0x20; i++) {
-        (&buf[0x20])[i] = (&commentTbl[0][0])[i+32];
+        (&buf[0x20])[i] = (&commentTbl[0][0])[i + 32];
     }
     anim_data = HuSprAnimReadFile(WIN_CARD_BANNER_ANM);
-    memcpy(buf + offsetof(SaveBufData, banner), anim_data->bmp->data, CARD_BANNER_WIDTH*CARD_BANNER_HEIGHT);
+    memcpy(buf + offsetof(SaveBufData, banner), anim_data->bmp->data, CARD_BANNER_WIDTH * CARD_BANNER_HEIGHT);
     memcpy(buf + offsetof(SaveBufData, bannerTlut), anim_data->bmp->palData, 512);
     anim_data = HuSprAnimReadFile(curBoxNo + WIN_CARD_BOX1_ICON_ANM);
-    memcpy(buf + offsetof(SaveBufData, icon), anim_data->bmp->data, CARD_ICON_WIDTH*CARD_ICON_HEIGHT*4);
+    memcpy(buf + offsetof(SaveBufData, icon), anim_data->bmp->data, CARD_ICON_WIDTH * CARD_ICON_HEIGHT * 4);
     memcpy(buf + offsetof(SaveBufData, iconTlut), anim_data->bmp->palData, 512);
     SLSaveDataInfoSet(time);
 }
 
-void SLSaveDataInfoSet(OSTime *time) {
+void SLSaveDataInfoSet(OSTime *time)
+{
     s16 year;
     s16 digit;
     OSCalendarTime sp8;
-    
-    #if VERSION_ENG
+
     OSTicksToCalendarTime(*time, &sp8);
+#if VERSION_ENG
     saveBuf.data.comment[37] = curBoxNo + '1';
     digit = (sp8.mon + 1) / 10;
     saveBuf.data.comment[40] = digit + '0';
@@ -308,8 +321,7 @@ void SLSaveDataInfoSet(OSTime *time) {
     saveBuf.data.comment[48] = digit + '0';
     year -= digit * 10;
     saveBuf.data.comment[49] = year + '0';
-    #elif VERSION_PAL
-    OSTicksToCalendarTime(*time, &sp8);
+#elif VERSION_PAL
     saveBuf.data.comment[37] = curBoxNo + '1';
     digit = sp8.mday / 10;
     saveBuf.data.comment[40] = digit + '0';
@@ -330,33 +342,38 @@ void SLSaveDataInfoSet(OSTime *time) {
     saveBuf.data.comment[48] = digit + '0';
     year -= digit * 10;
     saveBuf.data.comment[49] = year + '0';
-    #else
-    //TODO: Japanese Version
-    OSTicksToCalendarTime(*time, &sp8);
-    saveBuf.data.comment[37] = curBoxNo + '1';
-    digit = sp8.mday / 10;
-    saveBuf.data.comment[40] = digit + '0';
-    digit = sp8.mday % 10;
-    saveBuf.data.comment[41] = digit + '0';
+#else
+    saveBuf.data.comment[52] = sjisNumTbl[(curBoxNo + 1) * 2];
+    saveBuf.data.comment[53] = sjisNumTbl[(curBoxNo + 1) * 2 + 1];
     digit = (sp8.mon + 1) / 10;
-    saveBuf.data.comment[43] = digit + '0';
+    if (digit == 0) {
+        saveBuf.data.comment[32] = sjisSpace[0];
+        saveBuf.data.comment[33] = sjisSpace[1];
+    }
+    else {
+        saveBuf.data.comment[32] = sjisNumTbl[digit * 2];
+        saveBuf.data.comment[33] = sjisNumTbl[digit * 2 + 1];
+    }
     digit = (sp8.mon + 1) % 10;
-    saveBuf.data.comment[44] = digit + '0';
-    year = sp8.year;
-    digit = year / 1000;
-    saveBuf.data.comment[46] = digit + '0';
-    year -= digit * 1000;
-    digit = year / 100;
-    saveBuf.data.comment[47] = digit + '0';
-    year -= digit * 100;
-    digit = year / 10;
-    saveBuf.data.comment[48] = digit + '0';
-    year -= digit * 10;
-    saveBuf.data.comment[49] = year + '0';
-    #endif
+    saveBuf.data.comment[34] = sjisNumTbl[digit * 2];
+    saveBuf.data.comment[35] = sjisNumTbl[digit * 2 + 1];
+    digit = sp8.mday / 10;
+    if (digit == 0) {
+        saveBuf.data.comment[38] = sjisSpace[0];
+        saveBuf.data.comment[39] = sjisSpace[1];
+    }
+    else {
+        saveBuf.data.comment[38] = sjisNumTbl[digit * 2];
+        saveBuf.data.comment[39] = sjisNumTbl[digit * 2 + 1];
+    }
+    digit = sp8.mday % 10;
+    saveBuf.data.comment[40] = sjisNumTbl[digit * 2];
+    saveBuf.data.comment[41] = sjisNumTbl[digit * 2 + 1];
+#endif
 }
 
-void SLCommonSet(void) {
+void SLCommonSet(void)
+{
     OSTime create_time;
 
     create_time = OSGetTime();
@@ -365,7 +382,8 @@ void SLCommonSet(void) {
     SLSaveDataInfoSet(&create_time);
 }
 
-void SLSaveBoard(void) {
+void SLSaveBoard(void)
+{
     s16 i;
 
     memcpy(&saveBuf.data.system, &GWSystem, sizeof(SystemState));
@@ -374,7 +392,8 @@ void SLSaveBoard(void) {
     }
 }
 
-void SLSaveBoardStory(void) {
+void SLSaveBoardStory(void)
+{
     s16 i;
 
     memcpy(&saveBuf.data.systemStory, &GWSystem, sizeof(SystemState));
@@ -383,7 +402,8 @@ void SLSaveBoardStory(void) {
     }
 }
 
-s32 SLSave(void) {
+s32 SLSave(void)
+{
     s32 result;
 
     while (1) {
@@ -392,7 +412,8 @@ s32 SLSave(void) {
         if (result == CARD_RESULT_NOFILE) {
             if (!SLSerialNoCheck()) {
                 SLMessOut(9);
-            } else {
+            }
+            else {
                 SLCreateSaveWin();
                 result = SLFileCreate(SaveFileNameTbl[curBoxNo], 16384, &saveBuf);
                 SLKillSaveWin();
@@ -401,7 +422,8 @@ s32 SLSave(void) {
                     goto block_32;
                 }
             }
-        } else {
+        }
+        else {
             if (result == CARD_RESULT_NOCARD) {
                 result = SLMessOut(10);
                 if (result != 0) {
@@ -414,15 +436,18 @@ s32 SLSave(void) {
             if (result >= 0) {
                 if (!SLSerialNoCheck()) {
                     SLMessOut(9);
-                } else {
+                }
+                else {
                     SLCreateSaveWin();
                     result = SLFileWrite(16384, &saveBuf);
                     SLKillSaveWin();
                     if (result == CARD_RESULT_NOCARD) {
                         SLMessOut(0);
-                    } else if (result == CARD_RESULT_WRONGDEVICE) {
+                    }
+                    else if (result == CARD_RESULT_WRONGDEVICE) {
                         SLMessOut(7);
-                    } else if (result == CARD_RESULT_BROKEN) {
+                    }
+                    else if (result == CARD_RESULT_BROKEN) {
                         result = HuCardSectorSizeGet(curSlotNo);
                         if (result > 0 && result != 8192) {
                             SLMessOut(8);
@@ -436,13 +461,15 @@ s32 SLSave(void) {
                                 return result;
                             }
                             continue;
-                        } else {
+                        }
+                        else {
                             result = CARD_RESULT_BROKEN;
                         }
-                    } else if (result < 0) {
+                    }
+                    else if (result < 0) {
                         SLMessOut(1);
                     }
-block_32:
+                block_32:
                     SLFileClose();
                     if (result >= 0) {
                         HuCardUnMount(curSlotNo);
@@ -451,11 +478,12 @@ block_32:
                 }
             }
         }
-block_36:
+    block_36:
         result = SLMessOut(10);
         if (result != 0) {
             SLMessOut(11);
-        } else {
+        }
+        else {
             SLSaveFlagSet(0);
             break;
         }
@@ -470,23 +498,31 @@ block_36:
 #define SAVEWIN_POS 120
 #endif
 
-static s16 SLCreateSaveWin(void) {
+#if VERSION_JPN
+#define SAVEWIN_MESS slotIconMesTbl
+#else
+#define SAVEWIN_MESS SlotNameTbl
+#endif
+
+static s16 SLCreateSaveWin(void)
+{
     float size[2];
     s16 window;
 
     HuWinInit(1);
-    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesMaxSizeGet(1, size, MAKE_MESSID(16, 68));
     window = HuWinExCreateStyled(-10000.0f, SAVEWIN_POS, size[0], size[1], -1, 2);
     saveMessWin = window;
     HuWinExAnimIn(window);
-    HuWinInsertMesSet(window, MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSet(window, MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesSet(window, MAKE_MESSID(16, 68));
     HuWinMesWait(window);
     return window;
 }
 
-static void SLKillSaveWin(void) {
+static void SLKillSaveWin(void)
+{
     if (saveMessWin != -1) {
         HuWinExAnimOut(saveMessWin);
         HuWinExCleanup(saveMessWin);
@@ -494,7 +530,8 @@ static void SLKillSaveWin(void) {
     }
 }
 
-s32 SLLoad(void) {
+s32 SLLoad(void)
+{
     s32 result;
     u16 *save_checksum;
     u16 checksum;
@@ -513,11 +550,13 @@ s32 SLLoad(void) {
     return 0;
 }
 
-void SLLoadGameStat(void) {
+void SLLoadGameStat(void)
+{
     memcpy(&GWGameStat, &saveBuf.data.stat, sizeof(GameStat));
 }
 
-void SLLoadBoard(void) {
+void SLLoadBoard(void)
+{
     s16 i;
 
     memcpy(&GWSystem, &saveBuf.data.system, sizeof(SystemState));
@@ -531,7 +570,8 @@ void SLLoadBoard(void) {
     }
 }
 
-void SLLoadBoardStory(void) {
+void SLLoadBoardStory(void)
+{
     s16 i;
 
     memcpy(&GWSystem, &saveBuf.data.systemStory, 0xDC);
@@ -545,11 +585,13 @@ void SLLoadBoardStory(void) {
     }
 }
 
-s32 SLSerialNoGet(void) {
+s32 SLSerialNoGet(void)
+{
     return CARDGetSerialNo(curSlotNo, &SLSerialNo);
 }
 
-BOOL SLSerialNoCheck(void) {
+BOOL SLSerialNoCheck(void)
+{
     s32 result;
     u64 serialNo;
 
@@ -566,7 +608,8 @@ BOOL SLSerialNoCheck(void) {
     return TRUE;
 }
 
-BOOL SLCheckSumCheck(void) {
+BOOL SLCheckSumCheck(void)
+{
     u16 *save_checksum = (u16 *)&saveBuf.buf[sizeof(SaveBufData)];
     u16 checksum = SLCheckSumGet();
 
@@ -576,7 +619,8 @@ BOOL SLCheckSumCheck(void) {
     return FALSE;
 }
 
-u16 SLCheckSumGet(void) {
+u16 SLCheckSumGet(void)
+{
     u32 i;
     u32 checksum;
 
@@ -584,17 +628,19 @@ u16 SLCheckSumGet(void) {
         checksum += saveBuf.buf[i];
     }
     checksum = ~checksum;
-    return (u16) checksum & 0xFFFF;
+    return (u16)checksum & 0xFFFF;
 }
 
-void SLCheckSumSet(void) {
+void SLCheckSumSet(void)
+{
     u16 checksum = SLCheckSumGet();
 
     saveBuf.buf[sizeof(SaveBufData)] = (checksum >> 8) & 0xFF;
-    saveBuf.buf[sizeof(SaveBufData)+1] = checksum;
+    saveBuf.buf[sizeof(SaveBufData) + 1] = checksum;
 }
 
-s32 SLStatSet(s32 reportF) {
+s32 SLStatSet(s32 reportF)
+{
     CARDStat stat;
     s32 fileNo;
     s32 result;
@@ -643,7 +689,8 @@ s32 SLStatSet(s32 reportF) {
     return result;
 }
 
-s32 SLCardMount(s16 slotNo) {
+s32 SLCardMount(s16 slotNo)
+{
     s32 result;
 
     while (1) {
@@ -673,10 +720,12 @@ s32 SLCardMount(s16 slotNo) {
                 if (result != 0) {
                     return result;
                 }
-            } else {
+            }
+            else {
                 return CARD_RESULT_FATAL_ERROR;
             }
-        } else {
+        }
+        else {
             break;
         }
     }
@@ -692,7 +741,8 @@ s32 SLCardMount(s16 slotNo) {
     return 0;
 }
 
-s32 SLFormat(s16 slotNo) {
+s32 SLFormat(s16 slotNo)
+{
     float winSize[2];
     s16 result;
     s16 window1;
@@ -700,11 +750,11 @@ s32 SLFormat(s16 slotNo) {
     OSTime time;
 
     HuWinInit(1);
-    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesMaxSizeGet(1, winSize, MAKE_MESSID(16, 56));
     window1 = HuWinExCreateStyled(-10000.0f, SAVEWIN_POS, winSize[0], winSize[1], -1, 2);
     HuWinExAnimIn(window1);
-    HuWinInsertMesSet(window1, MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSet(window1, MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesSet(window1, MAKE_MESSID(16, 56));
     HuWinMesMaxSizeGet(1, winSize, MAKE_MESSID(16, 11));
     window2 = HuWinExCreateStyled(-10000.0f, 200.0f, winSize[0], winSize[1], -1, 2);
@@ -754,7 +804,8 @@ s32 SLFormat(s16 slotNo) {
     return result;
 }
 
-s16 SLMessOut(s16 mess) {
+s16 SLMessOut(s16 mess)
+{
     WindowData *var_r26;
     float size[2];
     u32 slot_mess;
@@ -782,19 +833,23 @@ s16 SLMessOut(s16 mess) {
         case 2:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            #if VERSION_NTSC
+#if VERSION_ENG
             save_mess = MAKE_MESSID(16, 74);
-            #else
+#elif VERSION_PAL
             save_mess = MAKE_MESSID(16, 72);
-            #endif
+#else
+            save_mess = MAKE_MESSID(16, 5);
+#endif
             break;
 
         case 3:
-            #if VERSION_NTSC
+#if VERSION_ENG
             save_mess = MAKE_MESSID(16, 74);
-            #else
+#elif VERSION_PAL
             save_mess = MAKE_MESSID(16, 72);
-            #endif
+#else
+            save_mess = MAKE_MESSID(16, 6);
+#endif
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
             break;
@@ -841,11 +896,11 @@ s16 SLMessOut(s16 mess) {
         case 11:
             HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
             slot_mess = MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]);
-            #if VERSION_NTSC
+#if VERSION_ENG
             save_mess = MAKE_MESSID(16, 72);
-            #else
+#else
             save_mess = MAKE_MESSID(16, 76);
-            #endif
+#endif
             break;
 
         case 12:
@@ -854,7 +909,8 @@ s16 SLMessOut(s16 mess) {
     }
     if (save_mess == MAKE_MESSID(16, 4)) {
         HuWinMesMaxSizeGet(1, size, MAKE_MESSID(16, 78));
-    } else {
+    }
+    else {
         HuWinMesMaxSizeGet(1, size, save_mess);
     }
     window = HuWinExCreateStyled(-10000.0f, 200.0f, size[0], size[1], -1, 2);

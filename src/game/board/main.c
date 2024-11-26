@@ -1988,11 +1988,15 @@ void BoardLast5GfxInit(void)
 			} else {
 				prio = 1400;
 			}
+#if !VERSION_JPN
 			spr_file = last5GfxSprTbl[i];
 			if(i == 2 && work->is_last && GWLanguageGet() != 0) {
 				spr_file = DATA_MAKE_NUM(DATADIR_BOARD, 98);
 			}
 			BoardSpriteCreate(spr_file, prio, NULL, &work->sprites[i]);
+#else
+			BoardSpriteCreate(last5GfxSprTbl[i], prio, NULL, &work->sprites[i]);
+#endif
 			HuSprGrpMemberSet(work->group, i, work->sprites[i]);
 			HuSprAttrSet(work->group, i, HUSPR_ATTR_LINEAR);
 			HuSprPosSet(work->group, i, last5GfxPosTbl[lastF][i][0], last5GfxPosTbl[lastF][i][1]);
