@@ -75,7 +75,7 @@ OVL_DEFINE(OVL_MENT, "dll/mentdll.rel")
 OVL_DEFINE(OVL_MGMODE, "dll/mgmodedll.rel")
 OVL_DEFINE(OVL_MODELTEST, "dll/modeltestdll.rel")
 OVL_DEFINE(OVL_MODESEL, "dll/modeseldll.rel")
-OVL_DEFINE(OVL_MOVIE, "dll/movieDll.rel")
+OVL_DEFINE(OVL_MOVIE, "dll/moviedll.rel")
 #else
 OVL_DEFINE(OVL_MESS, "dll/messdll.rel")
 OVL_DEFINE(OVL_MGMODE, "dll/mgmodedll.rel")

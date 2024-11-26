@@ -201,3 +201,6 @@ game/minigame_seq.c:
 	.sdata      start:0x801D3158 end:0x801D3258
 	.sbss       start:0x801D3A38 end:0x801D3A58
 	.sdata2     start:0x801D49A8 end:0x801D4B60
+
+game/ovllist.c:
+	.data       start:0x8012F378 end:0x8012FCE8
