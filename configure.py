@@ -421,7 +421,7 @@ config.libs = [
             Object(Matching, "game/thpmain.c"),
             Object(Matching, "game/objsub.c"),
             Object(Matching, "game/flag.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "game/saveload.c"),
+            Object(Matching, "game/saveload.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "game/sreset.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "game/board/main.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "game/board/player.c"),

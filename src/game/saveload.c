@@ -35,9 +35,9 @@ s32 saveExecF;
 u8 curBoxNo;
 s16 curSlotNo;
 
-#if VERSION_JAP
+#if VERSION_JPN
 static u8 commentTbl[2][32] = { "マリオパーティ４", "？？月？？日　データ？です。" };
-static char *lbl_80131D70 = { "０１２３４５６７８９" };
+static u8 sjisNumTbl[20] = "０１２３４５６７８９";
 #else
 static u8 commentTbl[2][32] = { "Mario Party 4", "File 0  00/00/0000" };
 #endif
@@ -47,6 +47,11 @@ char *SaveFileNameTbl[] = { "MARIPA4BOX0", "MARIPA4BOX1", "MARIPA4BOX2" };
 s32 SaveEnableF = 1;
 
 static char *SlotNameTbl[] = { "A", "B" };
+
+#if VERSION_JPN
+static char *slotIconMesTbl[] = { "\x0E\x16", "\x0E\x17" };
+static u8 sjisSpace[] = "　";
+#endif
 
 static s32 saveMessWin = -1;
 
@@ -338,51 +343,32 @@ void SLSaveDataInfoSet(OSTime *time)
     year -= digit * 10;
     saveBuf.data.comment[49] = year + '0';
 #else
-    saveBuf.data.comment[37] = curBoxNo + '1';
+    saveBuf.data.comment[52] = sjisNumTbl[(curBoxNo + 1) * 2];
+    saveBuf.data.comment[53] = sjisNumTbl[(curBoxNo + 1) * 2 + 1];
     digit = (sp8.mon + 1) / 10;
-    saveBuf.data.comment[40] = digit + '0';
+    if (digit == 0) {
+        saveBuf.data.comment[32] = sjisSpace[0];
+        saveBuf.data.comment[33] = sjisSpace[1];
+    }
+    else {
+        saveBuf.data.comment[32] = sjisNumTbl[digit * 2];
+        saveBuf.data.comment[33] = sjisNumTbl[digit * 2 + 1];
+    }
     digit = (sp8.mon + 1) % 10;
-    saveBuf.data.comment[41] = digit + '0';
+    saveBuf.data.comment[34] = sjisNumTbl[digit * 2];
+    saveBuf.data.comment[35] = sjisNumTbl[digit * 2 + 1];
     digit = sp8.mday / 10;
-    saveBuf.data.comment[43] = digit + '0';
+    if (digit == 0) {
+        saveBuf.data.comment[38] = sjisSpace[0];
+        saveBuf.data.comment[39] = sjisSpace[1];
+    }
+    else {
+        saveBuf.data.comment[38] = sjisNumTbl[digit * 2];
+        saveBuf.data.comment[39] = sjisNumTbl[digit * 2 + 1];
+    }
     digit = sp8.mday % 10;
-    saveBuf.data.comment[44] = digit + '0';
-    year = sp8.year;
-    digit = year / 1000;
-    saveBuf.data.comment[46] = digit + '0';
-    year -= digit * 1000;
-    digit = year / 100;
-    saveBuf.data.comment[47] = digit + '0';
-    year -= digit * 100;
-    digit = year / 10;
-    saveBuf.data.comment[48] = digit + '0';
-    year -= digit * 10;
-    saveBuf.data.comment[49] = year + '0';
-
-    saveBuf.data.comment[52] = lbl_80131D70[curBoxNo + 1];
-    saveBuf.data.comment[53] = lbl_80131D70[curBoxNo + 1];
-    digit = (sp8.mon + 1) / 10;
-    // if (digit == 0) {
-    //     saveBuf.data.comment[32] = lbl_801D32F8.unk_00;
-    //     saveBuf.data.comment[33] = lbl_801D32F8.unk_01;
-    // } else {
-    //     saveBuf.data.comment[32] = *(&@lbl_80131D70 + (var_r31 * 2));
-    //     saveBuf.data.comment[33] = ((var_r31 * 2) + &@lbl_80131D70)->unk_01;
-    // }
-    digit = (sp8.mon + 1) % 10;
-    // saveBuf.data.comment[34] = *(&@lbl_80131D70 + (var_r31 * 2));
-    // saveBuf.data.comment[35] = ((var_r31 * 2) + &@lbl_80131D70)->unk_01;
-    digit = sp8.mday / 10;
-    // if (digit == 0) {
-    //     saveBuf.data.comment[38] = lbl_801D32F8.unk_00;
-    //     saveBuf.data.comment[39] = lbl_801D32F8.unk_01;
-    // } else {
-    //     saveBuf.data.comment[38] = *(&@lbl_80131D70 + (var_r31 * 2));
-    //     saveBuf.data.comment[39] = ((var_r31 * 2) + &@lbl_80131D70)->unk_01;
-    // }
-    digit = sp8.mday % 10;
-    // saveBuf.data.comment[40] = *(&@lbl_80131D70 + (var_r31 * 2));
-    // saveBuf.data.comment[41] = ((var_r31 * 2) + &@lbl_80131D70)->unk_01;
+    saveBuf.data.comment[40] = sjisNumTbl[digit * 2];
+    saveBuf.data.comment[41] = sjisNumTbl[digit * 2 + 1];
 #endif
 }
 
@@ -512,18 +498,24 @@ s32 SLSave(void)
 #define SAVEWIN_POS 120
 #endif
 
+#if VERSION_JPN
+#define SAVEWIN_MESS slotIconMesTbl
+#else
+#define SAVEWIN_MESS SlotNameTbl
+#endif
+
 static s16 SLCreateSaveWin(void)
 {
     float size[2];
     s16 window;
 
     HuWinInit(1);
-    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesMaxSizeGet(1, size, MAKE_MESSID(16, 68));
     window = HuWinExCreateStyled(-10000.0f, SAVEWIN_POS, size[0], size[1], -1, 2);
     saveMessWin = window;
     HuWinExAnimIn(window);
-    HuWinInsertMesSet(window, MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSet(window, MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesSet(window, MAKE_MESSID(16, 68));
     HuWinMesWait(window);
     return window;
@@ -758,11 +750,11 @@ s32 SLFormat(s16 slotNo)
     OSTime time;
 
     HuWinInit(1);
-    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSizeGet(MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesMaxSizeGet(1, winSize, MAKE_MESSID(16, 56));
     window1 = HuWinExCreateStyled(-10000.0f, SAVEWIN_POS, winSize[0], winSize[1], -1, 2);
     HuWinExAnimIn(window1);
-    HuWinInsertMesSet(window1, MAKE_MESSID_PTR(SlotNameTbl[curSlotNo]), 0);
+    HuWinInsertMesSet(window1, MAKE_MESSID_PTR(SAVEWIN_MESS[curSlotNo]), 0);
     HuWinMesSet(window1, MAKE_MESSID(16, 56));
     HuWinMesMaxSizeGet(1, winSize, MAKE_MESSID(16, 11));
     window2 = HuWinExCreateStyled(-10000.0f, 200.0f, winSize[0], winSize[1], -1, 2);

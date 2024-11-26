@@ -4,7 +4,6 @@
 #include "string.h"
 #include "version.h"
 
-
 s16 GwLanguage = 1;
 s16 GwLanguageSave = -1;
 
@@ -55,7 +54,7 @@ void GWInit(void)
     _InitFlag();
     GWErase();
     InitPlayerConfig();
-#if VERSION_JAP
+#if VERSION_JPN
     GWGameStat.language = 0;
 #elif VERSION_ENG
     GWGameStat.language = 1;
@@ -132,7 +131,7 @@ void GWGameStatReset(void)
     GameStat *game_stat = &GWGameStatDefault;
     memset(game_stat, 0, sizeof(GameStat));
     game_stat->unk_00 = 0;
-#if VERSION_JAP
+#if VERSION_JPN
     game_stat->language = 0;
 #elif VERSION_ENG
     game_stat->language = 1;
@@ -163,7 +162,7 @@ s32 GWMessDelayGet(void)
         GWSystem.mess_speed = 1;
         GWSystem.mess_delay = 32;
     }
-#else 
+#else
     if (GWSystem.mess_delay > 64) {
         GWSystem.mess_speed = 1;
         GWSystem.mess_delay = 48;

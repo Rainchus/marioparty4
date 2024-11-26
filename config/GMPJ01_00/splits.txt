@@ -304,6 +304,6 @@ game/saveload.c:
 	.text       start:0x80057D18 end:0x8005A324
 	.data       start:0x80131D30 end:0x80131DE8
 	.bss        start:0x801980C0 end:0x8019C0E0
-	.sdata      start:0x801D32D8 end:0x801D32F0
+	.sdata      start:0x801D32D8 end:0x801D3300
 	.sbss       start:0x801D3B68 end:0x801D3B78
 	.sdata2     start:0x801D4DF8 end:0x801D4E08
