@@ -14,8 +14,8 @@ fill_gaps: true
 modules:
   - object: files/dll/_minigameDll.rel
 
-    symbols: config/GMPJ01_00/rels/_minigameDll/symbols.txt
-    splits: config/GMPJ01_00/rels/_minigameDll/splits.txt
+    symbols: config/GMPE01_00/rels/_minigameDll/symbols.txt
+    splits: config/GMPE01_00/rels/_minigameDll/splits.txt
     links: []
   - object: files/dll/bootDll.rel
 
@@ -49,58 +49,58 @@ modules:
     links: []
   - object: files/dll/m402Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m402Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m402Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m402Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m402Dll/splits.txt
     links: []
   - object: files/dll/m403Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m403Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m403Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m403Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m403Dll/splits.txt
     links: []
   - object: files/dll/m404Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m404Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m404Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m404Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m404Dll/splits.txt
     links: []
   - object: files/dll/m405Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m405Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m405Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m405Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m405Dll/splits.txt
     links: []
   - object: files/dll/m406Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m406Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m406Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m406Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m406Dll/splits.txt
     links: []
   - object: files/dll/m407dll.rel
 
-    symbols: config/GMPJ01_00/rels/m407dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m407dll/splits.txt
+    symbols: config/GMPE01_00/rels/m407dll/symbols.txt
+    splits: config/GMPE01_00/rels/m407dll/splits.txt
     links: []
   - object: files/dll/m408Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m408Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m408Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m408Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m408Dll/splits.txt
     links: []
   - object: files/dll/m409Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m409Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m409Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m409Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m409Dll/splits.txt
     links: []
   - object: files/dll/m410Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m410Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m410Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m410Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m410Dll/splits.txt
     links: []
   - object: files/dll/m411Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m411Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m411Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m411Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m411Dll/splits.txt
     links: []
   - object: files/dll/m412Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m412Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m412Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m412Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m412Dll/splits.txt
     links: []
   - object: files/dll/m413Dll.rel
 
@@ -109,23 +109,23 @@ modules:
     links: []
   - object: files/dll/m414Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m414Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m414Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m414Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m414Dll/splits.txt
     links: []
   - object: files/dll/m415Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m415Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m415Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m415Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m415Dll/splits.txt
     links: []
   - object: files/dll/m416Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m416Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m416Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m416Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m416Dll/splits.txt
     links: []
   - object: files/dll/m417Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m417Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m417Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m417Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m417Dll/splits.txt
     links: []
   - object: files/dll/m418Dll.rel
 
@@ -139,13 +139,13 @@ modules:
     links: []
   - object: files/dll/m420dll.rel
 
-    symbols: config/GMPJ01_00/rels/m420dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m420dll/splits.txt
+    symbols: config/GMPE01_00/rels/m420dll/symbols.txt
+    splits: config/GMPE01_00/rels/m420dll/splits.txt
     links: []
   - object: files/dll/m421Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m421Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m421Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m421Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m421Dll/splits.txt
     links: []
   - object: files/dll/m422Dll.rel
 
@@ -194,13 +194,13 @@ modules:
     links: []
   - object: files/dll/m431Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m431Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m431Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m431Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m431Dll/splits.txt
     links: []
   - object: files/dll/m432Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m432Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m432Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m432Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m432Dll/splits.txt
     links: []
   - object: files/dll/m433Dll.rel
 
@@ -209,8 +209,8 @@ modules:
     links: []
   - object: files/dll/m434Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m434Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m434Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m434Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m434Dll/splits.txt
     links: []
   - object: files/dll/m435Dll.rel
 
@@ -219,13 +219,13 @@ modules:
     links: []
   - object: files/dll/m436Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m436Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m436Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m436Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m436Dll/splits.txt
     links: []
   - object: files/dll/m437Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m437Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m437Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m437Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m437Dll/splits.txt
     links: []
   - object: files/dll/m438Dll.rel
 
@@ -234,28 +234,28 @@ modules:
     links: []
   - object: files/dll/m439Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m439Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m439Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m439Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m439Dll/splits.txt
     links: []
   - object: files/dll/m440Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m440Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m440Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m440Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m440Dll/splits.txt
     links: []
   - object: files/dll/m441Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m441Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m441Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m441Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m441Dll/splits.txt
     links: []
   - object: files/dll/m442Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m442Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m442Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m442Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m442Dll/splits.txt
     links: []
   - object: files/dll/m443Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m443Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m443Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m443Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m443Dll/splits.txt
     links: []
   - object: files/dll/m444dll.rel
 
@@ -264,23 +264,23 @@ modules:
     links: []
   - object: files/dll/m445Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m445Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m445Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m445Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m445Dll/splits.txt
     links: []
   - object: files/dll/m446dll.rel
 
-    symbols: config/GMPJ01_00/rels/m446dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m446dll/splits.txt
+    symbols: config/GMPE01_00/rels/m446dll/symbols.txt
+    splits: config/GMPE01_00/rels/m446dll/splits.txt
     links: []
   - object: files/dll/m447dll.rel
 
-    symbols: config/GMPJ01_00/rels/m447dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m447dll/splits.txt
+    symbols: config/GMPE01_00/rels/m447dll/symbols.txt
+    splits: config/GMPE01_00/rels/m447dll/splits.txt
     links: []
   - object: files/dll/m448Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m448Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m448Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m448Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m448Dll/splits.txt
     links: []
   - object: files/dll/m449Dll.rel
 
@@ -289,23 +289,23 @@ modules:
     links: []
   - object: files/dll/m450Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m450Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m450Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m450Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m450Dll/splits.txt
     links: []
   - object: files/dll/m451Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m451Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m451Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m451Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m451Dll/splits.txt
     links: []
   - object: files/dll/m453Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m453Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m453Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m453Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m453Dll/splits.txt
     links: []
   - object: files/dll/m455Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m455Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m455Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m455Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m455Dll/splits.txt
     links: []
   - object: files/dll/m456Dll.rel
 
@@ -329,13 +329,13 @@ modules:
     links: []
   - object: files/dll/m460Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m460Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m460Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m460Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m460Dll/splits.txt
     links: []
   - object: files/dll/m461Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m461Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m461Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m461Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m461Dll/splits.txt
     links: []
   - object: files/dll/m462Dll.rel
 
@@ -359,13 +359,13 @@ modules:
     links: []
   - object: files/dll/mgmodedll.rel
 
-    symbols: config/GMPJ01_00/rels/mgmodedll/symbols.txt
-    splits: config/GMPJ01_00/rels/mgmodedll/splits.txt
+    symbols: config/GMPE01_00/rels/mgmodedll/symbols.txt
+    splits: config/GMPE01_00/rels/mgmodedll/splits.txt
     links: []
   - object: files/dll/modeltestDll.rel
 
-    symbols: config/GMPJ01_00/rels/modeltestDll/symbols.txt
-    splits: config/GMPJ01_00/rels/modeltestDll/splits.txt
+    symbols: config/GMPE01_00/rels/modeltestDll/symbols.txt
+    splits: config/GMPE01_00/rels/modeltestDll/splits.txt
     links: []
   - object: files/dll/modeseldll.rel
 
@@ -404,8 +404,8 @@ modules:
     links: []
   - object: files/dll/nisDll.rel
 
-    symbols: config/GMPJ01_00/rels/nisDll/symbols.txt
-    splits: config/GMPJ01_00/rels/nisDll/splits.txt
+    symbols: config/GMPE01_00/rels/nisDll/symbols.txt
+    splits: config/GMPE01_00/rels/nisDll/splits.txt
     links: []
   - object: files/dll/option.rel
 
@@ -414,13 +414,13 @@ modules:
     links: []
   - object: files/dll/present.rel
 
-    symbols: config/GMPJ01_00/rels/present/symbols.txt
-    splits: config/GMPJ01_00/rels/present/splits.txt
+    symbols: config/GMPE01_00/rels/present/symbols.txt
+    splits: config/GMPE01_00/rels/present/splits.txt
     links: []
   - object: files/dll/resultDll.rel
 
-    symbols: config/GMPJ01_00/rels/resultDll/symbols.txt
-    splits: config/GMPJ01_00/rels/resultDll/splits.txt
+    symbols: config/GMPE01_00/rels/resultDll/symbols.txt
+    splits: config/GMPE01_00/rels/resultDll/splits.txt
     links: []
   - object: files/dll/safDll.rel
 
@@ -504,8 +504,8 @@ modules:
     links: [_minigameDll]
   - object: files/dll/m401Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m401Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m401Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m401Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m401Dll/splits.txt
     links: [_minigameDll]
 
 extract:
