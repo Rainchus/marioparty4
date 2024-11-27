@@ -210,9 +210,9 @@ void fn_1_7DD8(s32 arg0, s32 *arg1);
 float fn_1_7EDC(float arg8, float arg9, float argA);
 void fn_1_8164(float *arg0, Vec *arg1);
 void fn_1_8C34(float *arg0, float *arg1, float *arg2, s32 arg3);
-float fn_1_8EEC(float *arg0, float *arg1, float *arg2, float arg8);
+float fn_1_8EEC(float arg8, float *arg0, float *arg1, float *arg2, s32 arg3);
 void fn_1_9040(float *arg0, Vec *arg1, float arg2[3][3], s32 arg3);
-void fn_1_9420(float *arg0, float *arg1, float arg2[3][3], float arg3[3][3], s32 arg4, float arg8);
+void fn_1_9420(float arg8, float *arg0, float *arg1, float arg2[3][3], float arg3[3][3], s32 arg4);
 float fn_1_9634(Vec *arg0);
 void fn_1_974(omObjData *object);
 float fn_1_9960(Vec *arg0, Vec *arg1, Vec *arg2);
@@ -558,244 +558,78 @@ Vec lbl_1_data_68[11][8] = {
      { 15.000001f, 0.0f, 505.7f },
      { 148.59999f, 0.0f, 393.0f },
         {    0.0f, 1.0f,   0.0f },
-        {    0.0f, 0.0f,   0.0f },
     },
     {
         { -198.7f, 0.0f, -122.899994f },
-    { -11.599999f, 0.0f, -177.1f }
+    { -11.599999f, 0.0f, -177.1f },
+        {   63.4f, 0.0f, -349.7f },
+    {  277.09999f, 0.0f, -296.4f },
+        {  397.5f, 0.0f, -470.2f },
+        {    0.0f, 1.0f,    0.0f },
+    },
+    {
+        { -421.0f, 0.0f, -471.3f },
+        { -270.1f, 0.0f, -460.0f },
+        { -153.1f, 0.0f, -356.5f },
+        {   12.4f, 0.0f, -473.99997f },
+        {    0.0f, 1.0f,    0.0f },
+    },
+    {
+    { -545.10004f, 0.0f, -318.9f },
+        { -469.0f, 0.0f, -154.1f },
+        { -313.4, 0.0f,  -170.09999f },
+        { -250.0f, 0.0f, -32.8f },
+        {    0.0f, 1.0f,   0.0f },
+    },
+    {
+        { -155.6f, 0.0f,  19.5f },
+        {  -34.3f, 0.0f,  96.6f },
+        {  -63.9f, 0.0f, 240.00002f },
+        {   37.5f, 0.0f, 402.8f },
+        {    0.0f, 1.0f,   0.0f }
+    },
+    {
+        { 207.5f, 0.0f, -163.2f },
+        { 270.1f, 0.0f, -104.799995f },
+    { 402.19998f, 0.0f, -102.4f },
+    { 511.49997f, 0.0f,  -25.099998f },
+        { 627.3f, 0.0f, -142.0f },
+        {   0.0f, 1.0f,    0.0f }
+    },
+    {
+        { -601.0f, 0.0f, 97.799995f },
+    { -516.80005f, 0.0f, 60.000004f },
+        { -417.7f, 0.0f, 92.9f },
+    { -309.40002f, 0.0f, 76.1f },
+        {    0.0f, 1.0f,  0.0f },
+    },
+    {
+        {  82.8f, 0.0f, 164.2f },
+    { 179.40001f, 0.0f, 179.8f },
+    { 241.00002f, 0.0f,  87.1f },
+        { 323.0f, 0.0f,  38.800003f },
+        {   0.0f, 1.0f,   0.0f }
+    },
+    {
+        { 243.4f, 0.0f, 573.5f },
+        { 227.7f, 0.0f, 461.2f },
+    { 319.30002f, 0.0f, 400.6f },
+    { 342.30002f, 0.0f, 310.0f },
+        {   0.0f, 1.0f,   0.0f }
+    },
+    {
+    { 357.69998f, 0.0f, 146.8f },
+    { 418.80002f, 0.0f, 225.0f },
+        { 503.2f, 0.0f, 234.69998f },
+        { 548.1f, 0.0f, 321.19998f },
+        {   0.0f, 1.0f, 0.0f }
+    },
+    {
+        { -100.0f, 0.0f,    0.0f },
+        {    0.0f, 0.0f, -100.0f },
+        {  100.0f, 0.0f,    0.0f },
+        {    0.0f, 1.0f,    0.0f }
     }
-// 63.4, 0, -349.7
-// 277.09998
-// 0
-// -296.4
-// 397.5
-// 0
-// -470.2
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// -421
-// 0
-// -471.3
-// -270.1
-// 0
-// -460
-// -153.1
-// 0
-// -356.5
-// 12.4
-// 0
-// -473.99997
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// -545.10004
-// 0
-// -318.9
-// -469
-// 0
-// -154.1
-// -313.4
-// 0
-// -170.09999
-// -250
-// 0
-// -32.8
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// -155.6
-// 0
-// 19.5
-// -34.3
-// 0
-// 96.6
-// -63.9
-// 0
-// 240.00002
-// 37.5
-// 0
-// 402.8
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 207.5
-// 0
-// -163.2
-// 270.1
-// 0
-// -104.799995
-// 402.19998
-// 0
-// -102.4
-// 511.49997
-// 0
-// -25.099998
-// 627.3
-// 0
-// -142
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// -601
-// 0
-// 97.799995
-// -516.80005
-// 0
-// 60.000004
-// -417.7
-// 0
-// 92.9
-// -309.40002
-// 0
-// 76.1
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 82.8
-// 0
-// 164.2
-// 179.40001
-// 0
-// 179.8
-// 241.00002
-// 0
-// 87.1
-// 323
-// 0
-// 38.800003
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 243.4
-// 0
-// 573.5
-// 227.7
-// 0
-// 461.2
-// 319.30002
-// 0
-// 400.6
-// 342.30002
-// 0
-// 310
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 357.69998
-// 0
-// 146.8
-// 418.80002
-// 0
-// 225
-// 503.2
-// 0
-// 234.69998
-// 548.1
-// 0
-// 321.19998
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// -100
-// 0
-// 0
-// 0
-// 0
-// -100
-// 100
-// 0
-// 0
-// 0
-// 1
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
-// 0
 };
 void fn_1_1204(omObjData *object)
 {
@@ -849,9 +683,8 @@ void fn_1_13A0(omObjData *object)
     switch (lbl_1_bss_DBA) {
         case 0:
         case 1:
-        case 2:
-        case 3:
         case 4:
+        case 5:
             break;
         case 6:
             lbl_1_bss_294 = 0x1E;
@@ -1092,11 +925,10 @@ void fn_1_2070(omObjData *object)
             var_r31->unk_10.y = var_r31->unk_28.y + (var_f31 * (var_r31->unk_40.y - var_r31->unk_28.y));
             var_r31->unk_10.z = var_r31->unk_28.z + (var_f31 * (var_r31->unk_40.z - var_r31->unk_28.z));
             var_r31->unk_130 = var_r31->unk_134 + (var_f31 * (var_r31->unk_138 - var_r31->unk_134));
-        }
-        else {
-            fn_1_9420((float *)&var_r31->unk_04, var_r31->unk_F4, (float(*)[3]) & var_r31->unk_64, var_r31->unk_88, 3, 2.0f * var_f31);
-            fn_1_9420((float *)&var_r31->unk_10, var_r31->unk_100, (float(*)[3]) & var_r31->unk_AC, var_r31->unk_D0, 3, 2.0f * var_f31);
-            var_r31->unk_130 = fn_1_8EEC(var_r31->unk_124, var_r31->unk_10C, var_r31->unk_118, 2.0f * var_f31);
+        } else {
+            fn_1_9420(2.0f * var_f31, (float *)&var_r31->unk_04, var_r31->unk_F4, (float(*)[3]) & var_r31->unk_64, var_r31->unk_88, 3);
+            fn_1_9420(2.0f * var_f31, (float *)&var_r31->unk_10, var_r31->unk_100, (float(*)[3]) & var_r31->unk_AC, var_r31->unk_D0, 3);
+            var_r31->unk_130 = fn_1_8EEC(2.0f * var_f31, var_r31->unk_124, var_r31->unk_10C, var_r31->unk_118, 3);
         }
     }
     CRot.x = var_r31->unk_10.x;
@@ -1615,12 +1447,16 @@ void fn_1_35C0(omObjData *object)
             var_r31->unk_22 = var_r28;
             var_r31->unk_20 = var_r28;
             CharModelMotionShiftSet(var_r31->unk_01, object->motion[8], 0.0f, 8.0f, var_r27);
-        }
-        else if (var_r28 < 3) {
-            if (var_r28 < 0 || var_r31->unk_20 == 0 || CharModelMotionShiftIDGet(var_r31->unk_01) < 0) {
-                var_r31->unk_22 = var_r28;
-                var_r31->unk_20 = var_r28;
-                CharModelMotionShiftSet(var_r31->unk_01, object->motion[var_r31->unk_20], 0.0f, 8.0f, var_r27);
+        } else {
+            switch (var_r28) {
+                case 0:
+                case 1:
+                case 2:
+                    if (var_r31->unk_20 != 0 && CharModelMotionShiftIDGet(var_r31->unk_01) >= 0) break;
+                default:
+                    var_r31->unk_22 = var_r28;
+                    var_r31->unk_20 = var_r28;
+                    CharModelMotionShiftSet(var_r31->unk_01, object->motion[var_r31->unk_20], 0.0f, 8.0f, var_r27);
             }
         }
         var_r31->unk_30 = CharModelMotionMaxTimeGet(var_r31->unk_01);
@@ -1727,6 +1563,7 @@ void fn_1_4724(omObjData *object)
     omSetSca(object, 1.25f, 1.25f, 1.25f);
     object->func = fn_1_4984;
 }
+
 
 // void fn_1_4984(omObjData *object)
 // {
@@ -3046,7 +2883,7 @@ void fn_1_8C34(float *arg0, float *arg1, float *arg2, s32 arg3)
     }
 }
 
-float fn_1_8EEC(float *arg0, float *arg1, float *arg2, float arg8)
+float fn_1_8EEC(float arg8, float *arg0, float *arg1, float *arg2, s32 arg3)
 {
     float var_f31;
     float var_f30;
@@ -3123,7 +2960,8 @@ void fn_1_9040(float *arg0, Vec *arg1, float arg2[3][3], s32 arg3)
     }
 }
 
-void fn_1_9420(float *arg0, float *arg1, float arg2[3][3], float arg3[3][3], s32 arg4, float arg8)
+
+void fn_1_9420(float arg8, float *arg0, float *arg1, float arg2[3][3], float arg3[3][3], s32 arg4)
 {
     float sp48[16];
     float sp8[16];
@@ -3138,7 +2976,7 @@ void fn_1_9420(float *arg0, float *arg1, float arg2[3][3], float arg3[3][3], s32
             sp48[var_r30] = arg2[var_r30][var_r29];
             sp8[var_r30] = arg3[var_r30][var_r29];
         }
-        arg0[var_r29] = fn_1_8EEC(arg1, sp48, sp8, arg8);
+        arg0[var_r29] = fn_1_8EEC(arg8, arg1, sp48, sp8, arg4);
     }
 }
 
@@ -3502,6 +3340,8 @@ void fn_1_A60C(omObjData *object)
     Hu3DModelLayerSet(object->model[0], 7);
     object->func = fn_1_A688;
 }
+
+u32 lbl_1_data_510 = 0x41C64E6D;
 
 void fn_1_A688(omObjData *object) { }
 

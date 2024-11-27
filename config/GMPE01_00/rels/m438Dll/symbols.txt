@@ -387,6 +387,7 @@ lbl_1_data_68 = .data:0x00000068; // type:object size:0x420 data:float
 lbl_1_data_488 = .data:0x00000488; // type:object size:0x2C
 lbl_1_data_4B4 = .data:0x000004B4; // type:object size:0x30
 jumptable_1_data_4E4 = .data:0x000004E4; // type:object size:0x2C scope:local
+lbl_1_data_510 = .data:0x00000510; // type:object size:0x4
 lbl_1_data_514 = .data:0x00000514; // type:object size:0xC
 lbl_1_data_520 = .data:0x00000520; // type:object size:0x64
 lbl_1_data_584 = .data:0x00000584; // type:object size:0x64
