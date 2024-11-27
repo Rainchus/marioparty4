@@ -178,6 +178,9 @@ typedef struct M438StructBssDE4 {
     M438UnkStruct2 *unk_40;
 } M438StructBssDE4; /* size =  */
 
+void fn_1_4DC(omObjData *object);
+void fn_1_4FC(omObjData *object);
+void fn_1_974(omObjData *object);
 void fn_1_1174(omObjData *object);
 void fn_1_1204(omObjData *object);
 void fn_1_13A0(omObjData *object);
@@ -193,9 +196,7 @@ void fn_1_35C0(omObjData *object);
 void fn_1_4374(omObjData *object);
 void fn_1_4724(omObjData *object);
 void fn_1_4984(omObjData *object);
-void fn_1_4DC(omObjData *object);
 void fn_1_4F50(omObjData *object);
-void fn_1_4FC(omObjData *object);
 void fn_1_5D4C(void *arg0);
 void fn_1_62BC(void *arg0);
 void fn_1_63B0(void *arg0);
@@ -208,13 +209,12 @@ void fn_1_7D30(void);
 s32 fn_1_7DB4(void);
 void fn_1_7DD8(s32 arg0, s32 *arg1);
 float fn_1_7EDC(float arg8, float arg9, float argA);
-void fn_1_8164(float *arg0, Vec *arg1);
+void fn_1_8164(Mtx arg0, Vec *arg1);
 void fn_1_8C34(float *arg0, float *arg1, float *arg2, s32 arg3);
 float fn_1_8EEC(float arg8, float *arg0, float *arg1, float *arg2, s32 arg3);
 void fn_1_9040(float *arg0, Vec *arg1, float arg2[3][3], s32 arg3);
 void fn_1_9420(float arg8, float *arg0, float *arg1, float arg2[3][3], float arg3[3][3], s32 arg4);
 float fn_1_9634(Vec *arg0);
-void fn_1_974(omObjData *object);
 float fn_1_9960(Vec *arg0, Vec *arg1, Vec *arg2);
 float fn_1_A14C(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3);
 void fn_1_A60C(omObjData *object);
@@ -1565,115 +1565,100 @@ void fn_1_4724(omObjData *object)
 }
 
 
-// void fn_1_4984(omObjData *object)
-// {
-//     float sp10;
-//     float spC;
-//     float sp8;
-//     float temp_f0;
-//     float temp_f0_2;
-//     float var_f31;
-//     omObjData *var_r29;
-//     s16 var_r27;
-//     void *var_r28;
-//     void *var_r30;
-//     void *var_r31;
+void fn_1_4984(omObjData *object)
+{
+    Vec sp8;
+    float var_f31;
+    s32 var_r27;
+    M438MainWork3 *var_r28;
+    M438MainWork3 *var_r30;
+    M438MainWork3 *var_r31;
 
-//     var_r29 = object;
-//     var_r31 = var_r29->data;
-//     switch (lbl_1_bss_DBA) {
-//         case 1:
-//             if (lbl_1_bss_4 == 0) {
-//                 lbl_1_bss_4 = fn_1_10258(0x90, 1);
-//                 fn_1_11018(lbl_1_bss_4, 0, 0x45000A);
-//                 *(lbl_1_bss_DE4.unk_40 + ((lbl_1_bss_4 * 0xBC) + 0x30)) = fn_1_6A3C;
-//                 fn_1_11890(lbl_1_bss_4, var_r31->unk_10, -80.0f, var_r31->unk_18);
-//                 fn_1_12100(lbl_1_bss_4, 4);
-//                 fn_1_124CC(lbl_1_bss_4, 1);
-//                 *(lbl_1_bss_DE4.unk_40 + ((lbl_1_bss_4 * 0xBC) + 0x7C)) = 0;
-//             }
-//             break;
-//         case 2:
-//             var_r31->unk_14 = var_r31->unk_14 + var_r31->unk_2C;
-//             var_r31->unk_2C = var_r31->unk_2C - -2.0416667f;
-//             if (var_r31->unk_14 >= -350.0f) {
-//                 HuAudFXPlay(0x6FA);
-//                 *(lbl_1_bss_DE4.unk_40 + ((lbl_1_bss_4 * 0xBC) + 0x7C)) = 1;
-//             }
-//             if (var_r31->unk_14 > 0.0f) {
-//                 HuAudFXEmiterPlay(0x700, var_r31 + 0x10);
-//                 lbl_1_bss_DB2 = 0x78;
-//                 lbl_1_bss_DBA += 1;
-//                 var_r31->unk_30 = 20.0f;
-//             }
-//             break;
-//         case 3:
-//             var_r31->unk_14 = var_r31->unk_14 + var_r31->unk_2C;
-//             var_r31->unk_18 = var_r31->unk_18 + var_r31->unk_30;
-//             var_r31->unk_2C = var_r31->unk_2C + -2.0416667f;
-//             if (var_r31->unk_14 < 0.0f) {
-//                 var_r31->unk_30 = var_r31->unk_30 - 0.5f;
-//                 if (var_r31->unk_30 < 0.0f) {
-//                     var_r31->unk_30 = 0.0f;
-//                 }
-//                 var_r31->unk_14 = 0.0f;
-//                 if (lbl_1_bss_8 == 0) {
-//                     HuAudFXPlay(0x6FE);
-//                     var_r28 = lbl_1_bss_DD8->data;
-//                     var_r28->unk_18A = 0x3C;
-//                     var_r28->unk_150 = 25.0f;
-//                     var_r28->unk_15C = 0.95f;
-//                     var_r28->unk_174 = 90.0f;
-//                     var_r28->unk_168 = 90.0f;
-//                     for (var_r27 = 0; var_r27 < 4; var_r27++) {
-//                         omVibrate(var_r27, 0x36, 0xC, 0);
-//                     }
-//                     lbl_1_bss_4 = fn_1_10258(0x3C, 1);
-//                     fn_1_11018(lbl_1_bss_4, 0, 0x45000F);
-//                     *(lbl_1_bss_DE4.unk_40 + ((lbl_1_bss_4 * 0xBC) + 0x30)) = fn_1_5D4C;
-//                     fn_1_11890(lbl_1_bss_4, var_r31->unk_10, 50.0f + var_r31->unk_14, var_r31->unk_18);
-//                     fn_1_124CC(lbl_1_bss_4, 1);
-//                     lbl_1_bss_8++;
-//                 }
-//             }
-//             sp8 = var_r31->unk_10;
-//             spC = var_r31->unk_14;
-//             sp10 = var_r31->unk_18;
-//             temp_f0 = spC + 120.00001f;
-//             spC = temp_f0;
-//             temp_f0_2 = sp10 - 300.0f;
-//             sp10 = temp_f0_2;
-//             var_f31 = CZoom;
-//             var_r30 = lbl_1_bss_DD8->data;
-//             var_r30->unk_00 = 0;
-//             var_r30->unk_144 = 1.0f;
-//             var_r30->unk_148 = 1.0f;
-//             var_r30->unk_1C = var_r30->unk_04;
-//             var_r30->unk_20 = var_r30->unk_08;
-//             var_r30->unk_24 = var_r30->unk_0C;
-//             var_r30->unk_34 = sp8;
-//             var_r30->unk_38 = temp_f0;
-//             var_r30->unk_3C = temp_f0_2;
-//             var_r30->unk_28 = var_r30->unk_10;
-//             var_r30->unk_2C = var_r30->unk_14;
-//             var_r30->unk_30 = var_r30->unk_18;
-//             var_r30->unk_40 = CRot.x;
-//             var_r30->unk_44 = CRot.y;
-//             var_r30->unk_48 = CRot.z;
-//             var_r30->unk_134 = var_r30->unk_130;
-//             var_r30->unk_138 = var_f31;
-//             break;
-//         case 5:
-//             Hu3DModelAttrReset(*var_r29->model, HU3D_MOTATTR_LOOP);
-//             Hu3DModelAttrSet(*var_r29->model, HU3D_MOTATTR_REV);
-//             var_r29->func = fn_1_4F50;
-//             var_r29->work[0] = 0xA;
-//             var_r29->work[1] = 0;
-//             break;
-//     }
-//     omSetTra(var_r29, var_r31->unk_10, var_r31->unk_14, var_r31->unk_18);
-//     omSetRot(var_r29, var_r31->unk_1C, var_r31->unk_20, var_r31->unk_24);
-// }
+    var_r31 = object->data;
+    switch (lbl_1_bss_DBA) {
+        case 1:
+            if (lbl_1_bss_4 == 0) {
+                lbl_1_bss_4 = fn_1_10258(0x90, 1);
+                fn_1_11018(lbl_1_bss_4, 0, 0x45000A);
+                lbl_1_bss_DE4.unk_40[lbl_1_bss_4].unk_30 = fn_1_6A3C;
+                fn_1_11890(lbl_1_bss_4, var_r31->unk_10.x, -80.0f, var_r31->unk_10.z);
+                fn_1_12100(lbl_1_bss_4, 4);
+                fn_1_124CC(lbl_1_bss_4, 1);
+                lbl_1_bss_DE4.unk_40[lbl_1_bss_4].unk_7C = 0;
+            }
+            break;
+        case 2:
+            var_r31->unk_10.y += var_r31->unk_28.y;
+            var_r31->unk_28.y -= -2.0416667f;
+            if (var_r31->unk_10.y >= -350.0f) {
+                HuAudFXPlay(0x6FA);
+                lbl_1_bss_DE4.unk_40[lbl_1_bss_4].unk_7C = 1;
+            }
+            if (var_r31->unk_10.y > 0.0f) {
+                HuAudFXEmiterPlay(0x700, &var_r31->unk_10);
+                lbl_1_bss_DB2 = 0x78;
+                lbl_1_bss_DBA += 1;
+                var_r31->unk_28.z = 20.0f;
+            }
+            break;
+        case 3:
+            var_r31->unk_10.y += var_r31->unk_28.y;
+            var_r31->unk_10.z += var_r31->unk_28.z;
+            var_r31->unk_28.y += -2.0416667f;
+            if (var_r31->unk_10.y < 0.0f) {
+                var_r31->unk_28.z -= 0.5f;
+                if (var_r31->unk_28.z < 0.0f) {
+                    var_r31->unk_28.z = 0.0f;
+                }
+                var_r31->unk_10.y = 0.0f;
+                if (lbl_1_bss_8 == 0) {
+                    HuAudFXPlay(0x6FE);
+                    var_r28 = lbl_1_bss_DD8->data;
+                    var_r28->unk_188[1] = 0x3C;
+                    var_r28->unk_14C[1] = 25.0f;
+                    var_r28->unk_158[1] = 0.95f;
+                    var_r28->unk_170[1] = 90.0f;
+                    var_r28->unk_164[1] = 90.0f;
+                    for (var_r27 = 0; var_r27 < 4; var_r27++) {
+                        omVibrate(var_r27, 0x36, 0xC, 0);
+                    }
+                    lbl_1_bss_4 = fn_1_10258(0x3C, 1);
+                    fn_1_11018(lbl_1_bss_4, 0, 0x45000F);
+                   lbl_1_bss_DE4.unk_40[lbl_1_bss_4].unk_30 = fn_1_5D4C;
+                    fn_1_11890(lbl_1_bss_4, var_r31->unk_10.x, 50.0f + var_r31->unk_10.y, var_r31->unk_10.z);
+                    fn_1_124CC(lbl_1_bss_4, 1);
+                    lbl_1_bss_8++;
+                }
+            }
+            sp8 = var_r31->unk_10;
+            sp8.y += 120.00001f;
+            sp8.z -= 300.0f;
+            var_f31 = CZoom;
+            var_r30 = lbl_1_bss_DD8->data;
+            var_r30->unk_00 = 0;
+            var_r30->unk_148 = var_r30->unk_144 = 1.0f;
+            var_r30->unk_1C = var_r30->unk_04;
+            var_r30->unk_34.x = sp8.x;
+            var_r30->unk_34.y = sp8.y;
+            var_r30->unk_34.z = sp8.z;
+            var_r30->unk_28 = var_r30->unk_10;
+            var_r30->unk_40.x = CRot.x;
+            var_r30->unk_40.y = CRot.y;
+            var_r30->unk_40.z = CRot.z;
+            var_r30->unk_134 = var_r30->unk_130;
+            var_r30->unk_138 = var_f31;
+            break;
+        case 5:
+            Hu3DModelAttrReset(object->model[0], HU3D_MOTATTR_LOOP);
+            Hu3DModelAttrSet(object->model[0], HU3D_MOTATTR_REV);
+            object->func = fn_1_4F50;
+            object->work[0] = 10;
+            object->work[1] = 0;
+            break;
+    }
+    omSetTra(object, var_r31->unk_10.x, var_r31->unk_10.y, var_r31->unk_10.z);
+    omSetRot(object, var_r31->unk_1C.x, var_r31->unk_1C.y, var_r31->unk_1C.z);
+}
 
 // void fn_1_4F50(omObjData *object)
 // {
