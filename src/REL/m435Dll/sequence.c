@@ -322,7 +322,7 @@ void fn_1_195F4(omObjData* arg0, s32 arg1, Vec* arg2, Vec* arg3, s32 arg4, s32 a
     fn_1_1906C(arg0, arg1, arg2, arg3, arg4, arg5, arg6, 1, 1);
 }
 
-void fn_1_19658(omObjData* arg0, s32 arg1, s32 arg2, float arg3) {
+void fn_1_19658(omObjData* arg0, s32 arg1, float arg2, s32 arg3) {
     float var_f31;
     float var_f30;
 
@@ -332,7 +332,7 @@ void fn_1_19658(omObjData* arg0, s32 arg1, s32 arg2, float arg3) {
     } else if (var_f31 >= 360.0f) {
         var_f31 -= 360.0f;
     }
-    var_f30 = arg3;
+    var_f30 = arg2;
     if (var_f30 < 0.0f) {
         var_f30 += 360.0f;
     } else if (var_f30 >= 360.0f) {
@@ -353,7 +353,7 @@ void fn_1_19658(omObjData* arg0, s32 arg1, s32 arg2, float arg3) {
             var_f31 += 360.0f;
         }
     }
-    var_f31 = (var_f30 + var_f31 * (arg2 - 1)) / arg2;
+    var_f31 = (var_f30 + var_f31 * (arg3 - 1)) / arg3;
     if (arg1 == 0) {
         arg0->rot.y = var_f31;
     } else {
@@ -393,7 +393,7 @@ void fn_1_19960(StructFn19894* arg0, s32 arg1) {
     arg0->unk464 = arg1;
 }
 
-void fn_1_19968(StructFn19894* arg0) {
+void fn_1_19968(StructFn19894* arg0, s32 arg1) {
     arg0->unk464 = -1;
 }
 
@@ -526,7 +526,7 @@ void fn_1_1A33C(Process* arg0, StructFn19894* arg1, s32 arg2, char* arg3, s32 ar
     fn_1_19974(arg1, 1);
     arg1->unk08 = arg2;
     strcpy(arg1->unk10, arg3);
-    fn_1_19968(arg1);
+    fn_1_19968(arg1, -1);
     fn_1_198F8(arg1, -1);
     arg1->unk470 = 5.0f;
     arg1->unk474 = 10000.0f;
