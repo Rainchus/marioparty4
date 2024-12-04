@@ -22,7 +22,11 @@ extern s32 HuDvdErrWait;
 
 static s32 SR_PreRstChk[4] = {};
 
-#if VERSION_NTSC
+#if VERSION_JPN
+static s32 padding[4] = {};
+#endif
+
+#if VERSION_ENG
 
 #include "coveropen_en.inc"
 #include "fatalerror_en.inc"
@@ -31,7 +35,7 @@ static s32 SR_PreRstChk[4] = {};
 #include "retryerror_en.inc"
 #include "wrongdisc_en.inc"
 
-#else
+#elif VERSION_PAL
 
 #include "coveropen_en.inc"
 #include "fatalerror_en.inc"
@@ -67,6 +71,15 @@ static s32 SR_PreRstChk[4] = {};
 #include "nodisc_sp.inc"
 #include "retryerror_sp.inc"
 #include "wrongdisc_sp.inc"
+
+#else
+
+#include "coveropen_jp.inc"
+#include "fatalerror_jp.inc"
+#include "loading_jp.inc"
+#include "nodisc_jp.inc"
+#include "retryerror_jp.inc"
+#include "wrongdisc_jp.inc"
 
 #endif
 
@@ -287,17 +300,21 @@ static void ToeDispCheck(void)
 
 static void _HuDvdErrDispXFB(s32 error)
 {
-	#if VERSION_NTSC
+	#if VERSION_ENG
 	static void *bmpMes[][6] = {
-		loading_en, coveropen_en, nodisc_en, wrongdisc_en, retryerror_en, fatalerror_en
+		 loading_en, coveropen_en, nodisc_en, wrongdisc_en, retryerror_en, fatalerror_en
 	};
-	#else
+	#elif VERSION_PAL
 	static void *bmpMes[][6] = {
 		loading_en, coveropen_en, nodisc_en, wrongdisc_en, retryerror_en, fatalerror_en,
 		loading_fr, coveropen_fr, nodisc_fr, wrongdisc_fr, retryerror_fr, fatalerror_fr,
 		loading_ge, coveropen_ge, nodisc_ge, wrongdisc_ge, retryerror_ge, fatalerror_ge,
 		loading_it, coveropen_it, nodisc_it, wrongdisc_it, retryerror_it, fatalerror_it,
 		loading_sp, coveropen_sp, nodisc_sp, wrongdisc_sp, retryerror_sp, fatalerror_sp
+	};
+	#else
+	static void *bmpMes[][6] = {
+		 loading_jp, coveropen_jp, nodisc_jp, wrongdisc_jp, retryerror_jp, fatalerror_jp
 	};
 	#endif
 	

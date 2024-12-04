@@ -91,6 +91,32 @@ void MGSeqPauseEnableCtrl(s32 flag);
 void MGSeqPracticeInit(void);
 void MGSeqPracticeExitCheck(omObjData *object);
 
+s32 MGSeqInitTimer(SeqWork *work, va_list params);
+s32 MGSeqUpdateTimer(SeqWork *work);
+
+s32 MGSeqInitType2(SeqWork *work, va_list params);
+s32 MGSeqUpdateType2(SeqWork *work);
+
+s32 MGSeqUpdateMGBattle(SeqWork *work);
+
+s32 MGSeqInitMGBasic(SeqWork *work, va_list params);
+s32 MGSeqUpdateMGBasic(SeqWork *work);
+s32 MGSeqInitMGCommon(SeqWork *work, va_list params);
+s32 MGSeqUpdateMG1vs3(SeqWork *work);
+s32 MGSeqUpdateMGStory(SeqWork *work);
+s32 MGSeqUpdateMG2vs2(SeqWork *work);
+s32 MGSeqUpdateMGBowser(SeqWork *work);
+
+s32 MGSeqInitWin(SeqWork *work, va_list params);
+s32 MGSeqUpdateWin(SeqWork *work);
+s32 MGSeqInitDraw(SeqWork *work, va_list params);
+s32 MGSeqUpdateDraw(SeqWork *work);
+s32 MGSeqInitRecord(SeqWork *work, va_list params);
+s32 MGSeqUpdateRecord(SeqWork *work);
+
+s32 MGSeqInitFlip(SeqWork *work, va_list params);
+s32 MGSeqUpdateFlip(SeqWork *work);
+
 extern OverlayID mgSeqOvlPrev;
 
 #endif
