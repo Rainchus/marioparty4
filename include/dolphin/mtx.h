@@ -31,7 +31,7 @@ typedef struct {
 
 } MtxStack, *MtxStackPtr;
 
-#define MTXDegToRad(a) ((a)*0.01745329252f)
+#define MTXDegToRad(a) ((a)*0.017453292f)
 #define MTXRadToDeg(a) ((a)*57.29577951f)
 #define MTXRowCol(m, r, c) ((m)[(r)][(c)])
 

@@ -12,6 +12,8 @@
 
 #include "REL/m438Dll.h"
 
+#define BOARD_FABS(value) ((value < 0.0f) ? -(value) : (value))
+
 typedef struct M438MainWork {
     u8 unk_00;
     u8 unk_01;
@@ -2467,247 +2469,105 @@ float fn_1_7EDC(float arg8, float arg9, float argA)
     return arg8;
 }
 
-// void fn_1_8044(Mtx arg0, float arg8, float arg9, float argA)
-// {
-//     Mtx var_r31;
-//     float var_f29;
-//     float var_f30;
-//     float var_f31;
+void fn_1_8044(Mtx arg0, f32 arg8, f32 arg9, f32 argA) {
+    Mtx sp38;
+    Mtx sp8;
+    
+    if (0.0f != argA) {
+        PSMTXRotRad(arg0, 0x5A, MTXDegToRad(argA));
+    } else {
+        PSMTXIdentity(arg0);
+    }
+    if (0.0f != arg8) {
+        PSMTXRotRad(sp38, 0x58, MTXDegToRad(arg8));
+        PSMTXConcat(sp38, arg0, arg0);
+    }
+    if (0.0f != arg9) {
+        PSMTXRotRad(sp8, 0x59, MTXDegToRad(arg9));
+        PSMTXConcat(sp8, arg0, arg0);
+    }
+}
 
-//     var_r31 = arg0;
-//     var_f29 = arg8;
-//     var_f30 = arg9;
-//     var_f31 = argA;
-//     if (var_f31 != 0.0f) {
-//         PSMTXRotRad(var_r31, 0x5A, 0.017453292f * var_f31);
-//     }
-//     else {
-//         PSMTXIdentity(var_r31);
-//     }
-//     if (var_f29 != 0.0f) {
-//         PSMTXRotRad(&sp38[0], 0x58, 0.017453292f * var_f29);
-//         PSMTXConcat(&sp38[0], var_r31, var_r31);
-//     }
-//     if (var_f30 != 0.0f) {
-//         PSMTXRotRad(&sp8[0], 0x59, 0.017453292f * var_f30);
-//         PSMTXConcat(&sp8[0], var_r31, var_r31);
-//     }
-// }
+void fn_1_8164(Mtx arg0, Vec* arg1) {
+    f32 temp_f29;
+    f32 var_f28;
 
-// void fn_1_8164(float *arg0, Vec *arg1)
-// {
-//     float sp8;
-//     Vec *var_r31;
-//     float *var_r30;
-//     float var_f27;
-//     float var_f28;
-//     float var_f29;
-//     double var_f30;
-//     double var_f31;
+    arg1->x = atan2d(arg0[1][2], arg0[2][2]);
+    if (arg1->x < 0.0f) {
+        arg1->x += 360.0f;
+    }
+    arg1->z = atan2d(arg0[0][1], arg0[0][0]);
+    if (arg1->z < 0.0f) {
+        arg1->z += 360.0f;
+    }
+    temp_f29 = -arg0[0][2];
+    var_f28 = sqrtf(BOARD_FABS(1.0 - temp_f29 * temp_f29));
+    if ((arg1->x > 90.0f) && (arg1->x < 270.0f) && (arg1->z > 90.0f) && (arg1->z < 270.0f)) {
+        arg1->x = fmod((180.0f + arg1->x), 360.0);
+        arg1->z = fmod((180.0f + arg1->z), 360.0);
+        var_f28 = -var_f28;
+    }
+    arg1->y = atan2d(temp_f29, var_f28);
+    if (arg1->y < 0.0f) {
+        arg1->y += 360.0f;
+    }
+}
 
-//     var_r30 = arg0;
-//     var_r31 = arg1;
-//     var_r31->x = atan2d(var_r30->unk_18, var_r30->unk_28);
-//     if (var_r31->x < 0.0f) {
-//         var_r31->x += 360.0f;
-//     }
-//     var_r31->z = atan2d(var_r30->unk_04, var_r30->unk_00);
-//     if (var_r31->z < 0.0f) {
-//         var_r31->z += 360.0f;
-//     }
-//     var_f29 = -var_r30->unk_08;
-//     if ((1.0 - (var_f29 * var_f29)) < 0.0) {
-//         var_f30 = -(1.0 - (var_f29 * var_f29));
-//     }
-//     else {
-//         var_f30 = 1.0 - (var_f29 * var_f29);
-//     }
-//     if (var_f30 > 0.0f) {
-//         var_f31 = __frsqrte(var_f30);
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         sp8 = var_f30 * var_f31;
-//         var_f27 = sp8;
-//     }
-//     else {
-//         var_f27 = var_f30;
-//     }
-//     var_f28 = var_f27;
-//     if ((var_r31->x > 90.0f) && (var_r31->x < 270.0f) && (var_r31->z > 90.0f) && (var_r31->z < 270.0f)) {
-//         var_r31->x = fmod(180.0f + var_r31->x, 360.0);
-//         var_r31->z = fmod(180.0f + var_r31->z, 360.0);
-//         var_f28 = -var_f28;
-//     }
-//     var_r31->y = atan2d(var_f29, var_f28);
-//     if (var_r31->y < 0.0f) {
-//         var_r31->y += 360.0f;
-//     }
-// }
+void fn_1_8500(Mtx arg0, Vec* arg1) {
+    f32 temp_f29;
+    f32 var_f28;
 
-// void fn_1_8500(void *arg0, void *arg1)
-// {
-//     float sp8;
-//     float var_f27;
-//     float var_f28;
-//     float var_f29;
-//     double var_f30;
-//     double var_f31;
-//     void *var_r30;
-//     void *var_r31;
+    arg1->z = atan2d(arg0[0][1], arg0[1][1]);
+    arg1->y = atan2d(arg0[2][0], arg0[2][2]);
+    temp_f29 = -arg0[2][1];
+    var_f28 = sqrtf(BOARD_FABS(1.0 - temp_f29 * temp_f29));
+    arg1->x = atan2d(temp_f29, var_f28);
+}
 
-//     var_r31 = arg0;
-//     var_r30 = arg1;
-//     var_r30->unk_08 = atan2d(var_r31->unk_04, var_r31->unk_14);
-//     var_r30->unk_04 = atan2d(var_r31->unk_20, var_r31->unk_28);
-//     var_f29 = -var_r31->unk_24;
-//     if ((1.0 - (var_f29 * var_f29)) < 0.0) {
-//         var_f30 = -(1.0 - (var_f29 * var_f29));
-//     }
-//     else {
-//         var_f30 = 1.0 - (var_f29 * var_f29);
-//     }
-//     if (var_f30 > 0.0f) {
-//         var_f31 = __frsqrte(var_f30);
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         sp8 = var_f30 * var_f31;
-//         var_f28 = sp8;
-//     }
-//     else {
-//         var_f28 = var_f30;
-//     }
-//     var_f27 = var_f28;
-//     var_r30->unk_00 = atan2d(var_f29, var_f27);
-// }
+f32 fn_1_8750(f32 arg8, f32 arg9, f32 argA, f32 argB) {
+    f32 temp_f31;
+    f32 var_f30;
 
-// double fn_1_8750(double arg8, float arg9, float argA, float argB)
-// {
-//     double var_f30;
-//     double var_f31;
+    temp_f31 = (1.0 - arg8);
+    var_f30 = ((temp_f31 * temp_f31) * arg9) + (temp_f31 * arg8 * argA * 2.0) + ((arg8 * arg8) * argB);
+    return var_f30;
+}
 
-//     var_f31 = 1.0 - arg8;
-//     var_f31 = var_f31;
-//     var_f30 = (argB * (arg8 * arg8)) + ((arg9 * (var_f31 * var_f31)) + (2.0 * (argA * (var_f31 * arg8))));
-//     var_f30 = var_f30;
-//     return var_f30;
-// }
+void fn_1_87C8(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32 arg8) {
+    s32 var_r31;
+    
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        *arg3++ = fn_1_8750(arg8, *arg0++, *arg1++, *arg2++);
+    }
+}
 
-// void fn_1_87C8(float *arg0, float *arg1, float *arg2, float *arg3, double arg8)
-// {
-//     float *var_r3;
-//     float *var_r4;
-//     float *var_r5;
-//     float *var_r6;
-//     float var_f26;
-//     float var_f27;
-//     float var_f28;
-//     float var_f29;
-//     double var_f24;
-//     double var_f25;
-//     double var_f30;
-//     double var_f31;
-//     s32 var_r31;
+f32 fn_1_88E4(f32 arg8, f32 arg9, f32 argA, f32 argB) {
+    f32 var_f31;
 
-//     var_r3 = arg0;
-//     var_r4 = arg1;
-//     var_r5 = arg2;
-//     var_r6 = arg3;
-//     for (var_r31 = 0; var_r31 < 3; var_r31++) {
-//         var_f27 = *var_r5;
-//         var_r5 += 4;
-//         var_f28 = *var_r4;
-//         var_r4 += 4;
-//         var_f29 = *var_r3;
-//         var_r3 += 4;
-//         var_f26 = var_f29;
-//         var_f31 = 1.0 - arg8;
-//         var_f31 = var_f31;
-//         var_f30 = (var_f27 * (arg8 * arg8)) + ((var_f29 * (var_f31 * var_f31)) + (2.0 * (var_f28 * (var_f31 * arg8))));
-//         var_f30 = var_f30;
-//         var_f25 = var_f30;
-//         var_f24 = var_f25;
-//         *var_r6 = var_f24;
-//         var_r6 += 4;
-//     }
-// }
+    var_f31 = 2.0 * ((arg8 - 1.0) * arg9 + (1.0 - (2.0 * arg8)) * argA + (arg8 * argB));
+    return var_f31;
+}
 
-// double fn_1_88E4(float arg8, double arg9, double argA, float argB)
-// {
-//     double var_f31;
+void fn_1_895C(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32 arg8) {
+    f32 spC[3];
+    f32 var_f29;
+    s32 var_r31;
 
-//     var_f31 = 2.0 * ((arg8 * argB) + (((arg8 - 1.0) * arg9) + ((1.0 - (2.0 * arg8)) * argA)));
-//     var_f31 = var_f31;
-//     return var_f31;
-// }
-
-// void fn_1_895C(float *arg0, float *arg1, float *arg2, float *arg3, float arg8)
-// {
-//     float sp8;
-//     float *temp_r6;
-//     float *var_r3;
-//     float *var_r4;
-//     float *var_r5;
-//     float *var_r6;
-//     float var_f23;
-//     float var_f24;
-//     float var_f25;
-//     float var_f26;
-//     float var_f28;
-//     float var_f29;
-//     float var_f30;
-//     double var_f21;
-//     double var_f22;
-//     double var_f27;
-//     double var_f31;
-//     s32 var_r31;
-
-//     var_r3 = arg0;
-//     var_r4 = arg1;
-//     var_r5 = arg2;
-//     var_r6 = arg3;
-//     for (var_r31 = 0; var_r31 < 3; var_r31++) {
-//         var_f24 = *var_r5;
-//         var_r5 += 4;
-//         var_f25 = *var_r4;
-//         var_r4 += 4;
-//         var_f26 = *var_r3;
-//         var_r3 += 4;
-//         var_f23 = var_f26;
-//         var_f27 = 2.0 * ((arg8 * var_f24) + (((arg8 - 1.0) * var_f26) + ((1.0 - (2.0 * arg8)) * var_f25)));
-//         var_f27 = var_f27;
-//         var_f22 = var_f27;
-//         var_f21 = var_f22;
-//         (&spC[0])[var_r31] = var_f21;
-//     }
-//     var_f30 = (sp14 * sp14) + ((spC[0] * spC[0]) + (sp10 * sp10));
-//     if (var_f30 > 0.0f) {
-//         var_f31 = __frsqrte(var_f30);
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         sp8 = var_f30 * var_f31;
-//         var_f28 = sp8;
-//     }
-//     else {
-//         var_f28 = var_f30;
-//     }
-//     var_f29 = var_f28;
-//     if (var_f29 != 0.0f) {
-//         var_f29 = 1.0 / var_f29;
-//         var_f29 = var_f29;
-//         for (var_r31 = 0; var_r31 < 3; var_r31++) {
-//             *var_r6 = var_f29 * (&spC[0])[var_r31];
-//             var_r6 += 4;
-//         }
-//         return;
-//     }
-//     *var_r6 = 0.0f;
-//     temp_r6 = var_r6 + 4;
-//     *temp_r6 = 0.0f;
-//     *(temp_r6 + 4) = 1.0f;
-// }
+    for (var_r31 = 0; var_r31 < 3; var_r31++) {
+        spC[var_r31] = fn_1_88E4(arg8, *arg0++, *arg1++, *arg2++);
+    }
+    var_f29 = sqrtf((spC[0] * spC[0]) + (spC[1] * spC[1]) + (spC[2] * spC[2]));
+    if (var_f29) {
+        var_f29 = (1.0 / var_f29);
+        for (var_r31 = 0; var_r31 < 3; var_r31++) {
+            *arg3++ = var_f29 * spC[var_r31];
+        }
+        return;
+    }
+    *arg3++ = 0.0f;
+    *arg3++ = 0.0f;
+    *arg3++ = 1.0f;
+}
 
 void fn_1_8C34(float *arg0, float *arg1, float *arg2, s32 arg3)
 {
