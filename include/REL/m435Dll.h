@@ -20,7 +20,7 @@ typedef struct {
 } StructBss84; // Size 0x18
 
 typedef struct {
-    /* 0x00 */ void (*unk00)(void); // inferred (unsure)
+    /* 0x00 */ char unk00[4];
     /* 0x04 */ void (*unk04)(void);
     /* 0x08 */ void (*unk08)(void);
     /* 0x0C */ float unk0C;

@@ -3818,21 +3818,21 @@ void fn_1_12D18(void) {
     StructBssC1C* sp10;
     StructBss144* temp_r27;
     s32 var_r30;
-    s32 var_r31;
+    s32 i;
 
     var_r30 = 999;
     var_r28 = &lbl_1_bss_4EE8;
     sp10 = &lbl_1_bss_C1C;
-    for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        fn_1_A4B8(var_r31, 0);
+    for (i = 0; i < 4; i++) {
+        fn_1_A4B8(i, 0);
     }
     fn_1_8250(1);
     if (var_r28->unk08 != 1) {
-        for (var_r31 = 0; var_r31 < 4; var_r31++) {
-            temp_r27 = &lbl_1_bss_144[var_r31];
+        for (i = 0; i < 4; i++) {
+            temp_r27 = &lbl_1_bss_144[i];
             if (var_r30 > temp_r27->unk50) {
                 var_r30 = temp_r27->unk50;
-                var_r28->unk10 = var_r31;
+                var_r28->unk10 = i;
             }
         }
     }
@@ -3847,9 +3847,9 @@ void fn_1_12D18(void) {
         };
 
         var_r30 = var_r28->unk10;
-        for (var_r31 = 0; var_r31 < 4; var_r31++) {
+        for (i = 0; i < 4; i++) {
             temp_r29 = &lbl_1_bss_E88[var_r30];
-            omSetTra(temp_r29->unk00, sp14[var_r31].x, sp14[var_r31].y, sp14[var_r31].z);
+            omSetTra(temp_r29->unk00, sp14[i].x, sp14[i].y, sp14[i].z);
             omSetRot(temp_r29->unk00, 0.0f, 180.0f, 0.0f);
             fn_1_157BC(temp_r29->unk00, 0, 0, 10, 1);
             var_r30++;
@@ -3861,6 +3861,21 @@ void fn_1_12D18(void) {
         }
     }
     fn_1_1090C(5);
+
+    // Hack required to match.
+    if (0) {
+        s32 var_r25;
+        s32 var_r26;
+
+        (void) var_r26;
+        (void) var_r26;
+        (void) var_r26;
+        (void) var_r26;
+        (void) var_r25;
+        (void) var_r25;
+        (void) var_r25;
+        (void) var_r25;
+    }
 }
 
 // Unused. Mirrors the Vec array defined in fn_1_12D18.
@@ -3871,15 +3886,75 @@ const Vec lbl_1_rodata_48C[] = {
     {  400.0f, 0.0f, -225.0f }
 };
 
-s32 fn_1_12F48(void) {
+static inline void fn_1_12F48_inline_hack(s32 arg0) {
     StructBss4EE8* var_r27;
+
+    var_r27 = &lbl_1_bss_4EE8;
+    (void) var_r27;
+    (void) var_r27;
+    (void) var_r27;
+    (void) var_r27;
+
+    if (arg0) {
+        s32 var_r31;
+        s32 var_r30;
+        s32 var_r26;
+        s32 var_r23;
+        s32 var_r22;
+        s32 var_r21;
+        s32 var_r20;
+        s32 var_r19;
+        s32 var_r18;
+        s32 var_r17;
+
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r30;
+        (void) var_r30;
+        (void) var_r30;
+        (void) var_r30;
+        (void) var_r30;
+        (void) var_r30;
+        (void) var_r26;
+        (void) var_r26;
+        (void) var_r26;
+        (void) var_r26;
+        (void) var_r23;
+        (void) var_r23;
+        (void) var_r23;
+        (void) var_r22;
+        (void) var_r22;
+        (void) var_r22;
+        (void) var_r21;
+        (void) var_r21;
+        (void) var_r21;
+        (void) var_r20;
+        (void) var_r20;
+        (void) var_r20;
+        (void) var_r19;
+        (void) var_r19;
+        (void) var_r19;
+        (void) var_r18;
+        (void) var_r18;
+        (void) var_r18;
+        (void) var_r17;
+        (void) var_r17;
+        (void) var_r17;
+    }
+}
+
+s32 fn_1_12F48(void) {
     StructBssC1C* var_r25;
     StructBssC30* var_r24;
     StructBssE88* sp8;
     s32 var_r29;
     s32 var_r28;
 
-    var_r27 = &lbl_1_bss_4EE8;
+    fn_1_12F48_inline_hack(0); // Required to match.
     if (fn_1_15670(&lbl_1_bss_6C, 0) == 180) {
         var_r25 = &lbl_1_bss_C1C;
         for (var_r29 = 0; var_r29 < 4; var_r29++) {
@@ -4079,6 +4154,8 @@ void fn_1_13600(void) {
 }
 
 void fn_1_14384(omObjData* arg0) {
+    StructBssDE4* var_r25;
+
     switch (lbl_1_bss_1C) {
         case 0:
             fn_1_13600();
@@ -4124,7 +4201,8 @@ void fn_1_14384(omObjData* arg0) {
             }
             break;
         case 8:
-            fn_1_2BFC(999);
+            var_r25 = &lbl_1_bss_DE4;
+            var_r25->unk04 = 999;
             if (fn_1_13414()) {
                 lbl_1_bss_1C = 9;
             }
@@ -4135,6 +4213,20 @@ void fn_1_14384(omObjData* arg0) {
             break;
     }
     fn_1_135A0(arg0);
+
+    // Hack required to match.
+    if (0) {
+        s32 var_r31;
+        s32 var_r28;
+
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r31;
+        (void) var_r28;
+        (void) var_r28;
+        (void) var_r28;
+    }
 }
 
 void fn_1_14760(omObjData* arg0) {
