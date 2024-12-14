@@ -990,7 +990,7 @@ config.libs = [
     Rel(
         "m419Dll",  # Tree Stomp
         objects={
-            Object(NonMatching, "REL/m419Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m419Dll/main.c"),
         },
     ),
     Rel(
