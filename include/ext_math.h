@@ -19,6 +19,7 @@ typedef struct vec2f {
 #define VECDistanceZY(a, b) sqrtf((((a)->z-(b)->z)*((a)->z-(b)->z))+(((a)->y-(b)->y)*((a)->y-(b)->y)))
 #define VECSumXZ(a, b) sqrtf((((a)->x+(b)->x)*((a)->x+(b)->x))+(((a)->z+(b)->z)*((a)->z+(b)->z)))
 
+#define VECMagXYZ(a) sqrtf(((a)->x*(a)->x)+((a)->y*(a)->y)+((a)->z*(a)->z))
 #define VECMagXZ(a) sqrtf(((a)->x*(a)->x)+((a)->z*(a)->z))
 #define VECMagXY(a) sqrtf(((a)->x*(a)->x)+((a)->y*(a)->y))
 
