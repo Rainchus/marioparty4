@@ -89,6 +89,12 @@ static s32 lbl_1_data_4CC[8] = {
     0x000002E3
 };
 
+#if VERSION_JP
+#define MDL_ID_SHIFT 0
+#else
+#define MDL_ID_SHIFT 1
+#endif
+
 static s32 lbl_1_data_4EC[] = {
     DATA_MAKE_NUM(DATADIR_BKOOPA, 8),
     DATA_MAKE_NUM(DATADIR_BKOOPA, 10),
@@ -1036,7 +1042,7 @@ static void fn_1_C40C(void) {
     BoardCameraMotionWait();
     BoardCameraTargetModelSet(-1);
     BoardModelRotYSet(lbl_1_data_498, var_f30);
-    lbl_1_data_4A0 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 99), NULL, 0);
+    lbl_1_data_4A0 = BoardModelCreate(DATA_MAKE_NUM(DATADIR_BOARD, 98 + MDL_ID_SHIFT), NULL, 0);
     BoardModelVisibilitySet(lbl_1_data_4A0, 0);
     BoardModelLayerSet(lbl_1_data_4A0, 2);
     var_r29 = BoardSpaceStarGet(lbl_1_bss_0->unk04 - 1);

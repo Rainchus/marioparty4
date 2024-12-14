@@ -214,8 +214,8 @@ modules:
     links: []
   - object: files/dll/m435Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m435Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m435Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m435Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m435Dll/splits.txt
     links: []
   - object: files/dll/m436Dll.rel
 
@@ -444,18 +444,18 @@ modules:
     links: []
   - object: files/dll/w01Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w01Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w01Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w01Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w01Dll/splits.txt
     links: []
   - object: files/dll/w02Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w02Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w02Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w02Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w02Dll/splits.txt
     links: []
   - object: files/dll/w03Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w03Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w03Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w03Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w03Dll/splits.txt
     links: []
   - object: files/dll/w04Dll.rel
 
@@ -464,28 +464,28 @@ modules:
     links: []
   - object: files/dll/w05Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w05Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w05Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w05Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w05Dll/splits.txt
     links: []
   - object: files/dll/w06Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w06Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w06Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w06Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w06Dll/splits.txt
     links: []
   - object: files/dll/w10Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w10Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w10Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w10Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w10Dll/splits.txt
     links: []
   - object: files/dll/w20Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w20Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w20Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w20Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w20Dll/splits.txt
     links: []
   - object: files/dll/w21Dll.rel
 
-    symbols: config/GMPJ01_00/rels/w21Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/w21Dll/splits.txt
+    symbols: config/GMPE01_00/rels/w21Dll/symbols.txt
+    splits: config/GMPE01_00/rels/w21Dll/splits.txt
     links: []
   - object: files/dll/ztardll.rel
 
