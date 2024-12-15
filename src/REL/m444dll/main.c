@@ -128,6 +128,9 @@ void ObjectSetup(void)
     lbl_1_bss_30C = omAddObjEx(lbl_1_bss_308, 32730, 0, 0, -1, fn_1_6EDC);
     omAddObjEx(lbl_1_bss_308, 0, 32, 32, -1, fn_1_7290);
     Hu3DBGColorSet(0, 0, 0);
+#if VERSION_JP
+    GWGameStat.language = 0;
+#endif
     HuWinInit(1);
     BoardStatusCreate();
 }
