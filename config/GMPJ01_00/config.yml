@@ -309,8 +309,8 @@ modules:
     links: []
   - object: files/dll/m456Dll.rel
 
-    symbols: config/GMPJ01_00/rels/m456Dll/symbols.txt
-    splits: config/GMPJ01_00/rels/m456Dll/splits.txt
+    symbols: config/GMPE01_00/rels/m456Dll/symbols.txt
+    splits: config/GMPE01_00/rels/m456Dll/splits.txt
     links: []
   - object: files/dll/m457Dll.rel
 
