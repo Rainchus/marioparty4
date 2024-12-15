@@ -763,7 +763,7 @@ void fn_1_33B0(void)
         var_r30 = HuSprCreate(var_r29, 0x64, mgBattleStarMax + 1);
     }
     HuSprGrpMemberSet(lbl_1_bss_50, 1, var_r30);
-    HuSprPosSet(lbl_1_bss_50, 1, 342.0f, 80.0f);
+    HuSprPosSet(lbl_1_bss_50, 1, VERSION_JP ? 234.0f : 342.0f, 80.0f);
     HuSprScaleSet(lbl_1_bss_50, 1, 0.0f, 0.0f);
     HuSprGrpDrawNoSet(lbl_1_bss_50, 0x7F);
     var_r29 = HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_ZTAR, 9));
@@ -1096,17 +1096,36 @@ void fn_1_4948(void)
 
 void fn_1_51BC(s16 arg0)
 {
-    omOvlHisData *var_r31;
+    s16 var_r31;
+    omOvlHisData *var_r30;
+    u32 var_r29;
 
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 0x3C);
     HuAudSeqAllFadeOut(0x3E8);
-
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    var_r31 = omOvlHisGet(0);
-    omOvlHisChg(0, OVL_ZTAR, arg0, var_r31->stat);
+#if VERSION_JP
+    if ((GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8)) {
+        msmMusStopAll(1, 0);
+        msmSeStopAll(1, 0);
+        var_r29 = OSGetTick();
+        while (TRUE) {
+            if ((msmMusGetNumPlay(1) != 0) || (msmSeGetNumPlay(1) != 0)) {
+                if (((OSGetTick() - var_r29) / (*((u32 *)0x800000F8) / 4 / 1000)) >= 0x1F4) {
+                    break;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        msmSysDelGroupBase(0);
+    }
+#endif
+    var_r30 = omOvlHisGet(0);
+    omOvlHisChg(0, OVL_ZTAR, arg0, var_r30->stat);
     omOvlCallEx(OVL_M433, 1, 0, 0);
     while (TRUE) {
         HuPrcVSleep();
