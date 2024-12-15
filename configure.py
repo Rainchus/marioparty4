@@ -1064,7 +1064,7 @@ config.libs = [
     Rel(
         "m429Dll",  # Team Treasure Trek
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/m429Dll/main.c"),
+            Object(Matching, "REL/m429Dll/main.c"),
         },
     ),
     Rel(
@@ -1171,10 +1171,10 @@ config.libs = [
     Rel(
         "m444dll",  # Reversal of Fortune
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/pinball.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/datalist.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/shadow.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/pinball.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/datalist.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/shadow.c"),
         },
     ),
     Rel(
@@ -1249,8 +1249,8 @@ config.libs = [
     Rel(
         "m456Dll",  # Take a Breather
         objects={
-            Object(NonMatching, "REL/m456Dll/main.c"),
-            Object(NonMatching, "REL/m456Dll/stage.c"),
+            Object(Matching, "REL/m456Dll/main.c"),
+            Object(Matching, "REL/m456Dll/stage.c"),
         },
     ),
     Rel(
@@ -1540,9 +1540,9 @@ config.libs = [
     Rel(
         "ztardll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/ztardll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/ztardll/font.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/ztardll/select.c"),
+            Object(Matching, "REL/ztardll/main.c"),
+            Object(Matching, "REL/ztardll/font.c"),
+            Object(Matching, "REL/ztardll/select.c"),
         },
     ),
 ]

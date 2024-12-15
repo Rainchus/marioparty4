@@ -3028,6 +3028,12 @@ void fn_1_114EC(u32 arg0, s32 arg1)
     s32 var_r29;
     s32 var_r28;
 
+#if VERSION_JP
+    if (lbl_1_data_670 != -1) {
+        HuWinMesSet(lbl_1_data_670, arg0);
+        return;
+    }
+#endif
     HuWinMesMaxSizeGet(1, spC, arg0);
     var_r29 = spC[0];
     var_r31 = spC[1];
@@ -3038,6 +3044,9 @@ void fn_1_114EC(u32 arg0, s32 arg1)
     else {
         var_r30 = 0x181 - var_r31;
     }
+#if VERSION_JP
+    lbl_1_data_670 = HuWinExCreateStyled(var_r28, var_r30, var_r29, var_r31, -1, 1);
+#else
     if (lbl_1_data_670 != -1) {
         fn_1_1190C();
         lbl_1_data_670 = HuWinExCreateStyled(var_r28, var_r30, var_r29, var_r31, -1, 1);
@@ -3045,6 +3054,7 @@ void fn_1_114EC(u32 arg0, s32 arg1)
     else {
         lbl_1_data_670 = HuWinExCreateStyled(var_r28, var_r30, var_r29, var_r31, -1, 1);
     }
+#endif
     HuWinBGTPLvlSet(lbl_1_data_670, 0.0f);
     HuWinDispOn(lbl_1_data_670);
     HuWinMesSet(lbl_1_data_670, arg0);
@@ -3059,11 +3069,21 @@ void fn_1_11708(u32 arg0)
     s32 var_r29;
     s32 var_r28;
 
+#if VERSION_JP
+    if (lbl_1_data_670 != -1) {
+        HuWinMesSet(lbl_1_data_670, arg0);
+        return;
+    }
+#endif
     HuWinMesMaxSizeGet(1, sp8, arg0);
     var_r30 = sp8[0];
     var_r31 = sp8[1];
     var_r28 = (0x240 - var_r30) / 2.0f;
     var_r29 = 0x181 - var_r31;
+#if VERSION_JP
+    lbl_1_data_670 = HuWinExCreateStyled(var_r28, var_r29, var_r30, var_r31, -1, 1);
+    (void)var_r29;
+#else
     if (lbl_1_data_670 != -1) {
         fn_1_1190C();
         lbl_1_data_670 = HuWinExCreateStyled(var_r28, var_r29, var_r30, var_r31, -1, 1);
@@ -3071,6 +3091,7 @@ void fn_1_11708(u32 arg0)
     else {
         lbl_1_data_670 = HuWinExCreateStyled(var_r28, var_r29, var_r30, var_r31, -1, 1);
     }
+#endif
     HuWinBGTPLvlSet(lbl_1_data_670, 0.0f);
     HuWinDispOn(lbl_1_data_670);
     HuWinMesSet(lbl_1_data_670, arg0);
