@@ -1540,9 +1540,9 @@ config.libs = [
     Rel(
         "ztardll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/ztardll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/ztardll/font.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/ztardll/select.c"),
+            Object(Matching, "REL/ztardll/main.c"),
+            Object(Matching, "REL/ztardll/font.c"),
+            Object(Matching, "REL/ztardll/select.c"),
         },
     ),
 ]

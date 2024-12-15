@@ -13,6 +13,8 @@
 
 #include "REL/ztardll.h"
 
+extern s32 charVoiceGroupStat[8];
+
 void fn_1_1774(void);
 void fn_1_1CF0(void);
 void fn_1_1DA0(void);
@@ -1106,7 +1108,7 @@ void fn_1_51BC(s16 arg0)
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-#if VERSION_JP
+#if !VERSION_ENG
     if ((GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8)) {
         msmMusStopAll(1, 0);
         msmSeStopAll(1, 0);
@@ -1122,6 +1124,11 @@ void fn_1_51BC(s16 arg0)
             }
         }
         msmSysDelGroupBase(0);
+#if VERSION_PAL
+        for (var_r31 = 0; var_r31 < 8; var_r31++) {
+            charVoiceGroupStat[var_r31] = 0;
+        }
+#endif
     }
 #endif
     var_r30 = omOvlHisGet(0);
@@ -1258,6 +1265,9 @@ s32 fn_1_524C(s32 arg0)
     var_r22 = &winData[var_r24];
     HuWinPriSet(var_r24, 5);
     HuWinPosSet(var_r24, (576.0f - var_r22->w) / 2, 300.0f);
+#if VERSION_PAL
+    HuWinScaleSet(var_r24, 0.95f, 1.0f);
+#endif
     HuWinAttrSet(var_r24, 0x800);
     var_r30 = 0;
     var_r23 = 0;
@@ -1419,6 +1429,11 @@ void fn_1_66F8(void)
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         GWPlayerCfg[var_r31].character = -1;
     }
+#if VERSION_PAL
+    for (var_r31 = 0; var_r31 < 8; var_r31++) {
+        charVoiceGroupStat[var_r31] = 0;
+    }
+#endif
     mgPracticeEnableF = 0;
     omOvlReturnEx(1, 1);
     HuPrcEnd();
