@@ -1285,7 +1285,7 @@ config.libs = [
     Rel(
         "m459dll",  # Mushroom Medic
         objects={
-            Object(NonMatching, "REL/m459dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m459dll/main.c"),
         },
     ),
     Rel(

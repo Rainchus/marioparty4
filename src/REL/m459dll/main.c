@@ -143,7 +143,7 @@ void fn_1_4FC8(void);
 void fn_1_52D8(s32 arg0);
 s32 fn_1_52F0(void);
 s32 fn_1_5300(void);
-void fn_1_5310(void);
+s32 fn_1_5310(void);
 void fn_1_535C(void);
 void fn_1_5490(void);
 void fn_1_556C(M459DllBss18Struct *arg0);
@@ -489,19 +489,24 @@ void fn_1_73C(void)
                 while (lbl_1_bss_698[0x12]) {
                     HuPrcVSleep();
                 }
-                fn_1_52D8(1);
-                if (fn_1_52F0() != 0x63) {
-                    lbl_1_bss_698[0x12] = HuPrcChildCreate(fn_1_4B68, 0x100, 0x4000, 0, HuPrcCurrentGet());
-                    while (lbl_1_bss_698[0x12]) {
-                        HuPrcVSleep();
-                    }
-                    continue;
-                }
+                goto label;
             }
             else {
+                
                 lbl_1_bss_698[0x12] = HuPrcChildCreate(fn_1_48E4, 0x100, 0x4000, 0, HuPrcCurrentGet());
                 while (lbl_1_bss_698[0x12]) {
                     HuPrcVSleep();
+                }
+                if(0) {
+                    label:
+                    fn_1_52D8(1);
+                    if (fn_1_52F0() != 0x63) {
+                        lbl_1_bss_698[0x12] = HuPrcChildCreate(fn_1_4B68, 0x100, 0x4000, 0, HuPrcCurrentGet());
+                        while (lbl_1_bss_698[0x12]) {
+                            HuPrcVSleep();
+                        }
+                        continue;
+                    } 
                 }
             }
         }
@@ -1665,7 +1670,7 @@ s32 fn_1_5300(void)
     return lbl_1_bss_4C.unk_10;
 }
 
-void fn_1_5310(void)
+s32 fn_1_5310(void)
 {
     if (lbl_1_bss_4C.unk_10 < lbl_1_bss_4C.unk_0C) {
         lbl_1_bss_4C.unk_10 = lbl_1_bss_4C.unk_0C;
@@ -1768,108 +1773,108 @@ void fn_1_55B0(M459DllBss18Struct *var_r31)
     var_r29 = var_r31->unk_04[var_r31->unk_24[1]];
     espDispOn(var_r29);
     var_r23 = 0;
-loop_1:
-    var_r30 = 0;
-    var_r27 = 0;
-    if (var_r31->unk_28 != 0) {
-        if (var_r31->unk_2C <= 0) {
-            var_r20 = lbl_1_bss_70.unk_08;
-            if ((var_r20 > 0xB4) && (var_r23 == 0)) {
-                var_r24 = frandmod(0xA);
-                if (var_r24 >= 5) {
-                    var_r30 |= 1;
-                }
-                else if (var_r24 > 1) {
-                    var_r30 |= 2;
+    while(1) {
+        var_r30 = 0;
+        var_r27 = 0;
+        if (var_r31->unk_28 != 0) {
+            if (var_r31->unk_2C <= 0) {
+                var_r20 = lbl_1_bss_70.unk_08;
+                if ((var_r20 > 0xB4) && (var_r23 == 0)) {
+                    var_r24 = frandmod(0xA);
+                    if (var_r24 >= 5) {
+                        var_r30 |= 1;
+                    }
+                    else if (var_r24 > 1) {
+                        var_r30 |= 2;
+                    }
+                    else {
+                        var_r23 = 1;
+                    }
                 }
                 else {
-                    var_r23 = 1;
+                    if (lbl_1_bss_14 > lbl_1_bss_10) {
+                        var_r30 |= 1;
+                    }
+                    else if (lbl_1_bss_14 < lbl_1_bss_10) {
+                        var_r30 |= 2;
+                    }
+                    if (lbl_1_bss_14 == lbl_1_bss_10) {
+                        var_r27 |= 0x100;
+                    }
                 }
+                var_r31->unk_2C = 0x1E;
             }
             else {
-                if (lbl_1_bss_14 > lbl_1_bss_10) {
-                    var_r30 |= 1;
-                }
-                else if (lbl_1_bss_14 < lbl_1_bss_10) {
-                    var_r30 |= 2;
-                }
-                if (lbl_1_bss_14 == lbl_1_bss_10) {
-                    var_r27 |= 0x100;
-                }
+                var_r31->unk_2C--;
             }
-            var_r31->unk_2C = 0x1E;
         }
         else {
-            var_r31->unk_2C--;
+            var_r30 = HuPadDStkRep[var_r31->unk_24[0]];
+            var_r27 = HuPadBtnDown[var_r31->unk_24[0]];
         }
-    }
-    else {
-        var_r30 = HuPadDStkRep[var_r31->unk_24[0]];
-        var_r27 = HuPadBtnDown[var_r31->unk_24[0]];
-    }
-    if (var_r28 != -1) {
-        if ((var_r27 & 0x100) != 0) {
-            HuAudFXPlay(2);
-            // lbl_1_bss_7C[lbl_1_bss_14].unk_04 = 3;
-            // espDispOff(var_r29);
-            // lbl_1_bss_18.unk_00 = 0;
+        if (var_r28 != -1) {
+            if ((var_r27 & 0x100) != 0) {
+                HuAudFXPlay(2);
+                break;
+            }
+            else {
+                if ((var_r30 & 1) != 0) {
+                    if (--lbl_1_bss_14 < 0) {
+                        lbl_1_bss_14 = 4;
+                    }
+                    HuAudFXPlay(0);
+                }
+                else if ((var_r30 & 2) != 0) {
+                    if (++lbl_1_bss_14 >= 5) {
+                        lbl_1_bss_14 = 0;
+                    }
+                    HuAudFXPlay(0);
+                }
+                goto block_30;
+            }
         }
         else {
-            if ((var_r30 & 1) != 0) {
-                if (--lbl_1_bss_14 < 0) {
-                    lbl_1_bss_14 = 4;
-                }
-                HuAudFXPlay(0);
-            }
-            else if ((var_r30 & 2) != 0) {
-                if (++lbl_1_bss_14 >= 5) {
-                    lbl_1_bss_14 = 0;
-                }
-                HuAudFXPlay(0);
-            }
-            goto block_30;
-        }
-    }
-    else {
-    block_30:
-        if (var_r28 != lbl_1_bss_14) {
-            var_r25 = &lbl_1_bss_CC[lbl_1_bss_14];
-            sp14 = sp20;
-            sp20 = var_r25->unk_0C;
-            sp20.y = 40.0f;
-            espPriSet(var_r29, 0x32);
-            if (var_r28 == -1) {
+        block_30:
+            if (var_r28 != lbl_1_bss_14) {
+                var_r25 = &lbl_1_bss_CC[lbl_1_bss_14];
                 sp14 = sp20;
+                sp20 = var_r25->unk_0C;
+                sp20.y = 40.0f;
+                espPriSet(var_r29, 0x32);
+                if (var_r28 == -1) {
+                    sp14 = sp20;
+                }
+                else {
+                    lbl_1_bss_7C[var_r28].unk_04 = 3;
+                }
+                for (var_r26 = 0; var_r26 <= 4; var_r26++) {
+                    var_f31 = sind((90.0f * (0.25f * var_r26)));
+                    var_f31 *= var_f31 * var_f31;
+                    sp8.x = sp14.x + (var_f31 * (sp20.x - sp14.x));
+                    sp8.y = sp14.y + (var_f31 * (sp20.y - sp14.y));
+                    sp8.z = sp14.z + (var_f31 * (sp20.z - sp14.z));
+                    Hu3D3Dto2D(&sp8, 1, &sp8);
+                    espPosSet(var_r29, sp8.x, sp8.y);
+                    var_r22 = var_r31->unk_00;
+                    HuPrcVSleep();
+                    if (var_r31->unk_00 != var_r22) {
+                        return;
+                    }
+                }
+                espPosSet(var_r29, sp8.x, sp8.y);
+                lbl_1_bss_7C[lbl_1_bss_14].unk_04 = 1;
             }
-            else {
-                lbl_1_bss_7C[var_r28].unk_04 = 3;
-            }
-            for (var_r26 = 0; var_r26 < 4; var_r26++) {
-                // espPosSet(var_r29, sp8.x, sp8.y);
-                // lbl_1_bss_7C[lbl_1_bss_14].unk_04 = 1;
-                goto block_39;
-            }
-            var_f31 = sind((90.0f * (0.25f * var_r26)));
-            var_f31 *= var_f31 * var_f31;
-            sp8.x = sp14.x + (var_f31 * (sp20.x - sp14.x));
-            sp8.y = sp14.y + (var_f31 * (sp20.y - sp14.y));
-            sp8.z = sp14.z + (var_f31 * (sp20.z - sp14.z));
-            Hu3D3Dto2D(&sp8, 1, &sp8);
-            espPosSet(var_r29, sp8.x, sp8.y);
-            var_r22 = var_r31->unk_00;
-            HuPrcVSleep();
-            if (var_r31->unk_00 == var_r22) { }
-        }
-        else {
-        block_39:
             var_r28 = lbl_1_bss_14;
             var_r21 = var_r31->unk_00;
-            HuPrcVSleep(&lbl_1_bss_14);
-            if (var_r31->unk_00 == var_r21) {
-                goto loop_1;
+            HuPrcVSleep();
+            if (var_r31->unk_00 != var_r21) {
+                return;
             }
         }
     }
+    lbl_1_bss_7C[lbl_1_bss_14].unk_04 = 3;
+    espDispOff(var_r29);
+    lbl_1_bss_18.unk_00 = 0;
 }
 
 void fn_1_5A78(M459DllBss18Struct *arg0)
@@ -1960,17 +1965,18 @@ void fn_1_5EAC(void)
         switch (var_r31->unk_04) {
             case 0:
                 fn_1_5F40(var_r31);
-                continue;
+                break;
             case 1:
                 fn_1_5F84(var_r31);
-                continue;
+                break;
             case 2:
                 fn_1_6198(var_r31);
-                continue;
+                break;
             case 3:
-                continue;
+                fn_1_6458(var_r31);
+                break;
         }
-        fn_1_6458(var_r31);
+        
     }
 }
 
