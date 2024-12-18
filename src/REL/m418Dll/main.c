@@ -94,6 +94,7 @@ s32 lbl_1_bss_1C;
 u32 lbl_1_bss_18;
 s32 lbl_1_bss_14;
 s32 lbl_1_bss_10;
+s32 lbl_1_bss_C;
 s32 lbl_1_bss_8;
 s32 lbl_1_bss_4;
 Process* lbl_1_bss_0;

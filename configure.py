@@ -1000,7 +1000,7 @@ config.libs = [
     Rel(
         "m418Dll",  # Hide and Go BOOM!
         objects={
-            Object(NonMatching, "REL/m418Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m418Dll/main.c"),
             Object(NonMatching, "REL/m418Dll/sequence.c"),
         },
     ),
