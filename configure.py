@@ -1031,7 +1031,7 @@ config.libs = [
     Rel(
         "m422Dll",  # Money Belts
         objects={
-            Object(NonMatching, "REL/m422Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m422Dll/main.c"),
         },
     ),
     Rel(
