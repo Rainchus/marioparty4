@@ -23,7 +23,9 @@
     "object.h": "c",
     "executor.h": "c",
     "m438dll.h": "c",
-    "audio.h": "c"
+    "audio.h": "c",
+    "musyx.h": "c",
+    "math.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {

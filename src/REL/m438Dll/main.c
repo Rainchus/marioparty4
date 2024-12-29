@@ -5,6 +5,7 @@
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 #include "game/minigame_seq.h"
+#include "game/object.h"
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/sprite.h"
@@ -121,8 +122,9 @@ typedef struct M438MainWork3 {
 } M438MainWork3; /* size =  */
 
 typedef struct M438MainWork4 {
-    s8 unk_00;
-    char unk04[11];
+    u8 unk_00;
+    char unk01[0x7];
+    float unk_08;
     float unk_0C;
     float unk_10;
     float unk_14;
@@ -217,6 +219,8 @@ typedef struct M438StructBssDE4 {
     M438UnkStruct2 *unk_40;
 } M438StructBssDE4; /* size =  */
 
+typedef u8 M438UnkType[0x30];
+
 void fn_1_4DC(omObjData *object);
 void fn_1_4FC(omObjData *object);
 void fn_1_974(omObjData *object);
@@ -259,7 +263,7 @@ float fn_1_A14C(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3);
 void fn_1_A60C(omObjData *object);
 void fn_1_A688(omObjData *object);
 void fn_1_A68C(ModelData *model, Mtx matrix);
-s32 fn_1_AE18(u32 arg0, Vec *arg1, Vec *arg2);
+s32 fn_1_AE18(u32 arg0, float arg8, Vec *arg1, Vec *arg2);
 float fn_1_B440(Vec *arg0, Vec *arg1, Vec *arg2);
 
 Vec lbl_1_data_0 = { 1000.0f, 3000.0f, 1000.0f };
@@ -2705,357 +2709,169 @@ void fn_1_9420(float arg8, float *arg0, float *arg1, float arg2[3][3], float arg
     }
 }
 
-// float fn_1_9634(Vec *arg0)
-// {
-//     float sp8;
-//     float var_f28;
-//     float var_f29;
-//     float var_f30;
-//     double var_f31;
+f32 fn_1_9634(Vec* arg0) {
+    f32 var_f30;
+    f32 var_f29;
+    var_f30 = (arg0->x * arg0->x) + (arg0->y * arg0->y) + (arg0->z * arg0->z);
+    var_f30 = sqrtf(var_f30);
+    if (var_f30 != 0.0f) {
+        var_f29 = 1.0f / var_f30;
+        arg0->x *= var_f29;
+        arg0->y *= var_f29;
+        arg0->z *= var_f29;
+    } else {
+        arg0->x = arg0->y = arg0->z = 0.0f;
+    }
+    return var_f30;
+}
 
-//     var_f30 = (arg0->z * arg0->z) + ((arg0->x * arg0->x) + (arg0->y * arg0->y));
-//     if (var_f30 > 0.0f) {
-//         var_f31 = __frsqrte(var_f30);
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f30 * (var_f31 * var_f31)));
-//         sp8 = var_f30 * var_f31;
-//         var_f28 = sp8;
-//     }
-//     else {
-//         var_f28 = var_f30;
-//     }
-//     var_f30 = var_f28;
-//     if (var_f30 != 0.0f) {
-//         var_f29 = 1.0f / var_f30;
-//         arg0->x *= var_f29;
-//         arg0->y *= var_f29;
-//         arg0->z *= var_f29;
-//     }
-//     else {
-//         arg0->z = 0.0f;
-//         arg0->y = 0.0f;
-//         arg0->x = 0.0f;
-//     }
-//     return var_f30;
-// }
+f32 fn_1_97CC(Vec arg0, Vec arg1, Vec* arg2, f32 arg8) {
+    if (arg8 <= 0.0f) {
+        arg2->x = arg0.x;
+        arg2->y = arg0.y;
+        arg2->z = arg0.z;
+        arg8 = 0.0f;
+    } else if (arg8 >= 1.0f) {
+        arg2->x = (arg0.x + arg1.x);
+        arg2->y = (arg0.y + arg1.y);
+        arg2->z = (arg0.z + arg1.z);
+        arg8 = 1.0f;
+    } else {
+        arg2->x = (arg0.x + (arg8 * arg1.x));
+        arg2->y = (arg0.y + (arg8 * arg1.y));
+        arg2->z = (arg0.z + (arg8 * arg1.z));
+    }
+    return arg8;
+}
 
-// float fn_1_97CC(void *arg0, void *arg1, void *arg2, float arg8)
-// {
-//     if (arg8 <= 0.0f) {
-//         arg2->unk_00 = arg0->unk_00;
-//         arg2->unk_04 = arg0->unk_04;
-//         arg2->unk_08 = arg0->unk_08;
-//         return 0.0f;
-//     }
-//     if (arg8 >= 1.0f) {
-//         arg2->unk_00 = arg0->unk_00 + arg1->unk_00;
-//         arg2->unk_04 = arg0->unk_04 + arg1->unk_04;
-//         arg2->unk_08 = arg0->unk_08 + arg1->unk_08;
-//         return 1.0f;
-//     }
-//     arg2->unk_00 = arg0->unk_00 + (arg8 * arg1->unk_00);
-//     arg2->unk_04 = arg0->unk_04 + (arg8 * arg1->unk_04);
-//     arg2->unk_08 = arg0->unk_08 + (arg8 * arg1->unk_08);
-//     return arg8;
-// }
+f32 fn_1_98A4(Vec arg0, Vec arg1, Vec arg2) {
+    f32 temp_f30;
+    f32 var_f31;
 
-// float fn_1_98A4(void *arg0, void *arg1, void *arg2)
-// {
-//     float var_f30;
-//     float var_f31;
+    var_f31 = (arg2.z * (arg1.z - arg0.z)) + ((arg2.x * (arg1.x - arg0.x)) + (arg2.y * (arg1.y - arg0.y)));
+    temp_f30 = -((arg2.z * arg2.z) + ((arg2.x * arg2.x) + (arg2.y * arg2.y)));
+    if (0.0f != temp_f30) {
+        var_f31 /= temp_f30;
+    }
+    return var_f31;
+}
 
-//     var_f31 = (arg2->unk_08 * (arg1->unk_08 - arg0->unk_08))
-//         + ((arg2->unk_00 * (arg1->unk_00 - arg0->unk_00)) + (arg2->unk_04 * (arg1->unk_04 - arg0->unk_04)));
-//     var_f30 = -((arg2->unk_08 * arg2->unk_08) + ((arg2->unk_00 * arg2->unk_00) + (arg2->unk_04 * arg2->unk_04)));
-//     if (var_f30 != 0.0f) {
-//         var_f31 /= var_f30;
-//     }
-//     return var_f31;
-// }
+f32 fn_1_9960(Vec* arg0, Vec* arg1, Vec* arg2) {
+    Vec sp44;
+    f32 var_f31;
+    f32 var_f30;
+    f32 temp_f29;
 
-// float fn_1_9960(Vec *arg0, Vec *arg1, Vec *arg2)
-// {
-//     float sp4C;
-//     float sp48;
-//     float sp44;
-//     float sp40;
-//     float sp3C;
-//     float sp38;
-//     float sp34;
-//     float sp30;
-//     float sp2C;
-//     float sp28;
-//     float sp24;
-//     float sp20;
-//     float sp1C;
-//     float sp18;
-//     float sp14;
-//     float sp10;
-//     float spC;
-//     float sp8;
-//     float var_f27;
-//     float var_f28;
-//     float var_f29;
-//     float var_f30;
-//     float var_f31;
+    if (0.0f == ((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y)))) {
+        return ((arg0->z - arg1->z) * (arg0->z - arg1->z)) + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
+    }
+    var_f31 = fn_1_98A4(*arg0, *arg1, *arg2);
+    fn_1_97CC(*arg1, *arg2, &sp44, var_f31);
+    return ((arg0->z - sp44.z) * (arg0->z - sp44.z)) + (((arg0->x - sp44.x) * (arg0->x - sp44.x)) + ((arg0->y - sp44.y) * (arg0->y - sp44.y)));
+}
 
-//     if (((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y))) == 0.0f) {
-//         return ((arg0->z - arg1->z) * (arg0->z - arg1->z))
-//             + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
-//     }
-//     sp38 = arg0->x;
-//     sp3C = arg0->y;
-//     sp40 = arg0->z;
-//     sp2C = arg1->x;
-//     sp30 = arg1->y;
-//     sp34 = arg1->z;
-//     sp20 = arg2->x;
-//     sp24 = arg2->y;
-//     sp28 = arg2->z;
-//     var_f30 = (sp28 * (sp34 - sp40)) + ((sp20 * (sp2C - sp38)) + (sp24 * (sp30 - sp3C)));
-//     var_f29 = -((sp28 * sp28) + ((sp20 * sp20) + (sp24 * sp24)));
-//     if (var_f29 != 0.0f) {
-//         var_f30 /= var_f29;
-//     }
-//     var_f27 = var_f30;
-//     var_f28 = var_f27;
-//     var_f31 = var_f28;
-//     sp8 = arg2->x;
-//     spC = arg2->y;
-//     sp10 = arg2->z;
-//     sp14 = arg1->x;
-//     sp18 = arg1->y;
-//     sp1C = arg1->z;
-//     if (var_f31 <= 0.0f) {
-//         sp44 = sp14;
-//         sp48 = sp18;
-//         sp4C = sp1C;
-//         var_f31 = 0.0f;
-//     }
-//     else if (var_f31 >= 1.0f) {
-//         sp44 = sp14 + sp8;
-//         sp48 = sp18 + spC;
-//         sp4C = sp1C + sp10;
-//         var_f31 = 1.0f;
-//     }
-//     else {
-//         sp44 = sp14 + (var_f31 * sp8);
-//         sp48 = sp18 + (var_f31 * spC);
-//         sp4C = sp1C + (var_f31 * sp10);
-//     }
-//     return ((arg0->z - sp4C) * (arg0->z - sp4C)) + (((arg0->x - sp44) * (arg0->x - sp44)) + ((arg0->y - sp48) * (arg0->y - sp48)));
-// }
+f32 fn_1_9C9C(Vec* arg0, Vec* arg1, Vec* arg2, Vec* arg3, Vec* arg4) {
+    f32 sp44;
+    f32 sp40;
+    f32 sp3C;
+    f32 sp38;
+    f32 sp34;
+    f32 sp30;
+    f32 sp2C;
+    f32 sp28;
+    f32 sp24;
+    Vec sp18;
+    f32 sp14;
+    f32 sp10;
+    f32 spC;
+    f32 sp8;
+    f32 temp_f25;
+    f32 temp_f26;
+    f32 temp_f28;
+    f32 var_f24;
+    f32 var_f27;
+    f64 temp_f31;
+    f64 temp_f31_2;
+    f64 temp_f31_3;
 
-// float fn_1_9C9C(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4)
-// {
-//     float sp44;
-//     float sp40;
-//     float sp3C;
-//     float sp38;
-//     float sp34;
-//     float sp30;
-//     float sp2C;
-//     float sp28;
-//     float sp24;
-//     float sp20;
-//     float sp1C;
-//     float sp18;
-//     float sp14;
-//     float sp10;
-//     float spC;
-//     float sp8;
-//     float var_f22;
-//     float var_f23;
-//     float var_f24;
-//     float var_f25;
-//     float var_f26;
-//     float var_f27;
-//     float var_f28;
-//     float var_f29;
-//     float var_f30;
-//     double var_f31;
+    if (0.0f == ((arg2->z * arg2->z) + ((arg2->x * arg2->x) + (arg2->y * arg2->y)))) {
+        return ((arg0->z - arg1->z) * (arg0->z - arg1->z)) + (((arg0->x - arg1->x) * (arg0->x - arg1->x)) + ((arg0->y - arg1->y) * (arg0->y - arg1->y)));
+    }
+    var_f27 = fn_1_98A4(*arg0, *arg1, *arg2);
+    fn_1_97CC(*arg1, *arg2, arg3, var_f27);
+    arg4->x = (arg0->x - arg3->x);
+    arg4->y = (arg0->y - arg3->y);
+    arg4->z = (arg0->z - arg3->z);
 
-//     if (((arg2->unk_08 * arg2->unk_08) + ((arg2->unk_00 * arg2->unk_00) + (arg2->unk_04 * arg2->unk_04))) == 0.0f) {
-//         return ((arg0->unk_08 - arg1->unk_08) * (arg0->unk_08 - arg1->unk_08))
-//             + (((arg0->unk_00 - arg1->unk_00) * (arg0->unk_00 - arg1->unk_00)) + ((arg0->unk_04 - arg1->unk_04) * (arg0->unk_04 -
-//             arg1->unk_04)));
-//     }
-//     sp3C = arg0->unk_00;
-//     sp40 = arg0->unk_04;
-//     sp44 = arg0->unk_08;
-//     sp30 = arg1->unk_00;
-//     sp34 = arg1->unk_04;
-//     sp38 = arg1->unk_08;
-//     sp24 = arg2->unk_00;
-//     sp28 = arg2->unk_04;
-//     sp2C = arg2->unk_08;
-//     var_f27 = (sp2C * (sp38 - sp44)) + ((sp24 * (sp30 - sp3C)) + (sp28 * (sp34 - sp40)));
-//     var_f25 = -((sp2C * sp2C) + ((sp24 * sp24) + (sp28 * sp28)));
-//     if (var_f25 != 0.0f) {
-//         var_f27 /= var_f25;
-//     }
-//     var_f22 = var_f27;
-//     var_f23 = var_f22;
-//     var_f30 = var_f23;
-//     spC = arg2->unk_00;
-//     sp10 = arg2->unk_04;
-//     sp14 = arg2->unk_08;
-//     sp18 = arg1->unk_00;
-//     sp1C = arg1->unk_04;
-//     sp20 = arg1->unk_08;
-//     if (var_f30 <= 0.0f) {
-//         arg3->unk_00 = sp18;
-//         arg3->unk_04 = sp1C;
-//         arg3->unk_08 = sp20;
-//         var_f30 = 0.0f;
-//     }
-//     else if (var_f30 >= 1.0f) {
-//         arg3->unk_00 = sp18 + spC;
-//         arg3->unk_04 = sp1C + sp10;
-//         arg3->unk_08 = sp20 + sp14;
-//         var_f30 = 1.0f;
-//     }
-//     else {
-//         arg3->unk_00 = sp18 + (var_f30 * spC);
-//         arg3->unk_04 = sp1C + (var_f30 * sp10);
-//         arg3->unk_08 = sp20 + (var_f30 * sp14);
-//     }
-//     arg4->unk_00 = arg0->unk_00 - arg3->unk_00;
-//     arg4->unk_04 = arg0->unk_04 - arg3->unk_04;
-//     arg4->unk_08 = arg0->unk_08 - arg3->unk_08;
-//     var_f28 = (arg4->unk_08 * arg4->unk_08) + ((arg4->unk_00 * arg4->unk_00) + (arg4->unk_04 * arg4->unk_04));
-//     var_f29 = var_f28;
-//     if (var_f29 > 0.0f) {
-//         var_f31 = __frsqrte(var_f29);
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f29 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f29 * (var_f31 * var_f31)));
-//         var_f31 = 0.5 * var_f31 * (3.0 - (var_f29 * (var_f31 * var_f31)));
-//         sp8 = var_f29 * var_f31;
-//         var_f24 = sp8;
-//     }
-//     else {
-//         var_f24 = var_f29;
-//     }
-//     var_f28 = var_f24;
-//     if (var_f28 != 0.0f) {
-//         var_f26 = 1.0f / var_f28;
-//         arg4->unk_00 = arg4->unk_00 * var_f26;
-//         arg4->unk_04 = arg4->unk_04 * var_f26;
-//         arg4->unk_08 = arg4->unk_08 * var_f26;
-//     }
-//     else {
-//         arg4->unk_08 = 0.0f;
-//         arg4->unk_04 = 0.0f;
-//         arg4->unk_00 = 0.0f;
-//     }
-//     return var_f28;
-// }
+    return fn_1_9634(arg4);
+}
 
-// float fn_1_A14C(Vec *arg0, Vec *arg1, Vec *arg2, Vec *arg3)
-// {
-//     float var_f23;
-//     float var_f24;
-//     float var_f25;
-//     float var_f26;
-//     float var_f27;
-//     float var_f28;
-//     float var_f29;
-//     float var_f30;
-//     float var_f31;
-//     s32 var_r29;
-//     s32 var_r30;
-//     s32 var_r31;
+f32 fn_1_A14C(Vec* arg0, Vec* arg1, Vec* arg2, Vec* arg3) {
+    f32 temp_f31;
+    f32 var_f30;
+    f32 var_f29;
+    f32 var_f28;
+    f32 var_f27;
+    f32 var_f26;
+    s32 var_r31;
+    s32 var_r30;
+    s32 var_r29;
 
-//     var_f30 = -1.0f;
-//     var_r31 = 0;
-//     if (arg3->unk_00 < 0.0f) {
-//         var_f25 = -arg3->unk_00;
-//     }
-//     else {
-//         var_f25 = arg3->unk_00;
-//     }
-//     var_f28 = var_f25;
-//     if (arg3->unk_04 < 0.0f) {
-//         var_f24 = -arg3->unk_04;
-//     }
-//     else {
-//         var_f24 = arg3->unk_04;
-//     }
-//     var_f27 = var_f24;
-//     if (arg3->unk_08 < 0.0f) {
-//         var_f23 = -arg3->unk_08;
-//     }
-//     else {
-//         var_f23 = arg3->unk_08;
-//     }
-//     var_f26 = var_f23;
-//     if (var_f28 >= var_f27) {
-//         if (var_f28 >= var_f26) {
-//             var_r30 = 1;
-//         }
-//         else {
-//             var_r30 = 0x100;
-//         }
-//         var_r31 = var_r30;
-//     }
-//     else {
-//         if (var_f27 >= var_f26) {
-//             var_r29 = 0x10;
-//         }
-//         else {
-//             var_r29 = 0x100;
-//         }
-//         var_r31 = var_r29;
-//     }
-//     if ((var_r31 & 3) != 0) {
-//         if ((arg1->x != 0.0f) || (arg1->z != 0.0f)) {
-//             var_f31 = (arg3->unk_00 * arg1->z) - (arg3->unk_08 * arg1->x);
-//             if (var_f31 == 0.0f) {
-//                 return -1.0f;
-//             }
-//             var_f29 = ((arg3->unk_08 * (arg0->x - arg2->x)) - (arg3->unk_00 * (arg0->z - arg2->z))) / var_f31;
-//             goto block_44;
-//         }
-//         var_f31 = (arg3->unk_04 * arg1->x) - (arg3->unk_00 * arg1->y);
-//         if (var_f31 == 0.0f) {
-//             return -1.0f;
-//         }
-//         var_f29 = ((arg3->unk_00 * (arg0->y - arg2->y)) - (arg3->unk_04 * (arg0->x - arg2->x))) / var_f31;
-//         goto block_44;
-//     }
-//     if ((var_r31 & 0x30) != 0) {
-//         if ((arg1->x != 0.0f) || (arg1->y != 0.0f)) {
-//             var_f31 = (arg3->unk_04 * arg1->x) - (arg3->unk_00 * arg1->y);
-//             if (var_f31 == 0.0f) {
-//                 return -1.0f;
-//             }
-//             var_f29 = ((arg3->unk_00 * (arg0->y - arg2->y)) - (arg3->unk_04 * (arg0->x - arg2->x))) / var_f31;
-//             goto block_44;
-//         }
-//         var_f31 = (arg3->unk_08 * arg1->y) - (arg3->unk_04 * arg1->z);
-//         if (var_f31 == 0.0f) {
-//             return -1.0f;
-//         }
-//         var_f29 = ((arg3->unk_04 * (arg0->z - arg2->z)) - (arg3->unk_08 * (arg0->y - arg2->y))) / var_f31;
-//         goto block_44;
-//     }
-//     if ((arg1->x != 0.0f) || (arg1->z != 0.0f)) {
-//         var_f31 = (arg3->unk_00 * arg1->z) - (arg3->unk_08 * arg1->x);
-//         if (var_f31 == 0.0f) {
-//             return -1.0f;
-//         }
-//         var_f29 = ((arg3->unk_08 * (arg0->x - arg2->x)) - (arg3->unk_00 * (arg0->z - arg2->z))) / var_f31;
-//         goto block_44;
-//     }
-//     var_f31 = (arg3->unk_08 * arg1->y) - (arg3->unk_04 * arg1->z);
-//     if (var_f31 == 0.0f) {
-//         return -1.0f;
-//     }
-//     var_f29 = ((arg3->unk_04 * (arg0->z - arg2->z)) - (arg3->unk_08 * (arg0->y - arg2->y))) / var_f31;
-// block_44:
-//     return var_f29;
-// }
+    var_f30 = -1.0f;
+    var_r31 = 0;
+
+    var_f28 = BOARD_FABS(arg3->x);
+    var_f27 = BOARD_FABS(arg3->y);
+    var_f26 = BOARD_FABS(arg3->z);
+    if (var_f28 >= var_f27) {
+        if (var_f28 >= var_f26) {
+            var_r30 = 1;
+        } else {
+            var_r30 = 0x100;
+        }
+        var_r31 = var_r30;
+    } else {
+        if (var_f27 >= var_f26) {
+            var_r29 = 0x10;
+        } else {
+            var_r29 = 0x100;
+        }
+        var_r31 = var_r29;
+    }
+    if ((var_r31 & 3) != 0) {
+        if ((0.0f != arg1->x) || (0.0f != arg1->z)) {
+            if (0.0f == (temp_f31 = (arg3->x * arg1->z) - (arg3->z * arg1->x))) {
+                return var_f30;
+            }
+            var_f29 = ((arg3->z * (arg0->x - arg2->x)) - (arg3->x * (arg0->z - arg2->z))) / temp_f31;
+        } else if (0.0f == (temp_f31 = (arg3->y * arg1->x) - (arg3->x * arg1->y))) {
+            return var_f30;
+        } else {
+            var_f29 = ((arg3->x * (arg0->y - arg2->y)) - (arg3->y * (arg0->x - arg2->x))) / temp_f31;
+        }
+    } else if ((var_r31 & 0x30) != 0) {
+        if ((0.0f != arg1->x) || (0.0f != arg1->y)) {
+            if (0.0f == (temp_f31 = (arg3->y * arg1->x) - (arg3->x * arg1->y))) {
+                return var_f30;
+            }
+            var_f29 = ((arg3->x * (arg0->y - arg2->y)) - (arg3->y * (arg0->x - arg2->x))) / temp_f31;
+        } else if (0.0f == (temp_f31 = (arg3->z * arg1->y) - (arg3->y * arg1->z))) {
+            return var_f30;
+        } else {
+            var_f29 = ((arg3->y * (arg0->z - arg2->z)) - (arg3->z * (arg0->y - arg2->y))) / temp_f31;
+        }
+    } else if ((0.0f != arg1->x) || (0.0f != arg1->z)) {
+        if (0.0f == (temp_f31 = (arg3->x * arg1->z) - (arg3->z * arg1->x))) {
+            return var_f30;
+        }
+        var_f29 = ((arg3->z * (arg0->x - arg2->x)) - (arg3->x * (arg0->z - arg2->z))) / temp_f31;
+    } else if (0.0f == (temp_f31 = (arg3->z * arg1->y) - (arg3->y * arg1->z))) {
+        return var_f30;
+    } else {
+        var_f29 = ((arg3->y * (arg0->z - arg2->z)) - (arg3->z * (arg0->y - arg2->y))) / temp_f31;
+    }
+    return var_f29;
+}
 
 void fn_1_A60C(omObjData *object)
 {
@@ -3072,11 +2888,11 @@ void fn_1_A688(omObjData *object) { }
 
 Vec lbl_1_data_514 = { -850.0f, 0.0f, -850.0f };
 s32 lbl_1_data_520[25] = {
-    -98, -97, -96, -95, -94,
-    -50, -49, -48, -47, -46,
-    -2, -1, 0, 1, 2,
-    0x2E, 0x2F, 0x30, 0x31, 0x32,
-    0x5E, 0x5F, 0x60, 0x61, 0x62,
+    -0x62, -0x61, -0x60, -0x5F, -0x5E,
+    -0x32, -0x31, -0x30, -0x2F, -0x2E,
+     -0x2,  -0x1,   0x0,   0x1,   0x2,
+     0x2E,  0x2F,  0x30,  0x31,  0x32,
+     0x5E,  0x5F,  0x60,  0x61,  0x62,
 };
 
 u32 lbl_1_data_584[25] = {
@@ -3107,158 +2923,141 @@ u32 lbl_1_data_584[25] = {
     0x50,
 };
 
-// void fn_1_A68C(ModelData *model, Mtx matrix)
-// {
-//     Vec sp14;
-//     Vec sp8;
-//     ? *var_r30;
-//     float var_f31;
-//     omObjData *var_r27;
-//     s32 var_r24;
-//     s32 var_r28;
-//     s32 var_r29;
-//     u8 *var_r26;
-//     void *var_r25;
-//     void *var_r31;
+#define getData(v, off) &( &( *OM_GET_DATA_PTR(lbl_1_bss_DBC, M438UnkType) )[ (u32)(0.028235294f * (v.x - off)) ] )[ (u32)(0.028235294f * (v.z - off)) * 0x30 ]
 
-//     if (omPauseChk() == 0) {
-//         memset(lbl_1_bss_DBC->data, 0, 0x900);
-//         if (lbl_1_bss_DBA == 7) {
-//             for (var_r30 = &lbl_1_bss_298; var_r29 = 0; var_r30 < 0x30; var_r29++; var_r30 += 0x30) {
-//                 if ((var_r30->unk_00 > 1) && (var_r30->unk_00 < 5)) {
-//                     var_f31 = 0.0f;
-//                     for (var_f31 = 0.0f; var_f31 < (35.416668f + var_r30->unk_14); var_f31 += 35.416668f) {
-//                         VECScale(var_r30 + 0x24, &sp8, var_f31);
-//                         VECAdd(var_r30 + 0x18, &sp8, &sp14);
-//                         VECSubtract(&sp14, &lbl_1_data_514, &sp14);
-//                         var_r24 = (0.028235294f * sp14.z) * 0x30;
-//                         var_r25 = (0.028235294f * sp14) + var_r24;
-//                         var_r25 += lbl_1_bss_DBC->data;
-//                         for (var_r28 = 0; var_r28 < 0x19; var_r28++) {
-//                             var_r26 = var_r25 + lbl_1_data_520[var_r28];
-//                             if (*var_r26 < lbl_1_data_584[var_r28]) {
-//                                 *var_r26 = lbl_1_data_584[var_r28];
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//             for (var_r29 = 0; var_r29 < 4; var_r29++) {
-//                 if (lbl_1_bss_DC4[var_r29] != NULL) {
-//                     var_r27 = lbl_1_bss_DC4[var_r29];
-//                     var_r31 = var_r27->data;
-//                     if ((var_r31 != NULL) && (var_r31->unk_68 != 0)) {
-//                         var_r31->unk_68 = 0;
-//                         VECAdd(var_r31 + 0x6C, var_r31 + 0x4C, &sp14);
-//                         var_r31->unk_64 = fn_1_AE18(var_r27->work[0], &sp14, var_r31 + 0x58);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
+void fn_1_A68C(ModelData* model, Mtx matrix) {
+    Vec sp14;
+    Vec sp8;
+    M438StructBss298* var_r30;
+    f32 var_f31;
+    omObjData* temp_r27;
+    s32 var_r28;
+    s32 var_r29;
+    u8* temp_r26;
+    u8* var_r25;
+    M438MainWork *temp_r31;
 
-// u16 fn_1_A8FC(Vec *arg0, float arg8)
-// {
-//     s32 sp34;
-//     float sp30;
-//     s32 sp2C;
-//     Vec sp20;
-//     Vec sp14;
-//     float sp10;
-//     float spC;
-//     float sp8;
-//     Vec *var_r29;
-//     float var_f25;
-//     float var_f28;
-//     float var_f29;
-//     float var_f30;
-//     float var_f31;
-//     double var_f26;
-//     double var_f27;
-//     s32 var_r28;
-//     u16 var_r30;
-//     u8 temp_r0;
-//     void *var_r31;
+    if ((u8)omPauseChk() == 0) {
+        memset(lbl_1_bss_DBC->data, 0, 0x900);
+        if (lbl_1_bss_DBA == 7) {
+            var_r30 = lbl_1_bss_298;
+            for (var_r29 = 0; var_r29 < 0x30; var_r29++, var_r30++) {
+                if ((var_r30->unk_00 > 1U) && (var_r30->unk_00 < 5U)) {
 
-//     var_r29 = arg0;
-//     var_f25 = arg8;
-//     var_r30 = 0;
-//     var_r28 = 0;
-//     var_f28 = 100.0f * (4.5f - (2.0f * var_f25));
-//     var_f31 = VECMag(var_r29);
-//     if (var_f31 > 280.0f) {
-//         if (var_f31 > 560.0f) {
-//             var_r28 = 1;
-//             VECNormalize(var_r29, &sp14);
-//         }
-//         var_f31 -= 280.0f;
-//         var_f31 *= 0.12987013f;
-//         if (var_f31 > 50.0f) {
-//             var_f31 = 500.0f;
-//         }
-//         var_r30 = var_f31;
-//     }
-//     if (lbl_1_bss_DBA == 7) {
-//         var_r31 = lbl_1_bss_DC0->data;
-//         sp2C = var_r31->unk_34;
-//         sp30 = var_r31->unk_38;
-//         sp34 = var_r31->unk_3C;
-//         sp30 = 0.0f;
-//         temp_r0 = var_r31->unk_00;
-//         if (temp_r0 < 4) {
-//             if (temp_r0 < 2) {
-//                 goto block_18;
-//             }
-//             sp8 = sind(var_r31->unk_08);
-//             spC = 0.0f;
-//             sp10 = cosd(var_r31->unk_08);
-//             VECScale(&sp8, &sp20, 600.0f + (100.0f * (8.0f * var_f25)));
-//             var_f30 = fn_1_B440(var_r29, &sp2C, &sp20);
-//             if ((var_f30 > -0.2f) && (var_f30 < 1.0f)) {
-//                 VECScale(&sp20, &sp20, var_f30);
-//                 VECAdd(&sp2C, &sp20, &sp2C);
-//                 VECSubtract(&sp2C, var_r29, &sp20);
-//                 var_f31 = VECMag(&sp20);
-//                 if (var_f31 < var_f28) {
-//                     var_f29 = 0.0f;
-//                     if (var_r28 != 0) {
-//                         var_f29 = VECDotProduct(&sp14, &sp8);
-//                         var_f27 = fabs(var_f29);
-//                         var_f29 = 1.0 - var_f27;
-//                         var_f29 = var_f29;
-//                     }
-//                     var_f31 = (1.0f / var_f28) * (var_f28 - var_f31);
-//                     var_f31 = 0.5f * (var_f31 + (1.0f - ((1.0f - var_f31) * (1.0f - var_f31))));
-//                     var_f31 += (1.0f - var_f31) * var_f29;
-//                     var_f31 = 100.0f + (50.0f * var_f31);
-//                     var_f26 = fabs(var_f30);
-//                     var_f30 = 0.5 + (0.5 * (1.0 - var_f26));
-//                     var_f30 = var_f30;
-//                     var_f31 *= var_f30;
-//                     if (var_f31 > 150.0f) {
-//                         var_f31 = 150.0f;
-//                     }
-//                     var_r30 = var_r30 + var_f31;
-//                 }
-//             }
-//         }
-//         else {
-//         block_18:
-//             VECSubtract(var_r29, &sp2C, &sp20);
-//             var_f31 = VECMag(&sp20);
-//             if (var_f31 < 600.0f) {
-//                 var_f31 = 800.0f - var_f31;
-//                 var_f31 = 20.0f + (0.1f * var_f31);
-//                 if (var_f31 > 100.0f) {
-//                     var_f31 = 100.0f;
-//                 }
-//                 var_r30 = var_r30 + var_f31;
-//             }
-//         }
-//     }
-//     return var_r30;
-// }
+                    var_f31 = 0.0f;
+                    for (var_f31 = 0.0f; var_f31 < (35.416668f + var_r30->unk_14); var_f31 += 35.416668f) {
+                        PSVECScale(&var_r30->unk_24, &sp8, var_f31);
+                        PSVECAdd(&var_r30->unk_18, &sp8, &sp14);
+                        PSVECSubtract(&sp14, &lbl_1_data_514, &sp14);
+
+                        // @todo make this look nicer
+                        // var_r25 = getData(sp14, 0);
+                        var_r25 = getData(sp14, 0);
+                        for (var_r28 = 0; var_r28 < 0x19; var_r28++) {
+                            temp_r26 = &var_r25[lbl_1_data_520[var_r28]];
+                            if (temp_r26[0] < lbl_1_data_584[var_r28]) {
+                                temp_r26[0] = lbl_1_data_584[var_r28];
+                            }
+                        }
+                    }
+                }
+            }
+            for (var_r29 = 0; var_r29 < 4; var_r29++) {
+                if ((omObjData* ) lbl_1_bss_DC4[var_r29]) {
+                    temp_r27 = lbl_1_bss_DC4[var_r29];
+                    temp_r31 = temp_r27->data;
+                    if ((temp_r31) && (temp_r31->unk_68 != 0)) {
+                        temp_r31->unk_68 = 0;
+                        PSVECAdd(&temp_r31->unk_6C, &temp_r31->unk_4C, &sp14);
+                        temp_r31->unk_64 = fn_1_AE18(temp_r27->work[0], temp_r31->unk_7C, &sp14, &temp_r31->unk_58);
+                    }
+                }
+            }
+        }
+    }
+}
+
+u32 fn_1_A8FC(Vec* arg0, f32 arg8) {
+    Vec sp2C;
+    Vec sp20;
+    Vec sp14;
+    Vec sp8;
+    f32 var_f31;
+    f32 var_f30;
+    f32 var_f29;
+    f32 temp_f28;
+    s32 var_r28;
+    u32 var_r30;
+    M438MainWork4 *temp_r31;
+
+    var_r30 = 0;
+    var_r28 = 0;
+    temp_f28 = 100.0f * (4.5f - (2.0f * arg8));
+    var_f31 = PSVECMag(arg0);
+    if (var_f31 > 280.0f) {
+        if (var_f31 > 560.0f) {
+            var_r28 = 1;
+            PSVECNormalize(arg0, &sp14);
+        }
+        var_f31 -= 280.0f;
+        var_f31 *= 0.12987013f;
+        if (var_f31 > 50.0f) {
+            var_f31 = 500.0f;
+        }
+        var_r30 = var_f31;
+    }
+    if (lbl_1_bss_DBA == 7) {
+        temp_r31 = lbl_1_bss_DC0->data;
+        sp2C = temp_r31->unk_34;
+        sp2C.y = 0.0f;
+        switch (temp_r31->unk_00) {
+            case 2:
+            case 3:
+                sp8.x = sind(temp_r31->unk_08);
+                sp8.y = 0.0f;
+                sp8.z = cosd(temp_r31->unk_08);
+                PSVECScale(&sp8, &sp20, 600.0f + (100.0f * (8.0f * arg8)));
+                var_f30 = fn_1_B440(arg0, &sp2C, &sp20);
+                if (var_f30 > -0.2f && var_f30 < 1.0f) {
+                    PSVECScale(&sp20, &sp20, var_f30);
+                    PSVECAdd(&sp2C, &sp20, &sp2C);
+                    PSVECSubtract(&sp2C, arg0, &sp20);
+                    var_f31 = PSVECMag(&sp20);
+                    if (var_f31 < temp_f28) { 
+                        var_f29 = 0.0f;
+                        if (var_r28 != 0) {
+                            var_f29 = PSVECDotProduct(&sp14, &sp8);
+                            var_f29 = 1.0 - fabs(var_f29);
+                        }
+                        var_f31 = (1.0f / temp_f28) * (temp_f28 - var_f31);
+                        var_f31 = 0.5f * (var_f31 + (1.0f - ((1.0f - var_f31) * (1.0f - var_f31))));
+                        var_f31 += (1.0f - var_f31) * var_f29;
+                        var_f31 = 100.0f + 50.0f * var_f31;
+                        var_f30 = 0.5 + 0.5 * (1.0 - fabs(var_f30));
+                        var_f31 *= var_f30;
+                        if (var_f31 > 150.0f) {
+                            var_f31 = 150.0f;
+                        }
+                        var_r30 += var_f31;
+                    }
+                }
+                break;
+            default:
+                PSVECSubtract(arg0, &sp2C, &sp20);
+                var_f31 = PSVECMag(&sp20);
+                if (var_f31 < 600.0f) {
+                    var_f31 = 800.0f - var_f31;
+                    var_f31 = 20.0f + (0.1f * var_f31);
+                    if (var_f31 > 100.0f) {
+                        var_f31 = 100.0f;
+                    }
+                    var_r30 += var_f31;
+                }
+                break;
+        }
+    }
+    return var_r30;
+}
 
 s32 lbl_1_data_5E8[9] = { 0, -49, -48, -47, -1, 1, 0x2F, 0x30, 0x31 };
 
