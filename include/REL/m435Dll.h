@@ -17,12 +17,12 @@ typedef struct {
     /* 0x0C */ StructData3A0* unk0C;
     /* 0x10 */ void (*unk10)(void);
     /* 0x14 */ s32 (*unk14)(void);
-} StructBss84; // Size unknown
+} StructBss84; // Size 0x18
 
 typedef struct {
-    /* 0x00 */ void (*unk00)(void); // inferred
-    /* 0x04 */ void (*unk04)(void); // inferred
-    /* 0x08 */ char unk08[4];
+    /* 0x00 */ char unk00[4];
+    /* 0x04 */ void (*unk04)(void);
+    /* 0x08 */ void (*unk08)(void);
     /* 0x0C */ float unk0C;
     /* 0x10 */ float unk10;
     /* 0x14 */ float unk14;
@@ -38,7 +38,9 @@ typedef struct {
     /* 0x3C */ float unk3C;
     /* 0x40 */ float unk40;
     /* 0x44 */ float unk44;
-} StructBssE08; // Size unknown
+    /* 0x48 */ s32 unk48[7];
+    /* 0x64 */ float unk64[7];
+} StructBssE08; // Size 0x80
 
 typedef struct {
     /* 0x000 */ omObjData* unk00;
@@ -55,7 +57,7 @@ typedef struct {
     /* 0x474 */ float unk474;
     /* 0x478 */ float unk478;
     /* 0x47C */ float unk47C;
-} StructFn19894; // Size unknown
+} StructFn19894; // Size 0x480
 
 float fn_1_1526C(float arg0, float arg1, float arg2, float arg3);
 float fn_1_15294(float arg0, float arg1, float arg2);
@@ -75,10 +77,10 @@ void fn_1_17804(StructBssE08* arg0, StructBssE08* arg1, float arg2, float arg3, 
 void fn_1_188E0(StructBssE08* arg0, StructBssE08* arg1, float arg2, float arg3, float arg4);
 void fn_1_19530(omObjData* arg0, s32 arg1, Vec* arg2, Vec* arg3, s32 arg4, s32 arg5, s32 arg6);
 void fn_1_195F4(omObjData* arg0, s32 arg1, Vec* arg2, Vec* arg3, s32 arg4, s32 arg5, s32 arg6);
-void fn_1_19658(omObjData* arg0, s32 arg1, s32 arg2, float arg3);
+void fn_1_19658(omObjData* arg0, s32 arg1, float arg2, s32 arg3);
 void fn_1_19894(StructFn19894* arg0, s32 arg1);
 void fn_1_198F8(StructFn19894* arg0, s32 arg1);
 void fn_1_19960(StructFn19894* arg0, s32 arg1);
-void fn_1_19968(StructFn19894* arg0);
+void fn_1_19968(StructFn19894* arg0, s32 arg1);
 void fn_1_19974(StructFn19894* arg0, s32 arg1);
 void fn_1_1A33C(Process* arg0, StructFn19894* arg1, s32 arg2, char* arg3, s32 arg4, s32 arg5);

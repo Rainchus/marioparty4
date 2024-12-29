@@ -565,3 +565,90 @@ dolphin/os/OS.c:
 	.data       start:0x801588E8 end:0x80158AA8
 	.bss        start:0x801C26A0 end:0x801C26F0
 	.sbss       start:0x801F1668 end:0x801F1698
+
+musyx/runtime/seq.c:
+	.text       start:0x800F26B0 end:0x800F6620
+
+musyx/runtime/synth.c:
+	.text       start:0x800F6620 end:0x800F997C
+
+musyx/runtime/seq_api.c:
+	.text       start:0x800F997C end:0x800F9BFC
+
+musyx/runtime/snd_synthapi.c:
+	.text       start:0x800F9BFC end:0x800FA37C
+
+musyx/runtime/stream.c:
+	.text       start:0x800FA37C end:0x800FDEE8
+
+musyx/runtime/synthdata.c:
+	.text       start:0x800FDEE8 end:0x800FFC78
+
+musyx/runtime/synthmacros.c:
+	.text       start:0x800FFC78 end:0x801049D0
+
+musyx/runtime/synthvoice.c:
+	.text       start:0x801049D0 end:0x80106460
+
+musyx/runtime/synth_ac.c:
+	.text       start:0x80106460 end:0x80106580
+
+musyx/runtime/synth_adsr.c:
+	.text       start:0x80106580 end:0x80106D40
+
+musyx/runtime/synth_vsamples.c:
+	.text       start:0x80106D40 end:0x801074C8
+
+musyx/runtime/s_data.c:
+	.text       start:0x801074C8 end:0x80108020
+
+musyx/runtime/hw_dspctrl.c:
+	.text       start:0x80108020 end:0x8010B434
+
+musyx/runtime/hw_volconv.c:
+	.text       start:0x8010B434 end:0x8010BB24
+
+musyx/runtime/snd3d.c:
+	.text       start:0x8010BB24 end:0x8010DEF4
+
+musyx/runtime/snd_init.c:
+	.text       start:0x8010DEF4 end:0x8010E048
+
+musyx/runtime/snd_math.c:
+	.text       start:0x8010E048 end:0x8010E408
+
+musyx/runtime/snd_midictrl.c:
+	.text       start:0x8010E408 end:0x801100DC
+
+musyx/runtime/snd_service.c:
+	.text       start:0x801100DC end:0x80110288
+
+musyx/runtime/hardware.c:
+	.text       start:0x80110288 end:0x8011128C
+
+musyx/runtime/hw_aramdma.c:
+	.text       start:0x8011128C end:0x80111F00
+
+musyx/runtime/hw_dolphin.c:
+	.text       start:0x80111F00 end:0x801123F8
+
+musyx/runtime/hw_memory.c:
+	.text       start:0x801123F8 end:0x8011244C
+
+musyx/runtime/CheapReverb/creverb_fx.c:
+	.text       start:0x8011244C end:0x80112508
+
+musyx/runtime/CheapReverb/creverb.c:
+	.text       start:0x80112508 end:0x80112DC4
+
+musyx/runtime/StdReverb/reverb_fx.c:
+	.text       start:0x80112DC4 end:0x80112E84
+
+musyx/runtime/StdReverb/reverb.c:
+	.text       start:0x80112E84 end:0x80113BC8
+
+musyx/runtime/Delay/delay_fx.c:
+	.text       start:0x80113BC8 end:0x80113F74
+
+musyx/runtime/Chorus/chorus_fx.c:
+	.text       start:0x80113F74 end:0x801147DC
