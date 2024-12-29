@@ -20,8 +20,8 @@ Supported versions:
 - `GMPE01_00`: Rev 0 (USA)
 - `GMPE01_01`: Rev 1 (USA)
 - `GMPP01_00`: Rev 0 (PAL)
-- `GMPP01_02`: REV 2 (PAL) 
-- `GMPJ01_00`: REV 0 (JP)
+- `GMPP01_02`: Rev 2 (PAL) 
+- `GMPJ01_00`: Rev 0 (JP)
 
 Dependencies
 ============
