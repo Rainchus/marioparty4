@@ -2396,8 +2396,8 @@ void fn_1_B01C(void)
     temp_f31 = lbl_1_bss_98[lbl_1_bss_28].x - temp_r30->unk4.x;
     temp_f30 = lbl_1_bss_98[lbl_1_bss_28].z - temp_r30->unk4.z;
     temp_r30->unk64 = atan2d(temp_f31, temp_f30);
-    omVibrate(temp_r31->unk114, 2 * REFRESH_RATE, 6, 6);
-    omVibrate(temp_r30->unk114, 2 * REFRESH_RATE, 6, 6);
+    omVibrate(temp_r31->unk114, (VERSION_JP ? 3 : 2) * REFRESH_RATE, 6, 6);
+    omVibrate(temp_r30->unk114, (VERSION_JP ? 3 : 2) * REFRESH_RATE, 6, 6);
 }
 
 void fn_1_B754(float *arg0, float arg1, float arg2, s32 arg3)

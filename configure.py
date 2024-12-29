@@ -278,6 +278,23 @@ cflags_musyx = [
     "-DMUSY_TARGET=MUSY_TARGET_DOLPHIN",
 ]
 
+cflags_musyx_debug = [
+    "-proc gecko",
+    "-fp hard",
+    "-nodefaults",
+    "-nosyspath",
+    "-i include",
+    "-i extern/musyx/include",
+    "-i libc",
+    "-g",
+    "-sym on",
+    "-D_DEBUG=1",
+    "-fp hard",
+    "-enum int",
+    "-Cpp_exceptions off",
+    "-DMUSY_TARGET=MUSY_TARGET_DOLPHIN",
+]
+
 # REL flags
 cflags_rel = [
     *cflags_base,
@@ -736,21 +753,21 @@ config.libs = [
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synth.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/seq_api.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/snd_synthapi.c"),
-            Object(NonMatching, "musyx/runtime/stream.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/stream.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synthdata.c"),
-            Object(NonMatching, "musyx/runtime/synthmacros.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synthmacros.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synthvoice.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synth_ac.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synth_dbtab.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synth_adsr.c"),
-            Object(NonMatching, "musyx/runtime/synth_vsamples.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/synth_vsamples.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/s_data.c"),
-            Object(NonMatching, "musyx/runtime/hw_dspctrl.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/hw_dspctrl.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/hw_volconv.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/snd3d.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/snd_init.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/snd_math.c"),
-            Object(NonMatching, "musyx/runtime/snd_midictrl.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/snd_midictrl.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/snd_service.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/hardware.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "musyx/runtime/dsp_import.c"),
@@ -961,7 +978,7 @@ config.libs = [
         "m415Dll",  # Stamp Out!
         objects={
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m415Dll/main.c"),
-            Object(NonMatching, "REL/m415Dll/map.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m415Dll/map.c"),
         },
     ),
     Rel(
@@ -983,14 +1000,14 @@ config.libs = [
     Rel(
         "m418Dll",  # Hide and Go BOOM!
         objects={
-            Object(NonMatching, "REL/m418Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m418Dll/main.c"),
             Object(NonMatching, "REL/m418Dll/sequence.c"),
         },
     ),
     Rel(
         "m419Dll",  # Tree Stomp
         objects={
-            Object(NonMatching, "REL/m419Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m419Dll/main.c"),
         },
     ),
     Rel(
@@ -1014,7 +1031,7 @@ config.libs = [
     Rel(
         "m422Dll",  # Money Belts
         objects={
-            Object(NonMatching, "REL/m422Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m422Dll/main.c"),
         },
     ),
     Rel(
@@ -1064,7 +1081,7 @@ config.libs = [
     Rel(
         "m429Dll",  # Team Treasure Trek
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/m429Dll/main.c"),
+            Object(Matching, "REL/m429Dll/main.c"),
         },
     ),
     Rel(
@@ -1108,8 +1125,8 @@ config.libs = [
     Rel(
         "m435Dll",  # Darts of Doom
         objects={
-            Object(NonMatching, "REL/m435Dll/main.c"),
-            Object(NonMatching, "REL/m435Dll/sequence.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m435Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01" "GMPJ01_00"), "REL/m435Dll/sequence.c"),
         },
     ),
     Rel(
@@ -1171,10 +1188,10 @@ config.libs = [
     Rel(
         "m444dll",  # Reversal of Fortune
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/pinball.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/datalist.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m444dll/shadow.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/pinball.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/datalist.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/m444dll/shadow.c"),
         },
     ),
     Rel(
@@ -1249,8 +1266,8 @@ config.libs = [
     Rel(
         "m456Dll",  # Take a Breather
         objects={
-            Object(NonMatching, "REL/m456Dll/main.c"),
-            Object(NonMatching, "REL/m456Dll/stage.c"),
+            Object(Matching, "REL/m456Dll/main.c"),
+            Object(Matching, "REL/m456Dll/stage.c"),
         },
     ),
     Rel(
@@ -1268,7 +1285,7 @@ config.libs = [
     Rel(
         "m459dll",  # Mushroom Medic
         objects={
-            Object(NonMatching, "REL/m459dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m459dll/main.c"),
         },
     ),
     Rel(
@@ -1454,95 +1471,95 @@ config.libs = [
     Rel(
         "w01Dll",  # Toad's Midway Madness
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w01Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w01Dll/mg_coin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w01Dll/mg_item.c"),
+            Object(Matching, "REL/w01Dll/main.c"),
+            Object(Matching, "REL/w01Dll/mg_coin.c"),
+            Object(Matching, "REL/w01Dll/mg_item.c"),
         },
     ),
     Rel(
         "w02Dll",  # Goomba's Greedy Gala
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/gendice.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/gamble.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/mg_coin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/mg_item.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/shuffleboard.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w02Dll/roulette.c"),
+            Object(Matching, "REL/w02Dll/main.c"),
+            Object(Matching, "REL/w02Dll/gendice.c"),
+            Object(Matching, "REL/w02Dll/gamble.c"),
+            Object(Matching, "REL/w02Dll/mg_coin.c"),
+            Object(Matching, "REL/w02Dll/mg_item.c"),
+            Object(Matching, "REL/w02Dll/shuffleboard.c"),
+            Object(Matching, "REL/w02Dll/roulette.c"),
         },
     ),
     Rel(
         "w03Dll",  # Shy Guy's Jungle Jam
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/statue.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/condor.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/river.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/smoke.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/mg_coin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w03Dll/mg_item.c"),
+            Object(Matching, "REL/w03Dll/main.c"),
+            Object(Matching, "REL/w03Dll/statue.c"),
+            Object(Matching, "REL/w03Dll/condor.c"),
+            Object(Matching, "REL/w03Dll/river.c"),
+            Object(Matching, "REL/w03Dll/smoke.c"),
+            Object(Matching, "REL/w03Dll/mg_coin.c"),
+            Object(Matching, "REL/w03Dll/mg_item.c"),
         },
     ),
     Rel(
         "w04Dll",  # Boo's Haunted Bash
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w04Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w04Dll/bridge.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w04Dll/boo_event.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w04Dll/big_boo.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w04Dll/mg_item.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w04Dll/mg_coin.c"),
+            Object(Matching, "REL/w04Dll/main.c"),
+            Object(Matching, "REL/w04Dll/bridge.c"),
+            Object(Matching, "REL/w04Dll/boo_event.c"),
+            Object(Matching, "REL/w04Dll/big_boo.c"),
+            Object(Matching, "REL/w04Dll/mg_item.c"),
+            Object(Matching, "REL/w04Dll/mg_coin.c"),
         },
     ),
     Rel(
         "w05Dll",  # Koopa's Seaside Soiree
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w05Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w05Dll/hotel.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w05Dll/monkey.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w05Dll/dolphin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w05Dll/mg_item.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w05Dll/mg_coin.c"),
+            Object(Matching, "REL/w05Dll/main.c"),
+            Object(Matching, "REL/w05Dll/hotel.c"),
+            Object(Matching, "REL/w05Dll/monkey.c"),
+            Object(Matching, "REL/w05Dll/dolphin.c"),
+            Object(Matching, "REL/w05Dll/mg_item.c"),
+            Object(Matching, "REL/w05Dll/mg_coin.c"),
         },
     ),
     Rel(
         "w06Dll",  # Bowser's Gnarly Party
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w06Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w06Dll/mg_item.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w06Dll/mg_coin.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w06Dll/fire.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w06Dll/bridge.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w06Dll/bowser.c"),
+            Object(Matching, "REL/w06Dll/main.c"),
+            Object(Matching, "REL/w06Dll/mg_item.c"),
+            Object(Matching, "REL/w06Dll/mg_coin.c"),
+            Object(Matching, "REL/w06Dll/fire.c"),
+            Object(Matching, "REL/w06Dll/bridge.c"),
+            Object(Matching, "REL/w06Dll/bowser.c"),
         },
     ),
     Rel(
         "w10Dll",  # Tutorial board
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w10Dll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w10Dll/host.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w10Dll/scene.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w10Dll/tutorial.c"),
+            Object(Matching, "REL/w10Dll/main.c"),
+            Object(Matching, "REL/w10Dll/host.c"),
+            Object(Matching, "REL/w10Dll/scene.c"),
+            Object(Matching, "REL/w10Dll/tutorial.c"),
         },
     ),
     Rel(
         "w20Dll",  # Mega Board Mayhem
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w20Dll/main.c"),
+            Object(Matching, "REL/w20Dll/main.c"),
         },
     ),
     Rel(
         "w21Dll",  # Mini Board Mad Dash
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/w21Dll/main.c"),
+            Object(Matching, "REL/w21Dll/main.c"),
         },
     ),
     Rel(
         "ztardll",
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/ztardll/main.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/ztardll/font.c"),
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/ztardll/select.c"),
+            Object(Matching, "REL/ztardll/main.c"),
+            Object(Matching, "REL/ztardll/font.c"),
+            Object(Matching, "REL/ztardll/select.c"),
         },
     ),
 ]

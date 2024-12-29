@@ -13,6 +13,8 @@
 
 #include "REL/ztardll.h"
 
+extern s32 charVoiceGroupStat[8];
+
 void fn_1_1774(void);
 void fn_1_1CF0(void);
 void fn_1_1DA0(void);
@@ -763,7 +765,7 @@ void fn_1_33B0(void)
         var_r30 = HuSprCreate(var_r29, 0x64, mgBattleStarMax + 1);
     }
     HuSprGrpMemberSet(lbl_1_bss_50, 1, var_r30);
-    HuSprPosSet(lbl_1_bss_50, 1, 342.0f, 80.0f);
+    HuSprPosSet(lbl_1_bss_50, 1, VERSION_JP ? 234.0f : 342.0f, 80.0f);
     HuSprScaleSet(lbl_1_bss_50, 1, 0.0f, 0.0f);
     HuSprGrpDrawNoSet(lbl_1_bss_50, 0x7F);
     var_r29 = HuSprAnimReadFile(DATA_MAKE_NUM(DATADIR_ZTAR, 9));
@@ -1096,17 +1098,41 @@ void fn_1_4948(void)
 
 void fn_1_51BC(s16 arg0)
 {
-    omOvlHisData *var_r31;
+    s16 var_r31;
+    omOvlHisData *var_r30;
+    u32 var_r29;
 
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 60);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 0x3C);
     HuAudSeqAllFadeOut(0x3E8);
-
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    var_r31 = omOvlHisGet(0);
-    omOvlHisChg(0, OVL_ZTAR, arg0, var_r31->stat);
+#if !VERSION_ENG
+    if ((GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8) && (GWPlayerCfg->character >= 8)) {
+        msmMusStopAll(1, 0);
+        msmSeStopAll(1, 0);
+        var_r29 = OSGetTick();
+        while (TRUE) {
+            if ((msmMusGetNumPlay(1) != 0) || (msmSeGetNumPlay(1) != 0)) {
+                if (((OSGetTick() - var_r29) / (*((u32 *)0x800000F8) / 4 / 1000)) >= 0x1F4) {
+                    break;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        msmSysDelGroupBase(0);
+#if VERSION_PAL
+        for (var_r31 = 0; var_r31 < 8; var_r31++) {
+            charVoiceGroupStat[var_r31] = 0;
+        }
+#endif
+    }
+#endif
+    var_r30 = omOvlHisGet(0);
+    omOvlHisChg(0, OVL_ZTAR, arg0, var_r30->stat);
     omOvlCallEx(OVL_M433, 1, 0, 0);
     while (TRUE) {
         HuPrcVSleep();
@@ -1239,6 +1265,9 @@ s32 fn_1_524C(s32 arg0)
     var_r22 = &winData[var_r24];
     HuWinPriSet(var_r24, 5);
     HuWinPosSet(var_r24, (576.0f - var_r22->w) / 2, 300.0f);
+#if VERSION_PAL
+    HuWinScaleSet(var_r24, 0.95f, 1.0f);
+#endif
     HuWinAttrSet(var_r24, 0x800);
     var_r30 = 0;
     var_r23 = 0;
@@ -1400,6 +1429,11 @@ void fn_1_66F8(void)
     for (var_r31 = 0; var_r31 < 4; var_r31++) {
         GWPlayerCfg[var_r31].character = -1;
     }
+#if VERSION_PAL
+    for (var_r31 = 0; var_r31 < 8; var_r31++) {
+        charVoiceGroupStat[var_r31] = 0;
+    }
+#endif
     mgPracticeEnableF = 0;
     omOvlReturnEx(1, 1);
     HuPrcEnd();
