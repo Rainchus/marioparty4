@@ -2,9 +2,7 @@
 #include "ext_math.h"
 #include "game/chrman.h"
 #include "game/hsfman.h"
-#include "game/hsfmotion.h"
 #include "game/minigame_seq.h"
-#include "game/object.h"
 #include "game/objsub.h"
 #include "game/pad.h"
 #include "game/wipe.h"
@@ -1377,7 +1375,7 @@ M418DllUnkStruct8 lbl_1_data_294[3] = {
 };
 
 void fn_1_5D28(void) {
-    fn_1_AEDC(&lbl_1_bss_50, (M418DllUnkStruct8**)&lbl_1_data_294);
+    fn_1_AEDC(&lbl_1_bss_50, &lbl_1_data_294[0]);
 }
 
 s32 fn_1_5D58(void) {
@@ -2155,7 +2153,7 @@ M418DllUnkStruct8 lbl_1_data_348[11] = {
 };
 
 void fn_1_8480(void) {
-    fn_1_AEDC(&lbl_1_bss_38, (M418DllUnkStruct8**)&lbl_1_data_348);
+    fn_1_AEDC(&lbl_1_bss_38, &lbl_1_data_348[0]);
 }
 
 s32 fn_1_84B0(void) {
@@ -2527,7 +2525,7 @@ M418DllUnkStruct8 lbl_1_data_444[8] = {
 };
 
 void fn_1_9334(void) {
-    fn_1_AEDC(&lbl_1_bss_20, (M418DllUnkStruct8**)&lbl_1_data_444);
+    fn_1_AEDC(&lbl_1_bss_20, &lbl_1_data_444[0]);
 }
 
 s32 fn_1_9364(void) {

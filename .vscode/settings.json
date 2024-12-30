@@ -17,6 +17,7 @@
     "*.s": "plaintext",
     "*.json": "jsonc",
     "*.c": "c",
+    "*.asm": "masm",
     "*.inc": "c",
     ".clangd": "yaml",
     "m443dll.h": "c",
@@ -25,7 +26,15 @@
     "m438dll.h": "c",
     "audio.h": "c",
     "musyx.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "m418dll.h": "c",
+    "ext_math.h": "c",
+    "mtx.h": "c",
+    "types.h": "c",
+    "corecrt_math.h": "c",
+    "corecrt.h": "c",
+    "vcruntime.h": "c",
+    "hsfmotion.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {
