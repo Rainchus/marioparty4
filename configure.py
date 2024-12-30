@@ -640,7 +640,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/thp/THPDec.c"),
-            Object(NonMatching, "dolphin/thp/THPAudio.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/thp/THPAudio.c"),
         ],
     },
     {
