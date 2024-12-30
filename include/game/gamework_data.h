@@ -110,11 +110,11 @@ typedef struct player_state {
 } PlayerState; //size of 0x30
 
 typedef struct pause_backup_config {
-	u8 explain_mg : 1;
-	u8 show_com_mg : 1;
-	u8 mg_list : 2;
-	u8 mess_speed : 2;
-	u8 save_mode : 2;
+    u8 explain_mg : 1;
+    u8 show_com_mg : 1;
+    u8 mg_list : 2;
+    u8 mess_speed : 2;
+    u8 save_mode : 2;
 } PauseBackupConfig;
 
 typedef struct game_stat {
@@ -152,6 +152,11 @@ extern PlayerState GWPlayer[4];
 extern SystemState GWSystem;
 extern GameStat GWGameStat;
 
+static inline s32 GWPlayerCfgGroupGet(s32 player)
+{
+    return GWPlayerCfg[player].group;
+}
+
 static inline s32 GWTeamGet(void)
 {
     return GWSystem.team;
@@ -159,12 +164,12 @@ static inline s32 GWTeamGet(void)
 
 static inline s32 GWMGTypeGet(void)
 {
-	return GWSystem.mg_type;
+    return GWSystem.mg_type;
 }
 
 static inline void GWMGTypeSet(s32 type)
 {
-	GWSystem.mg_type = type;
+    GWSystem.mg_type = type;
 }
 
 static inline s32 GWPartyGet(void)
@@ -190,9 +195,9 @@ static inline s32 GWRumbleGet(void)
 static inline void GWRumbleSet(s32 value)
 {
     GWGameStat.rumble = value;
-	if(value == 0) {
-		HuPadRumbleAllStop();
-	}
+    if(value == 0) {
+        HuPadRumbleAllStop();
+    }
 }
 
 static inline s32 GWBonusStarGet(void)
@@ -245,39 +250,39 @@ static inline s32 GWMessSpeedGet(void)
 static inline void GWMessSpeedSet(s32 value)
 {
     #if VERSION_NTSC
-	GWSystem.mess_speed = value;
-	switch(value) {
-		case 0:
-			GWSystem.mess_delay = 16;
-			break;
-			
-		case 2:
-			GWSystem.mess_delay = 48;
-			break;
-			
-		default:
-			GWSystem.mess_delay = 32;
-			break;
-	}
+    GWSystem.mess_speed = value;
+    switch(value) {
+        case 0:
+            GWSystem.mess_delay = 16;
+            break;
+
+        case 2:
+            GWSystem.mess_delay = 48;
+            break;
+
+        default:
+            GWSystem.mess_delay = 32;
+            break;
+    }
     #else
     GWSystem.mess_speed = value;
-	switch(value) {
-		case 0:
-			GWSystem.mess_delay = 32;
-			break;
-			
+    switch(value) {
+        case 0:
+            GWSystem.mess_delay = 32;
+            break;
+
         case 2:
-			GWSystem.mess_delay = 64;
-			break;
+            GWSystem.mess_delay = 64;
+            break;
             
-		case 1:
-			GWSystem.mess_delay = 48;
-			break;
-			
-		default:
-			GWSystem.mess_delay = 120;
-			break;
-	}
+        case 1:
+            GWSystem.mess_delay = 48;
+            break;
+
+        default:
+            GWSystem.mess_delay = 120;
+            break;
+    }
     #endif
 }
 
@@ -289,7 +294,7 @@ static inline void GWSaveModeSet(s32 value)
 static inline s32 GWSaveModeGet(void)
 {
     if (GWSystem.save_mode == 3) {
-		GWSaveModeSet(1);
+        GWSaveModeSet(1);
     }
     return GWSystem.save_mode;
 }
@@ -326,29 +331,29 @@ static inline void GWLuckyValueSet(s32 value)
 
 static inline s16 GWPlayerCoinBattleGet(s32 player)
 {
-	return GWPlayer[player].coins_battle;
+    return GWPlayer[player].coins_battle;
 }
 
 static inline s16 GWPlayerCoinCollectGet(s32 player)
 {
-	return GWPlayer[player].coin_collect;
+    return GWPlayer[player].coin_collect;
 }
 
 static inline void GWPlayerCoinCollectSet(s32 player, s16 value)
 {
-	GWPlayer[player].coin_collect = value;
+    GWPlayer[player].coin_collect = value;
 }
 
 static inline s16 GWPlayerCoinWinGet(s32 player)
 {
-	return GWPlayer[player].coin_win;
+    return GWPlayer[player].coin_win;
 }
 
 static inline void GWPlayerCoinWinSet(s32 player, s16 value)
 {
-	if (_CheckFlag(FLAG_ID_MAKE(1, 12)) == 0) {
-		GWPlayer[player].coin_win = value;
-	}
+    if (_CheckFlag(FLAG_ID_MAKE(1, 12)) == 0) {
+        GWPlayer[player].coin_win = value;
+    }
 }
 
 #define GWPlayerCoinWinAdd(player, value) GWPlayerCoinWinSet((player), GWPlayerCoinWinGet((player))+(value))

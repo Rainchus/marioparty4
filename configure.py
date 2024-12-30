@@ -1037,7 +1037,7 @@ config.libs = [
     Rel(
         "m423Dll",  # GOOOOOOOAL!!
         objects={
-            Object(NonMatching, "REL/m423Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m423Dll/main.c"),
         },
     ),
     Rel(
