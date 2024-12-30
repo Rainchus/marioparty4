@@ -567,7 +567,7 @@ config.libs = [
     DolphinLib(
         "ar",
         [
-            Object(NonMatching, "dolphin/ar/ar.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/ar/ar.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/ar/arq.c"),
         ],
     ),
