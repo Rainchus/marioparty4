@@ -4,16 +4,8 @@
 #include "game/audio.h"
 #include "game/hsfman.h"
 #include "game/minigame_seq.h"
-#include "game/object.h"
 #include "game/objsub.h"
 #include "game/wipe.h"
-
-// STRUCT
-typedef struct _M424DllMainStruct {
-    Vec rot;
-    Vec center;
-    f32 zoom;
-} M424DllMainStruct;
 
 // BSS
 Process* lbl_1_bss_4C;
@@ -65,17 +57,6 @@ void fn_1_FF0(void);
 void fn_1_11EC(omObjData* object);
 void fn_1_1204(s32, s32, f32);
 f32 fn_1_16C0(f32, f32, f32);
-void fn_1_1B8C(void);
-void fn_1_1AB8(Process*);
-f32 fn_1_213C(void);
-void fn_1_2720(Process*);
-void fn_1_2880(void);
-s32 fn_1_8A2C(void);
-void fn_1_93F0(Process*);
-void fn_1_94A4(void);
-s32 fn_1_B888(void);
-s32 fn_1_B8AC(void);
-s32 fn_1_B924(void);
 
 /// FUNCTIONS ///
 
@@ -438,8 +419,3 @@ f32 fn_1_16C0(f32 arg0, f32 arg1, f32 arg2) {
     temp_f24 = fabs(var_f23 * arg0);
     return fn_1_1470(arg2, arg1, temp_f24);
 }
-
-// // @todo move to map.c?
-// Vec lbl_1_data_E0 = { 0.0f, 3000.0f, 1.0f };
-// Vec lbl_1_data_EC = { 0.0f, 1.0f, 0.0f };
-// Vec lbl_1_data_F8 = { 0.0f, 0.0f, 0.0f };

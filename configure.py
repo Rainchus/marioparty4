@@ -1044,7 +1044,7 @@ config.libs = [
         "m424Dll",  # Blame it on the Crane
         objects={
             Object(MatchingFor("GMPE01_00"), "REL/m424Dll/main.c"),
-            Object(NonMatching, "REL/m424Dll/map.c"),
+            Object(MatchingFor("GMPE01_00"), "REL/m424Dll/map.c"),
             Object(NonMatching, "REL/m424Dll/ball.c"),
             Object(NonMatching, "REL/m424Dll/claw.c"),
         },
