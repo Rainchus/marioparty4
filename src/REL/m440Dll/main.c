@@ -1875,11 +1875,11 @@ void fn_1_806C(ModelData *arg0, Mtx arg1)
     GXSetChanMatColor(GX_COLOR0A0, sp10);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA6, 0);
-    GXSetArray(GX_VA_POS, temp_r31->unkC, 0xC);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetArray(GX_VA_POS, temp_r31->unkC, 12);
     GXSetVtxDesc(GX_VA_NRM, GX_INDEX16);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_NRM, GX_TEX_S, GX_RGBA6, 0);
-    GXSetArray(GX_VA_NRM, temp_r31->unk14, 0xC);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_NRM, GX_NRM_XYZ, GX_F32, 0);
+    GXSetArray(GX_VA_NRM, temp_r31->unk14, 12);
     lbl_1_bss_C = temp_r31->unk3C;
     if (temp_r31->unk28->unk34 == 0) {
         GXSetNumTevStages(1);
@@ -1893,7 +1893,7 @@ void fn_1_806C(ModelData *arg0, Mtx arg1)
     }
     else {
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
-        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_RGBA6, 0);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
         GXSetArray(GX_VA_TEX0, temp_r31->unk1C, 8);
         temp_r29 = &temp_r31->unk2C[temp_r31->unk28->unk38[0]];
         fn_1_7D60(temp_r29->unk80, temp_r29, 0);
@@ -2600,7 +2600,7 @@ void fn_1_A390(ModelData *arg0, Mtx arg1)
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_TEX_ST, GX_RGBA8, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
     GXSetNumTevStages(1);
     GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
     GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);

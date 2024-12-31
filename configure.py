@@ -567,7 +567,7 @@ config.libs = [
     DolphinLib(
         "ar",
         [
-            Object(NonMatching, "dolphin/ar/ar.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/ar/ar.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/ar/arq.c"),
         ],
     ),
@@ -584,19 +584,19 @@ config.libs = [
         [
             Object(NonMatching, "dolphin/gx/GXInit.c"),
             Object(NonMatching, "dolphin/gx/GXFifo.c"),
-            Object(NonMatching, "dolphin/gx/GXAttr.c"),
-            Object(NonMatching, "dolphin/gx/GXMisc.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXAttr.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXMisc.c"),
             Object(NonMatching, "dolphin/gx/GXGeometry.c"),
             Object(NonMatching, "dolphin/gx/GXFrameBuf.c"),
-            Object(NonMatching, "dolphin/gx/GXLight.c"),
-            Object(NonMatching, "dolphin/gx/GXTexture.c"),
-            Object(NonMatching, "dolphin/gx/GXBump.c"),
-            Object(NonMatching, "dolphin/gx/GXTev.c"),
-            Object(NonMatching, "dolphin/gx/GXPixel.c"),
-            Object(NonMatching, "dolphin/gx/GXStubs.c"),
-            Object(NonMatching, "dolphin/gx/GXDisplayList.c"),
-            Object(NonMatching, "dolphin/gx/GXTransform.c"),
-            Object(NonMatching, "dolphin/gx/GXPerf.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXLight.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXTexture.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXBump.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXTev.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXPixel.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXStubs.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXDisplayList.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXTransform.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "dolphin/gx/GXPerf.c"),
         ],
     ),
     DolphinLib(
@@ -1037,7 +1037,7 @@ config.libs = [
     Rel(
         "m423Dll",  # GOOOOOOOAL!!
         objects={
-            Object(NonMatching, "REL/m423Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m423Dll/main.c"),
         },
     ),
     Rel(

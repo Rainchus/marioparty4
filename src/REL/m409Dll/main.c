@@ -1376,13 +1376,13 @@ void fn_1_602C(ModelData *arg0, f32 (*arg1)[4])
     }
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA6, 0);
-    GXSetArray(GX_VA_POS, temp_r30->unk1C, 0xC);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetArray(GX_VA_POS, temp_r30->unk1C, 12);
     GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_TEX_ST, GX_RGBA8, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
     GXSetArray(GX_VA_CLR0, temp_r30->unk24, 4);
     GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
-    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_RGBA6, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
     GXSetArray(GX_VA_TEX0, temp_r30->unk20, 8);
     fn_1_40A4(arg1, sp128);
     PSMTXReorder(sp128, spF8);
