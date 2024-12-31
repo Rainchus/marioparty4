@@ -27,7 +27,7 @@ void PSQUATNormalize(void);
 void OSTicksToCalendarTime(void);
 void GXWaitDrawDone(void);
 void GXProject(void);
-void GXSetProjectionv(void);
+void GXGetProjectionv(void);
 void GXGetViewportv(void);
 void GXPixModeSync(void);
 void GXSetIndTexOrder(void);
@@ -1044,7 +1044,7 @@ extern void _kerjmp_PSQUATNormalize(void);
 extern void _kerjmp_OSTicksToCalendarTime(void);
 extern void _kerjmp_GXWaitDrawDone(void);
 extern void _kerjmp_GXProject(void);
-extern void _kerjmp_GXSetProjectionv(void);
+extern void _kerjmp_GXGetProjectionv(void);
 extern void _kerjmp_GXGetViewportv(void);
 extern void _kerjmp_GXPixModeSync(void);
 extern void _kerjmp_GXSetIndTexOrder(void);
@@ -2093,8 +2093,8 @@ asm void _kerent(void) {
     b GXWaitDrawDone
     entry _kerjmp_GXProject
     b GXProject
-    entry _kerjmp_GXSetProjectionv
-    b GXSetProjectionv
+    entry _kerjmp_GXGetProjectionv
+    b GXGetProjectionv
     entry _kerjmp_GXGetViewportv
     b GXGetViewportv
     entry _kerjmp_GXPixModeSync
