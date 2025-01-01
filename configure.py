@@ -1043,8 +1043,8 @@ config.libs = [
     Rel(
         "m424Dll",  # Blame it on the Crane
         objects={
-            Object(MatchingFor("GMPE01_00"), "REL/m424Dll/main.c"),
-            Object(MatchingFor("GMPE01_00"), "REL/m424Dll/map.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m424Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m424Dll/map.c"),
             Object(NonMatching, "REL/m424Dll/ball.c"),
             Object(NonMatching, "REL/m424Dll/claw.c"),
         },
@@ -1146,7 +1146,7 @@ config.libs = [
     Rel(
         "m438Dll",  # Chain Chomp Fever
         objects={
-            Object(MatchingFor("GMPE01_00"), "REL/m438Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m438Dll/main.c"),
             Object(NonMatching, "REL/m438Dll/map.c"),
             Object(NonMatching, "REL/m438Dll/fire.c"),
         },
