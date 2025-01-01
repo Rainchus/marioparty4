@@ -100,7 +100,6 @@ static BOOL DBGWriteMailbox(u32 p1)
 }
 
 #pragma dont_inline on
-
 static BOOL DBGReadMailbox(u32 *p1)
 {
     BOOL total = FALSE;
@@ -119,7 +118,7 @@ static BOOL DBGReadMailbox(u32 *p1)
 
     return IS_FALSE(total);
 }
-#pragma dont_inline off
+#pragma dont_inline reset
 
 static BOOL DBGRead(u32 count, u32 *buffer, s32 param3)
 {
