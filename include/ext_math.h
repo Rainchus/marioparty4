@@ -29,6 +29,7 @@ typedef struct vec2f {
 
 #define sind(x) sin(M_PI*(x)/180.0)
 #define cosd(x) cos(M_PI*(x)/180.0)
+#define asind(x) (180.0*(asinf((x)) / M_PI))
 #define atan2d(y, x) (180.0*(atan2((y), (x)) / M_PI))
 
 #endif
