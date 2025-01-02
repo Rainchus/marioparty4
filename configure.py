@@ -1233,7 +1233,7 @@ config.libs = [
     Rel(
         "m449Dll",  # Kareening Koopa
         objects={
-            Object(NonMatching, "REL/m449Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m449Dll/main.c"),
         },
     ),
     Rel(
