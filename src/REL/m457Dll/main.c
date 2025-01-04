@@ -1134,7 +1134,7 @@ void fn_1_2CC4(omObjData* arg0) {
         temp_f25 = lbl_1_data_28C.unk0C;
         var_f21 *= lbl_1_data_28C.unk04 * 2;
         temp_f25 *= lbl_1_data_28C.unk04 * 2;
-        lbl_1_data_28C.unk00 = lbl_1_data_28C.unk00 == 0;
+        lbl_1_data_28C.unk00 = !lbl_1_data_28C.unk00;
         lbl_1_data_28C.unk04 = (lbl_1_data_28C.unk04 > 24) ? 23
             : (lbl_1_data_28C.unk04 - 1 > 0) ? (lbl_1_data_28C.unk04 - 1) : 0;
         Center.x = 0.0f;
