@@ -1273,7 +1273,7 @@ config.libs = [
     Rel(
         "m457Dll",  # Bowser Wrestling
         objects={
-            Object(NonMatching, "REL/m457Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m457Dll/main.c"),
         },
     ),
     Rel(

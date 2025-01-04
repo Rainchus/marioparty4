@@ -777,8 +777,6 @@ void fn_1_350C(omObjData *var_r27)
     ModelData *var_r28;
     ModelData *var_r26;
     s32 var_r25;
-    s32 var_r24;
-    s32 var_r23;
 
     for (var_r31 = 0; var_r31 < 2; var_r31++) {
         spC[var_r31] = (&lbl_1_bss_BC)[var_r31]->data;
@@ -960,19 +958,8 @@ void fn_1_350C(omObjData *var_r27)
         var_f25 *= lbl_1_data_114.unk_04 * 2;
         var_f26 *= lbl_1_data_114.unk_04 * 2;
         lbl_1_data_114.unk_00 = !lbl_1_data_114.unk_00;
-        if (lbl_1_data_114.unk_04 > 0x18) {
-            var_r24 = 0x17;
-        }
-        else {
-            if ((lbl_1_data_114.unk_04 - 1) > 0) {
-                var_r23 = lbl_1_data_114.unk_04 - 1;
-            }
-            else {
-                var_r23 = 0;
-            }
-            var_r24 = var_r23;
-        }
-        lbl_1_data_114.unk_04 = var_r24;
+        lbl_1_data_114.unk_04 = (lbl_1_data_114.unk_04 > 24)    ? 23
+                              : (lbl_1_data_114.unk_04 - 1 > 0) ? (lbl_1_data_114.unk_04 - 1) : 0;
         Center.x = 0.0f;
         Center.y = 100.0f + var_f26;
     }
