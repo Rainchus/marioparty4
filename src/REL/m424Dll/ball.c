@@ -54,25 +54,6 @@ typedef struct _M424DllBallStruct {
     s32 unkEC;
 } M424DllBallStruct; // sizeof 0xF0
 
-typedef struct _M424DllBallStruct2 {
-    omObjData* unk0;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6;
-    u16 unk8;
-    u16 unkA;
-    Mtx unkC;
-    Vec unk3C;
-    Vec unk48;
-    Vec unk54;
-    Vec unk60;
-    Vec unk6C;
-    Vec unk78;
-    Vec unk84;
-    u8 unk90;
-    u8 unk91;
-} M424DllBallStruct2; // sizeof 0x94
-
 typedef struct _M424DllBallStruct3 {
     u8 unk0;
     M424DllBallStruct2* unk4;
@@ -153,7 +134,7 @@ void fn_1_2720(Process* arg0) {
     }
     
     for (var_r31 = 0; var_r31 < 6; var_r29++, var_r31++) {
-        var_r30 = omAddObjEx(arg0, 0x3F, 2U, 5U, 0, fn_1_4220);
+        var_r30 = omAddObjEx(arg0, 0x3F, 2, 5, 0, fn_1_4220);
         lbl_1_bss_594[var_r31] = var_r30;
         var_r30->work[0] = var_r31;
         var_r30->work[1] = sp8[var_r29];
@@ -460,12 +441,12 @@ void fn_1_37FC(omObjData* object) {
             if (temp_r31->unkC != 0) {
                 if (temp_r31->unkD != 0) {
                     temp_r31->unk4C.y = 0.0f;
-                    temp_r31->unkD = 0U;
+                    temp_r31->unkD = 0;
                     var_r28 = 5;
                     var_r27 = 0;
                 } else {
                     temp_r31->unk4C.y *= -0.1f;
-                    temp_r31->unkC = 0U;
+                    temp_r31->unkC = 0;
                     var_r28 = 4;
                     var_r27 = 0;
                 }
@@ -689,7 +670,7 @@ u8 fn_1_48D0(omObjData* object, u8 arg1, u8 arg2) {
     temp_r31->unk8 = var_r30;
     Hu3DModelLayerSet(var_r30, 2);
     Hu3DModelShadowMapSet(var_r30);
-    Hu3DModelAttrSet(var_r30, 0x20000U);
+    Hu3DModelAttrSet(var_r30, 0x20000);
     Hu3DModelHiliteMapSet(var_r30, HuSprAnimRead(HuDataReadNum(0x370016, 0x10000000)));
     var_r30 = Hu3DModelCreate(HuDataSelHeapReadNum((arg1 * 2) + 0x370001, 0x10000000, HEAP_DATA));
     temp_r31->unkA = var_r30;
@@ -856,7 +837,7 @@ void fn_1_5018(void) {
         var_f30 = var_f29;
         var_r31 = &lbl_1_bss_60[0];
         for (var_r28 = 0; var_r28 < lbl_1_bss_58; var_r28++, var_r31++) {
-            if ((var_r31->unk90 != 0) && (var_r31->unk4 < 4U)) {
+            if ((var_r31->unk90 != 0) && (var_r31->unk4 < 4)) {
                 var_r31->unk90 = 0;
                 if (var_r31->unk4 < 3) {
                     if (var_r31->unk6C.y < 0.0f) {
