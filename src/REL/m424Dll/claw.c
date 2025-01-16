@@ -1,5 +1,6 @@
 #include "REL/m424Dll.h"
 
+#include "math.h"
 #include "ext_math.h"
 #include "game/audio.h"
 #include "game/chrman.h"
@@ -7,8 +8,6 @@
 #include "game/hsfman.h"
 #include "game/hsfmotion.h"
 #include "game/pad.h"
-#include "math.h"
-
 
 // STRUCT
 typedef struct _M424DllClawStruct {
@@ -67,8 +66,8 @@ typedef struct _M424DllClawStruct3 {
 } M424DllClawStruct3; // sizeof 0x8
 
 // BSS
-Process *lbl_1_bss_6DC;
-omObjData *lbl_1_bss_6D8;
+Process* lbl_1_bss_6DC;
+omObjData* lbl_1_bss_6D8;
 s32 lbl_1_bss_6D0[2];
 s32 lbl_1_bss_6CC;
 s32 lbl_1_bss_6C8;
@@ -179,7 +178,7 @@ void fn_1_94D0(omObjData *arg0)
     }
     var_r31->unk184 = -1;
     var_r31->unk30 = lbl_1_data_30C;
-
+  
     for (var_r29 = 0; var_r29 < 0xC; var_r29++) {
         var_r31->unk3C[var_r29] = lbl_1_data_30C;
         var_r31->unkCC[var_r29] = lbl_1_data_30C;
