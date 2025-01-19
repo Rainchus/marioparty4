@@ -1072,7 +1072,7 @@ config.libs = [
     Rel(
         "m426Dll",  # Revers-a-Bomb
         objects={
-            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m426Dll/main.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPP01_00", "GMPP01_02"), "REL/m426Dll/main.c"),
         },
     ),
     Rel(
@@ -1088,7 +1088,7 @@ config.libs = [
         objects={
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m428Dll/main.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m428Dll/map.c"),
-            Object(NonMatching, "REL/m428Dll/player.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "REL/m428Dll/player.c"),
         },
     ),
     Rel(
