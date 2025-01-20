@@ -112,7 +112,7 @@ void fn_1_B54C(omObjData *arg0)
     var_r29 = Hu3DTexScrollCreate(arg0->model[1], "lafall");
     Hu3DTexScrollPosMoveSet(var_r29, 0.0f, -(1.0f / 60.0f), 0.0f);
     var_r29 = 0;
-
+  
     var_r27 = Hu3DParticleCreate(HuSprAnimReadFile(0x45000C), 0x32);
     arg0->model[3] = var_r27;
     Hu3DModelLayerSet(var_r27, 3);
@@ -151,7 +151,7 @@ void fn_1_B54C(omObjData *arg0)
         lbl_1_bss_E34[var_r30]->unk40.a = 0;
         lbl_1_bss_E34[var_r30]->unk00 = 0;
     }
-
+  
     var_r27 = Hu3DParticleCreate(HuSprAnimReadFile(0x45000F), 0x32);
     arg0->model[6] = var_r27;
     Hu3DModelLayerSet(var_r27, 3);
@@ -162,7 +162,7 @@ void fn_1_B54C(omObjData *arg0)
         var_r25->unk40.a = 0;
         var_r25->unk00 = 0;
     }
-
+  
     var_r27 = Hu3DParticleCreate(HuSprAnimReadFile(0x450010), 0x1F4);
     arg0->model[7] = var_r27;
     Hu3DModelLayerSet(var_r27, 2);
@@ -437,7 +437,7 @@ void fn_1_CAB0(f32 arg8)
     temp_f28 = 20.0f;
     temp_f27 = 7.0f;
     var_r29 = 0x19;
-
+  
     for (var_r30 = 0; var_r30 < 0x96; var_r30++) {
         var_r31 = lbl_1_bss_E34[var_r30];
         if (var_r31->unk00_s16 == 0) {
@@ -447,12 +447,12 @@ void fn_1_CAB0(f32 arg8)
             sp8.x = sind(temp_f31);
             sp8.y = 0.0f;
             sp8.z = cosd(temp_f31);
-
+          
             temp_f31 = arg8 + (((0.002f * frandmod(0x3E8)) - 1.0f)) * temp_f27;
             var_r31->unk34.x = 7.5 * sind(temp_f31) * 100.0;
             var_r31->unk34.y = 0.2f * frandmod(0x3E8);
             var_r31->unk34.z = 7.5 * cosd(temp_f31) * 100.0;
-
+          
             temp_f30 = 1.6666667f * (4.0f + (0.014f * frandmod(0x3E8)));
             var_r31->unk08.x = sp8.x * temp_f30;
             var_r31->unk08.z = sp8.z * temp_f30;
@@ -478,12 +478,12 @@ void fn_1_CAB0(f32 arg8)
             sp8.x = sind(temp_f31);
             sp8.y = 0.0f;
             sp8.z = cosd(temp_f31);
-
+          
             temp_f31 = arg8 + (((0.002f * frandmod(0x3E8)) - 1.0f)) * temp_f27;
             var_r31->unk34.x = 7.5 * sind(temp_f31) * 100.0;
             var_r31->unk34.y = 0.2f * frandmod(0x3E8);
             var_r31->unk34.z = 7.5 * cosd(temp_f31) * 100.0;
-
+          
             temp_f30 = 1.6666667f * -(0.01f * frandmod(0x3E8));
             var_r31->unk08.x = sp8.x * temp_f30;
             var_r31->unk08.z = sp8.z * temp_f30;
@@ -586,7 +586,7 @@ s32 fn_1_DA64(f32 arg8)
     var_r28 = lbl_1_bss_108C[0]->data;
     var_r29 = 0;
     var_r31 = &var_r28->unk4;
-
+  
     for (var_r30 = 0; var_r30 < 0x20; var_r30++, var_r31++) {
         var_f31 = fn_1_E5A4(var_r31->unk8, arg8);
         if ((fabs(var_f31) < 12.0) && (var_r31->unk0 != 0)) {
@@ -627,7 +627,7 @@ s32 fn_1_DEA0(f32 arg8)
     var_r28 = lbl_1_bss_108C[0]->data;
     var_r29 = 0;
     var_r31 = &var_r28->unk4;
-
+  
     for (var_r30 = 0; var_r30 < 0x20; var_r30++, var_r31++) {
         var_f31 = fn_1_E5A4(var_r31->unk8, arg8);
         if ((fabs(var_f31) < 8.0) && (var_r31->unk0 != 0)) {
@@ -647,6 +647,7 @@ f32 fn_1_DF70(f32 arg8, f32 arg9)
     var_f31 = 180.0 * (atan2f(arg9, arg8) / M_PI);
     if (var_f31 < 0.0f) {
         var_f31 += temp_f30;
+      
     }
     else if (var_f31 >= temp_f30) {
         var_f31 -= temp_f30;
