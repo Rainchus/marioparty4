@@ -1,5 +1,6 @@
 #include "PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/abort_exit.h"
 #include "PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/critical_regions.h"
+#include "PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/signal.h"
 #include "stddef.h"
 #include "PowerPC_EABI_Support/Runtime/NMWException.h"
 
@@ -20,7 +21,19 @@ void (*__console_exit)(void) = 0;
 
 void abort(void)
 {
-	// TODO
+    void (**var_r31)(void);
+
+    raise(1);
+    __aborting = 1;
+    var_r31 = &__atexit_funcs[0];
+    while (__atexit_curr_func > 0) {
+        var_r31[--__atexit_curr_func]();
+    }
+    if (__console_exit != 0) {
+        __console_exit();
+        __console_exit = 0;
+    }
+    _ExitProcess();
 }
 
 void exit(int status)

@@ -60,6 +60,23 @@ void* memchr(const void* ptr, int ch, size_t count)
 	return NULL;
 }
 
+unsigned char* __memrchr(unsigned char* s, int c, size_t n){ // credit to CelestialAmber
+    int n_count;
+	size_t char_check;
+    
+    char_check = (unsigned char)c;
+    s = &s[n];
+    n_count = n + 1;
+	
+    while(--n_count){
+		if(*--s == char_check){
+            return s;
+        }
+    }
+	
+	return 0;
+}
+
 int memcmp(const void* lhs, const void* rhs, size_t count)
 {
 	const unsigned char* p1;

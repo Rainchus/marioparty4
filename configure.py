@@ -680,7 +680,7 @@ config.libs = [
         "cflags": cflags_msl,
         "host": False,
         "objects": [
-            Object(NonMatching, "MSL_C.PPCEABI.bare.H/abort_exit.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/abort_exit.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/alloc.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/errno.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/ansi_files.c"),
@@ -692,7 +692,7 @@ config.libs = [
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/file_io.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/FILE_POS.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/mbstring.c"),
-            Object(NonMatching, "MSL_C.PPCEABI.bare.H/mem.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/mem.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/mem_funcs.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/misc_io.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/printf.c"),

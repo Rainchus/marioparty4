@@ -47,7 +47,15 @@
     "hsfformat.h": "c",
     "hsfanim.h": "c",
     "memory.h": "c",
-    "animdata.h": "c"
+    "animdata.h": "c",
+    "abort_exit.h": "c",
+    "critical_regions.h": "c",
+    "stddef.h": "c",
+    "nmwexception.h": "c",
+    "signal.h": "c",
+    "gx.h": "c",
+    "dol2asm.h": "c",
+    "__mem.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {
