@@ -1,8 +1,8 @@
 #include "string.h"
 #include "stddef.h"
 
-static int K1 = 0x80808080;
-static int K2 = 0xFEFEFEFF;
+#define K1 0x80808080
+#define K2 0xFEFEFEFF
 
 size_t strlen(const char* str)
 {
@@ -20,8 +20,6 @@ char* strcpy(char* dst, const char* src)
 {
 	register unsigned char *destb, *fromb;
 	register unsigned long w, t, align;
-	register unsigned int k1;
-	register unsigned int k2;
 
 	fromb = (unsigned char*)src;
 	destb = (unsigned char*)dst;
@@ -44,14 +42,11 @@ char* strcpy(char* dst, const char* src)
 		++fromb;
 	}
 
-	k1 = K1;
-	k2 = K2;
-
 	w = *((int*)(fromb));
 
-	t = w + k2;
+	t = w + K2;
 
-	t &= k1;
+	t &= K1;
 	if (t) {
 		goto bytecopy;
 	}
@@ -61,8 +56,8 @@ char* strcpy(char* dst, const char* src)
 		*(++((int*)(destb))) = w;
 		w                    = *(++((int*)(fromb)));
 
-		t = w + k2;
-		t &= k1;
+		t = w + K2;
+		t &= K1;
 		if (t) {
 			goto adjust;
 		}
@@ -103,16 +98,21 @@ char* strncpy(char* dst, const char* src, size_t n)
 	return dst;
 }
 
-char* strcat(char* dst, const char* src)
+// TODO: same implementation as strncpy?
+char* strcat(char* dst, const char* src, size_t n)
 {
-	const unsigned char* p = (unsigned char*)src - 1;
+    const unsigned char* p = (const unsigned char*)src - 1;
 	unsigned char* q       = (unsigned char*)dst - 1;
 
-	while (*++q) { }
-
-	q--;
-
-	while (*++q = *++p) { }
+	n++;
+	while (--n) {
+		if (!(*++q = *++p)) {
+			while (--n) {
+				*++q = 0;
+			}
+			break;
+		}
+	}
 
 	return dst;
 }
@@ -194,6 +194,22 @@ bytecopy:
 			return 0;
 		}
 	} while (1);
+}
+
+int strncmp(const char* str1, const char* str2, size_t n)
+{
+    const unsigned char* p1 = (unsigned char*)str1 - 1;
+    const unsigned char* p2 = (unsigned char*)str2 - 1;
+    unsigned long c1, c2;
+
+    n++;
+
+    while (--n)
+        if ((c1 = *++p1) != (c2 = *++p2))
+            return (c1 - c2);
+        else if (!c1)
+            break;
+    return 0;
 }
 
 char* strchr(const char* str, int c)

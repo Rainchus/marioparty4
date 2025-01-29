@@ -227,6 +227,7 @@ cflags_thp = [
 # Metrowerks library flags
 cflags_msl = [
     *cflags_base,
+    "-char signed",
     "-use_lmw_stmw on",
     "-str reuse,pool,readonly",
     "-common off",
@@ -681,7 +682,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/abort_exit.c"),
-            Object(NonMatching, "MSL_C.PPCEABI.bare.H/alloc.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/alloc.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/errno.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/ansi_files.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/ansi_fp.c"),
@@ -697,8 +698,8 @@ config.libs = [
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/misc_io.c"),
             Object(NonMatching, "MSL_C.PPCEABI.bare.H/printf.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/float.c"),
-            Object(NonMatching, "MSL_C.PPCEABI.bare.H/signal.c"),
-            Object(NonMatching, "MSL_C.PPCEABI.bare.H/string.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/signal.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/string.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/uart_console_io.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/wchar_io.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01"), "MSL_C.PPCEABI.bare.H/e_acos.c"),
