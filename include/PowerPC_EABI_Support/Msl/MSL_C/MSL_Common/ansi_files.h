@@ -85,7 +85,7 @@ typedef struct _FILE {
 	file_modes file_mode;
 	file_states file_state;
 
-	char is_dynamically_allocated;
+	unsigned char is_dynamically_allocated;
 	char char_buffer;
 	char char_buffer_overflow;
 	char ungetc_buffer[2];
