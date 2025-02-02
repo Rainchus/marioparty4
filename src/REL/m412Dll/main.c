@@ -1425,7 +1425,6 @@ static inline void PadInline(void)
     (void)var_f27;
 }
 
-// fn_1_6814: https://decomp.me/scratch/WQPjD
 void fn_1_6814(unkStruct3 *arg0)
 {
     Vec sp104;
