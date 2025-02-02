@@ -100,14 +100,8 @@ typedef struct M427DllBss590Struct {
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ float unk_0C;
     /* 0x10 */ float unk_10;
-    /* 0x14 */ Vec unk_14;
-    /* 0x20 */ float unk_20;
-    /* 0x24 */ float unk_24;
-    /* 0x28 */ float unk_28;
-    /* 0x2C */ Vec unk_2C;
-    /* 0x38 */ float unk_38;
-    /* 0x3C */ float unk_3C;
-    /* 0x40 */ float unk_40;
+    /* 0x14 */ Vec unk_14[2];
+    /* 0x2C */ Vec unk_2C[2];
     /* 0x44 */ Vec unk_44;
     /* 0x50 */ float unk_50;
     /* 0x54 */ float unk_54;
@@ -1551,14 +1545,14 @@ void fn_1_12B08(void)
         }
         if (var_r31->unk_04 < 0) {
             var_r31->unk_6C = 0.0f;
-            sp20.x = lbl_1_bss_58C[var_r30].x + lbl_1_bss_590[var_r30 - 1].unk_20;
-            sp20.y = lbl_1_bss_58C[var_r30].y + lbl_1_bss_590[var_r30 - 1].unk_24;
-            sp20.z = lbl_1_bss_58C[var_r30].z + lbl_1_bss_590[var_r30 - 1].unk_28;
-            fn_1_16E3C(&lbl_1_data_260[var_r30], &sp20, &var_r31->unk_14, 0);
-            sp20.x = lbl_1_bss_588[var_r30].x + lbl_1_bss_590[var_r30 - 1].unk_38;
-            sp20.y = lbl_1_bss_588[var_r30].y + lbl_1_bss_590[var_r30 - 1].unk_3C;
-            sp20.z = lbl_1_bss_588[var_r30].z + lbl_1_bss_590[var_r30 - 1].unk_40;
-            fn_1_16E3C(&lbl_1_data_3BC[var_r30], &sp20, &var_r31->unk_2C, 0);
+            sp20.x = lbl_1_bss_58C[var_r30].x + lbl_1_bss_590[var_r30 - 1].unk_14[1].x;
+            sp20.y = lbl_1_bss_58C[var_r30].y + lbl_1_bss_590[var_r30 - 1].unk_14[1].y;
+            sp20.z = lbl_1_bss_58C[var_r30].z + lbl_1_bss_590[var_r30 - 1].unk_14[1].z;
+            fn_1_16E3C(&lbl_1_data_260[var_r30], &sp20, &var_r31->unk_14[0], 0);
+            sp20.x = lbl_1_bss_588[var_r30].x + lbl_1_bss_590[var_r30 - 1].unk_2C[1].x;
+            sp20.y = lbl_1_bss_588[var_r30].y + lbl_1_bss_590[var_r30 - 1].unk_2C[1].y;
+            sp20.z = lbl_1_bss_588[var_r30].z + lbl_1_bss_590[var_r30 - 1].unk_2C[1].z;
+            fn_1_16E3C(&lbl_1_data_3BC[var_r30], &sp20, &var_r31->unk_2C[0], 0);
             sp20.x = lbl_1_bss_584[var_r30].x + lbl_1_bss_590[var_r30 - 1].unk_50;
             sp20.y = lbl_1_bss_584[var_r30].y + lbl_1_bss_590[var_r30 - 1].unk_54;
             sp20.z = lbl_1_bss_584[var_r30].z + lbl_1_bss_590[var_r30 - 1].unk_58;
@@ -1569,8 +1563,8 @@ void fn_1_12B08(void)
             sp20.y = lbl_1_bss_584[var_r30 + 1].y - lbl_1_bss_584[var_r30].y;
             sp20.z = lbl_1_bss_584[var_r30 + 1].z - lbl_1_bss_584[var_r30].z;
             var_r31->unk_6C = sqrtf((sp20.z * sp20.z) + ((sp20.x * sp20.x) + (sp20.y * sp20.y)));
-            fn_1_16E3C(&lbl_1_bss_58C[var_r30], &lbl_1_bss_58C[var_r31->unk_04], &var_r31->unk_14, 0);
-            fn_1_16E3C(&lbl_1_bss_588[var_r30], &lbl_1_bss_588[var_r31->unk_04], &var_r31->unk_2C, 0);
+            fn_1_16E3C(&lbl_1_bss_58C[var_r30], &lbl_1_bss_58C[var_r31->unk_04], &var_r31->unk_14[0], 0);
+            fn_1_16E3C(&lbl_1_bss_588[var_r30], &lbl_1_bss_588[var_r31->unk_04], &var_r31->unk_2C[0], 0);
             fn_1_16E3C(&lbl_1_bss_584[var_r30], &lbl_1_bss_584[var_r31->unk_04], &var_r31->unk_44, 0);
         }
         sp20.x = lbl_1_bss_58C[var_r30].x - lbl_1_bss_584[var_r30].x;
@@ -1946,7 +1940,7 @@ s32 fn_1_15AF0(s32 arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4)
         var_f31 = var_r30->unk_5C + (sp8 * (var_r30->unk_64 - var_r30->unk_5C));
         if (var_f29 > var_f31) {
             sp30 = *arg2;
-            fn_1_17048(&var_r30->unk_14, NULL, &sp30, &sp24);
+            fn_1_17048(var_r30->unk_14, NULL, &sp30, &sp24);
             arg3->x = sp24.x;
             arg3->y = sp24.y;
             arg3->z = sp24.z;
@@ -1960,7 +1954,7 @@ s32 fn_1_15AF0(s32 arg0, Vec *arg1, Vec *arg2, Vec *arg3, Vec *arg4)
     var_f31 = var_r30->unk_60 + (sp8 * (var_r30->unk_68 - var_r30->unk_60));
     if (var_f29 > var_f31) {
         sp30 = *arg2;
-        fn_1_17048(&var_r30->unk_2C, NULL, &sp30, &sp18);
+        fn_1_17048(var_r30->unk_2C, NULL, &sp30, &sp18);
         arg3->x = sp18.x;
         arg3->y = sp18.y;
         arg3->z = sp18.z;
