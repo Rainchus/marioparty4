@@ -60,7 +60,9 @@
     "float.h": "c",
     "corecrt_math_defines.h": "c",
     "math_ppc.h": "c",
-    "errno.h": "c"
+    "errno.h": "c",
+    "m427dll.h": "c",
+    "sprite.h": "c"
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {
