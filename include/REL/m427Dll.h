@@ -13,6 +13,7 @@ void fn_1_91E0(s16 arg0, float arg8, float arg9, float argA, float argB);
 float fn_1_AE78(s16 arg0, float arg8, float arg9);                      
 void fn_1_E98C(Process*);
 void fn_1_EC54(void);
+s32 fn_1_10FE8(s32 arg0, s32 *arg1);
 void fn_1_110E8(s32, s32*);
 void fn_1_111C0(s32, s32*);
 void fn_1_11298(f32);
