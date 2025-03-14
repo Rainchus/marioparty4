@@ -1352,7 +1352,7 @@ config.libs = [
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/free_play.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/record.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/battle.c"),
-            Object(NonMatching, "REL/mgmodedll/tictactoe.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/tictactoe.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/main.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/datalist.c"),
             Object(MatchingFor("GMPE01_00", "GMPE01_01", "GMPJ01_00"), "REL/mgmodedll/minigame.c"),
