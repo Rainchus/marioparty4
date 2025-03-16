@@ -252,11 +252,9 @@ cflags_trk = [
 
 cflags_odemuexi = [
     *cflags_base,
+    "-inline auto,deferred"
     # TODO figure out flags
 ]
-
-if version_num > 0:
-    cflags_odemuexi.append("-inline auto,deferred")
 
 cflags_amcstub = [
     *cflags_base,
@@ -805,7 +803,7 @@ config.libs = [
         "cflags": cflags_odemuexi,
         "host": False,
         "objects": [
-            Object(MatchingFor("GMPE01_01"), "OdemuExi2/DebuggerDriver.c"),
+            Object(MatchingFor("GMPE01_00", "GMPE01_01"), "OdemuExi2/DebuggerDriver.c"),
         ],
     },
     {
