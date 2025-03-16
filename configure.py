@@ -252,8 +252,7 @@ cflags_trk = [
 
 cflags_odemuexi = [
     *cflags_base,
-    "-inline auto,deferred"
-    # TODO figure out flags
+    "-inline deferred"
 ]
 
 cflags_amcstub = [

@@ -1,347 +1,3 @@
-#if VERSION == 0
-
-    #include <dolphin/exi.h>
-    #include <dolphin/hw_regs.h>
-    #include <dolphin/os.h>
-
-    typedef void (*MTRCallbackType)(int);
-
-    static MTRCallbackType MTRCallback;
-
-    static void (*DBGCallback)(u32, OSContext *);
-
-    static u32 SendMailData;
-
-    static s32 RecvDataLeng;
-
-    static u8 *pEXIInputFlag;
-
-    static u8 EXIInputFlag;
-
-    static u8 SendCount = 0x80;
-
-    #define IS_TRUE(x) ((x) != FALSE)
-    #define IS_FALSE(x) !IS_TRUE(x)
-    #define ROUND_UP(x, align) (((x) + (align)-1) & (-(align)))
-
-    // functions
-    static void CheckMailBox(void);
-    static void MWCallback(u32 a, OSContext *b);
-    static void DBGHandler(s16 a, OSContext *b);
-    static u32 DBGEXISelect(u32 v);
-    static void DBGEXIInit();
-
-    void DBClose(void) { }
-
-    void DBOpen(void) { }
-
-
-    BOOL DBWrite(void *src, u32 size)
-    {
-        u32 v;
-        u32 busyFlag;
-        BOOL interrupts = OSDisableInterrupts();
-
-        do {
-            _DBGReadStatus(&busyFlag);
-        } while (busyFlag & 2);
-
-        SendCount++;
-        v = ((SendCount & 1) ? 0x1000 : 0);
-
-        while (!DBGWrite(v | 0x1c000, src, ROUND_UP(size, 4)))
-            ;
-
-        do {
-            _DBGReadStatus(&busyFlag);
-        } while (busyFlag & 2);
-
-        v = SendCount;
-        while (!DBGWriteMailbox((0x1f000000) | v << 0x10 | size))
-            ;
-
-        do {
-            while (!_DBGReadStatus(&busyFlag))
-                ;
-        } while (busyFlag & 2);
-
-        OSRestoreInterrupts(interrupts);
-
-        return 0;
-    }
-
-    BOOL DBRead(u32 *buffer, s32 count)
-    {
-        u32 interrupts = OSDisableInterrupts();
-        u32 v = SendMailData & 0x10000 ? 0x1000 : 0;
-
-        DBGRead(v + 0x1e000, buffer, ROUND_UP(count, 4));
-
-        RecvDataLeng = 0;
-        EXIInputFlag = 0;
-
-        OSRestoreInterrupts(interrupts);
-
-        return 0;
-    }
-
-    u32 DBQueryData(void)
-    {
-        BOOL interrupts;
-        EXIInputFlag = 0;
-        if (!RecvDataLeng) {
-            interrupts = OSDisableInterrupts();
-            CheckMailBox();
-    #if VERSION > 0
-            OSRestoreInterrupts(interrupts);
-        }
-    #else
-        }
-        OSRestoreInterrupts(interrupts);
-    #endif
-        return RecvDataLeng;
-    }
-
-    static void CheckMailBox(void)
-    {
-        u32 v;
-        DBGReadStatus(&v);
-        if (v & 1) {
-            DBGReadMailbox(&v);
-            v &= 0x1fffffff;
-
-            if ((v & 0x1f000000) == 0x1f000000) {
-                SendMailData = v;
-                RecvDataLeng = v & 0x7fff;
-                EXIInputFlag = 1;
-            }
-        }
-    }
-
-    void DBInitInterrupts(void)
-    {
-        __OSMaskInterrupts(0x18000);
-        __OSMaskInterrupts(0x40);
-        DBGCallback = &MWCallback;
-        __OSSetInterruptHandler(0x19, DBGHandler);
-        __OSUnmaskInterrupts(0x40);
-    }
-
-    void DBInitComm(u8 **a, MTRCallbackType b)
-    {
-        BOOL interrupts = OSDisableInterrupts();
-        {
-            pEXIInputFlag = (u8 *)EXIInputFlag;
-            pEXIInputFlag = &EXIInputFlag;
-
-            *a = pEXIInputFlag;
-
-            MTRCallback = b;
-
-            DBGEXIInit();
-        }
-        OSRestoreInterrupts(interrupts);
-    }
-
-    static void DBGHandler(s16 a, OSContext *b)
-    {
-        *__PIRegs = 0x1000;
-        if (DBGCallback) {
-            DBGCallback(a, b);
-        }
-    }
-
-    static void MWCallback(u32 a, OSContext *b)
-    {
-        EXIInputFlag = TRUE;
-        if (MTRCallback) {
-            MTRCallback(0);
-        }
-    }
-
-    #pragma push
-    #pragma dont_inline on
-    static BOOL DBGReadStatus(u32 *p1)
-    {
-        return _DBGReadStatus(p1);
-    }
-    #pragma pop
-
-    static BOOL _DBGReadStatus(u32 *p1)
-    {
-        BOOL total = FALSE;
-        u32 v;
-
-        DBGEXISelect(4);
-
-        v = 0x40000000;
-        total |= !(DBGEXIImm(&v, 2, 1));
-        total |= !(DBGEXISync());
-
-        total |= !(DBGEXIImm(p1, 4, 0));
-        total |= !(DBGEXISync());
-
-        total |= !(DBGEXIDeselect());
-
-        return !(total);
-    }
-
-    static BOOL DBGWrite(u32 count, void *buffer, s32 param3)
-    {
-        BOOL total = FALSE;
-        u32 *buf_p = (u32 *)buffer;
-        u32 v1;
-        u32 v;
-
-        DBGEXISelect(4);
-
-        v1 = (count & 0x1fffc) << 8 | 0xa0000000;
-        total |= IS_FALSE(DBGEXIImm(&v1, sizeof(v1), 1));
-        total |= IS_FALSE(DBGEXISync());
-
-        while (param3 != 0) {
-            v = *buf_p++;
-
-            total |= IS_FALSE(DBGEXIImm(&v, sizeof(v), 1));
-            total |= IS_FALSE(DBGEXISync());
-
-            param3 -= 4;
-            if (param3 < 0) {
-                param3 = 0;
-            }
-        }
-
-        total |= IS_FALSE(DBGEXIDeselect());
-        return IS_FALSE(total);
-    }
-
-    static BOOL DBGRead(u32 count, u32 *buffer, s32 param3)
-    {
-        BOOL total = FALSE;
-        u32 *buf_p = (u32 *)buffer;
-        u32 v1;
-        u32 v;
-
-        DBGEXISelect(4);
-
-        v1 = (count & 0x1fffc) << 8 | 0x20000000;
-        total |= IS_FALSE(DBGEXIImm(&v1, sizeof(v1), 1));
-        total |= IS_FALSE(DBGEXISync());
-
-        while (param3) {
-            total |= IS_FALSE(DBGEXIImm(&v, sizeof(v), 0));
-            total |= IS_FALSE(DBGEXISync());
-
-            *buf_p++ = v;
-
-            param3 -= 4;
-            if (param3 < 0) {
-                param3 = 0;
-            }
-        }
-
-        total |= IS_FALSE(DBGEXIDeselect());
-        return IS_FALSE(total);
-    }
-
-    #pragma push
-    #pragma dont_inline on
-    static BOOL DBGReadMailbox(u32 *p1)
-    {
-        long cmd;
-        long v;
-
-        DBGEXISelect(4);
-
-        v = 0x60000000;
-        cmd = 0;
-        cmd |= !(DBGEXIImm(&v, 2, 1));
-        cmd |= !(DBGEXISync());
-
-        cmd |= !(DBGEXIImm(p1, 4, 0));
-        cmd |= !(DBGEXISync());
-
-        cmd |= !(DBGEXIDeselect());
-
-        return !(cmd);
-    }
-    #pragma pop
-
-    static BOOL DBGWriteMailbox(u32 p1)
-    {
-        u32 cmd = 0xc0000000;
-        u32 v;
-        u32 base = p1;
-        BOOL total = FALSE;
-
-        DBGEXISelect(4);
-        v = (base & 0x1fffffff) | (cmd);
-        total |= IS_FALSE(DBGEXIImm(&v, sizeof(v), 1));
-        total |= IS_FALSE(DBGEXISync());
-        total |= IS_FALSE(DBGEXIDeselect());
-
-        return IS_FALSE(total);
-    }
-
-    static BOOL DBGEXIImm(void *buffer, s32 bytecounter, u32 write)
-    {
-        u8 *tempPointer;
-        u32 writeOutValue;
-        int i;
-
-        if (write) {
-            tempPointer = buffer;
-            writeOutValue = 0;
-            for (i = 0; i < bytecounter; i++) {
-                u8 *temp = ((u8 *)buffer) + i;
-                writeOutValue |= *temp << ((3 - i) << 3);
-            }
-            __EXIRegs[14] = writeOutValue;
-        }
-
-        __EXIRegs[13] = 1 | write << 2 | (bytecounter - 1) << 4;
-        DBGEXISync();
-
-        if (!write) {
-            writeOutValue = __EXIRegs[14];
-            tempPointer = buffer;
-            for (i = 0; i < bytecounter; i++) {
-                *tempPointer++ = writeOutValue >> ((3 - i) << 3);
-            }
-        }
-
-        return TRUE;
-    }
-
-    static BOOL DBGEXISync()
-    {
-        while (__EXIRegs[13] & 1)
-            ;
-
-        return TRUE;
-    }
-
-    static BOOL DBGEXIDeselect(void)
-    {
-        __EXIRegs[10] &= 0x405;
-        return TRUE;
-    }
-
-    static u32 DBGEXISelect(u32 v)
-    {
-        u32 regs = __EXIRegs[10];
-        regs &= 0x405;
-        regs |= 0x80 | (v << 4);
-        __EXIRegs[10] = regs;
-        return TRUE;
-    }
-
-    static void DBGEXIInit()
-    {
-        __OSMaskInterrupts(0x18000);
-        __EXIRegs[10] = 0;
-    }
-#elif VERSION == 1
 #include <dolphin/exi.h>
 #include <dolphin/hw_regs.h>
 #include <dolphin/os.h>
@@ -366,15 +22,311 @@ static u8 SendCount = 0x80;
 #define IS_FALSE(x) !IS_TRUE(x)
 #define ROUND_UP(x, align) (((x) + (align)-1) & (-(align)))
 
-// TODO
+#if VERSION == VERSION_NO_ENG0
 
-void DBGEXIInit()
+static void DBGEXIInit();
+static u32 DBGEXISelect(u32 v);
+static void CheckMailBox(void);
+static void MWCallback(u32 a, OSContext *b);
+static void DBGHandler(s16 a, OSContext *b);
+
+void DBClose(void) { }
+
+void DBOpen(void) { }
+
+BOOL DBWrite(void *src, u32 size)
 {
-    __OSMaskInterrupts(0x18000);
-    __EXIRegs[10] = 0;
+    u32 v;
+    u32 busyFlag;
+    BOOL interrupts = OSDisableInterrupts();
+
+    do {
+        _DBGReadStatus(&busyFlag);
+    } while (busyFlag & 2);
+
+    SendCount++;
+    v = ((SendCount & 1) ? 0x1000 : 0);
+
+    while (!DBGWrite(v | 0x1c000, src, ROUND_UP(size, 4)))
+        ;
+
+    do {
+        _DBGReadStatus(&busyFlag);
+    } while (busyFlag & 2);
+
+    v = SendCount;
+    while (!DBGWriteMailbox((0x1f000000) | v << 0x10 | size))
+        ;
+
+    do {
+        while (!_DBGReadStatus(&busyFlag))
+            ;
+    } while (busyFlag & 2);
+
+    OSRestoreInterrupts(interrupts);
+
+    return 0;
 }
 
-static u32 DBGEXISelect(u32 v)
+BOOL DBRead(u32 *buffer, s32 count)
+{
+    u32 interrupts = OSDisableInterrupts();
+    u32 v = SendMailData & 0x10000 ? 0x1000 : 0;
+
+    DBGRead(v + 0x1e000, buffer, ROUND_UP(count, 4));
+
+    RecvDataLeng = 0;
+    EXIInputFlag = 0;
+
+    OSRestoreInterrupts(interrupts);
+
+    return 0;
+}
+
+u32 DBQueryData(void)
+{
+    BOOL interrupts;
+    EXIInputFlag = 0;
+    if (!RecvDataLeng) {
+        interrupts = OSDisableInterrupts();
+        CheckMailBox();
+#if VERSION > 0
+        OSRestoreInterrupts(interrupts);
+    }
+#else
+    }
+    OSRestoreInterrupts(interrupts);
+#endif
+    return RecvDataLeng;
+}
+
+inline static void CheckMailBox(void)
+{
+    u32 v;
+    DBGReadStatus(&v);
+    if (v & 1) {
+        DBGReadMailbox(&v);
+        v &= 0x1fffffff;
+
+        if ((v & 0x1f000000) == 0x1f000000) {
+            SendMailData = v;
+            RecvDataLeng = v & 0x7fff;
+            EXIInputFlag = 1;
+        }
+    }
+}
+
+void DBInitInterrupts(void)
+{
+    __OSMaskInterrupts(0x18000);
+    __OSMaskInterrupts(0x40);
+    DBGCallback = &MWCallback;
+    __OSSetInterruptHandler(0x19, DBGHandler);
+    __OSUnmaskInterrupts(0x40);
+}
+
+void DBInitComm(u8 **a, MTRCallbackType b)
+{
+    BOOL interrupts = OSDisableInterrupts();
+    {
+        pEXIInputFlag = (u8 *)EXIInputFlag;
+        pEXIInputFlag = &EXIInputFlag;
+
+        *a = pEXIInputFlag;
+
+        MTRCallback = b;
+
+        DBGEXIInit();
+    }
+    OSRestoreInterrupts(interrupts);
+}
+
+inline static BOOL _DBGReadStatus(u32 *p1)
+{
+    BOOL total = FALSE;
+    u32 v;
+
+    DBGEXISelect(4);
+
+    v = 1 << 30;
+    total |= IS_FALSE(DBGEXIImm(&v, 2, 1));
+    total |= IS_FALSE(DBGEXISync());
+
+    total |= IS_FALSE(DBGEXIImm(p1, 4, 0));
+    total |= IS_FALSE(DBGEXISync());
+
+    total |= IS_FALSE(DBGEXIDeselect());
+
+    return IS_FALSE(total);
+}
+
+static void DBGHandler(s16 a, OSContext *b)
+{
+    *__PIRegs = 0x1000;
+    if (DBGCallback) {
+        DBGCallback(a, b);
+    }
+}
+
+static void MWCallback(u32 a, OSContext *b)
+{
+    EXIInputFlag = TRUE;
+    if (MTRCallback) {
+        MTRCallback(0);
+    }
+}
+
+#pragma push
+#pragma dont_inline on
+static BOOL DBGReadStatus(u32 *p1)
+{
+    return _DBGReadStatus(p1);
+}
+#pragma pop
+
+static BOOL DBGWrite(u32 count, void *buffer, s32 param3)
+{
+    BOOL total = FALSE;
+    u32 *buf_p = (u32 *)buffer;
+    u32 v1;
+    u32 v;
+
+    DBGEXISelect(4);
+
+    v1 = (count & 0x1fffc) << 8 | 0xa0000000;
+    total |= IS_FALSE(DBGEXIImm(&v1, sizeof(v1), 1));
+    total |= IS_FALSE(DBGEXISync());
+
+    while (param3 != 0) {
+        v = *buf_p++;
+
+        total |= IS_FALSE(DBGEXIImm(&v, sizeof(v), 1));
+        total |= IS_FALSE(DBGEXISync());
+
+        param3 -= 4;
+        if (param3 < 0) {
+            param3 = 0;
+        }
+    }
+
+    total |= IS_FALSE(DBGEXIDeselect());
+    return IS_FALSE(total);
+}
+
+static BOOL DBGRead(u32 count, u32 *buffer, s32 param3)
+{
+    BOOL total = FALSE;
+    u32 *buf_p = (u32 *)buffer;
+    u32 v1;
+    u32 v;
+
+    DBGEXISelect(4);
+
+    v1 = (count & 0x1fffc) << 8 | 0x20000000;
+    total |= IS_FALSE(DBGEXIImm(&v1, sizeof(v1), 1));
+    total |= IS_FALSE(DBGEXISync());
+
+    while (param3) {
+        total |= IS_FALSE(DBGEXIImm(&v, sizeof(v), 0));
+        total |= IS_FALSE(DBGEXISync());
+
+        *buf_p++ = v;
+
+        param3 -= 4;
+        if (param3 < 0) {
+            param3 = 0;
+        }
+    }
+
+    total |= IS_FALSE(DBGEXIDeselect());
+    return IS_FALSE(total);
+}
+
+#define TO_BOOL(x) (((u32)__cntlzw((x)) >> 5))
+#pragma push
+#pragma dont_inline on
+static BOOL DBGReadMailbox(u32* p1)
+{
+	u32 v;
+	u32 total = 0;
+    u32 stack0, stack1, stack2;
+
+    DBGEXISelect(4);
+
+	v = 0x60000000;
+	total |= !(DBGEXIImm(&v, 2, 1) != 0);
+	DBGEXISync();
+
+	total |= !(DBGEXIImm(p1, 4, 0) != 0);
+	DBGEXISync();
+
+    DBGEXIDeselect();
+    total = TO_BOOL(total);
+	return total;
+}
+#pragma pop
+
+inline static BOOL DBGWriteMailbox(u32 p1)
+{
+    u32 cmd = 0xc0000000;
+    u32 v;
+    u32 base = p1;
+    BOOL total = FALSE;
+
+    DBGEXISelect(4);
+    v = (base & 0x1fffffff) | (cmd);
+    total |= IS_FALSE(DBGEXIImm(&v, sizeof(v), 1));
+    total |= IS_FALSE(DBGEXISync());
+    total |= IS_FALSE(DBGEXIDeselect());
+
+    return IS_FALSE(total);
+}
+
+static BOOL DBGEXIImm(void *buffer, s32 bytecounter, u32 write)
+{
+    u8 *tempPointer;
+    u32 writeOutValue;
+    int i;
+
+    if (write) {
+        tempPointer = buffer;
+        writeOutValue = 0;
+        for (i = 0; i < bytecounter; i++) {
+            u8 *temp = ((u8 *)buffer) + i;
+            writeOutValue |= *temp << ((3 - i) << 3);
+        }
+        __EXIRegs[14] = writeOutValue;
+    }
+
+    __EXIRegs[13] = 1 | write << 2 | (bytecounter - 1) << 4;
+    DBGEXISync();
+
+    if (!write) {
+        writeOutValue = __EXIRegs[14];
+        tempPointer = buffer;
+        for (i = 0; i < bytecounter; i++) {
+            *tempPointer++ = writeOutValue >> ((3 - i) << 3);
+        }
+    }
+
+    return TRUE;
+}
+
+inline static BOOL DBGEXISync()
+{
+    while (__EXIRegs[13] & 1)
+        ;
+
+    return TRUE;
+}
+
+inline BOOL DBGEXIDeselect(void)
+{
+    __EXIRegs[10] &= 0x405;
+    return TRUE;
+}
+
+inline static u32 DBGEXISelect(u32 v)
 {
     u32 regs = __EXIRegs[10];
     regs &= 0x405;
@@ -383,13 +335,36 @@ static u32 DBGEXISelect(u32 v)
     return TRUE;
 }
 
-BOOL DBGEXIDeselect(void)
+inline static void DBGEXIInit()
+{
+    __OSMaskInterrupts(0x18000);
+    __EXIRegs[10] = 0;
+}
+
+#else
+
+inline void DBGEXIInit()
+{
+    __OSMaskInterrupts(0x18000);
+    __EXIRegs[10] = 0;
+}
+
+inline static u32 DBGEXISelect(u32 v)
+{
+    u32 regs = __EXIRegs[10];
+    regs &= 0x405;
+    regs |= 0x80 | (v << 4);
+    __EXIRegs[10] = regs;
+    return TRUE;
+}
+
+inline BOOL DBGEXIDeselect(void)
 {
     __EXIRegs[10] &= 0x405;
     return TRUE;
 }
 
-static BOOL DBGEXISync()
+inline static BOOL DBGEXISync()
 {
     while (__EXIRegs[13] & 1)
         ;
@@ -427,7 +402,7 @@ static BOOL DBGEXIImm(void *buffer, s32 bytecounter, u32 write)
     return TRUE;
 }
 
-static BOOL DBGWriteMailbox(u32 p1)
+inline static BOOL DBGWriteMailbox(u32 p1)
 {
     u32 cmd = 0xc0000000;
     u32 v;
@@ -522,7 +497,7 @@ static BOOL DBGWrite(u32 count, void *buffer, s32 param3)
     return IS_FALSE(total);
 }
 
-static BOOL _DBGReadStatus(u32 *p1)
+inline static BOOL _DBGReadStatus(u32 *p1)
 {
     BOOL total = FALSE;
     u32 v;
@@ -541,10 +516,12 @@ static BOOL _DBGReadStatus(u32 *p1)
     return IS_FALSE(total);
 }
 
+#pragma dont_inline on
 static BOOL DBGReadStatus(u32 *p1)
 {
     return _DBGReadStatus(p1);
 }
+#pragma dont_inline reset
 
 static void MWCallback(u32 a, OSContext *b)
 {
@@ -587,7 +564,7 @@ void DBInitInterrupts(void)
     __OSUnmaskInterrupts(0x40);
 }
 
-static void CheckMailBox(void)
+inline static void CheckMailBox(void)
 {
     u32 v;
     DBGReadStatus(&v);
@@ -672,7 +649,5 @@ BOOL DBWrite(void *src, u32 size)
 void DBOpen(void) { }
 
 void DBClose(void) { }
-
-#else
 
 #endif
