@@ -259,7 +259,6 @@ void BoardPlayerInit(void)
 
 void BoardPlayerModelInit(void)
 {
-    s32 sp64[14];
     s32 var_r31;
     s32 var_r30;
     s32 temp_r29;
@@ -275,9 +274,10 @@ void BoardPlayerModelInit(void)
     s32 ro1[8] = { DATA_MAKE_NUM(DATADIR_MARIOMOT, 0x00), DATA_MAKE_NUM(DATADIR_LUIGIMOT, 0x00), DATA_MAKE_NUM(DATADIR_PEACHMOT, 0x00),
         DATA_MAKE_NUM(DATADIR_YOSHIMOT, 0x00), DATA_MAKE_NUM(DATADIR_WARIOMOT, 0x00), DATA_MAKE_NUM(DATADIR_DONKEYMOT, 0x00),
         DATA_MAKE_NUM(DATADIR_DAISYMOT, 0x00), DATA_MAKE_NUM(DATADIR_WALUIGIMOT, 0x00) };
-    u16 ro2[13] = { 0, 2, 3, 5, 6, 22, 23, 24, 27, 31, 47, 72, 73 };
+    u16 ro2[] = { 0, 2, 3, 5, 6, 22, 23, 24, 27, 31, 47, 72, 73 };
+    s32 sp64[ARRAY_COUNT(ro2)+1];
 
-    memset(&boardPlayerMdl, 0, 8);
+    memset(&boardPlayerMdl, 0, sizeof(boardPlayerMdl));
     suitMdl = -1;
     suitPlayerMdl = -1;
     if ((_CheckFlag(FLAG_ID_MAKE(1, 5)) != 0) || (_CheckFlag(FLAG_ID_MAKE(1, 6)) && (GWBoardGet() == BOARD_ID_MAIN6))) {
@@ -298,7 +298,7 @@ void BoardPlayerModelInit(void)
         GWPlayer[var_r31].character = temp_r29;
         GWPlayerCfg[var_r31].character = temp_r29;
 
-        for (var_r30 = 0; var_r30 < 0xD; var_r30++) {
+        for (var_r30 = 0; var_r30 < ARRAY_COUNT(ro2); var_r30++) {
             sp64[var_r30] = ro1[temp_r29] | ro2[var_r30];
         }
         sp64[var_r30] = -1;
@@ -309,7 +309,7 @@ void BoardPlayerModelInit(void)
         BoardModelMotionStart(temp_r3, playerMot[var_r31], 0x40000001);
         if (BoardStartCheck() == 0) {
 
-            for (var_r30 = 0; var_r30 < 3; var_r30++) {
+            for (var_r30 = 0; var_r30 < ARRAY_COUNT(temp_r27->items); var_r30++) {
                 temp_r27->items[var_r30] = -1;
             }
             temp_r24 = GWPlayerCfg[var_r31].group;
